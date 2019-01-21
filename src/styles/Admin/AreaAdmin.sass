@@ -1,0 +1,166 @@
+*
+    box-sizing: border-box
+
+\:root
+    font-size: 10px
+
+body
+    font-family: $text-font
+    background: $content-color
+
+=close-icon
+    align-self: flex-start
+    justify-self: end
+    margin-left: $defaultMargin
+    cursor: pointer
+    border-radius: 50%
+    padding: 0.4rem
+    background: $button-color
+    color: white
+    display: flex
+    justify-content: center
+    align-content: center
+
+    &:hover
+        opacity: 0.8
+
+    i
+        font-size: 1.6rem
+
+.area-admin
+    display: flex
+    display: -webkit-flex
+    display: -ms-flexbox
+    flex-flow: column wrap
+
+    .area-manager
+        display: flex
+        display: -webkit-flex
+        display: -ms-flexbox
+        flex-flow: row nowrap
+        justify-content: flex-start
+
+        .create-area
+            display: flex
+            display: -webkit-flex
+            display: -ms-flexbox
+            flex-flow: column wrap
+            margin-left: 10px
+            width: 70%
+
+            .create-area-item
+                display: flex
+                display: -webkit-flex
+                display: -ms-flexbox
+                flex-flow: row nowrap
+
+                .form-group
+                    display: flex
+                    flex-direction: column
+                    justify-content: flex-end
+                    flex: 1
+                    max-width: none
+                    padding: 0.4rem
+                    width: 80%
+                    margin-left: $defaultMargin
+
+                    select
+
+                    #{$all-text-inputs}, select
+                        height: 35px
+
+                button
+                    height: 35px
+                    align-self: flex-end
+                    margin-bottom: 0.4rem
+
+            .area-list
+                margin: 2em
+                width: 100%
+                display: grid
+                grid-template-columns: repeat(5, auto)
+                overflow-y: auto
+                border-left: none
+                .header
+                    background-color: #F9F9FA
+                    position: sticky
+                    top: 0
+                    height: 35px
+                    border-bottom: 1px solid #E3E4E4
+                    display: flex
+                    align-content: center
+                    justify-content: center
+    
+                    label
+                        align-self: center                       
+
+                .helper
+                    background-color: clear
+                    border: 0px
+
+                .item
+                    height: 35px
+                    display: flex
+                    align-content: center
+                    justify-content: center
+                        
+                    label
+                        align-self: center
+
+                .close
+                    +close-icon
+                    justify-self: start
+                    align-self: center
+
+        .create-area-type
+            width: 30%
+
+            form
+                display: flex
+                display: -webkit-flex
+                display: -ms-flexbox
+                flex-flow: column wrap
+                width: 80%
+
+                .item
+                    display: flex
+                    flex-flow: row nowrap
+                    justify-content: flex-start
+
+                    .label-container
+                        background-color: $clear-background-color
+                        padding: 10px
+                        border-radius: 5px
+                        width: 100%
+                        margin: $defaultMargin
+
+                        label
+                            align-self: center
+
+                    .close
+                        +close-icon
+
+            .new-type
+                display: flex
+                display: -webkit-flex
+                display: -ms-flexbox
+                flex-flow: row nowrap
+
+                label
+                    margin: $defaultMargin
+
+                input
+                    margin: $defaultMargin
+
+            // .create
+            //     background-color: red
+            //
+            // #{$all-text-inputs}, select
+            //     width: 100%
+
+        .submit-form
+            display: flex
+            display: -webkit-flex
+            display: -ms-flexbox
+            align-self: flex-end
+            flex-flow: column wrap

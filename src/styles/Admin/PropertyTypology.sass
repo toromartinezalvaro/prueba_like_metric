@@ -1,0 +1,102 @@
+.property-typology
+    width: 100%
+
+    .form-container
+        background: rgba(255, 255, 255, 0.4)
+        padding: 0.8rem
+        border-radius: 0.4rem
+        margin-bottom: 1rem
+
+        .form-controls
+            display: flex
+            flex-direction: row
+            justify-content: flex-end
+
+            .close
+                cursor: pointer
+                border-radius: 50%
+                padding: 0.4rem
+                background: $button-color
+                color: white
+                display: flex
+                justify-content: center
+                align-content: center
+
+                &:hover
+                    opacity: 0.8
+
+                i
+                    font-size: 1.6rem
+
+        .form-row
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: flex-end
+
+            .add-area
+                width: 15%
+
+                .form-group
+                    display: flex
+                    flex-direction: column
+                    justify-content: flex-end
+                    flex-grow: 1
+                    flex-shrink: 1
+                    max-width: none
+                    padding: 0.4rem
+            
+            .property-list
+                width: 85%
+                display: grid
+                margin-left: 2rem
+                grid-template-rows: repeat(5, auto)
+                grid-auto-columns: 10rem
+                grid-auto-flow: column
+
+                .header
+                    background-color: #F9F9FA
+                    height: 35px
+                    border-left: 1px solid #E3E4E4
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                
+                .areaTypeName
+                    background-color: #CED8F6
+                
+                .item
+                    height: 35px
+                    border-right: 1px solid #E3E4E4
+                    display: flex
+                    align-items: center
+                    justify-content: center
+
+                select
+                    width: 100%
+
+            label
+                display: block
+                margin-bottom: 0.4rem
+    .add-row
+        display: flex
+        flex-direction: row
+        justify-content: flex-end
+        height: 4rem
+        margin: 0.8rem
+
+        .add-button, .remove-button
+            display: flex
+            justify-content: center
+            align-items: center
+            border-radius: 50%
+            flex-basis: 4rem
+            flex-shrink: 0
+            background: $button-color
+            margin-left: 1rem
+            font-weight: bold
+            color: white
+            cursor: pointer
+
+            &:hover
+                opacity: 0.8
