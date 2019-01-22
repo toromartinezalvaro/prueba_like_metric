@@ -41,10 +41,11 @@ export default class CreateArea extends Component {
         this.services.getAreaList().then(areaItems => {
             const { areaTypes, areas } = areaItems
             console.log('state prime ' + JSON.stringify(areaItems))
+            let firstType = areaTypes[0]
             this.setState({
                 areaTypeList: areaTypes,
                 areaList: areas,
-                [ComponentId.areaType]: areaTypes[0].id
+                [ComponentId.areaType]: firstType ? firstType.id : ""
             })
         })
     }
@@ -75,14 +76,9 @@ export default class CreateArea extends Component {
         const { currentType, areaTypeList } = this.state
         this.services
             .createAreaType(currentType)
-            .then(body => {
-                var newTypeList = areaTypeList
-                newTypeList.push({
-                    id: areaTypeList[areaTypeList.length - 1].id + 1,
-                    name: currentType
-                })
+            .then(areaTypeList => {
                 this.setState({
-                    areaTypeList: newTypeList
+                    areaTypeList: areaTypeList
                 })
             })
     }
@@ -121,15 +117,15 @@ export default class CreateArea extends Component {
             this.setState({
                 areaTypeList: areaTypes,
                 areaList: areas,
-                areaReference: 0,
-                areaPriceMt2: 0,
-                areaMt2: 0
+                [ComponentId.areaReference]: 0,
+                [ComponentId.areaPriceMt2]: "",
+                [ComponentId.areaMt2]: ""
             })
         })
     }
 
     render() {
-        const { currentState, areaTypeList, areaList, idType, areaReference, areaMt2, areaPriceMt2 } = this.state
+        const { currentState, areaTypeList, areaList, idType, reference, mt2, priceMt2 } = this.state
         return (
             <div className="area-manager">
                 <div className='create-area-type'>
@@ -181,15 +177,15 @@ export default class CreateArea extends Component {
                             </div>
                             <div className='form-group'>
                                 <label>Referencia</label>
-                                <input type='number' name={ComponentId.areaReference} value={StringHelper.digits(areaReference)} onChange={this._onChange} />
+                                <input type='number' name={ComponentId.areaReference} value={StringHelper.digits(reference)} onChange={this._onChange} />
                             </div>
                             <div className='form-group'>
                                 <label>mt2</label>
-                                <input type='number' name={ComponentId.areaMt2} value={StringHelper.digits(areaMt2)} onChange={this._onChange} />
+                                <input type='number' name={ComponentId.areaMt2} value={StringHelper.digits(mt2)} onChange={this._onChange} />
                             </div>
                             <div className='form-group'>
                                 <label>Valor mt2</label>
-                                <input type='number' name={ComponentId.areaPriceMt2} value={StringHelper.digits(areaPriceMt2)} onChange={this._onChange} />
+                                <input type='number' name={ComponentId.areaPriceMt2} value={StringHelper.digits(priceMt2)} onChange={this._onChange} />
                             </div>
                             <button onClick={() => this._createArea()}>Crear Area</button>
                         </div>

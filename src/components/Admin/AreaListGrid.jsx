@@ -27,14 +27,19 @@ export default class AreaListGrid extends Component {
         return ["Tipo", "Referencia", "Mt2", "Valor mt2", ""]
     }
 
+    _findAreaById = (id, areaTypeList) => {
+        let type = areaTypeList.find(type => {
+            return type.id === id
+        })
+        return type ? type.name : ""
+    }
+
     itemsByArea(area, areaTypeList, removeArea) {
         return [
             <div className="item">
                 <label >
                     {
-                        areaTypeList.find(type => {
-                            return type.id === area.idType
-                        }).name
+                        this._findAreaById(area.idType, areaTypeList)
                     }
                 </label>
             </div>,

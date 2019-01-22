@@ -1,27 +1,31 @@
-import { 
+import {
     getPrimeTypes,
     removePrimeType,
-     createPrimeType,
-      createAreaType,
-       removeAreaType,
-        getAreaList,
-         getPrimeList,
-          createPrimeList,
-           getPropertyTypology,
-            createArea,
-             removeArea,
-             createPropertyTypology,
-             removePropertyTypology
-             } from './area'
+    createPrimeType,
+    createAreaType,
+    removeAreaType,
+    getAreaList,
+    getPrimeList,
+    createPrimeList,
+    getPropertyTypology,
+    createArea,
+    removeArea,
+    createPropertyTypology,
+    removePropertyTypology
+} from './area'
 
 export default class Services {
-    constructor() { }
+    constructor() {}
 
     getPrimeTypes() {
         return new Promise((resolve, reject) => {
-            getPrimeTypes({}).then(({ body }) => {
+            getPrimeTypes({}).then(({
+                body
+            }) => {
                 // console.log('trying body' + JSON.stringify(body))
-                const { primeTypeList } = body
+                const {
+                    primeTypeList
+                } = body
 
                 if (primeTypeList) {
                     return resolve(primeTypeList)
@@ -35,7 +39,9 @@ export default class Services {
     removePrimeType(id) {
         removePrimeType({
             id: id
-        }).then(({ body }) => {
+        }).then(({
+            body
+        }) => {
             // console.log('trying body' + JSON.stringify(body))
         })
     }
@@ -44,7 +50,9 @@ export default class Services {
         return new Promise((resolve, reject) => {
             createPrimeType({
                 name: name
-            }).then(({ body }) => {
+            }).then(({
+                body
+            }) => {
                 // console.log('trying body' + JSON.stringify(body))
                 if (body) {
                     return resolve(body)
@@ -57,13 +65,21 @@ export default class Services {
 
     getAreaList() {
         return new Promise((resolve, reject) => {
-            getAreaList({}).then(({ body }) => {
+            getAreaList({}).then(({
+                body
+            }) => {
                 // console.log('trying body' + JSON.stringify(body))
-                const { areaTypes, areas } = body
-                if (areaTypes  && areas) {
+                const {
+                    areaTypes,
+                    areas
+                } = body
+                if (areaTypes && areas) {
                     return resolve(body)
                 } else {
-                    return resolve({areaTypes: [], areas: []})
+                    return resolve({
+                        areaTypes: [],
+                        areas: []
+                    })
                 }
             })
         })
@@ -72,7 +88,9 @@ export default class Services {
     removeAreaType(id) {
         removeAreaType({
             id: id
-        }).then(({ body }) => {
+        }).then(({
+            body
+        }) => {
             // console.log('trying body' + JSON.stringify(body))
         })
     }
@@ -81,10 +99,12 @@ export default class Services {
         return new Promise((resolve, reject) => {
             createAreaType({
                 name: name
-            }).then(({ body }) => {
-                // console.log('trying body' + JSON.stringify(body))
-                if (body) {
-                    return resolve(body)
+            }).then(({
+                body
+            }) => {
+                const { areaTypeList } = body
+                if (areaTypeList) {
+                    return resolve(areaTypeList)
                 } else {
                     return reject(new Error("Not found"))
                 }
@@ -94,9 +114,14 @@ export default class Services {
 
     getPrimeList() {
         return new Promise((resolve, reject) => {
-            getPrimeList({}).then(({ body }) => {
+            getPrimeList({}).then(({
+                body
+            }) => {
                 // console.log('trying body' + JSON.stringify(body))
-                const { primes, primeTypes } = body
+                const {
+                    primes,
+                    primeTypes
+                } = body
 
                 if (primes, primeTypes) {
                     return resolve(body)
@@ -109,9 +134,14 @@ export default class Services {
 
     createPrimeList(list) {
         return new Promise((resolve, reject) => {
-            createPrimeList(list).then(({ body }) => {
+            createPrimeList(list).then(({
+                body
+            }) => {
                 // console.log('trying body' + JSON.stringify(body))
-                const { primes, primeTypes } = body
+                const {
+                    primes,
+                    primeTypes
+                } = body
                 if (primes && primeTypes) {
                     return resolve(body)
                 } else {
@@ -123,14 +153,10 @@ export default class Services {
 
     getPropertyTypology() {
         return new Promise((resolve, reject) => {
-            getPropertyTypology().then(({ body }) => {
-                console.log('trying body' + JSON.stringify(body))
-                const { propertyTypologies, areaTypes, areas } = body
-                if (propertyTypologies && areaTypes && areas) {
-                    return resolve(body)
-                } else {
-                    return reject(new Error("Not found"))
-                }
+            getPropertyTypology().then(({
+                body
+            }) => {
+                this.validatePropertyType(resolve, reject, body)
             })
         })
     }
@@ -141,10 +167,11 @@ export default class Services {
 
             let areas = type.areas.map(area => {
                 return {
-                    id: area.isNew ? null : area.areaId
+                    id: area.isNew ? area.areaId : null
                 }
-            }).filter(area => { area.id !== null })
-
+            }).filter(area => {
+                return area.id !== null
+            })
             return {
                 id: type.isNew ? null : type.id,
                 name: type.name,
@@ -152,15 +179,11 @@ export default class Services {
             }
         })
 
-        console.log('trying body' + JSON.stringify(parameters))
         return new Promise((resolve, reject) => {
-            createPropertyTypology(parameters).then(({ body }) => {
-                const { propertyTypologies, areaTypes, areas } = body
-                if (propertyTypologies && areaTypes && areas) {
-                    return resolve(body)
-                } else {
-                    return resolve([])
-                }
+            createPropertyTypology(parameters).then(({
+                body
+            }) => {
+                this.validatePropertyType(resolve, reject, body)
             })
         })
     }
@@ -169,19 +192,29 @@ export default class Services {
         return new Promise((resolve, reject) => {
             removePropertyTypology({
                 id: id
-            }).then(({ body }) => {
-                const { propertyTypologies, areaTypes, areas } = body
-                if (propertyTypologies && areaTypes && areas) {
-                    return resolve(body)
-                } else {
-                    return resolve({
-                        propertyTypologies: [],
-                        areaTypes: [],
-                        areas: []
-                    })
-                }
+            }).then(({
+                body
+            }) => {
+                this.validatePropertyType(resolve, reject, body)
             })
         })
+    }
+
+    validatePropertyType(resolve, reject, body) {
+        const {
+            propertyTypologies,
+            areaTypes,
+            areas
+        } = body
+        if (propertyTypologies && areaTypes && areas) {
+            return resolve(body)
+        } else {
+            return resolve({
+                propertyTypologies: [],
+                areaTypes: [],
+                areas: []
+            })
+        }
     }
 
     createArea(idType, reference, mt2, priceMt2) {
@@ -192,8 +225,13 @@ export default class Services {
                 description: '',
                 mt2: mt2,
                 priceMt2: priceMt2
-            }).then(({ body }) => {
-                const { areas, areaTypes } = body
+            }).then(({
+                body
+            }) => {
+                const {
+                    areas,
+                    areaTypes
+                } = body
                 if (areas, areaTypes) {
                     return resolve(body)
                 } else {
@@ -207,8 +245,13 @@ export default class Services {
         return new Promise((resolve, reject) => {
             removeArea({
                 id: id
-            }).then(({ body }) => {
-                const { areas, areaTypes } = body
+            }).then(({
+                body
+            }) => {
+                const {
+                    areas,
+                    areaTypes
+                } = body
                 if (areas, areaTypes) {
                     return resolve(body)
                 } else {

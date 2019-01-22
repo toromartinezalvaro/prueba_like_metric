@@ -54,7 +54,7 @@ export const removeArea = data => {
 }
 
 export const createPropertyTypology = data => {
-    return request.post(`${API_PATH}/area/createPropertyTypology`).send(data)
+    return request.post(`${API_PATH}/area/createPropertyType`).send(data)
 }
 
 export const removePropertyTypology = data => {

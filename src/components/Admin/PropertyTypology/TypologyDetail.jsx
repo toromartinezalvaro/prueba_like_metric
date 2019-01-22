@@ -63,29 +63,29 @@ class TypologyDetail extends Component {
         return ["", "Referencia", "Area mt2", "Valor mt2", "Valor Total"]
     }
 
-    _itemByArea(description, name) {            
-           return (<div className={"item " + name}>
-                <label >
-                    {
-                        description
-                    }
-                </label>
-            </div>)
+    _itemByArea(description, name) {
+        return (<div className={"item " + name}>
+            <label >
+                {
+                    description
+                }
+            </label>
+        </div>)
     }
 
-    _itemsByArea(area) {            
+    _itemsByArea(area) {
         return [
-        this._itemByArea(area.areaTypeName, "areaTypeName"), 
-        this._itemByArea(area.areaReference, "areaReference"),
-        this._itemByArea(StringHelper.digits(area.areaMt2), "areaMt2"),
-        this._itemByArea(StringHelper.digits(area.areaPriceMt2), "areaPriceMt2"),
-        this._itemByArea(StringHelper.digits(area.areaPriceMt2 * area.areaMt2), "totalPrice"),
+            this._itemByArea(area.areaTypeName, "areaTypeName"),
+            this._itemByArea(area.areaReference, "areaReference"),
+            this._itemByArea(StringHelper.digits(area.areaMt2), "areaMt2"),
+            this._itemByArea(StringHelper.digits(area.areaPriceMt2), "areaPriceMt2"),
+            this._itemByArea(StringHelper.digits(area.areaPriceMt2 * area.areaMt2), "totalPrice"),
         ]
     }
 
     _addArea = () => {
-        const { currentTypology, typeList, areaList, addArea, index } = this.props
-        const { currentAreaType,  currentAreaReference } = this.state
+        const { currentTypology, typeList, areaList, addArea } = this.props
+        const { currentAreaType, currentAreaReference } = this.state
 
         let type = typeList.find(type => { return type.id === currentAreaType })
         let area = areaList.find(area => {
@@ -93,10 +93,10 @@ class TypologyDetail extends Component {
         })
 
         let newArea = {
-            areaId: index,
+            areaId: area.id,
             areaTypeId: type.id,
             areaTypeName: type.name,
-            areaReference: currentAreaReference,                                                                                           
+            areaReference: currentAreaReference,
             areaMt2: area.mt2,
             isNew: true,
             areaPriceMt2: area.priceMt2
@@ -167,7 +167,7 @@ class TypologyDetail extends Component {
                         </div>
                     </div>
                     <div className='property-list'>
-                        { 
+                        {
                             this._headers().map(header => {
                                 return (
                                     <div
@@ -182,12 +182,12 @@ class TypologyDetail extends Component {
                                     </div>)
                             })
                         }
-                        {  !currentTypology.areas.isEmpty &&
+                        {!currentTypology.areas.isEmpty &&
                             currentTypology.areas.flatMap(area => {
                                 return this._itemsByArea(area)
                             })
                         }
-                        
+
                     </div>
                 </div>
             </div>
