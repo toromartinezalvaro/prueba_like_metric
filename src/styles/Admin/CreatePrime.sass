@@ -1,0 +1,111 @@
+
+=form-group
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    flex: 1
+    max-width: none
+    padding: 0.4rem
+    width: 80%
+    margin-left: $defaultMargin
+
+    #{$all-text-inputs}, select
+        height: 35px
+
+
+.prime
+        display: flex
+        flex-direction: row
+        
+        // justify-content: flex-start
+        // flex-grow: 1
+        // flex-shrink: 1
+        // max-width: calc(100vw - 5rem)
+        // background: $content-color
+        // padding: 1.2rem
+
+        .type-prime
+            display: flex
+            flex-direction: column
+            width: 20%
+            height: 18rem
+
+            .form-group
+                +form-group
+
+        .create-prime
+            display: flex
+            flex-direction: column 
+            width: 70rem
+
+            .create-location-prime, .create-floor-prime
+                display: flex
+                flex-direction: column
+                padding-bottom: 50px
+                width: 100%
+                
+                .edit-prime-item
+                    display: flex
+                    flex-direction: row
+                    padding-bottom: 10px
+
+                    .form-group
+                        +form-group
+
+                .prime-list
+                    display: grid
+                    grid-template-columns: repeat(2, auto)
+                    width: 313px
+                    margin-top: $defaultMargin
+                    margin-left: $defaultMargin
+
+                    .header
+                        background-color: #F9F9FA
+                        height: 35px
+                        border-left: 1px solid #E3E4E4
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                
+                    .mt2
+                        width: 20em
+                
+                    .item
+                        height: 35px
+                        widows: 
+                        border-right: 1px solid #E3E4E4
+                        border-bottom: 1px solid #E3E4E4
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                    
+                    .reference
+                        background-color: #E6E6E6
+                
+                    .priceMT2
+                        background-color: #FAFAFA
+                        width: 20rem
+
+                
+                    .close
+                        align-self: center
+                        justify-self: start
+                        margin-left: $defaultMargin
+                        cursor: pointer
+                        border-radius: 50%
+                        padding: $defaultMargin
+                        background: $button-color
+                        color: white
+                        display: flex
+                        justify-content: center
+                        align-content: center
+
+                        &:hover
+                            opacity: 0.8
+
+                        i
+                            font-size: 1rem
+
+
+.submit-form
+    padding: 1rem

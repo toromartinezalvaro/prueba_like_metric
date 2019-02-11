@@ -1,0 +1,92 @@
+.area-admin
+    display: flex
+    justify-content: flex-start
+    flex-direction: row
+    align-items: stretch
+    height: 100%
+
+    .area-admin-slidebar
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: stretch
+        flex-basis: 5rem
+        background: $sidebar-color
+        flex-shrink: 0
+        height: 100%
+        min-height: 100rem
+
+        .logo
+            display: flex
+            justify-content: center
+            align-items: center
+            flex-basis: 5rem
+            background: $button-color
+            color: $sidebar-menu-item-color
+            cursor: pointer
+
+            &:hover
+                color: white
+
+        .menu-item
+            position: relative
+            display: flex
+            justify-content: center
+            align-items: center
+            flex-basis: 5rem
+            cursor: pointer
+            border-bottom: 1px solid gray
+            color: $sidebar-menu-item-color
+
+            .tooltip
+                position: absolute
+                left: calc(100% + 1rem)
+                width: 14rem
+                font-size: 1.2rem
+                background: $sidebar-color
+                border-radius: 0.5rem
+                padding: 0.5rem
+                opacity: 0.85
+                visibility: hidden
+                opacity: 0
+                transition: visibility 0s, opacity 0.7s linear
+
+                &::before
+                    content: ""
+                    position: absolute
+                    left: -0.5rem
+                    width: 0
+                    height: 0
+                    border-top: 0.5rem solid transparent
+                    border-right: 0.5rem solid $sidebar-color
+                    border-bottom: 0.5rem solid transparent
+
+            &.active
+                border-left: 2px solid $button-color
+
+                &::before
+                    content: ""
+                    position: absolute
+                    top: calc(50% - 0.7rem)
+                    left: 0
+                    width: 0
+                    height: 0
+                    border-top: 0.7rem solid transparent
+                    border-left: 0.7rem solid $button-color
+                    border-bottom: 0.7rem solid transparent
+
+            &:hover
+                color: white
+
+                .tooltip
+                    visibility: visible
+                    opacity: 1
+    .area-container
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        flex-grow: 1
+        flex-shrink: 1
+        max-width: calc(100vw - 5rem)
+        background: $content-color
+        padding: 1.2rem
