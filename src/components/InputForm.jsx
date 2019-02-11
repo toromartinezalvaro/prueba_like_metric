@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Sales from './InputForm/Sales'
-import DirectExpenses from './InputForm/DirectExpenses'
-import IndirectExpenses from './InputForm/IndirectExpenses'
+import DirectExpenses from './InputForm/DirectExpenses/DirectExpenses'
+import IndirectExpenses from './InputForm/IndirectExpenses/IndirectExpenses'
 
 const TABS = {
   SALES: 'SALES',

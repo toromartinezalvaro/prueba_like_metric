@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../../styles/index.sass'
 import Services from '../../webapi/services'
-import PrimeTypeItem from './PrimeTypeItem'
+import PrimeTypeItem from './Prime/PrimeTypeItem'
 
 
 const STATES = {

@@ -11,7 +11,15 @@ class TypologyDetail extends Component {
             typeList
         } = props
 
+
         let areaType = typeList[0]
+        if (!areaType){
+            this.state = {
+                currentAreaType: null,
+                currentAreaReference: null
+            }
+            return 
+        }
         let referencesByType = this._areaReferences(areaList, areaType.id)
 
         this.state = {
@@ -39,17 +47,17 @@ class TypologyDetail extends Component {
         // })
     }
 
-    _areaReferences(areaList, typeId) {
+    _areaReferences(areaList, idType) {
         let areas = areaList.filter(area => {
-            return area.idType === typeId
+            return area.idType === idType
         })
         console.log("references" + JSON.stringify(areas))
         return areas.map(area => { return area.reference })
     }
 
-    _areaByReferenceAndType(areaList, typeId, reference) {
+    _areaByReferenceAndType(areaList, idType, reference) {
         return areaList.find(area => {
-            return area.reference === reference && area.idType === typeId
+            return area.reference === reference && area.idType === idType
         })
     }
 
@@ -99,7 +107,7 @@ class TypologyDetail extends Component {
             areaReference: currentAreaReference,
             areaMt2: area.mt2,
             isNew: true,
-            areaPriceMt2: area.priceMt2
+            areaPriceMt2: area.priceMT2
         }
 
         addArea(currentTypology.id, newArea)

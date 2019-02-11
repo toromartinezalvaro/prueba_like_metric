@@ -1,6 +1,7 @@
 import {
     getPrimeTypes,
     removePrimeType,
+    removePrime,
     createPrimeType,
     createAreaType,
     removeAreaType,
@@ -11,7 +12,8 @@ import {
     createArea,
     removeArea,
     createPropertyTypology,
-    removePropertyTypology
+    removePropertyTypology,
+    removeAllPrime
 } from './area'
 
 export default class Services {
@@ -43,6 +45,50 @@ export default class Services {
             body
         }) => {
             // console.log('trying body' + JSON.stringify(body))
+        })
+    }
+
+    removeAllPrime() {
+        return new Promise((resolve, reject) => {
+            removeAllPrime({}).then(({
+                body
+            }) => {
+                const {
+                    primes,
+                    primeTypes
+                } = body
+
+                if (primes) {
+                    return resolve(body)
+                } else {
+                    return resolve({
+                        primes: []
+                    })
+                }
+            })
+        })
+    }
+
+    removePrime(id) {
+        return new Promise((resolve, reject) => {
+            removePrime({
+                id: id
+            }).then(({
+                body
+            }) => {
+                const {
+                    primes,
+                    primeTypes
+                } = body
+
+                if (primes) {
+                    return resolve(body)
+                } else {
+                    return resolve({
+                        primes: []
+                    })
+                }
+            })
         })
     }
 
@@ -102,7 +148,9 @@ export default class Services {
             }).then(({
                 body
             }) => {
-                const { areaTypeList } = body
+                const {
+                    areaTypeList
+                } = body
                 if (areaTypeList) {
                     return resolve(areaTypeList)
                 } else {
@@ -123,16 +171,24 @@ export default class Services {
                     primeTypes
                 } = body
 
-                if (primes, primeTypes) {
+                if (primes) {
                     return resolve(body)
                 } else {
-                    return reject(new Error("Not found"))
+                    return resolve({
+                        primes: [],
+                        primeTypes: primeTypes
+                    })
                 }
             })
         })
     }
 
     createPrimeList(list) {
+        // let parameters = list.map(prime => {
+        //     return {
+
+        //     }
+        // })
         return new Promise((resolve, reject) => {
             createPrimeList(list).then(({
                 body
@@ -145,7 +201,7 @@ export default class Services {
                 if (primes && primeTypes) {
                     return resolve(body)
                 } else {
-                    return reject(new Error("Not found"))
+                    return resolve(body)
                 }
             })
         })
@@ -217,14 +273,14 @@ export default class Services {
         }
     }
 
-    createArea(idType, reference, mt2, priceMt2) {
+    createArea(idType, reference, mt2, priceMT2) {
         return new Promise((resolve, reject) => {
             createArea({
                 idType: idType,
                 reference: reference,
                 description: '',
                 mt2: mt2,
-                priceMt2: priceMt2
+                priceMT2: priceMT2
             }).then(({
                 body
             }) => {

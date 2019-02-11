@@ -67,7 +67,7 @@ export default class PropertyTypology extends Component {
     let nextIndex = Math.max(typologies.length, 1)
 
     let lastType = typologies[nextIndex - 1]
-    if (lastType && lastType.isNew) {
+    if (lastType && lastType.isNew && lastType.areas.length <= 0) {
       alert("Primero agrega areas al tipo de inmueble recien creado")
       return
     }

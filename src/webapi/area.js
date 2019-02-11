@@ -9,6 +9,14 @@ export const removePrimeType = data => {
     return request.delete(`${API_PATH}/area/removePrimeType`).send(data)
 }
 
+export const removePrime = data => {
+    return request.delete(`${API_PATH}/area/removePrime`).send(data)
+}
+
+export const removeAllPrime = data => {
+    return request.delete(`${API_PATH}/area/removeAllPrime`).send(data)
+}
+
 export const createPrimeType = data => {
     return request.post(`${API_PATH}/area/createPrimeType`).send(data)
 }
@@ -23,10 +31,6 @@ export const createPrime = data => {
 
 export const createPrimeList = data => {
     return request.post(`${API_PATH}/area/createPrimeList`).send(data)
-}
-
-export const removePrime = data => {
-    return request.delete(`${API_PATH}/area/removePrime`).send(data)
 }
 
 export const getAreaList = query => {

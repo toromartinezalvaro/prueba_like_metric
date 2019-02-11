@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Services from '../../webapi/services'
-import PrimeTypeItem from './PrimeTypeItem'
+import PrimeTypeItem from './Prime/PrimeTypeItem'
 import AreaListGrid from './AreaListGrid'
 import StringHelper from './../../Helpers/StringHelper'
 
@@ -77,8 +77,10 @@ export default class CreateArea extends Component {
         this.services
             .createAreaType(currentType)
             .then(areaTypeList => {
+                let firstType = areaTypeList[0]
                 this.setState({
-                    areaTypeList: areaTypeList
+                    areaTypeList: areaTypeList,
+                    [ComponentId.areaType]: firstType ? firstType.id : ""
                 })
             })
     }
@@ -91,8 +93,10 @@ export default class CreateArea extends Component {
             return type.id !== id
         })
 
+        let firstType = areaTypeList[0]
         this.setState({
-            areaTypeList: typeFiltered
+            areaTypeList: typeFiltered,
+            [ComponentId.areaType]: firstType ? firstType.id : ""
         })
     }
 
@@ -189,7 +193,7 @@ export default class CreateArea extends Component {
                             </div>
                             <button onClick={() => this._createArea()}>Crear Area</button>
                         </div>
-                        {areaList.length > 0 &&
+                        {areaList.length > 0 && areaTypeList.length > 0 &&
                             <AreaListGrid
                                 removeArea={this._deleteArea}
                                 areaList={areaList}

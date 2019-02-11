@@ -1,19 +1,12 @@
 import React, { Component } from 'react'
 import '../../styles/index.sass'
-import CreatePrimeType from './CreatePrimeType'
+import CreatePrimeType from './Prime/CreatePrimeType'
 import CreateAreaType from './CreateAreaType'
 import CreateArea from './CreateArea'
-import CreatePrime from './CreatePrime'
+import CreatePrime from './Prime/CreatePrime'
 import PropertyTypology from './PropertyTypology/PropertyTypology'
-
-
-export const SECTIONS = {
-    PRIME_TYPE: 'PRIME_TYPE',
-    PRIME: 'PRIME',
-    AREA_TYPE: 'AREA_TYPE',
-    AREA: 'AREA',
-    PROPERTY_TYPOLOGY: 'PROPERTY_TYPOLOGY'
-}
+import AreaAdminSlidebar, { SECTIONS } from './AreaAdminSlidebar'
+import CreateBuilding from './Building/CreateBuilding';
 
 class AreaAdmin extends Component {
 
@@ -24,29 +17,18 @@ class AreaAdmin extends Component {
         }
     }
 
-    _nextStep= () => {
-        const { section } = this.state
-        var currentSection = SECTIONS.AREA_TYPE 
-        switch (section) {
-            // case SECTIONS.PRIME_TYPE:
-            //     currentSection = SECTIONS.AREA_TYPE
-            //     break;
-            case SECTIONS.AREA_TYPE:
-                currentSection = SECTIONS.PROPERTY_TYPOLOGY
-                break;
-            default:
-            break;
-        }
-      
+    _changeSection= (section) => {
         this.setState({
-            section: currentSection
+            section: section
         })
     }
 
     render() {
         const { section } = this.state
         return (
-            <div className='area-admin'>
+            <div className='area-admin'> 
+                <AreaAdminSlidebar section={section} changeSection={this._changeSection} />
+                <div className='area-container'>
                 {
                     section === SECTIONS.PRIME_TYPE &&
                     <CreatePrimeType />
@@ -63,9 +45,14 @@ class AreaAdmin extends Component {
                     section === SECTIONS.PRIME && 
                     <CreatePrime />
                 }
-                    <div className='submit-form'>
+                {
+                    section == SECTIONS.BUILDING &&
+                    <CreateBuilding />
+                }
+                    {/* <div className='submit-form'>
                         <button onClick={this._nextStep}>Siguiente</button>
-                    </div>
+                    </div> */}
+                </div>
             </div>
         )
     }
