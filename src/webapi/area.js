@@ -49,6 +49,10 @@ export const getPropertyTypology = () => {
     return request.get(`${API_PATH}/area/propertyType`).query()
 }
 
+export const getProperties = () => {
+    return request.get(`${API_PATH}/area/property`).query()
+}
+
 export const createArea = data => {
     return request.post(`${API_PATH}/area/create`).send(data)
 }

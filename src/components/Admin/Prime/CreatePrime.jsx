@@ -105,24 +105,6 @@ export default class CreatePrime extends Component {
         })
     }
 
-
-
-    _newPrime = () => {
-        // let newPrime = {
-        //     id: null,
-        //     provisionalId: this.provisionalId,
-        //     idType: null,
-        //     reference: null,
-        //     priceMT2: null
-        // }
-
-        // this.provisionalId++
-
-        // this.setState({
-        //     primeList: [...primeList, newPrime]
-        // })
-    }
-
     _createPrime = () => {
         const { primeList } = this.state
 
@@ -145,6 +127,8 @@ export default class CreatePrime extends Component {
         }
     }
 
+
+
     _removeAllPrime = () => {
         if (window.confirm("Desea eliminar todas las primas actuales")) {
             this.services
@@ -160,7 +144,16 @@ export default class CreatePrime extends Component {
     }
 
     _updateQuantities = () => {
-        const { floorAmount, locationAmount } = this.state
+        const { floorAmount, locationAmount, primeList } = this.state
+
+        let areaJustUnsavePrimes =  primeList.reduce((value, prime) => {
+            return prime.isNew
+        }, false)
+        
+        if (!areaJustUnsavePrimes && primeList.length > 0) {
+            alert("Por favor elimina todas las primas actuales")
+            return
+        }
 
         let locationArray = Array.apply(null, { length: locationAmount }).map(Number.call, Number).map(index => {
             return {

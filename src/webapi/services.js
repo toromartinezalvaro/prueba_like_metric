@@ -13,7 +13,8 @@ import {
     removeArea,
     createPropertyTypology,
     removePropertyTypology,
-    removeAllPrime
+    removeAllPrime,
+    getProperties
 } from './area'
 
 export default class Services {
@@ -115,6 +116,9 @@ export default class Services {
                 body
             }) => {
                 // console.log('trying body' + JSON.stringify(body))
+                if (!body) {
+                    return
+                }
                 const {
                     areaTypes,
                     areas
@@ -217,6 +221,16 @@ export default class Services {
         })
     }
 
+    getProperties() {
+        return new Promise((resolve, reject) => {
+            getProperties().then(({
+                body
+            }) => {
+                this.validateProperties(resolve, reject, body)
+            })
+        })
+    }
+
 
     createPropertyTypology(typologies) {
         let parameters = typologies.map(type => {
@@ -273,6 +287,20 @@ export default class Services {
         }
     }
 
+    validateProperties(resolve, reject, body) {
+        const {
+            towerList,
+            propertyTypologies,
+            primeList
+        } = body
+        return resolve({
+            towerList: towerList || [],
+            primeList: primeList || [],
+            propertyTypologies: propertyTypologies || []
+        })
+    }
+
+
     createArea(idType, reference, mt2, priceMT2) {
         return new Promise((resolve, reject) => {
             createArea({
@@ -280,7 +308,7 @@ export default class Services {
                 reference: reference,
                 description: '',
                 mt2: mt2,
-                priceMT2: priceMT2
+                priceMt2: priceMT2
             }).then(({
                 body
             }) => {
@@ -291,7 +319,10 @@ export default class Services {
                 if (areas, areaTypes) {
                     return resolve(body)
                 } else {
-                    return reject(new Error("Not found"))
+                    return {
+                        areas: [],
+                        areaTypes: []
+                    }
                 }
             })
         })
