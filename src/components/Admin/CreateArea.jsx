@@ -39,19 +39,32 @@ export default class CreateArea extends Component {
 
     _loadAreaTypes = () => {
         this.services.getAreaList().then(areaItems => {
-            const { areaTypes, areas } = areaItems
-            console.log('state prime ' + JSON.stringify(areaItems))
-            let firstType = areaTypes[0]
-            this.setState({
-                areaTypeList: areaTypes,
-                areaList: areas,
-                [ComponentId.areaType]: firstType ? firstType.id : ""
-            })
+            this._setupArea(areaItems)
+        }).catch(err => {
+            console.log("error -->" + err)
+        });
+    }
+    
+    _setupArea = (areaItems) => {
+        const { areaTypes, areas } = areaItems
+        const { idType } = this.state
+        let firstType = areaTypes[0]
+        let typeId = idType.length > 0 ? idType : (firstType ? firstType.id : "")
+        this.setState({
+            areaTypeList: areaTypes,
+            areaList: areas,
+            [ComponentId.areaType]: typeId,
+            [ComponentId.areaPriceMt2]: "",
+            [ComponentId.areaMt2]: ""
         })
+    
+        this._setupReference(typeId, areas)
+        this.refs.mt2Input.select()
     }
 
     _onChange = event => {
         const { target: { name, value } } = event
+        const { areaTypeList, areaList } = this.state
         // console.log("testing --"+ JSON.stringify(name) +"  "+ JSON.stringify(value))
         if (name === ComponentId.newAreaType) {
             this.setState({
@@ -61,9 +74,25 @@ export default class CreateArea extends Component {
             this.setState({
                 [name]: value
             })
-
-            console.log("testing --"+ JSON.stringify(this.state))
         }
+
+        if (name === ComponentId.areaType) {
+            this._setupReference(value, areaList)
+        }
+    }
+
+    _setupReference = (typeId, areaList) => {
+        let maxReference = areaList.reduce((maxReference, area) => {
+            if (area.idType == typeId) {
+                let reference = parseInt(area.reference) + 1
+                return reference > maxReference ? reference : maxReference
+            }
+            return maxReference
+        }, 1)
+        
+        this.setState({
+            reference: maxReference
+        })
     }
 
     _newAreaType = () => {
@@ -82,22 +111,25 @@ export default class CreateArea extends Component {
                     areaTypeList: areaTypeList,
                     [ComponentId.areaType]: firstType ? firstType.id : ""
                 })
+                this._loadAreaTypes()
             })
     }
 
     _deleteAreaType = (id) => {
-        this.services.removeAreaType(id)
-        const { areaTypeList } = this.state
-
-        var typeFiltered = areaTypeList.filter(type => {
-            return type.id !== id
-        })
-
-        let firstType = areaTypeList[0]
-        this.setState({
-            areaTypeList: typeFiltered,
-            [ComponentId.areaType]: firstType ? firstType.id : ""
-        })
+        if (window.confirm("Desea eliminar este tipo de area? \n tenga en cuenta que eliminaría todas las areas asociadas a este tipo")) {
+            this.services.removeAreaType(id)
+            const { areaTypeList } = this.state
+    
+            var typeFiltered = areaTypeList.filter(type => {
+                return type.id !== id
+            })
+    
+            let firstType = areaTypeList[0]
+            this.setState({
+                areaTypeList: typeFiltered,
+                [ComponentId.areaType]: firstType ? firstType.id : ""
+            })
+        }
     }
 
     _deleteArea = (id) => {
@@ -117,14 +149,9 @@ export default class CreateArea extends Component {
         this.services
         .createArea(idType, reference, mt2, priceMt2)
         .then(body => {
-            const { areas, areaTypes } = body
-            this.setState({
-                areaTypeList: areaTypes,
-                areaList: areas,
-                [ComponentId.areaReference]: 0,
-                [ComponentId.areaPriceMt2]: "",
-                [ComponentId.areaMt2]: ""
-            })
+            if (body) {
+                this._setupArea(body)
+            }
         })
     }
 
@@ -181,11 +208,11 @@ export default class CreateArea extends Component {
                             </div>
                             <div className='form-group'>
                                 <label>Referencia</label>
-                                <input type='number' name={ComponentId.areaReference} value={StringHelper.digits(reference)} onChange={this._onChange} />
+                                <input type='number' name={ComponentId.areaReference} value={reference} onChange={this._onChange}/>
                             </div>
                             <div className='form-group'>
                                 <label>mt2</label>
-                                <input type='number' name={ComponentId.areaMt2} value={StringHelper.digits(mt2)} onChange={this._onChange} />
+                                <input type='number' name={ComponentId.areaMt2} value={StringHelper.digits(mt2)} onChange={this._onChange} ref='mt2Input'/>
                             </div>
                             <div className='form-group'>
                                 <label>Valor mt2</label>

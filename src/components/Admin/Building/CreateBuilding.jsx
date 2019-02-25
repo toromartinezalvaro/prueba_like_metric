@@ -97,10 +97,13 @@ export default class CreateBuilding extends Component {
         this.setState({
             towerList: floorList
         })
+        this._saveProperty(newProperty)
     }
 
-    _saveProperty(floorId, newProperty) {
-        
+    _saveProperty(newProperty) {
+        this.services.createProperties(newProperty).then(info => {
+            this._setStateWithInfo(info)
+        })
     }
 
     _saveAll = () => {
@@ -158,9 +161,6 @@ export default class CreateBuilding extends Component {
                         <Icon name='add' />
                     </div>
                 </div> */}
-                <div className='submit-form'>
-                    <button onClick={this._saveAll}>Guardar todo</button>
-                </div>
             </div>
         )
     }

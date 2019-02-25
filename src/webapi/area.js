@@ -53,6 +53,10 @@ export const getProperties = () => {
     return request.get(`${API_PATH}/area/property`).query()
 }
 
+export const createProperties = data => {
+    return request.post(`${API_PATH}/area/createProperties`).send(data)
+}
+
 export const createArea = data => {
     return request.post(`${API_PATH}/area/create`).send(data)
 }

@@ -91,6 +91,7 @@ class FloorDetail extends Component {
             number: currentApartmentNumber,
             type: currentTypology,
             locationId: currentLocation,
+            floorId: floorItem.floorId,
             isNew: true
         }
 

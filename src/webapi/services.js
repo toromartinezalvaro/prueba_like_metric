@@ -14,7 +14,8 @@ import {
     createPropertyTypology,
     removePropertyTypology,
     removeAllPrime,
-    getProperties
+    getProperties,
+    createProperties
 } from './area'
 
 export default class Services {
@@ -300,6 +301,17 @@ export default class Services {
         })
     }
 
+    createProperties(property) {
+        return new Promise((resolve, reject) => {
+            createProperties([
+                property
+            ]).then(({
+                body
+            }) => {
+                this.validateProperties(resolve, reject, body)
+            })
+        })
+    }
 
     createArea(idType, reference, mt2, priceMT2) {
         return new Promise((resolve, reject) => {
