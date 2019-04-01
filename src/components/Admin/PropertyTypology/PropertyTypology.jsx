@@ -64,9 +64,8 @@ export default class PropertyTypology extends Component {
   _add = (typologies) => {
     const { customId, newTypologies } = this.state
     var mutableTypologies = typologies
-    let nextIndex = Math.max(typologies.length, 1)
-
-    let lastType = typologies[nextIndex - 1]
+    let nextIndex = Math.max(typologies.length + 1, 1)
+    let lastType = typologies[typologies.length - 1]
     if (lastType && lastType.isNew && lastType.areas.length <= 0) {
       alert("Primero agrega areas al tipo de inmueble recien creado")
       return

@@ -145,6 +145,7 @@ export default class CreateBuilding extends Component {
                     return prime.typeId == PrimeTypes.floor
                 }).map(floor => {
                     return (
+                        typologies.length > 0 &&
                         <FloorDetail
                             primeList={primeList}
                             floorItem={floor}

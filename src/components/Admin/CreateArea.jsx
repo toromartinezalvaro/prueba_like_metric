@@ -103,6 +103,12 @@ export default class CreateArea extends Component {
 
     _createAreaType = () => {
         const { currentType, areaTypeList } = this.state
+
+        if (!currentType || currentType.length <= 0) {
+            alert("Por favor escriba algo en el campo de texto para luego continuar guardando");
+            return 
+        }
+
         this.services
             .createAreaType(currentType)
             .then(areaTypeList => {

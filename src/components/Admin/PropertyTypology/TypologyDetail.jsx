@@ -13,18 +13,18 @@ class TypologyDetail extends Component {
 
 
         let areaType = typeList[0]
-        if (!areaType){
+        if (!areaType) {
             this.state = {
                 currentAreaType: null,
                 currentAreaReference: null
             }
-            return 
+            return
         }
-        let referencesByType = this._areaReferences(areaList, areaType.id)
+        let referenceByType = this._areasReferences(areaList, areaType.id)[0]
 
         this.state = {
             currentAreaType: areaType.id,
-            currentAreaReference: referencesByType[0]
+            currentAreaReference: referenceByType ? referenceByType.reference : ""
         }
     }
 
@@ -47,12 +47,14 @@ class TypologyDetail extends Component {
         // })
     }
 
-    _areaReferences(areaList, idType) {
+    _areasReferences(areaList, idType) {
         let areas = areaList.filter(area => {
             return area.idType === idType
         })
-        console.log("references" + JSON.stringify(areas))
-        return areas.map(area => { return area.reference })
+
+        console.log("testing --" + JSON.stringify(areas))
+        return areas
+        // return areas.map(area => { return area.reference })
     }
 
     _areaByReferenceAndType(areaList, idType, reference) {
@@ -82,12 +84,30 @@ class TypologyDetail extends Component {
     }
 
     _itemsByArea(area) {
+        let totalPrice = (parseFloat(area.areaPriceMt2) * parseFloat(area.areaMt2))
         return [
             this._itemByArea(area.areaTypeName, "areaTypeName"),
             this._itemByArea(area.areaReference, "areaReference"),
             this._itemByArea(StringHelper.digits(area.areaMt2), "areaMt2"),
             this._itemByArea(StringHelper.digits(area.areaPriceMt2), "areaPriceMt2"),
-            this._itemByArea(StringHelper.digits(area.areaPriceMt2 * area.areaMt2), "totalPrice"),
+            this._itemByArea("$" + StringHelper.digits(totalPrice), "totalPrice")
+        ]
+    }
+
+    _totalPriceByAreas(areas) {
+        if (areas.length <= 1) {
+            return []
+        }
+
+        let totalPrice = areas.reduce((total, area) => {
+            return (parseFloat(area.areaPriceMt2) * parseFloat(area.areaMt2)) + total
+        }, 0)
+        return [
+            this._itemByArea("", "helper"),
+            this._itemByArea("", "helper"),
+            this._itemByArea("", "helper"),
+            this._itemByArea("", "helper"),
+            this._itemByArea("Total: $" + StringHelper.digits(totalPrice), "totalPrice")
         ]
     }
 
@@ -99,6 +119,10 @@ class TypologyDetail extends Component {
         let area = areaList.find(area => {
             return area.reference === currentAreaReference && area.idType === currentAreaType
         })
+        if (currentAreaReference.length <= 0 || currentAreaType.length <= 0 || !area) {
+            alert("Primero selecciona un tipo de area y una referencia")
+            return
+        }
 
         let newArea = {
             areaId: area.id,
@@ -107,9 +131,8 @@ class TypologyDetail extends Component {
             areaReference: currentAreaReference,
             areaMt2: area.mt2,
             isNew: true,
-            areaPriceMt2: area.priceMT2
+            areaPriceMt2: area.priceMt2
         }
-
         addArea(currentTypology.id, newArea)
     }
 
@@ -134,6 +157,9 @@ class TypologyDetail extends Component {
                 </div>
                 <div className='form-row'>
                     <div className='add-area'>
+                        <div className='form-group'>
+                            <label>{currentTypology.name}</label>
+                        </div>
                         <div className='form-group'>
                             <label>Seleccionar el tipo</label>
                             <select
@@ -160,10 +186,10 @@ class TypologyDetail extends Component {
                                 onChange={this._onChange}
                             >
                                 {
-                                    this._areaReferences(areaList, currentAreaType).map(reference => {
+                                    this._areasReferences(areaList, currentAreaType).map(area => {
                                         return (
-                                            <option key={reference} value={reference}>
-                                                {reference}
+                                            <option key={area.id} value={area.reference}>
+                                                {area.reference + " " + "( $" + area.priceMt2 + " )"}
                                             </option>
                                         )
                                     })
@@ -191,9 +217,12 @@ class TypologyDetail extends Component {
                             })
                         }
                         {!currentTypology.areas.isEmpty &&
-                            currentTypology.areas.flatMap(area => {
-                                return this._itemsByArea(area)
-                            })
+                            [
+                                ...currentTypology.areas.flatMap(area => {
+                                    return this._itemsByArea(area)
+                                }),
+                                ...this._totalPriceByAreas(currentTypology.areas)
+                            ]
                         }
 
                     </div>
