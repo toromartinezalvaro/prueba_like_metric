@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from "react-router-dom";
-import Home from './containers/Home/Home'
+import { BrowserRouter, Route } from "react-router-dom";
+import Dashboard from './containers/Dashboard/Dashboard';
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Home />
+        <Route path="/dashboard" component={Dashboard} />
       </BrowserRouter>
     );
   }
