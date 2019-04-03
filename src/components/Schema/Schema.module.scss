@@ -1,0 +1,12 @@
+.Container {
+  display: flex;
+}
+
+.Container>* {
+  margin-right: 25px;
+}
+
+.Actions {
+  display: flex;
+  flex-direction: row-reverse;
+}

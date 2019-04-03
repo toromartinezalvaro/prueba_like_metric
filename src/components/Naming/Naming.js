@@ -1,4 +1,6 @@
 import React from 'react';
+import styles from './Naming.module.scss';
+import Card, { CardHeader, CardBody, CardFooter } from "../../HOC/Card/Card";
 
 const naming = props => {
 
@@ -13,29 +15,42 @@ const naming = props => {
     header.push(<th key={`header-${index}`}>{index + 1}</th>);
   }
 
-  for (let floor = 0; floor < props.floors - (parseInt(props.lowestBillableFloor) - 1); floor++) {
+  for (let floor = 0; floor < props.floors; floor++) {
     rows.push(
       <tr key={`floor-${floor}`}>
         <th>{floor + parseInt(props.lowestBillableFloor)}</th>
         {header.map((_, apartment) => (
-          <td key={`apartment-${apartment}`}><input onChange={event => { props.onApartmentNameChange(floor, apartment, event) }} type="text" /></td>
+          <td key={`apartment-${apartment}`}>
+            <input type="text"
+              onChange={event => { props.onApartmentNameChange(floor, apartment, event) }}
+              value={props.apartmentsNames[floor][apartment]} />
+          </td>
         ))}
       </tr>
     );
   }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>header</th>
-          {header}
-        </tr>
-      </thead>
-      <tbody>
-        {rows}
-      </tbody>
-    </table>
+    <Card>
+      <CardHeader>
+        <p>Nomenclatura</p>
+      </CardHeader>
+      <CardBody>
+        <div className={styles.Card}>
+          <table>
+            <thead>
+              <tr>
+                <th>header</th>
+                {header}
+              </tr>
+            </thead>
+            <tbody>
+              {rows}
+            </tbody>
+          </table>
+        </div>
+      </CardBody>
+    </Card>
   );
 };
 

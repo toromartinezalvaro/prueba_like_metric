@@ -32,7 +32,7 @@ class Building extends Component {
     this.setState({ lowestBillableFloor: event.target.value });
   }
 
-  updateNamingArray = (floors, apartments) => Array(parseInt(floors)).fill().map(() => Array(parseInt(apartments)).fill());
+  updateNamingArray = (floors, apartments) => Array(parseInt(floors)).fill().map(() => Array(parseInt(apartments)).fill(""));
 
   apartmentNameChangeHandler = (floor, apartment, event) => {
     const name = event.target.value;
@@ -40,19 +40,23 @@ class Building extends Component {
     if (duplicate) console.log(`😅 Duplicate value!`);
     let apartments = [...this.state.naming];
     apartments[floor][apartment] = name;
+    console.log(`🗒 ${apartments}`);
     this.setState({ naming: apartments });
   }
 
   render() {
     return (
       <div>
-        <h1>Schema</h1>
         <Schema floors={this.state.floors} apartments={this.state.apartments} lowestBillableFloor={this.state.lowestBillableFloor}
           onFloorsChange={this.floorsChangeHandler}
           onApartmentsChange={this.apartmentsChangeHandler}
           onLowestBillableFloorChange={this.lowestBillableFloorChangeHandler} />
-        <Naming floors={this.state.floors} apartments={this.state.apartments} lowestBillableFloor={this.state.lowestBillableFloor}
-          onApartmentNameChange={this.apartmentNameChangeHandler} />
+        <Naming floors={this.state.floors}
+          apartments={this.state.apartments}
+          lowestBillableFloor={this.state.lowestBillableFloor}
+          onApartmentNameChange={this.apartmentNameChangeHandler}
+          apartmentsNames={this.state.naming}
+        />
       </div>
     );
   }
