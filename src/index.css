@@ -61,6 +61,10 @@ input {
   color: rgb(68, 68, 68);
 }
 
+input:disabled {
+  background: #aaa;
+}
+
 input:focus {
   border: 1px solid rgb(111, 255, 176);
   box-shadow: rgb(111, 255, 176) 0px 0px 2px 2px;

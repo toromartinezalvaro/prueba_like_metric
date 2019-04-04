@@ -11,24 +11,23 @@ const schema = props => (
       <div className={styles.Container}>
         <div >
           <p>Pisos vendibles</p>
-          <input type="text" onChange={event => { props.onFloorsChange(event) }} value={props.floors} />
+          <input type="text" onChange={event => { props.onFloorsChange(event) }} value={props.floors} disabled={props.disable}/>
         </div>
 
         <div>
           <p>Apartamentos</p>
-          <input type="text" onChange={event => { props.onApartmentsChange(event) }} value={props.apartments} />
+          <input type="text" onChange={event => { props.onApartmentsChange(event) }} value={props.apartments}  disabled={props.disable}/>
         </div>
 
         <div>
           <p>Piso mas bajo vendible</p>
-          <input type="text" onChange={event => { props.onLowestBillableFloorChange(event) }} value={props.lowestBillableFloor} />
+          <input type="text" onChange={event => { props.onLowestFloorChange(event) }} value={props.lowestFloor}  disabled={props.disable}/>
         </div>
       </div>
     </CardBody>
     <CardFooter>
       <div className={styles.Actions}>
-        <button>Guardar</button>
-        <button>Editar</button>
+        <button onClick={() => { props.onSaveSchema() }}>Guardar</button>
       </div>
     </CardFooter>
   </Card>
