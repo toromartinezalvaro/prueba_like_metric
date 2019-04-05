@@ -4,15 +4,13 @@ import Card, { CardHeader, CardBody, CardFooter } from "../../HOC/Card/Card";
 
 class naming extends Component {
 
-
   shouldComponentUpdate() {
     return this.props.disable;
   }
 
-
   render() {
 
-    let header = [];
+    const header = [];
     const rows = []
 
     // console.log(`🏢 Pisos: ${this.props.floors}`);
@@ -31,7 +29,7 @@ class naming extends Component {
             <td key={`apartment-${apartment}`}>
               <input type="text"
                 onChange={event => { this.props.onApartmentNameChange(floor, apartment, event) }}
-                value={this.props.apartmentsNames[floor][apartment].number} />
+                value={this.props.apartmentsNames[floor][apartment].name} />
             </td>
           ))}
         </tr>

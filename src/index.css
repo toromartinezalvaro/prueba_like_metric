@@ -1,16 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
-@import url('https://fonts.googleapis.com/css?family=Arimo');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 body {
+  background: #f9f9fc;
   margin: 0;
   padding: 0;
   color: #333;
-  font-family: "Arimo", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Open Sans";
   font-size: 18px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   height: 100vh;
 }
 
@@ -18,15 +15,11 @@ body {
   height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
 button {
+  font-family: inherit;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.8);
-  background: rgb(145, 92, 182);
+  background: #7d4cdb;
   padding: 10px 40px;
   border-radius: 4px;
   font-weight: bold;
@@ -44,7 +37,8 @@ button:hover {
   box-shadow: 0 0 15px rgba(145, 92, 182, .4);
 }
 
-input {
+/* input {
+  font-family: inherit;
   box-sizing: border-box;
   font-size: inherit;
   -moz-appearance: none;
@@ -68,4 +62,4 @@ input:disabled {
 input:focus {
   border: 1px solid rgb(111, 255, 176);
   box-shadow: rgb(111, 255, 176) 0px 0px 2px 2px;
-}
+} */

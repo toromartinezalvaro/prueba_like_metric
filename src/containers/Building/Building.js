@@ -6,8 +6,8 @@ import Naming from '../../components/Naming/Naming';
 class Building extends Component {
 
   state = {
-    floors: 0,
-    apartments: 0,
+    floors: 1,
+    apartments: 1,
     lowestFloor: 1,
     disable: false,
     naming: []
@@ -18,32 +18,21 @@ class Building extends Component {
   }
 
   floorsChangeHandler = event => {
-    const floors = parseInt(event.target.value);
-    this.setState({
-      floors: floors
-      //naming: this.updateNamingArray(floors, this.state.apartments)
-    });
-
+    this.setState({ floors: event.target.value });
   }
 
   apartmentsChangeHandler = event => {
-    const apartments = parseInt(event.target.value);
-    this.setState({
-      apartments: apartments
-      //naming: this.updateNamingArray(this.state.floors, apartments)
-    });
+    this.setState({ apartments: event.target.value });
   }
 
   lowestFloorChangeHandler = event => {
-    this.setState({ lowestFloor: parseInt(event.target.value) });
+    this.setState({ lowestFloor: event.target.value });
   }
 
   updateNamingArray = () => {
     axios.get('http://localhost:1337/schema/1')
       .then(response => {
-        if (response.data.length === 0) {
-
-        } else {
+        if (response.data.length !== 0) {
           this.setState({
             floors: response.data.length,
             apartments: response.data[0].length,
@@ -51,23 +40,26 @@ class Building extends Component {
             disable: true,
             naming: response.data
           });
-          this.forceUpdate();
         }
       });
   }
 
   saveSchema = () => {
     console.log(`💾 Saving schema...`);
-    axios
-      .post('http://localhost:1337/schema', {
-        tower_id: 1,
-        floors: this.state.floors,
-        properties: this.state.apartments,
-        startingFloor: this.state.lowestFloor
-      })
-      .then(data => {
-        this.updateNamingArray();
-      });
+    if (this.state.disable) {
+      this.setState({ disable: false, naming: [] });
+    } else {
+      axios
+        .post('http://localhost:1337/schema', {
+          towerId: 1,
+          floors: parseInt(this.state.floors),
+          properties: parseInt(this.state.apartments),
+          startingFloor: parseInt(this.state.lowestFloor)
+        })
+        .then(data => {
+          this.updateNamingArray();
+        });
+    }
   }
 
   apartmentNameChangeHandler = (floor, apartment, event) => {
@@ -75,7 +67,7 @@ class Building extends Component {
     const duplicate = this.state.naming.reduce((current, next) => current || next.indexOf(name) !== -1, false);
     if (duplicate) console.log(`😅 Duplicate value!`);
     let apartments = [...this.state.naming];
-    apartments[floor][apartment].number = name;
+    apartments[floor][apartment].name = name;
     axios
       .put('http://localhost:1337/schema', apartments[floor][apartment])
       .then(data => {
@@ -96,14 +88,16 @@ class Building extends Component {
           onLowestFloorChange={this.lowestFloorChangeHandler}
           onSaveSchema={this.saveSchema}
           disable={this.state.disable} />
-        <Naming
-          floors={this.state.floors}
-          apartments={this.state.apartments}
-          lowestFloor={this.state.lowestFloor}
-          disable={this.state.disable}
-          onApartmentNameChange={this.apartmentNameChangeHandler}
-          apartmentsNames={this.state.naming}
-        />
+        {this.state.naming.length === 0 ? null :
+          <Naming
+            floors={this.state.floors}
+            apartments={this.state.apartments}
+            lowestFloor={this.state.lowestFloor}
+            disable={this.state.disable}
+            onApartmentNameChange={this.apartmentNameChangeHandler}
+            apartmentsNames={this.state.naming}
+          />
+        }
       </div>
     );
   }
