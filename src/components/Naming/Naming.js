@@ -29,7 +29,7 @@ class naming extends Component {
             <td key={`apartment-${apartment}`}>
               <input type="text"
                 onChange={event => { this.props.onApartmentNameChange(floor, apartment, event) }}
-                value={this.props.apartmentsNames[floor][apartment].name} />
+                value={this.props.names[floor][apartment].name} />
             </td>
           ))}
         </tr>
