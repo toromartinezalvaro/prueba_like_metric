@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Schema.module.scss';
 import Card, { CardHeader, CardBody, CardFooter } from "../../HOC/Card/Card";
-import Input from '../Input/Input';
+import Input from '../UI/Input/Input';
 import Modal from '../UI/Modal/Modal';
 
 const schema = props => {
+
+  const [hidden, setHidden] = useState(true);
 
   const inputValidation = [
     {
@@ -22,12 +24,26 @@ const schema = props => {
     }
   ];
 
+  const save = () => {
+    if (props.update) {
+      props.updateSchema();
+    } else {
+      props.saveSchema();
+    }
+    setHidden(true);
+  }
+
+  const cancel = () => {
+    props.editMode();
+    setHidden(true);
+  }
+
   return (
     <Card>
       <CardHeader>
         <p>Esquema</p>
       </CardHeader>
-      <CardBody >
+      <CardBody>
         <div className={styles.Container}>
           <div>
             <p className={styles.Label}>Pisos vendibles:</p>
@@ -66,13 +82,13 @@ const schema = props => {
       <CardFooter>
         <div className={styles.Actions}>
           {props.disable ?
-            <button onClick={() => { props.editMode() }}>Editar</button>
+            <button onClick={props.editMode}>Editar</button>
             :
-            <button onClick={() => { props.update ? props.updateSchema() : props.onSaveSchema() }}>Guardar</button>
+            <button onClick={() => { setHidden(false) }}>Guardar</button>
           }
         </div>
-          <Modal>
-            
+        <Modal title={'Actualizar nomenclatura'} hidden={hidden} onConfirm={save} onCancel={cancel}>
+          Guardar este nuevo esquema eliminara toda la nomenclatura anterior <br /> deseas continuar?
           </Modal>
       </CardFooter>
     </Card>

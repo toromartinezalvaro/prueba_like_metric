@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Input.module.scss';
+import uuid from 'uuid/v4';
 
 const input = props => {
 
@@ -10,7 +11,6 @@ const input = props => {
   let errorMessage = [];
 
   const [localValue, changeLocalValue] = useState();
-
 
   const validation = () => {
     return props.validations.reduce((current, next) => {
@@ -44,7 +44,7 @@ const input = props => {
         value={localValue === undefined ? props.value : localValue}
         disabled={props.disable} />
       <div className={styles.ErrorMessage}>
-        {localValue !== undefined ? errorMessage.map(element => <div>{element}</div>) : ''}
+        {localValue !== undefined ? errorMessage.map((element, index) => <div key={uuid()}>{element}</div>) : ''}
       </div>
     </div>
 

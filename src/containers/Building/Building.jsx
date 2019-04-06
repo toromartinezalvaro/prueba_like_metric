@@ -1,7 +1,6 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
+import _ from 'lodash/array';
 import Schema from '../../components/Schema/Schema';
 import Naming from '../../components/Naming/Naming';
 
@@ -56,19 +55,12 @@ class Building extends Component {
 
   schemaEditMode = () => {
     this.setState({
-      disable: false,
-      names: []
+      disable: !this.state.disable
     });
   }
 
   saveSchema = () => {
     console.log(`💾 Saving schema...`);
-
-    this.setState({
-      disable: true,
-      update: true
-    });
-
     axios
       .post('http://localhost:1337/schema', {
         towerId: 1,
@@ -76,15 +68,12 @@ class Building extends Component {
         properties: parseInt(this.state.apartments),
         startingFloor: parseInt(this.state.lowestFloor)
       })
-      .then(data => {
+      .then(() => {
         this.updateNames();
       });
   }
 
   updateSchema = () => {
-    this.setState({
-      disable: true
-    });
 
     axios
       .put('http://localhost:1337/schema', {
@@ -98,14 +87,19 @@ class Building extends Component {
       });
   }
 
-  apartmentNameChangeHandler = (floor, apartment, event) => {
-    const name = event.target.value;
-    const duplicate = this.state.names.reduce((current, next) => current || next.indexOf(name) !== -1, false);
-    if (duplicate) console.log(`😅 Duplicate value!`);
+  checkDuplicates = value => {
+    const duplicate = this.state.names.reduce((current, next) => {
+      return current && _.findIndex(next, e => e.name === value) === -1;
+    }, true);
+    return duplicate;
+  }
+
+  apartmentNameChangeHandler = (floor, apartment, value) => {
+    const name = value;
     let apartments = [...this.state.names];
     apartments[floor][apartment].name = name;
     axios
-      .put('http://localhost:1337/schema', apartments[floor][apartment])
+      .put('http://localhost:1337/schema/properties', apartments[floor][apartment])
       .then(data => {
         console.log('✅ updated');
       });
@@ -115,67 +109,32 @@ class Building extends Component {
   }
 
   render() {
-    return ( <
-      div >
-      <
-      Schema floors = {
-        this.state.floors
-      }
-      apartments = {
-        this.state.apartments
-      }
-      lowestFloor = {
-        this.state.lowestFloor
-      }
-      disable = {
-        this.state.disable
-      }
-      update = {
-        this.state.update
-      }
-      onFloorsChange = {
-        this.floorsChangeHandler
-      }
-      onApartmentsChange = {
-        this.apartmentsChangeHandler
-      }
-      onLowestFloorChange = {
-        this.lowestFloorChangeHandler
-      }
-      editMode = {
-        this.schemaEditMode
-      }
-      saveSchema = {
-        this.saveSchema
-      }
-      updateSchema = {
-        this.updateSchema
-      }
-      /> {
-        this.state.names.length === 0 ? null :
-          <
-          Naming
-        floors = {
-          this.state.floors
+    return (
+      <div>
+        <Schema
+          floors={this.state.floors}
+          apartments={this.state.apartments}
+          lowestFloor={this.state.lowestFloor}
+          disable={this.state.disable}
+          update={this.state.update}
+          onFloorsChange={this.floorsChangeHandler}
+          onApartmentsChange={this.apartmentsChangeHandler}
+          onLowestFloorChange={this.lowestFloorChangeHandler}
+          editMode={this.schemaEditMode}
+          saveSchema={this.saveSchema}
+          updateSchema={this.updateSchema} />
+        {!this.state.disable ? null :
+          <Naming
+            floors={this.state.floors}
+            apartments={this.state.apartments}
+            lowestFloor={this.state.lowestFloor}
+            disable={this.state.disable}
+            checkDuplicates={this.checkDuplicates}
+            onApartmentNameChange={this.apartmentNameChangeHandler}
+            names={this.state.names}
+          />
         }
-        apartments = {
-          this.state.apartments
-        }
-        lowestFloor = {
-          this.state.lowestFloor
-        }
-        disable = {
-          this.state.disable
-        }
-        onApartmentNameChange = {
-          this.apartmentNameChangeHandler
-        }
-        names = {
-          this.state.names
-        }
-        />
-      } <
-      /div>
+      </div>
     );
   }
 }
