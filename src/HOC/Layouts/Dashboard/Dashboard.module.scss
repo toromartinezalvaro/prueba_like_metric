@@ -1,0 +1,12 @@
+.Dashboard {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.Content {
+  padding: 50px;
+  flex-grow: 1;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
