@@ -88,7 +88,7 @@ class Building extends Component {
   }
 
   checkDuplicates = value => {
-    const duplicate = this.state.names.reduce((current, next) => {
+    const duplicate = value === '' ? true : this.state.names.reduce((current, next) => {
       return current && _.findIndex(next, e => e.name === value) === -1;
     }, true);
     return duplicate;
