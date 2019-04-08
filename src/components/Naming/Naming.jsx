@@ -26,8 +26,6 @@ const naming = props => {
             <Input
               className={styles.Input}
               validations={[
-                {fn: value => !isNullOrUndefined(value), message: 'El nombre es obligatorio'},
-                {fn: value => value !== '', message: 'El nombre es obligatorio'}, 
                 {fn: props.checkDuplicates, message: 'Nombres unicos'},
               ]}
               onChange={value => { props.onApartmentNameChange(floor, apartment, value) }}
