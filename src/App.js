@@ -6,6 +6,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
+        <Route path="/login" component={Dashboard} />
         <Route path="/dashboard" component={Dashboard} />
       </BrowserRouter>
     );
