@@ -95,6 +95,7 @@ class Building extends Component {
   }
 
   apartmentNameChangeHandler = (floor, apartment, value) => {
+    console.log("valuee --> a ", value)
     const name = value;
     let apartments = [...this.state.names];
     apartments[floor][apartment].name = name;

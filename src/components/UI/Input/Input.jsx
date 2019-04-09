@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import styles from './Input.module.scss';
-import uuid from 'uuid/v4';
 
 const input = props => {
 
   const errorStyle = {
     borderBottomColor: "#FF4040"
   };
-  
-  const [localValue, setLocalValue] = useState();
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [initialTarget, setInitialTarget] = useState({ name: props.name, value: props.value })
+  const [localTarget, setLocalTarget] = useState(initialTarget);
+  const [errorMessages, setErrorMessages] = useState("");
   const [valid, setValid] = useState(true);
 
   const validation = value => {
-    setErrorMessages([]);
+    setErrorMessages("")
     return props.validations.reduce((current, next) => {
 
       const val = next.fn(value);
       if (!val) {
-        setErrorMessages([...errorMessages, next.message]);
+        setErrorMessages(next.message);
       }
 
       return current && val;
@@ -26,30 +25,33 @@ const input = props => {
     }, true);
   };
 
-  const localValueHandler = value => {   
-    setValid(validation(value));
-    setLocalValue(value);
+  const localTargetHandler = target => {   
+    console.debug("event... ", initialTarget, target.value);
+    setValid(validation(target.value));
+    let currentTarget = initialTarget
+    currentTarget.value = target.value
+    setLocalTarget(currentTarget);
   };
 
   const syncValues = () => {
     if (valid) {
-      props.onChange(localValue);
+      props.onChange(localTarget);
     } else {
-      setLocalValue(props.value);
+      setLocalTarget(initialTarget);
     }
   };
 
   return (
     <div className={styles.Container}>
-      <input type="text"
-        style={!valid && localValue !== undefined ? errorStyle : {}}
+      <input name={props.name} type="text"
+        style={!valid && localTarget.value !== undefined ? errorStyle : {}}
         className={`${styles.Input} ${props.className}`}
-        onChange={event => { localValueHandler(event.target.value) }}
+        onChange={event => { localTargetHandler(event.target) }}
         onBlur={syncValues}
-        value={localValue === undefined ? props.value : localValue}
+        value={localTarget === undefined ? props.value : localTarget.value}
         disabled={props.disable} />
       <div className={styles.ErrorMessage}>
-        {localValue !== undefined ? errorMessages.map((element, index) => <div key={uuid()}>{element}</div>) : ''}
+        {errorMessages}
       </div>
     </div>
 
