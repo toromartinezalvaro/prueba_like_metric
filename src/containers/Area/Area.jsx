@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
+import Input from '../../components/UI/Input/Input';
 import IconButton from '../../components/UI/Button/IconButton/IconButton';
 
 class Area extends Component {
 
   state = {
-    areasNames: ['Interior'],
-    properties: ['201'],
-    data: [['80']]
+    areasNames: ['interior'],
+    properties: ['Column'],
+    data: [[{type: 1, property:1, area: 32}]]
   }
 
   add = () => {
@@ -19,14 +20,21 @@ class Area extends Component {
   }
 
   render() {
+
+    const inputs = this.state.data.map((row, index) => 
+     row.map((e2, i2) => (
+        <Input value={e2.area}/>
+     ))
+    );
+
     return (
       <Card>
         <CardHeader>
           <p>Areas</p>
         </CardHeader>
         <CardBody>
-          <IconButton onClick={this.add} />
-          <Table intercept={'Areas'} headers={this.state.areasNames} columns={this.state.properties} data={this.state.data} />
+          {/* <IconButton onClick={this.add} /> */}
+          <Table intersect={'Areas'} headers={this.state.areasNames} columns={this.state.properties} data={inputs} />
         </CardBody>
       </Card>
     );

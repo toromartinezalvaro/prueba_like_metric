@@ -1,63 +1,37 @@
 import React from 'react';
 import styles from './Table.module.scss';
 
-const table = props => {
+const table = ({ intersect, columns, headers, data }) => {
 
   return (
-    <div className={`${styles["sticky-wrap"]} ${styles["overflow-y"]}`}>
+    <div className={styles.Container}>
 
-      <table className={styles["sticky-enabled"]} style={{ margin: 0, width: "100%" }}>
-        <thead>
-          <tr>
-            <th>{props.intercept}</th>
-            {props.headers.map((header, headerIndex) => <th key={`th-${headerIndex}`}>{header}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {props.columns.map((column, columnIndex) => {
-            return (
-              <tr key={`column-${columnIndex}`}>
-                <th>{column}</th>
-                {props.data[columnIndex].map((data, dataIndex) => (
-                  <td key={`data-${columnIndex}-${dataIndex}`}>{data}</td>
-                ))}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className={styles.Intersect}>
+        {intersect}
+      </div>
 
-      <table className={styles["sticky-thead"]}>
-        <thead>
-          <tr>
-            {props.headers.map((header, headerIndex) => <th key={`th-${headerIndex}`}>{header}</th>)}
-          </tr>
-        </thead>
-      </table>
+      <div className={styles.Header}>
+        {headers.map(element => (
+          <div>{element}</div>
+        ))}
+      </div>
 
-      <table className={styles["sticky-col"]} >
-        <thead>
-          <tr>
-            <th>Areas</th>
-            <th>Interior</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>201</th>
-          </tr>
+      <div className={styles.Columns}>
+        {columns.map(element => (
+          <div>{element}</div>
+        ))}
+      </div>     
 
-        </tbody>
-      </table>
+      <div className={styles.Table}>
+        {data.map(row => (
+          <div className={styles.Row}>
+            {row.map(cell => (
+              <div className={styles.Cell}>{cell}</div>
+            ))}
+          </div>
+        ))}
 
-      <table className={styles["sticky-intersect"]} >
-        <thead>
-          <tr>
-            <th>{props.intercept}</th>
-          </tr>
-        </thead>
-      </table>
-
+      </div>
     </div>
   );
 
