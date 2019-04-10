@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
-import Card, { CardHeader, CardBody } from '../../HOC/Card/Card';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import Table from '../../components/UI/Table/Table';
+import IconButton from '../../components/UI/Button/IconButton/IconButton';
 
 class Area extends Component {
+
+  state = {
+    areasNames: ['Interior'],
+    properties: ['201'],
+    data: [['80']]
+  }
+
+  add = () => {
+    this.setState(prevState => ({
+      areasNames: [...prevState.areasNames, "area agregada"],
+      data: [...prevState.data, ['120']]
+    }))
+  }
 
   render() {
     return (
@@ -10,17 +25,8 @@ class Area extends Component {
           <p>Areas</p>
         </CardHeader>
         <CardBody>
-          <table>
-            <thead>
-              <th>Header</th>
-            </thead>
-            <tbody>
-              <tr>
-                <th>row1</th>
-                <td>val1</td>
-              </tr>
-            </tbody>
-          </table>
+          <IconButton onClick={this.add} />
+          <Table intercept={'Areas'} headers={this.state.areasNames} columns={this.state.properties} data={this.state.data} />
         </CardBody>
       </Card>
     );
