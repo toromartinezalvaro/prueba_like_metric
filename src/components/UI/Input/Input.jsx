@@ -6,8 +6,8 @@ const input = props => {
   const errorStyle = {
     borderBottomColor: "#FF4040"
   };
-  const [initialTarget, setInitialTarget] = useState({ name: props.name, value: props.value })
-  const [localTarget, setLocalTarget] = useState(initialTarget);
+
+  const [localValue, setLocalValue] = useState();
   const [errorMessages, setErrorMessages] = useState("");
   const [valid, setValid] = useState(true);
 
@@ -25,30 +25,29 @@ const input = props => {
     }, true);
   };
 
-  const localTargetHandler = target => {   
-    console.debug("event... ", initialTarget, target.value);
-    setValid(validation(target.value));
-    let currentTarget = initialTarget
-    currentTarget.value = target.value
-    setLocalTarget(currentTarget);
+  const localValueHandler = value => {
+    setValid(validation(value));
+    setLocalValue(value);
   };
 
   const syncValues = () => {
     if (valid) {
-      props.onChange(localTarget);
+      props.onChange({ name: props.name === undefined ? "" : props.name, value: localValue });
     } else {
-      setLocalTarget(initialTarget);
+      setLocalValue(props.value);
     }
   };
 
   return (
     <div className={styles.Container}>
-      <input name={props.name} type="text"
-        style={!valid && localTarget.value !== undefined ? errorStyle : {}}
+      <input
+        name={props.name}
+        type={props.type === undefined ? "text" : props.type }
+        style={!valid && localValue !== undefined ? errorStyle : {}}
         className={`${styles.Input} ${props.className}`}
-        onChange={event => { localTargetHandler(event.target) }}
+        onChange={event => { localValueHandler(event.target.value) }}
         onBlur={syncValues}
-        value={localTarget === undefined ? props.value : localTarget.value}
+        value={localValue === undefined ? props.value : localValue}
         disabled={props.disable} />
       <div className={styles.ErrorMessage}>
         {errorMessages}

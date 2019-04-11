@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
-import { Route } from "react-router-dom";
+import Services from '../../services/UserServices'
 import LoginComponent from '../../components/User/Login';
 
 class Login extends Component {
+
+
+  constructor(props) {
+    super(props)
+    this.services = new Services()
+  }
+
 
   state = {
     email: "",
     password: "",
   }
 
-  onChange = event => {
-    const { target: { name, value } } = event
-    console.log("name  -->>", name, " v", value)
+  onChange = target => {
+    const { name, value  } = target
     if (name && value) {
       this.setState({
           [name]: value
@@ -19,7 +25,13 @@ class Login extends Component {
     }
   }
 
-
+  loginActionHandler = () => {
+    this.services
+    .login(this.state.email, this.state.password)
+    .then(response => {
+      console.log("response log ", response)
+    })
+  }
 
 
   render() {
@@ -28,6 +40,7 @@ class Login extends Component {
         onChange={this.onChange}
         email={this.state.email}
         password={this.state.password}
+        loginAction={this.loginActionHandler}
       />
     </div>
     );

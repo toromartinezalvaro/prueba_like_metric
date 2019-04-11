@@ -8,8 +8,8 @@ export default class UserServices {
     console.log('User --> ', error)
   }
 
-  login() {
-    return axios.post(UserServiceDefinitions.login)
+  login(email, pass) {
+    return axios.post(UserServiceDefinitions.login, { email: email, password: pass })
   }
 
 }

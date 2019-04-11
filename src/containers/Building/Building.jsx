@@ -19,21 +19,9 @@ class Building extends Component {
     this.updateNames();
   }
 
-  floorsChangeHandler = value => {
+  onChangeHandler = target => {
     this.setState({
-      floors: value
-    });
-  }
-
-  apartmentsChangeHandler = value => {
-    this.setState({
-      apartments: value
-    });
-  }
-
-  lowestFloorChangeHandler = value => {
-    this.setState({
-      lowestFloor: value
+      [target.name]: target.value
     });
   }
 
@@ -95,13 +83,12 @@ class Building extends Component {
   }
 
   apartmentNameChangeHandler = (floor, apartment, value) => {
-    console.log("valuee --> a ", value)
     const name = value;
     let apartments = [...this.state.names];
     apartments[floor][apartment].name = name;
     axios
       .put('http://localhost:1337/schema/properties', apartments[floor][apartment])
-      .then(data => {
+      .then(() => {
         console.log('✅ updated');
       });
     this.setState({
@@ -118,9 +105,7 @@ class Building extends Component {
           lowestFloor={this.state.lowestFloor}
           disable={this.state.disable}
           update={this.state.update}
-          onFloorsChange={this.floorsChangeHandler}
-          onApartmentsChange={this.apartmentsChangeHandler}
-          onLowestFloorChange={this.lowestFloorChangeHandler}
+          onChange={this.onChangeHandler}
           editMode={this.schemaEditMode}
           saveSchema={this.saveSchema}
           updateSchema={this.updateSchema} />

@@ -29,7 +29,6 @@ const naming = props => {
                 {fn: props.checkDuplicates, message: 'Nombres unicos'},
               ]}
               onChange={target => { 
-                console.log("solving target ->> ", target)
                 props.onApartmentNameChange(floor, apartment, target.value) 
               }}
               value={props.names[floor][apartment].name} />
