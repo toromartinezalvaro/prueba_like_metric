@@ -2,14 +2,25 @@ import React, { Component } from 'react';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Input from '../../components/UI/Input/Input';
-import IconButton from '../../components/UI/Button/IconButton/IconButton';
+import axios from 'axios';
 
 class Area extends Component {
 
   state = {
     areasNames: ['interior'],
-    properties: ['Column'],
-    data: [[{type: 1, property:1, area: 32}]]
+    properties: ['Column', '202'],
+    data: []
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:1337/areas')
+      .then(response => {
+        this.setState({
+          areasNames: response.data.areaTypes,
+          properties: response.data.properties,
+          data: response.data.propertiesAreas
+        })
+      })
   }
 
   add = () => {
@@ -21,10 +32,10 @@ class Area extends Component {
 
   render() {
 
-    const inputs = this.state.data.map((row, index) => 
-     row.map((e2, i2) => (
-        <Input value={e2.area}/>
-     ))
+    const inputs = this.state.data.map((row, index) =>
+      row.map((e2, i2) => (
+        <Input value={e2.area} />
+      ))
     );
 
     return (
