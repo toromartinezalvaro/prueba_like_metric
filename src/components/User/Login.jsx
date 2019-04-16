@@ -1,11 +1,11 @@
 import React from 'react';
 import Input from '../UI/Input/Input';
 
-const schema = props => {
+const login = props => {
   const emailValidation = [
     {
       fn: value => {
-        let emailExp = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+        let emailExp = /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
         const pattern = new RegExp(emailExp);
         return pattern.test(value);
       },
@@ -35,6 +35,13 @@ const schema = props => {
         disable={false}
       />
 
+      <label>
+        {
+          props.currentErrorMessage !== "" &&
+          props.currentErrorMessage
+        }
+      </label>
+
       <div 
       // className={styles.Actions}
       >
@@ -46,4 +53,4 @@ const schema = props => {
   )
 }
 
-export default schema
+export default login

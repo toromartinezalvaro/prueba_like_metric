@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Naming.module.scss';
 import Card, { CardHeader, CardBody, CardFooter } from "../../HOC/Card/Card";
 import Input from '../UI/Input/Input';
-import { isNullOrUndefined } from 'util';
 
 const naming = props => {
 

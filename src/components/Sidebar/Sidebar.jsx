@@ -6,6 +6,7 @@ const sidebar = () => (
   <ul className={style.Sidebar}>
     <li><Link to="/dashboard/">Dashboard</Link></li>
     <li><Link to="/dashboard/building">Building</Link></li>
+    <li><Link to="/dashboard/info">User</Link></li>
   </ul>
 );
 
