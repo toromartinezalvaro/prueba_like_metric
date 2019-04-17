@@ -39,7 +39,7 @@ export default class UserServices {
   }
 
   logout() {
-    return axios.post(UserServiceDefinitions.user)
+    return axios.post(UserServiceDefinitions.logout)
   }
 
 }

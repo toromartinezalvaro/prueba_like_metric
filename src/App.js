@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from "react-router-dom";
 import Dashboard from './containers/Dashboard/Dashboard';
 import Login from './containers/User/Login';
-import User from './containers/User/User';
 import agent from './config/config'
 import history from './config/history'
 

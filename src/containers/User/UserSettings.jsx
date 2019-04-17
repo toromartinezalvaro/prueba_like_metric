@@ -20,7 +20,8 @@ export default class UserSettings extends Component {
     .logout()
     .then(response => {
       if (response.status === 200) {
-        this.props.push('/login')
+        agent.removeToken()
+        this.props.history.push('/login')
       } 
     })
     .catch(error => {

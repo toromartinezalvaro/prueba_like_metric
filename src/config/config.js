@@ -12,6 +12,11 @@ class Agent {
     return window.localStorage.getItem(jwtKey);
   }
 
+  removeToken() {
+    window.localStorage.setItem(jwtKey, '');
+    this.token = ''
+  }
+
   reloadHeaderToken() {
     this.setToken(this.currentToken);
   }
