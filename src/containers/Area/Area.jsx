@@ -30,11 +30,24 @@ class Area extends Component {
     }))
   }
 
+  areaChangeHandler = (rowIndex, cellIndex, value) => {
+    console.log('entrando')
+    const currentData = this.state.data;
+    currentData[rowIndex][cellIndex].measure = value;
+    axios.put('http://localhost:1337/areas/1', currentData[rowIndex][cellIndex])
+      .then(response => {
+        console.log(response)
+        this.setState({ data: currentData });
+      }).catch(error => {
+        console.log(error)
+      })
+  }
+
   render() {
 
-    const inputs = this.state.data.map((row, index) =>
-      row.map((e2, i2) => (
-        <Input value={e2.area} />
+    const inputs = this.state.data.map((row, rowIndex) =>
+      row.map((e2, cellIndex) => (
+        <Input validations={[]} onChange={value => { this.areaChangeHandler(rowIndex, cellIndex, value) }} value={e2.measure} />
       ))
     );
 
