@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Input from '../../components/UI/Input/Input';
-import Button from '../../components/UI/Button/Button';
+import IconButton from '../../components/UI/Button/IconButton/IconButton';
 import axios from 'axios';
 
 class Area extends Component {
@@ -25,8 +25,13 @@ class Area extends Component {
       })
   }
 
-  addAreaType = event => {
-    axios.put('http://localhost:1337/areas/area-types', {name: event.target.value, towerId: 1})
+  areaTypeHandler = value => {
+    this.setState({areaType: value});
+  }
+
+  addAreaType = () => {
+    console.log('agregando nueva area');
+    axios.post('http://localhost:1337/areas/area-types', {name: this.state.areaType, towerId: 1})
     .then(data=> {
       console.log(data);
       axios.get('http://localhost:1337/areas')
@@ -57,7 +62,7 @@ class Area extends Component {
 
     const inputs = this.state.data.map((row, rowIndex) =>
       row.map((e2, cellIndex) => (
-        <Input validations={[]} onChange={value => { this.areaChangeHandler(rowIndex, cellIndex, value) }} value={e2.measure} />
+        <Input style={{width: '75px'}} validations={[]} onChange={value => { this.areaChangeHandler(rowIndex, cellIndex, value) }} value={e2.measure} />
       ))
     );
 
@@ -67,9 +72,9 @@ class Area extends Component {
           <p>Areas</p>
         </CardHeader>
         <CardBody>
-          <Input validations={[]} onChange={this.addAreaType} value={this.state.areaType}/>
-          <Button>Agregar</Button>
-          <Table intersect={'Areas'} headers={this.state.areasNames} columns={this.state.properties} data={inputs} />
+          <Input validations={[]} onChange={this.areaTypeHandler} value={this.state.areaType}/>
+          
+          <Table intersect={'Areas'} headers={[...this.state.areasNames, <IconButton onClick={this.addAreaType}></IconButton>]} columns={this.state.properties} data={inputs} />
         </CardBody>
       </Card>
     );
