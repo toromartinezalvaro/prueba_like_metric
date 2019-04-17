@@ -1,3 +1,5 @@
+@import '../../../styles/variables.scss';
+
 .Container {
   text-align: center;
 }
@@ -18,7 +20,7 @@
 }
 
 .Input:focus {
-  border-bottom: 1px solid #6fffb0;
+  border-bottom: 1px solid $green-color;
 }
 
 .Input:disabled {
@@ -27,5 +29,5 @@
 
 .ErrorMessage {
   font-size: 14px;
-  color: #FF4040;
+  color: $red-color;
 }

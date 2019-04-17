@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import Dashboard from './containers/Dashboard/Dashboard';
 import Login from './containers/User/Login';
 import agent from './config/config'
 import history from './config/history'
+import styles from './App.module.scss'
 
 class App extends Component {
-
-
 
   componentDidMount() {
     console.log("getSnapshotBeforeUpdate")
@@ -22,10 +21,10 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={Dashboard} />
-      </BrowserRouter>
+      </Router>
     );
   }
 }

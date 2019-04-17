@@ -3,6 +3,8 @@ import Services from '../../services/UserServices'
 import LoginComponent from '../../components/User/Login';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
+import history from '../../config/history'
+
 
 class Login extends Component {
 
@@ -41,11 +43,14 @@ class Login extends Component {
         .currentUser()
         .then(response => {
           if (response.data.user) {
-            this.props.history.push("/dashboard")
+            history.push("/dashboard")
+          } else {
+            agent.removeToken()
           }
           this.setState({ isLoading: false })
         })
         .catch(error => {
+          agent.removeToken()
           this.setState({
             isLoading: false
           })
@@ -62,7 +67,7 @@ class Login extends Component {
       .login(this.state.email, this.state.password)
       .then(user => {
         if (user.email) {
-          this.props.history.push("/dashboard")
+            history.push("/dashboard")
         }
         this.setState({ isLoading: false })
       })

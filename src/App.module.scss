@@ -1,0 +1,28 @@
+@import './styles/variables.scss';
+
+body {
+  background: $defaultWhite-color;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-family: "Open Sans";
+  font-size: 18px;
+  height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  background: $blue-color;
+  padding: 10px 40px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  outline: none;
+  margin: 0 10px;
+}

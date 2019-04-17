@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Services from '../../services/UserServices'
 import agent from '../../config/config'
 import User from '../../components/User/User'
+import history from '../../config/history'
 
 export default class UserSettings extends Component {
 
@@ -21,7 +22,7 @@ export default class UserSettings extends Component {
     .then(response => {
       if (response.status === 200) {
         agent.removeToken()
-        this.props.history.push('/login')
+        history.push('/login')
       } 
     })
     .catch(error => {
