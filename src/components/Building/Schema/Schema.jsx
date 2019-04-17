@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styles from './Schema.module.scss';
-import Card, { CardHeader, CardBody, CardFooter } from "../../HOC/Card/Card";
-import Input from '../UI/Input/Input';
-import Modal from '../UI/Modal/Modal';
+import Card, { CardHeader, CardBody, CardFooter } from "../../UI/Card/Card";
+import Input from '../../UI/Input/Input';
+import Button from '../../UI/Button/Button';
+import Modal from '../../UI/Modal/Modal';
 
 const schema = props => {
 
@@ -60,8 +61,8 @@ const schema = props => {
             <p className={styles.Label}>Apartamentos:</p>
             <Input
               className={styles.Input}
-              onChange={props.onApartmentsChange}
-              value={props.apartments}
+              onChange={props.onPropertiesChange}
+              value={props.properties}
               validations={inputValidation}
               disable={props.disable}
             />
@@ -82,9 +83,9 @@ const schema = props => {
       <CardFooter>
         <div className={styles.Actions}>
           {props.disable ?
-            <button onClick={props.editMode}>Editar</button>
+            <Button onClick={props.editMode}>Editar</Button>
             :
-            <button onClick={() => { setHidden(false) }}>Guardar</button>
+            <Button onClick={() => { setHidden(false) }}>Guardar</Button>
           }
         </div>
         <Modal title={'Actualizar nomenclatura'} hidden={hidden} onConfirm={save} onCancel={cancel}>

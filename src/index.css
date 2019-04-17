@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic:400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
 body {
   background: #f9f9fc;
   margin: 0;
   padding: 0;
   color: #333;
-  font-family: "Open Sans";
+  font-family: "Roboto";
   font-size: 18px;
   height: 100vh;
 }
@@ -14,53 +14,3 @@ body {
 #root {
   height: 100%;
 }
-
-button {
-  font-family: inherit;
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
-  background: #7d4cdb;
-  padding: 10px 40px;
-  border-radius: 4px;
-  font-weight: bold;
-  text-transform: uppercase;
-  transition: all 0.2s ease-in-out;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  outline: none;
-  margin: 0 10px;
-}
-
-button:hover {
-  color: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 15px rgba(145, 92, 182, .4);
-}
-
-/* input {
-  font-family: inherit;
-  box-sizing: border-box;
-  font-size: inherit;
-  -moz-appearance: none;
-  padding: 11px;
-  outline: currentcolor none medium;
-  background: transparent none repeat scroll 0% 0%;
-  color: inherit;
-  font-weight: 600;
-  margin: 0px;
-  border: 1px solid rgba(0, 0, 0, 0.33);
-  border-radius: 4px;
-  width: 100%;
-  transition: all 0.2s ease-in-out;
-  color: rgb(68, 68, 68);
-}
-
-input:disabled {
-  background: #aaa;
-}
-
-input:focus {
-  border: 1px solid rgb(111, 255, 176);
-  box-shadow: rgb(111, 255, 176) 0px 0px 2px 2px;
-} */
-

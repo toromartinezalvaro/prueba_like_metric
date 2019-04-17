@@ -33,7 +33,7 @@ const input = props => {
 
   const syncValues = () => {
     if (valid) {
-      props.onChange(localValue);
+      props.onChange(localValue === undefined ? props.value : localValue);
     } else {
       setLocalValue(props.value);
     }
@@ -41,6 +41,7 @@ const input = props => {
 
   return (
     <div className={styles.Container}>
+    {console.log(`render`)}
       <input type="text"
         style={!valid && localValue !== undefined ? errorStyle : {}}
         className={`${styles.Input} ${props.className}`}

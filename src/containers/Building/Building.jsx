@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import _ from 'lodash/array';
-import Schema from '../../components/Schema/Schema';
-import Naming from '../../components/Naming/Naming';
+import _ from 'lodash';
+import Schema from '../../components/Building/Schema/Schema';
+import Naming from '../../components/Building/Naming/Naming';
 
 class Building extends Component {
 
   state = {
     floors: 1,
-    apartments: 1,
+    properties: 1,
     lowestFloor: 1,
     disable: false,
     update: false,
@@ -25,9 +25,9 @@ class Building extends Component {
     });
   }
 
-  apartmentsChangeHandler = value => {
+  propertiesChangeHandler = value => {
     this.setState({
-      apartments: value
+      properties: value
     });
   }
 
@@ -43,7 +43,7 @@ class Building extends Component {
         if (response.data.length !== 0) {
           this.setState({
             floors: response.data.length,
-            apartments: response.data[0].length,
+            properties: response.data[0].length,
             lowestFloor: response.data[0][0].floor,
             disable: true,
             update: true,
@@ -53,20 +53,19 @@ class Building extends Component {
       });
   }
 
-  schemaEditMode = () => {
-    this.setState({
-      disable: !this.state.disable
-    });
+  toggleEditMode = () => {
+    this.setState(prevState => ({
+      disable: !prevState.disable
+    }));
   }
 
   saveSchema = () => {
-    console.log(`💾 Saving schema...`);
     axios
       .post('http://localhost:1337/schema', {
         towerId: 1,
         floors: parseInt(this.state.floors),
-        properties: parseInt(this.state.apartments),
-        startingFloor: parseInt(this.state.lowestFloor)
+        properties: parseInt(this.state.properties),
+        lowestFloor: parseInt(this.state.lowestFloor)
       })
       .then(() => {
         this.updateNames();
@@ -74,13 +73,12 @@ class Building extends Component {
   }
 
   updateSchema = () => {
-
     axios
       .put('http://localhost:1337/schema', {
         towerId: 1,
         floors: parseInt(this.state.floors),
-        properties: parseInt(this.state.apartments),
-        startingFloor: parseInt(this.state.lowestFloor)
+        properties: parseInt(this.state.properties),
+        lowestFloor: parseInt(this.state.lowestFloor)
       })
       .then(() => {
         this.updateNames();
@@ -94,17 +92,16 @@ class Building extends Component {
     return duplicate;
   }
 
-  apartmentNameChangeHandler = (floor, apartment, value) => {
-    const name = value;
-    let apartments = [...this.state.names];
-    apartments[floor][apartment].name = name;
+  propertyNameChangeHandler = (floor, property, value) => {
+    let names = [...this.state.names];
+    names[floor][property].name = value;
     axios
-      .put('http://localhost:1337/schema/properties', apartments[floor][apartment])
+      .put('http://localhost:1337/schema/properties', names[floor][property])
       .then(data => {
         console.log('✅ updated');
       });
     this.setState({
-      names: apartments
+      names: names
     });
   }
 
@@ -113,24 +110,24 @@ class Building extends Component {
       <div>
         <Schema
           floors={this.state.floors}
-          apartments={this.state.apartments}
+          properties={this.state.properties}
           lowestFloor={this.state.lowestFloor}
           disable={this.state.disable}
           update={this.state.update}
           onFloorsChange={this.floorsChangeHandler}
-          onApartmentsChange={this.apartmentsChangeHandler}
+          onPropertiesChange={this.propertiesChangeHandler}
           onLowestFloorChange={this.lowestFloorChangeHandler}
-          editMode={this.schemaEditMode}
+          editMode={this.toggleEditMode}
           saveSchema={this.saveSchema}
           updateSchema={this.updateSchema} />
         {!this.state.disable ? null :
           <Naming
             floors={this.state.floors}
-            apartments={this.state.apartments}
+            properties={this.state.properties}
             lowestFloor={this.state.lowestFloor}
             disable={this.state.disable}
             checkDuplicates={this.checkDuplicates}
-            onApartmentNameChange={this.apartmentNameChangeHandler}
+            onPropertyNameChange={this.propertyNameChangeHandler}
             names={this.state.names}
           />
         }
