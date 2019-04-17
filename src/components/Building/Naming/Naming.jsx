@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Naming.module.scss';
-import Card, { CardHeader, CardBody, CardFooter } from "../../HOC/Card/Card";
-import Input from '../UI/Input/Input';
+import Card, { CardHeader, CardBody, CardFooter } from "../../UI/Card/Card";
+import Input from '../../UI/Input/Input';
 
 const naming = props => {
 
@@ -9,10 +9,10 @@ const naming = props => {
   const rows = []
 
   // console.log(`🏢 Pisos: ${props.floors}`);
-  // console.log(`🏠 Apartamentos: ${props.apartments}`);
+  // console.log(`🏠 Apartamentos: ${props.properties}`);
   // console.log(`🔻 Piso mas bajo: ${props.lowestFloor}`);
 
-  for (let index = 0; index < props.apartments; index++) {
+  for (let index = 0; index < props.properties; index++) {
     header.push(<th key={`header-${index}`}>{index + 1}</th>);
   }
 
@@ -20,17 +20,17 @@ const naming = props => {
     rows.push(
       <tr key={`floor-${floor}`}>
         <th>{floor + parseInt(props.lowestFloor)}</th>
-        {header.map((_, apartment) => (
-          <td key={`apartment-${apartment}`}>
+        {header.map((_, property) => (
+          <td key={`property-${property}`}>
             <Input
               className={styles.Input}
               validations={[
                 {fn: props.checkDuplicates, message: 'Nombres unicos'},
               ]}
               onChange={target => { 
-                props.onApartmentNameChange(floor, apartment, target.value) 
+                props.onPropertyNameChange(floor, property, target.value) 
               }}
-              value={props.names[floor][apartment].name} />
+              value={props.names[floor][property].name} />
           </td>
         ))}
       </tr>

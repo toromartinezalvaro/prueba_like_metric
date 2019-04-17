@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Router, Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
+import { DashboardRoutes } from './routes/local/routes';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Login from './containers/User/Login';
 import agent from './config/config'
@@ -21,10 +22,10 @@ class App extends Component {
 
   render() {
     return (
-      <Router history={history}>
-        <Route path="/login" component={Login} />
-        <Route path="/dashboard" component={Dashboard} />
-      </Router>
+      <BrowserRouter>
+            <Route path={UserRoutes.login} component={Login} />
+        <Route path={DashboardRoutes.base} component={Dashboard} />
+      </BrowserRouter>
     );
   }
 }

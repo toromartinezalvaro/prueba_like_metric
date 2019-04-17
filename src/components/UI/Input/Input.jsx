@@ -32,7 +32,8 @@ const input = props => {
 
   const syncValues = () => {
     if (valid) {
-      props.onChange({ name: props.name === undefined ? "" : props.name, value: localValue });
+      let value = localValue === undefined ? props.value : localValue
+      props.onChange({ name: props.name === undefined ? "" : props.name, value: value });
     } else {
       setLocalValue(props.value);
     }
