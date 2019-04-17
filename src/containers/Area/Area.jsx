@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Input from '../../components/UI/Input/Input';
+import Button from '../../components/UI/Button/Button';
 import axios from 'axios';
 
 class Area extends Component {
 
   state = {
+    areaType: '',
     areasNames: ['interior'],
     properties: ['Column', '202'],
     data: []
@@ -23,11 +25,19 @@ class Area extends Component {
       })
   }
 
-  add = () => {
-    this.setState(prevState => ({
-      areasNames: [...prevState.areasNames, "area agregada"],
-      data: [...prevState.data, ['120']]
-    }))
+  addAreaType = event => {
+    axios.put('http://localhost:1337/areas/area-types', {name: event.target.value, towerId: 1})
+    .then(data=> {
+      console.log(data);
+      axios.get('http://localhost:1337/areas')
+      .then(response => {
+        this.setState({
+          areasNames: response.data.areaTypes,
+          properties: response.data.properties,
+          data: response.data.propertiesAreas
+        })
+      })
+    })
   }
 
   areaChangeHandler = (rowIndex, cellIndex, value) => {
@@ -57,7 +67,8 @@ class Area extends Component {
           <p>Areas</p>
         </CardHeader>
         <CardBody>
-          {/* <IconButton onClick={this.add} /> */}
+          <Input validations={[]} onChange={this.addAreaType} value={this.state.areaType}/>
+          <Button>Agregar</Button>
           <Table intersect={'Areas'} headers={this.state.areasNames} columns={this.state.properties} data={inputs} />
         </CardBody>
       </Card>
