@@ -48,7 +48,8 @@ const input = props => {
         onChange={event => { localValueHandler(event.target.value) }}
         onBlur={syncValues}
         value={localValue === undefined ? props.value : localValue}
-        disabled={props.disable} />
+        disabled={props.disable}
+        style={props.style} />
       <div className={styles.ErrorMessage}>
         {localValue !== undefined ? errorMessages.map((element, index) => <div key={uuid()}>{element}</div>) : ''}
       </div>

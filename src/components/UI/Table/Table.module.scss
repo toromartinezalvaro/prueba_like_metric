@@ -1,24 +1,22 @@
 .Container {
   display: grid;
-  display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
-  grid-template-areas: "Intersect Headers""Columns Table";
+  grid-template-areas: "Intersect Headers" "Columns Table";
   overflow: auto;
+  font-size: 16px;
 
   .Intersect {
     position: sticky;
     left: 0;
     top: 0;
     grid-area: Intersect;
-    background: #fff;
     z-index: 99;
     text-align: center;
     background: #666;
     padding: 0.75em 1.5em;
     font-weight: bold;
     color: #fff;
-    
   }
 
   .Header {
@@ -29,12 +27,12 @@
     z-index: 98;
     background: #31bc86;
     text-align: center;
-    padding: 0.75em 1.5em;
     font-weight: bold;
     color: #fff;
 
-    &>* {
-      flex-grow: 1;
+    & > * {
+      width: 150px;
+      line-height: 50px; 
     }
   }
 
@@ -50,15 +48,14 @@
     color: #fff;
     display: flex;
     flex-direction: column;
-    &>* {
-      flex-grow: 1;
+    & > * {
+      height: 50px;
     }
   }
 
   .Table {
     grid-area: Table;
     flex-grow: 1;
-    width: 100%;
 
     .Row {
       display: flex;
@@ -69,11 +66,10 @@
         background: rgba(129, 208, 177, 0.3);
       }
 
-      &>* {
-        flex-grow: 1;
-        padding: 0.75em 1.5em;
+      & > * {
+        width: 150px;
+        height: 50px;
       }
     }
   }
-
 }
