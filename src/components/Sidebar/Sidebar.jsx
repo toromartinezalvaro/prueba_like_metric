@@ -8,7 +8,7 @@ const sidebar = () => (
     <li><Link to={DashboardRoutes.base}>Dashboard</Link></li>
     <li><Link to={DashboardRoutes.base + DashboardRoutes.building}>Building</Link></li>
     <li><Link to={DashboardRoutes.base + DashboardRoutes.areas}>Areas</Link></li>
-    <li><Link to={DashboardRoutes.base + DashboardRoutes.userInfo}>User</Link></li>
+    <li><Link to={DashboardRoutes.base + DashboardRoutes.user}>User</Link></li>
   </ul>
 );
 

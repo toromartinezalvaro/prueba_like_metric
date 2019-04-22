@@ -32,8 +32,10 @@ class Agent {
   }
 
   setupAxios(currentToken) {
-    if (currentToken !== undefined) {
+    if (currentToken !== undefined && currentToken !== "") {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken
+      axios.defaults.withCredentials = true
+      console.log("headers -->", axios.defaults.headers)
     } else {
       axios.defaults.headers.common['Authorization'] = ''
     }

@@ -17,16 +17,21 @@ class Area extends Component {
   componentDidMount() {
     axios.get('http://localhost:1337/areas')
       .then(response => {
-        this.setState({
-          areasNames: response.data.areaTypes,
-          properties: response.data.properties,
-          data: response.data.propertiesAreas
-        })
+        const { areaTypes, properties, propertiesAreas } = response.data
+        if (areaTypes, properties, propertiesAreas) {
+          this.setState({
+            areasNames: areaTypes,
+            properties: properties,
+            data: propertiesAreas
+          })
+        } else {
+          console.log("Error with areas response")
+        }
       })
   }
 
-  addAreaType = event => {
-    axios.put('http://localhost:1337/areas/area-types', {name: event.target.value, towerId: 1})
+  addAreaType = target => {
+    axios.put('http://localhost:1337/areas/area-types', {name: target.value, towerId: 1})
     .then(data=> {
       console.log(data);
       axios.get('http://localhost:1337/areas')
@@ -57,7 +62,7 @@ class Area extends Component {
 
     const inputs = this.state.data.map((row, rowIndex) =>
       row.map((e2, cellIndex) => (
-        <Input validations={[]} onChange={value => { this.areaChangeHandler(rowIndex, cellIndex, value) }} value={e2.measure} />
+        <Input validations={[]} onChange={target => { this.areaChangeHandler(rowIndex, cellIndex, target.value) }} value={e2.measure} />
       ))
     );
 
@@ -67,7 +72,7 @@ class Area extends Component {
           <p>Areas</p>
         </CardHeader>
         <CardBody>
-          <Input validations={[]} onChange={this.addAreaType} value={this.state.areaType}/>
+          <Input name="areaType" validations={[]} onChange={this.addAreaType} value={this.state.areaType}/>
           <Button>Agregar</Button>
           <Table intersect={'Areas'} headers={this.state.areasNames} columns={this.state.properties} data={inputs} />
         </CardBody>

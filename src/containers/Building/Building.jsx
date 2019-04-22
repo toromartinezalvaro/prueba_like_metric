@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import _ from 'lodash';
 import Schema from '../../components/Building/Schema/Schema';
 import Naming from '../../components/Building/Naming/Naming';
+import SchemeServices from '../../services/schema/SchemaServices'
 
 class Building extends Component {
+
+  constructor(props) {
+    super(props)
+    this.services = new SchemeServices(this)
+  }
 
   state = {
     floors: 1,
@@ -26,8 +31,11 @@ class Building extends Component {
   }
 
   updateNames = () => {
-    axios.get('http://localhost:1337/schema/1')
+    console.log("updateNames")
+    this.services
+    .getSchema(1)
       .then(response => {
+        console.log("response data", response.data)
         if (response.data.length !== 0) {
           this.setState({
             floors: response.data.length,
@@ -48,8 +56,8 @@ class Building extends Component {
   }
 
   saveSchema = () => {
-    axios
-      .post('http://localhost:1337/schema', {
+    this.services
+      .postScheme({
         towerId: 1,
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
@@ -61,8 +69,8 @@ class Building extends Component {
   }
 
   updateSchema = () => {
-    axios
-      .put('http://localhost:1337/schema', {
+    this.services
+      .putSchema({
         towerId: 1,
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
@@ -83,8 +91,8 @@ class Building extends Component {
   propertyNameChangeHandler = (floor, property, value) => {
     let names = [...this.state.names];
     names[floor][property].name = value;
-    axios
-      .put('http://localhost:1337/schema/properties', names[floor][property])
+    this.services
+      .putProperties(names[floor][property])
       .then(data => {
         console.log('✅ updated');
       });

@@ -1,5 +1,5 @@
 import UserServiceDefinitions from './UserServiceDefinitions'
-import agent from '../config/config'
+import agent from '../../config/config'
 import axios from 'axios'
 
 

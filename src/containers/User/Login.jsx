@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Services from '../../services/UserServices'
+import Services from '../../services/user/UserServices'
 import LoginComponent from '../../components/User/Login';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
-import history from '../../config/history'
+import { DashboardRoutes } from '../../routes/local/routes'
 
 
 class Login extends Component {
@@ -43,7 +43,7 @@ class Login extends Component {
         .currentUser()
         .then(response => {
           if (response.data.user) {
-            history.push("/dashboard")
+            this.props.history.push(DashboardRoutes.base)
           } else {
             agent.removeToken()
           }
@@ -67,7 +67,7 @@ class Login extends Component {
       .login(this.state.email, this.state.password)
       .then(user => {
         if (user.email) {
-            history.push("/dashboard")
+            this.props.history.push(DashboardRoutes.base)
         }
         this.setState({ isLoading: false })
       })

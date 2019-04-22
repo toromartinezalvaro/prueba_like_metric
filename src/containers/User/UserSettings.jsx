@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Services from '../../services/UserServices'
+import Services from '../../services/user/UserServices'
 import agent from '../../config/config'
 import User from '../../components/User/User'
-import history from '../../config/history'
+import { UserRoutes } from '../../routes/local/routes'
 
 export default class UserSettings extends Component {
 
@@ -17,12 +17,13 @@ export default class UserSettings extends Component {
   }
 
   logoutAction = () => {
+    console.log("log out")
     this.services
     .logout()
     .then(response => {
       if (response.status === 200) {
         agent.removeToken()
-        history.push('/login')
+        this.props.history.push(UserRoutes.login)
       } 
     })
     .catch(error => {
