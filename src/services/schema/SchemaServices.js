@@ -5,7 +5,6 @@ import Services from '../services'
 export default class SchemeServices extends Services  {
 
   getSchema(towerId) {
-    // console.log(SchemaServiceDefinitions.schema(towerId), axios.defaults.headers)
     return this.get(SchemaServiceDefinitions.schema(towerId))
   }
 

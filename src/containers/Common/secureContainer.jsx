@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-const SecureClass = Container => class extends Container {
+const SecureContainer = Container => class extends Container {
 
   constructor() {
     super();
@@ -14,7 +14,6 @@ const SecureClass = Container => class extends Container {
   }
 
   excecuteNoAuthorization = () => {
-    console.log("excecuteNoAuthorization")
     this.setState({ redirect: true })
   }
 
@@ -40,4 +39,4 @@ const SecureClass = Container => class extends Container {
 
 }
 
-export default SecureClass
+export default SecureContainer

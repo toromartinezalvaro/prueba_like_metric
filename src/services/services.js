@@ -10,20 +10,19 @@ class Services {
       this.setupAuthentication()
     }
 
-    post(...args) {
-      return this.axiosPromise(this.axios.post(args))
+    post(url, data, config) {
+      return this.axiosPromise(this.axios.post(url, data, config))
     }
 
-    put(...args) {
-      return this.axiosPromise(this.axios.put(args))
+    put(url, data, config) {
+      return this.axiosPromise(this.axios.put(url, data, config))
     }
 
-    get(...args) {
-      return this.axiosPromise(this.axios.get(args))
+    get(url, data, config) {
+      return this.axiosPromise(this.axios.get(url, data, config))
     }
 
     axiosPromise(promise) {
-      console.log("axiosPromise -->")
       return new Promise( (resolve, reject) => {
           promise.then(response => {
             console.log("DONE -->", response)
