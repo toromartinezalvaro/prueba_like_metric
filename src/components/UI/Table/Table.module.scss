@@ -5,6 +5,7 @@
   grid-template-rows: auto 1fr;
   grid-template-areas: "Intersect Headers""Columns Table";
   overflow: auto;
+  font-size: 16px;
 
   .Intersect {
     position: sticky;
