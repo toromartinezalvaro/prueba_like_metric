@@ -12,23 +12,35 @@
   height: 100%;
   width: 64px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.End {
+  margin-top: auto;
+  margin-bottom: 3vh;
+}
+
+.MenuItem {
+  
+  display: flex;
+  justify-content: center;
+
   a:link,
   a:visited {
     border: none;
     color: $white-color;
     padding: 10px 10px;
-    -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
     text-decoration: none;
     font-size: 16px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-basis: 5rem;
   }
   a:hover,
   a:active {
     background-color: $gray-color;
+    border-radius: 50%
   }
+
 }

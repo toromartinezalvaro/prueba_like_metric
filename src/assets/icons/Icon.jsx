@@ -2,7 +2,7 @@ import React from 'react'
 
 const Icon = ({ prefix, name, fixWidth }) => {
   let className = ''
-  const fa = prefix ? prefix : 'fa' 
+  const fa = prefix ? prefix : 'fas' 
 
   className += fa
   className += ' '
