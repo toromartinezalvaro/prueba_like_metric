@@ -9,6 +9,7 @@ import EditableHeader from "../../components/Area/EditableHeader/EditableHeader"
 
 class Area extends Component {
   state = {
+    areaTypeId: null,
     areaType: "",
     areaMeasurementUnit: "MT2",
     areasNames: [],
@@ -19,27 +20,23 @@ class Area extends Component {
   };
 
   modalContent = () => {
-    if (this.state.editingAreaType) {
-      return <div>Entrada para editar</div>;
-    } else {
-      return (
-        <div style={{ display: "flex" }}>
-          <Input
-            validations={[]}
-            onChange={this.areaTypeHandler}
-            value={this.state.areaType}
-          />
-          <select
-            onChange={this.measurementUnitHandler}
-            placeholder={"Tipo de medida"}
-            value={this.state.areaMeasurementUnit}
-          >
-            <option value={"MT2"}>MT2</option>
-            <option value={"UNIDAD"}>Unidad</option>
-          </select>
-        </div>
-      );
-    }
+    return (
+      <div style={{ display: "flex" }}>
+        <Input
+          validations={[]}
+          onChange={this.areaTypeHandler}
+          value={this.state.areaType}
+        />
+        <select
+          onChange={this.measurementUnitHandler}
+          placeholder={"Tipo de medida"}
+          value={this.state.areaMeasurementUnit}
+        >
+          <option value={"MT2"}>MT2</option>
+          <option value={"UNIDAD"}>Unidad</option>
+        </select>
+      </div>
+    );
   };
 
   processHeaders = headers => {
@@ -86,11 +83,16 @@ class Area extends Component {
     if (areaType === undefined) {
       this.setState(prevState => ({
         hidden: !prevState.hidden,
+        areaType: "",
+        areaMeasurementUnit: "MT2",
         editingAreaType: false
       }));
     } else {
       this.setState(prevState => ({
         hidden: !prevState.hidden,
+        areaTypeId: areaType.id,
+        areaType: areaType.name,
+        areaMeasurementUnit: areaType.measurementUnit,
         editingAreaType: true
       }));
     }
@@ -104,8 +106,24 @@ class Area extends Component {
       });
   };
 
+  updateAreaType = () => {
+    alert('entrando en editar')
+    axios
+      .put(`http://localhost:1337/areas/area-types/${this.state.areaTypeId}`, {
+        id: this.state.areaTypeId,
+        name: this.state.areaType,
+        measurementUnit: this.state.areaMeasurementUnit,
+        towerId: 1
+      })
+      .then(data => {
+        console.log(data);
+        this.updateTableInformation();
+        this.setState({ hidden: true });
+      });
+  };
+
   addAreaType = () => {
-    console.log("agregando nueva area");
+    alert("entrando en agragar");
     axios
       .post("http://localhost:1337/areas/area-types", {
         name: this.state.areaType,
@@ -180,7 +198,9 @@ class Area extends Component {
         <Modal
           title={"Agregar nuevo tipo de area"}
           hidden={this.state.hidden}
-          onConfirm={this.addAreaType}
+          onConfirm={
+            this.state.editingAreaType ? this.updateAreaType : this.addAreaType
+          }
           onCancel={this.toggleAreaTypeModal}
         >
           {this.modalContent()}
