@@ -6,6 +6,7 @@ import IconButton from "../../components/UI/Button/IconButton/IconButton";
 import Modal from "../../components/UI/Modal/Modal";
 import axios from "axios";
 import EditableHeader from "../../components/Area/EditableHeader/EditableHeader";
+import Prices from "../../components/Area/Prices/Prices";
 
 class Area extends Component {
   state = {
@@ -20,23 +21,46 @@ class Area extends Component {
   };
 
   modalContent = () => {
-    return (
-      <div style={{ display: "flex" }}>
-        <Input
-          validations={[]}
-          onChange={this.areaTypeHandler}
-          value={this.state.areaType}
-        />
-        <select
-          onChange={this.measurementUnitHandler}
-          placeholder={"Tipo de medida"}
-          value={this.state.areaMeasurementUnit}
-        >
-          <option value={"MT2"}>MT2</option>
-          <option value={"UNIDAD"}>Unidad</option>
-        </select>
-      </div>
-    );
+    if (this.state.editingAreaType) {
+      return (
+        <Fragment>
+          <div style={{ display: "flex" }}>
+            <Input
+              validations={[]}
+              onChange={this.areaTypeHandler}
+              value={this.state.areaType}
+            />
+            <select
+              onChange={this.measurementUnitHandler}
+              placeholder={"Tipo de medida"}
+              value={this.state.areaMeasurementUnit}
+            >
+              <option value={"MT2"}>MT2</option>
+              <option value={"UNIDAD"}>Unidad</option>
+            </select>
+          </div>
+          <Prices />
+        </Fragment>
+      );
+    } else {
+      return (
+        <div style={{ display: "flex" }}>
+          <Input
+            validations={[]}
+            onChange={this.areaTypeHandler}
+            value={this.state.areaType}
+          />
+          <select
+            onChange={this.measurementUnitHandler}
+            placeholder={"Tipo de medida"}
+            value={this.state.areaMeasurementUnit}
+          >
+            <option value={"MT2"}>MT2</option>
+            <option value={"UNIDAD"}>Unidad</option>
+          </select>
+        </div>
+      );
+    }
   };
 
   processHeaders = headers => {
@@ -107,7 +131,7 @@ class Area extends Component {
   };
 
   updateAreaType = () => {
-    alert('entrando en editar')
+    alert("entrando en editar");
     axios
       .put(`http://localhost:1337/areas/area-types/${this.state.areaTypeId}`, {
         id: this.state.areaTypeId,
