@@ -27,7 +27,9 @@ const naming = props => {
               validations={[
                 {fn: props.checkDuplicates, message: 'Nombres unicos'},
               ]}
-              onChange={value => { props.onPropertyNameChange(floor, property, value) }}
+              onChange={target => { 
+                props.onPropertyNameChange(floor, property, target.value) 
+              }}
               value={props.names[floor][property].name} />
           </td>
         ))}

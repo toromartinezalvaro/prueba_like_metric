@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic:400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+@import './assets/styles/variables.scss';
+
+body {
+  background: $defaultWhite-color;
+  margin: 0;
+  padding: 0;
+  color: $black-color;
+  font-family: "Roboto";
+  font-size: 18px;
+  height: 100vh;
+}
+
+button {
+  text-decoration: none;
+  color: $white-color;
+  background: $main-color;
+  border-radius: 4px;
+  padding: 10px 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  outline: none;
+  margin: 0 10px;
+}

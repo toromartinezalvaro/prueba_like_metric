@@ -49,8 +49,9 @@ const schema = props => {
           <div>
             <p className={styles.Label}>Pisos vendibles:</p>
             <Input
+              name="floors"
               className={styles.Input}
-              onChange={props.onFloorsChange}
+              onChange={props.onChange}
               value={props.floors}
               validations={inputValidation}
               disable={props.disable}
@@ -60,8 +61,9 @@ const schema = props => {
           <div>
             <p className={styles.Label}>Apartamentos:</p>
             <Input
+              name="properties"
               className={styles.Input}
-              onChange={props.onPropertiesChange}
+              onChange={props.onChange}
               value={props.properties}
               validations={inputValidation}
               disable={props.disable}
@@ -71,8 +73,9 @@ const schema = props => {
           <div>
             <p className={styles.Label}>Piso mas bajo vendible:</p>
             <Input
+              name="lowestFloor"
               className={styles.Input}
-              onChange={props.onLowestFloorChange}
+              onChange={props.onChange}
               value={props.lowestFloor}
               validations={inputValidation}
               disable={props.disable}

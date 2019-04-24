@@ -71,8 +71,8 @@ class Area extends Component {
     });
   };
 
-  areaTypeHandler = value => {
-    this.setState({ areaType: value });
+  areaTypeHandler = target => {
+    this.setState({ areaType: target.value });
   };
 
   measurementUnitHandler = event => {
@@ -165,8 +165,8 @@ class Area extends Component {
               message: "No puede estar vacio"
             }
           ]}
-          onChange={value => {
-            this.areaChangeHandler(rowIndex, cellIndex, value);
+          onChange={target => {
+            this.areaChangeHandler(rowIndex, cellIndex, target.value);
           }}
           value={e2.measure}
         />

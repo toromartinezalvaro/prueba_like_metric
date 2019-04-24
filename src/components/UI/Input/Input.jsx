@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import styles from './Input.module.scss';
-import uuid from 'uuid/v4';
 
 const input = props => {
 
   const errorStyle = {
     borderBottomColor: "#FF4040"
   };
-  
+
   const [localValue, setLocalValue] = useState();
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState("");
   const [valid, setValid] = useState(true);
 
   const validation = value => {
-    setErrorMessages([]);
+    setErrorMessages("")
     return props.validations.reduce((current, next) => {
 
       const val = next.fn(value);
       if (!val) {
-        setErrorMessages([...errorMessages, next.message]);
+        setErrorMessages(next.message);
       }
 
       return current && val;
@@ -26,14 +25,15 @@ const input = props => {
     }, true);
   };
 
-  const localValueHandler = value => {   
+  const localValueHandler = value => {
     setValid(validation(value));
     setLocalValue(value);
   };
 
   const syncValues = () => {
     if (valid) {
-      props.onChange(localValue === undefined ? props.value : localValue);
+      let value = localValue === undefined ? props.value : localValue
+      props.onChange({ name: props.name === undefined ? "" : props.name, value: value });
     } else {
       setLocalValue(props.value);
     }
@@ -41,8 +41,9 @@ const input = props => {
 
   return (
     <div className={styles.Container}>
-    {console.log(`render`)}
-      <input type="text"
+      <input
+        name={props.name}
+        type={props.type === undefined ? "text" : props.type }
         style={!valid && localValue !== undefined ? errorStyle : {}}
         className={`${styles.Input} ${props.className}`}
         onChange={event => { localValueHandler(event.target.value) }}
@@ -51,7 +52,7 @@ const input = props => {
         disabled={props.disable}
         style={props.style} />
       <div className={styles.ErrorMessage}>
-        {localValue !== undefined ? errorMessages.map((element, index) => <div key={uuid()}>{element}</div>) : ''}
+        {errorMessages}
       </div>
     </div>
 

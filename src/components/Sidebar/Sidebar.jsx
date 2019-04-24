@@ -2,13 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardRoutes } from '../../routes/local/routes';
 import style from './Sidebar.module.scss';
+import Icon from '../../assets/icons/Icon';
 
 const sidebar = () => (
-  <ul className={style.Sidebar}>
-    <li><Link to={DashboardRoutes.base}>Dashboard</Link></li>
-    <li><Link to={DashboardRoutes.base + DashboardRoutes.building}>Building</Link></li>
-    <li><Link to={DashboardRoutes.base + DashboardRoutes.areas}>Areas</Link></li>
-  </ul>
+  <div className={style.Sidebar}>
+    <div className={style.MenuItem}><Link to={DashboardRoutes.base}></Link></div>
+    <div className={style.MenuItem}><Link to={DashboardRoutes.base + DashboardRoutes.building}><Icon name="fa-building" fixWidth={true} /></Link></div>
+    <div className={style.MenuItem}><Link to={DashboardRoutes.base + DashboardRoutes.areas}><Icon name="fa-layer-group" fixWidth={true} /></Link></div>
+    <div className={`${style.End} ${style.MenuItem}`}><Link to={DashboardRoutes.base + DashboardRoutes.user}><Icon name="fa-user-tie" fixWidth={true} /></Link></div>
+  </div>
 );
 
 export default sidebar;
