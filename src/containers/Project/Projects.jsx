@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import UserServices from '../../services/User/UserServices'
-import agent from '../../config/config'
+import ProjectServices from '../../services/Projects/ProjectServices'
 import User from '../../components/User/User'
 import { UserRoutes } from '../../routes/local/routes'
 
-export default class UserSettings extends Component {
+export default class Projects extends Component {
 
   constructor(props) {
     super(props)
-    this.services = new UserServices()
+    this.services = new Services()
   }
 
   state = {
-    isLoading: false,
     user: {}
   }
 

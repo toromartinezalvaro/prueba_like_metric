@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Schema from '../../components/Building/Schema/Schema';
 import Naming from '../../components/Building/Naming/Naming';
-import SchemeServices from '../../services/schema/SchemaServices'
+import SchemeServices from '../../services/Schema/SchemaServices'
 
 class Building extends Component {
 
