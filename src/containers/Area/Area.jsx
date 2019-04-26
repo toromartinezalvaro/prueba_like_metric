@@ -30,16 +30,12 @@ class Area extends Component {
               onChange={this.areaTypeHandler}
               value={this.state.areaType}
             />
-            <select
-              onChange={this.measurementUnitHandler}
-              placeholder={"Tipo de medida"}
-              value={this.state.areaMeasurementUnit}
-            >
-              <option value={"MT2"}>MT2</option>
-              <option value={"UNIDAD"}>Unidad</option>
-            </select>
+            {this.state.areaMeasurementUnit}
           </div>
-          <Prices />
+          <Prices
+            areaTypeId={this.state.areaTypeId}
+            measurementUnit={this.state.areaMeasurementUnit}
+          />
         </Fragment>
       );
     } else {
@@ -75,7 +71,7 @@ class Area extends Component {
             this.deleteAreaType(areaType.id);
           }}
         >
-          {areaType.name}
+          {`${areaType.name} ${areaType.measurementUnit}`}
         </EditableHeader>
       </div>
     ));
@@ -131,10 +127,8 @@ class Area extends Component {
   };
 
   updateAreaType = () => {
-    alert("entrando en editar");
     axios
       .put(`http://localhost:1337/areas/area-types/${this.state.areaTypeId}`, {
-        id: this.state.areaTypeId,
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
         towerId: 1
@@ -147,7 +141,6 @@ class Area extends Component {
   };
 
   addAreaType = () => {
-    alert("entrando en agragar");
     axios
       .post("http://localhost:1337/areas/area-types", {
         name: this.state.areaType,

@@ -43,19 +43,18 @@ const input = props => {
     <div className={styles.Container}>
       <input
         name={props.name}
-        type={props.type === undefined ? "text" : props.type }
-        style={!valid && localValue !== undefined ? errorStyle : {}}
+        type={props.type === undefined ? "text" : props.type}
+        style={!valid && localValue !== undefined ? {errorStyle, ...props.style} : props.style}
         className={`${styles.Input} ${props.className}`}
-        onChange={event => { localValueHandler(event.target.value) }}
+        onChange={event => {
+          localValueHandler(event.target.value);
+        }}
         onBlur={syncValues}
         value={localValue === undefined ? props.value : localValue}
         disabled={props.disable}
-        style={props.style} />
-      <div className={styles.ErrorMessage}>
-        {errorMessages}
-      </div>
+      />
+      <div className={styles.ErrorMessage}>{errorMessages}</div>
     </div>
-
   );
 }
 
