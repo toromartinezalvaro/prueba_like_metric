@@ -155,7 +155,6 @@ class Area extends Component {
   };
 
   areaChangeHandler = (rowIndex, cellIndex, value) => {
-    console.log("entrando");
     const currentData = this.state.data;
     currentData[rowIndex][cellIndex].measure = value;
     axios
@@ -179,7 +178,7 @@ class Area extends Component {
               fn: value => {
                 return value !== null;
               },
-              message: "No puede estar vacio"
+              message: "No puede estar vacío"
             }
           ]}
           onChange={target => {
