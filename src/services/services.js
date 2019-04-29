@@ -33,6 +33,11 @@ class Services {
             resolve(response)
           })
           .catch(error => {
+            if (this.delegate === undefined) {
+              reject(new Error("Should set delegate"))
+              return 
+            }
+
             if (error.response.status === 401 && this.delegate.excecuteNoAuthorization) {
               console.log("error === 401")
               this.delegate.excecuteNoAuthorization()
@@ -48,7 +53,6 @@ class Services {
       if (currentToken !== undefined && currentToken !== "") {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken
         axios.defaults.withCredentials = true
-        console.log("headers -->", axios.defaults.headers)
       } else {
         axios.defaults.headers.common['Authorization'] = ''
       }

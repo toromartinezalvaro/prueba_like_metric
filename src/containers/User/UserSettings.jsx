@@ -8,12 +8,16 @@ export default class UserSettings extends Component {
 
   constructor(props) {
     super(props)
-    this.services = new UserServices()
+    this.services = new UserServices(this)
   }
 
   state = {
     isLoading: false,
     user: {}
+  }
+
+  componentDidMount() {
+    this.loadCurrentUserInfo()
   }
 
   logoutAction = () => {

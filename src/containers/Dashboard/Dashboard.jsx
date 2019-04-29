@@ -15,7 +15,7 @@ class Dashboard extends Component {
       <DashboardLayout>
         <Route path={match.url + DashboardRoutes.building} exact component={SecureContainer(Building)} />
         <Route path={match.url + DashboardRoutes.areas} exact component={Areas} />
-        <Route path={match.url + DashboardRoutes.user} exact component={UserSettings} />
+        <Route path={match.url + DashboardRoutes.user} exact component={SecureContainer(UserSettings)} />
       </DashboardLayout>
     );
   }
