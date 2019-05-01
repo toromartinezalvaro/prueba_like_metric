@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserServices from '../../services/User/UserServices'
+import UserServices from '../../services/user/UserServices'
 import LoginComponent from '../../components/User/Login';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
@@ -10,7 +10,7 @@ class Login extends Component {
 
   constructor(props) {
     super(props)
-    this.services = new UserServices()
+    this.services = new UserServices(this)
   }
 
   state = {

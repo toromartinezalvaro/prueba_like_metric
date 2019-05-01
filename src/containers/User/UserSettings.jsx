@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserServices from '../../services/User/UserServices'
+import UserServices from '../../services/user/UserServices'
 import agent from '../../config/config'
 import User from '../../components/User/User'
 import { UserRoutes } from '../../routes/local/routes'
