@@ -2,7 +2,8 @@ export const DashboardRoutes = {
   base: '/dashboard',
   building: '/building',
   areas: '/areas',
-  user: '/user'
+  user: '/user',
+  prime: '/prime'
 }
 
 export const UserRoutes = {
