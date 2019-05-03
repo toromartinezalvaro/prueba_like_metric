@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
+import _ from "lodash";
 import Table from "../../UI/Table/Table";
 import Input from "../../UI/Input/Input";
 
@@ -37,25 +38,31 @@ const prices = ({ areaTypeId, measurementUnit }) => {
     axios
       .get(`http://localhost:1337/areas/1/area-types/${areaTypeId}/prices`)
       .then(res => {
-        const areas = [];
-        const prices =
-          res.data[0].measurementUnit === "UNIDAD"
-            ? setPrices(res.data[0].price)
-            : res.data.map(area => {
-                areas.push(area.measure);
-                return [
-                  <Input
-                    onChange={target => {
-                      updateAreaPrice(area.id, target.value);
-                    }}
-                    validations={[]}
-                    style={{ width: "75px", fontSize: "16px" }}
-                    value={area.price}
-                  />
-                ];
-              });
-        setAreas(areas);
-        setPrices(prices);
+        if (res.data.length > 0) {
+          res.data = _.sortBy(res.data, o => o.measure);
+
+          if (res.data[0].measurementUnit === "UNIDAD") {
+            setPrices([res.data[0].price]);
+          } else {
+            const areas = [];
+            const prices = res.data.map(area => {
+              areas.push(area.measure);
+              return [
+                <Input
+                  mask="currency"
+                  onChange={target => {
+                    updateAreaPrice(area.id, target.value);
+                  }}
+                  validations={[]}
+                  style={{ width: "75px", fontSize: "16px" }}
+                  value={area.price}
+                />
+              ];
+            });
+            setAreas(areas);
+            setPrices(prices);
+          }
+        }
       })
       .catch(error => {
         alert(error);
@@ -64,8 +71,9 @@ const prices = ({ areaTypeId, measurementUnit }) => {
 
   return (
     <Fragment>
-      <h3>{console.log(`Typo de area: ${measurementUnit}`)}</h3>
-      {measurementUnit === "MT2" ? (
+      {prices.length === 0 ? (
+        <div>No se han ingresado areas</div>
+      ) : measurementUnit === "MT2" ? (
         <Table
           intersect={"Areas"}
           headers={["Precio"]}
@@ -80,7 +88,7 @@ const prices = ({ areaTypeId, measurementUnit }) => {
               onChange={target => {
                 updateAreaTypePrice(areaTypeId, target.value);
               }}
-              value={prices}
+              value={prices[0]}
               validations={[]}
               style={{ width: "75px", fontSize: "16px" }}
             />

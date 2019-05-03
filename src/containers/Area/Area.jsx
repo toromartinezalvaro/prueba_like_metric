@@ -23,11 +23,13 @@ class Area extends Component {
   };
 
   modalContent = () => {
+    console.log("modalContent ====> ", this.state.areaType);
     if (this.state.editingAreaType) {
       return (
         <Fragment>
           <div style={{ display: "flex" }}>
             <Input
+              name="areaType"
               validations={[]}
               onChange={this.areaTypeHandler}
               value={this.state.areaType}
@@ -44,6 +46,7 @@ class Area extends Component {
       return (
         <div style={{ display: "flex" }}>
           <Input
+            name="areaType"
             validations={[]}
             onChange={this.areaTypeHandler}
             value={this.state.areaType}
@@ -109,7 +112,7 @@ class Area extends Component {
   };
 
   areaTypeHandler = target => {
-    this.setState({ areaType: target.value });
+    this.setState({ [target.name]: target.value });
   };
 
   measurementUnitHandler = event => {
@@ -117,7 +120,13 @@ class Area extends Component {
   };
 
   toggleAreaTypeModal = areaType => {
+    console.log(
+      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`
+    );
     if (areaType === undefined) {
+      console.log(
+        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`
+      );
       this.setState(prevState => ({
         hidden: !prevState.hidden,
         areaType: "",
@@ -132,6 +141,8 @@ class Area extends Component {
         areaMeasurementUnit: areaType.measurementUnit,
         editingAreaType: true
       }));
+
+      console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
     }
   };
 
@@ -155,8 +166,8 @@ class Area extends Component {
       })
       .then(data => {
         console.log(data);
+        this.toggleAreaTypeModal();
         this.updateTableInformation();
-        this.setState({ hidden: true });
       });
   };
 
@@ -169,8 +180,8 @@ class Area extends Component {
       })
       .then(data => {
         console.log(data);
+        this.toggleAreaTypeModal();
         this.updateTableInformation();
-        this.setState({ hidden: true });
       });
   };
 
@@ -192,6 +203,7 @@ class Area extends Component {
     const inputs = this.state.data.map((row, rowIndex) => {
       return row.map((e2, cellIndex) => (
         <Input
+          mask="number"
           style={{ width: "75px", fontSize: "16px" }}
           validations={[
             {
@@ -227,7 +239,7 @@ class Area extends Component {
                 />
               ]}
               columns={this.state.properties}
-              data={[...inputs, [[], [], []]]}
+              data={[...inputs]}
             />
           </CardBody>
         </Card>

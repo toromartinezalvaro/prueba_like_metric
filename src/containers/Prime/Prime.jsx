@@ -18,6 +18,7 @@ class Prime extends Component {
       response.data.forEach(element => {
         floorsPrices.push([
           <Input
+            mask="currency"
             style={{ width: "75px", fontSize: "16px" }}
             validations={[]}
             onChange={target => {
@@ -34,7 +35,6 @@ class Prime extends Component {
   }
 
   priceHandler(id, price) {
-    console.log(`🦄 ${JSON.stringify(price)}`)
     axios
       .put(`http://localhost:1337/primes/${id}`, { price_mt2: parseInt(price) })
       .then(data => {

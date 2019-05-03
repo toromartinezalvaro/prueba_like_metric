@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Input.module.scss";
 import MaskedInput from "react-text-mask";
+import { createNumberMask } from "text-mask-addons";
 
 const input = props => {
   const errorStyle = {
@@ -33,24 +34,53 @@ const input = props => {
       let value = localValue === undefined ? props.value : localValue;
       props.onChange({
         name: props.name === undefined ? "" : props.name,
-        value: value
+        value: cleanValue(value)
       });
     } else {
       setLocalValue(props.value);
     }
   };
 
+  const cleanNumberMask = value => {
+    return value.replace(",", "");
+  };
+
+  const cleanCurrencyMask = value => {
+    return cleanNumberMask(value).replace("$", "");
+  };
+
   const handleFocus = event => event.target.select();
+
+  const cleanValue = value => {
+    if (props.mask === "number") {
+      return cleanNumberMask(value);
+    } else if (props.mask === "currency") {
+      return cleanCurrencyMask(value);
+    } else {
+      return value;
+    }
+  };
+
+  const getMask = () => {
+    if (props.mask === "number") {
+      return createNumberMask({ prefix: "" });
+    } else if (props.mask === "currency") {
+      return createNumberMask({ allowDecimal: true, decimalLimit: 3 });
+    } else {
+      return false;
+    }
+  };
 
   return (
     <div className={styles.Container}>
       <MaskedInput
-        mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/]}
+        mask={getMask()}
+        guide={false}
         name={props.name}
         type={props.type === undefined ? "text" : props.type}
         style={
           !valid && localValue !== undefined
-            ? { errorStyle, ...props.style }
+            ? { ...errorStyle, ...props.style }
             : props.style
         }
         className={`${styles.Input} ${props.className}`}
