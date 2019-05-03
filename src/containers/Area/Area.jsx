@@ -17,7 +17,9 @@ class Area extends Component {
     properties: [],
     data: [],
     hidden: true,
-    editingAreaType: false
+    editingAreaType: false,
+    deleteAreaTypeId: null,
+    hideDeleteModal: true
   };
 
   modalContent = () => {
@@ -68,13 +70,28 @@ class Area extends Component {
       >
         <EditableHeader
           onClick={() => {
-            this.deleteAreaType(areaType.id);
+            this.toggleDeleteModal(areaType.id);
           }}
+          canBeDeleted={areaType.name.toLowerCase() === "interior"}
         >
           {`${areaType.name} ${areaType.measurementUnit}`}
         </EditableHeader>
       </div>
     ));
+  };
+
+  toggleDeleteModal = id => {
+    if (id === undefined) {
+      this.setState(prevState => ({
+        deleteAreaTypeId: null,
+        hideDeleteModal: !prevState.hideDeleteModal
+      }));
+    } else {
+      this.setState(prevState => ({
+        deleteAreaTypeId: id,
+        hideDeleteModal: !prevState.hideDeleteModal
+      }));
+    }
   };
 
   componentDidMount() {
@@ -118,10 +135,13 @@ class Area extends Component {
     }
   };
 
-  deleteAreaType = areaTypeId => {
+  deleteAreaType = () => {
     axios
-      .delete(`http://localhost:1337/areas/area-types/${areaTypeId}`)
+      .delete(
+        `http://localhost:1337/areas/area-types/${this.state.deleteAreaTypeId}`
+      )
       .then(data => {
+        this.toggleDeleteModal();
         this.updateTableInformation();
       });
   };
@@ -220,6 +240,14 @@ class Area extends Component {
           onCancel={this.toggleAreaTypeModal}
         >
           {this.modalContent()}
+        </Modal>
+        <Modal
+          title={"Eliminar tipo de area"}
+          hidden={this.state.hideDeleteModal}
+          onConfirm={this.deleteAreaType}
+          onCancel={this.toggleDeleteModal}
+        >
+          Deseas eliminar este tipo de area?
         </Modal>
       </Fragment>
     );

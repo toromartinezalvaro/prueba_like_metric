@@ -67,7 +67,7 @@ const prices = ({ areaTypeId, measurementUnit }) => {
       <h3>{console.log(`Typo de area: ${measurementUnit}`)}</h3>
       {measurementUnit === "MT2" ? (
         <Table
-          intersect={"Precios"}
+          intersect={"Areas"}
           headers={["Precio"]}
           columns={areas}
           data={prices}
