@@ -1,0 +1,58 @@
+@import "../../assets/styles/variables.scss";
+
+.ItemContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: $blackBorder-color;
+  background: $main-color;
+  height: 140px;
+  max-width: 260px;
+  min-width: 188px;
+  width: 25%;
+  margin-right: 12px;
+
+  .DescriptionItem {
+    
+  }
+
+  .Item {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    position: relative;
+    box-sizing: border-box;
+    padding: 40px 16px 60px;
+    transition: box-shadow 0.3s ease-in-out 0s, background-color 0.6s ease-in 0s
+  }
+}
+
+.Projects {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.Remove {
+  align-self: flex-end;
+  justify-self: end;
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 0.5rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  i {
+    font-size: 0.9rem;
+  }
+}

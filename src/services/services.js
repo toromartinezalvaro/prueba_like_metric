@@ -1,4 +1,3 @@
-import compose from "lodash/fp/compose"
 import axios from 'axios'
 import agent from '../config/config'
 
