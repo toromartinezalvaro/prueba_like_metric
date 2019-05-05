@@ -1,14 +1,10 @@
-import React from 'react';
-import styles from './Table.module.scss';
+import React from "react";
+import styles from "./Table.module.scss";
 
 const table = ({ intersect, columns, headers, data }) => {
-  
-  return (    
+  return (
     <div className={styles.Container}>
-
-      <div className={styles.Intersect}>
-        {intersect}
-      </div>
+      <div className={styles.Intersect}>{intersect}</div>
 
       <div className={styles.Header}>
         {headers.map(element => (
@@ -20,7 +16,7 @@ const table = ({ intersect, columns, headers, data }) => {
         {columns.map(element => (
           <div>{element}</div>
         ))}
-      </div>     
+      </div>
 
       <div className={styles.Table}>
         {data.map(row => (
@@ -30,11 +26,9 @@ const table = ({ intersect, columns, headers, data }) => {
             ))}
           </div>
         ))}
-
       </div>
     </div>
   );
-
-}
+};
 
 export default table;

@@ -8,7 +8,7 @@ const editableHeader = props => {
     setDeleteMode(!deleteMode);
   };
   return (
-    <div onContextMenu={toggleDeleteMode}>
+    <div onContextMenu={!props.canBeDeleted ? toggleDeleteMode : null}>
       {deleteMode ? (
         <Button onMouseOut={toggleDeleteMode} onClick={props.onClick}>
           Eliminar

@@ -57,7 +57,7 @@ class Building extends Component {
 
   saveSchema = () => {
     this.services
-      .postScheme({
+      .postSchema({
         towerId: 1,
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),

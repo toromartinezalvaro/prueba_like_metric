@@ -6,6 +6,7 @@ import IconButton from "../../components/UI/Button/IconButton/IconButton";
 import Modal from "../../components/UI/Modal/Modal";
 import EditableHeader from "../../components/Area/EditableHeader/EditableHeader";
 import AreaServices from "../../services/area/AreaServices"
+import Prices from "../../components/Area/Prices/Prices";
 
 class Area extends Component {
 
@@ -22,27 +23,51 @@ class Area extends Component {
     properties: [],
     data: [],
     hidden: true,
-    editingAreaType: false
+    editingAreaType: false,
+    deleteAreaTypeId: null,
+    hideDeleteModal: true
   };
 
   modalContent = () => {
-    return (
-      <div style={{ display: "flex" }}>
-        <Input
-          validations={[]}
-          onChange={this.areaTypeHandler}
-          value={this.state.areaType}
-        />
-        <select
-          onChange={this.measurementUnitHandler}
-          placeholder={"Tipo de medida"}
-          value={this.state.areaMeasurementUnit}
-        >
-          <option value={"MT2"}>MT2</option>
-          <option value={"UNIDAD"}>Unidad</option>
-        </select>
-      </div>
-    );
+    console.log("modalContent ====> ", this.state.areaType);
+    if (this.state.editingAreaType) {
+      return (
+        <Fragment>
+          <div style={{ display: "flex" }}>
+            <Input
+              name="areaType"
+              validations={[]}
+              onChange={this.areaTypeHandler}
+              value={this.state.areaType}
+            />
+            {this.state.areaMeasurementUnit}
+          </div>
+          <Prices
+            areaTypeId={this.state.areaTypeId}
+            measurementUnit={this.state.areaMeasurementUnit}
+          />
+        </Fragment>
+      );
+    } else {
+      return (
+        <div style={{ display: "flex" }}>
+          <Input
+            name="areaType"
+            validations={[]}
+            onChange={this.areaTypeHandler}
+            value={this.state.areaType}
+          />
+          <select
+            onChange={this.measurementUnitHandler}
+            placeholder={"Tipo de medida"}
+            value={this.state.areaMeasurementUnit}
+          >
+            <option value={"MT2"}>MT2</option>
+            <option value={"UNIDAD"}>Unidad</option>
+          </select>
+        </div>
+      );
+    }
   };
 
   processHeaders = headers => {
@@ -54,13 +79,28 @@ class Area extends Component {
       >
         <EditableHeader
           onClick={() => {
-            this.deleteAreaType(areaType.id);
+            this.toggleDeleteModal(areaType.id);
           }}
+          canBeDeleted={areaType.name.toLowerCase() === "interior"}
         >
-          {areaType.name}
+          {`${areaType.name} ${areaType.measurementUnit}`}
         </EditableHeader>
       </div>
     ));
+  };
+
+  toggleDeleteModal = id => {
+    if (id === undefined) {
+      this.setState(prevState => ({
+        deleteAreaTypeId: null,
+        hideDeleteModal: !prevState.hideDeleteModal
+      }));
+    } else {
+      this.setState(prevState => ({
+        deleteAreaTypeId: id,
+        hideDeleteModal: !prevState.hideDeleteModal
+      }));
+    }
   };
 
   componentDidMount() {
@@ -78,7 +118,7 @@ class Area extends Component {
   };
 
   areaTypeHandler = target => {
-    this.setState({ areaType: target.value });
+    this.setState({ [target.name]: target.value });
   };
 
   measurementUnitHandler = event => {
@@ -86,7 +126,13 @@ class Area extends Component {
   };
 
   toggleAreaTypeModal = areaType => {
+    console.log(
+      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`
+    );
     if (areaType === undefined) {
+      console.log(
+        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`
+      );
       this.setState(prevState => ({
         hidden: !prevState.hidden,
         areaType: "",
@@ -101,21 +147,23 @@ class Area extends Component {
         areaMeasurementUnit: areaType.measurementUnit,
         editingAreaType: true
       }));
+
+      console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
     }
   };
 
-  deleteAreaType = areaTypeId => {
-    this.services
-      .deleteArea(areaTypeId)
+  deleteAreaType = () => {
+this.services
+.deleteArea(this.state.deleteAreaTypeId)
       .then(data => {
+        this.toggleDeleteModal();
         this.updateTableInformation();
       });
   };
 
   updateAreaType = () => {
-    alert('entrando en editar')
     this.services.
-      putArea, {
+      putArea(this.state.areaTypeId, {
         id: this.state.areaTypeId,
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
@@ -123,13 +171,12 @@ class Area extends Component {
       })
       .then(data => {
         console.log(data);
+        this.toggleAreaTypeModal();
         this.updateTableInformation();
-        this.setState({ hidden: true });
       });
   };
 
   addAreaType = () => {
-    alert("entrando en agragar");
     axios
       .post("http://localhost:1337/areas/area-types", {
         name: this.state.areaType,
@@ -138,13 +185,12 @@ class Area extends Component {
       })
       .then(data => {
         console.log(data);
+        this.toggleAreaTypeModal();
         this.updateTableInformation();
-        this.setState({ hidden: true });
       });
   };
 
   areaChangeHandler = (rowIndex, cellIndex, value) => {
-    console.log("entrando");
     const currentData = this.state.data;
     currentData[rowIndex][cellIndex].measure = value;
     axios
@@ -162,13 +208,14 @@ class Area extends Component {
     const inputs = this.state.data.map((row, rowIndex) => {
       return row.map((e2, cellIndex) => (
         <Input
+          mask="number"
           style={{ width: "75px", fontSize: "16px" }}
           validations={[
             {
               fn: value => {
                 return value !== null;
               },
-              message: "No puede estar vacio"
+              message: "No puede estar vacío"
             }
           ]}
           onChange={target => {
@@ -197,7 +244,7 @@ class Area extends Component {
                 />
               ]}
               columns={this.state.properties}
-              data={[...inputs, [[], [], []]]}
+              data={[...inputs]}
             />
           </CardBody>
         </Card>
@@ -210,6 +257,14 @@ class Area extends Component {
           onCancel={this.toggleAreaTypeModal}
         >
           {this.modalContent()}
+        </Modal>
+        <Modal
+          title={"Eliminar tipo de area"}
+          hidden={this.state.hideDeleteModal}
+          onConfirm={this.deleteAreaType}
+          onCancel={this.toggleDeleteModal}
+        >
+          Deseas eliminar este tipo de area?
         </Modal>
       </Fragment>
     );
