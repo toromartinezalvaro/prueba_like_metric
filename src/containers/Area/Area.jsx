@@ -4,10 +4,16 @@ import Table from "../../components/UI/Table/Table";
 import Input from "../../components/UI/Input/Input";
 import IconButton from "../../components/UI/Button/IconButton/IconButton";
 import Modal from "../../components/UI/Modal/Modal";
-import axios from "axios";
 import EditableHeader from "../../components/Area/EditableHeader/EditableHeader";
+import AreaServices from "../../services/area/AreaServices"
 
 class Area extends Component {
+
+  constructor(props) {
+    super(props)
+    this.services = new AreaServices(this)
+  }
+
   state = {
     areaTypeId: null,
     areaType: "",
@@ -62,7 +68,7 @@ class Area extends Component {
   }
 
   updateTableInformation = () => {
-    axios.get("http://localhost:1337/areas").then(response => {
+    this.services.getAreas.then(response => {
       this.setState({
         areasNames: this.processHeaders(response.data.areaTypes),
         properties: response.data.properties,
@@ -99,8 +105,8 @@ class Area extends Component {
   };
 
   deleteAreaType = areaTypeId => {
-    axios
-      .delete(`http://localhost:1337/areas/area-types/${areaTypeId}`)
+    this.services
+      .deleteArea(areaTypeId)
       .then(data => {
         this.updateTableInformation();
       });
@@ -108,8 +114,8 @@ class Area extends Component {
 
   updateAreaType = () => {
     alert('entrando en editar')
-    axios
-      .put(`http://localhost:1337/areas/area-types/${this.state.areaTypeId}`, {
+    this.services.
+      putArea, {
         id: this.state.areaTypeId,
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,

@@ -22,6 +22,10 @@ class Services {
       return this.axiosPromise(this.axios.get(url, data, config))
     }
 
+    delete(url, data, config) {
+      return this.axiosPromise(this.axios.delete(url, data, config))
+    }
+
     axiosPromise(promise) {
       return new Promise( (resolve, reject) => {
           promise.then(response => {

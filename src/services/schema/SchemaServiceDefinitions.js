@@ -1,5 +1,4 @@
-// import { API_PATH } from '../../config/config'
-export const API_PATH = "http://localhost:1337/"
+import { API_PATH } from '../../config/config'
 
 const SchemaServiceDefinitions = {
   schema: towerId => { return `${API_PATH}schema/${towerId}`},
