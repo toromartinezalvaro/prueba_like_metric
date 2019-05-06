@@ -4,7 +4,6 @@ import Services from '../services'
 
 export default class AreaServices extends Services  {
 
-
   getAreas() {
     return this.get(AreaServiceDefinitions.areas(""))
   }
@@ -23,6 +22,18 @@ export default class AreaServices extends Services  {
 
   putAreasByTowerId(towerId, data) {
     return this.put(AreaServiceDefinitions.areas(towerId), data)
+  }
+
+  putAreaPrice(areaId, data) {
+    return this.put(AreaServiceDefinitions.areaPricesById(areaId), data)
+  }
+
+  putAreaTypePrice(areaTypeId, data) {
+    return this.put(AreaServiceDefinitions.areasTypePrice(areaTypeId), data)
+  }
+
+  getPrices(towerId, areaTypeId) {
+    return this.get(AreaServiceDefinitions.areasPrices(towerId, areaTypeId))
   }
 
 }

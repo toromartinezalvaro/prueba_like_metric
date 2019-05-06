@@ -43,5 +43,5 @@ class Agent {
 }
 
 export const API_PATH = "http://localhost:1337/api/"
-// export const API_PATH = "herokuproduction"
+// export const API_PATH = "https://pefpiapis.herokuapp.com/api/"
 export default new Agent()
