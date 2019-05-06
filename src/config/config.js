@@ -42,5 +42,6 @@ class Agent {
   }
 }
 
+console.log("It'S production ", process.env.NODE_ENV === 'production')
 export const API_PATH = process.env.NODE_ENV === 'production' ? "https://pefpiapis.herokuapp.com/api/" : "http://localhost:1337/api/"
 export default new Agent()
