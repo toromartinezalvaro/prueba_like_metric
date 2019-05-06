@@ -9,7 +9,7 @@ const prices = ({ areaTypeId, measurementUnit }) => {
   const [prices, setPrices] = useState([]);
   const updateAreaPrice = (id, price) => {
     axios
-      .put(`http://localhost:1337/areas/prices/${id}`, {
+      .put(`http://localhost:1337/api/areas/prices/${id}`, {
         price: price
       })
       .then(data => {
@@ -22,7 +22,7 @@ const prices = ({ areaTypeId, measurementUnit }) => {
 
   const updateAreaTypePrice = (id, price) => {
     axios
-      .put(`http://localhost:1337/areas/area-types/${id}/prices/`, {
+      .put(`http://localhost:1337/api/areas/area-types/${id}/prices/`, {
         price: price
       })
       .then(data => {
@@ -36,7 +36,7 @@ const prices = ({ areaTypeId, measurementUnit }) => {
   useEffect(() => {
     // Component did mount
     axios
-      .get(`http://localhost:1337/areas/1/area-types/${areaTypeId}/prices`)
+      .get(`http://localhost:1337/api/areas/1/area-types/${areaTypeId}/prices`)
       .then(res => {
         if (res.data.length > 0) {
           res.data = _.sortBy(res.data, o => o.measure);

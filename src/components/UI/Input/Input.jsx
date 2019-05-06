@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Input.module.scss";
-import MaskedInput from "react-text-mask";
-import { createNumberMask } from "text-mask-addons";
+import NumberFormat from "react-number-format";
 
 const input = props => {
   const errorStyle = {
@@ -42,7 +41,7 @@ const input = props => {
   };
 
   const cleanNumberMask = value => {
-    return value.replace(",", "");
+    return value.toString().replace(/,/g , "");
   };
 
   const cleanCurrencyMask = value => {
@@ -61,37 +60,57 @@ const input = props => {
     }
   };
 
-  const getMask = () => {
-    if (props.mask === "number") {
-      return createNumberMask({ prefix: "" });
-    } else if (props.mask === "currency") {
-      return createNumberMask({ allowDecimal: true, decimalLimit: 3 });
-    } else {
-      return false;
-    }
-  };
+  // const getMask = () => {
+  //   if (props.mask === "number") {
+  //     return createNumberMask({ prefix: "" });
+  //   } else if (props.mask === "currency") {
+  //     return createNumberMask({ allowDecimal: true, decimalLimit: 3 });
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   return (
     <div className={styles.Container}>
-      <MaskedInput
-        mask={getMask()}
-        guide={false}
-        name={props.name}
-        type={props.type === undefined ? "text" : props.type}
-        style={
-          !valid && localValue !== undefined
-            ? { ...errorStyle, ...props.style }
-            : props.style
-        }
-        className={`${styles.Input} ${props.className}`}
-        onChange={event => {
-          localValueHandler(event.target.value);
-        }}
-        onFocus={handleFocus}
-        onBlur={syncValues}
-        value={localValue === undefined ? props.value : localValue}
-        disabled={props.disable}
-      />
+      {props.mask === "currency" || props.mask === "number" ? (
+        <NumberFormat
+          thousandSeparator={true}
+          prefix={props.mask === "currency" ? "$" : ""}
+          name={props.name}
+          type={props.type === undefined ? "text" : props.type}
+          style={
+            !valid && localValue !== undefined
+              ? { ...errorStyle, ...props.style }
+              : props.style
+          }
+          className={`${styles.Input} ${props.className}`}
+          onChange={event => {
+            localValueHandler(event.target.value);
+          }}
+          onFocus={handleFocus}
+          onBlur={syncValues}
+          value={localValue === undefined ? props.value : localValue}
+          disabled={props.disable}
+        />
+      ) : (
+        <input
+          name={props.name}
+          type={props.type === undefined ? "text" : props.type}
+          style={
+            !valid && localValue !== undefined
+              ? { ...errorStyle, ...props.style }
+              : props.style
+          }
+          className={`${styles.Input} ${props.className}`}
+          onChange={event => {
+            localValueHandler(event.target.value);
+          }}
+          onFocus={handleFocus}
+          onBlur={syncValues}
+          value={localValue === undefined ? props.value : localValue}
+          disabled={props.disable}
+        />
+      )}
       <div className={styles.ErrorMessage}>{errorMessages}</div>
     </div>
   );

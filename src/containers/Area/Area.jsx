@@ -38,6 +38,7 @@ class Area extends Component {
               validations={[]}
               onChange={this.areaTypeHandler}
               value={this.state.areaType}
+              disable={this.state.areaType === 'Interior'}
             />
             {this.state.areaMeasurementUnit}
           </div>
@@ -245,16 +246,21 @@ class Area extends Component {
             />
           </CardBody>
         </Card>
-        <Modal
-          title={"Agregar nuevo tipo de area"}
-          hidden={this.state.hidden}
-          onConfirm={
-            this.state.editingAreaType ? this.updateAreaType : this.addAreaType
-          }
-          onCancel={this.toggleAreaTypeModal}
-        >
-          {this.modalContent()}
-        </Modal>
+        {this.state.hidden ? null : (
+          <Modal
+            title={"Agregar nuevo tipo de area"}
+            hidden={this.state.hidden}
+            onConfirm={
+              this.state.editingAreaType
+                ? this.updateAreaType
+                : this.addAreaType
+            }
+            onCancel={this.toggleAreaTypeModal}
+          >
+            {this.modalContent()}
+          </Modal>
+        )}
+
         <Modal
           title={"Eliminar tipo de area"}
           hidden={this.state.hideDeleteModal}

@@ -37,7 +37,7 @@ class Services {
             resolve(response)
           })
           .catch(error => {
-            if (error.response.status === 401 && this.delegate.excecuteNoAuthorization) {
+            if (error.response && error.response.status === 401 && this.delegate.excecuteNoAuthorization) {
               console.log("error === 401")
               this.delegate.excecuteNoAuthorization()
             }
