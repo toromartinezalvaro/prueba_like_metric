@@ -5,14 +5,13 @@ import Input from "../../components/UI/Input/Input";
 import IconButton from "../../components/UI/Button/IconButton/IconButton";
 import Modal from "../../components/UI/Modal/Modal";
 import EditableHeader from "../../components/Area/EditableHeader/EditableHeader";
-import AreaServices from "../../services/area/AreaServices"
+import AreaServices from "../../services/area/AreaServices";
 import Prices from "../../components/Area/Prices/Prices";
 
 class Area extends Component {
-
   constructor(props) {
-    super(props)
-    this.services = new AreaServices(this)
+    super(props);
+    this.services = new AreaServices(this);
   }
 
   state = {
@@ -108,7 +107,7 @@ class Area extends Component {
   }
 
   updateTableInformation = () => {
-    this.services.getAreas.then(response => {
+    this.services.getAreas().then(response => {
       this.setState({
         areasNames: this.processHeaders(response.data.areaTypes),
         properties: response.data.properties,
@@ -153,17 +152,15 @@ class Area extends Component {
   };
 
   deleteAreaType = () => {
-this.services
-.deleteArea(this.state.deleteAreaTypeId)
-      .then(data => {
-        this.toggleDeleteModal();
-        this.updateTableInformation();
-      });
+    this.services.deleteArea(this.state.deleteAreaTypeId).then(data => {
+      this.toggleDeleteModal();
+      this.updateTableInformation();
+    });
   };
 
   updateAreaType = () => {
-    this.services.
-      putArea(this.state.areaTypeId, {
+    this.services
+      .putArea(this.state.areaTypeId, {
         id: this.state.areaTypeId,
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
@@ -177,8 +174,8 @@ this.services
   };
 
   addAreaType = () => {
-    axios
-      .post("http://localhost:1337/areas/area-types", {
+    this.services
+      .postArea({
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
         towerId: 1
@@ -193,8 +190,8 @@ this.services
   areaChangeHandler = (rowIndex, cellIndex, value) => {
     const currentData = this.state.data;
     currentData[rowIndex][cellIndex].measure = value;
-    axios
-      .put("http://localhost:1337/areas/1", currentData[rowIndex][cellIndex])
+    this.services
+      .putAreasByTowerId(1, currentData[rowIndex][cellIndex])
       .then(response => {
         console.log(response);
         this.setState({ data: currentData });

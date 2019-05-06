@@ -11,18 +11,22 @@ class Services {
     }
 
     post(url, data, config) {
+      console.log("url 🐒", url)
       return this.axiosPromise(this.axios.post(url, data, config))
     }
 
     put(url, data, config) {
+      console.log("url 🐒", url)
       return this.axiosPromise(this.axios.put(url, data, config))
     }
 
     get(url, data, config) {
+      console.log("url 🐒", url)
       return this.axiosPromise(this.axios.get(url, data, config))
     }
 
     delete(url, data, config) {
+      console.log("url 🐒", url)
       return this.axiosPromise(this.axios.delete(url, data, config))
     }
 

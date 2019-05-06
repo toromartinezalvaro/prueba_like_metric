@@ -1,4 +1,4 @@
-import AreaServiceDefinitions from './AreaServiceDefinitions';
+import AreaServiceDefinitions from './AreaServicesDefinitions';
 import Services from '../services'
 
 
@@ -6,7 +6,7 @@ export default class AreaServices extends Services  {
 
 
   getAreas() {
-    return this.get(AreaServiceDefinitions.areas)
+    return this.get(AreaServiceDefinitions.areas(""))
   }
 
   deleteArea(areaTypeId) {
@@ -17,14 +17,12 @@ export default class AreaServices extends Services  {
   return this.put(AreaServiceDefinitions.areaByTypeId(areaTypeId), data)
   }
 
-  postSchema(data) {
-    console.log(SchemaServiceDefinitions.schema(""))
-    return this.post(SchemaServiceDefinitions.schema(""), data)
+  postArea(data) {
+    return this.post(AreaServiceDefinitions.areaByTypeId(""), data)
   }
 
-
-  putProperties(data) {
-    return this.put(SchemaServiceDefinitions.properties, data)
+  putAreasByTowerId(towerId, data) {
+    return this.put(AreaServiceDefinitions.areas(towerId), data)
   }
 
 }
