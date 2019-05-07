@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import styles from './Schema.module.scss';
+import React, { useState } from "react";
+import styles from "./Schema.module.scss";
 import Card, { CardHeader, CardBody, CardFooter } from "../../UI/Card/Card";
-import Input from '../../UI/Input/Input';
-import Button from '../../UI/Button/Button';
-import Modal from '../../UI/Modal/Modal';
+import Input from "../../UI/Input/Input";
+import Button from "../../UI/Button/Button";
+import Modal from "../../UI/Modal/Modal";
 
 const schema = props => {
-
   const [hidden, setHidden] = useState(true);
 
   const inputValidation = [
@@ -32,12 +31,12 @@ const schema = props => {
       props.saveSchema();
     }
     setHidden(true);
-  }
+  };
 
   const cancel = () => {
     props.editMode();
     setHidden(true);
-  }
+  };
 
   return (
     <Card>
@@ -85,18 +84,32 @@ const schema = props => {
       </CardBody>
       <CardFooter>
         <div className={styles.Actions}>
-          {props.disable ?
+          {props.disable ? (
             <Button onClick={props.editMode}>Editar</Button>
-            :
-            <Button onClick={() => { setHidden(false) }}>Guardar</Button>
-          }
+          ) : (
+            <Button
+              onClick={() => {
+                setHidden(false);
+              }}
+            >
+              Guardar
+            </Button>
+          )}
         </div>
-        <Modal title={'Actualizar nomenclatura'} hidden={hidden} onConfirm={save} onCancel={cancel}>
-          Guardar este nuevo esquema eliminara toda la nomenclatura anterior <br /> deseas continuar?
+        {hidden ? null : (
+          <Modal
+            title={"Actualizar nomenclatura"}
+            hidden={hidden}
+            onConfirm={save}
+            onCancel={cancel}
+          >
+            Guardar este nuevo esquema eliminara toda la nomenclatura anterior{" "}
+            <br /> deseas continuar?
           </Modal>
+        )}
       </CardFooter>
     </Card>
   );
-}
+};
 
 export default schema;
