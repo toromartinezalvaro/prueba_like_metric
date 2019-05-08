@@ -39,7 +39,11 @@
 
 .ConfirmButton {
   background: #00C781;
+  &:disabled {
+    background: #aaa;
+  }
 }
+
 
 .CancelButton {
   background: #FF4040;
