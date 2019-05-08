@@ -4,17 +4,31 @@ import Table from "../UI/Table/Table";
 import Input from "../UI/Input/Input";
 
 const locations = () => {
+  const [headers, setHeaders] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [tableData, setTableData] = useState([[]]);
+  
   useEffect(() => {
-    const response = [[{ id: 1, name: "101", floor: 1, location: 1 }]];
+    const response = [
+      [{ id: 1, name: "101", value: null, floor: 1, location: 1 }]
+    ];
 
     setHeaders(["1", "2", "3", "4"]);
     setColumns(["1", "2", "3", "4"]);
-    setData([[]]);
+    setTableData(response);
   }, []);
 
-  const [headers, setHeaders] = useState([]);
-  const [columns, setColumns] = useState([]);
-  const [data, setData] = useState([[]]);
+  const inputs = () => {
+    return tableData.map(element => {
+      return element.map(prime => (
+        <Input
+          style={{ width: "75px", fontSize: "16px" }}
+          value={prime.value}
+          placeholder={prime.name}
+        />
+      ));
+    });
+  };
 
   return (
     <Card>
@@ -26,7 +40,7 @@ const locations = () => {
           intersect="Primas"
           headers={headers}
           columns={columns}
-          data={data}
+          data={inputs()}
         />
       </CardBody>
     </Card>
