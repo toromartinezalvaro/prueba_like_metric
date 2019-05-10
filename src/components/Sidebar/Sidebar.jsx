@@ -4,32 +4,27 @@ import { DashboardRoutes } from "../../routes/local/routes";
 import style from "./Sidebar.module.scss";
 import Icon from "../../assets/icons/Icon";
 
-const sidebar = () => (
-  <div className={style.Sidebar}>
-    <div className={style.MenuItem}>
-      <Link to={DashboardRoutes.base} />
+const sidebar = () => {
+  var itemForSlidebar = (styles, route, iconName) => {
+    return (
+      <div className={styles}>
+        <Link to={route}>
+          <Icon name={iconName} fixWidth={true} />
+        </Link>
+      </div>
+    );
+  };
+
+  return (
+    <div className={style.Sidebar}>
+    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.projects, "fa-file-contract")}
+    {itemForSlidebar(style.MenuItem, DashboardRoutes.base +  DashboardRoutes.projects + DashboardRoutes.towers, "fa-columns")}
+    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.building, "fa-building")}
+    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.areas, "fa-layer-group")}
+    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.prime, "fa-sort-amount-up")}
+    {itemForSlidebar(`${style.End} ${style.MenuItem}`, DashboardRoutes.base + DashboardRoutes.user, "fa-user-tie")}
     </div>
-    <div className={style.MenuItem}>
-      <Link to={DashboardRoutes.base + DashboardRoutes.building}>
-        <Icon name="fa-building" fixWidth={true} />
-      </Link>
-    </div>
-    <div className={style.MenuItem}>
-      <Link to={DashboardRoutes.base + DashboardRoutes.areas}>
-        <Icon name="fa-layer-group" fixWidth={true} />
-      </Link>
-    </div>
-    <div className={`${style.MenuItem}`}>
-      <Link to={DashboardRoutes.base + DashboardRoutes.prime}>
-        <Icon name="fa-sort-amount-up" fixWidth={true} />
-      </Link>
-    </div>
-    <div className={`${style.End} ${style.MenuItem}`}>
-      <Link to={DashboardRoutes.base + DashboardRoutes.user}>
-        <Icon name="fa-user-tie" fixWidth={true} />
-      </Link>
-    </div>   
-  </div>
-);
+  );
+};
 
 export default sidebar;

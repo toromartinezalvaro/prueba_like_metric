@@ -1,14 +1,15 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
 import Table from "../../components/UI/Table/Table";
 import Input from "../../components/UI/Input/Input";
-import PrimeServices from "../../services/prime/PrimeServices"
+import Locations from "../../components/Primes/Locations";
+import PrimeServices from "../../services/prime/PrimeServices";
 
 class Prime extends Component {
   constructor(props) {
-    super(props)
-    this.services = new PrimeServices(this)
+    super(props);
+    this.services = new PrimeServices(this);
   }
   state = {
     floorsPrices: [],
@@ -29,7 +30,7 @@ class Prime extends Component {
             onChange={target => {
               this.priceHandler(element.id, parseInt(target.value));
             }}
-            value={element.price_mt2}
+            value={element.price}
           />
         ]);
         floorsNames.push(element.reference);
@@ -41,7 +42,7 @@ class Prime extends Component {
 
   priceHandler(id, price) {
     this.services
-      .putPrimesById(id, { price_mt2: parseInt(price) })
+      .putPrimesById(id, { price: parseInt(price) })
       .then(data => {
         console.log(data);
       })
@@ -52,19 +53,22 @@ class Prime extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader>
-          <p>Primas por altura</p>
-        </CardHeader>
-        <CardBody>
-          <Table
-            intersect="primas"
-            headers={["Precio mt2"]}
-            columns={this.state.floorsNames}
-            data={this.state.floorsPrices}
-          />
-        </CardBody>
-      </Card>
+      <Fragment>
+        <Card>
+          <CardHeader>
+            <p>Primas por altura</p>
+          </CardHeader>
+          <CardBody>
+            <Table
+              intersect="primas"
+              headers={["Precio mt2"]}
+              columns={this.state.floorsNames}
+              data={this.state.floorsPrices}
+            />
+          </CardBody>
+        </Card>
+        <Locations />
+      </Fragment>
     );
   }
 }

@@ -26,4 +26,9 @@ button {
   cursor: pointer;
   outline: none;
   margin: 0 10px;
+  
+  &:hover {
+    opacity: 0.8
+  }
 }
+

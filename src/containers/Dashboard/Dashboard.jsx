@@ -3,6 +3,8 @@ import { Route } from "react-router-dom";
 import { DashboardRoutes } from "../../routes/local/routes";
 import DashboardLayout from "../../HOC/Layouts/Dashboard/Dashboard";
 import Building from "../Building/Building";
+import Projects from "../Project/Projects";
+import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
@@ -13,6 +15,16 @@ class Dashboard extends Component {
     const { match } = this.props;
     return (
       <DashboardLayout>
+        <Route
+          path={match.url + DashboardRoutes.projects}
+          exact
+          component={SecureContainer(Projects)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.projects + DashboardRoutes.towers}
+          exact
+          component={SecureContainer(Towers)}
+        />
         <Route
           path={match.url + DashboardRoutes.building}
           exact
@@ -26,7 +38,7 @@ class Dashboard extends Component {
         <Route
           path={match.url + DashboardRoutes.user}
           exact
-          component={UserSettings}
+          component={SecureContainer(UserSettings)}
         />
         <Route
           path={match.url + DashboardRoutes.prime}

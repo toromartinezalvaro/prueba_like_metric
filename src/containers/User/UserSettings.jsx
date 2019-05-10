@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Services from '../../services/user/UserServices'
+import UserServices from '../../services/user/UserServices'
 import agent from '../../config/config'
 import User from '../../components/User/User'
 import { UserRoutes } from '../../routes/local/routes'
@@ -8,12 +8,16 @@ export default class UserSettings extends Component {
 
   constructor(props) {
     super(props)
-    this.services = new Services()
+    this.services = new UserServices(this)
   }
 
   state = {
     isLoading: false,
     user: {}
+  }
+
+  componentDidMount() {
+    this.loadCurrentUserInfo()
   }
 
   logoutAction = () => {
