@@ -3,7 +3,8 @@ import { Route } from "react-router-dom";
 import { DashboardRoutes } from "../../routes/local/routes";
 import DashboardLayout from "../../HOC/Layouts/Dashboard/Dashboard";
 import Building from "../Building/Building";
-import Projects from "../Project/Projects"
+import Projects from "../Project/Projects";
+import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
@@ -18,6 +19,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.projects}
           exact
           component={SecureContainer(Projects)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.projects + DashboardRoutes.towers}
+          exact
+          component={SecureContainer(Towers)}
         />
         <Route
           path={match.url + DashboardRoutes.building}

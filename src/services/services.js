@@ -26,7 +26,11 @@ class Services {
 
   delete(url, data, config) {
     console.log("url 🐒", url)
-    return this.axiosPromise(this.axios.delete(url, data, config))
+    let newConfig = {
+      ...config,
+      data: data
+    }
+    return this.axiosPromise(this.axios.delete(url, newConfig))
   }
 
   axiosPromise(promise) {

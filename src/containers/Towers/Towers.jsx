@@ -1,57 +1,53 @@
 import React, { Component } from "react";
-import ProjectServices from "../../services/Projects/ProjectServices";
-import ProjectItems from "../../components/Projects/Projects";
+import TowerServices from "../../services/Towers/TowerServices";
+import TowerItems from "../../components/Towers/Towers";
 import Modal from "../../components/UI/Modal/Modal";
 import Input from "../../components/UI/Input/Input";
 import { DashboardRoutes } from "../../routes/local/routes";
 
-export default class Projects extends Component {
+export default class Towers extends Component {
   constructor(props) {
     super(props);
-    this.services = new ProjectServices(this);
+    this.services = new TowerServices(this);
   }
 
   state = {
-    projects: [],
+    towers: [],
     modalIsHidden: true,
-    newTitleProject: "",
-    newDescriptionProject: "",
+    newTitleTower: "",
+    newDescriptionTower: "",
     alertMessage: "",
     alertIsHidden: true,
     alertAccept: () => {}
   };
 
   componentDidMount() {
-    this.loadCurrentProjects();
+    this.loadCurrenttowers();
   }
 
-  openProjectHandler = id => {
-    console.log("tower id ", id)
-    this.props.history.push({
-      pathname: this.props.match.url + DashboardRoutes.towers,
-      search: `towerId=${id}`
-    })
+  opentowerHandler = id => {
+    this.props.history.push(DashboardRoutes.towers)
   };
 
-  createProjectHandler = () => {
+  createtowerHandler = () => {
     this.setState({
       modalIsHidden: false
     });
   };
 
-  removeProjectHandler = id => {
+  removetowerHandler = id => {
     const onAccept = () => {
       this.setState({
         alertIsHidden: true
       })
       this.services
-        .removeProject({id: id})
+        .removeTower({id: id})
         .then(response => {
-          let project = response.data.projects;
-          if (project) {
+          let tower = response.data.towers;
+          if (tower) {
             this.setState({
-              projects: project,
-              modalIsHidden: project.length > 0
+              towers: tower,
+              modalIsHidden: tower.length > 0
             });
           }
         })
@@ -62,25 +58,25 @@ export default class Projects extends Component {
 
     this.setState({
       alertAccept: onAccept,
-      alertMessage: "Está seguro de que quiere eliminar todo el proyecto? Al hacer esto eliminará toda la info interna",
+      alertMessage: "Está seguro de que quiere eliminar toda la torre? Al hacer esto eliminará toda la info interna",
       alertIsHidden: false
     })
   };
 
-  loadCurrentProjects = () => {
+  loadCurrenttowers = () => {
     this.services
-      .getProjects()
+      .getTowers()
       .then(response => {
-        console.log("response ---> ", response.data.projects);
+        console.log("response ---> ", response.data.towers);
         this.setState({
-          projects: response.data.projects ? response.data.projects : [],
-          modalIsHidden: response.data.projects.length > 0
+          towers: response.data.towers ? response.data.towers : [],
+          modalIsHidden: response.data.towers.length > 0
         });
-        console.log("state ---> ", this.state.projects);
+        console.log("state ---> ", this.state.towers);
       })
       .catch(error => {
         this.setState({
-          projects: [],
+          towers: [],
           modalIsHidden: true
         });
         console.log("ERROR::: ", error);
@@ -88,22 +84,22 @@ export default class Projects extends Component {
   };
 
   onCreate = () => {
-    if (this.state.newTitleProject === "") {
+    if (this.state.newTitleTower === "") {
       alert("Ingrese por lo menos un nombre para poder crear un proyecto");
       return;
     }
 
     console.log("onCreate :((((((")
     this.services
-      .createProject({
-        name: this.state.newTitleProject,
-        description: this.state.newDescriptionProject
+      .createTower({
+        name: this.state.newTitleTower,
+        description: this.state.newDescriptionTower
       })
       .then(response => {
         console.log("response ---> ", response.data);
         this.setState({
-          projects: response.data.projects ? response.data.projects : [],
-          modalIsHidden: response.data.projects.length > 0
+          towers: response.data.towers ? response.data.towers : [],
+          modalIsHidden: response.data.towers.length > 0
         });
       })
       .catch(error => {
@@ -112,8 +108,8 @@ export default class Projects extends Component {
 
     this.setState({
       modalIsHidden: true,
-      newTitleProject: "",
-      newDescriptionProject: ""
+      newTitleTower: "",
+      newDescriptionTower: ""
     });
   };
 
@@ -122,7 +118,7 @@ export default class Projects extends Component {
       alertIsHidden: true
     });
 
-    if (this.state.projects.length > 0) {
+    if (this.state.towers.length > 0) {
       this.setState({
         modalIsHidden: true
       });
@@ -148,21 +144,21 @@ export default class Projects extends Component {
         <div>
           <label>Nombre</label>
           <Input
-            name="newTitleProject"
+            name="newTitleTower"
             onChange={this.onChange}
             validations={[]}
             style={{ width: "75px", fontSize: "16px" }}
-            value={this.state.newTitleProject}
+            value={this.state.newTitleTower}
           />
         </div>
         <div>
           <label>Descripción</label>
           <Input
-            name="newDescriptionProject"
+            name="newDescriptionTower"
             onChange={this.onChange}
             validations={[]}
             style={{ width: "75px", fontSize: "16px" }}
-            value={this.state.newDescriptionProject}
+            value={this.state.newDescriptionTower}
           />
         </div>
       </Modal>
@@ -185,14 +181,14 @@ export default class Projects extends Component {
   render() {
     return (
       <div>
-        {this.state.projects.length > 0 && (
-          <ProjectItems
-            projects={this.state.projects}
-            openProject={this.openProjectHandler}
-            createProject={this.createProjectHandler}
-            removeProject={this.removeProjectHandler}
+        {this.state.towers.length > 0 && (
+          <TowerItems
+            towers={this.state.towers}
+            opentower={this.opentowerHandler}
+            createtower={this.createtowerHandler}
+            removetower={this.removetowerHandler}
           />
-        )}
+        )} 
         {!this.state.modalIsHidden && this.createModal()}
         {!this.state.alertIsHidden && this.createAlert()}
       </div>
