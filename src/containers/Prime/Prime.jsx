@@ -30,7 +30,7 @@ class Prime extends Component {
             onChange={target => {
               this.priceHandler(element.id, parseInt(target.value));
             }}
-            value={element.price_mt2}
+            value={element.price}
           />
         ]);
         floorsNames.push(element.reference);
@@ -42,7 +42,7 @@ class Prime extends Component {
 
   priceHandler(id, price) {
     this.services
-      .putPrimesById(id, { price_mt2: parseInt(price) })
+      .putPrimesById(id, { price: parseInt(price) })
       .then(data => {
         console.log(data);
       })
