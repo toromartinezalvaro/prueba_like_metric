@@ -41,7 +41,7 @@ const input = props => {
   };
 
   const cleanNumberMask = value => {
-    return value.toString().replace(/,/g, "");
+    return value.toString().replace(/,/g , "");
   };
 
   const cleanCurrencyMask = value => {
@@ -51,9 +51,7 @@ const input = props => {
   const handleFocus = event => event.target.select();
 
   const cleanValue = value => {
-    if (value === null && value === undefined) {
-      return value;
-    } else if (props.mask === "number") {
+    if (props.mask === "number") {
       return cleanNumberMask(value);
     } else if (props.mask === "currency") {
       return cleanCurrencyMask(value);
@@ -111,7 +109,6 @@ const input = props => {
           onBlur={syncValues}
           value={localValue === undefined ? props.value : localValue}
           disabled={props.disable}
-          placeholder={props.placeholder}
         />
       )}
       <div className={styles.ErrorMessage}>{errorMessages}</div>
