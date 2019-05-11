@@ -18,7 +18,6 @@ const sidebar = () => {
   return (
     <div className={style.Sidebar}>
     {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.projects, "fa-file-contract")}
-    {itemForSlidebar(style.MenuItem, DashboardRoutes.base +  DashboardRoutes.projects + DashboardRoutes.towers, "fa-columns")}
     {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.building, "fa-building")}
     {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.areas, "fa-layer-group")}
     {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.prime, "fa-sort-amount-up")}

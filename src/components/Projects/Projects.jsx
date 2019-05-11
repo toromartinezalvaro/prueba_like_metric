@@ -12,7 +12,7 @@ const projectItems = props => {
 
   var itemFromProject = project => {
     return (
-      <div className={styles.ItemContainer}>
+      <div className={styles.ItemContainer} key={project.id}>
         <div className={styles.DescriptionItem}>
           <div
             className={styles.Remove}

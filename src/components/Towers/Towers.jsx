@@ -4,29 +4,30 @@ import styles from "./Towers.module.scss";
 import Icon from "../../assets/icons/Icon";
 
 const towerItems = props => {
-  var items = projects => {
-    return projects.map(project => {
-      return itemFromProject(project);
+  
+  var items = towers => {
+    return towers.map(tower => {
+      return itemFromTower(tower);
     });
   };
 
-  var itemFromProject = project => {
+  var itemFromTower = tower => {
     return (
-      <div className={styles.ItemContainer}>
+      <div className={styles.ItemContainer} key={tower.id}>
         <div className={styles.DescriptionItem}>
           <div
             className={styles.Remove}
-            onClick={() => props.removeProject(project.id)}
+            onClick={() => props.removeTower(tower.id)}
           >
             <Icon name="fa-trash-alt" />
           </div>
           <div className={styles.Description}>
-            <p>{project.description}</p>
+            <p>{tower.description}</p>
           </div>
         </div>
         <div className={styles.Item}>
-          <div onClick={() => {props.openProject(project.id)}}>
-            <p>{project.name}</p>
+          <div onClick={() => {props.openTower(tower.id)}}>
+            <p>{tower.name}</p>
           </div>
         </div>
       </div>
@@ -36,11 +37,11 @@ const towerItems = props => {
   return (
     <Card>
       <CardHeader>
-        <p>Proyectos</p>
-        <button onClick={props.createProject}>Crear Proyecto</button>
+        <p>Torres</p>
+        <button onClick={props.createTower}>Crear Torre</button>
       </CardHeader>
       <CardBody>
-        <div className={styles.Projects}>{items(props.projects)}</div>
+        <div className={styles.Towers}>{items(props.towers)}</div>
       </CardBody>
       <CardFooter />
     </Card>

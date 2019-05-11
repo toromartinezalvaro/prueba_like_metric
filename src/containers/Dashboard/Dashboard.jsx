@@ -21,7 +21,7 @@ class Dashboard extends Component {
           component={SecureContainer(Projects)}
         />
         <Route
-          path={match.url + DashboardRoutes.projects + DashboardRoutes.towers}
+          path={match.url + DashboardRoutes.projects + DashboardRoutes.towersProjectId}
           exact
           component={SecureContainer(Towers)}
         />
