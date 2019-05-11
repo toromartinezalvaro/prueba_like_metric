@@ -1,7 +1,8 @@
 export const DashboardRoutes = {
   base: '/dashboard',
   projects: '/projects',
-  towers:  '/towers',
+  towersProjectId:  '/towers/:projectId',
+  towers:  '/towers/',
   building: '/building',
   areas: '/areas',
   user: '/user',
