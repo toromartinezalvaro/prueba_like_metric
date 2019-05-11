@@ -4,12 +4,13 @@ import _ from "lodash";
 import Table from "../../UI/Table/Table";
 import Input from "../../UI/Input/Input";
 
-const prices = ({ areaTypeId, measurementUnit }) => {
+const prices = ({ areaTypeId, measurementUnit, services }) => {
+
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
   const updateAreaPrice = (id, price) => {
-    axios
-      .put(`http://localhost:1337/api/areas/prices/${id}`, {
+    services
+      .putAreaPrice(id, {
         price: price
       })
       .then(data => {
@@ -21,8 +22,8 @@ const prices = ({ areaTypeId, measurementUnit }) => {
   };
 
   const updateAreaTypePrice = (id, price) => {
-    axios
-      .put(`http://localhost:1337/api/areas/area-types/${id}/prices/`, {
+    services
+      .putAreaTypePrice(id, {
         price: price
       })
       .then(data => {
@@ -35,8 +36,8 @@ const prices = ({ areaTypeId, measurementUnit }) => {
 
   useEffect(() => {
     // Component did mount
-    axios
-      .get(`http://localhost:1337/api/areas/1/area-types/${areaTypeId}/prices`)
+    services
+      .getPrices(1, areaTypeId)
       .then(res => {
         if (res.data.length > 0) {
           res.data = _.sortBy(res.data, o => o.measure);

@@ -45,6 +45,7 @@ class Area extends Component {
           <Prices
             areaTypeId={this.state.areaTypeId}
             measurementUnit={this.state.areaMeasurementUnit}
+            services={this.services}
           />
         </Fragment>
       );
