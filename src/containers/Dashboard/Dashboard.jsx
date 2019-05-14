@@ -37,7 +37,7 @@ class Dashboard extends Component {
           component={SecureContainer(Projects, { changeTower: this.onChangeTower})}
         />
         <Route
-          path={match.url + ProjectRoutes.base + DashboardRoutes.towersProjectId}
+          path={match.url + ProjectRoutes.base + DashboardRoutes.towers.withIndicator}
           exact
           component={SecureContainer(Towers, { changeTower: this.onChangeTower })}
         />
@@ -47,7 +47,7 @@ class Dashboard extends Component {
           component={SecureContainer(Building)}
         />
         <Route
-          path={match.url + DashboardRoutes.areas}
+          path={match.url + DashboardRoutes.areas.withIndicator}
           exact
           component={SecureContainer(Areas)}
         />
@@ -57,7 +57,7 @@ class Dashboard extends Component {
           component={SecureContainer(UserSettings, { changeTower: this.onChangeTower} )}
         />
         <Route
-          path={match.url + DashboardRoutes.prime}
+          path={match.url + DashboardRoutes.prime.withIndicator}
           exact
           component={Prime}
         />

@@ -7,42 +7,41 @@ import Icon from "../../assets/icons/Icon";
 const sideMenu = props => {
 
   var itemForSlidebar = (styles, route, iconName, description) => {
+
+    //TODO: REMOVE hardcoded towerId 
     return (
       <div className={styles}>
-        <Link to={route}>
+        <Link to={route + `${props.tower !== null && props.tower !== undefined ? props.tower.id : "1"}`}>
           <Icon name={iconName} fixWidth={true} />
           <label className={style.Description}> {description} </label>
         </Link>
       </div>
     );
   };
-  
-  useEffect(() => {
-    console.log("props.m ", props)
-  }, []);
 
   return (
-    <div className={style.SideMenu + " " + `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}` }>
-    {console.log("props.m ", props)}
+    <div className={style.SideMenu + " " 
+    +  `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}` 
+    }>
       <div>
         <label>{props.tower ? props.tower.name : "" }</label>
       </div>
       <div className={style.IconsContainer}>
         {itemForSlidebar(
           style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.building.value + `${props.tower !== null ? props.tower.id : ""}`,
+          DashboardRoutes.base + DashboardRoutes.building.value,
           "fa-building",
           "Esquema"
         )}
         {itemForSlidebar(
           style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.areas,
+          DashboardRoutes.base + DashboardRoutes.areas.value,
           "fa-layer-group",
           "Areas"
         )}
         {itemForSlidebar(
           style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.prime,
+          DashboardRoutes.base + DashboardRoutes.prime.value,
           "fa-sort-amount-up",
           "Primas"
         )}
