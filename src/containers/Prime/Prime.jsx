@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import axios from "axios";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
 import Table from "../../components/UI/Table/Table";
 import Input from "../../components/UI/Input/Input";
@@ -51,6 +50,10 @@ class Prime extends Component {
       });
   }
 
+  unitHandler(event) {
+    console.log(event.target.value);
+  }
+
   render() {
     return (
       <Fragment>
@@ -59,6 +62,10 @@ class Prime extends Component {
             <p>Primas por altura</p>
           </CardHeader>
           <CardBody>
+            <select onChange={this.unitHandler}>
+              <option value="UNIT">Unidad</option>
+              <option value="MT2">MT2</option>
+            </select>
             <Table
               intersect="primas"
               headers={["Precio mt2"]}
