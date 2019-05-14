@@ -22,6 +22,9 @@ export default class Projects extends Component {
   };
 
   componentDidMount() {
+    if (this.props.additionalProps) {
+      this.props.additionalProps.changeTower(null)
+    }
     this.loadCurrentProjects();
   }
 

@@ -32,7 +32,6 @@ const SecureContainer = (Container, additionalProps) => class extends Container 
     }
 
     const props = {...this.props, additionalProps}
-    console.log("props --> ", props)
     return (
       <React.Fragment>
         <Container {...props} />

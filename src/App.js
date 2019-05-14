@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from "react-router-dom";
 import { DashboardRoutes, UserRoutes, ProjectRoutes } from './routes/local/routes';
 import Dashboard from './containers/Dashboard/Dashboard';
-import ProjectsContainer from './containers/Project/ProjectsContainer'
 import Login from './containers/User/Login';
 import agent from './config/config'
 import _ from './App.module.scss'

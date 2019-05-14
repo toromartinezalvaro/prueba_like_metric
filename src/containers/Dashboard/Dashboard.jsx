@@ -17,6 +17,9 @@ class Dashboard extends Component {
   }
 
   onChangeTower = tower => {
+    if (tower === this.state.tower || this.state.tower === null && tower === null) {
+      return 
+    }
     this.setState({
       tower: tower
     })
@@ -25,14 +28,13 @@ class Dashboard extends Component {
 
   render() {
     const { match } = this.props;
-    console.log("match -------> ", match.params.towerId, " ", this.state.tower)
     const tower =  this.state.tower
     return (
       <DashboardLayout tower={ tower }>
         <Route
           path={match.url + ProjectRoutes.base }
           exact
-          component={SecureContainer(Projects)}
+          component={SecureContainer(Projects, { changeTower: this.onChangeTower})}
         />
         <Route
           path={match.url + ProjectRoutes.base + DashboardRoutes.towersProjectId}
@@ -52,7 +54,7 @@ class Dashboard extends Component {
         <Route
           path={match.url + DashboardRoutes.user}
           exact
-          component={SecureContainer(UserSettings)}
+          component={SecureContainer(UserSettings, { changeTower: this.onChangeTower} )}
         />
         <Route
           path={match.url + DashboardRoutes.prime}

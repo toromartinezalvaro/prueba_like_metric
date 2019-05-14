@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DashboardRoutes } from "../../routes/local/routes";
 import style from "./SideMenu.module.scss";
 import Icon from "../../assets/icons/Icon";
 
 const sideMenu = props => {
+
   var itemForSlidebar = (styles, route, iconName, description) => {
     return (
       <div className={styles}>
@@ -15,9 +16,14 @@ const sideMenu = props => {
       </div>
     );
   };
+  
+  useEffect(() => {
+    console.log("props.m ", props)
+  }, []);
 
   return (
     <div className={style.SideMenu + " " + `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}` }>
+    {console.log("props.m ", props)}
       <div>
         <label>{props.tower ? props.tower.name : "" }</label>
       </div>
