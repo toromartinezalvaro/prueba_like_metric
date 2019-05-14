@@ -1,5 +1,6 @@
 import React from 'react';
 import Input from '../UI/Input/Input';
+import styles from './Login.component.scss';
 
 const login = props => {
   const emailValidation = [
@@ -35,7 +36,7 @@ const login = props => {
         disable={false}
       />
 
-      <label>
+      <label className="Label">
         {
           props.currentErrorMessage !== "" &&
           props.currentErrorMessage

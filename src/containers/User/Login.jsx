@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import UserServices from '../../services/user/UserServices'
+import Services from '../../services/user/UserServices'
 import LoginComponent from '../../components/User/Login';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
 import { DashboardRoutes } from '../../routes/local/routes'
+import errorHandling from '../../services/commons/errorHelper'
 
 
 class Login extends Component {
 
   constructor(props) {
     super(props)
-    this.services = new UserServices(this)
+    this.services = new Services()
   }
 
   state = {
@@ -72,8 +73,9 @@ class Login extends Component {
         this.setState({ isLoading: false })
       })
       .catch(error => {
+        let errorHelper = errorHandling(error)
         this.setState({
-          currentErrorMessage: error.meesage,
+          currentErrorMessage: errorHelper.message,
           isLoading: false 
         })
       })
