@@ -31,7 +31,7 @@ export default class Projects extends Component {
   openProjectHandler = id => {
     console.log("tower id ", id)
     this.props.history.push({
-      pathname: this.props.match.url + DashboardRoutes.towers + id
+      pathname: this.props.match.url + DashboardRoutes.towers.value + id
     })
   };
 

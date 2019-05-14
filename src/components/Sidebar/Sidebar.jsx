@@ -18,7 +18,7 @@ const sidebar = () => {
   return (
     <div className={style.Sidebar}>
     {itemForSlidebar(`${style.Start} ${style.MenuItem}`, DashboardRoutes.base + ProjectRoutes.base, "fa-file-contract")}
-    {itemForSlidebar(`${style.MenuItem}`, DashboardRoutes.base, "fa-user-tie")}
+    {itemForSlidebar(`${style.MenuItem}`, DashboardRoutes.base + DashboardRoutes.user, "fa-user-tie")}
     </div>
   );
 };

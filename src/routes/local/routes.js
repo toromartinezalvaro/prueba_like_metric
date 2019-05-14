@@ -1,11 +1,10 @@
 export const DashboardRoutes = {
   base:'/dashboard',
-  towersProjectId:  '/towers/:projectId',
-  towers:  '/towers/',
+  towers:  { value:'/towers/', withIndicator:  '/towers/:projectId'},
   building: { value: '/building/', withIndicator: '/building/:towerId' },
-  areas: '/areas',
-  user: '/user',
-  prime: '/prime'
+  areas: { value: '/areas/', withIndicator: '/areas/:towerId' },
+  prime: { value: '/prime/', withIndicator: '/prime/:towerId' },
+  user: '/user'
 }
 
 export const ProjectRoutes = {
