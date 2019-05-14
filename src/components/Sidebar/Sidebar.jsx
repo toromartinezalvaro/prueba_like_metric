@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { DashboardRoutes } from "../../routes/local/routes";
+import { ProjectRoutes,  DashboardRoutes } from "../../routes/local/routes";
 import style from "./Sidebar.module.scss";
 import Icon from "../../assets/icons/Icon";
 
@@ -17,12 +17,8 @@ const sidebar = () => {
 
   return (
     <div className={style.Sidebar}>
-    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.projects, "fa-file-contract")}
-    {itemForSlidebar(style.MenuItem, DashboardRoutes.base +  DashboardRoutes.projects + DashboardRoutes.towers, "fa-columns")}
-    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.building, "fa-building")}
-    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.areas, "fa-layer-group")}
-    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.prime, "fa-sort-amount-up")}
-    {itemForSlidebar(`${style.End} ${style.MenuItem}`, DashboardRoutes.base + DashboardRoutes.user, "fa-user-tie")}
+    {itemForSlidebar(`${style.Start} ${style.MenuItem}`, DashboardRoutes.base + ProjectRoutes.base, "fa-file-contract")}
+    {itemForSlidebar(`${style.MenuItem}`, DashboardRoutes.base, "fa-user-tie")}
     </div>
   );
 };

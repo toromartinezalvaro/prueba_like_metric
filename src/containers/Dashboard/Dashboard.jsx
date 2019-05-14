@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import { DashboardRoutes } from "../../routes/local/routes";
+import { DashboardRoutes, ProjectRoutes } from "../../routes/local/routes";
 import DashboardLayout from "../../HOC/Layouts/Dashboard/Dashboard";
 import Building from "../Building/Building";
 import Projects from "../Project/Projects";
@@ -8,25 +8,41 @@ import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
-import SecureContainer from "../Common/secureContainer";
+import SecureContainer from "../../HOC/Common/SecureContainer";
 
 class Dashboard extends Component {
+  
+  state = {
+    tower: null
+  }
+
+  onChangeTower = tower => {
+    if (tower === this.state.tower || this.state.tower === null && tower === null) {
+      return 
+    }
+    this.setState({
+      tower: tower
+    })
+  }
+
+
   render() {
     const { match } = this.props;
+    const tower =  this.state.tower
     return (
-      <DashboardLayout>
+      <DashboardLayout tower={ tower }>
         <Route
-          path={match.url + DashboardRoutes.projects}
+          path={match.url + ProjectRoutes.base }
           exact
-          component={SecureContainer(Projects)}
+          component={SecureContainer(Projects, { changeTower: this.onChangeTower})}
         />
         <Route
-          path={match.url + DashboardRoutes.projects + DashboardRoutes.towers}
+          path={match.url + ProjectRoutes.base + DashboardRoutes.towersProjectId}
           exact
-          component={SecureContainer(Towers)}
+          component={SecureContainer(Towers, { changeTower: this.onChangeTower })}
         />
         <Route
-          path={match.url + DashboardRoutes.building}
+          path={match.url + DashboardRoutes.building.withIndicator}
           exact
           component={SecureContainer(Building)}
         />
@@ -38,7 +54,7 @@ class Dashboard extends Component {
         <Route
           path={match.url + DashboardRoutes.user}
           exact
-          component={SecureContainer(UserSettings)}
+          component={SecureContainer(UserSettings, { changeTower: this.onChangeTower} )}
         />
         <Route
           path={match.url + DashboardRoutes.prime}

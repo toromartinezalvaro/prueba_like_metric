@@ -21,6 +21,7 @@ class Building extends Component {
   }
 
   componentDidMount() {
+    console.log("match ", this.props.match)
     this.updateNames();
   }
 
@@ -31,11 +32,9 @@ class Building extends Component {
   }
 
   updateNames = () => {
-    console.log("updateNames")
     this.services
     .getSchema(1)
       .then(response => {
-        console.log("response data", response.data)
         if (response.data.length !== 0) {
           this.setState({
             floors: response.data.length,

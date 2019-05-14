@@ -22,14 +22,16 @@ export default class Projects extends Component {
   };
 
   componentDidMount() {
+    if (this.props.additionalProps) {
+      this.props.additionalProps.changeTower(null)
+    }
     this.loadCurrentProjects();
   }
 
   openProjectHandler = id => {
     console.log("tower id ", id)
     this.props.history.push({
-      pathname: this.props.match.url + DashboardRoutes.towers,
-      search: `towerId=${id}`
+      pathname: this.props.match.url + DashboardRoutes.towers + id
     })
   };
 
@@ -45,7 +47,7 @@ export default class Projects extends Component {
         alertIsHidden: true
       })
       this.services
-        .removeProject({id: id})
+        .removeProject({projectId: id})
         .then(response => {
           let project = response.data.projects;
           if (project) {

@@ -17,6 +17,9 @@ export default class UserSettings extends Component {
   }
 
   componentDidMount() {
+    if (this.props.additionalProps) {
+      this.props.additionalProps.changeTower(null)
+    }
     this.loadCurrentUserInfo()
   }
 
