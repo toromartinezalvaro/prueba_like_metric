@@ -25,8 +25,9 @@ export default class Towers extends Component {
     this.loadCurrentTowers();
   }
 
-  openTowerHandler = id => {
-    this.props.history.push(DashboardRoutes.towers)
+  openTowerHandler = tower => {
+    this.props.additionalProps.changeTower(tower)
+    this.props.history.push(DashboardRoutes.base + DashboardRoutes.building.value + tower.id)
   };
 
   createTowerHandler = () => {

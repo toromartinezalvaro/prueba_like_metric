@@ -1,19 +1,39 @@
 @import "../../assets/styles/variables.scss";
 
-.Sidebar {
+.SideMenu {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   flex-basis: 5rem;
   flex-shrink: 0;
-  background: $main-color;
+  background: $softGray-color;
   height: 100%;
-  width: 64px;
-
+  flex: 1;
   display: flex;
   justify-content: start;
   align-items: center;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.ZeroWidth {
+  width: 0px;
+}
+
+.OriginalWidth {
+  width: 240px;
+}
+
+.IconsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-top: 3vh;
+}
+
+.Description {
+  color: inherit;
 }
 
 .Start {
@@ -29,22 +49,27 @@
   
   display: flex;
   justify-content: center;
-
+  width: 100%;
 
   a:link,
   a:visited {
+    flex: 1;
     border: none;
-    color: $white-color;
+    color: $black-color;
     padding: 10px 10px;
     transition-duration: 0.4s;
     text-decoration: none;
     font-size: 16px;
     cursor: pointer;
   }
+  a:focus {
+    color: $main-color;
+    background-color: $softGrayBackground-color;
+  }
   a:hover,
   a:active {
-    background-color: $gray-color;
-    border-radius: 50%
+    background-color: $softGrayBackground-color;
+    border-radius: 2px;
   }
 
 }

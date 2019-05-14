@@ -26,7 +26,7 @@ const towerItems = props => {
           </div>
         </div>
         <div className={styles.Item}>
-          <div onClick={() => {props.openTower(tower.id)}}>
+          <div onClick={() => {props.openTower(tower)}}>
             <p>{tower.name}</p>
           </div>
         </div>

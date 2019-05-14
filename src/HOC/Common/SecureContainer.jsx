@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-const SecureContainer = Container => class extends Container {
+const SecureContainer = (Container, additionalProps) => class extends Container {
 
   constructor() {
     super();
@@ -30,9 +30,12 @@ const SecureContainer = Container => class extends Container {
     if (redirect) {
       return <Redirect to="/login" />;
     }
+
+    const props = {...this.props, additionalProps}
+    console.log("props --> ", props)
     return (
       <React.Fragment>
-        <Container {...this.props} />
+        <Container {...props} />
       </React.Fragment>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import { DashboardRoutes } from "../../routes/local/routes";
+import { DashboardRoutes, ProjectRoutes } from "../../routes/local/routes";
 import DashboardLayout from "../../HOC/Layouts/Dashboard/Dashboard";
 import Building from "../Building/Building";
 import Projects from "../Project/Projects";
@@ -8,25 +8,39 @@ import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
-import SecureContainer from "../Common/secureContainer";
+import SecureContainer from "../../HOC/Common/SecureContainer";
 
 class Dashboard extends Component {
+  
+  state = {
+    tower: null
+  }
+
+  onChangeTower = tower => {
+    this.setState({
+      tower: tower
+    })
+  }
+
+
   render() {
     const { match } = this.props;
+    console.log("match -------> ", match.params.towerId, " ", this.state.tower)
+    const tower =  this.state.tower
     return (
-      <DashboardLayout>
+      <DashboardLayout tower={ tower }>
         <Route
-          path={match.url + DashboardRoutes.projects}
+          path={match.url + ProjectRoutes.base }
           exact
           component={SecureContainer(Projects)}
         />
         <Route
-          path={match.url + DashboardRoutes.projects + DashboardRoutes.towersProjectId}
+          path={match.url + ProjectRoutes.base + DashboardRoutes.towersProjectId}
           exact
-          component={SecureContainer(Towers)}
+          component={SecureContainer(Towers, { changeTower: this.onChangeTower })}
         />
         <Route
-          path={match.url + DashboardRoutes.building}
+          path={match.url + DashboardRoutes.building.withIndicator}
           exact
           component={SecureContainer(Building)}
         />
