@@ -41,19 +41,31 @@ const locations = () => {
 
   const inputs = () => {
     return tableData.map(element => {
-      return element.map(prime => (
-        <Input
-          mask="currency"
-          style={{ width: "75px", fontSize: "16px" }}
-          value={prime.price}
-          validations={[]}
-          onChange={target => {
-            priceChangeHandler(prime.id, target.value);
-          }}
-          placeholder={prime.name}
-          tooltip={prime.name}
-        />
-      ));
+      return element.map(prime => {
+        if (prime) {
+          return (
+            <Input
+              mask="currency"
+              style={{ width: "75px", fontSize: "16px" }}
+              value={prime.price}
+              validations={[]}
+              onChange={target => {
+                priceChangeHandler(prime.id, target.value);
+              }}
+              placeholder={prime.name}
+              tooltip={prime.name}
+            />
+          );
+        } else {
+          return (
+            <Input
+              style={{ width: "75px", fontSize: "16px" }}
+              placeholder="-"
+              disable
+            />
+          );
+        }
+      });
     });
   };
 

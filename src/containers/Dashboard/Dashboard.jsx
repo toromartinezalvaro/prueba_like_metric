@@ -8,6 +8,7 @@ import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
+import Summary from "../Summary/Summary";
 import SecureContainer from "../Common/secureContainer";
 
 class Dashboard extends Component {
@@ -44,6 +45,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.prime}
           exact
           component={Prime}
+        />
+        <Route
+          path={match.url + DashboardRoutes.summary}
+          exact
+          component={SecureContainer(Summary)}
         />
       </DashboardLayout>
     );

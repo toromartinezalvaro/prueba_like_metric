@@ -42,7 +42,7 @@ const input = props => {
   };
 
   const cleanNumberMask = value => {
-    return value.toString().replace(/,/g, "");
+    return value ? value.toString().replace(/,/g, "") : "";
   };
 
   const cleanCurrencyMask = value => {

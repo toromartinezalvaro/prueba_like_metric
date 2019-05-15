@@ -22,6 +22,7 @@ const sidebar = () => {
     {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.building, "fa-building")}
     {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.areas, "fa-layer-group")}
     {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.prime, "fa-sort-amount-up")}
+    {itemForSlidebar(style.MenuItem, DashboardRoutes.base + DashboardRoutes.summary, "fa-list-alt")}
     {itemForSlidebar(`${style.End} ${style.MenuItem}`, DashboardRoutes.base + DashboardRoutes.user, "fa-user-tie")}
     </div>
   );
