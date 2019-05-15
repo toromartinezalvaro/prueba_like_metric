@@ -17,7 +17,7 @@ class Dashboard extends Component {
   }
 
   onChangeTower = tower => {
-    if (tower === this.state.tower || this.state.tower === null && tower === null) {
+    if (tower === this.state.tower || (this.state.tower === null && tower === null)) {
       return 
     }
     this.setState({

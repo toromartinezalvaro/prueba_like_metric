@@ -4,16 +4,12 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
   flex-basis: 5rem;
   flex-shrink: 0;
   background: $main-color;
   height: 100%;
   width: 64px;
-
-  display: flex;
-  justify-content: start;
-  align-items: center;
 }
 
 .Start {

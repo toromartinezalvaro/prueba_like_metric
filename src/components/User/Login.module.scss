@@ -1,3 +1,7 @@
+@import '../../assets/styles/variables.scss';
+
+
+
 .Container {
     display: flex;
     text-align: center;
@@ -13,4 +17,8 @@
 
 .Button {
     margin-top: 10%;
+}
+
+label {
+    color: $red-color
 }

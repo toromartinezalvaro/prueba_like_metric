@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import axios from "axios";
 import _ from "lodash";
 import Table from "../../UI/Table/Table";
 import Input from "../../UI/Input/Input";

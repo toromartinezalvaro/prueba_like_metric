@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { DashboardRoutes } from "../../routes/local/routes";
 import style from "./SideMenu.module.scss";
@@ -22,7 +22,7 @@ const sideMenu = props => {
   return (
     <div className={style.SideMenu + " " 
     //TODO: comment this line to test in develop environment 
-    +  `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}` 
+    // +  `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}` 
     }>
       <div>
         <label>{props.tower ? props.tower.name : "" }</label>

@@ -2,8 +2,6 @@ import React from 'react';
 import Input from '../UI/Input/Input';
 import styles from "./Login.module.scss";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import cardBody from '../UI/Card/CardBody/CardBody';
-import styles from './Login.component.scss';
 
 
 
@@ -51,15 +49,12 @@ const login = props => {
               placeholder={"Contraseña"}
 
             />
-          </div>
           <label>
             {
               props.currentErrorMessage !== "" &&
               props.currentErrorMessage
             }
           </label>
-          <div className={styles.Row}>
-
             <div
             // className={styles.Actions}
             >
