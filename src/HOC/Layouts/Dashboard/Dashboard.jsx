@@ -6,6 +6,7 @@ const dashboard = ({children}) => (
   <div className={styles.Dashboard}>
     <nav>
       <Sidebar />
+      
     </nav>
 
     <main className={styles.Content}>
