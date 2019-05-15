@@ -26,8 +26,9 @@ export default class Towers extends Component {
   }
 
   openTowerHandler = tower => {
+    tower = {...tower, projectId: this.props.match.params.projectId  }
     this.props.additionalProps.changeTower(tower)
-    this.props.history.push(DashboardRoutes.base + DashboardRoutes.building.value + tower.id)
+    this.props.history.push(DashboardRoutes.base + DashboardRoutes.building.value + this.props.match.params.projectId + "/"+ tower.id)
   };
 
   createTowerHandler = () => {
