@@ -23,6 +23,11 @@
   border-bottom: 1px solid $green-color;
 }
 
+.Input::placeholder {
+  color: $defaultPlaceholder-color;
+
+}
+
 .Input:disabled {
   border: none;
 }

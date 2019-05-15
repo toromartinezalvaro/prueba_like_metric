@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import UserServices from '../../services/user/UserServices'
+import Services from '../../services/user/UserServices'
 import LoginComponent from '../../components/User/Login';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
 import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes'
-
+import styles from './Login.container.scss'
+import errorHandling from '../../services/commons/errorHelper'
 
 class Login extends Component {
 
   constructor(props) {
     super(props)
-    this.services = new UserServices(this)
+    this.services = new Services()
   }
 
   state = {
@@ -62,7 +63,7 @@ class Login extends Component {
 
   loginActionHandler = () => {
     this.setState({ isLoading: true })
-    
+
     this.services
       .login(this.state.email, this.state.password)
       .then(user => {
@@ -72,8 +73,9 @@ class Login extends Component {
         this.setState({ isLoading: false })
       })
       .catch(error => {
+        let errorHelper = errorHandling(error)
         this.setState({
-          currentErrorMessage: error.meesage,
+          currentErrorMessage: errorHelper.message,
           isLoading: false 
         })
       })
@@ -82,12 +84,14 @@ class Login extends Component {
 
   render() {
     return (this.state.isLoading ?
-      <Loader
-      type="Puff"
-      color="#00BFFF"
-      height="100"	
-      width="100"
-      />
+      <div className="Container">
+        <Loader
+          type="Puff"
+          color={styles.color}
+          height="100"
+          width="100"
+        />
+      </div>
       :
       <div>
         <LoginComponent

@@ -32,9 +32,9 @@ class Prime extends Component {
             value={element.price}
           />
         ]);
+
         floorsNames.push(element.reference);
       });
-
       this.setState({ floorsPrices: floorsPrices, floorsNames: floorsNames });
     });
   }

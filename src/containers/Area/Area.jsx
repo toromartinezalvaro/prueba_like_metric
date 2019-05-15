@@ -24,9 +24,10 @@ class Area extends Component {
     hidden: true,
     editingAreaType: false,
     deleteAreaTypeId: null,
-    hideDeleteModal: true
+    hideDeleteModal: true,
   };
 
+  
   modalContent = () => {
     console.log("modalContent ====> ", this.state.areaType);
     if (this.state.editingAreaType) {
@@ -106,6 +107,7 @@ class Area extends Component {
 
   componentDidMount() {
     this.updateTableInformation();
+    this.setState({isLoading: true});
   }
 
   updateTableInformation = () => {
@@ -113,7 +115,8 @@ class Area extends Component {
       this.setState({
         areasNames: this.processHeaders(response.data.areaTypes),
         properties: response.data.properties,
-        data: response.data.propertiesAreas
+        data: response.data.propertiesAreas,
+        isLoading: false
       });
     });
   };
@@ -223,6 +226,7 @@ class Area extends Component {
           value={e2.measure}
         />
       ));
+      
     });
 
     return (

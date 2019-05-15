@@ -1,5 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import Loader from 'react-loader-spinner'
+import styles from '../../assets/styles/variables.scss'
 
 const SecureContainer = (Container, additionalProps) => class extends Container {
 
@@ -9,7 +11,14 @@ const SecureContainer = (Container, additionalProps) => class extends Container 
       isLoading: false,
       redirect: false,
       excecuteNoAuthorization: this.excecuteNoAuthorization,
-      loadingAspect: this.loadingAspect
+      loadingAspect: (<div className="Container">
+      <Loader
+      type="Puff"
+      color={ styles.color }
+      height="100"	
+      width="100"
+      />
+    </div>)
     };
   }
 
@@ -17,15 +26,11 @@ const SecureContainer = (Container, additionalProps) => class extends Container 
     this.setState({ redirect: true })
   }
 
-  loadingAspect = () => {
-    let loadingAspect = super.loadingAspect()
-    return loadingAspect ? loadingAspect : null
-  }
-
   render() {
-    const { loading, redirect } = this.state;
-    if (loading) {
-      return this.loadingAspect();
+    const { isLoading, redirect } = this.state;
+    if (isLoading) {
+      console.log("this.state.loadingAspect ", this.state.loadingAspect)
+      return this.state.loadingAspect
     }
     if (redirect) {
       return <Redirect to="/login" />;

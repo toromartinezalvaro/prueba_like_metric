@@ -7,6 +7,7 @@ $white-background: rgb(244, 245, 247);
 $softGray-color: #f4f4ff;
 $softGrayBackground-color: #d3d3db;
 $gray-color: rgb(162, 162, 180);
+$defaultPlaceholder-color: #bdbdc5;
 $grayBlack-color: rgb(79, 79, 87);
 $black-color: rgb(36, 36, 39);
 $blackBorder-color: rgb(23, 43, 77);
@@ -18,4 +19,6 @@ $header-size: 20px;
 $body-size: 16px;
 $secondaryText-size: 14px;
 
-
+:export {
+    color: $main-color;
+}

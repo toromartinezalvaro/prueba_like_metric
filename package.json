@@ -10,14 +10,13 @@
     "react-dom": "^16.8.6",
     "react-input-mask": "^2.0.4",
     "react-loader-spinner": "^2.3.0",
-    "react-number-format": "^4.0.7",
+    "react-number-format": "^4.0.8",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-text-mask": "^5.4.3",
     "react-tooltip": "^3.10.0",
     "text-mask-addons": "^3.8.0",
-    "uuid": "^3.3.2",
-    "@fortawesome/fontawesome-free": "^5.8.1"
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,6 +34,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.8.1"
+    "@fortawesome/fontawesome-free": "^5.8.2"
   }
 }
