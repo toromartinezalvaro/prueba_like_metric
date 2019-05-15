@@ -3,15 +3,12 @@
 .SideMenu {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
   flex-basis: 5rem;
   flex-shrink: 0;
   background: $softGray-color;
   height: 100%;
   flex: 1;
-  display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   overflow: hidden;
   transition: all 0.2s ease;
