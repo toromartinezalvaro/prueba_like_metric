@@ -4,8 +4,8 @@ import LoginComponent from '../../components/User/Login';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
 import { DashboardRoutes } from '../../routes/local/routes'
+import styles from './Login.container.scss'
 import errorHandling from '../../services/commons/errorHelper'
-
 
 class Login extends Component {
 
@@ -63,12 +63,12 @@ class Login extends Component {
 
   loginActionHandler = () => {
     this.setState({ isLoading: true })
-    
+
     this.services
       .login(this.state.email, this.state.password)
       .then(user => {
         if (user.email) {
-            this.props.history.push(DashboardRoutes.base)
+          this.props.history.push(DashboardRoutes.base)
         }
         this.setState({ isLoading: false })
       })
@@ -84,12 +84,14 @@ class Login extends Component {
 
   render() {
     return (this.state.isLoading ?
-      <Loader
-      type="Puff"
-      color="#00BFFF"
-      height="100"	
-      width="100"
-      />
+      <div className="Container">
+        <Loader
+          type="Puff"
+          color={styles.color}
+          height="100"
+          width="100"
+        />
+      </div>
       :
       <div>
         <LoginComponent

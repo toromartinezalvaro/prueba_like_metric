@@ -17,14 +17,17 @@ class Building extends Component {
     lowestFloor: 1,
     disable: false,
     update: false,
-    names: []
+    names: [],
   }
+
+  
 
   componentDidMount() {
     console.log("match ", this.props.match)
     this.updateNames();
+    this.setState({ isLoading: true})
   }
-
+  
   onChangeHandler = target => {
     this.setState({
       [target.name]: target.value
@@ -42,9 +45,11 @@ class Building extends Component {
             lowestFloor: response.data[0][0].floor,
             disable: true,
             update: true,
-            names: response.data
+            names: response.data,
+            isLoading: false
           });
         }
+        this.setState({isLoading: false})
       });
   }
 
@@ -65,6 +70,7 @@ class Building extends Component {
       .then(() => {
         this.updateNames();
       });
+      
   }
 
   updateSchema = () => {
@@ -78,6 +84,7 @@ class Building extends Component {
       .then(() => {
         this.updateNames();
       });
+      
   }
 
   checkDuplicates = value => {
@@ -85,6 +92,7 @@ class Building extends Component {
       return current && _.findIndex(next, e => e.name === value) === -1;
     }, true);
     return duplicate;
+    
   }
 
   propertyNameChangeHandler = (floor, property, value) => {

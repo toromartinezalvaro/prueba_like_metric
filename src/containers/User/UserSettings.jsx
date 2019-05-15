@@ -41,7 +41,7 @@ export default class UserSettings extends Component {
   loadCurrentUserInfo = () => {
     if (agent.currentToken) {
       this.setState({
-        isLoading: true
+        isLoading: false
       })
 
       this.services

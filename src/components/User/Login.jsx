@@ -1,6 +1,11 @@
 import React from 'react';
 import Input from '../UI/Input/Input';
+import styles from "./Login.module.scss";
+import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
+import cardBody from '../UI/Card/CardBody/CardBody';
 import styles from './Login.component.scss';
+
+
 
 const login = props => {
   const emailValidation = [
@@ -16,40 +21,55 @@ const login = props => {
 
 
   return (
-    <div>
-      <Input
-        // className={styles.Input}
-        name="email"
-        onChange={props.onChange}
-        value={props.email}
-        validations={emailValidation}
-        disable={false}
-      />
+    <div className={styles.Container}>
+      <Card className={styles.Card}>
+        <CardHeader>
+          <p>Login</p>
+        </CardHeader>
+        <CardBody>
+          <div className={styles.Row}>
+            <Input
+              // className={styles.Input}
+              name="email"
+              onChange={props.onChange}
+              value={props.email}
+              validations={emailValidation}
+              disable={false}
+              placeholder={"Correo"}
+            />
+          </div>
+          <div className={styles.Row}>
 
-      <Input
-        // className={styles.Input}
-        type="password"
-        name="password"
-        onChange={props.onChange}
-        value={props.password}
-        validations={[]}
-        disable={false}
-      />
+            <Input
+              // className={styles.Input}
+              type="password"
+              name="password"
+              onChange={props.onChange}
+              value={props.password}
+              validations={[]}
+              disable={false}
+              placeholder={"Contraseña"}
 
-      <label className="Label">
-        {
-          props.currentErrorMessage !== "" &&
-          props.currentErrorMessage
-        }
-      </label>
+            />
+          </div>
+          <label>
+            {
+              props.currentErrorMessage !== "" &&
+              props.currentErrorMessage
+            }
+          </label>
+          <div className={styles.Row}>
 
-      <div 
-      // className={styles.Actions}
-      >
-        {
-          <button onClick={props.loginAction}>Login</button>
-        }
-      </div>
+            <div
+            // className={styles.Actions}
+            >
+              {
+                <button className={styles.Button} onClick={props.loginAction}>Login</button>
+              }
+            </div>
+          </div>
+        </CardBody>
+      </Card>
     </div>
   )
 }
