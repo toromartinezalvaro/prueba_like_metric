@@ -1,7 +1,6 @@
 import axios from 'axios'
 import agent from '../config/config'
 
-
 class Services {
   constructor(delegate) {
     this.axios = axios
