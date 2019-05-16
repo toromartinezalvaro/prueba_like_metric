@@ -1,0 +1,25 @@
+@import "../../../assets/styles/variables.scss";
+
+.Container {
+  display: flex;
+}
+
+.Cell {
+  padding: 10px;
+  margin-left: 20px;
+}
+
+.Row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+
+.Column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}

@@ -8,6 +8,7 @@ import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
+import Detalle from "../Detalle/Detalle"
 import SecureContainer from "../../HOC/Common/SecureContainer";
 
 class Dashboard extends Component {
@@ -60,6 +61,12 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.prime.withIndicator}
           exact
           component={Prime}
+        />
+
+        <Route
+          path={match.url + DashboardRoutes.detalle.withIndicator}
+          exact
+          component={SecureContainer(Detalle)}
         />
       </DashboardLayout>
     );

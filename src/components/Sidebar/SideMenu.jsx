@@ -46,6 +46,12 @@ const sideMenu = props => {
           "fa-sort-amount-up",
           "Primas"
         )}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.detalle.value,
+          "fas fa-book-open",
+          "Detalle"
+        )}
       </div>
     </div>
   );
