@@ -2,11 +2,14 @@ import React, { Fragment, useState, useEffect } from "react";
 import _ from "lodash";
 import Table from "../../UI/Table/Table";
 import Input from "../../UI/Input/Input";
+import errorHandling from "../../../services/commons/errorHelper";
+import Error from "../../../components/UI/Error/Error";
 
 const prices = ({ areaTypeId, measurementUnit, services }) => {
 
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
+  const [currentErrorMessage, setCurrentErrorMessage] = useState();
   const updateAreaPrice = (id, price) => {
     services
       .putAreaPrice(id, {
@@ -65,12 +68,18 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
         }
       })
       .catch(error => {
-        alert(error);
+        let errorHelper = errorHandling(error);
+        setCurrentErrorMessage(errorHelper.message);
       });
+      setCurrentErrorMessage("");
   }, []);
 
   return (
     <Fragment>
+      <div>
+        {currentErrorMessage !== "" ? (
+          <Error message={currentErrorMessage} />
+        ) : null}
       {prices.length === 0 ? (
         <div>No se han ingresado areas</div>
       ) : measurementUnit === "MT2" ? (
@@ -95,6 +104,7 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
           </div>
         </div>
       )}
+      </div>
     </Fragment>
   );
 };
