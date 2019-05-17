@@ -230,7 +230,8 @@ const pie = props => {
 
   return (
     <div style={{ height: "505px", width: "500px" }} className={styles.Container} >
-      <MyResponsivePieCanvas data={data} className={styles.Row}/>
+      {console.log(props.areas)}
+      <MyResponsivePieCanvas data={props.areas} className={styles.Row}/>
     </div>
   );
 };

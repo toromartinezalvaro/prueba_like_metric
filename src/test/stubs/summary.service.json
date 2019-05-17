@@ -1,0 +1,49 @@
+[{
+    "nomenclatura": "302",
+    "areas": [{
+        "id": "Interior",
+        "label": "Interior",
+        "value": 103.3,
+        "color": "hsl(322, 70%, 50%)"
+    },{
+        "id": "Balcon",
+        "label": "Balcon",
+        "value": 80,
+        "color": "hsl(27, 70%, 50%)"
+    },{
+        "id": "Terraza",
+        "label": "Terraza",
+        "value": 103.3,
+        "color": "hsl(322, 70%, 50%)"
+    },{
+        "id": "Jardinera",
+        "label": "Jardinera",
+        "value": 20,
+        "color": "hsl(105, 70%, 50%)"
+    }
+],
+"adicionales": [{
+    "tipo": "Parqueadero",
+    "cantidad": "2",
+    "valor": "$2000",
+    "total": "$4000"
+},{
+    "tipo": "Util",
+    "cantidad": "3",
+    "valor": "$3000",
+    "total": "$9000"
+},{
+    "tipo": "Motos",
+    "cantidad": "4",
+    "valor": "$2500",
+    "total": "$10000"
+}],
+"areaTotal": "151",
+"valorXmt2": "$71222",
+"valorXmt2sinAdicionales": "$6800",
+"cantidadAdicionales": "3 mt2",
+"adicionalesTotal": "$70000",
+"promedioAdicionales": "$333333",
+"valorSinAdicionales": "$10000000",
+"valorTotal": "$10700000"
+}]
