@@ -1,6 +1,7 @@
 import React from 'react';
 import Accordion from '../../UI/Accordion/Accordion';
 import Table from '../../UI/Table/Table';
+//mport style from './SummaryTable.module.scss'
 
 const summaryTable = ({
   title,
@@ -12,12 +13,12 @@ const summaryTable = ({
 }) => {
   return (
     <Accordion trigger={title}>
-      <div className={style.statContainer}>
+      {/* <div className={style.statContainer}>
         <div className={style.stat}>
           <div className={style.statHeader}>Titulo de la estadística</div>
           <div className={style.statValue}>Estadística</div>
         </div>
-      </div>
+      </div> */}
       <Table
         intersect={intersect}
         headers={headers}
