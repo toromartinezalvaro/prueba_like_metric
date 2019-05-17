@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import Collapsible from "react-collapsible";
+import SummaryTable from "../../components/Summary/SummaryTable/SummaryTable";
 
 class Summary extends Component {
   state = {};
@@ -11,10 +11,13 @@ class Summary extends Component {
           <p>Entendido</p>
         </CardHeader>
         <CardBody>
-          
-          <Collapsible trigger="Texto">
-            que tengo que hacer
-          </Collapsible>
+          <SummaryTable
+            title="Areas"
+            intersect="Areas"
+            headers={[]}
+            columns={[]}
+            data={[[]]}
+          />
         </CardBody>
       </Card>
     );

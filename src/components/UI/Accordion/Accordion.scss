@@ -1,0 +1,29 @@
+.Collapsible__trigger {
+  display: block;
+  font-weight: 400;
+  text-decoration: none;
+  position: relative;
+  padding: 10px;
+  background: #ededed;
+
+  &:after {
+    font-family: "FontAwesome";
+    content: "\f107";
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: block;
+    transition: transform 300ms;
+  }
+
+  &.is-open {
+    &:after {
+      transform: rotateZ(180deg);
+    }
+  }
+
+  &.is-disabled {
+    opacity: 0.5;
+    background-color: grey;
+  }
+}

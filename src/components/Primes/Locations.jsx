@@ -3,7 +3,6 @@ import Card, { CardHeader, CardBody } from "../UI/Card/Card";
 import Table from "../UI/Table/Table";
 
 const locations = props => {
-  console.log("PROPS", props)
   return (
     <Card>
       <CardHeader>

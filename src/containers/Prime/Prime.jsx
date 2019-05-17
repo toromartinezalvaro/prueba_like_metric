@@ -63,7 +63,6 @@ class Prime extends Component {
       ]);
       return inputs;
     } else if (type === "LCT") {
-      console.log(this.state.altitude.prices);
       const inputs = this.state.location.prices.map(primes =>
         primes.map(prime => {
           if (prime) {
@@ -154,10 +153,12 @@ class Prime extends Component {
         />
         <Locations
           unitHandler={this.unitHandler}
-          headers={[...Array(10).keys()].map(o => o + 1)}
+          headers={[...Array(this.state.location.prices[0].length).keys()].map(
+            o => o + 1
+          )}
           floorsNames={this.state.floorsNames}
           prices={this.getInputs("LCT")}
-          unit={this.state.altitude.unit}
+          unit={this.state.location.unit}
         />
       </Fragment>
     );
