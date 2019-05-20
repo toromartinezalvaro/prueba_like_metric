@@ -10,6 +10,7 @@ import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
 import SecureContainer from "../../HOC/Common/SecureContainer";
 import TowerServices from "../../services/Towers/TowerServices";
+import Summary from "../Summary/Summary";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -29,19 +30,20 @@ class Dashboard extends Component {
       this.services
         .getTower(towerId, projectId)
         .then(response => {
-          const tower = { ...response.data, projectId: projectId }
+          const tower = { ...response.data, projectId: projectId };
           this.setState({ tower: tower });
         })
         .catch(error => {
-          console.log("ERROR >",
-            error
-          );
+          console.log("ERROR >", error);
         });
     }
   }
 
   onChangeTower = tower => {
-    if (tower === this.state.tower || (this.state.tower === null && tower === null)) {
+    if (
+      tower === this.state.tower ||
+      (this.state.tower === null && tower === null)
+    ) {
       return;
     }
     this.setState({
