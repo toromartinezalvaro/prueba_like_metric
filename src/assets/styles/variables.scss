@@ -3,11 +3,16 @@ $green-color: #018E42;
 $red-color: #EE2E31;
 $defaultWhite-color: #fafaff;
 $white-color: #fff;
+$white-background: rgb(244, 245, 247);
 $softGray-color: #f4f4ff;
+$softGrayBackground-color: #d3d3db;
 $gray-color: rgb(162, 162, 180);
+$defaultPlaceholder-color: #bdbdc5;
 $grayBlack-color: rgb(79, 79, 87);
 $black-color: rgb(36, 36, 39);
 $blackBorder-color: rgb(23, 43, 77);
+$alert-color: #f9ffa3;
+$box-shadow-color: rgba(82, 63, 105, 0.1);
 
 
 //sizes
@@ -16,4 +21,6 @@ $header-size: 20px;
 $body-size: 16px;
 $secondaryText-size: 14px;
 
-
+:export {
+    color: $main-color;
+}

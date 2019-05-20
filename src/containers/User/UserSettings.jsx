@@ -17,6 +17,9 @@ export default class UserSettings extends Component {
   }
 
   componentDidMount() {
+    if (this.props.additionalProps) {
+      this.props.additionalProps.changeTower(null)
+    }
     this.loadCurrentUserInfo()
   }
 
@@ -38,7 +41,7 @@ export default class UserSettings extends Component {
   loadCurrentUserInfo = () => {
     if (agent.currentToken) {
       this.setState({
-        isLoading: true
+        isLoading: false
       })
 
       this.services

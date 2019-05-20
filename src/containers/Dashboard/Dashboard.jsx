@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import { DashboardRoutes } from "../../routes/local/routes";
+import { DashboardRoutes, ProjectRoutes } from "../../routes/local/routes";
 import DashboardLayout from "../../HOC/Layouts/Dashboard/Dashboard";
 import Building from "../Building/Building";
 import Projects from "../Project/Projects";
@@ -8,41 +8,89 @@ import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
-import Summary from "../Summary/Summary";
-import SecureContainer from "../Common/secureContainer";
+import SecureContainer from "../../HOC/Common/SecureContainer";
+import TowerServices from "../../services/Towers/TowerServices";
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.services = new TowerServices(this);
+  }
+
+  state = {
+    tower: null
+  };
+
+  componentDidMount() {
+    const towerId = this.props.location.pathname.split("/")[4];
+    const projectId = this.props.location.pathname.split("/")[3];
+
+    if (towerId && projectId && this.state.tower === null) {
+      this.services
+        .getTower(towerId, projectId)
+        .then(response => {
+          const tower = { ...response.data, projectId: projectId }
+          this.setState({ tower: tower });
+        })
+        .catch(error => {
+          console.log("ERROR >",
+            error
+          );
+        });
+    }
+  }
+
+  onChangeTower = tower => {
+    if (tower === this.state.tower || (this.state.tower === null && tower === null)) {
+      return;
+    }
+    this.setState({
+      tower: tower
+    });
+  };
+
   render() {
     const { match } = this.props;
+    const tower = this.state.tower;
     return (
-      <DashboardLayout>
+      <DashboardLayout tower={tower}>
         <Route
-          path={match.url + DashboardRoutes.projects}
+          path={match.url + ProjectRoutes.base}
           exact
-          component={SecureContainer(Projects)}
+          component={SecureContainer(Projects, {
+            changeTower: this.onChangeTower
+          })}
         />
         <Route
-          path={match.url + DashboardRoutes.projects + DashboardRoutes.towers}
+          path={
+            match.url +
+            ProjectRoutes.base +
+            DashboardRoutes.towers.withIndicator
+          }
           exact
-          component={SecureContainer(Towers)}
+          component={SecureContainer(Towers, {
+            changeTower: this.onChangeTower
+          })}
         />
         <Route
-          path={match.url + DashboardRoutes.building}
+          path={match.url + DashboardRoutes.building.withIndicator}
           exact
           component={SecureContainer(Building)}
         />
         <Route
-          path={match.url + DashboardRoutes.areas}
+          path={match.url + DashboardRoutes.areas.withIndicator}
           exact
           component={SecureContainer(Areas)}
         />
         <Route
           path={match.url + DashboardRoutes.user}
           exact
-          component={SecureContainer(UserSettings)}
+          component={SecureContainer(UserSettings, {
+            changeTower: this.onChangeTower
+          })}
         />
         <Route
-          path={match.url + DashboardRoutes.prime}
+          path={match.url + DashboardRoutes.prime.withIndicator}
           exact
           component={Prime}
         />

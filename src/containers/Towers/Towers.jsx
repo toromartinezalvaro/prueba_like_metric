@@ -22,14 +22,16 @@ export default class Towers extends Component {
   };
 
   componentDidMount() {
-    this.loadCurrenttowers();
+    this.loadCurrentTowers();
   }
 
-  opentowerHandler = id => {
-    this.props.history.push(DashboardRoutes.towers)
+  openTowerHandler = tower => {
+    tower = {...tower, projectId: this.props.match.params.projectId  }
+    this.props.additionalProps.changeTower(tower)
+    this.props.history.push(DashboardRoutes.base + DashboardRoutes.building.value + this.props.match.params.projectId + "/"+ tower.id)
   };
 
-  createtowerHandler = () => {
+  createTowerHandler = () => {
     this.setState({
       modalIsHidden: false
     });
@@ -41,7 +43,10 @@ export default class Towers extends Component {
         alertIsHidden: true
       })
       this.services
-        .removeTower({id: id})
+        .removeTower({
+          projectId: this.props.match.params.projectId,
+          towerId: id
+        })
         .then(response => {
           let tower = response.data.towers;
           if (tower) {
@@ -63,9 +68,9 @@ export default class Towers extends Component {
     })
   };
 
-  loadCurrenttowers = () => {
+  loadCurrentTowers = () => {
     this.services
-      .getTowers()
+      .getTowers(this.props.match.params.projectId)
       .then(response => {
         console.log("response ---> ", response.data.towers);
         this.setState({
@@ -85,13 +90,13 @@ export default class Towers extends Component {
 
   onCreate = () => {
     if (this.state.newTitleTower === "") {
-      alert("Ingrese por lo menos un nombre para poder crear un proyecto");
+      alert("Ingrese por lo menos un nombre para poder crear una torre");
       return;
     }
 
-    console.log("onCreate :((((((")
     this.services
       .createTower({
+        projectId: this.props.match.params.projectId,
         name: this.state.newTitleTower,
         description: this.state.newDescriptionTower
       })
@@ -123,7 +128,7 @@ export default class Towers extends Component {
         modalIsHidden: true
       });
     } else {
-      alert("Debes tener por lo menos un proyecto para continuar");
+      this.props.history.goBack()
     }
   };
 
@@ -136,7 +141,7 @@ export default class Towers extends Component {
   createModal = () => {
     return (
       <Modal
-        title={"Crear proyecto"}
+        title={"Crear Torre"}
         hidden={this.state.modalIsHidden}
         onConfirm={this.onCreate}
         onCancel={this.cancel}
@@ -184,9 +189,9 @@ export default class Towers extends Component {
         {this.state.towers.length > 0 && (
           <TowerItems
             towers={this.state.towers}
-            opentower={this.opentowerHandler}
-            createtower={this.createtowerHandler}
-            removetower={this.removetowerHandler}
+            openTower={this.openTowerHandler}
+            createTower={this.createTowerHandler}
+            removeTower={this.removetowerHandler}
           />
         )} 
         {!this.state.modalIsHidden && this.createModal()}

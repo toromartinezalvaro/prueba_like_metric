@@ -1,12 +1,21 @@
 import UserServiceDefinitions from './UserServiceDefinitions'
 import agent from '../../config/config'
-import Services from '../services';
+import axios from 'axios'
 
-export default class UserServices extends Services {
+
+export default class UserServices {
+
+  constructor() {
+    agent.reloadHeaderToken()
+  }
+
+  devCatch(error) {
+    console.log('User --> ', error)
+  }
 
   login(email, pass) {
     return new Promise((resolve, reject) => {
-      this
+      axios
         .post(UserServiceDefinitions.login, { email: email, password: pass })
         .then(res => {
           console.log("res--> ", res)
@@ -25,11 +34,12 @@ export default class UserServices extends Services {
   }
 
   currentUser() {
-    return this.get(UserServiceDefinitions.user)
+    console.log("header ", axios.headers)
+    return axios.get(UserServiceDefinitions.user)
   }
 
   logout() {
-    return this.post(UserServiceDefinitions.logout)
+    return axios.post(UserServiceDefinitions.logout)
   }
 
 }

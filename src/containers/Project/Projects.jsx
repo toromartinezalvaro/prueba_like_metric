@@ -4,6 +4,7 @@ import ProjectItems from "../../components/Projects/Projects";
 import Modal from "../../components/UI/Modal/Modal";
 import Input from "../../components/UI/Input/Input";
 import { DashboardRoutes } from "../../routes/local/routes";
+// import Error from "../../components/UI/Error/Error";
 
 export default class Projects extends Component {
   constructor(props) {
@@ -22,15 +23,17 @@ export default class Projects extends Component {
   };
 
   componentDidMount() {
+    if (this.props.additionalProps) {
+      this.props.additionalProps.changeTower(null);
+    }
     this.loadCurrentProjects();
   }
 
   openProjectHandler = id => {
-    console.log("tower id ", id)
+    console.log("tower id ", id);
     this.props.history.push({
-      pathname: this.props.match.url + DashboardRoutes.towers,
-      search: `towerId=${id}`
-    })
+      pathname: this.props.match.url + DashboardRoutes.towers.value + id
+    });
   };
 
   createProjectHandler = () => {
@@ -43,9 +46,9 @@ export default class Projects extends Component {
     const onAccept = () => {
       this.setState({
         alertIsHidden: true
-      })
+      });
       this.services
-        .removeProject({id: id})
+        .removeProject({ projectId: id })
         .then(response => {
           let project = response.data.projects;
           if (project) {
@@ -62,12 +65,14 @@ export default class Projects extends Component {
 
     this.setState({
       alertAccept: onAccept,
-      alertMessage: "Está seguro de que quiere eliminar todo el proyecto? Al hacer esto eliminará toda la info interna",
+      alertMessage:
+        "Está seguro de que quiere eliminar todo el proyecto? Al hacer esto eliminará toda la info interna",
       alertIsHidden: false
-    })
+    });
   };
 
   loadCurrentProjects = () => {
+    this.setState({ isLoading: true})
     this.services
       .getProjects()
       .then(response => {
@@ -76,14 +81,14 @@ export default class Projects extends Component {
           projects: response.data.projects ? response.data.projects : [],
           modalIsHidden: response.data.projects.length > 0
         });
-        console.log("state ---> ", this.state.projects);
+        this.setState({ isLoading: false})
       })
       .catch(error => {
         this.setState({
           projects: [],
           modalIsHidden: true
         });
-        console.log("ERROR::: ", error);
+        this.setState({ isLoading: false})
       });
   };
 
@@ -93,7 +98,7 @@ export default class Projects extends Component {
       return;
     }
 
-    console.log("onCreate :((((((")
+    console.log("onCreate :((((((");
     this.services
       .createProject({
         name: this.state.newTitleProject,
@@ -185,6 +190,7 @@ export default class Projects extends Component {
   render() {
     return (
       <div>
+        {/* <Error /> */}
         {this.state.projects.length > 0 && (
           <ProjectItems
             projects={this.state.projects}

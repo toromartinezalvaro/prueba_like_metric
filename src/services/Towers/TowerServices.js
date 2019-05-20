@@ -1,8 +1,7 @@
 import TowerServiceDefinitions from './TowerServiceDefinitions';
 import Services from '../services'
 
-
-export default class TowerServices extends Services  {
+export default class TowerServices extends Services {
 
   getTowers(projectId) {
     return this.get(TowerServiceDefinitions.towerForProject(projectId))
@@ -14,6 +13,10 @@ export default class TowerServices extends Services  {
 
   removeTower(data) {
     return this.delete(TowerServiceDefinitions.tower, data)
+  }
+
+  getTower(towerId, projectId) {
+    return this.get(TowerServiceDefinitions.singleTower(towerId, projectId))
   }
 
 }

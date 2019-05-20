@@ -8,12 +8,12 @@ import _ from './App.module.scss'
 import PrivateRoute from './config/PrivateRoute'
 
 class App extends Component {
-  
+
   componentDidMount() {
     const token = agent.currentToken
     if (token) {
       agent.setToken(token);
-    } 
+    }
   }
 
 

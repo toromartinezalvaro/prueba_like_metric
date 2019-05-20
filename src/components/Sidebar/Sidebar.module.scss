@@ -4,17 +4,16 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
   flex-basis: 5rem;
   flex-shrink: 0;
   background: $main-color;
-  margin: 0;
   height: 100%;
   width: 64px;
+}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.Start {
+  margin-top: 3vh;
 }
 
 .End {
@@ -26,6 +25,7 @@
   
   display: flex;
   justify-content: center;
+
 
   a:link,
   a:visited {

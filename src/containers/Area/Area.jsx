@@ -7,6 +7,8 @@ import Modal from "../../components/UI/Modal/Modal";
 import EditableHeader from "../../components/Area/EditableHeader/EditableHeader";
 import AreaServices from "../../services/area/AreaServices";
 import Prices from "../../components/Area/Prices/Prices";
+import errorHandling from "../../services/commons/errorHelper";
+import Error from "../../components/UI/Error/Error";
 
 class Area extends Component {
   constructor(props) {
@@ -24,7 +26,8 @@ class Area extends Component {
     hidden: true,
     editingAreaType: false,
     deleteAreaTypeId: null,
-    hideDeleteModal: true
+    hideDeleteModal: true,
+    currentErrorMessage: ""
   };
 
   modalContent = () => {
@@ -38,7 +41,7 @@ class Area extends Component {
               validations={[]}
               onChange={this.areaTypeHandler}
               value={this.state.areaType}
-              disable={this.state.areaType === 'Interior'}
+              disable={this.state.areaType === "Interior"}
             />
             {this.state.areaMeasurementUnit}
           </div>
@@ -106,16 +109,27 @@ class Area extends Component {
 
   componentDidMount() {
     this.updateTableInformation();
+    this.setState({ isLoading: true });
   }
 
   updateTableInformation = () => {
-    this.services.getAreas().then(response => {
-      this.setState({
-        areasNames: this.processHeaders(response.data.areaTypes),
-        properties: response.data.properties,
-        data: response.data.propertiesAreas
+    this.services
+      .getAreas()
+      .then(response => {
+        this.setState({
+          areasNames: this.processHeaders(response.data.areaTypes),
+          properties: response.data.properties,
+          data: response.data.propertiesAreas,
+          isLoading: false
+        });
+      })
+      .catch(error => {
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message
+        });
       });
-    });
+    this.setState({ currentErrorMessage: "" });
   };
 
   areaTypeHandler = target => {
@@ -154,10 +168,19 @@ class Area extends Component {
   };
 
   deleteAreaType = () => {
-    this.services.deleteArea(this.state.deleteAreaTypeId).then(data => {
-      this.toggleDeleteModal();
-      this.updateTableInformation();
-    });
+    this.services
+      .deleteArea(this.state.deleteAreaTypeId)
+      .then(data => {
+        this.toggleDeleteModal();
+        this.updateTableInformation();
+      })
+      .catch(error => {
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message
+        });
+      });
+    this.setState({ currentErrorMessage: "" });
   };
 
   updateAreaType = () => {
@@ -172,7 +195,14 @@ class Area extends Component {
         console.log(data);
         this.toggleAreaTypeModal();
         this.updateTableInformation();
+      })
+      .catch(error => {
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message
+        });
       });
+    this.setState({ currentErrorMessage: "" });
   };
 
   addAreaType = () => {
@@ -186,7 +216,14 @@ class Area extends Component {
         console.log(data);
         this.toggleAreaTypeModal();
         this.updateTableInformation();
+      })
+      .catch(error => {
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message
+        });
       });
+    this.setState({ currentErrorMessage: "" });
   };
 
   areaChangeHandler = (rowIndex, cellIndex, value) => {
@@ -199,8 +236,12 @@ class Area extends Component {
         this.setState({ data: currentData });
       })
       .catch(error => {
-        console.log(error);
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message
+        });
       });
+    this.setState({ currentErrorMessage: "" });
   };
 
   render() {
@@ -226,51 +267,55 @@ class Area extends Component {
     });
 
     return (
-      <Fragment>
-        <Card>
-          <CardHeader>
-            <p>Areas</p>
-          </CardHeader>
-          <CardBody>
-            <Table
-              intersect={"Areas"}
-              headers={[
-                ...this.state.areasNames,
-                <IconButton
-                  onClick={() => {
-                    this.toggleAreaTypeModal();
-                  }}
-                />
-              ]}
-              columns={this.state.properties}
-              data={[...inputs]}
-            />
-          </CardBody>
-        </Card>
-        {this.state.hidden ? null : (
+      <div>
+        {this.state.currentErrorMessage !== "" ? (
+          <Error message={this.state.currentErrorMessage} />
+        ) : null}
+        <Fragment>
+          <Card>
+            <CardHeader>
+              <p>Areas</p>
+            </CardHeader>
+            <CardBody>
+              <Table
+                intersect={"Areas"}
+                headers={[
+                  ...this.state.areasNames,
+                  <IconButton
+                    onClick={() => {
+                      this.toggleAreaTypeModal();
+                    }}
+                  />
+                ]}
+                columns={this.state.properties}
+                data={[...inputs]}
+              />
+            </CardBody>
+          </Card>
+          {this.state.hidden ? null : (
+            <Modal
+              title={"Agregar nuevo tipo de area"}
+              hidden={this.state.hidden}
+              onConfirm={
+                this.state.editingAreaType
+                  ? this.updateAreaType
+                  : this.addAreaType
+              }
+              onCancel={this.toggleAreaTypeModal}
+            >
+              {this.modalContent()}
+            </Modal>
+          )}
           <Modal
-            title={"Agregar nuevo tipo de area"}
-            hidden={this.state.hidden}
-            onConfirm={
-              this.state.editingAreaType
-                ? this.updateAreaType
-                : this.addAreaType
-            }
-            onCancel={this.toggleAreaTypeModal}
+            title={"Eliminar tipo de area"}
+            hidden={this.state.hideDeleteModal}
+            onConfirm={this.deleteAreaType}
+            onCancel={this.toggleDeleteModal}
           >
-            {this.modalContent()}
+            Deseas eliminar este tipo de area?
           </Modal>
-        )}
-
-        <Modal
-          title={"Eliminar tipo de area"}
-          hidden={this.state.hideDeleteModal}
-          onConfirm={this.deleteAreaType}
-          onCancel={this.toggleDeleteModal}
-        >
-          Deseas eliminar este tipo de area?
-        </Modal>
-      </Fragment>
+        </Fragment>
+      </div>
     );
   }
 }
