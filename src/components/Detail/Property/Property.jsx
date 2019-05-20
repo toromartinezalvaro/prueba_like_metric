@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import styles from "../Inmueble/Inmueble.module.scss";
+import styles from "../Property/Property.module.scss";
 
-const inmueble = props => {
+const property = props => {
 
   const [color, setColor] = useState("");
   const [bool, setBool] = useState(true);
@@ -20,13 +20,13 @@ const inmueble = props => {
   }
 
   const Cell = props => {
-    return <div className={styles.Cell} onClick={handleOnClick} style={{backgroundColor: {color}}}>{props.children}</div>;
+    return <div className={styles.Cell} onClick={handleOnClick} style={props.style}>{props.children}</div>;
   };
 
   return (
     <div>
       <div className={styles.Row}>
-        <Cell>101</Cell>
+        <Cell  style={{backgroundColor: "#29339B", color: "#fff"}}>101</Cell>
         <Cell>102</Cell>
         <Cell>103</Cell>
       </div>
@@ -39,4 +39,4 @@ const inmueble = props => {
   );
 };
 
-export default inmueble;
+export default property;

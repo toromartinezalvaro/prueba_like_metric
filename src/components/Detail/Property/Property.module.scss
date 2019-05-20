@@ -6,7 +6,9 @@
 
 .Cell {
   padding: 10px;
-  margin-left: 20px;
+  margin: 10px;
+  border: 1px solid $softGrayBackground-color;
+  border-radius: 7px;
 }
 
 .Row {

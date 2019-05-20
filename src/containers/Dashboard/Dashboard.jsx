@@ -8,7 +8,7 @@ import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
-import Detalle from "../Detalle/Detalle"
+import Detail from "../Detail/Detail"
 import SecureContainer from "../../HOC/Common/SecureContainer";
 
 class Dashboard extends Component {
@@ -64,9 +64,9 @@ class Dashboard extends Component {
         />
 
         <Route
-          path={match.url + DashboardRoutes.detalle.withIndicator}
+          path={match.url + DashboardRoutes.detail.withIndicator}
           exact
-          component={SecureContainer(Detalle)}
+          component={SecureContainer(Detail)}
         />
       </DashboardLayout>
     );

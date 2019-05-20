@@ -1,49 +1,61 @@
 [{
-    "nomenclatura": "302",
+    "nomenclature": "302",
     "areas": [{
         "id": "Interior",
         "label": "Interior",
         "value": 103.3,
-        "color": "hsl(322, 70%, 50%)"
+        "color": "hsl(322, 70%, 50%)",
+        "price": "2500"
     },{
         "id": "Balcon",
         "label": "Balcon",
         "value": 80,
-        "color": "hsl(27, 70%, 50%)"
+        "color": "hsl(27, 70%, 50%)",
+        "price": "1000"
     },{
         "id": "Terraza",
         "label": "Terraza",
         "value": 103.3,
-        "color": "hsl(322, 70%, 50%)"
+        "color": "hsl(322, 70%, 50%)",
+        "price": "4000"
     },{
         "id": "Jardinera",
         "label": "Jardinera",
         "value": 20,
-        "color": "hsl(105, 70%, 50%)"
+        "color": "hsl(105, 70%, 50%)",
+        "price": "5000"
+    },
+    {
+        "id": "Prima",
+        "label": "Prima",
+        "value": 20,
+        "color": "hsl(105, 70%, 50%)",
+        "price": "$5000 unidad"
     }
 ],
-"adicionales": [{
-    "tipo": "Parqueadero",
-    "cantidad": "2",
-    "valor": "$2000",
-    "total": "$4000"
+"aditionals": [{
+    "type": "Parqueadero",
+    "quantity": "2",
+    "value": "2000",
+    "total": "4000"
 },{
-    "tipo": "Util",
-    "cantidad": "3",
-    "valor": "$3000",
-    "total": "$9000"
+    "type": "Util",
+    "quantity": "3",
+    "value": "3000",
+    "total": "9000"
 },{
-    "tipo": "Motos",
-    "cantidad": "4",
-    "valor": "$2500",
-    "total": "$10000"
+    "type": "Motos",
+    "quantity": "4",
+    "value": "2500",
+    "total": "10000"
 }],
+
 "areaTotal": "151",
-"valorXmt2": "$71222",
-"valorXmt2sinAdicionales": "$6800",
-"cantidadAdicionales": "3 mt2",
-"adicionalesTotal": "$70000",
-"promedioAdicionales": "$333333",
-"valorSinAdicionales": "$10000000",
-"valorTotal": "$10700000"
+"valueXmt2": "71222",
+"valueXmt2WithotAditionals": "6800",
+"quantityAditionals": "3 mt2",
+"aditionalsTotal": "70000",
+"averageAditionals": "333333",
+"valueWithoutAditionals": "10000000",
+"valueTotal": "10700000"
 }]
