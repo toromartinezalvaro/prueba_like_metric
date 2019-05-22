@@ -39,12 +39,12 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
   useEffect(() => {
     // Component did mount
     services
-      .getPrices(1, areaTypeId)
+      .getPrices("ff234f80-7b38-11e9-b198-3de9b761aac6", areaTypeId)
       .then(res => {
         if (res.data.length > 0) {
           res.data = _.sortBy(res.data, o => o.measure);
 
-          if (res.data[0].measurementUnit === "UNIDAD") {
+          if (res.data[0].measurementUnit === "UNT") {
             setPrices([res.data[0].price]);
           } else {
             const areas = [];
