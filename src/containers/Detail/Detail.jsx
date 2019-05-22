@@ -4,16 +4,31 @@ import Property from "../../components/Detail/Property/Property";
 import Insights from "../../components/Detail/Insights/Insights";
 import Aditionals from "../../components/Detail/Aditionals/Aditionals";
 import data from "../../test/stubs/summary.service.json";
-
+import DetailServices from "../../services/detail/DetailServices";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
 import styles from "../Detail/Detail.module.scss";
 
 export default class Detail extends Component {
-  
+  constructor(props) {
+    super(props);
+    this.services = new DetailServices(this);
+  }
+
+  componentDidMount() {
+    this.getDetails()
+  }
+
+  getDetails = () => {
+    this.services
+      .getDetails(1)
+        .then(response => {
+          this.setState ({
+            nomenclature: response.data[0].id
+          })
+        });
+  };
+
   render() {
-    {
-      console.log(data);
-    }
     return (
       <div>
         <Card>
@@ -63,7 +78,6 @@ export default class Detail extends Component {
             </div>
           </CardBody>
         </Card>
-
         <div style={{ display: "flex" }}>
           <div style={{ display: "flex" }}>
             <Card>
@@ -72,8 +86,6 @@ export default class Detail extends Component {
               </CardHeader>
               <CardBody>
                 <Pie areas={data[0].areas} />
-                <Pie areas={data[0].areas} />
-
               </CardBody>
             </Card>
           </div>
@@ -89,8 +101,8 @@ export default class Detail extends Component {
                   Titulo2="Precio"
                   Titulo3="Aditionals"
                   Value1={data[0].aditionals[0].quantity}
-                  Value2={data[0].aditionals[0].value}
-                  Value3={data[0].aditionals[0].total}
+                  Value2={"$" + data[0].aditionals[0].value}
+                  Value3={"$" + data[0].aditionals[0].total}
                 />
                 <Aditionals
                   Titulo={data[0].aditionals[1].type}
@@ -98,8 +110,8 @@ export default class Detail extends Component {
                   Titulo2="Precio"
                   Titulo3="Aditionals"
                   Value1={data[0].aditionals[1].quantity}
-                  Value2={data[0].aditionals[1].value}
-                  Value3={data[0].aditionals[1].total}
+                  Value2={"$" + data[0].aditionals[1].value}
+                  Value3={"$" + data[0].aditionals[1].total}
                 />
                 <Aditionals
                   Titulo={data[0].aditionals[2].type}
@@ -107,14 +119,35 @@ export default class Detail extends Component {
                   Titulo2="Precio"
                   Titulo3="Aditionals"
                   Value1={data[0].aditionals[2].quantity}
-                  Value2={data[0].aditionals[2].value}
-                  Value3={data[0].aditionals[2].total}
+                  Value2={"$" + data[0].aditionals[2].value}
+                  Value3={"$" + data[0].aditionals[2].total}
                 />
-                <Aditionals Titulo="Total" Titulo1="Total" Value1="23000" />
+                <Aditionals Titulo="Total" Titulo1="Total" Value1="$23000" />
               </CardBody>
             </Card>
           </div>
         </div>
+        <Card>
+          <CardHeader />
+          <CardBody>
+            <Aditionals
+              Titulo={data[0].areas[0].label}
+              Titulo2="Precio"
+              Value2={"$" + data[0].areas[0].price}
+            />
+            <Aditionals
+              Titulo={data[0].areas[2].label}
+              Titulo2="Precio"
+              Value2={"$" + data[0].areas[2].price}
+            />
+            <Aditionals
+              Titulo={data[0].areas[3].label}
+              Titulo2="Precio"
+              Value2={"$" + data[0].areas[3].price}
+            />
+            <Aditionals Titulo="Total" Titulo1="Total" Value1="$23000" />
+          </CardBody>
+        </Card>
       </div>
     );
   }

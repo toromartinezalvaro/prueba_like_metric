@@ -70,6 +70,33 @@ const pie = props => {
         innerRadius={0.5}
         enableRadialLabels={true}
         enableSlicesLabels={true}
+        defs={[
+          {
+              id: 'dots',
+              type: 'patternDots',
+              background: 'inherit',
+              color: 'rgba(255, 255, 255, 0.3)',
+              size: 4,
+              padding: 1,
+              stagger: true
+          },
+          {
+              id: 'lines',
+              type: 'patternLines',
+              background: 'inherit',
+              color: 'rgba(255, 255, 255, 0.3)',
+              rotation: -45,
+              lineWidth: 6,
+              spacing: 10
+          }
+      ]}
+        fill={[
+          {
+              match: {
+                  id: 'Prima'
+              },
+              id: 'dots'
+          }]}
         radialLabel={d => (
           <RadialLabel object={d} print={true}></RadialLabel>
         )} />
