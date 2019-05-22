@@ -14,6 +14,10 @@ export default class Detail extends Component {
     this.services = new DetailServices(this);
   }
 
+  state = {
+    properties: []
+   }
+
   componentDidMount() {
     this.getDetails()
   }
@@ -22,8 +26,8 @@ export default class Detail extends Component {
     this.services
       .getDetails(1)
         .then(response => {
-          this.setState ({
-            nomenclature: response.data[0].id
+          this.setState({
+            properties: response.data
           })
         });
   };
@@ -36,7 +40,7 @@ export default class Detail extends Component {
             <p>Inmuebles</p>
           </CardHeader>
           <CardBody>
-            <Property />
+            <Property properties={this.state.properties}/>
           </CardBody>
         </Card>
         <Card>
