@@ -97,7 +97,7 @@ class Dashboard extends Component {
           component={Prime}
         />
         <Route
-          path={match.url + DashboardRoutes.summary}
+          path={match.url + DashboardRoutes.summary.withIndicator}
           exact
           component={SecureContainer(Summary)}
         />
