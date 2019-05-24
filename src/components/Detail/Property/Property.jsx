@@ -6,10 +6,10 @@ const property = props => {
 
   return (
     <div>
-      
-      <div className={styles.Cell}  >
+      <div className={styles.Cell}  style={props.style} >
         {props.property.nomenclature}
-      </div>      </div>
+      </div>      
+    </div>
   );
 };
 

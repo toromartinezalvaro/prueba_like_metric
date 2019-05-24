@@ -16,7 +16,7 @@ const SecureContainer = (Container, additionalProps) => class extends Container 
       loadingAspect: (<div className={styles1.Container}>
       <Loader
       type="Puff"
-      color={ styles.color }
+      color={ styles.mainColor }
       height="100"	
       width="100"
       />

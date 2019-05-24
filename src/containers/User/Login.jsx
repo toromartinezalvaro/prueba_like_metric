@@ -87,7 +87,7 @@ class Login extends Component {
       <div className="Container">
         <Loader
           type="Puff"
-          color={styles.color}
+          color={styles.mainColor}
           height="100"
           width="100"
         />

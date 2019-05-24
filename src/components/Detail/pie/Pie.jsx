@@ -114,7 +114,7 @@ const pie = props => {
           <RadialLabel object={d} print={true}></RadialLabel>
         )} />
       <div style={styles.overlay}>
-        <span>Areas</span>
+        <span>{props.nomenclature}</span>
       </div>
     </div>
   );

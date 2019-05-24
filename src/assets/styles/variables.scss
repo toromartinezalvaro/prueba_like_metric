@@ -22,5 +22,7 @@ $body-size: 16px;
 $secondaryText-size: 14px;
 
 :export {
-    color: $main-color;
+    mainColor: $main-color;
+    redColor: $red-color;
+    greenColor: $green-color;
 }
