@@ -113,14 +113,17 @@ class Building extends Component {
       value === ""
         ? true
         : this.state.names.reduce((current, next) => {
-            return current && _.findIndex(next, e => e.name === value) === -1;
+            return (
+              current &&
+              _.findIndex(next, e => (e ? e.name === value : false)) === -1
+            );
           }, true);
     return duplicate;
   };
 
   propertyNameChangeHandler = (id, floor, location, value) => {
     let names = [...this.state.names];
-    names[floor - this.state.lowestFloor][location] = {
+    names[floor - this.state.lowestFloor][location - 1] = {
       id: id,
       floor: floor,
       location: location,
@@ -128,9 +131,9 @@ class Building extends Component {
       towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6"
     };
     this.services
-      .putProperties(names[floor - this.state.lowestFloor][location])
+      .putProperties(names[floor - this.state.lowestFloor][location - 1])
       .then(data => {
-        console.log("✅ updated");
+        console.log(data);
       });
     this.setState({
       names: names

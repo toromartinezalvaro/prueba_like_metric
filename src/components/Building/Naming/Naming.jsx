@@ -11,7 +11,9 @@ const naming = props => {
         <Input
           key={`floor-${floorIndex}-property-${propertyIndex}`}
           className={styles.Input}
-          validations={[]}
+          validations={[
+            { fn: props.checkDuplicates, message: "Nombres únicos" }
+          ]}
           onChange={target => {
             props.onPropertyNameChange(
               property ? property.id : null,

@@ -119,7 +119,7 @@ class Prime extends Component {
   unitHandler = (type, value) => {
     if (type === "ALT") {
       this.services
-        .putAltitudePrimeUnit({ towerId: 1, unit: value })
+        .putAltitudePrimeUnit({ towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6", unit: value })
         .then(response => {
           let altitude = { ...this.state.altitude };
           altitude.unit = response.data;
@@ -130,7 +130,7 @@ class Prime extends Component {
         });
     } else if (type === "LCT") {
       this.services
-        .putLocationPrimeUnit({ towerId: 1, unit: value })
+        .putLocationPrimeUnit({ towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6", unit: value })
         .then(response => {
           let location = { ...this.state.location };
           location.unit = response.data;
