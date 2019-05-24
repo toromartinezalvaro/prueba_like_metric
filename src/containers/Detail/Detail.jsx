@@ -15,21 +15,90 @@ export default class Detail extends Component {
   }
 
   state = {
-    properties: []
-   }
+    properties: [],
+    priceArea: 0,
+    priceAditionals: 0,
+    priceWithAditionals: 0,
+    mts2: 0,
+    pricexMts2: 0,
+    areas: [],
+    aditionals: [],
+    quantityAditionals: 0,
+    pricexUnit: 0,
+    show: 0
+  };
 
   componentDidMount() {
-    this.getDetails()
+    this.getDetails();
   }
 
   getDetails = () => {
-    this.services
-      .getDetails(1)
-        .then(response => {
-          this.setState({
-            properties: response.data
-          })
+    this.services.getDetails().then(response => {
+      if (response.data.length !== 0) {
+        this.setState({
+          properties: response.data,
+          priceArea: response.data[0].totals.priceArea,
+          priceAditionals: response.data[0].totals.priceAditionals,
+          priceWithAditionals: response.data[0].totals.priceWithAditionals,
+          mts2: response.data[0].totals.mts2,
+          pricexMts2: response.data[0].totals.pricexMts2,
+          areas: response.data[0].areas.filter(
+            ({ areaType }) => areaType.unit === "MT2"
+          ),
+          aditionals: response.data[0].areas.filter(
+            ({ areaType }) => areaType.unit === "UNT"
+          ),
+          quantityAditionals: response.data[0].totals.quantityAditionals,
+          pricexUnit: response.data[0].totals.pricexUnit
         });
+      }
+      // console.log("response -->" + data.totals.priceArea)
+      console.log("response -->" + this.state.areas);
+    });
+  };
+
+  printAditionals =   data => {
+    return data.map(aditional => {
+      return (
+        console.log(aditional),
+        <Aditionals
+          Titulo={aditional.areaType.name}
+          Titulo1="Cantidad"
+          Titulo2="Precio"
+          Titulo3="Aditionals"
+          Value1={aditional.measure}
+          Value2={"$" + aditional.price}
+          Value3={"$" + aditional.unitPrice}
+        />
+      );
+    });
+  };
+
+  cells = properties => {
+    return properties.map(property => {
+      const handleOnClick = () => {
+        this.setState({
+          priceArea: property.totals.priceArea,
+          priceAditionals: property.totals.priceAditionals,
+          priceWithAditionals: property.totals.priceWithAditionals,
+          mts2: property.totals.mts2,
+          pricexMts2: property.totals.pricexMts2,
+          areas: property.areas.filter(
+            ({ areaType }) => areaType.unit === "MT2"
+          ),
+          aditionals: property.areas.filter(
+            ({ areaType }) => areaType.unit === "UNT"
+          ),
+          quantityAditionals: property.totals.quantityAditionals,
+          pricexUnit: property.totals.pricexUnit
+        })
+      };
+      return (
+        <div key={property.nomenclature} onClick={handleOnClick}>
+          <Property property={property} />
+        </div>
+      );
+    });
   };
 
   render() {
@@ -40,7 +109,9 @@ export default class Detail extends Component {
             <p>Inmuebles</p>
           </CardHeader>
           <CardBody>
-            <Property properties={this.state.properties}/>
+            <div className={styles.Row}>
+              {this.cells(this.state.properties)}
+            </div>
           </CardBody>
         </Card>
         <Card>
@@ -51,31 +122,31 @@ export default class Detail extends Component {
             <div style={{ display: "flex", flexFlow: "row wrap" }}>
               <Insights
                 title="Inmueble"
-                value={data[0].valueWithoutAditionals}
+                value={"$" + this.state.priceArea}
                 color="#D62839"
                 icon="fas fa-building"
               />
               <Insights
                 title="Adicionales"
-                value={data[0].aditionalsTotal}
+                value={"$" + this.state.priceAditionals}
                 color="#E39774"
                 icon="fas fa-plus"
               />
               <Insights
                 title="Total"
-                value={data[0].valueTotal}
+                value={"$" + this.state.priceWithAditionals}
                 color="#A2C3A4"
                 icon="fas fa-money-bill-wave"
               />
               <Insights
                 title="Area total"
-                value={data[0].areaTotal}
+                value={this.state.mts2 + " mt2"}
                 color="#80A4ED"
                 icon="fas fa-chart-area"
               />
               <Insights
                 title="Valor por mt2"
-                value={data[0].valueXmt2}
+                value={"$" + this.state.pricexMts2}
                 color="#B68CB8"
                 icon="fas fa-tags"
               />
@@ -89,7 +160,7 @@ export default class Detail extends Component {
                 <p>Areas</p>
               </CardHeader>
               <CardBody>
-                <Pie areas={data[0].areas} />
+                <Pie areas={this.state.areas} />
               </CardBody>
             </Card>
           </div>
@@ -99,59 +170,21 @@ export default class Detail extends Component {
                 <p>Adicionales</p>
               </CardHeader>
               <CardBody>
+                {this.printAditionals(this.state.aditionals)}
+
                 <Aditionals
-                  Titulo={data[0].aditionals[0].type}
+                  Titulo="Total"
                   Titulo1="Cantidad"
-                  Titulo2="Precio"
-                  Titulo3="Aditionals"
-                  Value1={data[0].aditionals[0].quantity}
-                  Value2={"$" + data[0].aditionals[0].value}
-                  Value3={"$" + data[0].aditionals[0].total}
+                  Titulo2="Promedio"
+                  Titulo3="Total"
+                  Value1={this.state.quantityAditionals}
+                  Value2={"$" + this.state.pricexUnit}
+                  Value3={"$" + this.state.priceAditionals}
                 />
-                <Aditionals
-                  Titulo={data[0].aditionals[1].type}
-                  Titulo1="Cantidad"
-                  Titulo2="Precio"
-                  Titulo3="Aditionals"
-                  Value1={data[0].aditionals[1].quantity}
-                  Value2={"$" + data[0].aditionals[1].value}
-                  Value3={"$" + data[0].aditionals[1].total}
-                />
-                <Aditionals
-                  Titulo={data[0].aditionals[2].type}
-                  Titulo1="Cantidad"
-                  Titulo2="Precio"
-                  Titulo3="Aditionals"
-                  Value1={data[0].aditionals[2].quantity}
-                  Value2={"$" + data[0].aditionals[2].value}
-                  Value3={"$" + data[0].aditionals[2].total}
-                />
-                <Aditionals Titulo="Total" Titulo1="Total" Value1="$23000" />
               </CardBody>
             </Card>
           </div>
         </div>
-        <Card>
-          <CardHeader />
-          <CardBody>
-            <Aditionals
-              Titulo={data[0].areas[0].label}
-              Titulo2="Precio"
-              Value2={"$" + data[0].areas[0].price}
-            />
-            <Aditionals
-              Titulo={data[0].areas[2].label}
-              Titulo2="Precio"
-              Value2={"$" + data[0].areas[2].price}
-            />
-            <Aditionals
-              Titulo={data[0].areas[3].label}
-              Titulo2="Precio"
-              Value2={"$" + data[0].areas[3].price}
-            />
-            <Aditionals Titulo="Total" Titulo1="Total" Value1="$23000" />
-          </CardBody>
-        </Card>
       </div>
     );
   }

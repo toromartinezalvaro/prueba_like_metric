@@ -4,6 +4,19 @@ import styles from "../pie/pie.module.scss";
 import RadialLabel from "../radialLabel/radialLabel"
 
 const pie = props => {
+  var items = []
+  items = areas => {
+    console.log(areas)
+    return areas.map(area => {
+      return  { id: area.id,
+        label: area.areaType.name,
+        value: area.measure,
+        price: "$" + area.unitPrice }
+    })
+  }
+
+  const data = items(props.areas)
+
   const margin = { top: 30, right: 100, bottom: 35, left: 80 };
 
   const styles = {
@@ -66,7 +79,7 @@ const pie = props => {
     <div style={styles.root}>
       <ResponsivePie
         margin={margin}
-        data={props.areas}
+        data={data}
         innerRadius={0.5}
         enableRadialLabels={true}
         enableSlicesLabels={true}
