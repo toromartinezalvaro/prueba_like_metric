@@ -7,12 +7,12 @@ const aditionals = props => {
       <div className={styles.Card}>
         <h3>{props.Titulo}</h3>
         <div className={styles.Container}>
-          <div className={styles.Column}>
+          <div>
             <p><b>{props.Titulo1}</b></p>
             <p><b>{props.Titulo2}</b></p>
             <p><b>{props.Titulo3}</b></p>
           </div>
-          <div className={styles.Column}>
+          <div>
             <p>{props.Value1}</p>
             <p>{props.Value2}</p>
             <p>{props.Value3}</p>

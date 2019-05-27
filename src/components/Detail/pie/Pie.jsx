@@ -17,7 +17,7 @@ const pie = props => {
 
   const data = items(props.areas)
 
-  const margin = { top: 30, right: 100, bottom: 35, left: 80 };
+  const margin = { top: 0, right: 100, bottom: 35, left: 80 };
 
   const styles = {
     root: {
@@ -31,7 +31,7 @@ const pie = props => {
       position: "absolute",
       top: 0,
       right: margin.right,
-      bottom: 0,
+      bottom: 30,
       left: margin.left,
       display: "flex",
       flexDirection: "column",
