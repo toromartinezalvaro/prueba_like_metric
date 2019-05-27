@@ -16,14 +16,26 @@ class Summary extends Component {
       avg: 0,
       rack: [[{}]]
     },
-    prices: {
+    pricesWithAdditions: {
       min: 0,
       max: 0,
       avg: 0,
       rack: [[{}]]
     },
-    pricePerMT2: [[]],
-    properties: {
+    pricePerMT2WithAdditions: {
+      min: 0,
+      max: 0,
+      avg: 0,
+      rack: [[{}]]
+    },
+    propertiesPrices: {
+      min: 0,
+      max: 0,
+      avg: 0,
+      sum: 0,
+      rack: [[{}]]
+    },
+    pricePerMT2: {
       min: 0,
       max: 0,
       avg: 0,
@@ -39,9 +51,10 @@ class Summary extends Component {
         const data = response.data;
         this.setState({
           areas: data.areas,
-          prices: data.prices,
+          pricesWithAdditions: data.pricesWithAdditions,
+          pricePerMT2WithAdditions: data.pricePerMT2WithAdditions,
+          propertiesPrices: data.propertiesPrices,
           pricePerMT2: data.pricePerMT2,
-          properties: data.properties
         });
       });
   }
@@ -63,34 +76,7 @@ class Summary extends Component {
             columns={["1", "2", "3", "4"]}
             data={this.getAreas(this.state.areas.rack, "area")}
           />
-          <SummaryTable
-            title="Precios m2 + adicionales"
-            intersect="Precio"
-            headers={["1", "2", "3", "4"]}
-            columns={["1", "2", "3", "4"]}
-            data={this.getAreas(this.state.prices.rack, "price")}
-          />
-          <SummaryTable
-            title="Precios m2 + adicionales"
-            intersect="Precio"
-            headers={["1", "2", "3", "4"]}
-            columns={["1", "2", "3", "4"]}
-            data={this.getAreas(this.state.prices.rack, "price")}
-          />
-          <SummaryTable
-            title="Precio del inmueble"
-            intersect="Precio"
-            headers={["1", "2", "3", "4"]}
-            columns={["1", "2", "3", "4"]}
-            data={this.getAreas(this.state.pricePerMT2, "price")}
-          />
-          <SummaryTable
-            title="Precio por mt2"
-            intersect="Precio"
-            headers={["1", "2", "3", "4"]}
-            columns={["1", "2", "3", "4"]}
-            data={this.getAreas(this.state.properties.rack, "price")}
-          />
+         
         </CardBody>
       </Card>
     );
