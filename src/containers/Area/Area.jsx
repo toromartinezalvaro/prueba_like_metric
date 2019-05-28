@@ -67,7 +67,7 @@ class Area extends Component {
             value={this.state.areaMeasurementUnit}
           >
             <option value={"MT2"}>MT2</option>
-            <option value={"UNIDAD"}>Unidad</option>
+            <option value={"UNT"}>Unidad</option>
           </select>
         </div>
       );
@@ -190,7 +190,7 @@ class Area extends Component {
         id: this.state.areaTypeId,
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
-        towerId: 1
+        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6"
       })
       .then(data => {
         console.log(data);
@@ -211,7 +211,7 @@ class Area extends Component {
       .postArea({
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
-        towerId: 1
+        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6"
       })
       .then(data => {
         console.log(data);
@@ -231,7 +231,7 @@ class Area extends Component {
     const currentData = this.state.data;
     currentData[rowIndex][cellIndex].measure = value;
     this.services
-      .putAreasByTowerId(1, currentData[rowIndex][cellIndex])
+      .putAreasByTowerId("ff234f80-7b38-11e9-b198-3de9b761aac6", currentData[rowIndex][cellIndex])
       .then(response => {
         console.log(response);
         this.setState({ data: currentData });

@@ -1,16 +1,28 @@
 import PrimeServiceDefinitions from "./PrimeServiceDefinitions";
 import Services from "../services";
 
-export default class AreaServices extends Services {
-  getPrimes() {
-    return this.get(PrimeServiceDefinitions.primes(""));
+export default class PrimeServices extends Services {
+  getAltitudePrimes() {
+    return this.get(PrimeServiceDefinitions.altitude(""));
   }
 
-  putPrimesById(primeId, data) {
-    return this.put(PrimeServiceDefinitions.primes(primeId), data);
+  getLocationPrimes() {
+    return this.get(PrimeServiceDefinitions.location(""));
   }
 
-  putPrimesUnit(unit) {
-    return this.put(PrimeServiceDefinitions.location("", unit))
+  putAltitudePrimesById(primeId, data) {
+    return this.put(PrimeServiceDefinitions.altitude(primeId), data);
+  }
+
+  putLocationPrimesById(primeId, data) {
+    return this.put(PrimeServiceDefinitions.location(primeId), data);
+  }
+
+  putAltitudePrimeUnit(unit) {
+    return this.put(PrimeServiceDefinitions.altitude("units"), unit);
+  }
+
+  putLocationPrimeUnit(unit) {
+    return this.put(PrimeServiceDefinitions.location("units"), unit);
   }
 }

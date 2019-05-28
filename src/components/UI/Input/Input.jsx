@@ -8,6 +8,7 @@ const input = props => {
     borderBottomColor: "#FF4040"
   };
 
+  const [dirty, setDirty] = useState(false);
   const [localValue, setLocalValue] = useState();
   const [errorMessages, setErrorMessages] = useState("");
   const [valid, setValid] = useState(true);
@@ -31,25 +32,35 @@ const input = props => {
 
   const syncValues = () => {
     if (valid) {
+      if (dirty && localValue === "") {
+        setLocalValue("0");
+      }
       let value = localValue === undefined ? props.value : localValue;
-      props.onChange({
-        name: props.name === undefined ? "" : props.name,
-        value: cleanValue(value)
-      });
+      if (value !== props.value) {
+        props.onChange({
+          name: props.name === undefined ? "" : props.name,
+          value: cleanValue(value)
+        });
+      }
     } else {
       setLocalValue(props.value);
     }
   };
 
   const cleanNumberMask = value => {
-    return value.toString().replace(/,/g, "");
+    return value ? value.toString().replace(/,/g, "") : "";
   };
 
   const cleanCurrencyMask = value => {
     return cleanNumberMask(value).replace("$", "");
   };
 
-  const handleFocus = event => event.target.select();
+  const handleFocus = event => {
+    if (localValue == 0 || (localValue === undefined && props.value == 0)) {
+      setDirty(true);
+      setLocalValue("");
+    }
+  };
 
   const cleanValue = value => {
     if (props.mask === "number") {

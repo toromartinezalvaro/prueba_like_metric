@@ -12,6 +12,8 @@ import DetailAdmin from "../DetailAdmin/DetailAdmin";
 import Detail from "../Detail/Detail";
 
 import SecureContainer from "../../HOC/Common/SecureContainer";
+import TowerServices from "../../services/Towers/TowerServices";
+import Summary from "../Summary/Summary";
 
 class Dashboard extends Component {
   constructor(props) {

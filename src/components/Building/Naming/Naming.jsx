@@ -1,41 +1,32 @@
-import React from 'react';
-import styles from './Naming.module.scss';
+import React from "react";
+import styles from "./Naming.module.scss";
 import Card, { CardHeader, CardBody, CardFooter } from "../../UI/Card/Card";
-import Input from '../../UI/Input/Input';
+import Input from "../../UI/Input/Input";
+import Table from "../../UI/Table/Table";
 
 const naming = props => {
-
-  const header = [];
-  const rows = []
-
-  // console.log(`🏢 Pisos: ${props.floors}`);
-  // console.log(`🏠 Apartamentos: ${props.properties}`);
-  // console.log(`🔻 Piso mas bajo: ${props.lowestFloor}`);
-
-  for (let index = 0; index < props.properties; index++) {
-    header.push(<th key={`header-${index}`}>{index + 1}</th>);
-  }
-
-  for (let floor = 0; floor < props.floors; floor++) {
-    rows.push(
-      <tr key={`floor-${floor}`}>
-        <th>{floor + parseInt(props.lowestFloor)}</th>
-        {header.map((_, property) => (
-          <td key={`property-${property}`}>
-            <Input
-              className={styles.Input}
-              validations={[
-                {fn: props.checkDuplicates, message: 'Nombres unicos'},
-              ]}
-              onChange={target => { 
-                props.onPropertyNameChange(floor, property, target.value) 
-              }}
-              value={props.names[floor][property].name} />
-          </td>
-        ))}
-      </tr>
+  const getInputs = () => {
+    return props.names.map((floor, floorIndex) =>
+      floor.map((property, propertyIndex) => (
+        <Input
+          key={`floor-${floorIndex}-property-${propertyIndex}`}
+          className={styles.Input}
+          validations={[
+            { fn: props.checkDuplicates, message: "Nombres únicos" }
+          ]}
+          onChange={target => {
+            props.onPropertyNameChange(
+              property ? property.id : null,
+              floorIndex + props.lowestFloor,
+              propertyIndex + 1,
+              target.value
+            );
+          }}
+          value={property ? property.name : undefined}
+        />
+      ))
     );
-  }
+  };
 
   return (
     <Card>
@@ -44,24 +35,17 @@ const naming = props => {
       </CardHeader>
       <CardBody>
         <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Pisos / Apartamentos</th>
-                {header}
-              </tr>
-            </thead>
-            <tbody>
-              {rows}
-            </tbody>
-          </table>
+          <Table
+            intersect="Propiedades"
+            headers={props.headers}
+            columns={props.columns}
+            data={getInputs()}
+          />
         </div>
       </CardBody>
-      <CardFooter>
-
-      </CardFooter>
+      <CardFooter />
     </Card>
   );
-}
+};
 
 export default naming;

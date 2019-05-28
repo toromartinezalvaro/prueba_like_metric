@@ -5,13 +5,16 @@ import style from "./SideMenu.module.scss";
 import Icon from "../../assets/icons/Icon";
 
 const sideMenu = props => {
-
   var itemForSlidebar = (styles, route, iconName, description) => {
-
-    //TODO: REMOVE hardcoded towerId 
+    //TODO: REMOVE hardcoded towerId
+    if (props.tower !== null) {
+      const towerId = props.tower.id;
+      const projectId = props.tower.projectId;
+      route = route + projectId + `/${towerId}`;
+    }
     return (
       <div className={styles}>
-        <Link to={route + `${props.tower !== null && props.tower !== undefined ? props.tower.id : "1"}`}>
+        <Link to={route}>
           <Icon name={iconName} fixWidth={true} />
           <label className={style.Description}> {description} </label>
         </Link>
@@ -20,12 +23,16 @@ const sideMenu = props => {
   };
 
   return (
-    <div className={style.SideMenu + " " 
-    //TODO: comment this line to test in develop environment 
-    // +  `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}` 
-    }>
+    <div
+      className={
+        style.SideMenu +
+        " " +
+        //TODO: comment this line to test in develop environment
+        `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}`
+      }
+    >
       <div>
-        <label>{props.tower ? props.tower.name : "" }</label>
+        <label>{props.tower ? props.tower.name : ""}</label>
       </div>
       <div className={style.IconsContainer}>
         {itemForSlidebar(

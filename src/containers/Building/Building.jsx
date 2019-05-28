@@ -1,10 +1,10 @@
-import React, { Component } from "react";
 import _ from "lodash";
-import Schema from "../../components/Building/Schema/Schema";
+import React, { Component } from "react";
 import Naming from "../../components/Building/Naming/Naming";
-import SchemeServices from "../../services/schema/SchemaServices";
-import errorHandling from "../../services/commons/errorHelper";
+import Schema from "../../components/Building/Schema/Schema";
 import Error from "../../components/UI/Error/Error";
+import errorHandling from "../../services/commons/errorHelper";
+import SchemeServices from "../../services/schema/SchemaServices";
 
 class Building extends Component {
   constructor(props) {
@@ -37,21 +37,23 @@ class Building extends Component {
 
   updateNames = () => {
     this.services
-      .getSchema(1)
+      .getSchema("ff234f80-7b38-11e9-b198-3de9b761aac6")
       .then(response => {
         if (response.data.length !== 0) {
           this.setState({
-            floors: response.data.length,
-            properties: response.data[0].length,
-            lowestFloor: response.data[0][0].floor,
+            floors: response.data.floors,
+            properties: response.data.totalProperties,
+            lowestFloor: response.data.lowestFloor,
             disable: true,
             update: true,
-            names: response.data
+            names: response.data.properties
           });
         }
         this.setState({ isLoading: false });
+        console.log(`🦄 No entro al error`);
       })
       .catch(error => {
+        console.log(`🐶 error: ${error}`);
         let errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message
@@ -69,7 +71,7 @@ class Building extends Component {
   saveSchema = () => {
     this.services
       .postSchema({
-        towerId: 1,
+        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
         lowestFloor: parseInt(this.state.lowestFloor)
@@ -89,19 +91,18 @@ class Building extends Component {
   updateSchema = () => {
     this.services
       .putSchema({
-        towerId: 1,
+        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
-        lowestFloor: parseInt(this.state.lowestFloor),
-      },
-      )
+        lowestFloor: parseInt(this.state.lowestFloor)
+      })
       .then(() => {
         this.updateNames();
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message,
+          currentErrorMessage: errorHelper.message
         });
       });
     this.setState({ currentErrorMessage: "" });
@@ -112,17 +113,28 @@ class Building extends Component {
       value === ""
         ? true
         : this.state.names.reduce((current, next) => {
-            return current && _.findIndex(next, e => e.name === value) === -1;
+            return (
+              current &&
+              _.findIndex(next, e => (e ? e.name === value : false)) === -1
+            );
           }, true);
     return duplicate;
   };
 
-  propertyNameChangeHandler = (floor, property, value) => {
+  propertyNameChangeHandler = (id, floor, location, value) => {
     let names = [...this.state.names];
-    names[floor][property].name = value;
-    this.services.putProperties(names[floor][property]).then(data => {
-      console.log("✅ updated");
-    });
+    names[floor - this.state.lowestFloor][location - 1] = {
+      id: id,
+      floor: floor,
+      location: location,
+      name: value,
+      towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6"
+    };
+    this.services
+      .putProperties(names[floor - this.state.lowestFloor][location - 1])
+      .then(data => {
+        console.log(data);
+      });
     this.setState({
       names: names
     });
@@ -153,6 +165,10 @@ class Building extends Component {
               lowestFloor={this.state.lowestFloor}
               disable={this.state.disable}
               checkDuplicates={this.checkDuplicates}
+              headers={[...Array(this.state.properties).keys()].map(o => o + 1)}
+              columns={[...Array(this.state.floors).keys()].map(
+                o => o + this.state.lowestFloor
+              )}
               onPropertyNameChange={this.propertyNameChangeHandler}
               names={this.state.names}
             />
