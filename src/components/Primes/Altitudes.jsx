@@ -1,16 +1,16 @@
 import React from "react";
-import Card, { CardHeader, CardBody } from "../UI/Card/Card";
-import Table from "../UI/Table/Table";
+import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
+import Table from "../../components/UI/Table/Table";
 
-const locations = props => {
+const altitudes = props => {
   return (
     <Card>
       <CardHeader>
         <div style={{ display: "flex" }}>
-          <p>Primas por Ubicación</p>
+          <p>Primas por altura</p>
           <select
             onChange={event => {
-              props.unitHandler("LCT", event.target.value);
+              props.unitHandler("ALT", event.target.value);
             }}
             value={props.unit.code}
           >
@@ -21,8 +21,8 @@ const locations = props => {
       </CardHeader>
       <CardBody>
         <Table
-          intersect="Primas"
-          headers={props.headers}
+          intersect="primas"
+          headers={[`Precio (${props.unit.value})`]}
           columns={props.floorsNames}
           data={props.prices}
         />
@@ -31,4 +31,4 @@ const locations = props => {
   );
 };
 
-export default locations;
+export default altitudes;

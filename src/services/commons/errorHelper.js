@@ -44,7 +44,7 @@ function errorHandling(error) {
     status = error.response.status;
   }
 
-  console.log(status);
+  console.log(error);
 
   switch (status) {
     case 400:

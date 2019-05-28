@@ -6,7 +6,6 @@ import errorHandling from "../../../services/commons/errorHelper";
 import Error from "../../../components/UI/Error/Error";
 
 const prices = ({ areaTypeId, measurementUnit, services }) => {
-
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
   const [currentErrorMessage, setCurrentErrorMessage] = useState();
@@ -39,12 +38,12 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
   useEffect(() => {
     // Component did mount
     services
-      .getPrices(1, areaTypeId)
+      .getPrices("ff234f80-7b38-11e9-b198-3de9b761aac6", areaTypeId)
       .then(res => {
         if (res.data.length > 0) {
           res.data = _.sortBy(res.data, o => o.measure);
 
-          if (res.data[0].measurementUnit === "UNIDAD") {
+          if (res.data[0].areaType.unit === "UNT") {
             setPrices([res.data[0].price]);
           } else {
             const areas = [];
@@ -71,7 +70,7 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
         let errorHelper = errorHandling(error);
         setCurrentErrorMessage(errorHelper.message);
       });
-      setCurrentErrorMessage("");
+    setCurrentErrorMessage("");
   }, []);
 
   return (
@@ -80,30 +79,31 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
         {currentErrorMessage !== "" ? (
           <Error message={currentErrorMessage} />
         ) : null}
-      {prices.length === 0 ? (
-        <div>No se han ingresado areas</div>
-      ) : measurementUnit === "MT2" ? (
-        <Table
-          intersect={"Areas"}
-          headers={["Precio"]}
-          columns={areas}
-          data={prices}
-        />
-      ) : (
-        <div style={{ display: "flex" }}>
-          <div>Precio: </div>
-          <div>
-            <Input
-              onChange={target => {
-                updateAreaTypePrice(areaTypeId, target.value);
-              }}
-              value={prices[0]}
-              validations={[]}
-              style={{ width: "75px", fontSize: "16px" }}
-            />
+        {prices.length === 0 ? (
+          <div>No se han ingresado areas</div>
+        ) : measurementUnit === "MT2" ? (
+          <Table
+            intersect={"Areas"}
+            headers={["Precio"]}
+            columns={areas}
+            data={prices}
+          />
+        ) : (
+          <div style={{ display: "flex" }}>
+            <div>Precio: </div>
+            <div>
+              {console.log("prices", prices)}
+              <Input
+                onChange={target => {
+                  updateAreaTypePrice(areaTypeId, target.value);
+                }}
+                value={prices[0]}
+                validations={[]}
+                style={{ width: "75px", fontSize: "16px" }}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </Fragment>
   );
