@@ -5,19 +5,25 @@ import RadialLabel from "../radialLabel/radialLabel"
 
 const pie = props => {
   var items = []
-  items = areas => {
-    console.log(areas)
-    return areas.map(area => {
-      return  { id: area.id,
+  items = property => {
+    const areas = property.areas.filter(
+      ({ areaType }) => areaType.unit === "MT2"
+    )
+    return  areas.map(area => {
+      
+        return  { id: area.id,
         label: area.areaType.name,
         value: area.measure,
-        price: "$" + area.unitPrice }
-    })
+        price: area.unitPrice,
+        prime: property.totals.prime
+        }
+      }
+    )
   }
 
-  const data = items(props.areas)
+  const data = items(props.property)
 
-  const margin = { top: 0, right: 100, bottom: 35, left: 80 };
+  const margin = { top: 0, right: 100, bottom: 0, left: 80 };
 
   const styles = {
     root: {
@@ -29,7 +35,7 @@ const pie = props => {
     },
     overlay: {
       position: "absolute",
-      top: 0,
+      top: 30,
       right: margin.right,
       bottom: 30,
       left: margin.left,

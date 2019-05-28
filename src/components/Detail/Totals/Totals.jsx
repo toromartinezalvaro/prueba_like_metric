@@ -15,15 +15,6 @@ const totals = props => {
         />
       </div>
       <div>
-        <strong>Primas: </strong>
-        <NumberFormat
-          value={props.data.prime}
-          displayType={"text"}
-          thousandSeparator={true}
-          prefix={"$"}
-        />
-      </div>
-      <div>
         <strong>Adicionales: </strong>
         <NumberFormat
           value={props.data.totals.priceAditionals}

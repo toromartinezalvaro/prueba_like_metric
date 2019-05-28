@@ -67,7 +67,6 @@ export default class Detail extends Component {
     });
   };
   render() {
-    console.log(this.state.totals);
     return (
       <div>
         <Card>

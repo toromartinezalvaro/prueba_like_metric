@@ -96,7 +96,6 @@ export default class Detail extends Component {
   printAditionals = data => {
     return data.map(aditional => {
       return (
-        console.log(aditional),
         (
           <Aditionals
             Titulo={aditional.areaType.name}
@@ -209,44 +208,6 @@ export default class Detail extends Component {
             </div>
           </CardBody>
         </Card>
-        {/* <Card>
-          <CardHeader>
-            <p>Valores</p>
-          </CardHeader>
-          <CardBody>
-            <div style={{ display: "flex", flexFlow: "row wrap" }}>
-              <Insights
-                title="Inmueble"
-                color="#D62839"
-                icon="fas fa-building"
-              />
-              <Insights
-                title="Adicionales"
-                value={"$" + this.state.priceAditionals}
-                color="#E39774"
-                icon="fas fa-plus"
-              />
-              <Insights
-                title="Total"
-                value={"$" + this.state.priceWithAditionals}
-                color="#A2C3A4"
-                icon="fas fa-money-bill-wave"
-              />
-              <Insights
-                title="Area total"
-                value={this.state.mts2 + " mt2"}
-                color="#80A4ED"
-                icon="fas fa-chart-area"
-              />
-              <Insights
-                title="Valor por mt2"
-                value={"$" + this.state.pricexMts2}
-                color="#B68CB8"
-                icon="fas fa-tags"
-              />
-            </div>
-          </CardBody>
-        </Card> */}
         {this.state.id !== 0 || this.state.id2 !== 0 ? (
           <div
             style={
@@ -267,7 +228,7 @@ export default class Detail extends Component {
                   </CardHeader>
                   <CardBody style={{ margin: "0" }}>
                     <Pie
-                      areas={this.state.areas}
+                      property={this.state.property}
                       nomenclature={this.state.property.nomenclature}
                     />
 
@@ -302,7 +263,7 @@ export default class Detail extends Component {
                   </CardHeader>
                   <CardBody style={{ margin: "0" }}>
                     <Pie
-                      areas={this.state.areas2}
+                      property={this.state.property2}
                       nomenclature={this.state.property2.nomenclature}
                     />
                     <Totals data={this.state.property2} />
