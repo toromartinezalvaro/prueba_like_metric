@@ -12,6 +12,8 @@ class Summary extends Component {
   }
 
   state = {
+    firstFee: 0,
+    periods: 1,
     locations: [],
     floors: [],
     areas: {
@@ -70,8 +72,25 @@ class Summary extends Component {
       row.map(value => <SummaryCell k={key}>{value}</SummaryCell>)
     );
 
-  calcFees = target => {
-    
+  firstFeeHandler = target => {
+    this.setState({ firstFee: target.value });
+  };
+  periodsHandler = target => {
+    this.setState({ periods: target.value });
+  };
+  calcFees = () => {
+    return this.state.pricesWithAdditions.rack.map(row => {
+      return row.map(value => {
+        if (value) {
+          let newValue = { ...value };
+          newValue.price =
+            value.price * (this.state.firstFee / 100) * this.state.periods;
+          return newValue;
+        } else {
+          return null;
+        }
+      });
+    });
   };
 
   render() {
@@ -112,11 +131,32 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.pricesWithAdditions.rack, "price")}
+            data={this.getData(this.calcFees(), "price")}
             stats={[
-              { title: "Cuota inicial", value: <Input validations={[]} /> },
-              { title: "Credito", value: <Input validations={[]} /> },
-              { title: "Plazo", value: <Input validations={[]} /> }
+              {
+                title: "Cuota inicial",
+                value: (
+                  <Input
+                    validations={[]}
+                    onChange={this.firstFeeHandler}
+                    value={this.state.firstFee}
+                  />
+                )
+              },
+              {
+                title: "Credito",
+                value: <Input validations={[]} />
+              },
+              {
+                title: "Plazo",
+                value: (
+                  <Input
+                    validations={[]}
+                    onChange={this.periodsHandler}
+                    value={this.state.periods}
+                  />
+                )
+              }
             ]}
           />
           <SummaryTable
