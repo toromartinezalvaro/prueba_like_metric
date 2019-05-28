@@ -1,7 +1,7 @@
-import React from 'react';
-import Accordion from '../../UI/Accordion/Accordion';
-import Table from '../../UI/Table/Table';
-//mport style from './SummaryTable.module.scss'
+import React from "react";
+import Accordion from "../../UI/Accordion/Accordion";
+import Table from "../../UI/Table/Table";
+import styles from "./SummaryTable.module.scss";
 
 const summaryTable = ({
   title,
@@ -9,16 +9,19 @@ const summaryTable = ({
   headers,
   columns,
   data,
+  stats,
   ...rest
 }) => {
   return (
     <Accordion trigger={title}>
-      {/* <div className={style.statContainer}>
-        <div className={style.stat}>
-          <div className={style.statHeader}>Titulo de la estadística</div>
-          <div className={style.statValue}>Estadística</div>
-        </div>
-      </div> */}
+      <div className={styles.statContainer}>
+        {stats.map(stat => (
+          <div className={styles.stat}>
+            <div className={styles.statHeader}>{stat.title}</div>
+            <div className={styles.statValue}>{stat.value}</div>
+          </div>
+        ))}
+      </div>
       <Table
         intersect={intersect}
         headers={headers}
