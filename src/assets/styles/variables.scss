@@ -11,8 +11,9 @@ $defaultPlaceholder-color: #bdbdc5;
 $grayBlack-color: rgb(79, 79, 87);
 $black-color: rgb(36, 36, 39);
 $blackBorder-color: rgb(23, 43, 77);
-$alert-color: #f9ffa3;
+$alert-color: #FAF2A1;
 $box-shadow-color: rgba(82, 63, 105, 0.1);
+$softVariantGrayBackground-color: #f4f9ff;
 
 
 //sizes
@@ -22,5 +23,7 @@ $body-size: 16px;
 $secondaryText-size: 14px;
 
 :export {
-    color: $main-color;
+    mainColor: $main-color;
+    redColor: $red-color;
+    greenColor: $green-color;
 }

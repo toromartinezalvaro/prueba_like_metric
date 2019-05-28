@@ -30,6 +30,11 @@ function errorHandling(error) {
       status: "Service Temporarily Unavailable",
       message: "El servidor no se encuentra disponible de momento"
     },
+    InternalServerError: {
+      code: 500,
+      status: "Internal Server Error",
+      message: "Ha ocurrido un error interno"
+    },
     Error: {
       code: 0,
       status: "Error",

@@ -2,6 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import Loader from 'react-loader-spinner'
 import styles from '../../assets/styles/variables.scss'
+import styles1 from '../../components/User/Login.module.scss'
+
 
 const SecureContainer = (Container, additionalProps) => class extends Container {
 
@@ -11,10 +13,10 @@ const SecureContainer = (Container, additionalProps) => class extends Container 
       isLoading: false,
       redirect: false,
       excecuteNoAuthorization: this.excecuteNoAuthorization,
-      loadingAspect: (<div className="Container">
+      loadingAspect: (<div className={styles1.Container}>
       <Loader
       type="Puff"
-      color={ styles.color }
+      color={ styles.mainColor }
       height="100"	
       width="100"
       />

@@ -8,6 +8,9 @@ import Towers from "../Towers/Towers";
 import UserSettings from "../User/UserSettings";
 import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
+import DetailAdmin from "../DetailAdmin/DetailAdmin";
+import Detail from "../Detail/Detail";
+
 import SecureContainer from "../../HOC/Common/SecureContainer";
 import TowerServices from "../../services/Towers/TowerServices";
 import Summary from "../Summary/Summary";
@@ -100,6 +103,16 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.summary.withIndicator}
           exact
           component={SecureContainer(Summary)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.detailAdmin.withIndicator}
+          exact
+          component={SecureContainer(DetailAdmin)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.detail.withIndicator}
+          exact
+          component={SecureContainer(Detail)}
         />
       </DashboardLayout>
     );
