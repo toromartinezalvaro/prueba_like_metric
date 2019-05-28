@@ -5,6 +5,7 @@ export const DashboardRoutes = {
   areas: { value: '/areas/', withIndicator: '/areas/:towerId' },
   prime: { value: '/prime/', withIndicator: '/prime/:towerId' },
   user: '/user',
+  summary: { value: '/summary/', withIndicator: '/summary/:projectId/:towerId' },
   detailAdmin: { value: '/detailAdmin/' , withIndicator: '/detailAdmin/:towerId' },
   detail: { value: '/detail/' , withIndicator: '/detail/:towerId' }
 

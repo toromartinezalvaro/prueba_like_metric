@@ -14,9 +14,31 @@ import Detail from "../Detail/Detail";
 import SecureContainer from "../../HOC/Common/SecureContainer";
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.services = new TowerServices(this);
+  }
+
   state = {
     tower: null
   };
+
+  componentDidMount() {
+    const towerId = this.props.location.pathname.split("/")[4];
+    const projectId = this.props.location.pathname.split("/")[3];
+
+    if (towerId && projectId && this.state.tower === null) {
+      this.services
+        .getTower(towerId, projectId)
+        .then(response => {
+          const tower = { ...response.data, projectId: projectId };
+          this.setState({ tower: tower });
+        })
+        .catch(error => {
+          console.log("ERROR >", error);
+        });
+    }
+  }
 
   onChangeTower = tower => {
     if (
@@ -74,6 +96,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.prime.withIndicator}
           exact
           component={Prime}
+        />
+        <Route
+          path={match.url + DashboardRoutes.summary.withIndicator}
+          exact
+          component={SecureContainer(Summary)}
         />
         <Route
           path={match.url + DashboardRoutes.detailAdmin.withIndicator}
