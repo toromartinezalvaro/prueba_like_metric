@@ -5,6 +5,8 @@ import Schema from "../../components/Building/Schema/Schema";
 import Error from "../../components/UI/Error/Error";
 import errorHandling from "../../services/commons/errorHelper";
 import SchemeServices from "../../services/schema/SchemaServices";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+
 
 class Building extends Component {
   constructor(props) {
@@ -20,7 +22,9 @@ class Building extends Component {
     update: false,
     names: [],
     currentErrorMessage: "",
-    isLoading: false
+    isLoading: false,
+    showFloatingButton: true
+
   };
 
   componentDidMount() {
@@ -174,6 +178,7 @@ class Building extends Component {
             />
           )}
         </div>
+        {this.state.showFloatingButton ? <FloatingButton>Areas</FloatingButton> : null}
       </div>
     );
   }

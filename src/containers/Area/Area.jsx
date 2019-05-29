@@ -9,6 +9,7 @@ import AreaServices from "../../services/area/AreaServices";
 import Prices from "../../components/Area/Prices/Prices";
 import errorHandling from "../../services/commons/errorHelper";
 import Error from "../../components/UI/Error/Error";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton"
 
 class Area extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class Area extends Component {
     editingAreaType: false,
     deleteAreaTypeId: null,
     hideDeleteModal: true,
-    currentErrorMessage: ""
+    currentErrorMessage: "",
+    showFloatingButton: false
   };
 
   modalContent = () => {
@@ -233,7 +235,8 @@ class Area extends Component {
       .putAreasByTowerId("ff234f80-7b38-11e9-b198-3de9b761aac6", currentData[rowIndex][cellIndex])
       .then(response => {
         console.log(response);
-        this.setState({ data: currentData });
+        this.setState({ data: currentData, showFloatingButton: true });
+
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
@@ -315,6 +318,8 @@ class Area extends Component {
             Deseas eliminar este tipo de area?
           </Modal>
         </Fragment>
+        {this.state.showFloatingButton ? <FloatingButton>Primas</FloatingButton> : null}
+        
       </div>
     );
   }
