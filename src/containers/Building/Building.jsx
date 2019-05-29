@@ -6,7 +6,7 @@ import Error from "../../components/UI/Error/Error";
 import errorHandling from "../../services/commons/errorHelper";
 import SchemeServices from "../../services/schema/SchemaServices";
 import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
-
+import { NOMEM } from "dns";
 
 class Building extends Component {
   constructor(props) {
@@ -23,8 +23,7 @@ class Building extends Component {
     names: [],
     currentErrorMessage: "",
     isLoading: false,
-    showFloatingButton: true
-
+    showFloatingButton: false
   };
 
   componentDidMount() {
@@ -53,6 +52,16 @@ class Building extends Component {
             names: response.data.properties
           });
         }
+        console.log("properties", response.data.properties);
+        response.data.properties.find(arrayProperties => {
+          arrayProperties.find(nomenclature => {
+            return nomenclature !== null
+              ? nomenclature.name !== 0
+                ? this.setState({ showFloatingButton: true })
+                : false
+              : false;
+          });
+        });
         this.setState({ isLoading: false });
         console.log(`🦄 No entro al error`);
       })
@@ -140,7 +149,8 @@ class Building extends Component {
         console.log(data);
       });
     this.setState({
-      names: names
+      names: names,
+      showFloatingButton: true
     });
   };
 
@@ -178,7 +188,15 @@ class Building extends Component {
             />
           )}
         </div>
-        {this.state.showFloatingButton ? <FloatingButton>Areas</FloatingButton> : null}
+        {this.state.showFloatingButton ? (
+          <FloatingButton
+            route="areas"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Areas
+          </FloatingButton>
+        ) : null}
       </div>
     );
   }

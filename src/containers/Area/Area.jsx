@@ -9,7 +9,7 @@ import AreaServices from "../../services/area/AreaServices";
 import Prices from "../../components/Area/Prices/Prices";
 import errorHandling from "../../services/commons/errorHelper";
 import Error from "../../components/UI/Error/Error";
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton"
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
 
 class Area extends Component {
   constructor(props) {
@@ -112,6 +112,7 @@ class Area extends Component {
   componentDidMount() {
     this.updateTableInformation();
     this.setState({ isLoading: true });
+    console.log("PROPS" + this.props.match.params.towerId);
   }
 
   updateTableInformation = () => {
@@ -123,7 +124,16 @@ class Area extends Component {
           properties: response.data.properties,
           data: response.data.propertiesAreas,
           isLoading: false
+          
         });
+        response.data.propertiesAreas.find(arrayAreas => {
+          arrayAreas.find(area => {
+            return area.measure !== 0
+                ? this.setState({ showFloatingButton: true })
+                : false
+          })
+            
+          });
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
@@ -232,11 +242,13 @@ class Area extends Component {
     const currentData = this.state.data;
     currentData[rowIndex][cellIndex].measure = value;
     this.services
-      .putAreasByTowerId("ff234f80-7b38-11e9-b198-3de9b761aac6", currentData[rowIndex][cellIndex])
+      .putAreasByTowerId(
+        "ff234f80-7b38-11e9-b198-3de9b761aac6",
+        currentData[rowIndex][cellIndex]
+      )
       .then(response => {
         console.log(response);
         this.setState({ data: currentData, showFloatingButton: true });
-
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
@@ -256,6 +268,7 @@ class Area extends Component {
           validations={[
             {
               fn: value => {
+                console.log(value)
                 return value !== null;
               },
               message: "No puede estar vacío"
@@ -318,8 +331,15 @@ class Area extends Component {
             Deseas eliminar este tipo de area?
           </Modal>
         </Fragment>
-        {this.state.showFloatingButton ? <FloatingButton>Primas</FloatingButton> : null}
-        
+        {this.state.showFloatingButton ? (
+          <FloatingButton
+            route="prime"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Primas
+          </FloatingButton>
+        ) : null}
       </div>
     );
   }

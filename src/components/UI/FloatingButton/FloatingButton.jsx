@@ -1,16 +1,20 @@
-import React from 'react';
+import React from "react";
+import styles from "./FloatingButton.module.scss";
 import { Link } from "react-router-dom";
-import styles from './FloatingButton.module.scss'
+import { DashboardRoutes } from "../../../routes/local/routes";
+import TowerServices from "../../../services/Towers/TowerServices";
 
 const FloatingButton = props => {
+  const state = DashboardRoutes.building.value
 
   return (
-    <Link to={props.route}>
-      <button className={styles.float} disabled>
-        Ir a {props.children}  <i class="fas fa-angle-double-right"></i>
+    console.log(state.type),
+    <Link to={DashboardRoutes.base + "/"+ props.route.toLowerCase() + "/" + props.projectId + "/" + props.towerId}>
+      <button className={styles.float} >
+        Ir a {props.children} <i className="fas fa-angle-double-right" />
       </button>
     </Link>
   );
-}
+};
 
 export default FloatingButton;

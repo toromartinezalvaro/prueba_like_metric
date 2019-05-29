@@ -3,6 +3,7 @@ import Input from "../../components/UI/Input/Input";
 import Locations from "../../components/Primes/Locations";
 import Altitudes from "../../components/Primes/Altitudes";
 import PrimeServices from "../../services/prime/PrimeServices";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
 
 class Prime extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class Prime extends Component {
       unit: {},
       prices: [[]]
     },
-    floorsNames: [[]]
+    floorsNames: [[]],
+    showFloatingButton: false
   };
 
   componentDidMount() {
@@ -32,19 +34,31 @@ class Prime extends Component {
 
       response.data.primes.forEach(element => {
         floorsNames.push(element.reference);
+        response.data.primes.find(prime => {
+          return prime.price !== 0
+            ? this.setState({ showFloatingButton: true })
+            : false;
+        });
       });
-
       this.setState({
         floorsNames: floorsNames,
         altitude: altitude
       });
     });
-
     this.services.getLocationPrimes().then(response => {
       const location = { ...this.state.location };
       location.prices = response.data.primes;
       location.unit = response.data.unit;
       this.setState({ location: location });
+      response.data.primes.find(prime => {
+        return prime.find(location => {
+          return location !== null
+            ? location.price !== 0
+              ? this.setState({ showFloatingButton: true })
+              : false
+            : false;
+        });
+      });
     });
   }
 
@@ -100,6 +114,7 @@ class Prime extends Component {
         .putAltitudePrimesById(id, { price: parseInt(price) })
         .then(data => {
           console.log(data);
+          this.setState({ showFloatingButton: true });
         })
         .catch(error => {
           console.log(error);
@@ -109,6 +124,7 @@ class Prime extends Component {
         .putLocationPrimesById(id, { price: parseInt(price) })
         .then(data => {
           console.log(data);
+          this.setState({ showFloatingButton: true });
         })
         .catch(error => {
           console.log(error);
@@ -119,7 +135,10 @@ class Prime extends Component {
   unitHandler = (type, value) => {
     if (type === "ALT") {
       this.services
-        .putAltitudePrimeUnit({ towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6", unit: value })
+        .putAltitudePrimeUnit({
+          towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
+          unit: value
+        })
         .then(response => {
           let altitude = { ...this.state.altitude };
           altitude.unit = response.data;
@@ -130,7 +149,10 @@ class Prime extends Component {
         });
     } else if (type === "LCT") {
       this.services
-        .putLocationPrimeUnit({ towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6", unit: value })
+        .putLocationPrimeUnit({
+          towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
+          unit: value
+        })
         .then(response => {
           let location = { ...this.state.location };
           location.unit = response.data;
@@ -160,6 +182,15 @@ class Prime extends Component {
           prices={this.getInputs("LCT")}
           unit={this.state.location.unit}
         />
+        {this.state.showFloatingButton ? (
+          <FloatingButton
+            route="summary"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Resumen
+          </FloatingButton>
+        ) : null}
       </Fragment>
     );
   }
