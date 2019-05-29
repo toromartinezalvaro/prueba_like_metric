@@ -4,7 +4,7 @@ import LoginComponent from '../../components/User/Login';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
 import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes'
-import styles from './Login.container.scss'
+import styles from './Login.module.scss'
 import errorHandling from '../../services/commons/errorHelper'
 
 class Login extends Component {
@@ -87,7 +87,7 @@ class Login extends Component {
       <div className="Container">
         <Loader
           type="Puff"
-          color={styles.color}
+          color={styles.mainColor}
           height="100"
           width="100"
         />

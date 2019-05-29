@@ -119,6 +119,7 @@ class Area extends Component {
     this.services
       .getAreas()
       .then(response => {
+        console.log("response" + response)
         this.setState({
           areasNames: this.processHeaders(response.data.areaTypes),
           properties: response.data.properties,

@@ -12,6 +12,7 @@ class Building extends Component {
   constructor(props) {
     super(props);
     this.services = new SchemeServices(this);
+    
   }
 
   state = {
