@@ -5,12 +5,13 @@ import Schema from "../../components/Building/Schema/Schema";
 import Error from "../../components/UI/Error/Error";
 import errorHandling from "../../services/commons/errorHelper";
 import SchemeServices from "../../services/schema/SchemaServices";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import { NOMEM } from "dns";
 
 class Building extends Component {
   constructor(props) {
     super(props);
     this.services = new SchemeServices(this);
-    
   }
 
   state = {
@@ -21,7 +22,8 @@ class Building extends Component {
     update: false,
     names: [],
     currentErrorMessage: "",
-    isLoading: false
+    isLoading: false,
+    showFloatingButton: false
   };
 
   componentDidMount() {
@@ -49,6 +51,15 @@ class Building extends Component {
             update: true,
             names: response.data.properties
           });
+        }
+        let showFloating = response.data.properties.find(arrayProperties => {
+          let anyNomenclature = arrayProperties.find(nomenclature => {
+            return nomenclature !== null && nomenclature.name !== "0";
+          });
+          return anyNomenclature !== undefined;
+        });
+        if (showFloating !== undefined) {
+          this.setState({ showFloatingButton: true });
         }
         this.setState({ isLoading: false });
         console.log(`🦄 No entro al error`);
@@ -137,7 +148,8 @@ class Building extends Component {
         console.log(data);
       });
     this.setState({
-      names: names
+      names: names,
+      showFloatingButton: true
     });
   };
 
@@ -175,6 +187,15 @@ class Building extends Component {
             />
           )}
         </div>
+        {this.state.showFloatingButton ? (
+          <FloatingButton
+            route="areas"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Areas
+          </FloatingButton>
+        ) : null}
       </div>
     );
   }
