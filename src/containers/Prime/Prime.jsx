@@ -34,12 +34,13 @@ class Prime extends Component {
 
       response.data.primes.forEach(element => {
         floorsNames.push(element.reference);
-        response.data.primes.find(prime => {
-          return prime.price !== 0
-            ? this.setState({ showFloatingButton: true })
-            : false;
-        });
       });
+      let showFloating = response.data.primes.find(prime => {
+        return prime !== null && prime.price !== 0;
+      });
+      if (showFloating !== undefined) {
+        this.setState({ showFloatingButton: true });
+      }
       this.setState({
         floorsNames: floorsNames,
         altitude: altitude
