@@ -12,7 +12,6 @@ class Building extends Component {
   constructor(props) {
     super(props);
     this.services = new SchemeServices(this);
-    
   }
 
   state = {
@@ -53,16 +52,15 @@ class Building extends Component {
             names: response.data.properties
           });
         }
-        console.log("properties", response.data.properties);
-        response.data.properties.find(arrayProperties => {
-          arrayProperties.find(nomenclature => {
-            return nomenclature !== null
-              ? nomenclature.name !== 0
-                ? this.setState({ showFloatingButton: true })
-                : false
-              : false;
+        let showFloating = response.data.properties.find(arrayProperties => {
+          let anyNomenclature = arrayProperties.find(nomenclature => {
+            return nomenclature !== null && nomenclature.name !== "0";
           });
+          return anyNomenclature !== undefined;
         });
+        if (showFloating !== undefined) {
+          this.setState({ showFloatingButton: true });
+        }
         this.setState({ isLoading: false });
         console.log(`🦄 No entro al error`);
       })

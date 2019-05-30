@@ -50,15 +50,15 @@ class Prime extends Component {
       location.prices = response.data.primes;
       location.unit = response.data.unit;
       this.setState({ location: location });
-      response.data.primes.find(prime => {
-        return prime.find(location => {
-          return location !== null
-            ? location.price !== 0
-              ? this.setState({ showFloatingButton: true })
-              : false
-            : false;
+      let showFloating = response.data.primes.find(arrayPrimes => {
+        let anyPrime = arrayPrimes.find(prime => {
+          return prime !== null && prime.price !== 0;
         });
+        return anyPrime !== undefined;
       });
+      if (showFloating !== undefined) {
+        this.setState({ showFloatingButton: true });
+      }
     });
   }
 

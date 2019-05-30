@@ -112,7 +112,6 @@ class Area extends Component {
   componentDidMount() {
     this.updateTableInformation();
     this.setState({ isLoading: true });
-    console.log("PROPS" + this.props.match.params.towerId);
   }
 
   updateTableInformation = () => {
@@ -127,14 +126,15 @@ class Area extends Component {
           isLoading: false
           
         });
-        response.data.propertiesAreas.find(arrayAreas => {
-          arrayAreas.find(area => {
-            return area.measure !== 0
-                ? this.setState({ showFloatingButton: true })
-                : false
-          })
-            
+        let showFloating = response.data.propertiesAreas.find(arrayAreas => {
+          let anyArea = arrayAreas.find(area => {
+            return area !== null && area.measure !== 0;
           });
+          return anyArea !== undefined;
+        });
+        if (showFloating !== undefined) {
+          this.setState({ showFloatingButton: true });
+        }
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
