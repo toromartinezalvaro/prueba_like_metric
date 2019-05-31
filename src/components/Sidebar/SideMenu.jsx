@@ -6,11 +6,9 @@ import Icon from "../../assets/icons/Icon";
 
 const sideMenu = props => {
   var itemForSlidebar = (styles, route, iconName, description) => {
-    //TODO: REMOVE hardcoded towerId
     if (props.tower !== null) {
       const towerId = props.tower.id;
-      const projectId = props.tower.projectId;
-      route = route + projectId + `/${towerId}`;
+      route = route + towerId;
     }
     return (
       <div className={styles}>
@@ -27,7 +25,6 @@ const sideMenu = props => {
       className={
         style.SideMenu +
         " " +
-        //TODO: comment this line to test in develop environment
         `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}`
       }
     >
