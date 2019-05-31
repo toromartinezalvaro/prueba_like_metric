@@ -15,6 +15,7 @@ class Summary extends Component {
   state = {
     firstFee: 0,
     periods: 1,
+    credit: 100,
     locations: [],
     floors: [],
     areas: {
@@ -96,10 +97,19 @@ class Summary extends Component {
     );
 
   firstFeeHandler = target => {
-    this.setState({ firstFee: target.value });
+    this.setState({
+      firstFee: target.value,
+      credit: 100 - target.value
+    });
   };
   periodsHandler = target => {
     this.setState({ periods: target.value });
+  };
+  creditHandler = target => {
+    this.setState({
+      credit: target.value,
+      firstFee: 100 - target.value
+    });
   };
   calcFees = () => {
     return this.state.pricesWithAdditions.rack.map(row => {
@@ -149,7 +159,7 @@ class Summary extends Component {
               { title: "Total", value: this.state.pricesWithAdditions.sum }
             ]}
           />
-           <SummaryTable
+          <SummaryTable
             title="Valor mes cuota inicial"
             intersect="Precios"
             headers={this.state.locations}
@@ -160,7 +170,15 @@ class Summary extends Component {
                 title: "Cuota inicial",
                 value: (
                   <Input
-                    validations={[]}
+                    mask="percentage"
+                    validations={[
+                      {
+                        fn: value =>
+                          parseFloat(value) >= 0 && parseFloat(value) <= 100,
+                        message: "El valor debe estar entre 0% y 100%"
+                      }
+                    ]}
+                    style={{ width: "75px", fontSize: "16px" }}
                     onChange={this.firstFeeHandler}
                     value={this.state.firstFee}
                   />
@@ -168,7 +186,21 @@ class Summary extends Component {
               },
               {
                 title: "Credito",
-                value: <Input validations={[]} />
+                value: (
+                  <Input
+                    mask="percentage"
+                    style={{ width: "75px", fontSize: "16px" }}
+                    value={this.state.credit}
+                    onChange={this.creditHandler}
+                    validations={[
+                      {
+                        fn: value =>
+                          parseFloat(value) >= 0 && parseFloat(value) <= 100,
+                        message: "El valor debe estar entre 0% y 100%"
+                      }
+                    ]}
+                  />
+                )
               },
               {
                 title: "Plazo",
@@ -176,12 +208,13 @@ class Summary extends Component {
                   <Input
                     validations={[]}
                     onChange={this.periodsHandler}
+                    style={{ width: "75px", fontSize: "16px" }}
                     value={this.state.periods}
                   />
                 )
               }
             ]}
-          /> 
+          />
           <SummaryTable
             title="Precio por m² con adicionales"
             intersect="Precios"
