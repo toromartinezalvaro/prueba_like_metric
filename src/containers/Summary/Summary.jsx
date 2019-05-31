@@ -4,6 +4,7 @@ import SummaryTable from "../../components/Summary/SummaryTable/SummaryTable";
 import SummaryCell from "../../components/Summary/SummaryCell/SummaryCell";
 import SummaryServices from "../../services/summary/SummaryService";
 import Input from "../../components/UI/Input/Input";
+import getHeat from "../../components/Summary/HeatMap/HeatMap";
 
 class Summary extends Component {
   constructor(props) {
@@ -67,9 +68,24 @@ class Summary extends Component {
       });
   }
 
-  getData = (rack, key) =>
-    rack.map(row =>
-      row.map(value => <SummaryCell k={key}>{value}</SummaryCell>)
+  getData = (summary, key) =>
+    summary.rack.map(row =>
+      row.map(value => (
+        <SummaryCell
+          k={key}
+          style={{
+            backgroundColor: getHeat(
+              summary.min,
+              summary.max,
+              summary.avg,
+              value,
+              key
+            )
+          }}
+        >
+          {value}
+        </SummaryCell>
+      ))
     );
 
   firstFeeHandler = target => {
@@ -105,7 +121,7 @@ class Summary extends Component {
             intersect="Areas"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.areas.rack, "area")}
+            data={this.getData(this.state.areas, "area")}
             stats={[
               { title: "Mínimo", value: this.state.areas.min },
               { title: "Máximo", value: this.state.areas.max },
@@ -118,7 +134,7 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.pricesWithAdditions.rack, "price")}
+            data={this.getData(this.state.pricesWithAdditions, "price")}
             stats={[
               { title: "Mínimo", value: this.state.pricesWithAdditions.min },
               { title: "Máximo", value: this.state.pricesWithAdditions.max },
@@ -126,7 +142,7 @@ class Summary extends Component {
               { title: "Total", value: this.state.pricesWithAdditions.sum }
             ]}
           />
-          <SummaryTable
+          {/* <SummaryTable
             title="Valor mes cuota inicial"
             intersect="Precios"
             headers={this.state.locations}
@@ -158,16 +174,13 @@ class Summary extends Component {
                 )
               }
             ]}
-          />
+          /> */}
           <SummaryTable
             title="Precio por m² con adicionales"
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(
-              this.state.pricePerMT2WithAdditions.rack,
-              "price"
-            )}
+            data={this.getData(this.state.pricePerMT2WithAdditions, "price")}
             stats={[
               {
                 title: "Mínimo",
@@ -189,7 +202,7 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.propertiesPrices.rack, "price")}
+            data={this.getData(this.state.propertiesPrices, "price")}
             stats={[
               {
                 title: "Mínimo",
@@ -211,7 +224,7 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.pricePerMT2.rack, "price")}
+            data={this.getData(this.state.pricePerMT2, "price")}
             stats={[
               {
                 title: "Mínimo",
