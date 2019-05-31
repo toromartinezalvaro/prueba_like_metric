@@ -10,7 +10,7 @@ class Summary extends Component {
   constructor(props) {
     super(props);
     this.services = new SummaryServices(this);
-  }
+  } 
 
   state = {
     firstFee: 0,
@@ -65,11 +65,13 @@ class Summary extends Component {
           propertiesPrices: data.propertiesPrices,
           pricePerMT2: data.pricePerMT2
         });
+        console.log("areas", this.state.areas)
       });
   }
 
   getData = (summary, key) =>
     summary.rack.map(row =>
+      
       row.map(value => (
         <SummaryCell
           k={key}
@@ -84,7 +86,9 @@ class Summary extends Component {
           }}
         >
           {value}
-        </SummaryCell>
+        </SummaryCell>,
+    console.log("summary", summary.rack)
+
       ))
     );
 
