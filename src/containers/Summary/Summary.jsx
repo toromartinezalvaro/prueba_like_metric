@@ -52,6 +52,7 @@ class Summary extends Component {
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
       .getSummaries("ff234f80-7b38-11e9-b198-3de9b761aac6")
       .then(response => {
@@ -63,7 +64,8 @@ class Summary extends Component {
           pricesWithAdditions: data.pricesWithAdditions,
           pricePerMT2WithAdditions: data.pricePerMT2WithAdditions,
           propertiesPrices: data.propertiesPrices,
-          pricePerMT2: data.pricePerMT2
+          pricePerMT2: data.pricePerMT2,
+          isLoading: false
         });
       });
   }
@@ -86,6 +88,11 @@ class Summary extends Component {
           {value}
         </SummaryCell>
       ))
+    );
+
+  getData2 = (rack, key) =>
+    rack.map(row =>
+      row.map(value => <SummaryCell k={key}>{value}</SummaryCell>)
     );
 
   firstFeeHandler = target => {
@@ -142,12 +149,12 @@ class Summary extends Component {
               { title: "Total", value: this.state.pricesWithAdditions.sum }
             ]}
           />
-          {/* <SummaryTable
+           <SummaryTable
             title="Valor mes cuota inicial"
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.calcFees(), "price")}
+            data={this.getData2(this.calcFees(), "price")}
             stats={[
               {
                 title: "Cuota inicial",
@@ -174,7 +181,7 @@ class Summary extends Component {
                 )
               }
             ]}
-          /> */}
+          /> 
           <SummaryTable
             title="Precio por m² con adicionales"
             intersect="Precios"

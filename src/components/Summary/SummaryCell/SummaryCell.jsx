@@ -1,10 +1,19 @@
 import React from "react";
 import styles from "./SummaryCell.module.scss";
+import NumberFormat from "react-number-format";
 
 const summaryCell = ({ children, k, ...rest }) => (
   <div className={styles.container} {...rest}>
     <div className={styles.content}>
-      <span>{children ? children[k] : "-"}</span>
+      {children ? (
+        <NumberFormat
+          value={parseFloat(children[k]).toFixed(2)}
+          displayType={"text"}
+          thousandSeparator={true}
+        />
+      ) : (
+        "-"
+      )}
     </div>
   </div>
 );
