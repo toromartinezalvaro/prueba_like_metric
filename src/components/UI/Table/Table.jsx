@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./Table.module.scss";
 
 const table = ({ intersect, columns, headers, data, style, width }) => {
-  console.log(style);
   return (
     <div className={styles.Container}>
       <div className={styles.Intersect}>{intersect}</div>

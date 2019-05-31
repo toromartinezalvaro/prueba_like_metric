@@ -61,6 +61,12 @@ const sideMenu = props => {
         )}
         {itemForSlidebar(
           style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.rackAreas.value,
+          "fas fa-ruler",
+          "Resumen Areas"
+        )}
+        {itemForSlidebar(
+          style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
           "fas fa-book-open",
           "Detalle Admin"
@@ -71,12 +77,7 @@ const sideMenu = props => {
           "fas fa-book-open",
           "Detalle User"
         )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.rackAreas.value,
-          "fas fa-book-open",
-          "Resumen Areas"
-        )}
+        
       </div>
     </div>
   );

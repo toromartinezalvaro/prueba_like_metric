@@ -43,43 +43,51 @@ export default class Detail extends Component {
 
   componentDidMount() {
     this.getDetails();
+    this.setState({ isLoading: true });
   }
 
   getDetails = () => {
-    this.services.getDetails().then(response => {
-      if (response.data.length !== 0) {
-        this.setState({
-          properties: response.data,
-          property: response.data[0],
-          totals: response.data[0].totals,
-          areas: response.data[0].areas.filter(
-            ({ areaType }) => areaType.unit === "MT2"
-          ),
-          aditionals: response.data[0].areas.filter(
-            ({ areaType }) => areaType.unit === "UNT"
-          ),
+    this.services
+      .getDetails()
+      .then(response => {
+        if (response.data.length !== 0) {
+          this.setState({
+            properties: response.data,
+            property: response.data[0],
+            totals: response.data[0].totals,
+            areas: response.data[0].areas.filter(
+              ({ areaType }) => areaType.unit === "MT2"
+            ),
+            aditionals: response.data[0].areas.filter(
+              ({ areaType }) => areaType.unit === "UNT"
+            ),
+            id: response.data[0].id
+          });
+          console.log(this.state.areas);
+          if (this.state.areas) {
+            this.setState({
+              areasTable: this.state.areas.reduce(
+                (current, next) => {
+                  current.nameAreas.push(next.areaType.name);
+                  current.priceAreas.push(
+                    <p style={{ alignContent: "center" }}>
+                      {this.formatPrice(next.price)}
+                    </p>
+                  );
+                  return current;
+                },
+                {
+                  nameAreas: [],
+                  priceAreas: []
+                }
+              )
 
-          id: response.data[0].id
-        });
-        this.setState({
-          areasTable: this.state.areas.reduce(
-            (current, next) => {
-              current.nameAreas.push(next.areaType.name);
-              current.priceAreas.push(
-                <p style={{ alignContent: "center" }}>
-                  {this.formatPrice(next.price)}
-                </p>
-              );
-              return current;
-            },
-            {
-              nameAreas: [],
-              priceAreas: []
-            }
-          )
-        });
-      }
-    });
+            });
+            this.setState({ isLoading: false });
+
+          }
+        }
+      })
   };
 
   formatPrice = value => {
@@ -96,17 +104,15 @@ export default class Detail extends Component {
   printAditionals = data => {
     return data.map(aditional => {
       return (
-        (
-          <Aditionals
-            Titulo={aditional.areaType.name}
-            Titulo1="Cantidad"
-            Titulo2="Precio"
-            Titulo3="Aditionals"
-            Value1={aditional.measure}
-            Value2={this.formatPrice(aditional.price)}
-            Value3={this.formatPrice(aditional.unitPrice)}
-          />
-        )
+        <Aditionals
+          Titulo={aditional.areaType.name}
+          Titulo1="Cantidad"
+          Titulo2="Precio"
+          Titulo3="Aditionals"
+          Value1={aditional.measure}
+          Value2={this.formatPrice(aditional.price)}
+          Value3={this.formatPrice(aditional.unitPrice)}
+        />
       );
     });
   };
@@ -248,7 +254,7 @@ export default class Detail extends Component {
                         ]}
                         data={[this.state.areasTable.priceAreas]}
                         style={{ padding: "0em 1.5em" }}
-                        width={{width: "100px"}}
+                        width={{ width: "100px" }}
                       />
                     </div>
                   </CardBody>
@@ -282,7 +288,7 @@ export default class Detail extends Component {
                         ]}
                         data={[this.state.areasTable2.priceAreas]}
                         style={{ padding: "0em 1.5em" }}
-                        width={{width: "100px"}}
+                        width={{ width: "100px" }}
                       />
                     </div>
                   </CardBody>
