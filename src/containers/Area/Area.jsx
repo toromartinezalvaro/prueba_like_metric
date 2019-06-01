@@ -51,6 +51,7 @@ class Area extends Component {
             areaTypeId={this.state.areaTypeId}
             measurementUnit={this.state.areaMeasurementUnit}
             services={this.services}
+            towerId={this.props.match.params.towerId}
           />
         </Fragment>
       );
