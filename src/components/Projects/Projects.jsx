@@ -12,11 +12,21 @@ const projectItems = props => {
 
   var itemFromProject = project => {
     return (
-      <div className={styles.ItemContainer} key={project.id}>
+      <div
+        className={styles.ItemContainer}
+        key={project.id}
+        onClick={event => {
+          event.stopPropagation();
+          props.openProject(project.id);
+        }}
+      >
         <div className={styles.DescriptionItem}>
           <div
             className={styles.Remove}
-            onClick={() => props.removeProject(project.id)}
+            onClick={event => {
+              event.stopPropagation();
+              props.removeProject(project.id);
+            }}
           >
             <Icon name="fa-trash-alt" />
           </div>
@@ -25,7 +35,7 @@ const projectItems = props => {
           </div>
         </div>
         <div className={styles.Item}>
-          <div onClick={() => {props.openProject(project.id)}}>
+          <div>
             <p>{project.name}</p>
           </div>
         </div>

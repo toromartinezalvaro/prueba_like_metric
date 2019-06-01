@@ -46,7 +46,12 @@ export default class Detail extends Component {
   }
 
   getDetails = () => {
-    this.services.getDetails().then(response => {
+    const towerId = this.props.match.params.towerId;
+    if (!towerId) {
+      return;
+    }
+
+    this.services.getDetails(towerId).then(response => {
       if (response.data.length !== 0) {
         this.setState({
           properties: response.data,

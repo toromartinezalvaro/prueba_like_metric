@@ -6,7 +6,6 @@ import Error from "../../components/UI/Error/Error";
 import errorHandling from "../../services/commons/errorHelper";
 import SchemeServices from "../../services/schema/SchemaServices";
 import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
-import { NOMEM } from "dns";
 
 class Building extends Component {
   constructor(props) {
@@ -40,26 +39,11 @@ class Building extends Component {
 
   updateNames = () => {
     this.services
-      .getSchema("ff234f80-7b38-11e9-b198-3de9b761aac6")
+      .getSchema(this.props.match.params.towerId)
       .then(response => {
         if (response.data.length !== 0) {
-          this.setState({
-            floors: response.data.floors,
-            properties: response.data.totalProperties,
-            lowestFloor: response.data.lowestFloor,
-            disable: true,
-            update: true,
-            names: response.data.properties
-          });
-        }
-        let showFloating = response.data.properties.find(arrayProperties => {
-          let anyNomenclature = arrayProperties.find(nomenclature => {
-            return nomenclature !== null && nomenclature.name !== "0";
-          });
-          return anyNomenclature !== undefined;
-        });
-        if (showFloating !== undefined) {
-          this.setState({ showFloatingButton: true });
+          this.updateStatesWithResponse(response);
+          this.setupShowFloatingButton(response.data.properties);
         }
         this.setState({ isLoading: false });
         console.log(`🦄 No entro al error`);
@@ -74,6 +58,38 @@ class Building extends Component {
       });
   };
 
+  updateStatesWithResponse = response => {
+    let { floors, totalProperties, lowestFloor, properties } = response.data;
+    floors = _.defaultTo(floors, 0);
+    totalProperties = _.defaultTo(totalProperties, 0);
+    lowestFloor = _.defaultTo(lowestFloor, 0);
+
+    this.setState({
+      floors: floors,
+      properties: totalProperties,
+      lowestFloor: lowestFloor,
+      disable: floors > 0,
+      update: true,
+      names: properties
+    });
+  };
+
+  setupShowFloatingButton = properties => {
+    if (properties.length <= 0) {
+      return;
+    }
+
+    let showFloating = properties.find(arrayProperties => {
+      let anyNomenclature = arrayProperties.find(nomenclature => {
+        return nomenclature !== null && nomenclature.name !== "0";
+      });
+      return anyNomenclature !== undefined;
+    });
+    if (showFloating !== undefined) {
+      this.setState({ showFloatingButton: true });
+    }
+  };
+
   toggleEditMode = () => {
     this.setState(prevState => ({
       disable: !prevState.disable
@@ -83,7 +99,7 @@ class Building extends Component {
   saveSchema = () => {
     this.services
       .postSchema({
-        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
+        towerId: this.props.match.params.towerId,
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
         lowestFloor: parseInt(this.state.lowestFloor)
@@ -103,7 +119,7 @@ class Building extends Component {
   updateSchema = () => {
     this.services
       .putSchema({
-        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
+        towerId: this.props.match.params.towerId,
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
         lowestFloor: parseInt(this.state.lowestFloor)
@@ -140,7 +156,7 @@ class Building extends Component {
       floor: floor,
       location: location,
       name: value,
-      towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6"
+      towerId: this.props.match.params.towerId
     };
     this.services
       .putProperties(names[floor - this.state.lowestFloor][location - 1])

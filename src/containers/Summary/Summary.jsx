@@ -55,7 +55,7 @@ class Summary extends Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     this.services
-      .getSummaries("ff234f80-7b38-11e9-b198-3de9b761aac6")
+      .getSummaries(this.props.match.params.towerId)
       .then(response => {
         const data = response.data;
         this.setState({

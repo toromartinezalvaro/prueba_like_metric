@@ -36,9 +36,8 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
   };
 
   useEffect(() => {
-    // Component did mount
     services
-      .getPrices("ff234f80-7b38-11e9-b198-3de9b761aac6", areaTypeId)
+      .getPrices(this.props.match.params.towerId, areaTypeId)
       .then(res => {
         if (res.data.length > 0) {
           res.data = _.sortBy(res.data, o => o.measure);

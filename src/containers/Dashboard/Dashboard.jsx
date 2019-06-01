@@ -26,15 +26,13 @@ class Dashboard extends Component {
   };
 
   componentDidMount() {
-    const towerId = this.props.location.pathname.split("/")[4];
-    const projectId = this.props.location.pathname.split("/")[3];
+    const towerId = this.props.location.pathname.split("/")[3];
 
-    if (towerId && projectId && this.state.tower === null) {
+    if (towerId && this.state.tower === null) {
       this.services
-        .getTower(towerId, projectId)
+        .getTower(towerId)
         .then(response => {
-          const tower = { ...response.data, projectId: projectId };
-          this.setState({ tower: tower });
+          this.setState({ tower: response.data });
         })
         .catch(error => {
           console.log("ERROR >", error);
