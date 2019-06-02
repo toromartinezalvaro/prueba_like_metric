@@ -42,7 +42,9 @@ const input = props => {
           value: cleanValue(value)
         });
       }
-      setLocalValue(undefined);
+
+      //TODO: Sebastian please review this code, don't update prices 
+      // setLocalValue(undefined);
     } else {
       setLocalValue(props.value);
     }
