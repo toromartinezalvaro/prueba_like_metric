@@ -39,6 +39,7 @@ class Building extends Component {
   };
 
   updateNames = () => {
+    this.setState({ isLoading: true });
     this.services
       .getSchema("ff234f80-7b38-11e9-b198-3de9b761aac6")
       .then(response => {
@@ -49,7 +50,8 @@ class Building extends Component {
             lowestFloor: response.data.lowestFloor,
             disable: true,
             update: true,
-            names: response.data.properties
+            names: response.data.properties,
+            isLoading: false
           });
         }
         let showFloating = response.data.properties.find(arrayProperties => {

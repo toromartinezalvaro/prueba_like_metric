@@ -118,13 +118,12 @@ class Area extends Component {
     this.services
       .getAreas()
       .then(response => {
-        console.log("response" + response)
+        console.log("response" + response);
         this.setState({
           areasNames: this.processHeaders(response.data.areaTypes),
           properties: response.data.properties,
           data: response.data.propertiesAreas,
           isLoading: false
-          
         });
         let showFloating = response.data.propertiesAreas.find(arrayAreas => {
           let anyArea = arrayAreas.find(area => {
@@ -269,7 +268,7 @@ class Area extends Component {
           validations={[
             {
               fn: value => {
-                console.log(value)
+                console.log(value);
                 return value !== null;
               },
               message: "No puede estar vacío"
@@ -323,14 +322,16 @@ class Area extends Component {
               {this.modalContent()}
             </Modal>
           )}
-          <Modal
-            title={"Eliminar tipo de area"}
-            hidden={this.state.hideDeleteModal}
-            onConfirm={this.deleteAreaType}
-            onCancel={this.toggleDeleteModal}
-          >
-            Deseas eliminar este tipo de area?
-          </Modal>
+          {this.state.hideDeleteModal ? null : (
+            <Modal
+              title={"Eliminar tipo de area"}
+              hidden={this.state.hideDeleteModal}
+              onConfirm={this.deleteAreaType}
+              onCancel={this.toggleDeleteModal}
+            >
+              Deseas eliminar este tipo de area?
+            </Modal>
+          )}
         </Fragment>
         {this.state.showFloatingButton ? (
           <FloatingButton
