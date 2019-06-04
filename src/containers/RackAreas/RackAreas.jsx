@@ -30,7 +30,11 @@ export default class RackAreas extends Component {
   }
 
   getAreas = () => {
-    this.services.getAreas().then(response => {
+    const towerId = this.props.match.params.towerId;
+    if (!towerId) {
+      return;
+    }
+    this.services.getAreas(towerId).then(response => {
       const data = response.data;
       let floors = [];
       const locations = data.map(area => {

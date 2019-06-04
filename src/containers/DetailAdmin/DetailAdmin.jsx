@@ -63,31 +63,30 @@ export default class Detail extends Component {
           ),
           aditionals: response.data[0].areas.filter(
             ({ areaType }) => areaType.unit === "UNT"
-          ),
-          if (this.state.areas) {
-            this.setState({
-              areasTable: this.state.areas.reduce(
-                (current, next) => {
-                  current.nameAreas.push(next.areaType.name);
-                  current.priceAreas.push(
-                    <p style={{ alignContent: "center" }}>
-                      {this.formatPrice(next.price)}
-                    </p>
-                  );
-                  return current;
-                },
-                {
-                  nameAreas: [],
-                  priceAreas: []
-                }
-              )
-
-            });
-            this.setState({ isLoading: false });
-
-          }
+          )
+        });
+        if (this.state.areas) {
+          this.setState({
+            areasTable: this.state.areas.reduce(
+              (current, next) => {
+                current.nameAreas.push(next.areaType.name);
+                current.priceAreas.push(
+                  <p style={{ alignContent: "center" }}>
+                    {this.formatPrice(next.price)}
+                  </p>
+                );
+                return current;
+              },
+              {
+                nameAreas: [],
+                priceAreas: []
+              }
+            )
+          });
+          this.setState({ isLoading: false });
         }
-      })
+      }
+    });
   };
 
   formatPrice = value => {
