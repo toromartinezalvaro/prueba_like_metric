@@ -56,30 +56,27 @@ export default class RackAreas extends Component {
       }
 
       if (this.state.areas) {
+        let arrayValues = [];
         this.state.areas.forEach(property => {
           if (property.id !== undefined) {
-            const { floor, location } = property;
+            arrayValues = this.asignValues(property, areas);
+            console.log("array", arrayValues);
+            /* const { floor, location } = property;
             const total = property.areas.reduce((current, next) => {
               return current + next.measure;
             }, 0);
-            areas[floor - Math.min(...floors)][location - 1] = {
+            areas[floor - this.state.minFloor][location - 1] = {
               id: property.id,
               area: total,
               name: property.nomenclature
-            };
+            }; */
           } else {
             const ids = property.idsAreas.map(id => {
-              let areas = [[]];
-              if (this.state.maxFloor > 0) {
-                areas = this.createNullMatrix(
-                  this.state.maxFloor - this.state.minFloor + 1,
-                  this.state.maxLocation
-                );
-              }
-              let name = "";
+              let name = "Hola";
               this.state.areas.forEach(property => {
                 if (property.id !== undefined) {
-                  const { floor, location } = property;
+                  arrayValues = this.asignValues(property, areas, id);
+                  /*  const { floor, location } = property;
                   const total = property.areas.reduce((current, next) => {
                     if (next.areaType.id === id) {
                       name = next.areaType.name;
@@ -87,23 +84,47 @@ export default class RackAreas extends Component {
                     }
                     return current;
                   }, 0);
-                  areas[floor - Math.min(...floors)][location - 1] = {
+                  areas[floor - this.state.minFloor][location - 1] = {
                     id: property.id,
                     area: total,
                     name: property.nomenclature
-                  };
+                  };  */
                 }
               });
-              return { id: id, areas: areas, name: name };
+              return { id: id, areas: arrayValues, name: name };
             });
             this.setState({ arrayAreas: ids });
           }
         });
         this.setState({
-          mts2: areas
+          mts2: arrayValues
         });
       }
     });
+  };
+
+  asignValues = (area, array, id) => {
+    let name = "";
+    if (area.id !== undefined) {
+      const { floor, location } = area;
+      const total = area.areas.reduce((current, next) => {
+        if(id === undefined) {
+          current += next.measure;
+        } else {
+          if (next.areaType.id === id) {
+            name = next.areaType.name;
+            current += next.measure;
+          }
+        }
+        return current
+      }, 0);
+      array[floor - this.state.minFloor][location - 1] = {
+        id: area.id,
+        area: total,
+        name: area.nomenclature
+      };
+    }
+    return array;
   };
 
   createNullMatrix = (m, n) => {
