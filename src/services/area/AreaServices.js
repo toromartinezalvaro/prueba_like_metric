@@ -4,8 +4,8 @@ import Services from '../services'
 
 export default class AreaServices extends Services  {
 
-  getAreas() {
-    return this.get(AreaServiceDefinitions.areas(""))
+  getAreas(towerId) {
+    return this.get(AreaServiceDefinitions.areas(towerId))
   }
 
   deleteArea(areaTypeId) {

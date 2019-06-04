@@ -47,23 +47,23 @@ export default class Detail extends Component {
   }
 
   getDetails = () => {
-    this.services
-      .getDetails()
-      .then(response => {
-        if (response.data.length !== 0) {
-          this.setState({
-            properties: response.data,
-            property: response.data[0],
-            totals: response.data[0].totals,
-            areas: response.data[0].areas.filter(
-              ({ areaType }) => areaType.unit === "MT2"
-            ),
-            aditionals: response.data[0].areas.filter(
-              ({ areaType }) => areaType.unit === "UNT"
-            ),
-            id: response.data[0].id
-          });
-          console.log(this.state.areas);
+    const towerId = this.props.match.params.towerId;
+    if (!towerId) {
+      return;
+    }
+
+    this.services.getDetails(towerId).then(response => {
+      if (response.data.length !== 0) {
+        this.setState({
+          properties: response.data,
+          property: response.data[0],
+          totals: response.data[0].totals,
+          areas: response.data[0].areas.filter(
+            ({ areaType }) => areaType.unit === "MT2"
+          ),
+          aditionals: response.data[0].areas.filter(
+            ({ areaType }) => areaType.unit === "UNT"
+          ),
           if (this.state.areas) {
             this.setState({
               areasTable: this.state.areas.reduce(

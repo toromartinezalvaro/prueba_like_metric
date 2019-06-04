@@ -18,7 +18,11 @@ const summaryTable = ({
         {stats.map(stat => (
           <div className={styles.stat}>
             <div className={styles.statHeader}>{stat.title}</div>
-            <div className={styles.statValue}>{stat.value}</div>
+            <div className={styles.statValue}>
+              {typeof stat.value === "number"
+                ? parseFloat(stat.value).toFixed(2)
+                : stat.value}
+            </div>
           </div>
         ))}
       </div>
