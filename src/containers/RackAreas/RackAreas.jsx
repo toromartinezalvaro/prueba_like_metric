@@ -33,7 +33,6 @@ export default class RackAreas extends Component {
     this.services.getAreas().then(response => {
       const data = response.data;
       let floors = [];
-
       const locations = data.map(area => {
         if (area.floor !== undefined) {
           floors.push(area.floor);
@@ -79,8 +78,8 @@ export default class RackAreas extends Component {
               }
               let name = "";
               this.state.areas.forEach(property => {
-                const { floor, location } = property;
                 if (property.id !== undefined) {
+                  const { floor, location } = property;
                   const total = property.areas.reduce((current, next) => {
                     if (next.areaType.id === id) {
                       name = next.areaType.name;
