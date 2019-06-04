@@ -134,7 +134,7 @@ class Summary extends Component {
     return (
       <Card>
         <CardHeader>
-          <p>Entendido</p>
+          <p>Resumen general</p>
         </CardHeader>
         <CardBody>
           <SummaryTable
