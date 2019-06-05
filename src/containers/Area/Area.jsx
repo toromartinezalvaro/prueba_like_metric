@@ -91,6 +91,7 @@ class Area extends Component {
           canBeDeleted={areaType.name.toLowerCase() === "interior"}
         >
           {`${areaType.name} ${areaType.measurementUnit}`}
+          <p>Prueba</p>
         </EditableHeader>
       </div>
     ));
@@ -131,6 +132,10 @@ class Area extends Component {
           data: response.data.propertiesAreas,
           isLoading: false
         });
+        let hola = []
+         if(this.state.data) {hola =this.state.data.filter(data => data)}
+        console.log(hola)
+
         let showFloating = response.data.propertiesAreas.find(arrayAreas => {
           let anyArea = arrayAreas.find(area => {
             return area !== null && area.measure !== 0;
@@ -245,24 +250,26 @@ class Area extends Component {
   };
 
   areaChangeHandler = (rowIndex, cellIndex, value) => {
-    const currentData = this.state.data;
-    currentData[rowIndex][cellIndex].measure = value;
-    this.services
-      .putAreasByTowerId(
-        this.props.match.params.towerId,
-        currentData[rowIndex][cellIndex]
-      )
-      .then(response => {
-        console.log(response);
-        this.setState({ data: currentData, showFloatingButton: true });
-      })
-      .catch(error => {
-        let errorHelper = errorHandling(error);
-        this.setState({
-          currentErrorMessage: errorHelper.message
+    if (value !== "") {
+      const currentData = this.state.data;
+      currentData[rowIndex][cellIndex].measure = value;
+      this.services
+        .putAreasByTowerId(
+          this.props.match.params.towerId,
+          currentData[rowIndex][cellIndex]
+        )
+        .then(response => {
+          console.log(response);
+          this.setState({ data: currentData, showFloatingButton: true });
+        })
+        .catch(error => {
+          let errorHelper = errorHandling(error);
+          this.setState({
+            currentErrorMessage: errorHelper.message
+          });
         });
-      });
-    this.setState({ currentErrorMessage: "" });
+      this.setState({ currentErrorMessage: "" });
+    }
   };
 
   render() {
@@ -311,6 +318,7 @@ class Area extends Component {
                 ]}
                 columns={this.state.properties}
                 data={[...inputs]}
+                width={{ width: "125px" }}
               />
             </CardBody>
           </Card>
