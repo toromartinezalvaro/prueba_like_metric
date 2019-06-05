@@ -20,7 +20,8 @@ export default class RackAreas extends Component {
     maxFloor: 0,
     minFloor: 1,
     mts2: [[{ id: 0, area: 0, nomenclature: "0" }]],
-    arrayAreas: []
+    arrayAreas: [],
+    totals: {}
   };
 
   componentDidMount() {
@@ -64,9 +65,7 @@ export default class RackAreas extends Component {
           if (property.id !== undefined) {
             objectTotals = this.asignValues(property, arrayEmpty);
           } else {
-            console.log(property)
-
-            const ids = property.idsAreas.map(id => {
+            const ids = property.totalAreas.map(area => {
               if (this.state.maxFloor > 0) {
                 arrayEmpty = this.createNullMatrix(
                   this.state.maxFloor - this.state.minFloor + 1,
@@ -75,27 +74,50 @@ export default class RackAreas extends Component {
               }
               this.state.areas.forEach(property => {
                 if (property.id !== undefined) {
-                  console.log("property", property)
-
-                  objectAreas = this.asignValues(property, arrayEmpty, id);
+                  objectAreas = this.asignValues(property, arrayEmpty, area.id);
                 } else {
                 }
               });
               return {
-                id: id,
+                id: area.id,
                 areas: objectAreas.array,
                 name: objectAreas.name,
-                min: objectAreas.min,
-                max: objectAreas.max,
-                avg: objectAreas.avg
+                min: area.mts2.min,
+                max: area.mts2.max,
+                avg: area.mts2.avg
               };
             });
             this.setState({ arrayAreas: ids });
           }
         });
-
+        let total = 0;
+        let length = 0;
+        let min = 0;
+        let max = 0;
+        let avg = 0;
+        objectTotals.array.map(area => {
+          total = area.reduce((current, next) => {
+            current = current + next.area;
+            if (length === 0) {
+              min = next.area;
+            }
+            if (min > next.area) {
+              min = next.area;
+            } else if (max < next.area) {
+              max = next.area;
+            }
+            length++;
+            return current;
+          }, 0);
+        });
+        avg = total / length;
         this.setState({
-          mts2: objectTotals.array
+          mts2: objectTotals.array,
+          totals: {
+            min: min,
+            max: max,
+            avg: avg
+          }
         });
       }
     });
@@ -131,29 +153,25 @@ export default class RackAreas extends Component {
       .map(() => Array(n).fill());
   };
 
-  getData = (summary,key) => {
+  getData = (summary, key, totals) => {
     return summary.map(row =>
-      row.map(
-        value => (
-          (
-            <SummaryCell
-              k={key}
-              style={{
-                backgroundColor: getHeat(
-                  this.state.arrayAreas.min,
-                  this.state.arrayAreas.max,
-                  this.state.arrayAreas.avg,
-                  value,
-                  key
-                )
-              }}
-            >
-              {value}
-            </SummaryCell>
-          )
-        )
-      )
-    ); 
+      row.map(value => (
+        <SummaryCell
+          k={key}
+          style={{
+            backgroundColor: getHeat(
+              totals.min,
+              totals.max,
+              totals.avg,
+              value,
+              key
+            )
+          }}
+        >
+          {value}
+        </SummaryCell>
+      ))
+    );
   };
 
   makeSummary = data => {
@@ -163,7 +181,7 @@ export default class RackAreas extends Component {
         intersect="Areas"
         headers={this.state.locations}
         columns={this.state.floors}
-        data={this.getData(area.areas, "area")}
+        data={this.getData(area.areas, "area", area)}
         stats={[{}]}
       />
     ));
@@ -181,9 +199,10 @@ export default class RackAreas extends Component {
             intersect="Areas"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.mts2, "area")}
+            data={this.getData(this.state.mts2, "area", this.state.totals)}
             stats={[{}]}
           />
+          {console.log(this.state.totals)}
           {this.makeSummary(this.state.arrayAreas)}
         </CardBody>
       </Card>
