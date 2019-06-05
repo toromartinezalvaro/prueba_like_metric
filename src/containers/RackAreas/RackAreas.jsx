@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import RackAreasService from "../../services/rackAreas/RackAreasServices";
 import SummaryTable from "../../components/Summary/SummaryTable/SummaryTable";
 import SummaryCell from "../../components/Summary/SummaryCell/SummaryCell";
-import SummaryServices from "../../services/summary/SummaryService";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
 import _ from "lodash";
 import getHeat from "../../components/Summary/HeatMap/HeatMap";
-import { isDate } from "util";
 
 export default class RackAreas extends Component {
   constructor(props) {
@@ -51,57 +49,53 @@ export default class RackAreas extends Component {
         locations: _.range(1, Math.max(...locations) + 1),
         floors: _.range(Math.min(...floors), Math.max(...floors) + 1)
       });
-      let areas = [[]];
+      let arrayEmpty = [[]];
       if (this.state.maxFloor > 0) {
-        areas = this.createNullMatrix(
+        arrayEmpty = this.createNullMatrix(
           this.state.maxFloor - this.state.minFloor + 1,
           this.state.maxLocation
         );
       }
 
       if (this.state.areas) {
-        let arrayValues = [];
+        let objectAreas = [];
+        let objectTotals = [];
         this.state.areas.forEach(property => {
           if (property.id !== undefined) {
-            arrayValues = this.asignValues(property, areas);
-            console.log("array", arrayValues);
-            /* const { floor, location } = property;
-            const total = property.areas.reduce((current, next) => {
-              return current + next.measure;
-            }, 0);
-            areas[floor - this.state.minFloor][location - 1] = {
-              id: property.id,
-              area: total,
-              name: property.nomenclature
-            }; */
+            objectTotals = this.asignValues(property, arrayEmpty);
           } else {
+            console.log(property)
+
             const ids = property.idsAreas.map(id => {
-              let name = "Hola";
+              if (this.state.maxFloor > 0) {
+                arrayEmpty = this.createNullMatrix(
+                  this.state.maxFloor - this.state.minFloor + 1,
+                  this.state.maxLocation
+                );
+              }
               this.state.areas.forEach(property => {
                 if (property.id !== undefined) {
-                  arrayValues = this.asignValues(property, areas, id);
-                  /*  const { floor, location } = property;
-                  const total = property.areas.reduce((current, next) => {
-                    if (next.areaType.id === id) {
-                      name = next.areaType.name;
-                      current += next.measure;
-                    }
-                    return current;
-                  }, 0);
-                  areas[floor - this.state.minFloor][location - 1] = {
-                    id: property.id,
-                    area: total,
-                    name: property.nomenclature
-                  };  */
+                  console.log("property", property)
+
+                  objectAreas = this.asignValues(property, arrayEmpty, id);
+                } else {
                 }
               });
-              return { id: id, areas: arrayValues, name: name };
+              return {
+                id: id,
+                areas: objectAreas.array,
+                name: objectAreas.name,
+                min: objectAreas.min,
+                max: objectAreas.max,
+                avg: objectAreas.avg
+              };
             });
             this.setState({ arrayAreas: ids });
           }
         });
+
         this.setState({
-          mts2: arrayValues
+          mts2: objectTotals.array
         });
       }
     });
@@ -112,7 +106,7 @@ export default class RackAreas extends Component {
     if (area.id !== undefined) {
       const { floor, location } = area;
       const total = area.areas.reduce((current, next) => {
-        if(id === undefined) {
+        if (id === undefined) {
           current += next.measure;
         } else {
           if (next.areaType.id === id) {
@@ -120,7 +114,7 @@ export default class RackAreas extends Component {
             current += next.measure;
           }
         }
-        return current
+        return current;
       }, 0);
       array[floor - this.state.minFloor][location - 1] = {
         id: area.id,
@@ -128,7 +122,7 @@ export default class RackAreas extends Component {
         name: area.nomenclature
       };
     }
-    return array;
+    return { array, name };
   };
 
   createNullMatrix = (m, n) => {
@@ -137,25 +131,29 @@ export default class RackAreas extends Component {
       .map(() => Array(n).fill());
   };
 
-  getData = (summary, key) => {
+  getData = (summary,key) => {
     return summary.map(row =>
-      row.map(value => (
-        <SummaryCell
-          k={key}
-          style={{
-            backgroundColor: getHeat(
-              summary.min,
-              summary.max,
-              summary.avg,
-              value,
-              key
-            )
-          }}
-        >
-          {value}
-        </SummaryCell>
-      ))
-    );
+      row.map(
+        value => (
+          (
+            <SummaryCell
+              k={key}
+              style={{
+                backgroundColor: getHeat(
+                  this.state.arrayAreas.min,
+                  this.state.arrayAreas.max,
+                  this.state.arrayAreas.avg,
+                  value,
+                  key
+                )
+              }}
+            >
+              {value}
+            </SummaryCell>
+          )
+        )
+      )
+    ); 
   };
 
   makeSummary = data => {

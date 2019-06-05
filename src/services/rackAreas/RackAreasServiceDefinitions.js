@@ -1,7 +1,7 @@
 import { API_PATH } from '../../config/config'
 
 const RackAreasDefinitions = {
-  details: `${API_PATH}rackAreas`,
+  rackAreas: towerId => `${API_PATH}rackAreas/${towerId}`,
 };
 
 export default RackAreasDefinitions
