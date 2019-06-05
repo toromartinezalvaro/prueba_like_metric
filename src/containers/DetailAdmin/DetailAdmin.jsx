@@ -9,6 +9,8 @@ import styles from "../DetailAdmin/DetailAdmin.module.scss";
 import variables from "../../assets/styles/variables.scss";
 import Table from "../../components/UI/Table/Table";
 import NumberFormat from "react-number-format";
+import errorHandling from "../../services/commons/errorHelper";
+import Error from "../../components/UI/Error/Error";
 
 export default class Detail extends Component {
   constructor(props) {
@@ -52,41 +54,57 @@ export default class Detail extends Component {
       return;
     }
 
-    this.services.getDetails(towerId).then(response => {
-      if (response.data.length !== 0) {
-        this.setState({
-          properties: response.data,
-          property: response.data[0],
-          totals: response.data[0].totals,
-          areas: response.data[0].areas.filter(
-            ({ areaType }) => areaType.unit === "MT2"
-          ),
-          aditionals: response.data[0].areas.filter(
-            ({ areaType }) => areaType.unit === "UNT"
-          )
-        });
-        if (this.state.areas) {
+    this.services
+      .getDetails(towerId)
+      .then(response => {
+        if (response.data.length !== 0) {
           this.setState({
-            areasTable: this.state.areas.reduce(
-              (current, next) => {
-                current.nameAreas.push(next.areaType.name);
-                current.priceAreas.push(
-                  <p style={{ alignContent: "center" }}>
-                    {this.formatPrice(next.price)}
-                  </p>
-                );
-                return current;
-              },
-              {
-                nameAreas: [],
-                priceAreas: []
-              }
+            properties: response.data,
+            property: response.data[0],
+            totals: response.data[0].totals,
+            areas: response.data[0].areas.filter(
+              ({ areaType }) => areaType.unit === "MT2"
+            ),
+            aditionals: response.data[0].areas.filter(
+              ({ areaType }) => areaType.unit === "UNT"
             )
           });
-          this.setState({ isLoading: false });
+          if (this.state.areas) {
+            let areas = this.state.areas.sort((a, b) => {
+              const aInt = parseInt(a.id);
+              const bInt = parseInt(b.id);
+              if (aInt > bInt) return 1;
+              if (aInt < bInt) return -1;
+              return 0;
+            });
+            this.setState({
+              areasTable: areas.reduce(
+                (current, next) => {
+                  current.nameAreas.push(next.areaType.name);
+                  current.priceAreas.push(
+                    <p style={{ alignContent: "center" }}>
+                      {this.formatPrice(next.price)}
+                    </p>
+                  );
+                  return current;
+                },
+                {
+                  nameAreas: [],
+                  priceAreas: []
+                }
+              )
+            });
+            this.setState({ isLoading: false });
+          }
         }
-      }
-    });
+      })
+      .catch(error => {
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message
+        });
+      });
+    this.setState({ currentErrorMessage: "" });
   };
 
   formatPrice = value => {
@@ -119,6 +137,13 @@ export default class Detail extends Component {
   cells = properties => {
     return properties.map(property => {
       const handleOnClick = () => {
+        let areas = property.areas.sort((a, b) => {
+          const aInt = parseInt(a.id);
+          const bInt = parseInt(b.id);
+          if (aInt > bInt) return 1;
+          if (aInt < bInt) return -1;
+          return 0;
+        });
         if (
           this.state.id2 !== property.id &&
           this.state.id !== property.id &&
@@ -138,7 +163,7 @@ export default class Detail extends Component {
               )
             }),
             this.setState({
-              areasTable2: property.areas.reduce(
+              areasTable2: areas.reduce(
                 (current, next) => {
                   if (next.areaType.unit === "MT2") {
                     current.nameAreas.push(next.areaType.name);
@@ -203,6 +228,9 @@ export default class Detail extends Component {
   render() {
     return (
       <div>
+        {this.state.currentErrorMessage !== "" ? (
+          <Error message={this.state.currentErrorMessage} />
+        ) : null}
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
