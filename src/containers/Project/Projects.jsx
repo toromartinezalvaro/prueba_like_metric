@@ -156,7 +156,7 @@ export default class Projects extends Component {
             name="newTitleProject"
             onChange={this.onChange}
             validations={[]}
-            style={{ width: "75px", fontSize: "16px" }}
+             style={{ width: "75px" }}
             value={this.state.newTitleProject}
           />
         </div>
@@ -166,7 +166,7 @@ export default class Projects extends Component {
             name="newDescriptionProject"
             onChange={this.onChange}
             validations={[]}
-            style={{ width: "75px", fontSize: "16px" }}
+             style={{ width: "75px" }}
             value={this.state.newDescriptionProject}
           />
         </div>

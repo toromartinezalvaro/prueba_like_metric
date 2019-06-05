@@ -55,7 +55,7 @@ const prices = ({ areaTypeId, measurementUnit, services, towerId }) => {
                     updateAreaPrice(area.id, target.value);
                   }}
                   validations={[]}
-                  style={{ width: "75px", fontSize: "16px" }}
+                   style={{ width: "75px" }}
                   value={area.price}
                 />
               ];
@@ -98,7 +98,7 @@ const prices = ({ areaTypeId, measurementUnit, services, towerId }) => {
                 }}
                 value={prices[0]}
                 validations={[]}
-                style={{ width: "75px", fontSize: "16px" }}
+                 style={{ width: "75px" }}
               />
             </div>
           </div>

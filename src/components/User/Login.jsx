@@ -29,7 +29,7 @@ const login = props => {
           <CardBody>
             <div className={styles.Row}>
               <Input
-                // className={styles.Input}
+                className={styles.Input}
                 name="email"
                 onChange={props.onChange}
                 value={props.email}
@@ -40,7 +40,7 @@ const login = props => {
             </div>
             <div className={styles.Row}>
               <Input
-                // className={styles.Input}
+                className={styles.Input}
                 type="password"
                 name="password"
                 onChange={props.onChange}
