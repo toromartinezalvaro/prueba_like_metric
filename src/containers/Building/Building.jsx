@@ -22,7 +22,8 @@ class Building extends Component {
     names: [],
     currentErrorMessage: "",
     isLoading: false,
-    showFloatingButton: false
+    showFloatingButton: false,
+    loadingNaming: false
   };
 
   componentDidMount() {
@@ -68,8 +69,8 @@ class Building extends Component {
       floors: floors,
       properties: totalProperties,
       lowestFloor: lowestFloor,
-      disable: floors > 0,
       update: true,
+      disable: floors > 0,
       names: properties
     });
   };
@@ -97,6 +98,7 @@ class Building extends Component {
   };
 
   saveSchema = () => {
+    this.setState({ loadingNaming: true, disable: true });
     this.services
       .postSchema({
         towerId: this.props.match.params.towerId,
@@ -106,17 +108,20 @@ class Building extends Component {
       })
       .then(() => {
         this.updateNames();
+        this.setState({ loadingNaming: false });
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
+          loadingNaming: false
         });
         this.setState({ currentErrorMessage: "" });
       });
   };
 
   updateSchema = () => {
+    this.setState({ loadingNaming: true, disable: true });
     this.services
       .putSchema({
         towerId: this.props.match.params.towerId,
@@ -126,11 +131,13 @@ class Building extends Component {
       })
       .then(() => {
         this.updateNames();
+        this.setState({ loadingNaming: false });
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
+          loadingNaming: false
         });
       });
     this.setState({ currentErrorMessage: "" });
@@ -189,6 +196,7 @@ class Building extends Component {
           />
           {!this.state.disable ? null : (
             <Naming
+              loadingNaming={this.state.loadingNaming}
               floors={this.state.floors}
               properties={this.state.properties}
               lowestFloor={this.state.lowestFloor}
