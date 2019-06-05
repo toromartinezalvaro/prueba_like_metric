@@ -93,6 +93,7 @@ const prices = ({ areaTypeId, measurementUnit, services, towerId }) => {
             <div>
               {console.log("prices", prices)}
               <Input
+                mask="currency"
                 onChange={target => {
                   updateAreaTypePrice(areaTypeId, target.value);
                 }}
