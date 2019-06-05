@@ -152,7 +152,7 @@ export default class Towers extends Component {
             name="newTitleTower"
             onChange={this.onChange}
             validations={[]}
-            style={{ width: "75px", fontSize: "16px" }}
+             style={{ width: "75px" }}
             value={this.state.newTitleTower}
           />
         </div>
@@ -162,7 +162,7 @@ export default class Towers extends Component {
             name="newDescriptionTower"
             onChange={this.onChange}
             validations={[]}
-            style={{ width: "75px", fontSize: "16px" }}
+             style={{ width: "75px" }}
             value={this.state.newDescriptionTower}
           />
         </div>

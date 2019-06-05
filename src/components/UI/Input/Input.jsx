@@ -8,6 +8,7 @@ const input = props => {
     borderBottomColor: "#FF4040"
   };
 
+  const [clearValue, setClearValue] = useState(props.clearValue);
   const [dirty, setDirty] = useState(false);
   const [localValue, setLocalValue] = useState();
   const [errorMessages, setErrorMessages] = useState("");
@@ -42,9 +43,9 @@ const input = props => {
           value: cleanValue(value)
         });
       }
-
-      //TODO: Sebastian please review this code, don't update prices 
-      // setLocalValue(undefined);
+      if (clearValue) {
+        setLocalValue(undefined);
+      }
     } else {
       setLocalValue(props.value);
     }

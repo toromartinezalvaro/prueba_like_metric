@@ -116,21 +116,20 @@ class Area extends Component {
   }
 
   updateTableInformation = () => {
-    const towerId = this.props.match.params.towerId
+    const towerId = this.props.match.params.towerId;
     if (!towerId) {
-      return 
+      return;
     }
-    
+
     this.services
       .getAreas(towerId)
       .then(response => {
-        console.log("response" + response)
+        console.log("response" + response);
         this.setState({
           areasNames: this.processHeaders(response.data.areaTypes),
           properties: response.data.properties,
           data: response.data.propertiesAreas,
           isLoading: false
-          
         });
         let showFloating = response.data.propertiesAreas.find(arrayAreas => {
           let anyArea = arrayAreas.find(area => {
@@ -271,11 +270,11 @@ class Area extends Component {
       return row.map((e2, cellIndex) => (
         <Input
           mask="number"
-          style={{ width: "75px", fontSize: "16px" }}
+          style={{ width: "75px" }}
           validations={[
             {
               fn: value => {
-                console.log(value)
+                console.log(value);
                 return value !== null;
               },
               message: "No puede estar vacío"
