@@ -55,7 +55,7 @@ const prices = ({ areaTypeId, measurementUnit, services, towerId }) => {
                     updateAreaPrice(area.id, target.value);
                   }}
                   validations={[]}
-                  style={{ width: "75px", fontSize: "16px" }}
+                   style={{ width: "75px" }}
                   value={area.price}
                 />
               ];
@@ -93,12 +93,13 @@ const prices = ({ areaTypeId, measurementUnit, services, towerId }) => {
             <div>
               {console.log("prices", prices)}
               <Input
+                mask="currency"
                 onChange={target => {
                   updateAreaTypePrice(areaTypeId, target.value);
                 }}
                 value={prices[0]}
                 validations={[]}
-                style={{ width: "75px", fontSize: "16px" }}
+                 style={{ width: "75px" }}
               />
             </div>
           </div>

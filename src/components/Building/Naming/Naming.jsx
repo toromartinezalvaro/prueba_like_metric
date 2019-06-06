@@ -29,7 +29,7 @@ const naming = props => {
   };
 
   return (
-    <Card>
+    <Card loading={props.loadingNaming}>
       <CardHeader>
         <p>Nomenclatura</p>
       </CardHeader>

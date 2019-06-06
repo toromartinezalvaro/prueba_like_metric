@@ -74,7 +74,7 @@ class Prime extends Component {
       const inputs = this.state.altitude.prices.map(prime => [
         <Input
           mask="currency"
-          style={{ width: "75px", fontSize: "16px" }}
+           style={{ width: "75px" }}
           validations={[]}
           onChange={target => {
             this.priceHandler("ALT", prime.id, parseInt(target.value));
@@ -90,7 +90,7 @@ class Prime extends Component {
             return (
               <Input
                 mask="currency"
-                style={{ width: "75px", fontSize: "16px" }}
+                 style={{ width: "75px" }}
                 value={prime.price}
                 validations={[]}
                 onChange={target => {
@@ -103,7 +103,7 @@ class Prime extends Component {
           } else {
             return (
               <Input
-                style={{ width: "75px", fontSize: "16px" }}
+                 style={{ width: "75px" }}
                 placeholder="-"
                 disable
               />

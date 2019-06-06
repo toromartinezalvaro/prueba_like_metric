@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import SummaryTable from "../../components/Summary/SummaryTable/SummaryTable";
-import SummaryCell from "../../components/Summary/SummaryCell/SummaryCell";
-import SummaryServices from "../../services/summary/SummaryService";
-import Input from "../../components/UI/Input/Input";
-import getHeat from "../../components/Summary/HeatMap/HeatMap";
+import React, { Component } from 'react';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import SummaryTable from '../../components/Summary/SummaryTable/SummaryTable';
+import SummaryCell from '../../components/Summary/SummaryCell/SummaryCell';
+import SummaryServices from '../../services/summary/SummaryService';
+import Input from '../../components/UI/Input/Input';
+import getHeat from '../../components/Summary/HeatMap/HeatMap';
 
 class Summary extends Component {
   constructor(props) {
@@ -22,34 +22,34 @@ class Summary extends Component {
       min: 0,
       max: 0,
       avg: 0,
-      rack: [[{}]]
+      rack: [[{}]],
     },
     pricesWithAdditions: {
       min: 0,
       max: 0,
       avg: 0,
-      rack: [[{}]]
+      rack: [[{}]],
     },
     pricePerMT2WithAdditions: {
       min: 0,
       max: 0,
       avg: 0,
-      rack: [[{}]]
+      rack: [[{}]],
     },
     propertiesPrices: {
       min: 0,
       max: 0,
       avg: 0,
       sum: 0,
-      rack: [[{}]]
+      rack: [[{}]],
     },
     pricePerMT2: {
       min: 0,
       max: 0,
       avg: 0,
       sum: 0,
-      rack: [[{}]]
-    }
+      rack: [[{}]],
+    },
   };
 
   componentDidMount() {
@@ -66,7 +66,7 @@ class Summary extends Component {
           pricePerMT2WithAdditions: data.pricePerMT2WithAdditions,
           propertiesPrices: data.propertiesPrices,
           pricePerMT2: data.pricePerMT2,
-          isLoading: false
+          isLoading: false,
         });
         console.log("areas", this.state.areas)
       });
@@ -84,26 +84,19 @@ class Summary extends Component {
               summary.max,
               summary.avg,
               value,
-              key
-            )
+              key,
+            ),
           }}
         >
           {value}
-        </SummaryCell>,
-    console.log("summary", summary.rack)
-
-      ))
-    );
-
-  getData2 = (rack, key) =>
-    rack.map(row =>
-      row.map(value => <SummaryCell k={key}>{value}</SummaryCell>)
+        </SummaryCell>
+      )),
     );
 
   firstFeeHandler = target => {
     this.setState({
       firstFee: target.value,
-      credit: 100 - target.value
+      credit: 100 - target.value,
     });
   };
   periodsHandler = target => {
@@ -112,13 +105,29 @@ class Summary extends Component {
   creditHandler = target => {
     this.setState({
       credit: target.value,
-      firstFee: 100 - target.value
+      firstFee: 100 - target.value,
     });
   };
   calcFees = () => {
-    return this.state.pricesWithAdditions.rack.map(row => {
+    let items = 0;
+    let fees = {
+      min: this.state.pricesWithAdditions.rack[0][0].price,
+      max: this.state.pricesWithAdditions.rack[0][0].price,
+      avg: 0,
+      sum: 0,
+      rack: [],
+    };
+    fees.rack = this.state.pricesWithAdditions.rack.map(row => {
       return row.map(value => {
         if (value) {
+          if (value.price < fees.min) {
+            fees.min = value.price;
+          }
+          if (value.price > fees.max) {
+            fees.max = value.price;
+          }
+          fees.sum += value.price;
+          items++;
           let newValue = { ...value };
           newValue.price =
             value.price * (this.state.firstFee / 100) * this.state.periods;
@@ -128,6 +137,8 @@ class Summary extends Component {
         }
       });
     });
+    fees.avg = fees.sum /= items;
+    return fees;
   };
 
   render() {
@@ -142,12 +153,12 @@ class Summary extends Component {
             intersect="Areas"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.areas, "area")}
+            data={this.getData(this.state.areas, 'area')}
             stats={[
-              { title: "Mínimo", value: this.state.areas.min },
-              { title: "Máximo", value: this.state.areas.max },
-              { title: "Promedio", value: this.state.areas.avg },
-              { title: "Total", value: this.state.areas.sum }
+              { title: 'Mínimo', value: this.state.areas.min },
+              { title: 'Máximo', value: this.state.areas.max },
+              { title: 'Promedio', value: this.state.areas.avg },
+              { title: 'Total', value: this.state.areas.sum },
             ]}
           />
           {console.log(this.getData(this.state.areas, "area"))}
@@ -156,12 +167,12 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.pricesWithAdditions, "price")}
+            data={this.getData(this.state.pricesWithAdditions, 'price')}
             stats={[
-              { title: "Mínimo", value: this.state.pricesWithAdditions.min },
-              { title: "Máximo", value: this.state.pricesWithAdditions.max },
-              { title: "Promedio", value: this.state.pricesWithAdditions.avg },
-              { title: "Total", value: this.state.pricesWithAdditions.sum }
+              { title: 'Mínimo', value: this.state.pricesWithAdditions.min },
+              { title: 'Máximo', value: this.state.pricesWithAdditions.max },
+              { title: 'Promedio', value: this.state.pricesWithAdditions.avg },
+              { title: 'Total', value: this.state.pricesWithAdditions.sum },
             ]}
           />
           <SummaryTable
@@ -169,10 +180,10 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData2(this.calcFees(), "price")}
+            data={this.getData(this.calcFees(), 'price')}
             stats={[
               {
-                title: "Cuota inicial",
+                title: 'Cuota inicial',
                 value: (
                   <Input
                     mask="percentage"
@@ -180,44 +191,44 @@ class Summary extends Component {
                       {
                         fn: value =>
                           parseFloat(value) >= 0 && parseFloat(value) <= 100,
-                        message: "El valor debe estar entre 0% y 100%"
-                      }
+                        message: 'El valor debe estar entre 0% y 100%',
+                      },
                     ]}
-                    style={{ width: "75px", fontSize: "16px" }}
+                    style={{ width: '75px', fontSize: '16px' }}
                     onChange={this.firstFeeHandler}
                     value={this.state.firstFee}
                   />
-                )
+                ),
               },
               {
-                title: "Credito",
+                title: 'Credito',
                 value: (
                   <Input
                     mask="percentage"
-                    style={{ width: "75px", fontSize: "16px" }}
+                    style={{ width: '75px', fontSize: '16px' }}
                     value={this.state.credit}
                     onChange={this.creditHandler}
                     validations={[
                       {
                         fn: value =>
                           parseFloat(value) >= 0 && parseFloat(value) <= 100,
-                        message: "El valor debe estar entre 0% y 100%"
-                      }
+                        message: 'El valor debe estar entre 0% y 100%',
+                      },
                     ]}
                   />
-                )
+                ),
               },
               {
-                title: "Plazo",
+                title: 'Plazo',
                 value: (
                   <Input
                     validations={[]}
                     onChange={this.periodsHandler}
-                    style={{ width: "75px", fontSize: "16px" }}
+                    style={{ width: '75px', fontSize: '16px' }}
                     value={this.state.periods}
                   />
-                )
-              }
+                ),
+              },
             ]}
           />
           <SummaryTable
@@ -225,21 +236,24 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.pricePerMT2WithAdditions, "price")}
+            data={this.getData(this.state.pricePerMT2WithAdditions, 'price')}
             stats={[
               {
-                title: "Mínimo",
-                value: this.state.pricePerMT2WithAdditions.min
+                title: 'Mínimo',
+                value: this.state.pricePerMT2WithAdditions.min,
               },
               {
-                title: "Máximo",
-                value: this.state.pricePerMT2WithAdditions.max
+                title: 'Máximo',
+                value: this.state.pricePerMT2WithAdditions.max,
               },
               {
-                title: "Promedio",
-                value: this.state.pricePerMT2WithAdditions.avg
+                title: 'Promedio',
+                value: this.state.pricePerMT2WithAdditions.avg,
               },
-              { title: "Total", value: this.state.pricePerMT2WithAdditions.sum }
+              {
+                title: 'Total',
+                value: this.state.pricePerMT2WithAdditions.sum,
+              },
             ]}
           />
           <SummaryTable
@@ -247,21 +261,21 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.propertiesPrices, "price")}
+            data={this.getData(this.state.propertiesPrices, 'price')}
             stats={[
               {
-                title: "Mínimo",
-                value: this.state.propertiesPrices.min
+                title: 'Mínimo',
+                value: this.state.propertiesPrices.min,
               },
               {
-                title: "Máximo",
-                value: this.state.propertiesPrices.max
+                title: 'Máximo',
+                value: this.state.propertiesPrices.max,
               },
               {
-                title: "Promedio",
-                value: this.state.propertiesPrices.avg
+                title: 'Promedio',
+                value: this.state.propertiesPrices.avg,
               },
-              { title: "Total", value: this.state.propertiesPrices.sum }
+              { title: 'Total', value: this.state.propertiesPrices.sum },
             ]}
           />
           <SummaryTable
@@ -269,21 +283,21 @@ class Summary extends Component {
             intersect="Precios"
             headers={this.state.locations}
             columns={this.state.floors}
-            data={this.getData(this.state.pricePerMT2, "price")}
+            data={this.getData(this.state.pricePerMT2, 'price')}
             stats={[
               {
-                title: "Mínimo",
-                value: this.state.pricePerMT2.min
+                title: 'Mínimo',
+                value: this.state.pricePerMT2.min,
               },
               {
-                title: "Máximo",
-                value: this.state.pricePerMT2.max
+                title: 'Máximo',
+                value: this.state.pricePerMT2.max,
               },
               {
-                title: "Promedio",
-                value: this.state.pricePerMT2.avg
+                title: 'Promedio',
+                value: this.state.pricePerMT2.avg,
               },
-              { title: "Total", value: this.state.pricePerMT2.sum }
+              { title: 'Total', value: this.state.pricePerMT2.sum },
             ]}
           />
         </CardBody>
