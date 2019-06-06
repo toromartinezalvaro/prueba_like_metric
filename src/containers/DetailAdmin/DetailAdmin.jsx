@@ -53,50 +53,10 @@ export default class Detail extends Component {
     if (!towerId) {
       return;
     }
-
     this.services
       .getDetails(towerId)
       .then(response => {
-        if (response.data.length !== 0) {
-          this.setState({
-            properties: response.data,
-            property: response.data[0],
-            totals: response.data[0].totals,
-            areas: response.data[0].areas.filter(
-              ({ areaType }) => areaType.unit === "MT2"
-            ),
-            aditionals: response.data[0].areas.filter(
-              ({ areaType }) => areaType.unit === "UNT"
-            )
-          });
-          if (this.state.areas) {
-            let areas = this.state.areas.sort((a, b) => {
-              const aInt = parseInt(a.id);
-              const bInt = parseInt(b.id);
-              if (aInt > bInt) return 1;
-              if (aInt < bInt) return -1;
-              return 0;
-            });
-            this.setState({
-              areasTable: areas.reduce(
-                (current, next) => {
-                  current.nameAreas.push(next.areaType.name);
-                  current.priceAreas.push(
-                    <p style={{ alignContent: "center" }}>
-                      {this.formatPrice(next.price)}
-                    </p>
-                  );
-                  return current;
-                },
-                {
-                  nameAreas: [],
-                  priceAreas: []
-                }
-              )
-            });
-            this.setState({ isLoading: false });
-          }
-        }
+        this.assignDefaultValues(response.data);
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
@@ -105,6 +65,55 @@ export default class Detail extends Component {
         });
       });
     this.setState({ currentErrorMessage: "" });
+  };
+
+  assignDefaultValues = data => {
+    if (data.length !== 0) {
+      this.setState({
+        properties: data,
+        property: data[0],
+        totals: data[0].totals,
+        areas: data[0].areas.filter(({ areaType }) => areaType.unit === "MT2"),
+        aditionals: data[0].areas.filter(
+          ({ areaType }) => areaType.unit === "UNT"
+        )
+      });
+      this.assignTableData();
+      this.setState({ isLoading: false });
+    }
+  };
+
+  sortData = data => {
+    return data.sort((a, b) => {
+      const aInt = parseInt(a.id);
+      const bInt = parseInt(b.id);
+      if (aInt > bInt) return 1;
+      if (aInt < bInt) return -1;
+      return 0;
+    });
+  };
+
+  assignTableData = data => {
+    if (this.state.areas) {
+      let areas = this.sortData(this.state.areas);
+      this.setState({
+        areasTable: areas.reduce(
+          (current, next) => {
+            current.nameAreas.push(next.areaType.name);
+            current.priceAreas.push(
+              <p style={{ alignContent: "center" }}>
+                {this.formatPrice(next.price)}
+              </p>
+            );
+            return current;
+          },
+          {
+            nameAreas: [],
+            priceAreas: []
+          }
+        )
+      });
+    }
   };
 
   formatPrice = value => {
@@ -137,13 +146,7 @@ export default class Detail extends Component {
   cells = properties => {
     return properties.map(property => {
       const handleOnClick = () => {
-        let areas = property.areas.sort((a, b) => {
-          const aInt = parseInt(a.id);
-          const bInt = parseInt(b.id);
-          if (aInt > bInt) return 1;
-          if (aInt < bInt) return -1;
-          return 0;
-        });
+        let areas = this.sortData(property.areas);
         if (
           this.state.id2 !== property.id &&
           this.state.id !== property.id &&

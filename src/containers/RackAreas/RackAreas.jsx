@@ -57,71 +57,79 @@ export default class RackAreas extends Component {
           this.state.maxLocation
         );
       }
-
-      if (this.state.areas) {
-        let objectAreas = [];
-        let objectTotals = [];
-        this.state.areas.forEach(property => {
-          if (property.id !== undefined) {
-            objectTotals = this.asignValues(property, arrayEmpty);
-          } else {
-            const ids = property.totalAreas.map(area => {
-              if (this.state.maxFloor > 0) {
-                arrayEmpty = this.createNullMatrix(
-                  this.state.maxFloor - this.state.minFloor + 1,
-                  this.state.maxLocation
-                );
-              }
-              this.state.areas.forEach(property => {
-                if (property.id !== undefined) {
-                  objectAreas = this.asignValues(property, arrayEmpty, area.id);
-                } else {
-                }
-              });
-              return {
-                id: area.id,
-                areas: objectAreas.array,
-                name: objectAreas.name,
-                min: area.mts2.min,
-                max: area.mts2.max,
-                avg: area.mts2.avg
-              };
-            });
-            this.setState({ arrayAreas: ids });
-          }
-        });
-        let total = 0;
-        let length = 0;
-        let min = 0;
-        let max = 0;
-        let avg = 0;
-        objectTotals.array.map(area => {
-          total = area.reduce((current, next) => {
-            current = current + next.area;
-            if (length === 0) {
-              min = next.area;
-            }
-            if (min > next.area) {
-              min = next.area;
-            } else if (max < next.area) {
-              max = next.area;
-            }
-            length++;
-            return current;
-          }, 0);
-        });
-        avg = total / length;
-        this.setState({
-          mts2: objectTotals.array,
-          totals: {
-            min: min,
-            max: max,
-            avg: avg
-          }
-        });
-      }
+      this.assignTableValues(arrayEmpty)
     });
   };
+
+  assignTableValues = arrayEmpty => {
+    
+    if (this.state.areas) {
+      let objectAreas = [];
+      let objectTotals = [];
+      this.state.areas.forEach(property => {
+        if (property.id !== undefined) {
+          objectTotals = this.asignValues(property, arrayEmpty);
+        } else {
+          const ids = property.totalAreas.map(area => {
+            if (this.state.maxFloor > 0) {
+              arrayEmpty = this.createNullMatrix(
+                this.state.maxFloor - this.state.minFloor + 1,
+                this.state.maxLocation
+              );
+            }
+            this.state.areas.forEach(property => {
+              if (property.id !== undefined) {
+                objectAreas = this.asignValues(property, arrayEmpty, area.id);
+              } else {
+              }
+            });
+            return {
+              id: area.id,
+              areas: objectAreas.array,
+              name: objectAreas.name,
+              min: area.mts2.min,
+              max: area.mts2.max,
+              avg: area.mts2.avg
+            };
+          });
+          this.setState({ arrayAreas: ids });
+        }
+      });
+      this.assignTableHeatMapValues(objectTotals)
+    }
+  }
+  
+  assignTableHeatMapValues = objectTotals =>  {
+    let total = 0;
+      let length = 0;
+      let min = 0;
+      let max = 0;
+      let avg = 0;
+      objectTotals.array.map(area => {
+        total = area.reduce((current, next) => {
+          current = current + next.area;
+          if (length === 0) {
+            min = next.area;
+          }
+          if (min > next.area) {
+            min = next.area;
+          } else if (max < next.area) {
+            max = next.area;
+          }
+          length++;
+          return current;
+        }, 0);
+      });
+      avg = total / length;
+      this.setState({
+        mts2: objectTotals.array,
+        totals: {
+          min: min,
+          max: max,
+          avg: avg
+        }
+      });
+  }
 
   asignValues = (area, array, id) => {
     let name = "";
