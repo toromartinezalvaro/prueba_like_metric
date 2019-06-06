@@ -7,8 +7,8 @@ export const DashboardRoutes = {
   user: '/user',
   summary: { value: '/summary/', withIndicator: '/summary/:towerId' },
   detailAdmin: { value: '/detailAdmin/' , withIndicator: '/detailAdmin/:towerId' },
-  detail: { value: '/detail/' , withIndicator: '/detail/:towerId' }
-
+  detail: { value: '/detail/' , withIndicator: '/detail/:towerId' },
+  rackAreas: { value: '/rackAreas/' , withIndicator: '/rackAreas/:towerId' }
 }
 
 export const ProjectRoutes = {

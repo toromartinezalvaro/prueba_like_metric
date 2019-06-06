@@ -9,6 +9,8 @@ import styles from "../DetailAdmin/DetailAdmin.module.scss";
 import variables from "../../assets/styles/variables.scss";
 import Table from "../../components/UI/Table/Table";
 import NumberFormat from "react-number-format";
+import errorHandling from "../../services/commons/errorHelper";
+import Error from "../../components/UI/Error/Error";
 
 export default class Detail extends Component {
   constructor(props) {
@@ -43,6 +45,7 @@ export default class Detail extends Component {
 
   componentDidMount() {
     this.getDetails();
+    this.setState({ isLoading: true });
   }
 
   getDetails = () => {
@@ -50,41 +53,67 @@ export default class Detail extends Component {
     if (!towerId) {
       return;
     }
-
-    this.services.getDetails(towerId).then(response => {
-      if (response.data.length !== 0) {
+    this.services
+      .getDetails(towerId)
+      .then(response => {
+        this.assignDefaultValues(response.data);
+      })
+      .catch(error => {
+        let errorHelper = errorHandling(error);
         this.setState({
-          properties: response.data,
-          property: response.data[0],
-          totals: response.data[0].totals,
-          areas: response.data[0].areas.filter(
-            ({ areaType }) => areaType.unit === "MT2"
-          ),
-          aditionals: response.data[0].areas.filter(
-            ({ areaType }) => areaType.unit === "UNT"
-          ),
+          currentErrorMessage: errorHelper.message
+        });
+      });
+    this.setState({ currentErrorMessage: "" });
+  };
 
-          id: response.data[0].id
-        });
-        this.setState({
-          areasTable: this.state.areas.reduce(
-            (current, next) => {
-              current.nameAreas.push(next.areaType.name);
-              current.priceAreas.push(
-                <p style={{ alignContent: "center" }}>
-                  {this.formatPrice(next.price)}
-                </p>
-              );
-              return current;
-            },
-            {
-              nameAreas: [],
-              priceAreas: []
-            }
-          )
-        });
-      }
+  assignDefaultValues = data => {
+    if (data.length !== 0) {
+      this.setState({
+        properties: data,
+        property: data[0],
+        totals: data[0].totals,
+        areas: data[0].areas.filter(({ areaType }) => areaType.unit === "MT2"),
+        aditionals: data[0].areas.filter(
+          ({ areaType }) => areaType.unit === "UNT"
+        )
+      });
+      this.assignTableData();
+      this.setState({ isLoading: false });
+    }
+  };
+
+  sortData = data => {
+    return data.sort((a, b) => {
+      const aInt = parseInt(a.id);
+      const bInt = parseInt(b.id);
+      if (aInt > bInt) return 1;
+      if (aInt < bInt) return -1;
+      return 0;
     });
+  };
+
+  assignTableData = data => {
+    if (this.state.areas) {
+      let areas = this.sortData(this.state.areas);
+      this.setState({
+        areasTable: areas.reduce(
+          (current, next) => {
+            current.nameAreas.push(next.areaType.name);
+            current.priceAreas.push(
+              <p style={{ alignContent: "center" }}>
+                {this.formatPrice(next.price)}
+              </p>
+            );
+            return current;
+          },
+          {
+            nameAreas: [],
+            priceAreas: []
+          }
+        )
+      });
+    }
   };
 
   formatPrice = value => {
@@ -101,17 +130,15 @@ export default class Detail extends Component {
   printAditionals = data => {
     return data.map(aditional => {
       return (
-        (
-          <Aditionals
-            Titulo={aditional.areaType.name}
-            Titulo1="Cantidad"
-            Titulo2="Precio"
-            Titulo3="Aditionals"
-            Value1={aditional.measure}
-            Value2={this.formatPrice(aditional.price)}
-            Value3={this.formatPrice(aditional.unitPrice)}
-          />
-        )
+        <Aditionals
+          Titulo={aditional.areaType.name}
+          Titulo1="Cantidad"
+          Titulo2="Precio"
+          Titulo3="Aditionals"
+          Value1={aditional.measure}
+          Value2={this.formatPrice(aditional.price)}
+          Value3={this.formatPrice(aditional.unitPrice)}
+        />
       );
     });
   };
@@ -119,6 +146,7 @@ export default class Detail extends Component {
   cells = properties => {
     return properties.map(property => {
       const handleOnClick = () => {
+        let areas = this.sortData(property.areas);
         if (
           this.state.id2 !== property.id &&
           this.state.id !== property.id &&
@@ -138,7 +166,7 @@ export default class Detail extends Component {
               )
             }),
             this.setState({
-              areasTable2: property.areas.reduce(
+              areasTable2: areas.reduce(
                 (current, next) => {
                   if (next.areaType.unit === "MT2") {
                     current.nameAreas.push(next.areaType.name);
@@ -203,6 +231,9 @@ export default class Detail extends Component {
   render() {
     return (
       <div>
+        {this.state.currentErrorMessage !== "" ? (
+          <Error message={this.state.currentErrorMessage} />
+        ) : null}
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
@@ -253,7 +284,7 @@ export default class Detail extends Component {
                         ]}
                         data={[this.state.areasTable.priceAreas]}
                         style={{ padding: "0em 1.5em" }}
-                        width={{width: "100px"}}
+                        width={{ width: "100px" }}
                       />
                     </div>
                   </CardBody>
@@ -287,7 +318,7 @@ export default class Detail extends Component {
                         ]}
                         data={[this.state.areasTable2.priceAreas]}
                         style={{ padding: "0em 1.5em" }}
-                        width={{width: "100px"}}
+                        width={{ width: "100px" }}
                       />
                     </div>
                   </CardBody>
