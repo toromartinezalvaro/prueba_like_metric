@@ -24,6 +24,7 @@ class Area extends Component {
     areasNames: [],
     properties: [],
     data: [],
+    types: [],
     hidden: true,
     editingAreaType: false,
     deleteAreaTypeId: null,
@@ -77,24 +78,37 @@ class Area extends Component {
     }
   };
 
-  processHeaders = headers => {
-    return headers.map(areaType => (
-      <div
-        onDoubleClick={() => {
-          this.toggleAreaTypeModal(areaType);
-        }}
-      >
-        <EditableHeader
-          onClick={() => {
-            this.toggleDeleteModal(areaType.id);
+  processHeaders = (headers, totals) => {
+    let totalArea = 0;
+    return headers.map(areaType => {
+      console.log("totals", totals);
+      if (totals !== undefined && totals !== []) {
+        totalArea = totals.reduce((current, total) => {
+          console.log("total",total.total)
+          console.log("areaType.id",areaType.id)
+          total.type === areaType.id ? current += total.total : current = current;
+          return current;
+        }, 0);
+      }
+      console.log(totalArea);
+      return (
+        <div
+          onDoubleClick={() => {
+            this.toggleAreaTypeModal(areaType);
           }}
-          canBeDeleted={areaType.name.toLowerCase() === "interior"}
         >
-          {`${areaType.name} ${areaType.measurementUnit}`}
-          <p>Prueba</p>
-        </EditableHeader>
-      </div>
-    ));
+          <EditableHeader
+            onClick={() => {
+              this.toggleDeleteModal(areaType.id);
+            }}
+            canBeDeleted={areaType.name.toLowerCase() === "interior"}
+          >
+            {`${areaType.name} ${areaType.measurementUnit}`}
+            <p>Total: {totalArea}</p>
+          </EditableHeader>
+        </div>
+      );
+    });
   };
 
   toggleDeleteModal = id => {
@@ -125,17 +139,36 @@ class Area extends Component {
     this.services
       .getAreas(towerId)
       .then(response => {
+        this.setState({ data: response.data.propertiesAreas });
         console.log("response" + response);
+        console.log("this.state.types", this.state.types);
+        let totalAreas = [];
+        let types = [];
+        if (this.state.data) {
+          totalAreas.push(
+            this.state.data.map(data => {
+              let areas = data.map(area => {
+                if (!types.find(type => type.type === area.type)) {
+                  types.push({ type: area.type, total: area.measure });
+                } else {
+                  let objIndex = types.findIndex(obj => obj.type === area.type);
+                  types[objIndex].total += area.measure;
+                }
+                return area.measure;
+              });
+              return areas;
+            })
+          );
+        }
+        this.setState({ types: types });
         this.setState({
-          areasNames: this.processHeaders(response.data.areaTypes),
+          areasNames: this.processHeaders(
+            response.data.areaTypes,
+            this.state.types
+          ),
           properties: response.data.properties,
-          data: response.data.propertiesAreas,
           isLoading: false
         });
-        let hola = []
-         if(this.state.data) {hola =this.state.data.filter(data => data)}
-        console.log(hola)
-
         let showFloating = response.data.propertiesAreas.find(arrayAreas => {
           let anyArea = arrayAreas.find(area => {
             return area !== null && area.measure !== 0;
