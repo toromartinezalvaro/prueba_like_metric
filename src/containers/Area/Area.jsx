@@ -81,16 +81,14 @@ class Area extends Component {
   processHeaders = (headers, totals) => {
     let totalArea = 0;
     return headers.map(areaType => {
-      console.log("totals", totals);
       if (totals !== undefined && totals !== []) {
         totalArea = totals.reduce((current, total) => {
-          console.log("total",total.total)
-          console.log("areaType.id",areaType.id)
-          total.type === areaType.id ? current += total.total : current = current;
+          total.type === areaType.id
+            ? (current += total.total)
+            : (current = current);
           return current;
         }, 0);
       }
-      console.log(totalArea);
       return (
         <div
           onDoubleClick={() => {
@@ -103,8 +101,17 @@ class Area extends Component {
             }}
             canBeDeleted={areaType.name.toLowerCase() === "interior"}
           >
+            <p
+              style={{
+                marginBlockStart: "0px",
+                marginBlockEnd: "0px",
+                lineHeight: "0px",
+                marginTop:"18px"
+              }}
+            >
+              Total: {totalArea}
+            </p>
             {`${areaType.name} ${areaType.measurementUnit}`}
-            <p>Total: {totalArea}</p>
           </EditableHeader>
         </div>
       );
@@ -139,9 +146,9 @@ class Area extends Component {
     this.services
       .getAreas(towerId)
       .then(response => {
+        console.log("response",response)
         this.setState({ data: response.data.propertiesAreas });
         console.log("response" + response);
-        console.log("this.state.types", this.state.types);
         let totalAreas = [];
         let types = [];
         if (this.state.data) {
