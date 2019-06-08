@@ -10,7 +10,7 @@ import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
 import DetailAdmin from "../DetailAdmin/DetailAdmin";
 import Detail from "../Detail/Detail";
-
+import RackAreas from "../RackAreas/RackAreas";
 import SecureContainer from "../../HOC/Common/SecureContainer";
 import TowerServices from "../../services/Towers/TowerServices";
 import Summary from "../Summary/Summary";
@@ -111,6 +111,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.detail.withIndicator}
           exact
           component={SecureContainer(Detail)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.rackAreas.withIndicator}
+          exact
+          component={SecureContainer(RackAreas)}
         />
       </DashboardLayout>
     );

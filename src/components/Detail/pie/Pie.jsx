@@ -89,6 +89,8 @@ const pie = props => {
         innerRadius={0.5}
         enableRadialLabels={true}
         enableSlicesLabels={true}
+        radialLabelsSkipAngle={5}
+        slicesLabelsSkipAngle={5}
         defs={[
           {
               id: 'dots',
