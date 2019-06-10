@@ -14,6 +14,7 @@ import RackAreas from "../RackAreas/RackAreas";
 import SecureContainer from "../../HOC/Common/SecureContainer";
 import TowerServices from "../../services/Towers/TowerServices";
 import Summary from "../Summary/Summary";
+import Clustering from "../Clustering/Clustering";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -116,6 +117,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.rackAreas.withIndicator}
           exact
           component={SecureContainer(RackAreas)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.clustering.withIndicator}
+          exact
+          component={SecureContainer(Clustering)}
         />
       </DashboardLayout>
     );

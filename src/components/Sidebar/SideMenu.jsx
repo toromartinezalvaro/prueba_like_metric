@@ -74,7 +74,12 @@ const sideMenu = props => {
           "fas fa-book-open",
           "Detalle User"
         )}
-        
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.clustering.value,
+          "fas fa-object-group",
+          "Agrupamiento"
+        )}
       </div>
     </div>
   );

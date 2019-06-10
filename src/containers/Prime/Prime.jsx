@@ -49,7 +49,8 @@ class Prime extends Component {
       }
       this.setState({
         floorsNames: floorsNames,
-        altitude: altitude
+        altitude: altitude,
+        isLoading: false
       });
     });
     this.services.getLocationPrimes(towerId).then(response => {
