@@ -2,12 +2,12 @@ import PrimeServiceDefinitions from "./PrimeServiceDefinitions";
 import Services from "../services";
 
 export default class PrimeServices extends Services {
-  getAltitudePrimes() {
-    return this.get(PrimeServiceDefinitions.altitude(""));
+  getAltitudePrimes(towerId) {
+    return this.get(PrimeServiceDefinitions.altitudeByTower(towerId));
   }
 
-  getLocationPrimes() {
-    return this.get(PrimeServiceDefinitions.location(""));
+  getLocationPrimes(towerId) {
+    return this.get(PrimeServiceDefinitions.locationByTower(towerId));
   }
 
   putAltitudePrimesById(primeId, data) {

@@ -10,7 +10,7 @@ import Areas from "../Area/Area";
 import Prime from "../Prime/Prime";
 import DetailAdmin from "../DetailAdmin/DetailAdmin";
 import Detail from "../Detail/Detail";
-
+import RackAreas from "../RackAreas/RackAreas";
 import SecureContainer from "../../HOC/Common/SecureContainer";
 import TowerServices from "../../services/Towers/TowerServices";
 import Summary from "../Summary/Summary";
@@ -26,15 +26,13 @@ class Dashboard extends Component {
   };
 
   componentDidMount() {
-    const towerId = this.props.location.pathname.split("/")[4];
-    const projectId = this.props.location.pathname.split("/")[3];
+    const towerId = this.props.location.pathname.split("/")[3];
 
-    if (towerId && projectId && this.state.tower === null) {
+    if (towerId && this.state.tower === null) {
       this.services
-        .getTower(towerId, projectId)
+        .getTower(towerId)
         .then(response => {
-          const tower = { ...response.data, projectId: projectId };
-          this.setState({ tower: tower });
+          this.setState({ tower: response.data });
         })
         .catch(error => {
           console.log("ERROR >", error);
@@ -113,6 +111,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.detail.withIndicator}
           exact
           component={SecureContainer(Detail)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.rackAreas.withIndicator}
+          exact
+          component={SecureContainer(RackAreas)}
         />
       </DashboardLayout>
     );

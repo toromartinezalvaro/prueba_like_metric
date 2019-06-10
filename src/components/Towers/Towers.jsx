@@ -4,7 +4,6 @@ import styles from "./Towers.module.scss";
 import Icon from "../../assets/icons/Icon";
 
 const towerItems = props => {
-  
   var items = towers => {
     return towers.map(tower => {
       return itemFromTower(tower);
@@ -13,11 +12,21 @@ const towerItems = props => {
 
   var itemFromTower = tower => {
     return (
-      <div className={styles.ItemContainer} key={tower.id}>
+      <div
+        className={styles.ItemContainer}
+        key={tower.id}
+        onClick={event => {
+          event.stopPropagation();
+          props.openTower(tower);
+        }}
+      >
         <div className={styles.DescriptionItem}>
           <div
             className={styles.Remove}
-            onClick={() => props.removeTower(tower.id)}
+            onClick={event => {
+              event.stopPropagation();
+              props.removeTower(tower.id);
+            }}
           >
             <Icon name="fa-trash-alt" />
           </div>
@@ -26,7 +35,7 @@ const towerItems = props => {
           </div>
         </div>
         <div className={styles.Item}>
-          <div onClick={() => {props.openTower(tower)}}>
+          <div>
             <p>{tower.name}</p>
           </div>
         </div>

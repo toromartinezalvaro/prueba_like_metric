@@ -6,7 +6,7 @@ import TowerServices from "../../../services/Towers/TowerServices";
 
 const FloatingButton = props => {
   return (
-    <Link to={DashboardRoutes.base + "/"+ props.route.toLowerCase() + "/" + props.projectId + "/" + props.towerId}>
+    <Link to={DashboardRoutes.base + "/"+ props.route.toLowerCase() + "/" + props.towerId}>
       <button className={styles.float} >
         Ir a {props.children} <i className="fas fa-angle-double-right" />
       </button>

@@ -5,7 +5,7 @@ import Input from "../../UI/Input/Input";
 import errorHandling from "../../../services/commons/errorHelper";
 import Error from "../../../components/UI/Error/Error";
 
-const prices = ({ areaTypeId, measurementUnit, services }) => {
+const prices = ({ areaTypeId, measurementUnit, services, towerId }) => {
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
   const [currentErrorMessage, setCurrentErrorMessage] = useState();
@@ -36,9 +36,8 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
   };
 
   useEffect(() => {
-    // Component did mount
     services
-      .getPrices("ff234f80-7b38-11e9-b198-3de9b761aac6", areaTypeId)
+      .getPrices(towerId, areaTypeId)
       .then(res => {
         if (res.data.length > 0) {
           res.data = _.sortBy(res.data, o => o.measure);
@@ -56,7 +55,7 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
                     updateAreaPrice(area.id, target.value);
                   }}
                   validations={[]}
-                  style={{ width: "75px", fontSize: "16px" }}
+                   style={{ width: "75px" }}
                   value={area.price}
                 />
               ];
@@ -94,12 +93,13 @@ const prices = ({ areaTypeId, measurementUnit, services }) => {
             <div>
               {console.log("prices", prices)}
               <Input
+                mask="currency"
                 onChange={target => {
                   updateAreaTypePrice(areaTypeId, target.value);
                 }}
                 value={prices[0]}
                 validations={[]}
-                style={{ width: "75px", fontSize: "16px" }}
+                 style={{ width: "75px" }}
               />
             </div>
           </div>

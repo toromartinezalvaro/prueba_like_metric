@@ -28,7 +28,13 @@ export default class Detail extends Component {
   }
 
   getDetails = () => {
-    this.services.getDetails().then(response => {
+    const towerId = this.props.match.params.towerId;
+    console.log("towerID ->> ", towerId)
+    if (!towerId) {
+      return;
+    }
+    console.log("towerID ->> ", towerId)
+    this.services.getDetails(towerId).then(response => {
       if (response.data.length !== 0) {
         this.setState({
           properties: response.data,
@@ -42,14 +48,11 @@ export default class Detail extends Component {
   cells = properties => {
     return properties.map(property => {
       const handleOnClick = () => {
-          return (
-            this.setState({
-              
-              property: property,
-              totals: property.totals
-            })
-          );
-        } 
+        return this.setState({
+          property: property,
+          totals: property.totals
+        });
+      };
       return (
         <div key={property.nomenclature} onClick={handleOnClick}>
           <Property

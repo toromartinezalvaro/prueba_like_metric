@@ -51,6 +51,7 @@ class Area extends Component {
             areaTypeId={this.state.areaTypeId}
             measurementUnit={this.state.areaMeasurementUnit}
             services={this.services}
+            towerId={this.props.match.params.towerId}
           />
         </Fragment>
       );
@@ -115,8 +116,13 @@ class Area extends Component {
   }
 
   updateTableInformation = () => {
+    const towerId = this.props.match.params.towerId;
+    if (!towerId) {
+      return;
+    }
+
     this.services
-      .getAreas()
+      .getAreas(towerId)
       .then(response => {
         console.log("response" + response);
         this.setState({
@@ -201,7 +207,7 @@ class Area extends Component {
         id: this.state.areaTypeId,
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
-        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6"
+        towerId: this.props.match.params.towerId
       })
       .then(data => {
         console.log(data);
@@ -222,7 +228,7 @@ class Area extends Component {
       .postArea({
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
-        towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6"
+        towerId: this.props.match.params.towerId
       })
       .then(data => {
         console.log(data);
@@ -243,7 +249,7 @@ class Area extends Component {
     currentData[rowIndex][cellIndex].measure = value;
     this.services
       .putAreasByTowerId(
-        "ff234f80-7b38-11e9-b198-3de9b761aac6",
+        this.props.match.params.towerId,
         currentData[rowIndex][cellIndex]
       )
       .then(response => {
@@ -264,7 +270,7 @@ class Area extends Component {
       return row.map((e2, cellIndex) => (
         <Input
           mask="number"
-          style={{ width: "75px", fontSize: "16px" }}
+          style={{ width: "75px" }}
           validations={[
             {
               fn: value => {

@@ -28,7 +28,7 @@ export default class Towers extends Component {
   openTowerHandler = tower => {
     tower = {...tower, projectId: this.props.match.params.projectId  }
     this.props.additionalProps.changeTower(tower)
-    this.props.history.push(DashboardRoutes.base + DashboardRoutes.building.value + this.props.match.params.projectId + "/"+ tower.id)
+    this.props.history.push(DashboardRoutes.base + DashboardRoutes.building.value + tower.id)
   };
 
   createTowerHandler = () => {
@@ -152,7 +152,7 @@ export default class Towers extends Component {
             name="newTitleTower"
             onChange={this.onChange}
             validations={[]}
-            style={{ width: "75px", fontSize: "16px" }}
+             style={{ width: "75px" }}
             value={this.state.newTitleTower}
           />
         </div>
@@ -162,7 +162,7 @@ export default class Towers extends Component {
             name="newDescriptionTower"
             onChange={this.onChange}
             validations={[]}
-            style={{ width: "75px", fontSize: "16px" }}
+             style={{ width: "75px" }}
             value={this.state.newDescriptionTower}
           />
         </div>

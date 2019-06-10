@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import _ from "lodash"
 import Input from "../../components/UI/Input/Input";
 import Locations from "../../components/Primes/Locations";
 import Altitudes from "../../components/Primes/Altitudes";
@@ -26,7 +27,12 @@ class Prime extends Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    this.services.getAltitudePrimes().then(response => {
+    const towerId = this.props.match.params.towerId
+    if (!towerId) {
+      return
+    }
+
+    this.services.getAltitudePrimes(towerId).then(response => {
       const floorsNames = [];
 
       const altitude = { ...this.state.altitude };
@@ -47,7 +53,7 @@ class Prime extends Component {
         altitude: altitude
       });
     });
-    this.services.getLocationPrimes().then(response => {
+    this.services.getLocationPrimes(towerId).then(response => {
       const location = { ...this.state.location };
       location.prices = response.data.primes;
       location.unit = response.data.unit;
@@ -69,7 +75,7 @@ class Prime extends Component {
       const inputs = this.state.altitude.prices.map(prime => [
         <Input
           mask="currency"
-          style={{ width: "75px", fontSize: "16px" }}
+           style={{ width: "75px" }}
           validations={[]}
           onChange={target => {
             this.priceHandler("ALT", prime.id, parseInt(target.value));
@@ -85,7 +91,7 @@ class Prime extends Component {
             return (
               <Input
                 mask="currency"
-                style={{ width: "75px", fontSize: "16px" }}
+                 style={{ width: "75px" }}
                 value={prime.price}
                 validations={[]}
                 onChange={target => {
@@ -98,7 +104,7 @@ class Prime extends Component {
           } else {
             return (
               <Input
-                style={{ width: "75px", fontSize: "16px" }}
+                 style={{ width: "75px" }}
                 placeholder="-"
                 disable
               />
@@ -138,7 +144,7 @@ class Prime extends Component {
     if (type === "ALT") {
       this.services
         .putAltitudePrimeUnit({
-          towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
+          towerId: this.props.match.params.towerId,
           unit: value
         })
         .then(response => {
@@ -152,7 +158,7 @@ class Prime extends Component {
     } else if (type === "LCT") {
       this.services
         .putLocationPrimeUnit({
-          towerId: "ff234f80-7b38-11e9-b198-3de9b761aac6",
+          towerId: this.props.match.params.towerId,
           unit: value
         })
         .then(response => {
@@ -177,7 +183,7 @@ class Prime extends Component {
         />
         <Locations
           unitHandler={this.unitHandler}
-          headers={[...Array(this.state.location.prices[0].length).keys()].map(
+          headers={[...Array(_.defaultTo(this.state.location.prices[0], []).length).keys()].map(
             o => o + 1
           )}
           floorsNames={this.state.floorsNames}

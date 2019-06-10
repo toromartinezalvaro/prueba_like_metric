@@ -15,8 +15,8 @@ export default class TowerServices extends Services {
     return this.delete(TowerServiceDefinitions.tower, data)
   }
 
-  getTower(towerId, projectId) {
-    return this.get(TowerServiceDefinitions.singleTower(towerId, projectId))
+  getTower(towerId) {
+    return this.get(TowerServiceDefinitions.singleTower(towerId))
   }
 
 }

@@ -8,6 +8,7 @@ const input = props => {
     borderBottomColor: "#FF4040"
   };
 
+  const [clearValue, setClearValue] = useState(props.clearValue);
   const [dirty, setDirty] = useState(false);
   const [localValue, setLocalValue] = useState();
   const [errorMessages, setErrorMessages] = useState("");
@@ -16,7 +17,7 @@ const input = props => {
   const validation = value => {
     setErrorMessages("");
     return props.validations.reduce((current, next) => {
-      const val = next.fn(value);
+      const val = next.fn(cleanValue(value));
       if (!val) {
         setErrorMessages(next.message);
       }
@@ -42,6 +43,9 @@ const input = props => {
           value: cleanValue(value)
         });
       }
+      if (clearValue) {
+        setLocalValue(undefined);
+      }
     } else {
       setLocalValue(props.value);
     }
@@ -53,6 +57,10 @@ const input = props => {
 
   const cleanCurrencyMask = value => {
     return cleanNumberMask(value).replace("$", "");
+  };
+
+  const cleanPercentageMask = value => {
+    return cleanNumberMask(value).replace("%", "");
   };
 
   const handleFocus = event => {
@@ -67,6 +75,8 @@ const input = props => {
       return cleanNumberMask(value);
     } else if (props.mask === "currency") {
       return cleanCurrencyMask(value);
+    } else if (props.mask === "percentage") {
+      return cleanPercentageMask(value);
     } else {
       return value;
     }
@@ -84,11 +94,14 @@ const input = props => {
 
   return (
     <div className={styles.Container}>
-      {props.mask === "currency" || props.mask === "number" ? (
+      {props.mask === "currency" ||
+      props.mask === "number" ||
+      props.mask === "percentage" ? (
         <NumberFormat
           data-tip={props.tooltip}
           thousandSeparator={true}
           prefix={props.mask === "currency" ? "$" : ""}
+          suffix={props.mask === "percentage" ? "%" : ""}
           name={props.name}
           type={props.type === undefined ? "text" : props.type}
           style={
