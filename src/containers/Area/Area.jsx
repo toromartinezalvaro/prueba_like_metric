@@ -10,6 +10,7 @@ import Prices from "../../components/Area/Prices/Prices";
 import errorHandling from "../../services/commons/errorHelper";
 import Error from "../../components/UI/Error/Error";
 import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import NumberFormat from "react-number-format";
 
 class Area extends Component {
   constructor(props) {
@@ -23,14 +24,15 @@ class Area extends Component {
     areaMeasurementUnit: "MT2",
     areasNames: [],
     properties: [],
+    areaTypes: [],
     data: [],
-    types: [],
     hidden: true,
     editingAreaType: false,
     deleteAreaTypeId: null,
     hideDeleteModal: true,
     currentErrorMessage: "",
-    showFloatingButton: false
+    showFloatingButton: false,
+    update: true
   };
 
   modalContent = () => {
@@ -83,7 +85,7 @@ class Area extends Component {
     return headers.map(areaType => {
       if (totals !== undefined && totals !== []) {
         totalArea = totals.reduce((current, total) => {
-          total.type === areaType.id
+          total.id === areaType.id
             ? (current += total.total)
             : (current = current);
           return current;
@@ -106,10 +108,17 @@ class Area extends Component {
                 marginBlockStart: "0px",
                 marginBlockEnd: "0px",
                 lineHeight: "0px",
-                marginTop:"18px"
+                marginTop: "18px"
               }}
             >
-              Total: {totalArea}
+              Total:{" "}
+              {
+                <NumberFormat
+                  value={totalArea}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                />
+              }
             </p>
             {`${areaType.name} ${areaType.measurementUnit}`}
           </EditableHeader>
@@ -137,42 +146,52 @@ class Area extends Component {
     this.setState({ isLoading: true });
   }
 
+  getTotalHeaders(arrayAreas, types) {
+    let arrayTypes = types;
+    arrayAreas.forEach(area => {
+      if (arrayTypes !== undefined) {
+        let index = arrayTypes.findIndex(obj => obj.id === area.type);
+        if (arrayTypes[index] !== undefined) {
+          arrayTypes[index].total += area.measure;
+        }
+      }
+    });
+    return arrayTypes;
+  }
+
   updateTableInformation = () => {
     const towerId = this.props.match.params.towerId;
     if (!towerId) {
       return;
     }
-
     this.services
       .getAreas(towerId)
       .then(response => {
-        console.log("response",response)
-        this.setState({ data: response.data.propertiesAreas });
-        console.log("response" + response);
-        let totalAreas = [];
-        let types = [];
-        if (this.state.data) {
-          totalAreas.push(
-            this.state.data.map(data => {
-              let areas = data.map(area => {
-                if (!types.find(type => type.type === area.type)) {
-                  types.push({ type: area.type, total: area.measure });
-                } else {
-                  let objIndex = types.findIndex(obj => obj.type === area.type);
-                  types[objIndex].total += area.measure;
-                }
-                return area.measure;
-              });
-              return areas;
-            })
-          );
-        }
-        this.setState({ types: types });
+        console.log("response", response);
         this.setState({
-          areasNames: this.processHeaders(
-            response.data.areaTypes,
-            this.state.types
-          ),
+          data: response.data.propertiesAreas,
+          types: undefined
+        });
+        console.log("response" + response);
+        this.state.data.forEach(arrayAreas => {
+          if (arrayAreas !== undefined) {
+            let types = [];
+            types = arrayAreas.map(area => {
+              return { id: area.type, total: 0 };
+            });
+            if (this.state.types === undefined && types.length !== 0) {
+              this.setState({ types: types });
+            }
+
+            let totalHeaders = this.getTotalHeaders(
+              arrayAreas,
+              this.state.types
+            );
+              this.setState({ types: totalHeaders });
+          }
+        });
+        this.setState({
+          areaTypes: response.data.areaTypes,
           properties: response.data.properties,
           isLoading: false
         });
@@ -301,6 +320,7 @@ class Area extends Component {
         .then(response => {
           console.log(response);
           this.setState({ data: currentData, showFloatingButton: true });
+          this.updateTableInformation();
         })
         .catch(error => {
           let errorHelper = errorHandling(error);
@@ -349,7 +369,10 @@ class Area extends Component {
               <Table
                 intersect={"Areas"}
                 headers={[
-                  ...this.state.areasNames,
+                  ...this.processHeaders(
+                    this.state.areaTypes,
+                    this.state.types
+                  ),
                   <IconButton
                     onClick={() => {
                       this.toggleAreaTypeModal();

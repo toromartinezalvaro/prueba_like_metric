@@ -6,6 +6,9 @@ class table extends Component {
     super(props);
     this.wrapperTop = React.createRef();
     this.wrapperBottom = React.createRef();
+    this.divTop = React.createRef();
+    this.divBot = React.createRef();
+
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
   state = {
@@ -18,12 +21,9 @@ class table extends Component {
 
   componentDidUpdate() {
     if (this.wrapperTop.current) {
-      if (
-        this.wrapperTop.current.scrollWidth !==
-        this.wrapperBottom.current.scrollWidth
-      ) {
+      if (this.divTop.current.scrollWidth !== this.divBot.current.scrollWidth) {
         this.setState({
-          width: this.wrapperBottom.current.scrollWidth
+          width: this.divBot.current.scrollWidth
         });
       }
       if (this.state.height === 0) {
@@ -54,25 +54,23 @@ class table extends Component {
   handleScrollTop = event => {
     if (!this.state.isSyncingTopScroll) {
       this.setState({ isSyncingBottomScroll: true });
-      this.wrapperBottom.current.scrollLeft = this.wrapperTop.current.scrollLeft;
+      this.divBot.current.scrollLeft = this.wrapperTop.current.scrollLeft;
     }
     this.setState({ isSyncingTopScroll: false });
   };
 
   handleScrollBottom = event => {
-    if (this.wrapperTop.current) {
-      if (!this.state.isSyncingBottomScroll) {
-        this.setState({ isSyncingTopScroll: true });
-        this.wrapperTop.current.scrollLeft = this.wrapperBottom.current.scrollLeft;
-      }
-      this.setState({ isSyncingBottomScroll: false });
+    if (!this.state.isSyncingBottomScroll) {
+      this.setState({ isSyncingTopScroll: true });
+      this.wrapperTop.current.scrollLeft = this.divBot.current.scrollLeft;
     }
+    this.setState({ isSyncingBottomScroll: false });
   };
   render() {
     return (
       <Fragment>
         <div>
-          {this.state.heightViewPort * 0.2 < this.state.height ? (
+          {this.state.heightViewPort * 0.25 < this.state.height ? (
             <div
               className={styles.wrapper1}
               ref={this.wrapperTop}
@@ -80,6 +78,7 @@ class table extends Component {
             >
               <div
                 className={styles.div1}
+                ref={this.divTop}
                 style={{ width: this.state.width }}
               />
             </div>
@@ -91,6 +90,7 @@ class table extends Component {
           >
             <div
               className={styles.Container}
+              ref={this.divBot}
               style={{ maxHeight: this.state.heightViewPort }}
             >
               <div className={styles.Intersect}>
@@ -101,7 +101,7 @@ class table extends Component {
 
               <div className={styles.Header}>
                 {this.props.headers.map(element => (
-                  <div style={this.props.width} >{element}</div>
+                  <div style={this.props.width}>{element}</div>
                 ))}
               </div>
 

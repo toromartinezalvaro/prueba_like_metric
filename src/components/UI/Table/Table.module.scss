@@ -76,7 +76,12 @@
     }
   }
 }
-.wrapper1,
+.wrapper1{
+  width: inherit;
+  border: none 0px RED;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 .wrapper2 {
   width: inherit;
   border: none 0px RED;
@@ -84,13 +89,8 @@
   overflow-y: hidden;
 }
 
-.wrapper1 {
-  position: sticky;
-  top: 0;
-}
-
 .div1 {
-  width: 1090px;
+  width: 0px;
   height: 10px;
   overflow: auto;
 }

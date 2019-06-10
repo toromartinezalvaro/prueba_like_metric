@@ -66,7 +66,7 @@ class Building extends Component {
     floors = _.defaultTo(floors, 0);
     totalProperties = _.defaultTo(totalProperties, 0);
     lowestFloor = _.defaultTo(lowestFloor, 0);
-
+    console.log("properties", properties)
     this.setState({
       floors: floors,
       properties: totalProperties,
@@ -196,7 +196,7 @@ class Building extends Component {
             editMode={this.toggleEditMode}
             saveSchema={this.saveSchema}
             updateSchema={this.updateSchema}
-          />{ console.log(this.state.names)}
+          />
           {!this.state.disable ? null : (
             <Naming
               loadingNaming={this.state.loadingNaming}
