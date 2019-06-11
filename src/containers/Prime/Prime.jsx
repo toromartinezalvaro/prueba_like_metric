@@ -26,6 +26,7 @@ class Prime extends Component {
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     const towerId = this.props.match.params.towerId
     if (!towerId) {
       return
@@ -45,7 +46,7 @@ class Prime extends Component {
         return prime !== null && prime.price !== 0;
       });
       if (showFloating !== undefined) {
-        this.setState({ showFloatingButton: true });
+        this.setState({ showFloatingButton: true, isLoading: false });
       }
       this.setState({
         floorsNames: floorsNames,
@@ -64,7 +65,7 @@ class Prime extends Component {
         return anyPrime !== undefined;
       });
       if (showFloating !== undefined) {
-        this.setState({ showFloatingButton: true });
+        this.setState({ showFloatingButton: true, isLoading: false });
       }
     });
   }

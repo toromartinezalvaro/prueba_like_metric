@@ -328,14 +328,16 @@ class Area extends Component {
               {this.modalContent()}
             </Modal>
           )}
-          <Modal
-            title={"Eliminar tipo de area"}
-            hidden={this.state.hideDeleteModal}
-            onConfirm={this.deleteAreaType}
-            onCancel={this.toggleDeleteModal}
-          >
-            Deseas eliminar este tipo de area?
-          </Modal>
+          {this.state.hideDeleteModal ? null : (
+            <Modal
+              title={"Eliminar tipo de area"}
+              hidden={this.state.hideDeleteModal}
+              onConfirm={this.deleteAreaType}
+              onCancel={this.toggleDeleteModal}
+            >
+              Deseas eliminar este tipo de area?
+            </Modal>
+          )}
         </Fragment>
         {this.state.showFloatingButton ? (
           <FloatingButton

@@ -39,6 +39,7 @@ class Building extends Component {
   };
 
   updateNames = () => {
+    this.setState({ isLoading: true });
     this.services
       .getSchema(this.props.match.params.towerId)
       .then(response => {
@@ -71,7 +72,8 @@ class Building extends Component {
       lowestFloor: lowestFloor,
       update: true,
       disable: floors > 0,
-      names: properties
+      names: properties,
+      isLoading: false
     });
   };
 
