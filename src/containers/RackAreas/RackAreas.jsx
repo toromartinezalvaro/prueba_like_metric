@@ -57,12 +57,11 @@ export default class RackAreas extends Component {
           this.state.maxLocation
         );
       }
-      this.assignTableValues(arrayEmpty)
+      this.assignTableValues(arrayEmpty);
     });
   };
 
   assignTableValues = arrayEmpty => {
-    
     if (this.state.areas) {
       let objectAreas = [];
       let objectTotals = [];
@@ -95,41 +94,49 @@ export default class RackAreas extends Component {
           this.setState({ arrayAreas: ids });
         }
       });
-      this.assignTableHeatMapValues(objectTotals)
+      if (objectTotals !== []) {
+        this.assignTableHeatMapValues(objectTotals);
+      }
     }
-  }
-  
-  assignTableHeatMapValues = objectTotals =>  {
+  };
+
+  assignTableHeatMapValues = objectTotals => {
     let total = 0;
-      let length = 0;
-      let min = 0;
-      let max = 0;
-      let avg = 0;
+    let length = 0;
+    let min = 0;
+    let max = 0;
+    let avg = 0;
+    console.log("arrayArea", objectTotals.array);
+    if (objectTotals.array !== undefined) {
       objectTotals.array.map(area => {
         total = area.reduce((current, next) => {
-          current = current + next.area;
-          if (length === 0) {
-            min = next.area;
+          if (next) {
+            current = current + next.area;
+            if (length === 0) {
+              min = next.area;
+            }
+            if (min > next.area) {
+              min = next.area;
+            } else if (max < next.area) {
+              max = next.area;
+            }
+            length++;
           }
-          if (min > next.area) {
-            min = next.area;
-          } else if (max < next.area) {
-            max = next.area;
-          }
-          length++;
           return current;
         }, 0);
       });
-      avg = total / length;
-      this.setState({
-        mts2: objectTotals.array,
-        totals: {
-          min: min,
-          max: max,
-          avg: avg
-        }
-      });
-  }
+    }
+
+    avg = total / length;
+    this.setState({
+      mts2: objectTotals.array,
+      totals: {
+        min: min,
+        max: max,
+        avg: avg
+      }
+    });
+  };
 
   asignValues = (area, array, id) => {
     let name = "";
