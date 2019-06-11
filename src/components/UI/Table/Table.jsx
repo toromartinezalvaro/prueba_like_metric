@@ -91,7 +91,7 @@ class table extends Component {
             <div
               className={styles.Container}
               ref={this.divBot}
-              style={{ maxHeight: this.state.heightViewPort }}
+              style={this.props.maxHeight ?  this.props.maxHeight  : { maxHeight: this.state.heightViewPort }}
             >
               <div className={styles.Intersect}>
                 <p style={{ marginBlockStart: "0.8em" }}>

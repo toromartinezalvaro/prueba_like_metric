@@ -33,12 +33,12 @@ class modal extends Component {
         {this.props.hidden ? null : (
           <div
             className={styles.Container}
-            /* style={{
-              height:
+            style={{
+              /* height:
                 this.state.heightViewPort > 600
                   ? null
-                  : "100vh"
-            }} */
+                  : "100vh" */
+            }}
           >
             <div className={styles.Modal} ref={this.divModal}>
               <div className={styles.Title}>{this.props.title}</div>
