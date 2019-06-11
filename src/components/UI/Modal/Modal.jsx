@@ -8,7 +8,7 @@ class modal extends Component {
   }
   state = {
     blocked: false,
-    heightViewPort: window.innerHeight,
+    heightViewPort: window.innerHeight
   };
 
   componentDidUpdate() {
@@ -27,19 +27,11 @@ class modal extends Component {
   };
 
   render() {
-    console.log(this.state.heightViewPort)
+    console.log(this.state.heightViewPort);
     return (
       <Fragment>
         {this.props.hidden ? null : (
-          <div
-            className={styles.Container}
-            style={{
-              /* height:
-                this.state.heightViewPort > 600
-                  ? null
-                  : "100vh" */
-            }}
-          >
+          <div className={styles.Container}>
             <div className={styles.Modal} ref={this.divModal}>
               <div className={styles.Title}>{this.props.title}</div>
               <div className={styles.Content}>{this.props.children}</div>
