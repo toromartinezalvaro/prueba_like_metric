@@ -1,49 +1,65 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, Component } from "react";
 import styles from "./Modal.module.scss";
 
-const modal = props => {
-  const [blocked, setBlocked] = useState(false);
+class modal extends Component {
+  constructor(props) {
+    super(props);
+    this.divModal = React.createRef();
+  }
+  state = {
+    blocked: false,
+    heightViewPort: window.innerHeight
+  };
 
-  const performAction = action => {
+  componentDidUpdate() {
+    console.log(this.divModal);
+    if (this.state.heightModal !== this.divModal.current) {
+    }
+  }
+
+  performAction = action => {
     if (action === "confirm") {
-      setBlocked(true);
-      props.onConfirm();
+      this.setState({ blocked: true });
+      this.props.onConfirm();
     } else if (action === "cancel") {
-      props.onCancel();
+      this.props.onCancel();
     }
   };
 
-  return (
-    <Fragment>
-      {props.hidden ? null : (
-        <div className={styles.Container}>
-          <div className={styles.Modal}>
-            <div className={styles.Title}>{props.title}</div>
-            <div className={styles.Content}>{props.children}</div>
-            <div className={styles.Actions}>
-              <button
-                className={styles.ConfirmButton}
-                onClick={() => {
-                  performAction("confirm");
-                }}
-                disabled={blocked}
-              >
-                Confirmar
-              </button>
-              <button
-                className={styles.CancelButton}
-                onClick={() => {
-                  performAction("cancel");
-                }}
-              >
-                Cancelar
-              </button>
+  render() {
+    console.log(this.state.heightViewPort);
+    return (
+      <Fragment>
+        {this.props.hidden ? null : (
+          <div className={styles.Container}>
+            <div className={styles.Modal} ref={this.divModal}>
+              <div className={styles.Title}>{this.props.title}</div>
+              <div className={styles.Content}>{this.props.children}</div>
+              <div className={styles.Actions}>
+                <button
+                  className={styles.ConfirmButton}
+                  onClick={() => {
+                    this.performAction("confirm");
+                  }}
+                  disabled={this.state.blocked}
+                >
+                  Confirmar
+                </button>
+                <button
+                  className={styles.CancelButton}
+                  onClick={() => {
+                    this.performAction("cancel");
+                  }}
+                >
+                  Cancelar
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </Fragment>
-  );
-};
+        )}
+      </Fragment>
+    );
+  }
+}
 
 export default modal;
