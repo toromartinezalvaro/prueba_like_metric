@@ -134,7 +134,7 @@ export default class Detail extends Component {
           Titulo={aditional.areaType.name}
           Titulo1="Cantidad"
           Titulo2="Precio"
-          Titulo3="Aditionals"
+          Titulo3="Adicionales"
           Value1={aditional.measure}
           Value2={this.formatPrice(aditional.price)}
           Value3={this.formatPrice(aditional.unitPrice)}

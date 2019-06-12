@@ -48,7 +48,7 @@ export default class Detail extends Component {
           Titulo={aditional.areaType.name}
           Titulo1="Cantidad"
           Titulo2="Precio"
-          Titulo3="Aditionals"
+          Titulo3="Adicionales"
           Value1={aditional.measure}
           Value2={this.formatPrice(aditional.price)}
           Value3={this.formatPrice(aditional.unitPrice)}
@@ -118,53 +118,64 @@ export default class Detail extends Component {
             </div>
           </CardBody>
         </Card>
-        <Card>
-          <CardHeader>
-            <p>Valores</p>
-          </CardHeader>
-          <CardBody>
-            <div style={{ display: "flex", flexFlow: "row wrap" }}>
-              <Insights
-                title="Inmueble"
-                value={this.formatPrice(this.state.totals.priceArea)}
-                color="#D62839"
-                icon="fas fa-building"
-              />
-              <Insights
-                title="Adicionales"
-                value={this.formatPrice(this.state.totals.priceAditionals)}
-                color="#E39774"
-                icon="fas fa-plus"
-              />
-              <Insights
-                title="Total"
-                value={this.formatPrice(this.state.totals.priceWithAditionals)}
-                color="#A2C3A4"
-                icon="fas fa-money-bill-wave"
-              />
-              <Insights
-                title="Area total"
-                value={
-                  <NumberFormat
-                    value={this.state.totals.mts2}
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    suffix={" MT2"}
+        <div style={{ display: "flex" }}>
+          <div style={{ display: "flex" }}>
+            <Card>
+              <CardHeader>
+                <p>Valores</p>
+              </CardHeader>
+              <CardBody>
+                <div style={{ display: "flex", flexFlow: "row wrap" }}>
+                  <Insights
+                    title="Inmueble"
+                    value={this.formatPrice(this.state.totals.priceArea)}
+                    color="#D62839"
+                    icon="fas fa-building"
                   />
-                }
-                color="#80A4ED"
-                icon="fas fa-chart-area"
-              />
-              <Insights
-                title="Valor por mt2"
-                value={this.formatPrice(this.state.totals.pricexMts2)}
-                color="#B68CB8"
-                icon="fas fa-tags"
-              />
-            </div>
-            {this.printAditionals(this.state.aditionals)}
-          </CardBody>
-        </Card>
+                  <Insights
+                    title="Adicionales"
+                    value={this.formatPrice(this.state.totals.priceAditionals)}
+                    color="#E39774"
+                    icon="fas fa-plus"
+                  />
+                  <Insights
+                    title="Total"
+                    value={this.formatPrice(
+                      this.state.totals.priceWithAditionals
+                    )}
+                    color="#A2C3A4"
+                    icon="fas fa-money-bill-wave"
+                  />
+                  <Insights
+                    title="Area total"
+                    value={
+                      <NumberFormat
+                        value={this.state.totals.mts2}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        suffix={" MT2"}
+                      />
+                    }
+                    color="#80A4ED"
+                    icon="fas fa-chart-area"
+                  />
+                  <Insights
+                    title="Valor por mt2"
+                    value={this.formatPrice(this.state.totals.pricexMts2)}
+                    color="#B68CB8"
+                    icon="fas fa-tags"
+                  />
+                </div>
+              </CardBody>
+            </Card>
+          </div>
+          <div style={{ display: "flex" }}>
+            <Card>
+              <CardHeader>Adicionales</CardHeader>
+              <CardBody>{this.printAditionals(this.state.aditionals)}</CardBody>
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }
