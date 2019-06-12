@@ -38,10 +38,13 @@ class Building extends Component {
     });
   };
 
+
   updateNames = () => {
+    this.setState({ isLoading: true });
     this.services
       .getSchema(this.props.match.params.towerId)
       .then(response => {
+        console.log("responseUpdateNames", response)
         if (response.data.length !== 0) {
           this.updateStatesWithResponse(response);
           this.setupShowFloatingButton(response.data.properties);
@@ -64,14 +67,15 @@ class Building extends Component {
     floors = _.defaultTo(floors, 0);
     totalProperties = _.defaultTo(totalProperties, 0);
     lowestFloor = _.defaultTo(lowestFloor, 0);
-
+    console.log("properties", properties)
     this.setState({
       floors: floors,
       properties: totalProperties,
       lowestFloor: lowestFloor,
       update: true,
       disable: floors > 0,
-      names: properties
+      names: properties,
+      isLoading: false
     });
   };
 
@@ -171,6 +175,7 @@ class Building extends Component {
       .putProperties(names[floor - this.state.lowestFloor][location - 1])
       .then(data => {
         console.log(data);
+        this.updateNames()
       });
     this.setState({
       names: names,
@@ -211,6 +216,7 @@ class Building extends Component {
               onPropertyNameChange={this.propertyNameChangeHandler}
               names={this.state.names}
             />
+            
           )}
         </div>
         {this.state.showFloatingButton ? (

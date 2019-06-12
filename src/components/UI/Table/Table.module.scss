@@ -3,8 +3,8 @@
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
   grid-template-areas: "Intersect Headers" "Columns Table";
-  overflow: auto;
   font-size: 16px;
+  overflow-y: auto;
 
   .Intersect {
     position: sticky;
@@ -12,7 +12,6 @@
     top: 0;
     grid-area: Intersect;
     z-index: 99;
-    text-align: center;
     background: #666;
     padding: 0.75em 1.5em;
     font-weight: bold;
@@ -24,22 +23,26 @@
     display: flex;
     position: sticky;
     top: 0;
+    left: 0;
     z-index: 98;
     background: #31bc86;
     text-align: center;
     font-weight: bold;
     color: #fff;
-
+    padding-right: 10px;
     & > * {
       width: 150px;
-      line-height: 50px; 
+      line-height: 50px;
+    }
+    .Element{
+      vertical-align: middle
     }
   }
 
   .Columns {
     grid-area: Columns;
     position: sticky;
-    left: 0;
+    left:0;
     top: 0;
     z-index: 98;
     background: #2ea879;
@@ -72,4 +75,22 @@
       }
     }
   }
+}
+.wrapper1{
+  width: inherit;
+  border: none 0px RED;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.wrapper2 {
+  width: inherit;
+  border: none 0px RED;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.div1 {
+  width: 0px;
+  height: 10px;
+  overflow: auto;
 }

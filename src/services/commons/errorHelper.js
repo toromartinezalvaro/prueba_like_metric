@@ -43,10 +43,10 @@ function errorHandling(error) {
   });
 
   let status;
-  if (error.code === "ECONNABORTED") {
-    status = 0;
-  } else {
+  if (error.response) {
     status = error.response.status;
+  } else {
+    status = 0;
   }
 
   console.log(error);

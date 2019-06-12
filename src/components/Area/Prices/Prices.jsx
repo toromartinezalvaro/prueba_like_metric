@@ -86,6 +86,7 @@ const prices = ({ areaTypeId, measurementUnit, services, towerId }) => {
             headers={["Precio"]}
             columns={areas}
             data={prices}
+            maxHeight={{maxHeight: "36vh"}}
           />
         ) : (
           <div style={{ display: "flex" }}>

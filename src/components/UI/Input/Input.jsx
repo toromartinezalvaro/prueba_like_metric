@@ -14,6 +14,7 @@ const input = props => {
   const [errorMessages, setErrorMessages] = useState("");
   const [valid, setValid] = useState(true);
 
+
   const validation = value => {
     setErrorMessages("");
     return props.validations.reduce((current, next) => {
@@ -25,8 +26,7 @@ const input = props => {
       return current && val;
     }, true);
   };
-
-  const localValueHandler = value => {
+  const localValueHandler = value => {  
     setValid(validation(value));
     setLocalValue(value);
   };
@@ -48,7 +48,7 @@ const input = props => {
       }
     } else {
       setLocalValue(props.value);
-    }
+    }    
   };
 
   const cleanNumberMask = value => {

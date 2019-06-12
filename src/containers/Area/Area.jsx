@@ -10,6 +10,7 @@ import Prices from "../../components/Area/Prices/Prices";
 import errorHandling from "../../services/commons/errorHelper";
 import Error from "../../components/UI/Error/Error";
 import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import NumberFormat from "react-number-format";
 
 class Area extends Component {
   constructor(props) {
@@ -23,13 +24,15 @@ class Area extends Component {
     areaMeasurementUnit: "MT2",
     areasNames: [],
     properties: [],
+    areaTypes: [],
     data: [],
     hidden: true,
     editingAreaType: false,
     deleteAreaTypeId: null,
     hideDeleteModal: true,
     currentErrorMessage: "",
-    showFloatingButton: false
+    showFloatingButton: false,
+    update: true
   };
 
   modalContent = () => {
@@ -77,23 +80,51 @@ class Area extends Component {
     }
   };
 
-  processHeaders = headers => {
-    return headers.map(areaType => (
-      <div
-        onDoubleClick={() => {
-          this.toggleAreaTypeModal(areaType);
-        }}
-      >
-        <EditableHeader
-          onClick={() => {
-            this.toggleDeleteModal(areaType.id);
+  processHeaders = (headers, totals) => {
+    let totalArea = 0;
+    return headers.map(areaType => {
+      if (totals !== undefined && totals !== []) {
+        totalArea = totals.reduce((current, total) => {
+          total.id === areaType.id
+            ? (current += total.total)
+            : (current = current);
+          return current;
+        }, 0);
+      }
+      return (
+        <div
+          onDoubleClick={() => {
+            this.toggleAreaTypeModal(areaType);
           }}
-          canBeDeleted={areaType.name.toLowerCase() === "interior"}
         >
-          {`${areaType.name} ${areaType.measurementUnit}`}
-        </EditableHeader>
-      </div>
-    ));
+          <EditableHeader
+            onClick={() => {
+              this.toggleDeleteModal(areaType.id);
+            }}
+            canBeDeleted={areaType.name.toLowerCase() === "interior"}
+          >
+            <p
+              style={{
+                marginBlockStart: "0px",
+                marginBlockEnd: "0px",
+                lineHeight: "0px",
+                marginTop: "18px"
+              }}
+            >
+              Total:{" "}
+              {
+                <NumberFormat
+                  value={totalArea}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                />
+              }
+            </p>
+            {`${areaType.name} ${areaType.measurementUnit}`}
+          </EditableHeader>
+        </div>
+      );
+    });
   };
 
   toggleDeleteModal = id => {
@@ -115,20 +146,53 @@ class Area extends Component {
     this.setState({ isLoading: true });
   }
 
+  getTotalHeaders(arrayAreas, types) {
+    let arrayTypes = types;
+    arrayAreas.forEach(area => {
+      if (arrayTypes !== undefined) {
+        let index = arrayTypes.findIndex(obj => obj.id === area.type);
+        if (arrayTypes[index] !== undefined) {
+          arrayTypes[index].total += area.measure;
+        }
+      }
+    });
+    return arrayTypes;
+  }
+
   updateTableInformation = () => {
     const towerId = this.props.match.params.towerId;
     if (!towerId) {
       return;
     }
-
     this.services
       .getAreas(towerId)
       .then(response => {
-        console.log("response" + response);
+        console.log("response", response);
         this.setState({
-          areasNames: this.processHeaders(response.data.areaTypes),
-          properties: response.data.properties,
           data: response.data.propertiesAreas,
+          types: undefined
+        });
+        console.log("response" + response);
+        this.state.data.forEach(arrayAreas => {
+          if (arrayAreas !== undefined) {
+            let types = [];
+            types = arrayAreas.map(area => {
+              return { id: area.type, total: 0 };
+            });
+            if (this.state.types === undefined && types.length !== 0) {
+              this.setState({ types: types });
+            }
+
+            let totalHeaders = this.getTotalHeaders(
+              arrayAreas,
+              this.state.types
+            );
+              this.setState({ types: totalHeaders });
+          }
+        });
+        this.setState({
+          areaTypes: response.data.areaTypes,
+          properties: response.data.properties,
           isLoading: false
         });
         let showFloating = response.data.propertiesAreas.find(arrayAreas => {
@@ -245,24 +309,27 @@ class Area extends Component {
   };
 
   areaChangeHandler = (rowIndex, cellIndex, value) => {
-    const currentData = this.state.data;
-    currentData[rowIndex][cellIndex].measure = value;
-    this.services
-      .putAreasByTowerId(
-        this.props.match.params.towerId,
-        currentData[rowIndex][cellIndex]
-      )
-      .then(response => {
-        console.log(response);
-        this.setState({ data: currentData, showFloatingButton: true });
-      })
-      .catch(error => {
-        let errorHelper = errorHandling(error);
-        this.setState({
-          currentErrorMessage: errorHelper.message
+    if (value !== "") {
+      const currentData = this.state.data;
+      currentData[rowIndex][cellIndex].measure = value;
+      this.services
+        .putAreasByTowerId(
+          this.props.match.params.towerId,
+          currentData[rowIndex][cellIndex]
+        )
+        .then(response => {
+          console.log(response);
+          this.setState({ data: currentData, showFloatingButton: true });
+          this.updateTableInformation();
+        })
+        .catch(error => {
+          let errorHelper = errorHandling(error);
+          this.setState({
+            currentErrorMessage: errorHelper.message
+          });
         });
-      });
-    this.setState({ currentErrorMessage: "" });
+      this.setState({ currentErrorMessage: "" });
+    }
   };
 
   render() {
@@ -302,7 +369,10 @@ class Area extends Component {
               <Table
                 intersect={"Areas"}
                 headers={[
-                  ...this.state.areasNames,
+                  ...this.processHeaders(
+                    this.state.areaTypes,
+                    this.state.types
+                  ),
                   <IconButton
                     onClick={() => {
                       this.toggleAreaTypeModal();
@@ -311,6 +381,7 @@ class Area extends Component {
                 ]}
                 columns={this.state.properties}
                 data={[...inputs]}
+                width={{ width: "125px" }}
               />
             </CardBody>
           </Card>
@@ -328,14 +399,16 @@ class Area extends Component {
               {this.modalContent()}
             </Modal>
           )}
-          <Modal
-            title={"Eliminar tipo de area"}
-            hidden={this.state.hideDeleteModal}
-            onConfirm={this.deleteAreaType}
-            onCancel={this.toggleDeleteModal}
-          >
-            Deseas eliminar este tipo de area?
-          </Modal>
+          {this.state.hideDeleteModal ? null : (
+            <Modal
+              title={"Eliminar tipo de area"}
+              hidden={this.state.hideDeleteModal}
+              onConfirm={this.deleteAreaType}
+              onCancel={this.toggleDeleteModal}
+            >
+              Deseas eliminar este tipo de area?
+            </Modal>
+          )}
         </Fragment>
         {this.state.showFloatingButton ? (
           <FloatingButton
