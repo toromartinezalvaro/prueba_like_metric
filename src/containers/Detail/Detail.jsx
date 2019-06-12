@@ -5,6 +5,7 @@ import DetailServices from "../../services/detail/DetailServices";
 import Property from "../../components/Detail/Property/Property";
 import variables from "../../assets/styles/variables.scss";
 import styles from "../DetailAdmin/DetailAdmin.module.scss";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
 
 export default class Detail extends Component {
   constructor(props) {
@@ -121,6 +122,13 @@ export default class Detail extends Component {
             </div>
           </CardBody>
         </Card>
+        <FloatingButton
+            route="summary"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Resumen
+          </FloatingButton>
       </div>
     );
   }

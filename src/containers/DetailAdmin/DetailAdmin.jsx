@@ -11,6 +11,7 @@ import Table from "../../components/UI/Table/Table";
 import NumberFormat from "react-number-format";
 import errorHandling from "../../services/commons/errorHelper";
 import Error from "../../components/UI/Error/Error";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
 
 export default class Detail extends Component {
   constructor(props) {
@@ -386,6 +387,13 @@ export default class Detail extends Component {
             ) : null}
           </div>
         ) : null}
+        <FloatingButton
+            route="summary"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Resumen
+          </FloatingButton>
       </div>
     );
   }
