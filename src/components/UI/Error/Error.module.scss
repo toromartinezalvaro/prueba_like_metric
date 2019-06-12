@@ -7,8 +7,12 @@
   left: 0;
   position: absolute;
   justify-content: center;
+  animation: slideDown 3.4s ease 2;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
   z-index: 1000;
 }
+
 
 .Alert {
   background: $alert-color;
@@ -16,19 +20,17 @@
   box-shadow: 0px 0px 13px 0px $box-shadow-color;
   margin: 25px 0;
   padding: 25px 40px;
-  animation: slideDown 1.7s ease 2;
-  animation-direction: alternate;
-  opacity: 0;
+  opacity: 1;
 }
 
 @keyframes slideDown {
   0% {
-    transform: translateY(0px);
+    transform: translateY(-100%);
     opacity: 0;
   }
 
   100% {
-    transform: translateY(20px);
+    transform: translateY(0%);
     opacity: 1;
   }
 }
