@@ -107,6 +107,7 @@ class Building extends Component {
         lowestFloor: parseInt(this.state.lowestFloor)
       })
       .then(() => {
+        this.setState({ floors: [], disable: true, names: [] });
         this.updateNames();
         this.setState({ loadingNaming: false });
       })
@@ -130,6 +131,7 @@ class Building extends Component {
         lowestFloor: parseInt(this.state.lowestFloor)
       })
       .then(() => {
+        this.setState({ floors: [], disable: true, names: [] });
         this.updateNames();
         this.setState({ loadingNaming: false });
       })
