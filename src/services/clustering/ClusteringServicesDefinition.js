@@ -1,12 +1,15 @@
-import { API_PATH } from "../../config/config";
+import { API_PATH } from '../../config/config';
 
 const AreaServiceDefinitions = {
-  clusterize: () => {
-    return `${API_PATH}clustering/`;
+  clusterize: towerId => {
+    return `${API_PATH}clustering/${towerId}`;
+  },
+  putType: id => {
+    return `${API_PATH}clustering/${id}`;
   },
   getClusters: towerId => {
     return `${API_PATH}clustering/${towerId}`;
-  }
+  },
 };
 
 export default AreaServiceDefinitions;
