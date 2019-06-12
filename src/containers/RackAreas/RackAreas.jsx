@@ -5,6 +5,7 @@ import SummaryCell from "../../components/Summary/SummaryCell/SummaryCell";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
 import _ from "lodash";
 import getHeat from "../../components/Summary/HeatMap/HeatMap";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
 
 export default class RackAreas extends Component {
   constructor(props) {
@@ -220,6 +221,13 @@ export default class RackAreas extends Component {
           {console.log(this.state.totals)}
           {this.makeSummary(this.state.arrayAreas)}
         </CardBody>
+        <FloatingButton
+            route="detailAdmin"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Detalle
+          </FloatingButton>
       </Card>
     );
   }

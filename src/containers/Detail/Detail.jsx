@@ -7,6 +7,7 @@ import variables from "../../assets/styles/variables.scss";
 import styles from "../DetailAdmin/DetailAdmin.module.scss";
 import NumberFormat from "react-number-format";
 import Aditionals from "../../components/Detail/Aditionals/Aditionals";
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
 
 export default class Detail extends Component {
   constructor(props) {
@@ -176,6 +177,13 @@ export default class Detail extends Component {
             </Card>
           </div>
         </div>
+        <FloatingButton
+            route="summary"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Resumen
+          </FloatingButton>
       </div>
     );
   }
