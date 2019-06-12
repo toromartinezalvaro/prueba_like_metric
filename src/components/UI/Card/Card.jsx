@@ -16,7 +16,7 @@ const card = props => {
       {loading ? (
         <div className={styles.Loader}>
           <Loader
-            type="Puff"
+            type="ThreeDots"
             color={commonStyles.mainColor}
             height="100"
             width="100"

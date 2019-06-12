@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from 'react';
-import Card, { CardBody } from '../../components/UI/Card/Card';
-import Button from '../../components/UI/Button/Button';
-import Input from '../../components/UI/Input/Input';
-import ClusteringServices from '../../services/clustering/ClusteringServices';
-import PropertiesGraph from '../../components/Clustering/PropertiesGraph/PropertiesGraph';
-import GroupTable from '../../components/Clustering/GroupTable/GroupTable';
-import styles from './Clustering.module.scss';
+import React, { Component, Fragment } from "react";
+import Card, { CardBody } from "../../components/UI/Card/Card";
+import Button from "../../components/UI/Button/Button";
+import Input from "../../components/UI/Input/Input";
+import ClusteringServices from "../../services/clustering/ClusteringServices";
+import GroupTable from "../../components/Clustering/GroupTable/GroupTable";
+import styles from "./Clustering.module.scss";
 
 class Clustering extends Component {
   constructor(props) {
@@ -14,48 +13,68 @@ class Clustering extends Component {
   }
 
   state = {
-    clusterGroups: 1,
-
-    clusters: [
-      {
-        id: 1,
-        name: '201',
-        area: 123,
-        price: 456,
-        areaGroup: 'Tipo 2',
-        priceGroup: 'Tipo 3',
-      },
-    ],
+    towerClusterConfig: {
+      clusterByArea: true,
+      groups: 1
+    },
+    clusters: [],
+    loadingTable: false
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
-      .getClusters(
-        'pbEqAg883riKOrn43Y5KfgnvWgA1PQIpDP2dMXgnUZ3kkVMg6OFbMBeK9W1n',
-      )
+      .getClusters(this.props.match.params.towerId)
       .then(response => {
-        console.log(response.data);
+        this.setState({
+          towerClusterConfig: response.data.towerClustersConfig,
+          clusters: response.data.clusters,
+          isLoading: false
+        });
+      })
+      .catch(() => {
+        this.setState({ isLoading: false });
       });
   }
 
-  clusterGroupsHandler = event => {
-    this.setState({ clusterGroups: event.target.value });
+  clusterGroupsHandler = target => {
+    this.setState({ clusterGroups: target.value });
   };
 
   postClusters = clusterByArea => {
+    this.setState({ loadingTable: true });
     this.services
-      .postClusters(
-        'pbEqAg883riKOrn43Y5KfgnvWgA1PQIpDP2dMXgnUZ3kkVMg6OFbMBeK9W1n',
-        { groups: this.state.clusterGroups, clusterByArea },
-      )
+      .postClusters(this.props.match.params.towerId, {
+        groups: this.state.towerClusterConfig.groups,
+        clusterByArea
+      })
       .then(response => {
-        this.setState({ clusters: response });
+        this.setState({
+          towerClusterConfig: response.data.towerClustersConfig,
+          clusters: response.data.clusters,
+          loadingTable: false
+        });
+      })
+      .catch(error => {
+        this.setState({ loadingTable: false });
       });
   };
 
   putType = (id, type) => {
-    console.log('Enviando el nuevo tipo para la propiedad', id, type);
-    //this.services.putType(id, { type });
+    this.setState({ loadingTable: true });
+    this.services
+      .putType(id, {
+        type,
+        clusterByArea: this.state.towerClusterConfig.clusterByArea,
+        towerId: this.props.match.params.towerId
+      })
+      .then(response => {
+        this.setState({
+          towerClusterConfig: response.data.towerClustersConfig,
+          clusters: response.data.clusters,
+          loadingTable: false
+        });
+      });
   };
 
   render() {
@@ -71,9 +90,9 @@ class Clustering extends Component {
                 <Input
                   mask="number"
                   validations={[]}
-                  style={{ width: '75px' }}
-                  onChange={this.firstFeeHandler}
-                  value={this.state.clusterGroups}
+                  style={{ width: "75px" }}
+                  onChange={this.clusterGroupsHandler}
+                  value={this.state.towerClusterConfig.groups}
                   placeholder="Grupos"
                 />
               </div>
@@ -96,7 +115,14 @@ class Clustering extends Component {
             </div>
           </CardBody>
         </Card>
-        <GroupTable data={this.state.clusters} onTypeChange={this.putType} />
+        {this.state.clusters.length !== 0 ? (
+          <GroupTable
+            data={this.state.clusters}
+            onTypeChange={this.putType}
+            towerClusterConfig={this.state.towerClusterConfig}
+            loading={this.state.loadingTable}
+          />
+        ) : null}
       </Fragment>
     );
   }

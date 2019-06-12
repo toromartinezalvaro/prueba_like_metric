@@ -1,8 +1,14 @@
-import React from 'react';
-import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
-import Table from '../../UI/Table/Table';
+import React from "react";
+import Card, { CardHeader, CardBody } from "../../UI/Card/Card";
+import Table from "../../UI/Table/Table";
 
-const groupTable = ({ data, onTypeChange, ...rest }) => {
+const groupTable = ({
+  data,
+  onTypeChange,
+  towerClusterConfig,
+  loading,
+  ...rest
+}) => {
   const typeInput = (value, id) => {
     return (
       <select
@@ -11,10 +17,13 @@ const groupTable = ({ data, onTypeChange, ...rest }) => {
           onTypeChange(id, event.target.value);
         }}
       >
-        <option value="Tipo 1">Tipo 1</option>
-        <option value="Tipo 2">Tipo 2</option>
-        <option value="Tipo 3">Tipo 3</option>
-        <option value="Tipo 4">Tipo 4</option>
+        {Array(towerClusterConfig.groups)
+          .fill()
+          .map((_, index) => {
+            return (
+              <option value={`Tipo ${index + 1}`}>{`Tipo ${index + 1}`}</option>
+            );
+          })}
       </select>
     );
   };
@@ -29,16 +38,21 @@ const groupTable = ({ data, onTypeChange, ...rest }) => {
 
   const parseToRow = property => {
     return [
-      property.area,
+      property.area.fixed,
       property.price,
       property.areaGroup,
       property.priceGroup,
-      typeInput(property.areaGroup, property.id),
+      typeInput(
+        towerClusterConfig.clusterByArea
+          ? property.areaGroup
+          : property.priceGroup,
+        property.id
+      )
     ];
   };
 
   return (
-    <Card>
+    <Card loading={loading}>
       <CardHeader>
         <span>Tabla de propiedades</span>
       </CardHeader>
@@ -46,11 +60,11 @@ const groupTable = ({ data, onTypeChange, ...rest }) => {
         <Table
           intersect="Propiedades"
           headers={[
-            'Area',
-            'Precio',
-            'Tipo por area',
-            'Tipo por precio',
-            'Tipo',
+            "Area",
+            "Precio",
+            "Tipo por area",
+            "Tipo por precio",
+            "Tipo"
           ]}
           columns={getPropertyNames(data)}
           data={getRows(data)}
