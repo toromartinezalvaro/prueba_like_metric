@@ -5,6 +5,8 @@ import SummaryCell from '../../components/Summary/SummaryCell/SummaryCell';
 import SummaryServices from '../../services/summary/SummaryService';
 import Input from '../../components/UI/Input/Input';
 import getHeat from '../../components/Summary/HeatMap/HeatMap';
+import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+
 
 class Summary extends Component {
   constructor(props) {
@@ -301,6 +303,13 @@ class Summary extends Component {
             ]}
           />
         </CardBody>
+        <FloatingButton
+            route="rackAreas"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Resumen Areas
+          </FloatingButton>
       </Card>
     );
   }
