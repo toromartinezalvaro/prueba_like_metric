@@ -21,4 +21,8 @@ export default class SchemeServices extends Services  {
     return this.put(SchemaServiceDefinitions.properties, data)
   }
 
+  deleteProperties(id) {
+    return this.delete(SchemaServiceDefinitions.deleteProperties(id))
+  }
+
 }

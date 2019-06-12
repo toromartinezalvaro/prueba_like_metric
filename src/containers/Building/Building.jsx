@@ -38,13 +38,12 @@ class Building extends Component {
     });
   };
 
-
   updateNames = () => {
     this.setState({ isLoading: true });
     this.services
       .getSchema(this.props.match.params.towerId)
       .then(response => {
-        console.log("responseUpdateNames", response)
+        console.log("responseUpdateNames", response);
         if (response.data.length !== 0) {
           this.updateStatesWithResponse(response);
           this.setupShowFloatingButton(response.data.properties);
@@ -67,7 +66,7 @@ class Building extends Component {
     floors = _.defaultTo(floors, 0);
     totalProperties = _.defaultTo(totalProperties, 0);
     lowestFloor = _.defaultTo(lowestFloor, 0);
-    console.log("properties", properties)
+    console.log("properties", properties);
     this.setState({
       floors: floors,
       properties: totalProperties,
@@ -148,15 +147,27 @@ class Building extends Component {
   };
 
   checkDuplicates = value => {
+    let objectDuplicate = {};
     const duplicate =
       value === ""
         ? true
         : this.state.names.reduce((current, next) => {
+            console.log(this.state.names);
+            objectDuplicate = next.find(e => {
+              if (e !== null) return e.name === value;
+            });
+            if (objectDuplicate !== undefined) {
+              if (objectDuplicate.length > 0) {
+                return objectDuplicate;
+              }
+            }
+
             return (
               current &&
               _.findIndex(next, e => (e ? e.name === value : false)) === -1
             );
           }, true);
+    console.log("duplicate", duplicate);
     return duplicate;
   };
 
@@ -173,11 +184,19 @@ class Building extends Component {
       .putProperties(names[floor - this.state.lowestFloor][location - 1])
       .then(data => {
         console.log(data);
-        this.updateNames()
+        this.updateNames();
       });
     this.setState({
       names: names,
       showFloatingButton: true
+    });
+  };
+
+  propertyDelete = id => {
+    console.log("id", id);
+    this.services.deleteProperties(id).then(data => {
+      console.log("Hola dentro del servicio");
+      this.updateNames();
     });
   };
 
@@ -212,9 +231,10 @@ class Building extends Component {
                 o => o + this.state.lowestFloor
               )}
               onPropertyNameChange={this.propertyNameChangeHandler}
+              onPropertyEmpty={this.propertyDelete}
+              editMode={this.toggleEditMode}
               names={this.state.names}
             />
-            
           )}
         </div>
         {this.state.showFloatingButton ? (
