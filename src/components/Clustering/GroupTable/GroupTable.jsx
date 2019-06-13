@@ -1,6 +1,7 @@
-import React from "react";
-import Card, { CardHeader, CardBody } from "../../UI/Card/Card";
-import Table from "../../UI/Table/Table";
+import React from 'react';
+import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
+import Table from '../../UI/Table/Table';
+import Cell from './InfoCell/InfoCell';
 
 const groupTable = ({
   data,
@@ -9,12 +10,12 @@ const groupTable = ({
   loading,
   ...rest
 }) => {
-  const typeInput = (value, id) => {
+  const typeInput = (value, id, index) => {
     return (
       <select
         value={value}
         onChange={event => {
-          onTypeChange(id, event.target.value);
+          onTypeChange(id, event.target.value, index);
         }}
       >
         {Array(towerClusterConfig.groups)
@@ -33,21 +34,22 @@ const groupTable = ({
   };
 
   const getRows = data => {
-    return data.map(property => parseToRow(property));
+    return data.map((property, index) => parseToRow(property, index));
   };
 
-  const parseToRow = property => {
+  const parseToRow = (property, index) => {
     return [
-      property.area.fixed,
-      property.price,
-      property.areaGroup,
-      property.priceGroup,
+      <Cell>{property.area}</Cell>,
+      <Cell>{property.price}</Cell>,
+      <Cell>{property.areaGroup}</Cell>,
+      <Cell>{property.priceGroup}</Cell>,
       typeInput(
         towerClusterConfig.clusterByArea
           ? property.areaGroup
           : property.priceGroup,
-        property.id
-      )
+        property.id,
+        index,
+      ),
     ];
   };
 
@@ -60,11 +62,11 @@ const groupTable = ({
         <Table
           intersect="Propiedades"
           headers={[
-            "Area",
-            "Precio",
-            "Tipo por area",
-            "Tipo por precio",
-            "Tipo"
+            'Area',
+            'Precio',
+            'Tipo por area',
+            'Tipo por precio',
+            'Tipo',
           ]}
           columns={getPropertyNames(data)}
           data={getRows(data)}

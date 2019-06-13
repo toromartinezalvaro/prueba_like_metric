@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from "react";
-import Card, { CardBody } from "../../components/UI/Card/Card";
-import Button from "../../components/UI/Button/Button";
-import Input from "../../components/UI/Input/Input";
-import ClusteringServices from "../../services/clustering/ClusteringServices";
-import GroupTable from "../../components/Clustering/GroupTable/GroupTable";
-import styles from "./Clustering.module.scss";
+import React, { Component, Fragment } from 'react';
+import Card, { CardBody } from '../../components/UI/Card/Card';
+import Button from '../../components/UI/Button/Button';
+import Input from '../../components/UI/Input/Input';
+import ClusteringServices from '../../services/clustering/ClusteringServices';
+import GroupTable from '../../components/Clustering/GroupTable/GroupTable';
+import styles from './Clustering.module.scss';
 
 class Clustering extends Component {
   constructor(props) {
@@ -15,10 +15,10 @@ class Clustering extends Component {
   state = {
     towerClusterConfig: {
       clusterByArea: true,
-      groups: 1
+      groups: 1,
     },
     clusters: [],
-    loadingTable: false
+    loadingTable: false,
   };
 
   componentDidMount() {
@@ -29,7 +29,7 @@ class Clustering extends Component {
         this.setState({
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
-          isLoading: false
+          isLoading: false,
         });
       })
       .catch(() => {
@@ -38,7 +38,9 @@ class Clustering extends Component {
   }
 
   clusterGroupsHandler = target => {
-    this.setState({ clusterGroups: target.value });
+    const towerClusterConfig = { ...this.state.towerClusterConfig };
+    towerClusterConfig.groups = target.value;
+    this.setState({ towerClusterConfig });
   };
 
   postClusters = clusterByArea => {
@@ -46,13 +48,13 @@ class Clustering extends Component {
     this.services
       .postClusters(this.props.match.params.towerId, {
         groups: this.state.towerClusterConfig.groups,
-        clusterByArea
+        clusterByArea,
       })
       .then(response => {
         this.setState({
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
-          loadingTable: false
+          loadingTable: false,
         });
       })
       .catch(error => {
@@ -60,20 +62,26 @@ class Clustering extends Component {
       });
   };
 
-  putType = (id, type) => {
-    this.setState({ loadingTable: true });
+  putType = (id, type, index) => {
+    const tempClusters = [...this.state.clusters];
+    const tempProperty = { ...tempClusters[index] };
+    tempClusters[index].type = type;
+    this.setState({ clusters: tempClusters });
     this.services
       .putType(id, {
         type,
         clusterByArea: this.state.towerClusterConfig.clusterByArea,
-        towerId: this.props.match.params.towerId
+        towerId: this.props.match.params.towerId,
       })
       .then(response => {
         this.setState({
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
-          loadingTable: false
         });
+      })
+      .catch(error => {
+        tempClusters[index] = tempProperty;
+        this.setState({ clusters: tempClusters });
       });
   };
 
@@ -90,7 +98,7 @@ class Clustering extends Component {
                 <Input
                   mask="number"
                   validations={[]}
-                  style={{ width: "75px" }}
+                  style={{ width: '75px' }}
                   onChange={this.clusterGroupsHandler}
                   value={this.state.towerClusterConfig.groups}
                   placeholder="Grupos"
