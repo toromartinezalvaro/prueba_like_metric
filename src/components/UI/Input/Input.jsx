@@ -21,15 +21,13 @@ const input = props => {
       console.log("val", val);
 
       if (!val) {
-        setErrorMessages(next.message);
-      } else if (val.length > 0) {
-        if (
-          val[0].floor === props.floor &&
-          val[0].location === props.location
-        ) {
-          console.log("Hola");
+        console.log("IF");
+        return setErrorMessages(next.message);
+      } else if (val !== true) {
+        console.log("else if");
 
-          return false;
+        if (val.floor === props.floor && val.location === props.location) {
+          return true;
         } else {
           return setErrorMessages(next.message);
         }

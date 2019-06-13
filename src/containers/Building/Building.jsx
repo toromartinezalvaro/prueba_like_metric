@@ -147,25 +147,32 @@ class Building extends Component {
   };
 
   checkDuplicates = value => {
-    let objectDuplicate = {};
     const duplicate =
       value === ""
         ? true
         : this.state.names.reduce((current, next) => {
-            console.log(this.state.names);
-            objectDuplicate = next.find(e => {
-              if (e !== null) return e.name === value;
-            });
-            if (objectDuplicate !== undefined) {
-              if (objectDuplicate.length > 0) {
-                return objectDuplicate;
+            console.log(next);
+            /* objectDuplicate = next.find(e => {
+              if (e !== null) {
+                return e.name === value;
               }
-            }
+            }); */
 
-            return (
-              current &&
-              _.findIndex(next, e => (e ? e.name === value : false)) === -1
-            );
+            /* if (objectDuplicate !== undefined) {
+              console.log("objectDuplicate", objectDuplicate);
+
+              return current && objectDuplicate;
+            } */
+            next.map(e => {
+              if (e !== null) {
+                if(e.name === value) {
+                  current = e
+                }
+              }
+            });
+            return current;
+            /*               _.findIndex(next, e => (e ? e.name === value : false)) === -1
+             */
           }, true);
     console.log("duplicate", duplicate);
     return duplicate;
@@ -195,7 +202,6 @@ class Building extends Component {
   propertyDelete = id => {
     console.log("id", id);
     this.services.deleteProperties(id).then(data => {
-      console.log("Hola dentro del servicio");
       this.updateNames();
     });
   };

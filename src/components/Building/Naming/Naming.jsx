@@ -20,10 +20,7 @@ const naming = props => {
     setHidden(true);
   };
 
-  let validationsProps = {
-    fn: props.checkDuplicates,
-    message: "Nombres únicos"
-  };
+
 
   const getInputs = () => {
     return props.names.map((floor, floorIndex) =>
@@ -32,7 +29,12 @@ const naming = props => {
           <Input
             key={`floor-${floorIndex}-property-${propertyIndex}`}
             className={styles.Input}
-            validations={[{ ...validationsProps }]}
+            validations={[
+              {
+                fn: props.checkDuplicates,
+                message: "Nombres únicos"
+              }
+            ]}
             location={propertyIndex + 1}
             floor={floorIndex + props.lowestFloor}
             onChange={target => {
