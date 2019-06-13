@@ -43,14 +43,17 @@ export default class RackAreas extends Component {
         }
         return area.location !== undefined ? area.location : 0;
       });
-      this.setState({
-        areas: data,
-        maxLocation: Math.max(...locations),
-        maxFloor: Math.max(...floors),
-        minFloor: Math.min(...floors),
-        locations: _.range(1, Math.max(...locations) + 1),
-        floors: _.range(Math.min(...floors), Math.max(...floors) + 1)
-      });
+      if (floors.length > 0) {
+        this.setState({
+          areas: data,
+          maxLocation: Math.max(...locations),
+          maxFloor: Math.max(...floors),
+          minFloor: Math.min(...floors),
+          locations: _.range(1, Math.max(...locations) + 1),
+          floors: _.range(Math.min(...floors), Math.max(...floors) + 1)
+        });
+      }
+
       let arrayEmpty = [[]];
       if (this.state.maxFloor > 0) {
         arrayEmpty = this.createNullMatrix(
@@ -170,24 +173,26 @@ export default class RackAreas extends Component {
   };
 
   getData = (summary, key, totals) => {
-    return summary.map(row =>
-      row.map(value => (
-        <SummaryCell
-          k={key}
-          style={{
-            backgroundColor: getHeat(
-              totals.min,
-              totals.max,
-              totals.avg,
-              value,
-              key
-            )
-          }}
-        >
-          {value}
-        </SummaryCell>
-      ))
-    );
+    if (summary !== undefined) {
+      return summary.map(row =>
+        row.map(value => (
+          <SummaryCell
+            k={key}
+            style={{
+              backgroundColor: getHeat(
+                totals.min,
+                totals.max,
+                totals.avg,
+                value,
+                key
+              )
+            }}
+          >
+            {value}
+          </SummaryCell>
+        ))
+      );
+    }
   };
 
   makeSummary = data => {
@@ -210,24 +215,28 @@ export default class RackAreas extends Component {
           <p>Resumen Areas</p>
         </CardHeader>
         <CardBody>
-          <SummaryTable
+          
+          {this.state.floors.length > 0 ? 
+            <SummaryTable
             title="Totales"
             intersect="Areas"
             headers={this.state.locations}
             columns={this.state.floors}
             data={this.getData(this.state.mts2, "area", this.state.totals)}
             stats={[{}]}
-          />
+          />: null}
+          
+          
           {console.log(this.state.totals)}
           {this.makeSummary(this.state.arrayAreas)}
         </CardBody>
         <FloatingButton
-            route="detailAdmin"
-            projectId={this.props.match.params.projectId}
-            towerId={this.props.match.params.towerId}
-          >
-            Detalle
-          </FloatingButton>
+          route="detailAdmin"
+          projectId={this.props.match.params.projectId}
+          towerId={this.props.match.params.towerId}
+        >
+          Detalle
+        </FloatingButton>
       </Card>
     );
   }

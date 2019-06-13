@@ -14,19 +14,28 @@ const input = props => {
   const [errorMessages, setErrorMessages] = useState("");
   const [valid, setValid] = useState(true);
 
-
   const validation = value => {
     setErrorMessages("");
     return props.validations.reduce((current, next) => {
       const val = next.fn(cleanValue(value));
-      if (!val) {
-        setErrorMessages(next.message);
-      }
+      console.log("val", val);
 
+      if (!val) {
+        console.log("IF");
+        return setErrorMessages(next.message);
+      } else if (val !== true) {
+        console.log("else if");
+
+        if (val.floor === props.floor && val.location === props.location) {
+          return true;
+        } else {
+          return setErrorMessages(next.message);
+        }
+      }
       return current && val;
     }, true);
   };
-  const localValueHandler = value => {  
+  const localValueHandler = value => {
     setValid(validation(value));
     setLocalValue(value);
   };
@@ -48,7 +57,7 @@ const input = props => {
       }
     } else {
       setLocalValue(props.value);
-    }    
+    }
   };
 
   const cleanNumberMask = value => {
