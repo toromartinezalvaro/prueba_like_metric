@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
+    "@nivo/circle-packing": "^0.59.0",
     "@nivo/pie": "^0.58.0",
     "axios": "^0.18.0",
     "lodash": "^4.17.11",

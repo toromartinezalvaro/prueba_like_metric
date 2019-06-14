@@ -1,0 +1,9 @@
+.GraphContainer {
+  display: flex;
+  justify-content: center;
+
+  .root {
+    flex-grow: 1;
+    height: 300px;
+  }
+}

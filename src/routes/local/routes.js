@@ -8,7 +8,8 @@ export const DashboardRoutes = {
   summary: { value: '/summary/', withIndicator: '/summary/:towerId' },
   detailAdmin: { value: '/detailAdmin/' , withIndicator: '/detailAdmin/:towerId' },
   detail: { value: '/detail/' , withIndicator: '/detail/:towerId' },
-  rackAreas: { value: '/rackAreas/' , withIndicator: '/rackAreas/:towerId' }
+  rackAreas: { value: '/rackAreas/' , withIndicator: '/rackAreas/:towerId' },
+  clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' }
 }
 
 export const ProjectRoutes = {
