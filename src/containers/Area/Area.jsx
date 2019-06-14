@@ -284,6 +284,7 @@ class Area extends Component {
       })
       .then(data => {
         console.log(data);
+        this.setState({ calculateTotals: true });
         this.toggleAreaTypeModal();
         this.updateTableInformation();
       })
