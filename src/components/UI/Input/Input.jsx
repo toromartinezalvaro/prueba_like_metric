@@ -18,14 +18,9 @@ const input = props => {
     setErrorMessages("");
     return props.validations.reduce((current, next) => {
       const val = next.fn(cleanValue(value));
-      console.log("val", val);
-
       if (!val) {
-        console.log("IF");
         return setErrorMessages(next.message);
       } else if (val !== true) {
-        console.log("else if");
-
         if (val.floor === props.floor && val.location === props.location) {
           return true;
         } else {

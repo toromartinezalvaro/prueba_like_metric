@@ -4,7 +4,7 @@ import agent from "../config/config";
 class Services {
   constructor(delegate) {
     this.axios = axios;
-    axios.defaults.timeout = 1000 * 5
+    axios.defaults.timeout = 1000 * 15
     this.delegate = delegate;
     this.setupAuthentication();
   }

@@ -32,7 +32,7 @@ class Area extends Component {
     hideDeleteModal: true,
     currentErrorMessage: "",
     showFloatingButton: false,
-    update: true
+    calculateTotals: true
   };
 
   modalContent = () => {
@@ -146,19 +146,6 @@ class Area extends Component {
     this.setState({ isLoading: true });
   }
 
-  getTotalHeaders(arrayAreas, types) {
-    let arrayTypes = types;
-    arrayAreas.forEach(area => {
-      if (arrayTypes !== undefined) {
-        let index = arrayTypes.findIndex(obj => obj.id === area.type);
-        if (arrayTypes[index] !== undefined) {
-          arrayTypes[index].total += area.measure;
-        }
-      }
-    });
-    return arrayTypes;
-  }
-
   updateTableInformation = () => {
     const towerId = this.props.match.params.towerId;
     if (!towerId) {
@@ -167,29 +154,30 @@ class Area extends Component {
     this.services
       .getAreas(towerId)
       .then(response => {
-        console.log("response", response);
         this.setState({
-          data: response.data.propertiesAreas,
-          types: undefined
+          data: response.data.propertiesAreas
         });
-        console.log("response" + response);
-        this.state.data.forEach(arrayAreas => {
-          if (arrayAreas !== undefined) {
-            let types = [];
-            types = arrayAreas.map(area => {
-              return { id: area.type, total: 0 };
-            });
-            if (this.state.types === undefined && types.length !== 0) {
-              this.setState({ types: types });
+        console.log("response", response);
+        if (this.state.calculateTotals === true) {
+          let types = [];
+          this.state.data.forEach(arrayAreas => {
+            if (arrayAreas !== undefined) {
+              arrayAreas.forEach(area => {
+                if (!types.find(type => area.type === type.id)) {
+                  types.push({ id: area.type, total: 0 });
+                }
+                if (types !== undefined) {
+                  let index = types.findIndex(obj => obj.id === area.type);
+                  if (types[index] !== undefined) {
+                    types[index].total += area.measure;
+                  }
+                }
+                return types;
+              });
+              this.setState({ types: types, calculateTotals: false });
             }
-
-            let totalHeaders = this.getTotalHeaders(
-              arrayAreas,
-              this.state.types
-            );
-              this.setState({ types: totalHeaders });
-          }
-        });
+          });
+        }
         this.setState({
           areaTypes: response.data.areaTypes,
           properties: response.data.properties,
@@ -308,9 +296,24 @@ class Area extends Component {
     this.setState({ currentErrorMessage: "" });
   };
 
-  areaChangeHandler = (rowIndex, cellIndex, value) => {
+  sumTotalHeader(actualValue, value, type, arrayTotals) {
+    let index = arrayTotals.findIndex(obj => obj.id === type);
+    if (arrayTotals[index] !== undefined) {
+      console.log("actualValue", actualValue);
+
+      if (actualValue > parseFloat(value)) {
+        arrayTotals[index].total -= actualValue - parseFloat(value);
+      } else {
+        arrayTotals[index].total += parseFloat(value) - actualValue ;
+      }
+    }
+  }
+
+  areaChangeHandler = (rowIndex, cellIndex, value, type) => {
+    console.log(rowIndex, cellIndex, value, type);
     if (value !== "") {
       const currentData = this.state.data;
+      let actualValue = currentData[rowIndex][cellIndex].measure;
       currentData[rowIndex][cellIndex].measure = value;
       this.services
         .putAreasByTowerId(
@@ -318,8 +321,8 @@ class Area extends Component {
           currentData[rowIndex][cellIndex]
         )
         .then(response => {
-          console.log(response);
           this.setState({ data: currentData, showFloatingButton: true });
+          this.sumTotalHeader(actualValue, value, type, this.state.types);
           this.updateTableInformation();
         })
         .catch(error => {
@@ -348,12 +351,13 @@ class Area extends Component {
             }
           ]}
           onChange={target => {
-            this.areaChangeHandler(rowIndex, cellIndex, target.value);
+            this.areaChangeHandler(rowIndex, cellIndex, target.value, e2.type);
           }}
           value={e2.measure}
         />
       ));
     });
+    console.log("state", this.state.types);
 
     return (
       <div>
