@@ -5,14 +5,13 @@ import SummaryCell from '../../components/Summary/SummaryCell/SummaryCell';
 import SummaryServices from '../../services/summary/SummaryService';
 import Input from '../../components/UI/Input/Input';
 import getHeat from '../../components/Summary/HeatMap/HeatMap';
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
-
+import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 
 class Summary extends Component {
   constructor(props) {
     super(props);
     this.services = new SummaryServices(this);
-  } 
+  }
 
   state = {
     firstFee: 0,
@@ -70,13 +69,15 @@ class Summary extends Component {
           pricePerMT2: data.pricePerMT2,
           isLoading: false,
         });
-        console.log("areas", this.state.areas)
+        console.log('areas', this.state.areas);
+      })
+      .catch(error => {
+        this.setState({ isLoading: false });
       });
   }
 
   getData = (summary, key) =>
     summary.rack.map(row =>
-      
       row.map(value => (
         <SummaryCell
           k={key}
@@ -163,7 +164,7 @@ class Summary extends Component {
               { title: 'Total', value: this.state.areas.sum },
             ]}
           />
-          {console.log(this.getData(this.state.areas, "area"))}
+          {console.log(this.getData(this.state.areas, 'area'))}
           <SummaryTable
             title="Precio con adicionales"
             intersect="Precios"
@@ -304,12 +305,12 @@ class Summary extends Component {
           />
         </CardBody>
         <FloatingButton
-            route="rackAreas"
-            projectId={this.props.match.params.projectId}
-            towerId={this.props.match.params.towerId}
-          >
-            Resumen Areas
-          </FloatingButton>
+          route="rackAreas"
+          projectId={this.props.match.params.projectId}
+          towerId={this.props.match.params.towerId}
+        >
+          Resumen Areas
+        </FloatingButton>
       </Card>
     );
   }
