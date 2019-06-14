@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./Naming.module.scss";
 import Card, { CardHeader, CardBody, CardFooter } from "../../UI/Card/Card";
 import Input from "../../UI/Input/Input";
@@ -8,18 +8,10 @@ import Modal from "../../../components/UI/Modal/Modal";
 const naming = props => {
   const [hidden, setHidden] = useState(true);
   const [id, setId] = useState();
+  const [FloorState, setFloorState] = useState();
+  const [propertyIndexState, setPropertyIndexState] = useState();
   const [property, setProperty] = useState("");
-  const [value, setValue] = useState();
-
-  const confirm = () => {
-    setHidden(true);
-    props.onPropertyEmpty(id);
-  };
-
-  const cancel = () => {
-    setHidden(true);
-  };
-
+  const [clear, setClear] = useState();
 
 
   const getInputs = () => {
@@ -40,6 +32,8 @@ const naming = props => {
             onChange={target => {
               if (target.value === "" && property !== null) {
                 setProperty(property.name);
+                setFloorState(floorIndex + props.lowestFloor) 
+                setPropertyIndexState(propertyIndex + 1)
                 setId(property.id);
                 setHidden(false);
               } else {
@@ -52,9 +46,33 @@ const naming = props => {
               }
             }}
             value={property ? property.name : undefined}
+            clearValue={true}
+
           />
         );
       })
+    );
+  };
+  const confirm = () => {
+    setHidden(true);
+    setClear(false)
+    props.onPropertyEmpty(id);
+    props.onPropertyNameChange(
+      id,
+      FloorState,
+      propertyIndexState,
+      ""
+    );
+  };
+
+  const cancel = () => {
+    setHidden(true);
+    setClear(true)
+    props.onPropertyNameChange(
+      id,
+      FloorState,
+      propertyIndexState,
+      property
     );
   };
 
