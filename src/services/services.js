@@ -10,32 +10,32 @@ class Services {
   }
 
   post(url, data, config) {
-    console.log("url 🐒", url);
-    return this.axiosPromise(this.axios.post(url, data, config));
+    console.log("url 🐒 post", url);
+    return this.axiosPromise(() => this.axios.post(url, data, config));
   }
 
   put(url, data, config) {
-    console.log("url 🐒", url);
-    return this.axiosPromise(this.axios.put(url, data, config));
+    console.log("url 🐒 put", url);
+    return this.axiosPromise(() => this.axios.put(url, data, config));
   }
 
   get(url, data, config) {
-    console.log("url 🐒", url);
-    return this.axiosPromise(this.axios.get(url, data, config));
+    console.log("url 🐒 get", url);
+    return this.axiosPromise(() => this.axios.get(url, data, config));
   }
 
   delete(url, data, config) {
-    console.log("url 🐒", url);
+    console.log("url 🐒 delete", url);
     let newConfig = {
       ...config,
       data: data
     };
-    return this.axiosPromise(this.axios.delete(url, newConfig));
+    return this.axiosPromise(() => this.axios.delete(url, newConfig));
   }
 
   axiosPromise(promise) {
     return new Promise((resolve, reject) => {
-      promise
+      promise()
         .then(response => {
           console.log("DONE -->", response);
           resolve(response);
@@ -48,10 +48,10 @@ class Services {
           if (
             error.response &&
             error.response.status === 401 &&
-            this.delegate.excecuteNoAuthorization
+            this.delegate.executeNoAuthorization
           ) {
             console.log("error === 401");
-            this.delegate.excecuteNoAuthorization();
+            this.delegate.executeNoAuthorization();
             console.log("error -->", error.response.status);
           }
           
