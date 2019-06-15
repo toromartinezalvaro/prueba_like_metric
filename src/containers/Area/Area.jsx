@@ -114,7 +114,7 @@ class Area extends Component {
               Total:{" "}
               {
                 <NumberFormat
-                  value={totalArea}
+                  value={parseFloat(totalArea).toFixed(1)}
                   displayType={"text"}
                   thousandSeparator={true}
                 />
