@@ -13,7 +13,7 @@ const SecureContainer = (Container, additionalProps) =>
         isLoading: false,
         currentErrorMessage: "",
         redirect: false,
-        excecuteNoAuthorization: this.excecuteNoAuthorization,
+        executeNoAuthorization: this.executeNoAuthorization,
         loadingAspect: (
           <div className={styles1.Container}>
             <Loader
@@ -27,7 +27,7 @@ const SecureContainer = (Container, additionalProps) =>
       };
     }
 
-    excecuteNoAuthorization = () => {
+    executeNoAuthorization = () => {
       this.setState({ redirect: true });
     };
 
