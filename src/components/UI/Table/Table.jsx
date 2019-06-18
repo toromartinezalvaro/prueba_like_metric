@@ -60,7 +60,7 @@ class table extends Component {
   };
 
   handleScrollBottom = event => {
-    if (!this.state.isSyncingBottomScroll) {
+    if (!this.state.isSyncingBottomScroll && this.wrapperTop.current !== null) {
       this.setState({ isSyncingTopScroll: true });
       this.wrapperTop.current.scrollLeft = this.divBot.current.scrollLeft;
     }
