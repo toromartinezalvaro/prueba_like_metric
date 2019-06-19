@@ -80,6 +80,12 @@ const sideMenu = props => {
           "fas fa-object-group",
           "Agrupamiento"
         )}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.strategy.value,
+          "fas fa-chart-line",
+          "Estrategia"
+        )}
       </div>
     </div>
   );
