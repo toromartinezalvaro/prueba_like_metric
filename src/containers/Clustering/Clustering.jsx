@@ -13,9 +13,10 @@ class Clustering extends Component {
   }
 
   state = {
+    groupsSize: 0,
     towerClusterConfig: {
       clusterByArea: true,
-      groups: 1,
+      groups: [],
     },
     clusters: [],
     loadingTable: false,
@@ -27,6 +28,7 @@ class Clustering extends Component {
       .getClusters(this.props.match.params.towerId)
       .then(response => {
         this.setState({
+          groupsSize: response.data.towerClustersConfig.groups.length,
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
           isLoading: false,
@@ -38,16 +40,14 @@ class Clustering extends Component {
   }
 
   clusterGroupsHandler = target => {
-    const towerClusterConfig = { ...this.state.towerClusterConfig };
-    towerClusterConfig.groups = target.value;
-    this.setState({ towerClusterConfig });
+    this.setState({ groupsSize: target.value });
   };
 
   postClusters = clusterByArea => {
     this.setState({ loadingTable: true });
     this.services
       .postClusters(this.props.match.params.towerId, {
-        groups: this.state.towerClusterConfig.groups,
+        groups: parseInt(this.state.groupsSize),
         clusterByArea,
       })
       .then(response => {
@@ -62,15 +62,10 @@ class Clustering extends Component {
       });
   };
 
-  putType = (id, type, index) => {
-    const tempClusters = [...this.state.clusters];
-    const tempProperty = { ...tempClusters[index] };
-    tempClusters[index].type = type;
-    this.setState({ clusters: tempClusters });
+  putType = (id, type) => {
     this.services
       .putType(id, {
         type,
-        clusterByArea: this.state.towerClusterConfig.clusterByArea,
         towerId: this.props.match.params.towerId,
       })
       .then(response => {
@@ -79,10 +74,7 @@ class Clustering extends Component {
           clusters: response.data.clusters,
         });
       })
-      .catch(error => {
-        tempClusters[index] = tempProperty;
-        this.setState({ clusters: tempClusters });
-      });
+      .catch(error => {});
   };
 
   render() {
@@ -100,7 +92,7 @@ class Clustering extends Component {
                   validations={[]}
                   style={{ width: '75px' }}
                   onChange={this.clusterGroupsHandler}
-                  value={this.state.towerClusterConfig.groups}
+                  value={this.state.groupsSize}
                   placeholder="Grupos"
                 />
               </div>
@@ -123,7 +115,7 @@ class Clustering extends Component {
             </div>
           </CardBody>
         </Card>
-        {this.state.clusters.length !== 0 ? (
+        {this.state.towerClusterConfig.groups.length !== 0 ? (
           <GroupTable
             data={this.state.clusters}
             onTypeChange={this.putType}

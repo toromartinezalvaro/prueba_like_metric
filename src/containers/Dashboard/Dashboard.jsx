@@ -15,6 +15,7 @@ import SecureContainer from "../../HOC/Common/SecureContainer";
 import TowerServices from "../../services/Towers/TowerServices";
 import Summary from "../Summary/Summary";
 import Clustering from "../Clustering/Clustering";
+import Increments from "../Increments/Increments";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -122,6 +123,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.clustering.withIndicator}
           exact
           component={SecureContainer(Clustering)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.increments.withIndicator}
+          exact
+          component={SecureContainer(Increments)}
         />
       </DashboardLayout>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Table from '../../UI/Table/Table';
 import Cell from './InfoCell/InfoCell';
+import GroupSelect from './GroupSelect/GroupSelect';
 
 const groupTable = ({
   data,
@@ -10,25 +11,6 @@ const groupTable = ({
   loading,
   ...rest
 }) => {
-  const typeInput = (value, id, index) => {
-    return (
-      <select
-        value={value}
-        onChange={event => {
-          onTypeChange(id, event.target.value, index);
-        }}
-      >
-        {Array(towerClusterConfig.groups)
-          .fill()
-          .map((_, index) => {
-            return (
-              <option value={`Tipo ${index + 1}`}>{`Tipo ${index + 1}`}</option>
-            );
-          })}
-      </select>
-    );
-  };
-
   const getPropertyNames = data => {
     return data.map(property => property.name);
   };
@@ -43,13 +25,13 @@ const groupTable = ({
       <Cell>{property.price}</Cell>,
       <Cell>{property.areaGroup}</Cell>,
       <Cell>{property.priceGroup}</Cell>,
-      typeInput(
-        towerClusterConfig.clusterByArea
-          ? property.areaGroup
-          : property.priceGroup,
-        property.id,
-        index,
-      ),
+      <GroupSelect
+        value={property.group.id}
+        onChange={event => {
+          onTypeChange(property.id, event.target.value);
+        }}
+        groups={towerClusterConfig.groups}
+      />,
     ];
   };
 

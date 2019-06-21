@@ -9,6 +9,9 @@ const AreaServiceDefinitions = {
   },
   getClusters: towerId => {
     return `${API_PATH}clustering/${towerId}`;
+  },
+  getGroups: towerId => {
+    return `${API_PATH}clustering/groups/${towerId}`;
   }
 };
 
