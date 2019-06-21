@@ -1,39 +1,60 @@
-import React, { Component } from 'react';
-import StrategyServices from '../../services/strategy/StrategyService';
-import Line from '../../components/UI/ChartLine/ChartLine';
-import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
-import Button from '../../components/UI/Button/Button';
-
+import React, { Component } from "react";
+import StrategyServices from "../../services/strategy/StrategyService";
+import Line from "../../components/UI/ChartLine/ChartLine";
+import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
+import Button from "../../components/UI/Button/Button";
+let groups = [];
 export default class Strategy extends Component {
   constructor(props) {
     super(props);
     this.services = new StrategyServices(this);
+    this.chart = React.createRef();
   }
 
-  state = { data: [], groupActive: "Tipo 2" };
+  state = { groupActive: { strategies: [] } };
 
   componentDidMount() {
     this.setState({ isLoading: true });
     this.services
       .getStrategies(this.props.match.params.towerId)
       .then(strategies => {
-        this.setState({ isLoading: false, data: strategies.data });
+        groups = strategies.data;
+        this.setState({ isLoading: false, groupActive: groups[0] });
       });
   }
 
   handleClick(type) {
-    this.setState({groupActive: type})
+    console.log("chartReference", this.chart.current);
+/*     this.chart.current.remove();
+ */    console.log("chartReference", this.chart.current);
+    const groupFilter = groups.find(group => {
+      return group.type === type;
+    });
+    this.setState({ groupActive: groupFilter });
   }
 
   render() {
     return (
       <Card>
-        <div style={{textAlign: "center", marginBottom: "20px"}}>
-          {this.state.data.map(group => (
-            <Button onClick={() => this.handleClick(group.type)}>{group.type}</Button>
-          ))}
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          {groups.map(
+            group => (
+              console.log(group),
+              (
+                <Button onClick={() => this.handleClick(group.type)}>
+                  {group.type}
+                </Button>
+              )
+            )
+          )}
         </div>
-        <Line data={this.state.data} groupActive={this.state.groupActive} />
+        {this.state.groupActive.strategies.length !== 0 ? (
+          <Line
+            ref={this.chart}
+            groups={groups}
+            groupActive={this.state.groupActive.type}
+          />
+        ) : null}
       </Card>
     );
   }
