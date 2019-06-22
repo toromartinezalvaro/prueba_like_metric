@@ -13,4 +13,8 @@ export default class ClusteringServices extends Services {
   getClusters(areaTypeId) {
     return this.get(ClusteringServiceDefinition.getClusters(areaTypeId));
   }
+
+  getGroups(towerId) {
+    return this.get(ClusteringServiceDefinition.getGroups(towerId));
+  }
 }
