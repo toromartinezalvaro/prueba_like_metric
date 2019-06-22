@@ -24,7 +24,8 @@ export default class Detail extends Component {
       mts2: 0,
       pricexMts2: 0
     },
-    aditionals: []
+    aditionals: [],
+    id: 0
   };
 
   componentDidMount() {
@@ -34,7 +35,7 @@ export default class Detail extends Component {
   formatPrice = value => {
     return (
       <NumberFormat
-        value={value}
+        value={Number(value.toFixed(3))}
         displayType={"text"}
         thousandSeparator={true}
         prefix={"$"}
@@ -87,7 +88,8 @@ export default class Detail extends Component {
           totals: property.totals,
           aditionals: property.areas.filter(
             ({ areaType }) => areaType.unit === "UNT"
-          )
+          ),
+          id: property.id
         });
       };
       return (
@@ -151,7 +153,7 @@ export default class Detail extends Component {
                     title="Area total"
                     value={
                       <NumberFormat
-                        value={this.state.totals.mts2}
+                        value={Number(this.state.totals.mts2.toFixed(3))}
                         displayType={"text"}
                         thousandSeparator={true}
                         suffix={" MT2"}
