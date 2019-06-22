@@ -124,11 +124,11 @@ class Dashboard extends Component {
           exact
           component={SecureContainer(Clustering)}
         />
-        <Route
+        {/* <Route
           path={match.url + DashboardRoutes.increments.withIndicator}
           exact
           component={SecureContainer(Increments)}
-        />
+        /> */}
       </DashboardLayout>
     );
   }
