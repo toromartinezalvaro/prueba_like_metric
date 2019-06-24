@@ -5,7 +5,7 @@ import Input from "../../UI/Input/Input";
 import Table from "../../UI/Table/Table";
 import Modal from "../../../components/UI/Modal/Modal";
 
-const naming = props => {
+const Naming = props => {
   const [hidden, setHidden] = useState(true);
   const [id, setId] = useState();
   const [FloorState, setFloorState] = useState();
@@ -107,4 +107,4 @@ const naming = props => {
   );
 };
 
-export default naming;
+export default Naming;

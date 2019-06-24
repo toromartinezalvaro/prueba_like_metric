@@ -6,7 +6,7 @@ import CardHeader from "./CardHeader/CardHeader";
 import CardBody from "./CardBody/CardBody";
 import CardFooter from "./CardFooter/CardFooter";
 
-const card = props => {
+const Card = props => {
   const [loading, setLoading] = useState(props.loading);
   useEffect(() => {
     setLoading(props.loading);
@@ -29,5 +29,5 @@ const card = props => {
   );
 };
 
-export default card;
+export default Card;
 export { CardHeader, CardBody, CardFooter };
