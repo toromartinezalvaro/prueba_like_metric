@@ -8,7 +8,7 @@ import Loader from 'react-loader-spinner';
 import commonStyles from '../../../assets/styles/variables.scss';
 import styles from './Prices.module.scss';
 
-const prices = props => {
+const Prices = props => {
   const { areaTypeId, measurementUnit, services, towerId } = props;
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
@@ -128,4 +128,4 @@ const prices = props => {
   );
 };
 
-export default prices;
+export default Prices;
