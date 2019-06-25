@@ -39,6 +39,15 @@ const totals = props => {
       <div>
         <strong>Valor por mt2: </strong>
         <NumberFormat
+          value={props.data.totals.pricexMts2WithoutAditionals}
+          displayType={"text"}
+          thousandSeparator={true}
+          prefix={"$"}
+        />
+      </div>
+      <div>
+        <strong>Valor por mt2 + adicionales: </strong>
+        <NumberFormat
           value={props.data.totals.pricexMts2}
           displayType={"text"}
           thousandSeparator={true}

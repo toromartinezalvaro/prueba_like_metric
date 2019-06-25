@@ -3,7 +3,7 @@ import styles from "./Input.module.scss";
 import NumberFormat from "react-number-format";
 import ReactTooltip from "react-tooltip";
 
-const input = props => {
+const Input = props => {
   const errorStyle = {
     borderBottomColor: "#FF4040"
   };
@@ -150,4 +150,4 @@ const input = props => {
   );
 };
 
-export default input;
+export default Input;

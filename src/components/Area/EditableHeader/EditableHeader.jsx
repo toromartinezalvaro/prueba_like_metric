@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "../../UI/Button/Button";
 
-const editableHeader = props => {
+const EditableHeader = props => {
   const [deleteMode, setDeleteMode] = useState(false);
   const toggleDeleteMode = event => {
     event.preventDefault();
@@ -20,4 +20,4 @@ const editableHeader = props => {
   );
 };
 
-export default editableHeader;
+export default EditableHeader;

@@ -1,16 +1,18 @@
-import React, { Component, Fragment } from "react";
-import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import Table from "../../components/UI/Table/Table";
-import Input from "../../components/UI/Input/Input";
-import IconButton from "../../components/UI/Button/IconButton/IconButton";
-import Modal from "../../components/UI/Modal/Modal";
-import EditableHeader from "../../components/Area/EditableHeader/EditableHeader";
-import AreaServices from "../../services/area/AreaServices";
-import Prices from "../../components/Area/Prices/Prices";
-import errorHandling from "../../services/commons/errorHelper";
-import Error from "../../components/UI/Error/Error";
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
-import NumberFormat from "react-number-format";
+import React, { Component, Fragment } from 'react';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import Table from '../../components/UI/Table/Table';
+import Input from '../../components/UI/Input/Input';
+import IconButton from '../../components/UI/Button/IconButton/IconButton';
+import Modal from '../../components/UI/Modal/Modal';
+import EditableHeader from '../../components/Area/EditableHeader/EditableHeader';
+import AreaServices from '../../services/area/AreaServices';
+import Prices from '../../components/Area/Prices/Prices';
+import errorHandling from '../../services/commons/errorHelper';
+import Error from '../../components/UI/Error/Error';
+import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
+import NumberFormat from 'react-number-format';
+import Loader from 'react-loader-spinner';
+import commonStyles from '../../assets/styles/variables.scss';
 
 class Area extends Component {
   constructor(props) {
@@ -20,8 +22,8 @@ class Area extends Component {
 
   state = {
     areaTypeId: null,
-    areaType: "",
-    areaMeasurementUnit: "MT2",
+    areaType: '',
+    areaMeasurementUnit: 'MT2',
     areasNames: [],
     properties: [],
     areaTypes: [],
@@ -30,23 +32,24 @@ class Area extends Component {
     editingAreaType: false,
     deleteAreaTypeId: null,
     hideDeleteModal: true,
-    currentErrorMessage: "",
+    currentErrorMessage: '',
     showFloatingButton: false,
-    calculateTotals: true
+    calculateTotals: true,
+    modalIsLoading: false,
   };
 
   modalContent = () => {
-    console.log("modalContent ====> ", this.state.areaType);
+    console.log('modalContent ====> ', this.state.areaType);
     if (this.state.editingAreaType) {
       return (
         <Fragment>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             <Input
               name="areaType"
               validations={[]}
               onChange={this.areaTypeHandler}
               value={this.state.areaType}
-              disable={this.state.areaType === "Interior"}
+              disable={this.state.areaType === 'Interior'}
             />
             {this.state.areaMeasurementUnit}
           </div>
@@ -55,12 +58,22 @@ class Area extends Component {
             measurementUnit={this.state.areaMeasurementUnit}
             services={this.services}
             towerId={this.props.match.params.towerId}
+            isLoading={this.state.modalIsLoading}
           />
         </Fragment>
       );
     } else {
-      return (
-        <div style={{ display: "flex" }}>
+      return this.state.modalIsLoading ? (
+        <div>
+          <Loader
+            type="ThreeDots"
+            color={commonStyles.mainColor}
+            height="100"
+            width="100"
+          />
+        </div>
+      ) : (
+        <div style={{ display: 'flex' }}>
           <Input
             name="areaType"
             validations={[]}
@@ -69,11 +82,11 @@ class Area extends Component {
           />
           <select
             onChange={this.measurementUnitHandler}
-            placeholder={"Tipo de medida"}
+            placeholder={'Tipo de medida'}
             value={this.state.areaMeasurementUnit}
           >
-            <option value={"MT2"}>MT2</option>
-            <option value={"UNT"}>Unidad</option>
+            <option value={'MT2'}>MT2</option>
+            <option value={'UNT'}>Unidad</option>
           </select>
         </div>
       );
@@ -101,21 +114,21 @@ class Area extends Component {
             onClick={() => {
               this.toggleDeleteModal(areaType.id);
             }}
-            canBeDeleted={areaType.name.toLowerCase() === "interior"}
+            canBeDeleted={areaType.name.toLowerCase() === 'interior'}
           >
             <p
               style={{
-                marginBlockStart: "0px",
-                marginBlockEnd: "0px",
-                lineHeight: "0px",
-                marginTop: "18px"
+                marginBlockStart: '0px',
+                marginBlockEnd: '0px',
+                lineHeight: '0px',
+                marginTop: '18px',
               }}
             >
-              Total:{" "}
+              Total:{' '}
               {
                 <NumberFormat
                   value={parseFloat(totalArea).toFixed(1)}
-                  displayType={"text"}
+                  displayType={'text'}
                   thousandSeparator={true}
                 />
               }
@@ -131,12 +144,12 @@ class Area extends Component {
     if (id === undefined) {
       this.setState(prevState => ({
         deleteAreaTypeId: null,
-        hideDeleteModal: !prevState.hideDeleteModal
+        hideDeleteModal: !prevState.hideDeleteModal,
       }));
     } else {
       this.setState(prevState => ({
         deleteAreaTypeId: id,
-        hideDeleteModal: !prevState.hideDeleteModal
+        hideDeleteModal: !prevState.hideDeleteModal,
       }));
     }
   };
@@ -155,9 +168,9 @@ class Area extends Component {
       .getAreas(towerId)
       .then(response => {
         this.setState({
-          data: response.data.propertiesAreas
+          data: response.data.propertiesAreas,
         });
-        console.log("response", response);
+        console.log('response', response);
         if (this.state.calculateTotals === true) {
           let types = [];
           this.state.data.forEach(arrayAreas => {
@@ -181,7 +194,7 @@ class Area extends Component {
         this.setState({
           areaTypes: response.data.areaTypes,
           properties: response.data.properties,
-          isLoading: false
+          isLoading: false,
         });
         let showFloating = response.data.propertiesAreas.find(arrayAreas => {
           let anyArea = arrayAreas.find(area => {
@@ -196,10 +209,10 @@ class Area extends Component {
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
         });
       });
-    this.setState({ currentErrorMessage: "" });
+    this.setState({ currentErrorMessage: '' });
   };
 
   areaTypeHandler = target => {
@@ -212,17 +225,17 @@ class Area extends Component {
 
   toggleAreaTypeModal = areaType => {
     console.log(
-      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`
+      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`,
     );
     if (areaType === undefined) {
       console.log(
-        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`
+        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`,
       );
       this.setState(prevState => ({
         hidden: !prevState.hidden,
-        areaType: "",
-        areaMeasurementUnit: "MT2",
-        editingAreaType: false
+        areaType: '',
+        areaMeasurementUnit: 'MT2',
+        editingAreaType: false,
       }));
     } else {
       this.setState(prevState => ({
@@ -230,7 +243,7 @@ class Area extends Component {
         areaTypeId: areaType.id,
         areaType: areaType.name,
         areaMeasurementUnit: areaType.measurementUnit,
-        editingAreaType: true
+        editingAreaType: true,
       }));
 
       console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
@@ -247,79 +260,86 @@ class Area extends Component {
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
         });
       });
-    this.setState({ currentErrorMessage: "" });
+    this.setState({ currentErrorMessage: '' });
   };
 
   updateAreaType = () => {
+    this.setState({ modalIsLoading: true });
     this.services
       .putArea(this.state.areaTypeId, {
         id: this.state.areaTypeId,
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
-        towerId: this.props.match.params.towerId
+        towerId: this.props.match.params.towerId,
       })
       .then(data => {
         console.log(data);
         this.toggleAreaTypeModal();
         this.updateTableInformation();
+        this.setState({ modalIsLoading: false });
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
+          modalIsLoading: false,
         });
       });
-    this.setState({ currentErrorMessage: "" });
+    this.setState({ currentErrorMessage: '' });
   };
 
   addAreaType = () => {
+    console.log('addAreaType :D');
+    this.setState({ modalIsLoading: true });
     this.services
       .postArea({
         name: this.state.areaType,
         measurementUnit: this.state.areaMeasurementUnit,
-        towerId: this.props.match.params.towerId
+        towerId: this.props.match.params.towerId,
       })
       .then(data => {
         console.log(data);
         this.setState({ calculateTotals: true });
         this.toggleAreaTypeModal();
         this.updateTableInformation();
+        this.setState({ modalIsLoading: false });
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
+          modalIsLoading: false,
         });
       });
-    this.setState({ currentErrorMessage: "" });
+    this.setState({ currentErrorMessage: '' });
   };
 
   sumTotalHeader(actualValue, value, type, arrayTotals) {
     let index = arrayTotals.findIndex(obj => obj.id === type);
     if (arrayTotals[index] !== undefined) {
-      console.log("actualValue", actualValue);
+      console.log('actualValue', actualValue);
 
       if (actualValue > parseFloat(value)) {
         arrayTotals[index].total -= actualValue - parseFloat(value);
       } else {
-        arrayTotals[index].total += parseFloat(value) - actualValue ;
+        arrayTotals[index].total += parseFloat(value) - actualValue;
       }
     }
   }
 
   areaChangeHandler = (rowIndex, cellIndex, value, type) => {
     console.log(rowIndex, cellIndex, value, type);
-    if (value !== "") {
+    if (value !== '') {
       const currentData = this.state.data;
       let actualValue = currentData[rowIndex][cellIndex].measure;
       currentData[rowIndex][cellIndex].measure = value;
       this.services
         .putAreasByTowerId(
           this.props.match.params.towerId,
-          currentData[rowIndex][cellIndex]
+          currentData[rowIndex][cellIndex],
         )
         .then(response => {
           this.setState({ data: currentData, showFloatingButton: true });
@@ -329,10 +349,10 @@ class Area extends Component {
         .catch(error => {
           let errorHelper = errorHandling(error);
           this.setState({
-            currentErrorMessage: errorHelper.message
+            currentErrorMessage: errorHelper.message,
           });
         });
-      this.setState({ currentErrorMessage: "" });
+      this.setState({ currentErrorMessage: '' });
     }
   };
 
@@ -341,15 +361,15 @@ class Area extends Component {
       return row.map((e2, cellIndex) => (
         <Input
           mask="number"
-          style={{ width: "75px" }}
+          style={{ width: '75px' }}
           validations={[
             {
               fn: value => {
                 console.log(value);
                 return value !== null;
               },
-              message: "No puede estar vacío"
-            }
+              message: 'No puede estar vacío',
+            },
           ]}
           onChange={target => {
             this.areaChangeHandler(rowIndex, cellIndex, target.value, e2.type);
@@ -358,11 +378,11 @@ class Area extends Component {
         />
       ));
     });
-    console.log("state", this.state.types);
+    console.log('state', this.state.types);
 
     return (
       <div>
-        {this.state.currentErrorMessage !== "" ? (
+        {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <Fragment>
@@ -372,27 +392,27 @@ class Area extends Component {
             </CardHeader>
             <CardBody>
               <Table
-                intersect={"Areas"}
+                intersect={'Areas'}
                 headers={[
                   ...this.processHeaders(
                     this.state.areaTypes,
-                    this.state.types
+                    this.state.types,
                   ),
                   <IconButton
                     onClick={() => {
                       this.toggleAreaTypeModal();
                     }}
-                  />
+                  />,
                 ]}
                 columns={this.state.properties}
                 data={[...inputs]}
-                width={{ width: "125px" }}
+                width={{ width: '125px' }}
               />
             </CardBody>
           </Card>
           {this.state.hidden ? null : (
             <Modal
-              title={"Agregar nuevo tipo de area"}
+              title={'Agregar nuevo tipo de area'}
               hidden={this.state.hidden}
               onConfirm={
                 this.state.editingAreaType
@@ -406,7 +426,7 @@ class Area extends Component {
           )}
           {this.state.hideDeleteModal ? null : (
             <Modal
-              title={"Eliminar tipo de area"}
+              title={'Eliminar tipo de area'}
               hidden={this.state.hideDeleteModal}
               onConfirm={this.deleteAreaType}
               onCancel={this.toggleDeleteModal}
