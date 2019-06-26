@@ -1,0 +1,19 @@
+.ActionContainer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.Content {
+  display: flex;
+  text-align-last: center;
+  & * {
+    flex-grow: 1;
+  }
+  & .Column * {
+    margin-bottom: 5px;
+  }
+  & .Header {
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+}
