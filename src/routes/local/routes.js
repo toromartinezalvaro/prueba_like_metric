@@ -9,7 +9,8 @@ export const DashboardRoutes = {
   detailAdmin: { value: '/detailAdmin/' , withIndicator: '/detailAdmin/:towerId' },
   detail: { value: '/detail/' , withIndicator: '/detail/:towerId' },
   rackAreas: { value: '/rackAreas/' , withIndicator: '/rackAreas/:towerId' },
-  clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' }
+  clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' },
+  increments: { value: '/increments/' , withIndicator: '/increments/:towerId' }
 }
 
 export const ProjectRoutes = {
