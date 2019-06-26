@@ -18,6 +18,14 @@ class Increments extends Component {
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then(response => {
+        const notNulls = response.data.reduce((current, next) => {
+          return current &&
+            next.salesSpeed !== null &&
+            next.anualEffectiveIncrement !== null;
+        }, true);
+        if (notNulls) {
+          this.getIncrements();
+        }
         this.setState({ incrementsSummary: response.data });
       })
       .catch(error => {
@@ -33,7 +41,15 @@ class Increments extends Component {
     this.services.putAnualEffectiveIncrements(id, { anualEffectiveIncrement });
   };
 
-  getPrices = () => {
+  clacIncrements = () => {
+    this.services
+      .putIncrements(this.props.match.params.towerId)
+      .then(results => {
+        this.setState({ increments: results.data });
+      });
+  };
+
+  getIncrements = () => {
     this.services
       .getIncrements(this.props.match.params.towerId)
       .then(results => {
@@ -49,15 +65,18 @@ class Increments extends Component {
     return (
       <Fragment>
         <IncrementsTable
-          getPrices={this.getPrices}
+          calcIncrements={this.clacIncrements}
+          getIncrements={this.getIncrements}
           data={this.state.incrementsSummary}
           salesSpeedsHandler={this.salesSpeedsHandler}
           anualEffectiveIncrementsHandler={this.anualEffectiveIncrementsHandler}
         />
-        <IncrementsChart
-          data={this.state.increments}
-          incrementsHandler={this.putIncrement}
-        />
+        {this.state.increments.length === 0 ? null : (
+          <IncrementsChart
+            data={this.state.increments}
+            incrementsHandler={this.putIncrement}
+          />
+        )}
       </Fragment>
     );
   }

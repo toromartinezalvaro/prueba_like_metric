@@ -9,7 +9,8 @@ const incrementTable = ({
   data,
   salesSpeedsHandler,
   anualEffectiveIncrementsHandler,
-  getPrices,
+  calcIncrements,
+  getIncrements,
   ...rest
 }) => {
   return (
@@ -106,7 +107,8 @@ const incrementTable = ({
       </CardBody>
       <CardFooter>
         <div className={styles.ActionContainer}>
-          <Button onClick={getPrices}>Calcular incrementos</Button>
+          <Button onClick={getIncrements}>Obtener Incrementos</Button>
+          <Button onClick={calcIncrements}>Calcular incrementos</Button>
         </div>
       </CardFooter>
     </Card>

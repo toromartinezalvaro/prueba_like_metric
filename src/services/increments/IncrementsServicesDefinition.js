@@ -1,8 +1,11 @@
 import { API_PATH } from '../../config/config';
 
 const IncrementsServiceDefinition = {
-  getIncrements: towerId => {
+  putIncrements: towerId => {
     return `${API_PATH}pricing/${towerId}`;
+  },
+  getIncrements: towerId => {
+    return `${API_PATH}pricing/increments/${towerId}`;
   },
   getIncrementsSummary: towerId => {
     return `${API_PATH}pricing/summaries/${towerId}`;
