@@ -16,6 +16,7 @@ import TowerServices from "../../services/Towers/TowerServices";
 import Summary from "../Summary/Summary";
 import Strategy from "../Strategy/Strategy";
 import Clustering from "../Clustering/Clustering";
+import Increments from "../Increments/Increments";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -129,6 +130,11 @@ class Dashboard extends Component {
           exact
           component={SecureContainer(Strategy)}
         />
+        {/* <Route
+          path={match.url + DashboardRoutes.increments.withIndicator}
+          exact
+          component={SecureContainer(Increments)}
+        /> */}
       </DashboardLayout>
     );
   }
