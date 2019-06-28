@@ -16,6 +16,34 @@ export default class Strategy extends Component {
     groupFilter: [],
     labels: [],
     staticGroups: [],
+    dataGraph: [],
+    dataHelper: [
+      /*       { label: ['Mercado'], borderColor: '' },
+       */ {
+        label: ['Continua'],
+        borderColor: '#29339B',
+        backgroundColor: '#8A8FC8',
+        fill: null,
+      },
+      {
+        label: ['Semi-Continua'],
+        borderColor: '#018E42',
+        backgroundColor: '#74C197',
+        fill: null,
+      },
+      {
+        label: ['Semi-Escalonada'],
+        borderColor: '#EE2E31',
+        backgroundColor: '#F58D8E',
+        fill: null,
+      },
+      {
+        label: ['Escalonada'],
+        borderColor: '#FFC857',
+        backgroundColor: '#FFE1A3',
+        fill: null,
+      },
+    ],
   };
 
   findGroup = (groups, active) => {
@@ -40,42 +68,17 @@ export default class Strategy extends Component {
   };
 
   makeArrayDataSets = dataGraph => {
-    const dataHelper = [
-      { label: ['Mercado'], borderColor: '' },
-      {
-        label: ['Continua'],
-        borderColor: '#29339B',
-        backgroundColor: '#8A8FC8',
-        fill: null,
-      },
-      {
-        label: ['Semi-Continua'],
-        borderColor: '#018E42',
-        backgroundColor: '#74C197',
-        fill: null,
-      },
-      {
-        label: ['Semi-Escalonada'],
-        borderColor: '#EE2E31',
-        backgroundColor: '#F58D8E',
-        fill: null,
-      },
-      {
-        label: ['Escalonada'],
-        borderColor: '#FFC857',
-        backgroundColor: '#FFE1A3',
-        fill: null,
-      },
-    ];
     const arrayData = dataGraph.map((line, i) => {
-      return {
-        data: [...line],
-        label: dataHelper[i].label,
-        borderColor: dataHelper[i].borderColor,
-        backgroundColor: dataHelper[i].backgroundColor,
-        fill: dataHelper[i].fill,
-        lineTension: 0.05,
-      };
+      if (this.state.dataHelper !== undefined) {
+        return {
+          data: [...line],
+          label: this.state.dataHelper[i].label,
+          borderColor: this.state.dataHelper[i].borderColor,
+          backgroundColor: this.state.dataHelper[i].backgroundColor,
+          fill: this.state.dataHelper[i].fill,
+          lineTension: 0.05,
+        };
+      }
     });
 
     console.log('groups array ', arrayData);
@@ -87,6 +90,7 @@ export default class Strategy extends Component {
     this.services
       .getStrategies(this.props.match.params.towerId)
       .then(strategies => {
+        console.log(strategies);
         const groupFilter = this.findGroup(strategies.data, strategies.data[0]);
         const labels = this.makeArrayLabels(groupFilter);
         const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
@@ -125,11 +129,25 @@ export default class Strategy extends Component {
         </div>
         {this.state.groupActive.strategies.length !== 0 ? (
           <Line
-            ref={this.chart}
             currentGroup={[...this.state.currentGroup]}
             labels={this.state.labels}
+            type={this.state.groupActive.type}
           />
         ) : null}
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <h4>
+            Selecciona la estrategia para el {this.state.groupActive.type}
+          </h4>
+          {this.state.dataGraph.map((group, index) => {
+            if (index !== -1) {
+              return (
+                <Button /* onClick={() => this.handleClick()} */>
+                  {this.state.dataHelper[index].label}
+                </Button>
+              );
+            }
+          })}
+        </div>
       </Card>
     );
   }
