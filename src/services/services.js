@@ -47,11 +47,12 @@ class Services {
           }
           if (
             error.response &&
-            error.response.status === 401 &&
-            this.delegate.executeNoAuthorization
+            error.response.status === 401 
           ) {
-            console.log("error === 401");
-            this.delegate.executeNoAuthorization();
+            if (this.delegate.executeNoAuthorization) {
+              this.delegate.executeNoAuthorization();
+            }
+            agent.logout()
             console.log("error -->", error.response.status);
           }
           

@@ -17,5 +17,8 @@ export const ProjectRoutes = {
 }
 
 export const UserRoutes = {
-  login: '/login'
+  base: DashboardRoutes.base + DashboardRoutes.user,
+  login: '/login',
+  profile: '/profile',
+  create: '/create'
 }
