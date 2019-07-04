@@ -5,7 +5,7 @@ import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
 import Modal from "../../UI/Modal/Modal";
 
-const schema = props => {
+const Schema = props => {
   const [hidden, setHidden] = useState(true);
 
   const inputValidation = [
@@ -112,4 +112,4 @@ const schema = props => {
   );
 };
 
-export default schema;
+export default Schema;

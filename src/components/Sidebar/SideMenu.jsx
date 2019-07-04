@@ -80,6 +80,12 @@ const sideMenu = props => {
           "fas fa-object-group",
           "Agrupamiento"
         )}
+         {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.increments.value,
+          "fas fa-angle-double-up",
+          "Incrementos"
+        )}  
       </div>
     </div>
   );
