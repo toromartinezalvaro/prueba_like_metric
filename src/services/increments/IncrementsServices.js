@@ -2,6 +2,9 @@ import IncrementsServicesDefinition from './IncrementsServicesDefinition';
 import Services from '../services';
 
 export default class IncrementsServices extends Services {
+  putIncrements(towerId) {
+    return this.put(IncrementsServicesDefinition.putIncrements(towerId));
+  }
   getIncrements(towerId) {
     return this.put(IncrementsServicesDefinition.putIncrements(towerId));
   }

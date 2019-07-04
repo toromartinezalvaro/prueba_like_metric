@@ -36,7 +36,15 @@ class Increments extends Component {
     this.services.putAnualEffectiveIncrements(id, { anualEffectiveIncrement });
   };
 
-  getPrices = () => {
+  clacIncrements = () => {
+    this.services
+      .putIncrements(this.props.match.params.towerId)
+      .then(results => {
+        this.setState({ increments: results.data });
+      });
+  };
+
+  getIncrements = () => {
     this.services
       .getIncrements(this.props.match.params.towerId)
       .then(response => {
@@ -85,7 +93,7 @@ class Increments extends Component {
           putMarketAnualEffectiveIncrement={
             this.putMarketAnualEffectiveIncrement
           }
-          getPrices={this.getPrices}
+          getIncrements={this.getIncrements}
           data={this.state.incrementsSummary.groups}
           marketData={this.state.incrementsSummary.market}
           salesSpeedsHandler={this.salesSpeedsHandler}

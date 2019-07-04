@@ -10,7 +10,7 @@ const incrementTable = ({
   marketData,
   salesSpeedsHandler,
   anualEffectiveIncrementsHandler,
-  getPrices,
+  getIncrements,
   incrementsHandler,
   putMarketAnualEffectiveIncrement,
   putMarketAveragePrice,
@@ -164,7 +164,7 @@ const incrementTable = ({
       </CardBody>
       <CardFooter>
         <div className={styles.ActionContainer}>
-          <Button onClick={getPrices}>Calcular incrementos</Button>
+          <Button onClick={getIncrements}>Calcular incrementos</Button>
         </div>
       </CardFooter>
     </Card>
