@@ -1,67 +1,112 @@
-// import React, { Component, Fragment } from 'react';
-// import IncrementsTable from '../../components/Increments/IncrementTable';
-// //import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
-// import IncrementsServices from '../../services/increments/IncrementsServices';
+import React, { Component, Fragment } from 'react';
+import IncrementsTable from '../../components/Increments/IncrementTable';
+import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
+import IncrementsServices from '../../services/increments/IncrementsServices';
 
-// class Increments extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.services = new IncrementsServices(this);
-//   }
+class Increments extends Component {
+  constructor(props) {
+    super(props);
+    this.services = new IncrementsServices(this);
+  }
 
-//   state = {
-//     incrementsSummary: [],
-//     increments: [],
-//   };
+  state = {
+    incrementsSummary: {
+      market: { averagePrice: 0, anualEffectiveIncrement: 0 },
+      groups: [],
+    },
+    increments: [],
+  };
 
-//   componentDidMount() {
-//     this.services
-//       .getIncrementsSummary(this.props.match.params.towerId)
-//       .then(response => {
-//         this.setState({ incrementsSummary: response.data });
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//   }
+  componentDidMount() {
+    this.services
+      .getIncrementsSummary(this.props.match.params.towerId)
+      .then(response => {
+        this.setState({ incrementsSummary: response.data });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 
-//   putDefinitions = () => {
-//     // TODO: Cambiar nulos por ceros
-//     const salesSpeeds = this.state.incrementsSummary.map(increments => {
-//       return increments.salesSpeeds;
-//     });
-//     const anualEffectiveIncrements = this.state.incrementsSummary.map(
-//       increment => {
-//         return increment.anualEffectiveIncrements;
-//       },
-//     );
-//     this.services
-//       .putDefinitions(this.props.match.params.towerId, {
-//         salesSpeeds,
-//         anualEffectiveIncrements,
-//       })
-//       .then(results => {
-//         this.setState({ increments: results.data });
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//   };
+  salesSpeedsHandler = (id, salesSpeed) => {
+    this.services.putSalesSpeeds(id, { salesSpeed });
+  };
 
-//   getPrices = increments => {
-//     return increments.map(type => {
-//       return type.prices;
-//     });
-//   };
+  anualEffectiveIncrementsHandler = (id, anualEffectiveIncrement) => {
+    this.services.putAnualEffectiveIncrements(id, { anualEffectiveIncrement });
+  };
 
-//   render() {
-//     return (
-//       <Fragment>
-//         <IncrementsTable data={this.state.incrementsSummary} />
-//         {/* <IncrementsChart data={this.state.increments} /> */}
-//       </Fragment>
-//     );
-//   }
-// }
+  clacIncrements = () => {
+    this.services
+      .putIncrements(this.props.match.params.towerId)
+      .then(results => {
+        this.setState({ increments: results.data });
+      });
+  };
 
-// export default Increments;
+  getIncrements = () => {
+    this.services
+      .getIncrements(this.props.match.params.towerId)
+      .then(response => {
+        this.setState({ incrementsSummary: response.data });
+      });
+  };
+
+  putIncrement = (id, increment) => {
+    this.services
+      .putIncrement(this.props.match.params.towerId, {
+        groupId: id,
+        increment,
+      })
+      .then(response => {
+        this.setState({ incrementsSummary: response.data });
+      });
+  };
+
+  getPeriodsIncrements = () => {
+    this.services
+      .getPeriodsIncrements(this.props.match.params.towerId)
+      .then(response => {
+        this.setState({ increments: response.data });
+      });
+  };
+
+  putMarketAveragePrice = averagePrice => {
+    this.services.putMarketAveragePrice(this.props.match.params.towerId, {
+      averagePrice,
+    });
+  };
+  putMarketAnualEffectiveIncrement = anualEffectiveIncrement => {
+    this.services.putMarketAnualEffectiveIncrement(
+      this.props.match.params.towerId,
+      {
+        anualEffectiveIncrement,
+      },
+    );
+  };
+
+  render() {
+    return (
+      <Fragment>
+        <IncrementsTable
+          putMarketAveragePrice={this.putMarketAveragePrice}
+          putMarketAnualEffectiveIncrement={
+            this.putMarketAnualEffectiveIncrement
+          }
+          getIncrements={this.getIncrements}
+          data={this.state.incrementsSummary.groups}
+          marketData={this.state.incrementsSummary.market}
+          salesSpeedsHandler={this.salesSpeedsHandler}
+          anualEffectiveIncrementsHandler={this.anualEffectiveIncrementsHandler}
+          incrementsHandler={this.putIncrement}
+        />
+        <IncrementsChart
+          data={this.state.increments}
+          getData={this.getPeriodsIncrements}
+        />
+      </Fragment>
+    );
+  }
+}
+
+export default Increments;

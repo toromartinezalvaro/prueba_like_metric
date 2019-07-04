@@ -1,0 +1,37 @@
+.ActionContainer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.Content {
+  display: flex;
+  text-align-last: center;
+  & * {
+    flex-grow: 1;
+  }
+  & .Column * {
+    margin-bottom: 5px;
+  }
+  & .Header {
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+}
+
+.Title {
+  font-size: 23px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-family: 'Didact Gothic';
+}
+
+.MarketInputs {
+  display: flex;
+  .MarketInput {
+    display: flex;
+    .MarketInputLabel {
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+  }
+}

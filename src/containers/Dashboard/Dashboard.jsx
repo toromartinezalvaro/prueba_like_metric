@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { Route } from "react-router-dom";
-import { DashboardRoutes, ProjectRoutes } from "../../routes/local/routes";
-import DashboardLayout from "../../HOC/Layouts/Dashboard/Dashboard";
-import Building from "../Building/Building";
-import Projects from "../Project/Projects";
-import Towers from "../Towers/Towers";
-import UserSettings from "../User/UserSettings";
-import Areas from "../Area/Area";
-import Prime from "../Prime/Prime";
-import DetailAdmin from "../DetailAdmin/DetailAdmin";
-import Detail from "../Detail/Detail";
-import RackAreas from "../RackAreas/RackAreas";
-import SecureContainer from "../../HOC/Common/SecureContainer";
-import TowerServices from "../../services/Towers/TowerServices";
-import Summary from "../Summary/Summary";
-import Clustering from "../Clustering/Clustering";
-import Increments from "../Increments/Increments";
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes';
+import DashboardLayout from '../../HOC/Layouts/Dashboard/Dashboard';
+import Building from '../Building/Building';
+import Projects from '../Project/Projects';
+import Towers from '../Towers/Towers';
+import UserSettings from '../User/UserSettings';
+import Areas from '../Area/Area';
+import Prime from '../Prime/Prime';
+import DetailAdmin from '../DetailAdmin/DetailAdmin';
+import Detail from '../Detail/Detail';
+import RackAreas from '../RackAreas/RackAreas';
+import SecureContainer from '../../HOC/Common/SecureContainer';
+import TowerServices from '../../services/Towers/TowerServices';
+import Summary from '../Summary/Summary';
+import Clustering from '../Clustering/Clustering';
+import Increments from '../Increments/Increments';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -24,11 +24,11 @@ class Dashboard extends Component {
   }
 
   state = {
-    tower: null
+    tower: null,
   };
 
   componentDidMount() {
-    const towerId = this.props.location.pathname.split("/")[3];
+    const towerId = this.props.location.pathname.split('/')[3];
 
     if (towerId && this.state.tower === null) {
       this.services
@@ -37,7 +37,7 @@ class Dashboard extends Component {
           this.setState({ tower: response.data });
         })
         .catch(error => {
-          console.log("ERROR >", error);
+          console.log('ERROR >', error);
         });
     }
   }
@@ -50,7 +50,7 @@ class Dashboard extends Component {
       return;
     }
     this.setState({
-      tower: tower
+      tower: tower,
     });
   };
 
@@ -63,7 +63,7 @@ class Dashboard extends Component {
           path={match.url + ProjectRoutes.base}
           exact
           component={SecureContainer(Projects, {
-            changeTower: this.onChangeTower
+            changeTower: this.onChangeTower,
           })}
         />
         <Route
@@ -74,7 +74,7 @@ class Dashboard extends Component {
           }
           exact
           component={SecureContainer(Towers, {
-            changeTower: this.onChangeTower
+            changeTower: this.onChangeTower,
           })}
         />
         <Route
@@ -91,7 +91,7 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.user}
           exact
           component={SecureContainer(UserSettings, {
-            changeTower: this.onChangeTower
+            changeTower: this.onChangeTower,
           })}
         />
         <Route
@@ -124,11 +124,11 @@ class Dashboard extends Component {
           exact
           component={SecureContainer(Clustering)}
         />
-        {/* <Route
+        <Route
           path={match.url + DashboardRoutes.increments.withIndicator}
           exact
           component={SecureContainer(Increments)}
-        /> */}
+        />
       </DashboardLayout>
     );
   }
