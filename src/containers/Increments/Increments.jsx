@@ -10,7 +10,10 @@ class Increments extends Component {
   }
 
   state = {
-    incrementsSummary: [],
+    incrementsSummary: {
+      market: { averagePrice: 0, anualEffectiveIncrement: 0 },
+      groups: [],
+    },
     increments: [],
   };
 
@@ -36,27 +39,62 @@ class Increments extends Component {
   getPrices = () => {
     this.services
       .getIncrements(this.props.match.params.towerId)
-      .then(results => {
-        this.setState({ increments: results.data });
+      .then(response => {
+        this.setState({ incrementsSummary: response.data });
       });
   };
 
   putIncrement = (id, increment) => {
-    this.services.putIncrement(id, { increment });
+    this.services
+      .putIncrement(this.props.match.params.towerId, {
+        groupId: id,
+        increment,
+      })
+      .then(response => {
+        this.setState({ incrementsSummary: response.data });
+      });
+  };
+
+  getPeriodsIncrements = () => {
+    this.services
+      .getPeriodsIncrements(this.props.match.params.towerId)
+      .then(response => {
+        this.setState({ increments: response.data });
+      });
+  };
+
+  putMarketAveragePrice = averagePrice => {
+    this.services.putMarketAveragePrice(this.props.match.params.towerId, {
+      averagePrice,
+    });
+  };
+  putMarketAnualEffectiveIncrement = anualEffectiveIncrement => {
+    this.services.putMarketAnualEffectiveIncrement(
+      this.props.match.params.towerId,
+      {
+        anualEffectiveIncrement,
+      },
+    );
   };
 
   render() {
     return (
       <Fragment>
         <IncrementsTable
+          putMarketAveragePrice={this.putMarketAveragePrice}
+          putMarketAnualEffectiveIncrement={
+            this.putMarketAnualEffectiveIncrement
+          }
           getPrices={this.getPrices}
-          data={this.state.incrementsSummary}
+          data={this.state.incrementsSummary.groups}
+          marketData={this.state.incrementsSummary.market}
           salesSpeedsHandler={this.salesSpeedsHandler}
           anualEffectiveIncrementsHandler={this.anualEffectiveIncrementsHandler}
+          incrementsHandler={this.putIncrement}
         />
         <IncrementsChart
           data={this.state.increments}
-          incrementsHandler={this.putIncrement}
+          getData={this.getPeriodsIncrements}
         />
       </Fragment>
     );

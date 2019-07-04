@@ -3,10 +3,14 @@ import Services from '../services';
 
 export default class IncrementsServices extends Services {
   getIncrements(towerId) {
-    return this.get(IncrementsServicesDefinition.getIncrements(towerId));
+    return this.put(IncrementsServicesDefinition.putIncrements(towerId));
   }
   getIncrementsSummary(towerId) {
     return this.get(IncrementsServicesDefinition.getIncrementsSummary(towerId));
+  }
+
+  getPeriodsIncrements(towerId) {
+    return this.get(IncrementsServicesDefinition.getPeriodsIncrements(towerId));
   }
 
   putIncrement(id, increment) {
@@ -25,6 +29,20 @@ export default class IncrementsServices extends Services {
     return this.put(
       IncrementsServicesDefinition.putAnualEffectiveIncrement(id),
       anualEffectiveIncrement,
+    );
+  }
+
+  putMarketAveragePrice(towerId, body) {
+    return this.put(
+      IncrementsServicesDefinition.putMarketAveragePrice(towerId),
+      body,
+    );
+  }
+
+  putMarketAnualEffectiveIncrement(towerId, body) {
+    return this.put(
+      IncrementsServicesDefinition.putMarketAnualEffectiveIncrement(towerId),
+      body,
     );
   }
 }

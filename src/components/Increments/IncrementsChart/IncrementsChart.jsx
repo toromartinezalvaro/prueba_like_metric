@@ -4,22 +4,37 @@ import _ from 'lodash';
 import { Line } from 'react-chartjs-2';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Input from '../../UI/Input/Input';
+import Button from '../../UI/Button/IconButton/IconButton';
 import styles from './IncrementsChart.module.scss';
 
-const incrementsChart = ({ data, incrementsHandler, ...rest }) => {
+const incrementsChart = ({ data, incrementsHandler, getData, ...rest }) => {
+  const backgroundColors = [
+    'rgba(238, 99, 82, 0.65)',
+    'rgba(58, 124, 165, 0.65)',
+    'rgba(250, 192, 94, 0.65)',
+    'rgba(247, 157, 132, 0.65)',
+    'rgba(255, 107, 107, 0.65)',
+    'rgba(47, 102, 144, 0.65)',
+    'rgba(89, 205, 144, 0.65)',
+    'rgba(22, 66, 91, 0.65)',
+    'rgba(129, 195, 215, 0.65)',
+  ];
+
   const parseData = data => {
-    return data.map((prices, index) => {
+    return data.map((group, index) => {
       return {
-        label: `Tipo ${index + 1}`,
-        data: prices,
-        fill: null,
+        label: group.name,
+        data: group.increments,
+        borderColor: backgroundColors[index],
+        backgroundColor: backgroundColors[index],
+        fill: group.name !== 'Mercado' ? null : true,
       };
     });
   };
 
   const getLabels = data => {
-    const lengths = data.map(prices => {
-      return prices.length;
+    const lengths = data.map(group => {
+      return group.increments.length;
     });
     return Array(_.max(lengths))
       .fill(null)
@@ -28,41 +43,25 @@ const incrementsChart = ({ data, incrementsHandler, ...rest }) => {
       });
   };
 
-  const getPrices = increments => {
-    return increments.map(type => {
-      return type.prices;
-    });
-  };
-
   return (
     <Card>
       <CardHeader>
-        <span>Gráfica de incrementos</span>
+        <span>
+          Gráfica de incrementos{' '}
+          <Button onClick={getData} icon="fas fa-sync-alt" />
+        </span>
       </CardHeader>
       <CardBody>
-        <div className={styles.Container}>
-          Incrementos
-          {data.map(increment => {
-            return (
-              <div>
-                <span className={styles.Header}>{increment.type}: </span>{' '}
-                <Input
-                  value={increment.increment}
-                  validations={[]}
-                  onChange={target => {
-                    incrementsHandler(increment.id, target.value);
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <Line
-          data={{
-            labels: getLabels(getPrices(data)),
-            datasets: parseData(getPrices(data)),
-          }}
-        />
+        {data.length === 0 ? (
+          'No hay información para mostrar'
+        ) : (
+          <Line
+            data={{
+              labels: getLabels(data),
+              datasets: parseData(data),
+            }}
+          />
+        )}
       </CardBody>
     </Card>
   );

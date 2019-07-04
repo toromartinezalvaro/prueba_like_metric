@@ -7,9 +7,13 @@ import styles from './IncrementTable.module.scss';
 
 const incrementTable = ({
   data,
+  marketData,
   salesSpeedsHandler,
   anualEffectiveIncrementsHandler,
   getPrices,
+  incrementsHandler,
+  putMarketAnualEffectiveIncrement,
+  putMarketAveragePrice,
   ...rest
 }) => {
   return (
@@ -100,6 +104,60 @@ const incrementTable = ({
                   </div>
                 );
               })}
+            </div>
+          </div>
+          <div className={styles.Column}>
+            <div className={styles.Header}>Incremento</div>
+            <div>
+              {data.map(increment => {
+                return increment.increment === null ? (
+                  <div>-</div>
+                ) : (
+                  <div>
+                    <Input
+                      mask="currency"
+                      style={{ width: '100px' }}
+                      validations={[]}
+                      onChange={target => {
+                        incrementsHandler(increment.id, target.value);
+                      }}
+                      value={increment.increment.toFixed(2)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className={styles.Title}>Valores del mercado</div>
+          <div className={styles.MarketInputs}>
+            <div className={styles.MarketInput}>
+              <div className={styles.MarketInputLabel}>Precio promedio</div>
+              <div>
+                <Input
+                  onChange={target => {
+                    putMarketAveragePrice(target.value);
+                  }}
+                  validations={[]}
+                  style={{ width: '100px' }}
+                  value={marketData.averagePrice}
+                />
+              </div>
+            </div>
+
+            <div className={styles.MarketInput}>
+              <div className={styles.MarketInputLabel}>E.A</div>
+              <div>
+                <Input
+                  onChange={target => {
+                    putMarketAnualEffectiveIncrement(target.value);
+                  }}
+                  validations={[]}
+                  style={{ width: '100px' }}
+                  value={marketData.anualEffectiveIncrement}
+                />
+              </div>
             </div>
           </div>
         </div>
