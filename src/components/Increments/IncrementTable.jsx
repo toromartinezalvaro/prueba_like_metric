@@ -91,15 +91,16 @@ const incrementTable = ({
                 return (
                   <div>
                     <Input
+                      mask="percentage"
                       style={{ width: '50px' }}
                       validations={[]}
                       onChange={target => {
                         anualEffectiveIncrementsHandler(
                           increment.id,
-                          target.value,
+                          parseFloat(target.value) / 100,
                         );
                       }}
-                      value={increment.anualEffectiveIncrement}
+                      value={increment.anualEffectiveIncrement * 100}
                     />
                   </div>
                 );
@@ -150,12 +151,15 @@ const incrementTable = ({
               <div className={styles.MarketInputLabel}>E.A</div>
               <div>
                 <Input
+                  mask="percentage"
                   onChange={target => {
-                    putMarketAnualEffectiveIncrement(target.value);
+                    putMarketAnualEffectiveIncrement(
+                      parseFloat(target.value) / 100,
+                    );
                   }}
                   validations={[]}
                   style={{ width: '100px' }}
-                  value={marketData.anualEffectiveIncrement}
+                  value={marketData.anualEffectiveIncrement * 100}
                 />
               </div>
             </div>
