@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import Services from '../../services/user/UserServices'
-import LoginComponent from '../../components/User/Login';
+import { CreateUserForm } from '../../components/User';
 import Loader from 'react-loader-spinner'
 import agent from '../../config/config'
 import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes'
-import styles from './Login.module.scss'
+import styles from './CreateUser.module.scss'
 import errorHandling from '../../services/commons/errorHelper'
 
-class Login extends Component {
+class CreateUser extends Component {
 
   constructor(props) {
     super(props)
@@ -22,7 +22,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    this.loadCurrentUserInfo()
+    // this.loadCurrentUserInfo()
   }
 
   onChange = target => {
@@ -95,7 +95,7 @@ class Login extends Component {
       </div>
       :
       <div>
-        <LoginComponent
+        <CreateUserForm
           onChange={this.onChange}
           email={this.state.email}
           password={this.state.password}
@@ -107,4 +107,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default CreateUser;

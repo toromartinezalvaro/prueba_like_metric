@@ -20,7 +20,7 @@ export default class UserServices {
         .then(res => {
           console.log("res--> ", res)
           if (res.status === 200) {
-            agent.saveToken(res.data.user.token)
+            agent.saveUser(res.data.user)
             resolve({
               email: res.data.user.email
             })
