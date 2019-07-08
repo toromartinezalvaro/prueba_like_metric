@@ -144,7 +144,7 @@ class Dashboard extends Component {
           exact
           component={SecureContainer(Strategy)}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.increments.withIndicator}
           roles={[Role.Admin, Role.Super]}
           exact
