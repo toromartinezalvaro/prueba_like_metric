@@ -6,7 +6,7 @@ import Property from "../../components/Detail/Property/Property";
 import variables from "../../assets/styles/variables.scss";
 import styles from "../DetailAdmin/DetailAdmin.module.scss";
 import NumberFormat from "react-number-format";
-import Aditionals from "../../components/Detail/Aditionals/Aditionals";
+import Additional from "../../components/Detail/Aditionals/Aditionals";
 import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
 
 export default class Detail extends Component {
@@ -19,12 +19,12 @@ export default class Detail extends Component {
     property: {},
     totals: {
       priceArea: 0,
-      priceAditionals: 0,
-      priceWithAditionals: 0,
+      priceAdditional: 0,
+      priceWithAdditional: 0,
       mts2: 0,
-      pricexMts2: 0
+      priceXMts2: 0
     },
-    aditionals: [],
+    additional: [],
     id: 0
   };
 
@@ -43,17 +43,17 @@ export default class Detail extends Component {
     );
   };
 
-  printAditionals = data => {
-    return data.map(aditional => {
+  printAdditional = data => {
+    return data.map(additional => {
       return (
-        <Aditionals
-          Titulo={aditional.areaType.name}
-          Titulo1="Cantidad"
-          Titulo2="Precio"
-          Titulo3="Adicionales"
-          Value1={aditional.measure}
-          Value2={this.formatPrice(aditional.price)}
-          Value3={this.formatPrice(aditional.unitPrice)}
+        <Additional
+          Title={additional.areaType.name}
+          Title1="Cantidad"
+          Title2="Precio"
+          Title3="Adicionales"
+          Value1={additional.measure}
+          Value2={this.formatPrice(additional.price)}
+          Value3={this.formatPrice(additional.unitPrice)}
         />
       );
     });
@@ -72,7 +72,7 @@ export default class Detail extends Component {
           properties: response.data,
           property: response.data[0],
           totals: response.data[0].totals,
-          aditionals: response.data[0].areas.filter(
+          additional: response.data[0].areas.filter(
             ({ areaType }) => areaType.unit === "UNT"
           )
         });
@@ -86,7 +86,7 @@ export default class Detail extends Component {
         return this.setState({
           property: property,
           totals: property.totals,
-          aditionals: property.areas.filter(
+          additional: property.areas.filter(
             ({ areaType }) => areaType.unit === "UNT"
           ),
           id: property.id
@@ -137,14 +137,14 @@ export default class Detail extends Component {
                   />
                   <Insights
                     title="Adicionales"
-                    value={this.formatPrice(this.state.totals.priceAditionals)}
+                    value={this.formatPrice(this.state.totals.priceAdditional)}
                     color="#E39774"
                     icon="fas fa-plus"
                   />
                   <Insights
                     title="Total"
                     value={this.formatPrice(
-                      this.state.totals.priceWithAditionals
+                      this.state.totals.priceWithAdditional
                     )}
                     color="#A2C3A4"
                     icon="fas fa-money-bill-wave"
@@ -164,7 +164,7 @@ export default class Detail extends Component {
                   />
                   <Insights
                     title="Valor por mt2"
-                    value={this.formatPrice(this.state.totals.pricexMts2)}
+                    value={this.formatPrice(this.state.totals.priceXMts2)}
                     color="#B68CB8"
                     icon="fas fa-tags"
                   />
@@ -175,7 +175,7 @@ export default class Detail extends Component {
           <div style={{ display: "flex" }}>
             <Card>
               <CardHeader>Adicionales</CardHeader>
-              <CardBody>{this.printAditionals(this.state.aditionals)}</CardBody>
+              <CardBody>{this.printAdditional(this.state.additional)}</CardBody>
             </Card>
           </div>
         </div>
