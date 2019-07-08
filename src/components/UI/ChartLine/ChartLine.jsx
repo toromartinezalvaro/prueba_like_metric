@@ -74,18 +74,6 @@ class LineChart extends React.Component {
     return (
       <div>
         <Line data={{labels: this.props.labels, datasets: this.props.currentGroup}} /* options={this.state.options} */ />
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <h4>Selecciona la estrategia para el {/* this.state.dataGraph.type */}</h4>
-          {/* this.state.dataGraph.map((group, index) => {
-            if (index !== 0) {
-              return (
-                <Button onClick={() => this.handleClick()}>
-                  {this.state.dataHelper[index].label}
-                </Button>
-              );
-            }
-          }) */}
-        </div>
       </div>
     );
   }
