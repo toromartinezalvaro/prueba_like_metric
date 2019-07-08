@@ -4,6 +4,7 @@ import Line from '../../components/UI/ChartLine/ChartLine';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
+import styles from '../../assets/styles/variables.scss';
 export default class Strategy extends Component {
   constructor(props) {
     super(props);
@@ -11,45 +12,46 @@ export default class Strategy extends Component {
   }
 
   state = {
-    groupActive: { type: '0', strategies: [] },
+    groupActive: { type: '', strategies: [] },
     currentGroup: {},
     groups: [],
     groupFilter: [],
     labels: [],
     staticGroups: [],
     hidden: true,
+    strategySelected: 0,
     strategyActive: 0,
     dataHelper: [
-      /*       { label: ['Mercado'], borderColor: '' },
-       */ {
+      { label: ['Mercado'], borderColor: '' },
+      {
         id: 1,
         label: ['Continua'],
-        borderColor: '#29339B',
-        backgroundColor: '#8A8FC8',
-        fill: null
+        borderColor: styles.mainColor,
+        backgroundColor: styles.softMainColor,
+        fill: null,
       },
       {
         id: 3,
         label: ['Semi-Continua'],
-        borderColor: '#018E42',
-        backgroundColor: '#74C197',
-        fill: null
+        borderColor: styles.greenColor,
+        backgroundColor: styles.softGreenColor,
+        fill: null,
       },
       {
         id: 9,
         label: ['Semi-Escalonada'],
-        borderColor: '#EE2E31',
-        backgroundColor: '#F58D8E',
-        fill: null
+        borderColor: styles.redColor,
+        backgroundColor: styles.softRedColor,
+        fill: null,
       },
       {
         id: 18,
         label: ['Escalonada'],
-        borderColor: '#FFC857',
-        backgroundColor: '#FFE1A3',
-        fill: null
-      }
-    ]
+        borderColor: styles.yellowColor,
+        backgroundColor: styles.softRedColor,
+        fill: null,
+      },
+    ],
   };
 
   findGroup = (groups, active) => {
@@ -83,7 +85,7 @@ export default class Strategy extends Component {
           backgroundColor: this.state.dataHelper[i].backgroundColor,
           fill: this.state.dataHelper[i].fill,
           lineTension: 0.05,
-          hidden: true
+          hidden: true,
         };
       }
     });
@@ -106,7 +108,8 @@ export default class Strategy extends Component {
           groupActive: strategies.data[0],
           currentGroup: arrayDataSets,
           labels: labels,
-          groups: strategies.data
+          groups: strategies.data,
+          strategyActive: strategies.data[0].strategy,
         });
       });
   }
@@ -123,19 +126,28 @@ export default class Strategy extends Component {
       this.setState({
         currentGroup: arrayDataSets,
         labels: labels,
-        groupActive: groupActive
+        groupActive: groupActive,
+        strategyActive: groupActive.strategy,
       });
     } else {
       this.setState({
-        groupActive: groupActive
+        groupActive: groupActive,
       });
     }
   }
 
   save = () => {
     this.services
-      .putStrategy({ id: this.state.groupActive.id, strategy: this.state.strategyActive })
-      .then(this.setState({ hidden: true }))
+      .putStrategy({
+        id: this.state.groupActive.id,
+        strategy: this.state.strategySelected,
+      })
+      .then(
+        this.setState({
+          hidden: true,
+          strategyActive: this.state.strategySelected,
+        }),
+      )
       .catch(err => console.log(err));
   };
 
@@ -166,18 +178,27 @@ export default class Strategy extends Component {
                 Selecciona la estrategia para el {this.state.groupActive.type}
               </h4>
               {this.state.groupActive.strategies.map((group, index) => {
-                console.log('group', this.state.groupActive.id);
-                if (index !== -1) {
+                if (index !== 0) {
+                  let styleButton = {
+                    backgroundColor: styles.grayColor,
+                  };
+                  if (
+                    this.state.strategyActive ===
+                    this.state.dataHelper[index].id
+                  ) {
+                    styleButton = {
+                      backgroundColor: this.state.dataHelper[index].borderColor,
+                    };
+                  }
                   return (
                     <Button
                       onClick={() => {
-                        this.setState({ hidden: false, strategyActive: this.state.dataHelper[index]
-                          .id });
+                        this.setState({
+                          hidden: false,
+                          strategySelected: this.state.dataHelper[index].id,
+                        });
                       }}
-                      style={{
-                        backgroundColor: this.state.dataHelper[index]
-                          .borderColor
-                      }}
+                      style={styleButton}
                     >
                       {this.state.dataHelper[index].label}
                     </Button>
@@ -201,8 +222,7 @@ export default class Strategy extends Component {
             onConfirm={this.save}
             onCancel={this.cancel}
           >
-            Al escoger esta estrategia no podra volver a cambiarla <br /> deseas
-            continuar?
+            Deseas definir esta estrategia?
           </Modal>
         )}
       </Card>
