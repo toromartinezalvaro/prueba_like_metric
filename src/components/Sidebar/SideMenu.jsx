@@ -86,6 +86,12 @@ const sideMenu = props => {
           "fas fa-angle-double-up",
           "Incrementos"
         )}  
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.strategy.value,
+          "fas fa-chart-line",
+          "Estrategia"
+        )}
       </div>
     </div>
   );
