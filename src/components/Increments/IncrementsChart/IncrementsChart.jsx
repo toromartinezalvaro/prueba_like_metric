@@ -1,13 +1,19 @@
 import React from 'react';
-import NumberFormat from 'react-number-format';
+import moment from 'moment';
 import _ from 'lodash';
 import { Line } from 'react-chartjs-2';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
-import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/IconButton/IconButton';
-import styles from './IncrementsChart.module.scss';
 
-const incrementsChart = ({ data, incrementsHandler, getData, ...rest }) => {
+const incrementsChart = ({
+  data,
+  incrementsHandler,
+  getData,
+  salesStartDate,
+  ...rest
+}) => {
+  const defaultColor = 'rgba(0, 0, 0, 0.1)';
+
   const backgroundColors = [
     'rgba(238, 99, 82, 0.65)',
     'rgba(58, 124, 165, 0.65)',
@@ -25,8 +31,10 @@ const incrementsChart = ({ data, incrementsHandler, getData, ...rest }) => {
       return {
         label: group.name,
         data: group.increments,
-        borderColor: backgroundColors[index],
-        backgroundColor: backgroundColors[index],
+        borderColor:
+          group.name === 'Mercado' ? defaultColor : backgroundColors[index],
+        backgroundColor:
+          group.name === 'Mercado' ? defaultColor : backgroundColors[index],
         fill: group.name !== 'Mercado' ? null : true,
       };
     });
@@ -39,7 +47,9 @@ const incrementsChart = ({ data, incrementsHandler, getData, ...rest }) => {
     return Array(_.max(lengths))
       .fill(null)
       .map((_, index) => {
-        return index + 1;
+        return moment(Number(salesStartDate))
+          .add(index, 'months')
+          .format('MM/YY');
       });
   };
 
