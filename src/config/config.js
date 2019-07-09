@@ -33,9 +33,11 @@ class Agent {
   reloadCurrentUser() {
     if (this.user === null || this.token === null) {
       const user = JSON.parse(window.localStorage.getItem(jwtKey));
-      if (user) {
+      if (user && user.token) {
         this.user = user;
         this.setToken(user.token);
+      } else {
+        this.logout()
       }
       return user;
     }
