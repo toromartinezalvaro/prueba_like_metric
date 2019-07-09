@@ -48,4 +48,11 @@ export default class IncrementsServices extends Services {
       body,
     );
   }
+
+  putSalesStartDate(towerId, body) {
+    return this.put(
+      IncrementsServicesDefinition.putSalesStartDate(towerId),
+      body,
+    );
+  }
 }

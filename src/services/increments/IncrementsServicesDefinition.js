@@ -28,6 +28,9 @@ const IncrementsServiceDefinition = {
   putMarketAveragePrice: towerId => {
     return `${API_PATH}pricing/definitions/markets/averagePrices/${towerId}`;
   },
+  putSalesStartDate: towerId => {
+    return `${API_PATH}pricing/definitions/salesStartDates/${towerId}`
+  }
 };
 
 export default IncrementsServiceDefinition;
