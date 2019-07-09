@@ -1,6 +1,11 @@
 $main-color: #29339B;
 $green-color: #018E42;
 $red-color: #EE2E31;
+$yellow-color: #FFC857;
+$softMain-color: #8A8FC8;
+$softGreen-color: #74C197;
+$softRed-color: #F58D8E;
+$softYellow-color: #FFE1A3;
 $defaultWhite-color: #fafaff;
 $white-color: #fff;
 $white-background: rgb(244, 245, 247);
@@ -25,6 +30,12 @@ $secondaryText-size: 14px;
 
 :export {
     mainColor: $main-color;
+    softMainColor: $softMain-color;
     redColor: $red-color;
+    softRedColor: $softRed-color;
     greenColor: $green-color;
+    softGreenColor: $softGreen-color;
+    yellowColor: $yellow-color;
+    softYellowColor: $softYellow-color;
+    grayColor: $gray-color
 }

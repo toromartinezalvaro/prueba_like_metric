@@ -3,6 +3,8 @@ import { ResponsivePie } from "@nivo/pie";
 import styles from "../pie/pie.module.scss";
 import RadialLabel from "../radialLabel/radialLabel"
 
+
+
 const pie = props => {
   var items = []
   items = property => {

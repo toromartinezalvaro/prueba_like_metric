@@ -29,7 +29,7 @@ export default class UserSettings extends Component {
     .logout()
     .then(response => {
       if (response.status === 200) {
-        agent.removeToken()
+        agent.logout()
         this.props.history.push(UserRoutes.login)
       } 
     })

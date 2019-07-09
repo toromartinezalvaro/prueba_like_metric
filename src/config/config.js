@@ -1,47 +1,80 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const jwtKey = 'jwt'
+const jwtKey = 'jwt';
 
 class Agent {
-
   constructor() {
-    this.token = null
+    this.token = null;
+    this.user = null;
+    this.reloadCurrentUser();
+  }
+
+  get currentUser() {
+    if (this.user) {
+      return this.user;
+    } else {
+      return this.reloadCurrentUser();
+    }
   }
 
   get currentToken() {
-    return window.localStorage.getItem(jwtKey);
+    if (this.token) {
+      return this.token;
+    } else {
+      const user = this.reloadCurrentUser();
+      return user ? user.token : null;
+    }
   }
 
-  removeToken() {
-    window.localStorage.setItem(jwtKey, '');
-    this.token = ''
+  isAuthorized(roles) {
+    return roles && this.currentUser && roles.indexOf(this.currentUser.userType) !== -1;
+  }
+
+  reloadCurrentUser() {
+    if (this.user === null || this.token === null) {
+      const user = JSON.parse(window.localStorage.getItem(jwtKey));
+      if (user) {
+        this.user = user;
+        this.setToken(user.token);
+      }
+      return user;
+    }
+  }
+
+  logout() {
+    window.localStorage.setItem(jwtKey, null);
+    this.token = null;
+    this.user = null;
   }
 
   reloadHeaderToken() {
     this.setToken(this.currentToken);
   }
 
-  saveToken(newToken) {
-    this.setToken(newToken)
-    window.localStorage.setItem(jwtKey, newToken);
+  saveUser(newUser) {
+    this.setToken(newUser.token);
+    this.user = newUser;
+    window.localStorage.setItem(jwtKey, JSON.stringify(newUser));
   }
 
-  setToken(newToken) { 
-    this.token = newToken
-    this.setupAxios(newToken)
+  setToken(newToken) {
+    this.token = newToken;
+    this.setupAxios(newToken);
   }
 
   setupAxios(currentToken) {
-    if (currentToken !== undefined && currentToken !== "") {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken
-      axios.defaults.withCredentials = true
-      console.log("headers -->", axios.defaults.headers)
+    if (currentToken !== undefined && currentToken !== '') {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken;
+      axios.defaults.withCredentials = true;
     } else {
-      axios.defaults.headers.common['Authorization'] = ''
+      axios.defaults.headers.common['Authorization'] = '';
     }
   }
 }
 
-// export const API_PATH = process.env.NODE_ENV === 'production' ? "https://pefpiapis.herokuapp.com/api/" : "http://localhost:1337/api/"
-export const API_PATH = "https://pefpiapis.herokuapp.com/api/" 
-export default new Agent()
+export const API_PATH =
+  process.env.NODE_ENV === 'production'
+    ? 'https://pefpiapis.herokuapp.com/api/'
+    : 'http://localhost:1337/api/';
+// export const API_PATH = "https://pefpiapis.herokuapp.com/api/"
+export default new Agent();

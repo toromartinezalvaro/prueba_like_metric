@@ -1,3 +1,4 @@
+
 export const DashboardRoutes = {
   base:'/dashboard',
   towers:  { value:'/towers/', withIndicator:  '/towers/:projectId'},
@@ -9,7 +10,9 @@ export const DashboardRoutes = {
   detailAdmin: { value: '/detailAdmin/' , withIndicator: '/detailAdmin/:towerId' },
   detail: { value: '/detail/' , withIndicator: '/detail/:towerId' },
   rackAreas: { value: '/rackAreas/' , withIndicator: '/rackAreas/:towerId' },
-  clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' }
+  clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' },
+  increments: { value: '/increments/' , withIndicator: '/increments/:towerId' },
+  strategy: { value: '/strategy/' , withIndicator: '/strategy/:towerId' }
 }
 
 export const ProjectRoutes = {
@@ -17,5 +20,8 @@ export const ProjectRoutes = {
 }
 
 export const UserRoutes = {
-  login: '/login'
+  base: DashboardRoutes.base + DashboardRoutes.user,
+  login: '/login',
+  profile: '/profile',
+  create: '/create'
 }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Pie from "../../components/Detail/pie/Pie";
 import Property from "../../components/Detail/Property/Property";
-import Aditionals from "../../components/Detail/Aditionals/Aditionals";
+import Additional from "../../components/Detail/Aditionals/Aditionals";
 import Totals from "../../components/Detail/Totals/Totals";
 import DetailServices from "../../services/detail/DetailServices";
 import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
@@ -26,9 +26,9 @@ export default class Detail extends Component {
     totals: {},
     totals2: {},
     areas: [],
-    aditionals: [],
+    additional: [],
     areas2: [],
-    aditionals2: [],
+    additional2: [],
     areasTable: {
       nameAreas: [],
       priceAreas: []
@@ -75,7 +75,7 @@ export default class Detail extends Component {
         property: data[0],
         totals: data[0].totals,
         areas: data[0].areas.filter(({ areaType }) => areaType.unit === "MT2"),
-        aditionals: data[0].areas.filter(
+        additional: data[0].areas.filter(
           ({ areaType }) => areaType.unit === "UNT"
         )
       });
@@ -86,8 +86,8 @@ export default class Detail extends Component {
 
   sortData = data => {
     return data.sort((a, b) => {
-      const aInt = parseInt(a.id);
-      const bInt = parseInt(b.id);
+      const aInt = parseInt(a.areaType.id);
+      const bInt = parseInt(b.areaType.id);
       if (aInt > bInt) return 1;
       if (aInt < bInt) return -1;
       return 0;
@@ -128,14 +128,14 @@ export default class Detail extends Component {
     );
   };
 
-  printAditionals = data => {
+  printAdditional = data => {
     return data.map(aditional => {
       return (
-        <Aditionals
-          Titulo={aditional.areaType.name}
-          Titulo1="Cantidad"
-          Titulo2="Precio"
-          Titulo3="Adicionales"
+        <Additional
+          Title={aditional.areaType.name}
+          Title1="Cantidad"
+          Title2="Precio"
+          Title3="Adicionales"
           Value1={aditional.measure}
           Value2={this.formatPrice(aditional.price)}
           Value3={this.formatPrice(aditional.unitPrice)}
@@ -162,7 +162,7 @@ export default class Detail extends Component {
               areas2: property.areas.filter(
                 ({ areaType }) => areaType.unit === "MT2"
               ),
-              aditionals2: property.areas.filter(
+              additional2: property.areas.filter(
                 ({ areaType }) => areaType.unit === "UNT"
               )
             }),
@@ -203,7 +203,7 @@ export default class Detail extends Component {
             areas: property.areas.filter(
               ({ areaType }) => areaType.unit === "MT2"
             ),
-            aditionals: property.areas.filter(
+            additional: property.areas.filter(
               ({ areaType }) => areaType.unit === "UNT"
             ),
             id: property.id
@@ -339,16 +339,16 @@ export default class Detail extends Component {
                     <p>Adicionales</p>
                   </CardHeader>
                   <CardBody style={{ margin: "0" }}>
-                    {this.printAditionals(this.state.aditionals)}
-                    <Aditionals
-                      Titulo="Total"
-                      Titulo1="Cantidad"
-                      Titulo2="Promedio"
-                      Titulo3="Total"
-                      Value1={this.state.totals.quantityAditionals}
-                      Value2={this.formatPrice(this.state.totals.pricexUnit)}
+                    {this.printAdditional(this.state.additional)}
+                    <Additional
+                      Title="Total"
+                      Title1="Cantidad"
+                      Title2="Promedio"
+                      Title3="Total"
+                      Value1={this.state.totals.quantityAdditional}
+                      Value2={this.formatPrice(this.state.totals.priceXUnit)}
                       Value3={this.formatPrice(
-                        this.state.totals.priceAditionals
+                        this.state.totals.priceAdditional
                       )}
                     />
                   </CardBody>
@@ -368,17 +368,17 @@ export default class Detail extends Component {
                     <p>Adicionales</p>
                   </CardHeader>
                   <CardBody style={{ margin: "0" }}>
-                    {this.printAditionals(this.state.aditionals2)}
+                    {this.printAdditional(this.state.additional2)}
 
-                    <Aditionals
-                      Titulo="Total"
-                      Titulo1="Cantidad"
-                      Titulo2="Promedio"
-                      Titulo3="Total"
-                      Value1={this.state.totals2.quantityAditionals}
-                      Value2={this.formatPrice(this.state.totals2.pricexUnit)}
+                    <Additional
+                      Title="Total"
+                      Title1="Cantidad"
+                      Title2="Promedio"
+                      Title3="Total"
+                      Value1={this.state.totals2.quantityAdditional}
+                      Value2={this.formatPrice(this.state.totals2.priceXUnit)}
                       Value3={this.formatPrice(
-                        this.state.totals2.priceAditionals
+                        this.state.totals2.priceAdditional
                       )}
                     />
                   </CardBody>
