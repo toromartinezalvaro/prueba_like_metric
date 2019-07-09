@@ -4,7 +4,10 @@ import Line from '../../components/UI/ChartLine/ChartLine';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
+import { Link } from 'react-router-dom';
 import styles from '../../assets/styles/variables.scss';
+import { DashboardRoutes } from '../../routes/local/routes';
+
 export default class Strategy extends Component {
   constructor(props) {
     super(props);
@@ -100,18 +103,29 @@ export default class Strategy extends Component {
       .getStrategies(this.props.match.params.towerId)
       .then(strategies => {
         console.log('strategies.data', strategies.data);
-        const groupFilter = this.findGroup(strategies.data, strategies.data[0]);
-        const labels = this.makeArrayLabels(groupFilter);
-        const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
+        if (strategies.data !== {}) {
+          const groupFilter = this.findGroup(
+            strategies.data,
+            strategies.data[0],
+          );
+          const labels = this.makeArrayLabels(groupFilter);
+          const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
+          this.setState({
+            isLoading: false,
+            groupActive: strategies.data[0],
+            currentGroup: arrayDataSets,
+            labels: labels,
+            groups: strategies.data,
+            strategyActive: strategies.data[0].strategy,
+          });
+        }
+      })
+      .catch(err =>
         this.setState({
           isLoading: false,
-          groupActive: strategies.data[0],
-          currentGroup: arrayDataSets,
-          labels: labels,
-          groups: strategies.data,
-          strategyActive: strategies.data[0].strategy,
-        });
-      });
+        }),
+      );
+    console.log('this.state.groups', this.state.groups);
   }
 
   handleClick(type) {
@@ -166,53 +180,87 @@ export default class Strategy extends Component {
             </Button>
           ))}
         </div>
-        {this.state.groupActive.strategies.length !== 0 ? (
-          <div>
-            <Line
-              ref={this.chart}
-              currentGroup={[...this.state.currentGroup]}
-              labels={this.state.labels}
-            />
+        {this.state.groups.length > 0 ? (
+          this.state.groupActive.strategies.length !== 0 ? (
+            <div>
+              <Line
+                ref={this.chart}
+                currentGroup={[...this.state.currentGroup]}
+                labels={this.state.labels}
+              />
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <h4>
+                  Selecciona la estrategia para el {this.state.groupActive.type}
+                </h4>
+                {this.state.groupActive.strategies.map((group, index) => {
+                  if (index !== 0) {
+                    let styleButton = {
+                      backgroundColor: styles.grayColor,
+                    };
+                    if (
+                      this.state.strategyActive ===
+                      this.state.dataHelper[index].id
+                    ) {
+                      styleButton = {
+                        backgroundColor: this.state.dataHelper[index]
+                          .borderColor,
+                      };
+                    }
+                    return (
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            hidden: false,
+                            strategySelected: this.state.dataHelper[index].id,
+                          });
+                        }}
+                        style={styleButton}
+                      >
+                        {this.state.dataHelper[index].label}
+                      </Button>
+                    );
+                  }
+                })}
+              </div>
+            </div>
+          ) : (
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
               <h4>
-                Selecciona la estrategia para el {this.state.groupActive.type}
+                El {this.state.groupActive.type} no tiene los apartamentos
+                suficientes para definir una estrategia.
               </h4>
-              {this.state.groupActive.strategies.map((group, index) => {
-                if (index !== 0) {
-                  let styleButton = {
-                    backgroundColor: styles.grayColor,
-                  };
-                  if (
-                    this.state.strategyActive ===
-                    this.state.dataHelper[index].id
-                  ) {
-                    styleButton = {
-                      backgroundColor: this.state.dataHelper[index].borderColor,
-                    };
-                  }
-                  return (
-                    <Button
-                      onClick={() => {
-                        this.setState({
-                          hidden: false,
-                          strategySelected: this.state.dataHelper[index].id,
-                        });
-                      }}
-                      style={styleButton}
-                    >
-                      {this.state.dataHelper[index].label}
-                    </Button>
-                  );
-                }
-              })}
             </div>
-          </div>
+          )
         ) : (
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
             <h4>
-              El {this.state.groupActive.type} no tiene los apartamentos
-              suficientes para definir una estrategia.
+              Antes de poder ver las estrategias necesita realizar el
+              agrupamiento y los incrementos
             </h4>
+            <Link
+              to={
+                DashboardRoutes.base +
+                '/clustering' +
+                '/' +
+                this.props.match.params.towerId
+              }
+            >
+              <Button>
+                Ir a Agrupamiento <i className="fas fa-angle-double-right" />
+              </Button>
+            </Link>
+            <Link
+              to={
+                DashboardRoutes.base +
+                '/increments' +
+                '/' +
+                this.props.match.params.towerId
+              }
+            >
+              <Button>
+                Ir a Incrementos <i className="fas fa-angle-double-right" />
+              </Button>
+            </Link>
           </div>
         )}
         {this.state.hidden ? null : (
