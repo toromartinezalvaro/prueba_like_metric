@@ -31,21 +31,15 @@ const CreateUserForm = props => {
           </CardHeader>
           <CardBody>
             <div className={styles.Row}>
-              <Input
-                className={styles.Input}
-                name="name"
-                onChange={props.onChange}
-                value={props.name}
-                validations={[]}
-                disable={false}
-                placeholder={"Nombre"}
-              />
-            </div>
-            <div className={styles.Row}>
               <select
                 className={styles.Input}
-                name="name"
-                onChange={props.onChange}
+                name="role"
+                onChange={(event) => {
+                  console.log("onchange i ", event.target.value)
+                  if (event) {
+                    props.onChange({name: "role", event})
+                  }
+                }}
                 value={props.role}
               >
               {agent.isAuthorized([Role.Super]) &&
@@ -58,12 +52,23 @@ const CreateUserForm = props => {
             <div className={styles.Row}>
               <Input
                 className={styles.Input}
+                name="name"
+                onChange={props.onChange}
+                value={props.name}
+                validations={[]}
+                disable={false}
+                placeholder="Nombre"
+              />
+            </div>
+            <div className={styles.Row}>
+              <Input
+                className={styles.Input}
                 name="email"
                 onChange={props.onChange}
                 value={props.email}
                 validations={emailValidation}
                 disable={false}
-                placeholder={"Correo"}
+                placeholder="Correo"
               />
             </div>
             <div className={styles.Row}>
@@ -75,12 +80,12 @@ const CreateUserForm = props => {
                 value={props.password}
                 validations={[]}
                 disable={false}
-                placeholder={"Crear Contraseña"}
+                placeholder="Crear Contraseña"
               />
 
               <div>
                 {
-                  <button className={styles.Button} onClick={props.loginAction}>
+                  <button className={styles.Button} onClick={props.createUser}>
                     Crear
                   </button>
                 }

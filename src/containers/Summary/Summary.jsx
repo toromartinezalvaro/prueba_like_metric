@@ -190,6 +190,7 @@ class Summary extends Component {
                 value: (
                   <Input
                     mask="percentage"
+                    zeroDefault={true}
                     validations={[
                       {
                         fn: value =>

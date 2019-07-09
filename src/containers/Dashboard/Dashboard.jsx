@@ -136,7 +136,7 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.user + UserRoutes.create}
           roles={[Role.Admin, Role.Super]}
           exact
-          component={CreateUser}
+          component={SecureContainer(CreateUser)}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.increments.withIndicator}

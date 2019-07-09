@@ -6,15 +6,18 @@ import agent from '../../config/config'
 import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes'
 import styles from './CreateUser.module.scss'
 import errorHandling from '../../services/commons/errorHelper'
+import {Role} from "../../helpers"
 
 class CreateUser extends Component {
 
   constructor(props) {
     super(props)
-    this.services = new Services()
+    this.services = new Services(this)
   }
 
   state = {
+    role: Role.User,
+    name: "",
     email: "",
     password: "",
     currentErrorMessage: "",
@@ -61,13 +64,19 @@ class CreateUser extends Component {
     }
   }
 
-  loginActionHandler = () => {
+  createUserHandler = () => {
+    const {role, name, email, password} = this.state
     this.setState({ isLoading: true })
 
     this.services
-      .login(this.state.email, this.state.password)
+      .signup({
+        userType: role,
+        name,
+        email,
+        password
+      })
       .then(user => {
-
+        console.log("user --> ", user)
         if (user.email) {
             this.props.history.push(DashboardRoutes.base + ProjectRoutes.base)
         }
@@ -79,6 +88,7 @@ class CreateUser extends Component {
           currentErrorMessage: errorHelper.message,
           isLoading: false 
         })
+        console.log("user --> ", error)
       })
   }
 
@@ -97,9 +107,11 @@ class CreateUser extends Component {
       <div>
         <CreateUserForm
           onChange={this.onChange}
+          name={this.state.name}
+          role={this.state.role}
           email={this.state.email}
           password={this.state.password}
-          loginAction={this.loginActionHandler}
+          createUser={this.createUserHandler}
           currentErrorMessage={this.state.currentErrorMessage}
         />
       </div>

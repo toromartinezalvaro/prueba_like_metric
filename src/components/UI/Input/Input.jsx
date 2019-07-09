@@ -37,7 +37,7 @@ const Input = props => {
 
   const syncValues = () => {
     if (valid) {
-      if (dirty && localValue === "") {
+      if (dirty && props.zeroDefault && localValue === "") {
         setLocalValue("0");
       }
       let value = localValue === undefined ? props.value : localValue;
