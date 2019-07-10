@@ -82,7 +82,7 @@ export default class Strategy extends Component {
     const arrayData = dataGraph.map((line, i) => {
       if (this.state.dataHelper) {
         return {
-          data: [...line],
+          data: [...line.increments],
           label: this.state.dataHelper[i].label,
           borderColor: this.state.dataHelper[i].borderColor,
           backgroundColor: this.state.dataHelper[i].backgroundColor,
@@ -133,9 +133,10 @@ export default class Strategy extends Component {
       return group.type === type;
     });
     const groupFilter = this.findGroup(this.state.groups, groupActive);
-    console.log(groupFilter);
     const labels = this.makeArrayLabels(groupFilter);
     const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
+    console.log("arrayDataSets". arrayDataSets);
+
     if (arrayDataSets.length !== 0) {
       this.setState({
         currentGroup: arrayDataSets,
@@ -223,14 +224,7 @@ export default class Strategy extends Component {
                 })}
               </div>
             </div>
-          ) : (
-            <div style={{ textAlign: 'center', marginTop: '20px' }}>
-              <h4>
-                El {this.state.groupActive.type} no tiene los apartamentos
-                suficientes para definir una estrategia.
-              </h4>
-            </div>
-          )
+          ) : null
         ) : (
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
             <h4>
