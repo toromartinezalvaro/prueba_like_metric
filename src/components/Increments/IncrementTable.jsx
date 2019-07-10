@@ -74,7 +74,11 @@ const incrementTable = ({
                       onChange={target => {
                         salesSpeedsHandler(increment.id, target.value);
                       }}
-                      value={increment.salesSpeed.toFixed(1)}
+                      value={
+                        increment.salesSpeed === null
+                          ? null
+                          : increment.salesSpeed.toFixed(1)
+                      }
                     />
                   </div>
                 );
@@ -97,9 +101,11 @@ const incrementTable = ({
                           parseFloat(target.value) / 100,
                         );
                       }}
-                      value={(increment.anualEffectiveIncrement * 100).toFixed(
-                        1,
-                      )}
+                      value={
+                        increment.anualEffectiveIncrement === null
+                          ? null
+                          : (increment.anualEffectiveIncrement * 100).toFixed(1)
+                      }
                     />
                   </div>
                 );
