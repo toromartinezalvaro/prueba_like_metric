@@ -7,13 +7,10 @@ import styles from './IncrementTable.module.scss';
 
 const incrementTable = ({
   data,
-  marketData,
   salesSpeedsHandler,
   anualEffectiveIncrementsHandler,
   getIncrements,
   incrementsHandler,
-  putMarketAnualEffectiveIncrement,
-  putMarketAveragePrice,
   ...rest
 }) => {
   return (
@@ -26,20 +23,20 @@ const incrementTable = ({
           <div className={styles.Column}>
             <div className={styles.Header}>Tipo</div>
             {data.map(increment => {
-              return <div>{increment.name}</div>;
+              return <div className={styles.Text}>{increment.name}</div>;
             })}
           </div>
           <div className={styles.Column}>
             <div className={styles.Header}>Unidades</div>
             {data.map(increment => {
-              return <div>{increment.units}</div>;
+              return <div className={styles.Text}>{increment.units}</div>;
             })}
           </div>
           <div className={styles.Column}>
             <div className={styles.Header}>Area promedio</div>
             {data.map(increment => {
               return (
-                <div>
+                <div className={styles.Text}>
                   <NumberFormat
                     value={parseFloat(increment.averageArea).toFixed(2)}
                     displayType={'text'}
@@ -54,7 +51,7 @@ const incrementTable = ({
             <div className={styles.Header}>Precio Promedio</div>
             {data.map(increment => {
               return (
-                <div>
+                <div className={styles.Text}>
                   <NumberFormat
                     value={parseFloat(increment.averagePrice).toFixed(2)}
                     displayType={'text'}
@@ -70,14 +67,14 @@ const incrementTable = ({
             <div>
               {data.map(increment => {
                 return (
-                  <div>
+                  <div className={styles.Text}>
                     <Input
                       style={{ width: '50px' }}
                       validations={[]}
                       onChange={target => {
                         salesSpeedsHandler(increment.id, target.value);
                       }}
-                      value={increment.salesSpeed}
+                      value={increment.salesSpeed.toFixed(1)}
                     />
                   </div>
                 );
@@ -89,7 +86,7 @@ const incrementTable = ({
             <div>
               {data.map(increment => {
                 return (
-                  <div>
+                  <div className={styles.Text}>
                     <Input
                       mask="percentage"
                       style={{ width: '50px' }}
@@ -100,7 +97,9 @@ const incrementTable = ({
                           parseFloat(target.value) / 100,
                         );
                       }}
-                      value={increment.anualEffectiveIncrement * 100}
+                      value={(increment.anualEffectiveIncrement * 100).toFixed(
+                        1,
+                      )}
                     />
                   </div>
                 );
@@ -109,7 +108,7 @@ const incrementTable = ({
           </div>
           <div className={styles.Column}>
             <div className={styles.Header}>Incremento</div>
-            <div>
+            <div className={styles.Text}>
               {data.map(increment => {
                 return increment.increment === null ? (
                   <div>-</div>
@@ -127,39 +126,17 @@ const incrementTable = ({
                   </div>
                 );
               })}
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.Title}>Valores del mercado</div>
-          <div className={styles.MarketInputs}>
-            <div className={styles.MarketInput}>
-              <div className={styles.MarketInputLabel}>Precio promedio</div>
-              <div>
-                <Input
-                  onChange={target => {
-                    putMarketAveragePrice(target.value);
-                  }}
-                  validations={[]}
-                  style={{ width: '100px' }}
-                  value={marketData.averagePrice}
-                />
-              </div>
-            </div>
-
-            <div className={styles.MarketInput}>
-              <div className={styles.MarketInputLabel}>E.A</div>
-              <div>
-                <Input
-                  mask="percentage"
-                  onChange={target => {
-                    putMarketAnualEffectiveIncrement(
-                      parseFloat(target.value) / 100,
-                    );
-                  }}
-                  validations={[]}
-                  style={{ width: '100px' }}
-                  value={marketData.anualEffectiveIncrement * 100}
+              <div className={styles.Header}>Incremento total</div>
+              <div className={styles.Text}>
+                <NumberFormat
+                  value={data
+                    .reduce((current, next) => {
+                      return current + next.increment;
+                    }, 0)
+                    .toFixed(2)}
+                  displayType={'text'}
+                  prefix={'$'}
+                  thousandSeparator={true}
                 />
               </div>
             </div>

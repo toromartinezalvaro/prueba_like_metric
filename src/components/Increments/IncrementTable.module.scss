@@ -16,6 +16,9 @@
     font-weight: 700;
     margin-bottom: 15px;
   }
+  & .Text {
+    min-height: 52px;
+  }
 }
 
 .Title {
@@ -25,13 +28,3 @@
   font-family: 'Didact Gothic';
 }
 
-.MarketInputs {
-  display: flex;
-  .MarketInput {
-    display: flex;
-    .MarketInputLabel {
-      font-weight: 700;
-      margin-bottom: 15px;
-    }
-  }
-}
