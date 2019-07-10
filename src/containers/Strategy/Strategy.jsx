@@ -21,6 +21,7 @@ export default class Strategy extends Component {
     hidden: true,
     strategySelected: 0,
     strategyActive: 0,
+    index: 0,
     dataHelper: [
       { label: ['Mercado'], borderColor: '' },
       {
@@ -65,8 +66,9 @@ export default class Strategy extends Component {
       if (groupFilter.strategies.length > 0) {
         this.setState({ dataGraph: groupFilter.strategies });
         let dataGraph = groupFilter.strategies;
-        if (dataGraph[0] !== undefined) {
-          let lengthLabels = dataGraph[0].length;
+        console.log(groupFilter.strategies)
+        if (dataGraph[0].increments !== undefined) {
+          let lengthLabels = dataGraph[0].increments.length;
           return Array.from(Array(lengthLabels), (x, index) => index + 1);
         }
       } else {
@@ -79,7 +81,7 @@ export default class Strategy extends Component {
     const arrayData = dataGraph.map((line, i) => {
       if (this.state.dataHelper) {
         return {
-          data: [...line],
+          data: [...line.increments],
           label: this.state.dataHelper[i].label,
           borderColor: this.state.dataHelper[i].borderColor,
           backgroundColor: this.state.dataHelper[i].backgroundColor,
@@ -89,8 +91,6 @@ export default class Strategy extends Component {
         };
       }
     });
-
-    console.log('groups array ', arrayData);
     return arrayData;
   };
 
@@ -99,7 +99,6 @@ export default class Strategy extends Component {
     this.services
       .getStrategies(this.props.match.params.towerId)
       .then(strategies => {
-        console.log('strategies.data', strategies.data);
         const groupFilter = this.findGroup(strategies.data, strategies.data[0]);
         const labels = this.makeArrayLabels(groupFilter);
         const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
@@ -141,8 +140,10 @@ export default class Strategy extends Component {
       .putStrategy({
         id: this.state.groupActive.id,
         strategy: this.state.strategySelected,
+        incrementList: this.state.groupActive.strategies[this.state.index].percentage
       })
       .then(
+        console.log("HOLA",this.state.groupActive),
         this.setState({
           hidden: true,
           strategyActive: this.state.strategySelected,
@@ -196,6 +197,7 @@ export default class Strategy extends Component {
                         this.setState({
                           hidden: false,
                           strategySelected: this.state.dataHelper[index].id,
+                          index: index
                         });
                       }}
                       style={styleButton}
