@@ -26,6 +26,7 @@ export default class Strategy extends Component {
     hidden: true,
     strategySelected: 0,
     strategyActive: 0,
+    index: 0,
     salesStartDate: 0,
     dataHelper: [
       { label: ['Mercado'], borderColor: '' },
@@ -91,7 +92,7 @@ export default class Strategy extends Component {
     const arrayData = dataGraph.map((line, i) => {
       if (this.state.dataHelper) {
         return {
-          data: [...line],
+          data: [...line.increments],
           label: this.state.dataHelper[i].label,
           borderColor: this.state.dataHelper[i].borderColor,
           backgroundColor: this.state.dataHelper[i].backgroundColor,
@@ -101,8 +102,6 @@ export default class Strategy extends Component {
         };
       }
     });
-
-    console.log('groups array ', arrayData);
     return arrayData;
   };
 
@@ -111,7 +110,6 @@ export default class Strategy extends Component {
     this.services
       .getStrategies(this.props.match.params.towerId)
       .then(strategies => {
-        console.log('strategies.data', strategies.data);
         if (strategies.data !== {}) {
           const groupFilter = this.findGroup(
             strategies.data.increments,
@@ -166,8 +164,10 @@ export default class Strategy extends Component {
       .putStrategy({
         id: this.state.groupActive.id,
         strategy: this.state.strategySelected,
+        incrementList: this.state.groupActive.strategies[this.state.index].percentage
       })
       .then(
+        console.log("HOLA",this.state.groupActive),
         this.setState({
           hidden: true,
           strategyActive: this.state.strategySelected,
@@ -231,8 +231,22 @@ export default class Strategy extends Component {
                       </Button>
                     );
                   }
-                })}
-              </div>
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          hidden: false,
+                          strategySelected: this.state.dataHelper[index].id,
+                          index: index
+                        });
+                      }}
+                      style={styleButton}
+                    >
+                      {this.state.dataHelper[index].label}
+                    </Button>
+                  );
+                }
+              })}
             </div>
           ) : null
         ) : (
