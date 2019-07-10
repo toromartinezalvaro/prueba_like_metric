@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import SalesStartDate from '../../components/Increments/SalesStartDate/SalesStartDate';
 import IncrementsTable from '../../components/Increments/IncrementTable';
+import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
 import IncrementsServices from '../../services/increments/IncrementsServices';
 
@@ -13,6 +15,7 @@ class Increments extends Component {
     incrementsSummary: {
       market: { averagePrice: 0, anualEffectiveIncrement: 0 },
       groups: [],
+      salesStartDate: new Date().getTime(),
     },
     increments: [],
   };
@@ -35,6 +38,7 @@ class Increments extends Component {
   }
 
   salesSpeedsHandler = (id, salesSpeed) => {
+    salesSpeed = salesSpeed.replace(/,/g, '.');
     this.services.putSalesSpeeds(id, { salesSpeed });
   };
 
@@ -42,7 +46,7 @@ class Increments extends Component {
     this.services.putAnualEffectiveIncrements(id, { anualEffectiveIncrement });
   };
 
-  clacIncrements = () => {
+  calcIncrements = () => {
     this.services
       .putIncrements(this.props.match.params.towerId)
       .then(results => {
@@ -82,7 +86,8 @@ class Increments extends Component {
       averagePrice,
     });
   };
-  putMarketAnualEffectiveIncrement = anualEffectiveIncrement => {
+
+  putMarketAnnualEffectiveIncrement = anualEffectiveIncrement => {
     this.services.putMarketAnualEffectiveIncrement(
       this.props.match.params.towerId,
       {
@@ -91,22 +96,41 @@ class Increments extends Component {
     );
   };
 
+  putSalesStartDate = salesStartDate => {
+    this.services
+      .putSalesStartDate(this.props.match.params.towerId, {
+        salesStartDate,
+      })
+      .then(response => {
+        const tempIncrementsSummary = { ...this.state.incrementsSummary };
+        tempIncrementsSummary.salesStartDate = salesStartDate;
+        this.setState({ incrementsSummary: tempIncrementsSummary });
+      });
+  };
+
   render() {
     return (
       <Fragment>
+        <SalesStartDate
+          salesStartDate={this.state.incrementsSummary.salesStartDate}
+          dayChangeHandler={this.putSalesStartDate}
+        />
         <IncrementsTable
-          putMarketAveragePrice={this.putMarketAveragePrice}
-          putMarketAnualEffectiveIncrement={
-            this.putMarketAnualEffectiveIncrement
-          }
           getIncrements={this.getIncrements}
           data={this.state.incrementsSummary.groups}
-          marketData={this.state.incrementsSummary.market}
           salesSpeedsHandler={this.salesSpeedsHandler}
           anualEffectiveIncrementsHandler={this.anualEffectiveIncrementsHandler}
           incrementsHandler={this.putIncrement}
         />
+        <IncrementsMarket
+          putMarketAveragePrice={this.putMarketAveragePrice}
+          putMarketAnnualEffectiveIncrement={
+            this.putMarketAnnualEffectiveIncrement
+          }
+          marketData={this.state.incrementsSummary.market}
+        />
         <IncrementsChart
+          salesStartDate={this.state.incrementsSummary.salesStartDate}
           data={this.state.increments}
           getData={this.getPeriodsIncrements}
         />

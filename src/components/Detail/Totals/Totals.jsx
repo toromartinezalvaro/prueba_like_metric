@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "../Totals/Totals.module.scss";
-import NumberFormat from "react-number-format";
+import React from 'react';
+import styles from '../Totals/Totals.module.scss';
+import NumberFormat from 'react-number-format';
 
 const totals = props => {
   return (
@@ -9,49 +9,49 @@ const totals = props => {
         <strong>Inmueble: </strong>
         <NumberFormat
           value={props.data.totals.priceArea}
-          displayType={"text"}
+          displayType={'text'}
           thousandSeparator={true}
-          prefix={"$"}
+          prefix={'$'}
         />
       </div>
       <div>
         <strong>Adicionales: </strong>
         <NumberFormat
-          value={props.data.totals.priceAditionals}
-          displayType={"text"}
+          value={props.data.totals.priceAdditional}
+          displayType={'text'}
           thousandSeparator={true}
-          prefix={"$"}
+          prefix={'$'}
         />
       </div>
       <div>
         <strong>Total: </strong>
         <NumberFormat
-          value={props.data.totals.priceWithAditionals}
-          displayType={"text"}
+          value={props.data.totals.priceWithAdditional}
+          displayType={'text'}
           thousandSeparator={true}
-          prefix={"$"}
+          prefix={'$'}
         />
       </div>
       <div>
         <strong>Area total: </strong>
-        <p>{props.data.totals.mts2 + " mts2 "}</p>
+        <p>{Number(props.data.totals.mts2.toFixed(3)) + ' mts2 '}</p>
       </div>
       <div>
         <strong>Valor por mt2: </strong>
         <NumberFormat
-          value={props.data.totals.pricexMts2WithoutAditionals}
-          displayType={"text"}
+          value={props.data.totals.priceXMts2WithoutAdditional}
+          displayType={'text'}
           thousandSeparator={true}
-          prefix={"$"}
+          prefix={'$'}
         />
       </div>
       <div>
         <strong>Valor por mt2 + adicionales: </strong>
         <NumberFormat
-          value={props.data.totals.pricexMts2}
-          displayType={"text"}
+          value={props.data.totals.priceXMts2}
+          displayType={'text'}
           thousandSeparator={true}
-          prefix={"$"}
+          prefix={'$'}
         />
       </div>
     </div>

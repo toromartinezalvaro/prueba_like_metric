@@ -24,6 +24,7 @@ import Clustering from '../Clustering/Clustering';
 import Increments from '../Increments/Increments';
 import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
+import Strategy from '../Strategy/Strategy';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -137,6 +138,11 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={SecureContainer(CreateUser)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.strategy.withIndicator}
+          exact
+          component={SecureContainer(Strategy)}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.increments.withIndicator}

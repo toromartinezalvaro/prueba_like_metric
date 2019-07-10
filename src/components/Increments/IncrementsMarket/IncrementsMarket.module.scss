@@ -1,0 +1,10 @@
+.MarketInputs {
+  display: flex;
+  .MarketInput {
+    display: flex;
+    .MarketInputLabel {
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+  }
+}

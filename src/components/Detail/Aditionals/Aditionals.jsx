@@ -5,12 +5,12 @@ const aditionals = props => {
   return (
     <div>
       <div className={styles.Card}>
-        <h3>{props.Titulo}</h3>
+        <h3>{props.Title}</h3>
         <div className={styles.Container}>
           <div>
-            <p><b>{props.Titulo1}</b></p>
-            <p><b>{props.Titulo2}</b></p>
-            <p><b>{props.Titulo3}</b></p>
+            <p><b>{props.Title1}</b></p>
+            <p><b>{props.Title2}</b></p>
+            <p><b>{props.Title3}</b></p>
           </div>
           <div>
             <p>{props.Value1}</p>
