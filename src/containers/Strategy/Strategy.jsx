@@ -7,6 +7,8 @@ import Modal from '../../components/UI/Modal/Modal';
 import { Link } from 'react-router-dom';
 import styles from '../../assets/styles/variables.scss';
 import { DashboardRoutes } from '../../routes/local/routes';
+import moment from 'moment';
+import _ from 'lodash';
 
 export default class Strategy extends Component {
   constructor(props) {
@@ -24,6 +26,7 @@ export default class Strategy extends Component {
     hidden: true,
     strategySelected: 0,
     strategyActive: 0,
+    salesStartDate: 0,
     dataHelper: [
       { label: ['Mercado'], borderColor: '' },
       {
@@ -69,8 +72,14 @@ export default class Strategy extends Component {
         this.setState({ dataGraph: groupFilter.strategies });
         let dataGraph = groupFilter.strategies;
         if (dataGraph[0] !== undefined) {
-          let lengthLabels = dataGraph[0].length;
-          return Array.from(Array(lengthLabels), (x, index) => index + 1);
+          let lengths = [dataGraph[0].length];
+          return Array(_.max(lengths))
+            .fill(null)
+            .map((_, index) => {
+              return moment(Number(this.state.salesStartDate))
+                .add(index, 'months')
+                .format('MM/YY');
+            });
         }
       } else {
         return null;
@@ -82,7 +91,7 @@ export default class Strategy extends Component {
     const arrayData = dataGraph.map((line, i) => {
       if (this.state.dataHelper) {
         return {
-          data: [...line.increments],
+          data: [...line],
           label: this.state.dataHelper[i].label,
           borderColor: this.state.dataHelper[i].borderColor,
           backgroundColor: this.state.dataHelper[i].backgroundColor,
@@ -105,18 +114,19 @@ export default class Strategy extends Component {
         console.log('strategies.data', strategies.data);
         if (strategies.data !== {}) {
           const groupFilter = this.findGroup(
-            strategies.data,
-            strategies.data[0],
+            strategies.data.increments,
+            strategies.data.increments[0],
           );
           const labels = this.makeArrayLabels(groupFilter);
           const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
           this.setState({
             isLoading: false,
-            groupActive: strategies.data[0],
+            groupActive: strategies.data.increments[0],
             currentGroup: arrayDataSets,
             labels: labels,
-            groups: strategies.data,
-            strategyActive: strategies.data[0].strategy,
+            groups: strategies.data.increments,
+            strategyActive: strategies.data.increments[0].strategy,
+            salesStartDate: strategies.salesStartDate,
           });
         }
       })
@@ -135,7 +145,7 @@ export default class Strategy extends Component {
     const groupFilter = this.findGroup(this.state.groups, groupActive);
     const labels = this.makeArrayLabels(groupFilter);
     const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
-    console.log("arrayDataSets". arrayDataSets);
+    console.log('labels', labels);
 
     if (arrayDataSets.length !== 0) {
       this.setState({
