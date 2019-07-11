@@ -1,19 +1,17 @@
-import React from "react";
-import Input from "../UI/Input/Input";
-import styles from "./CreateUserForm.module.scss";
-import Card, { CardHeader, CardBody } from "../UI/Card/Card";
-import Error from "../UI/Error/Error";
-import {Role} from "../../helpers"
-import agent from "../../config/config"
+import React from 'react';
+import Input from '../UI/Input/Input';
+import styles from './CreateUserForm.module.scss';
+import Card, { CardHeader, CardBody } from '../UI/Card/Card';
+import { Role } from '../../helpers';
+import agent from '../../config/config';
 
-const CreateUserForm = props => {
-
+const ChildrenUsers = props => {
   const noEmptyValidation = {
     fn: value => {
-      return value.length > 0
+      return value.length > 0;
     },
-    message: "No puede estar vacío este campo",
-  }
+    message: 'No puede estar vacío este campo',
+  };
 
   const emailValidation = [
     {
@@ -22,15 +20,12 @@ const CreateUserForm = props => {
         const pattern = new RegExp(emailExp);
         return pattern.test(value);
       },
-      message: "Debe ser un email válido"
-    }
+      message: 'Debe ser un email válido',
+    },
   ];
 
   return (
     <div>
-      {props.currentErrorMessage !== "" ? (
-        <Error message={props.currentErrorMessage} />
-      ) : null}
       <div className={styles.Container}>
         <Card className={styles.Card}>
           <CardHeader>
@@ -41,17 +36,17 @@ const CreateUserForm = props => {
               <select
                 className={styles.Input}
                 name="role"
-                onChange={(event) => {
-                  console.log("onchange i ", event.target.value)
+                onChange={event => {
+                  console.log('onchange i ', event.target.value);
                   if (event) {
-                    props.onChange({name: "role", value: event.target.value})
+                    props.onChange({ name: 'role', value: event.target.value });
                   }
                 }}
                 value={props.role}
               >
-              {agent.isAuthorized([Role.Super]) &&
-                <option value={Role.Super}>Super User</option>
-              }
+                {agent.isAuthorized([Role.Super]) && (
+                  <option value={Role.Super}>Super User</option>
+                )}
                 <option value={Role.Admin}>Administrador</option>
                 <option value={Role.User}>Auxiliar</option>
               </select>
@@ -105,4 +100,4 @@ const CreateUserForm = props => {
   );
 };
 
-export default CreateUserForm;
+export default ChildrenUsers;

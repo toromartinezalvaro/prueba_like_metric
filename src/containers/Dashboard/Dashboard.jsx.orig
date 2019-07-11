@@ -1,0 +1,166 @@
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+<<<<<<< HEAD
+import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes';
+=======
+import {
+  DashboardRoutes,
+  ProjectRoutes,
+  UserRoutes,
+} from '../../routes/local/routes';
+>>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
+import DashboardLayout from '../../HOC/Layouts/Dashboard/Dashboard';
+import Building from '../Building/Building';
+import Projects from '../Project/Projects';
+import Towers from '../Towers/Towers';
+<<<<<<< HEAD
+import UserSettings from '../User/UserSettings';
+=======
+// import {CreateUser} from "../User";
+import { CreateUser, UserSettings } from '../User';
+// import UserSettings from "../User";
+>>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
+import Areas from '../Area/Area';
+import Prime from '../Prime/Prime';
+import DetailAdmin from '../DetailAdmin/DetailAdmin';
+import Detail from '../Detail/Detail';
+import RackAreas from '../RackAreas/RackAreas';
+import SecureContainer from '../../HOC/Common/SecureContainer';
+import TowerServices from '../../services/Towers/TowerServices';
+import Summary from '../Summary/Summary';
+import Clustering from '../Clustering/Clustering';
+import Increments from '../Increments/Increments';
+<<<<<<< HEAD
+=======
+import PrivateRoute from '../../config/PrivateRoute';
+import { Role } from '../../helpers';
+>>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
+
+class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.services = new TowerServices(this);
+  }
+
+  state = {
+    tower: null,
+  };
+
+  componentDidMount() {
+    const towerId = this.props.location.pathname.split('/')[3];
+
+    if (towerId && this.state.tower === null) {
+      this.services
+        .getTower(towerId)
+        .then(response => {
+          this.setState({ tower: response.data });
+        })
+        .catch(error => {
+          console.log('ERROR >', error);
+        });
+    }
+  }
+
+  onChangeTower = tower => {
+    if (
+      tower === this.state.tower ||
+      (this.state.tower === null && tower === null)
+    ) {
+      return;
+    }
+    this.setState({
+      tower: tower,
+    });
+  };
+
+  render() {
+    const { match, location } = this.props;
+    const tower = this.state.tower;
+    return (
+      <DashboardLayout tower={tower} location={location}>
+        <Route
+          path={match.url + ProjectRoutes.base}
+          exact
+          component={SecureContainer(Projects, {
+            changeTower: this.onChangeTower,
+          })}
+        />
+        <Route
+          path={
+            match.url +
+            ProjectRoutes.base +
+            DashboardRoutes.towers.withIndicator
+          }
+          exact
+          component={SecureContainer(Towers, {
+            changeTower: this.onChangeTower,
+          })}
+        />
+        <Route
+          path={match.url + DashboardRoutes.building.withIndicator}
+          exact
+          component={SecureContainer(Building)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.areas.withIndicator}
+          exact
+          component={SecureContainer(Areas)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.user}
+          exact
+          component={SecureContainer(UserSettings, {
+            changeTower: this.onChangeTower,
+          })}
+        />
+        <Route
+          path={match.url + DashboardRoutes.prime.withIndicator}
+          exact
+          component={SecureContainer(Prime)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.summary.withIndicator}
+          exact
+          component={SecureContainer(Summary)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.detailAdmin.withIndicator}
+          exact
+          component={SecureContainer(DetailAdmin)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.detail.withIndicator}
+          exact
+          component={SecureContainer(Detail)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.rackAreas.withIndicator}
+          exact
+          component={SecureContainer(RackAreas)}
+        />
+        <Route
+          path={match.url + DashboardRoutes.clustering.withIndicator}
+          exact
+          component={SecureContainer(Clustering)}
+        />
+<<<<<<< HEAD
+        <Route
+=======
+        <PrivateRoute
+          path={match.url + DashboardRoutes.user + UserRoutes.create}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={CreateUser}
+        />
+        {/* <Route
+>>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
+          path={match.url + DashboardRoutes.increments.withIndicator}
+          exact
+          component={SecureContainer(Increments)}
+        />
+      </DashboardLayout>
+    );
+  }
+}
+
+export default Dashboard;

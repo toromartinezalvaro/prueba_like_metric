@@ -6,8 +6,8 @@ import Services from '../services'
 
 export default class UserServices extends Services {
 
-  constructor() {
-    super()
+  constructor(delegate) {
+    super(delegate)
     agent.reloadHeaderToken()
   }
 
@@ -40,8 +40,11 @@ export default class UserServices extends Services {
   }
 
   signup(data) {
-    console.log("data ... ", data)
     return this.post(UserServiceDefinitions.user, data)
+  }
+
+  childrenInfo() {
+    return axios.get(UserServiceDefinitions.childrenInfo)
   }
 
 }

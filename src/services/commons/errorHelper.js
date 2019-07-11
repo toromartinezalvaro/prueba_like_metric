@@ -2,44 +2,49 @@ function errorHandling(error) {
   const ErrorType = Object.freeze({
     BadRequest: {
       code: 400,
-      status: "Bad Request",
-      message: "Solicitud incorrecta, por favor intentelo de nuevo"
+      status: 'Bad Request',
+      message: 'Solicitud incorrecta, por favor intentelo de nuevo',
+    },
+    UniqueConstraint: {
+      code: 400,
+      status: 'UniqueConstraintError',
+      message: 'Un usuario ya ha sido creado con este correo',
     },
     Unauthorized: {
       code: 401,
-      status: "Unauthorized",
-      message: "No tiene autorización para realizar esta acción"
+      status: 'Unauthorized',
+      message: 'No tiene autorización para realizar esta acción',
     },
     NotFound: {
       code: 404,
-      status: "Not Found",
-      message: "Pagina no encontrada"
+      status: 'Not Found',
+      message: 'Pagina no encontrada',
     },
     RequestTimeOut: {
       code: 408,
-      status: "Request Time Out",
-      message: "El servidor ha tardado demasiado tiempo en responder"
+      status: 'Request Time Out',
+      message: 'El servidor ha tardado demasiado tiempo en responder',
     },
     UnprocessableEntity: {
       code: 422,
-      status: "Unprocessable Entity",
-      message: "No se puede procesar la informacion"
+      status: 'Unprocessable Entity',
+      message: 'No se puede procesar la informacion',
     },
     ServiceTemporarilyUnavailable: {
       code: 503,
-      status: "Service Temporarily Unavailable",
-      message: "El servidor no se encuentra disponible de momento"
+      status: 'Service Temporarily Unavailable',
+      message: 'El servidor no se encuentra disponible de momento',
     },
     InternalServerError: {
       code: 500,
-      status: "Internal Server Error",
-      message: "Ha ocurrido un error interno"
+      status: 'Internal Server Error',
+      message: 'Ha ocurrido un error interno',
     },
     Error: {
       code: 0,
-      status: "Error",
-      message: "Ha ocurrido un error"
-    }
+      status: 'Error',
+      message: 'Ha ocurrido un error',
+    },
   });
 
   let status;
@@ -49,10 +54,13 @@ function errorHandling(error) {
     status = 0;
   }
 
-  console.log(error);
+  console.log("error O.o ", error.response);
 
   switch (status) {
     case 400:
+      if (error.response.data.message === 'SequelizeUniqueConstraintError') {
+        return ErrorType.UniqueConstraint;
+      }
       return ErrorType.BadRequest;
     case 401:
       return ErrorType.Unauthorized;
