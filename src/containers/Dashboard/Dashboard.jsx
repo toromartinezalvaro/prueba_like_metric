@@ -139,11 +139,11 @@ class Dashboard extends Component {
           exact
           component={CreateUser}
         />
-        <Route
+        {/* <Route
           path={match.url + DashboardRoutes.strategy.withIndicator}
           exact
           component={SecureContainer(Strategy)}
-        />
+        /> */}
         <PrivateRoute
           path={match.url + DashboardRoutes.increments.withIndicator}
           roles={[Role.Admin, Role.Super]}
