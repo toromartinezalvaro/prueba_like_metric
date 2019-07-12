@@ -113,6 +113,44 @@ const incrementTable = ({
             </div>
           </div>
           <div className={styles.Column}>
+            <div className={styles.Header}>Incremento recaudado</div>
+            <div>
+              {data.map(increment => {
+                return (
+                  <div className={styles.Text}>
+                    <NumberFormat
+                      value={parseFloat(increment.collectedIncrement).toFixed(
+                        2,
+                      )}
+                      displayType={'text'}
+                      prefix={'$'}
+                      thousandSeparator={true}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.Column}>
+            <div className={styles.Header}>Incremento restante</div>
+            <div>
+              {data.map(increment => {
+                return (
+                  <div className={styles.Text}>
+                    <NumberFormat
+                      value={parseFloat(
+                        increment.increment - increment.collectedIncrement,
+                      ).toFixed(2)}
+                      displayType={'text'}
+                      prefix={'$'}
+                      thousandSeparator={true}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.Column}>
             <div className={styles.Header}>Incremento</div>
             <div className={styles.Text}>
               {data.map(increment => {
