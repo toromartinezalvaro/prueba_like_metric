@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import UserServices from '../../services/user/UserServices';
-import { ChildrenInfo } from '../../components/User';
+import { ChildrenUsers } from '../../components/User';
+import { ProjectList } from '../../components/Projects';
 import Loader from 'react-loader-spinner';
 import agent from '../../config/config';
 import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes';
-import styles from './CreateUser.module.scss';
+import styles from './AssignTowerToUsers.module.scss';
 import errorHandling from '../../services/commons/errorHelper';
-import Error from "../UI/Error/Error";
+import Error from '../../components/UI/Error/Error';
 
 class AssignTowerToUsers extends Component {
   constructor(props) {
@@ -26,13 +27,15 @@ class AssignTowerToUsers extends Component {
     this.loadCurrentUserInfo();
   }
 
-  onChange = target => {
-    const { name, value } = target;
-    if (name && value) {
-      this.setState({
-        [name]: value,
-      });
-    }
+  onChange = userId => {
+    let currentUser = this.state.users.find(user => {
+      console.log("id ", user.id, userId)
+      return user.id == userId;
+    });
+
+    this.setState({
+      currentUser: currentUser,
+    });
   };
 
   loadCurrentUserInfo = () => {
@@ -43,11 +46,12 @@ class AssignTowerToUsers extends Component {
     this.services
       .childrenInfo()
       .then(response => {
-        const { users, projects } = response;
+        const { users, projects } = response.data;
         this.setState({
           isLoading: false,
           users: users ? users : [],
           projects: projects ? projects : [],
+          currentUser: users[0]
         });
       })
       .catch(error => {
@@ -85,25 +89,32 @@ class AssignTowerToUsers extends Component {
   //       });
   //     });
   // };
+  updatePasswordModal = () => {};
+
+  addProjectModal = () => {};
 
   render() {
     return this.state.isLoading ? (
-      <div className="Container">
+      <div className={styles.Loader}>
         <Loader type="Puff" color={styles.mainColor} height="100" width="100" />
       </div>
     ) : (
-      <div>
-        {props.currentErrorMessage !== '' ? (
+      <div className={styles.Container}>
+        {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
-        <ChildrenInfo
-          onChange={this.onChange}
-          name={this.state.name}
-          role={this.state.role}
-          email={this.state.email}
-          password={this.state.password}
-          createUser={this.createUserHandler}
-        />
+        {this.state.currentUser && (
+          <ChildrenUsers
+            onChange={this.onChange}
+            users={this.state.users}
+            currentUser={this.state.currentUser}
+            updatePassword={this.updatePasswordModal}
+            addProject={this.addProjectModal}
+          />
+        )}
+        {this.state.currentUser && (
+          <ProjectList currentUser={this.state.currentUser} />
+        )}
       </div>
     );
   }

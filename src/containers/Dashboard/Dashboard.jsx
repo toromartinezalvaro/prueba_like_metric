@@ -9,9 +9,7 @@ import DashboardLayout from '../../HOC/Layouts/Dashboard/Dashboard';
 import Building from '../Building/Building';
 import Projects from '../Project/Projects';
 import Towers from '../Towers/Towers';
-// import {CreateUser} from "../User";
-import { CreateUser, UserSettings } from '../User';
-// import UserSettings from "../User";
+import { CreateUser, UserSettings, AssignTowerToUsers } from '../User';
 import Areas from '../Area/Area';
 import Prime from '../Prime/Prime';
 import DetailAdmin from '../DetailAdmin/DetailAdmin';
@@ -138,6 +136,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={SecureContainer(CreateUser)}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.user + UserRoutes.assignProjects}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={SecureContainer(AssignTowerToUsers)}
         />
         <Route
           path={match.url + DashboardRoutes.strategy.withIndicator}

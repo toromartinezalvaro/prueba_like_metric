@@ -44,7 +44,7 @@ export default class UserServices extends Services {
   }
 
   childrenInfo() {
-    return axios.get(UserServiceDefinitions.childrenInfo)
+    return this.get(UserServiceDefinitions.childrenInfo)
   }
 
 }

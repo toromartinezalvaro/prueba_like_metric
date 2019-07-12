@@ -32,7 +32,7 @@ const CreateUserForm = props => {
         <Error message={props.currentErrorMessage} />
       ) : null}
       <div className={styles.Container}>
-        <Card className={styles.Card}>
+        <Card>
           <CardHeader>
             <p className={styles.Title}>Crear Usuario</p>
           </CardHeader>
