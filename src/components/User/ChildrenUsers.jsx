@@ -34,10 +34,10 @@ const ChildrenUsers = props => {
             </select>
           </div>
           <div className={styles.Row}>
-            <button className={styles.Button} onClick={props.createUser}>
+            <button className={styles.Button} onClick={props.openPasswordModal}>
               Update Password
             </button>
-            <button className={styles.Button} onClick={props.createUser}>
+            <button className={styles.Button} onClick={props.openProjectModal}>
               Agregar Proyecto
             </button>
           </div>

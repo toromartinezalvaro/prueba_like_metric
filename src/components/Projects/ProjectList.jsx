@@ -10,7 +10,12 @@ const ProjectList = props => {
   const accordionTitle = project => {
     return (
       <div className={styles.AccordionTitle}>
-        <div className={styles.RemoveButton} onClick={handleTitleAction}>
+        <div
+          className={styles.RemoveButton}
+          onClick={event => {
+            handleTitleAction(event, project.id);
+          }}
+        >
           <Icon name="fa-trash-alt" />
         </div>
         <p className={styles.Title}>{project.name}</p>
@@ -26,22 +31,28 @@ const ProjectList = props => {
     );
   };
 
-  const handleTitleAction = event => {
+  const handleTitleAction = (event, projectId) => {
     event.stopPropagation();
+    console.log("projectId ", projectId, props.currentUser.id)
   };
 
-  const handleTowerAction = event => {
-    event.stopPropagation();
-  };
+  // const handleTowerAction = (event, towerId) => {
+  //   event.stopPropagation();
+  // };
 
   const towerItem = tower => {
     return (
       <div key={tower.id} className={styles.TowerContent}>
         <div className={styles.TowerItem}>
-          <div className={styles.RemoveButton} onClick={handleTowerAction}>
+          {/* <div
+            className={styles.RemoveButton}
+            onClick={event => {
+              handleTowerAction(event, tower.id);
+            }}
+          >
             <Icon name="fa-trash-alt" />
-          </div>
-          <p onClick={handleTitleAction}>{tower.name}</p>
+          </div> */}
+          <p>{tower.name}</p>
         </div>
         <div className={styles.Line} />
       </div>
