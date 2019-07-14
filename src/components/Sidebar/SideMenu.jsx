@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { DashboardRoutes } from "../../routes/local/routes";
 import style from "./SideMenu.module.scss";
 import Icon from "../../assets/icons/Icon";
+import Agent from '../../config/config'
 
 const sideMenu = props => {
   var itemForSlidebar = (styles, route, iconName, description) => {
@@ -80,12 +81,13 @@ const sideMenu = props => {
           "fas fa-object-group",
           "Agrupamiento"
         )}
-         {itemForSlidebar(
+        {console.log('Agent.currentUser.id ', Agent.currentUser.id)}
+         {Agent.currentUser.id !== 3 ? itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.increments.value,
           "fas fa-angle-double-up",
           "Incrementos"
-        )}  
+        ): null}  
         {/* {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.strategy.value,
