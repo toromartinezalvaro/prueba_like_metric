@@ -1,6 +1,7 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
 import Card, { CardHeader, CardBody, CardFooter } from '../UI/Card/Card';
+import Accordion from '../UI/Accordion/Accordion';
 import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 import styles from './IncrementTable.module.scss';
@@ -19,7 +20,144 @@ const incrementTable = ({
         <span>Incrementos</span>
       </CardHeader>
       <CardBody>
-        <div className={styles.Content}>
+        {data.map(increment => {
+          return (
+            <Accordion trigger={increment.name}>
+              <div className={styles.AccordionContainer}>
+                <div className={styles.statContent}>
+                  <div>
+                    <span className={styles.label}>Unidades:</span>
+                  </div>
+                  <div>{increment.units}</div>
+                </div>
+                <div className={styles.statContent}>
+                  <div>
+                    <span className={styles.label}>Area Promedio:</span>
+                  </div>
+                  <div>
+                    <NumberFormat
+                      value={parseFloat(increment.averageArea).toFixed(2)}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      suffix=" m²"
+                    />
+                  </div>
+                </div>
+                <div className={styles.statContent}>
+                  <div>
+                    <span className={styles.label}>Precio Promedio:</span>
+                  </div>
+                  <div>
+                    <NumberFormat
+                      value={parseFloat(increment.averagePrice).toFixed(2)}
+                      displayType={'text'}
+                      prefix={'$'}
+                      thousandSeparator={true}
+                    />
+                  </div>
+                </div>
+                <div className={styles.statContent}>
+                  <div>
+                    <span className={styles.label}>Velocidad de ventas:</span>
+                  </div>
+                  <div>
+                    <Input
+                      style={{ width: '50px' }}
+                      validations={[]}
+                      onChange={target => {
+                        salesSpeedsHandler(increment.id, target.value);
+                      }}
+                      value={
+                        increment.salesSpeed === null
+                          ? null
+                          : increment.salesSpeed.toFixed(1)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className={styles.statContent}>
+                  <div>
+                    <span className={styles.label}>Meta Var e.a:</span>
+                  </div>
+                  <div>
+                    <Input
+                      mask="percentage"
+                      style={{ width: '50px' }}
+                      validations={[]}
+                      onChange={target => {
+                        anualEffectiveIncrementsHandler(
+                          increment.id,
+                          parseFloat(target.value) / 100,
+                        );
+                      }}
+                      value={
+                        increment.anualEffectiveIncrement === null
+                          ? null
+                          : (increment.anualEffectiveIncrement * 100).toFixed(1)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className={styles.statContent}>
+                  <div>
+                    <span className={styles.label}>Incremento recaudado:</span>
+                  </div>
+                  <div>
+                    <NumberFormat
+                      value={parseFloat(increment.collectedIncrement).toFixed(
+                        2,
+                      )}
+                      displayType={'text'}
+                      prefix={'$'}
+                      thousandSeparator={true}
+                    />
+                  </div>
+                </div>
+                <div className={styles.statContent}>
+                  <div>
+                    <span className={styles.label}>Incremento restante:</span>
+                  </div>
+                  <div>
+                    <NumberFormat
+                      value={parseFloat(
+                        increment.increment - increment.collectedIncrement,
+                      ).toFixed(2)}
+                      displayType={'text'}
+                      prefix={'$'}
+                      thousandSeparator={true}
+                    />
+                  </div>
+                </div>
+                <div className={styles.statContent}>
+                  <div>
+                    {' '}
+                    <span className={styles.label}>Incremento restante:</span>
+                  </div>
+                  <div>
+                    {' '}
+                    {increment.increment === null ? (
+                      <div>-</div>
+                    ) : (
+                      <div>
+                        <Input
+                          mask="currency"
+                          style={{ width: '100px' }}
+                          validations={[]}
+                          onChange={target => {
+                            incrementsHandler(increment.id, target.value);
+                          }}
+                          value={increment.increment.toFixed(2)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Accordion>
+          );
+        })}
+
+        {/* <div className={styles.Content}>
           <div className={styles.Column}>
             <div className={styles.Header}>Tipo</div>
             {data.map(increment => {
@@ -74,7 +212,11 @@ const incrementTable = ({
                       onChange={target => {
                         salesSpeedsHandler(increment.id, target.value);
                       }}
-                      value={increment.salesSpeed.toFixed(1)}
+                      value={
+                        increment.salesSpeed === null
+                          ? null
+                          : increment.salesSpeed.toFixed(1)
+                      }
                     />
                   </div>
                 );
@@ -97,9 +239,49 @@ const incrementTable = ({
                           parseFloat(target.value) / 100,
                         );
                       }}
-                      value={(increment.anualEffectiveIncrement * 100).toFixed(
-                        1,
+                      value={
+                        increment.anualEffectiveIncrement === null
+                          ? null
+                          : (increment.anualEffectiveIncrement * 100).toFixed(1)
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.Column}>
+            <div className={styles.Header}>Incremento recaudado</div>
+            <div>
+              {data.map(increment => {
+                return (
+                  <div className={styles.Text}>
+                    <NumberFormat
+                      value={parseFloat(increment.collectedIncrement).toFixed(
+                        2,
                       )}
+                      displayType={'text'}
+                      prefix={'$'}
+                      thousandSeparator={true}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.Column}>
+            <div className={styles.Header}>Incremento restante</div>
+            <div>
+              {data.map(increment => {
+                return (
+                  <div className={styles.Text}>
+                    <NumberFormat
+                      value={parseFloat(
+                        increment.increment - increment.collectedIncrement,
+                      ).toFixed(2)}
+                      displayType={'text'}
+                      prefix={'$'}
+                      thousandSeparator={true}
                     />
                   </div>
                 );
@@ -141,7 +323,7 @@ const incrementTable = ({
               </div>
             </div>
           </div>
-        </div>
+                  </div> */}
       </CardBody>
       <CardFooter>
         <div className={styles.ActionContainer}>

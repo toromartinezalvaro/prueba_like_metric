@@ -58,6 +58,12 @@ class Increments extends Component {
     this.services
       .getIncrements(this.props.match.params.towerId)
       .then(response => {
+        if (response.data.market === null) {
+          response.data.market = {
+            averagePrice: 0,
+            anualEffectiveIncrement: 0,
+          };
+        }
         this.setState({ incrementsSummary: response.data });
       });
   };

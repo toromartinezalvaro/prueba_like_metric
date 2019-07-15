@@ -28,3 +28,21 @@
   font-family: 'Didact Gothic';
 }
 
+.AccordionContainer {
+  box-sizing: border-box;
+  padding: 25px;
+  & .label {
+    font-weight: bold;
+  }
+
+  & .statContent {
+    display: flex;
+    margin-bottom: 5px;
+
+    & * {
+      width: 50%;
+      text-align: left;
+      flex-grow: 1;
+    }
+  }
+}

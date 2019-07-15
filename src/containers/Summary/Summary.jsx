@@ -164,7 +164,6 @@ class Summary extends Component {
               { title: 'Total', value: this.state.areas.sum },
             ]}
           />
-          {console.log(this.getData(this.state.areas, 'area'))}
           <SummaryTable
             title="Precio con adicionales"
             intersect="Precios"
