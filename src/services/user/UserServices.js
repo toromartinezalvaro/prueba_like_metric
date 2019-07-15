@@ -1,4 +1,5 @@
 import UserServiceDefinitions from './UserServiceDefinitions'
+import ProjectServiceDefinitions from '../Projects/ProjectServiceDefinitions'
 import agent from '../../config/config'
 import axios from 'axios'
 import Services from '../services'
@@ -45,6 +46,22 @@ export default class UserServices extends Services {
 
   childrenInfo() {
     return this.get(UserServiceDefinitions.childrenInfo)
+  }
+  
+  removeProjectForUser(data) {
+    return this.delete(ProjectServiceDefinitions.removeWithUser, data)
+  }
+  
+  addProjectToUser(data) {
+    return this.post(ProjectServiceDefinitions.addToUser, data)
+  }
+  
+  updatePassword(data) {
+    return this.put(UserServiceDefinitions.updatePassword, data)
+  }
+
+  updatePasswordFromAdmin(data) {
+    return this.put(UserServiceDefinitions.updatePasswordFromAdmin, data)
   }
 
 }

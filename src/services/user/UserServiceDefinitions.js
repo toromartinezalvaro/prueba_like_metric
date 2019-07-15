@@ -5,7 +5,9 @@ const UserServiceDefinitions = Object.freeze({
   signup: `${API_PATH}user`,
   user: `${API_PATH}user`,
   logout: `${API_PATH}user/logout`,
-  childrenInfo: `${API_PATH}user/allChildrenInfo`
+  childrenInfo: `${API_PATH}user/allChildrenInfo`,
+  updatePassword: `${API_PATH}user/updatePassword`,
+  updatePasswordFromAdmin: `${API_PATH}user/updatePasswordFromAdmin`,
 });
 
 export default UserServiceDefinitions

@@ -33,7 +33,7 @@ const ProjectList = props => {
 
   const handleTitleAction = (event, projectId) => {
     event.stopPropagation();
-    console.log("projectId ", projectId, props.currentUser.id)
+    props.removeOnClick(projectId, props.currentUser.id)
   };
 
   // const handleTowerAction = (event, towerId) => {

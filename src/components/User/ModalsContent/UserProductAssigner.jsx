@@ -16,9 +16,9 @@ const UserProductAssigner = props => {
       <select
         className={styles.Input}
         onChange={event => {
-          props.onChange({name: "currentProject" });
+          props.userOnChange({name: "currentProject", value: event.target.value });
         }}
-        value={props.currentProject}
+        value={props.currentProject.id}
       >
         {props.projects.map(optionForProject)}
       </select>
