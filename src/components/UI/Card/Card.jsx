@@ -1,18 +1,18 @@
-import React, { Fragment, useState, useEffect } from "react";
-import Loader from "react-loader-spinner";
-import commonStyles from "../../../assets/styles/variables.scss";
-import styles from "./Card.module.scss";
-import CardHeader from "./CardHeader/CardHeader";
-import CardBody from "./CardBody/CardBody";
-import CardFooter from "./CardFooter/CardFooter";
+import React, { Fragment, useState, useEffect } from 'react';
+import Loader from 'react-loader-spinner';
+import commonStyles from '../../../assets/styles/variables.scss';
+import styles from './Card.module.scss';
+import CardHeader from './CardHeader/CardHeader';
+import CardBody from './CardBody/CardBody';
+import CardFooter from './CardFooter/CardFooter';
 
-const Card = props => {
-  const [loading, setLoading] = useState(props.loading);
+const Card = ({ loading, children, style, ...rest }) => {
+  const [isLoading, setLoading] = useState(isLoading);
   useEffect(() => {
-    setLoading(props.loading);
-  }, [props.loading]);
+    setLoading(loading);
+  }, [isLoading]);
   return (
-    <div className={styles.Card} style={props.style}>
+    <div className={styles.Card} style={style} {...rest} >
       {loading ? (
         <div className={styles.Loader}>
           <Loader
@@ -23,7 +23,7 @@ const Card = props => {
           />
         </div>
       ) : (
-        props.children
+        children
       )}
     </div>
   );

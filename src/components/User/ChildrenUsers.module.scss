@@ -1,11 +1,8 @@
-@import "../../assets/styles/variables.scss";
+@import "../../assets/styles/variables.scss", "../UI/Card/Card.module.scss";
 
 .Container {
   display: flex;
   text-align: center;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
 
   label {
     color: $red-color;
@@ -13,9 +10,14 @@
 }
 
 .Input {
+  margin: 15px 30px;
   font-size: 30px;
 }
 
 .Button {
   margin-top: 10%;
+}
+
+.Title {
+  margin: 15px 30px;
 }

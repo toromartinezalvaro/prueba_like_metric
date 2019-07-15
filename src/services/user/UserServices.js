@@ -1,16 +1,15 @@
 import UserServiceDefinitions from './UserServiceDefinitions'
+import ProjectServiceDefinitions from '../Projects/ProjectServiceDefinitions'
 import agent from '../../config/config'
 import axios from 'axios'
+import Services from '../services'
 
 
-export default class UserServices {
+export default class UserServices extends Services {
 
-  constructor() {
+  constructor(delegate) {
+    super(delegate)
     agent.reloadHeaderToken()
-  }
-
-  devCatch(error) {
-    console.log('User --> ', error)
   }
 
   login(email, pass) {
@@ -18,7 +17,6 @@ export default class UserServices {
       axios
         .post(UserServiceDefinitions.login, { email: email, password: pass })
         .then(res => {
-          console.log("res--> ", res)
           if (res.status === 200) {
             agent.saveUser(res.data.user)
             resolve({
@@ -40,6 +38,30 @@ export default class UserServices {
 
   logout() {
     return axios.post(UserServiceDefinitions.logout)
+  }
+
+  signup(data) {
+    return this.post(UserServiceDefinitions.user, data)
+  }
+
+  childrenInfo() {
+    return this.get(UserServiceDefinitions.childrenInfo)
+  }
+  
+  removeProjectForUser(data) {
+    return this.delete(ProjectServiceDefinitions.removeWithUser, data)
+  }
+  
+  addProjectToUser(data) {
+    return this.post(ProjectServiceDefinitions.addToUser, data)
+  }
+  
+  updatePassword(data) {
+    return this.put(UserServiceDefinitions.updatePassword, data)
+  }
+
+  updatePasswordFromAdmin(data) {
+    return this.put(UserServiceDefinitions.updatePasswordFromAdmin, data)
   }
 
 }

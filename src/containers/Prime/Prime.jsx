@@ -78,6 +78,7 @@ class Prime extends Component {
           mask="currency"
            style={{ width: "75px" }}
           validations={[]}
+          zeroDefault={true}
           onChange={target => {
             this.priceHandler("ALT", prime.id, parseInt(target.value));
           }}

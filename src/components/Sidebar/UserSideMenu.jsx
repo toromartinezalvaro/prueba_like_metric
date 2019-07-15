@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardRoutes, UserRoutes } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
-import agent from '../../config/config'
-import { Role } from '../../helpers'
+import agent from '../../config/config';
+import { Role } from '../../helpers';
 
 const UserSideMenu = props => {
   const [user, setUser] = useState(agent.currentUser);
 
   useEffect(() => {
-    setUser(agent.currentUser)
+    setUser(agent.currentUser);
   });
 
   var itemForSidebar = (styles, route, iconName, description) => {
@@ -36,11 +36,18 @@ const UserSideMenu = props => {
           'fa-building',
           'Perfil',
         )}
-        {agent.isAuthorized([Role.Admin, Role.Super]) && itemForSidebar(
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSidebar(
+            style.MenuItem,
+            UserRoutes.base + UserRoutes.create,
+            'fa-building',
+            'Crear usuario',
+          )}
+        {itemForSidebar(
           style.MenuItem,
-          UserRoutes.base + UserRoutes.create,
+          UserRoutes.base + UserRoutes.assignProjects,
           'fa-building',
-          'Crear usuario'
+          'Admin usuarios',
         )}
       </div>
     </div>

@@ -8,7 +8,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => (
     {...rest}
     render={props => {
       const currentUser = agent.currentUser
-      console.log("authorized", currentUser)
+      // console.log("authorized", currentUser)
       if (!agent.currentToken || !currentUser) {
         return (
           <Redirect
@@ -21,7 +21,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => (
       }
 
       if (roles && !agent.isAuthorized(roles)) {
-        console.log("isAuthorized")
+        // console.log("isAuthorized")
         return <Redirect to={{ pathname: DashboardRoutes.base + ProjectRoutes.base }} />;
       }
 
