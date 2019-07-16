@@ -1,5 +1,5 @@
-import React, { Fragment, Component } from "react";
-import styles from "./Modal.module.scss";
+import React, { Fragment, Component } from 'react';
+import styles from './Modal.module.scss';
 
 class modal extends Component {
   constructor(props) {
@@ -8,7 +8,7 @@ class modal extends Component {
   }
   state = {
     blocked: false,
-    heightViewPort: window.innerHeight
+    heightViewPort: window.innerHeight,
   };
 
   componentDidUpdate() {
@@ -18,10 +18,10 @@ class modal extends Component {
   }
 
   performAction = action => {
-    if (action === "confirm") {
+    if (action === 'confirm') {
       this.setState({ blocked: true });
       this.props.onConfirm();
-    } else if (action === "cancel") {
+    } else if (action === 'cancel') {
       this.props.onCancel();
     }
   };
@@ -38,20 +38,24 @@ class modal extends Component {
               <div className={styles.Actions}>
                 <button
                   className={styles.ConfirmButton}
+                  style={{backgroundColor: this.props.rightColor}}
                   onClick={() => {
-                    this.performAction("confirm");
+                    this.performAction('confirm');
                   }}
                   disabled={this.state.blocked}
                 >
-                  Confirmar
+                  {this.props.rightButton
+                    ? this.props.rightButton
+                    : 'Confirmar'}
                 </button>
                 <button
                   className={styles.CancelButton}
+                  style={{backgroundColor: this.props.leftColor}}
                   onClick={() => {
-                    this.performAction("cancel");
+                    this.performAction('cancel');
                   }}
                 >
-                  Cancelar
+                  {this.props.leftButton ? this.props.leftButton : 'Cancelar'}
                 </button>
               </div>
             </div>

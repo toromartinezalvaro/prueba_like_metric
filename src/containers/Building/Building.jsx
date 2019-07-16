@@ -64,6 +64,7 @@ class Building extends Component {
     floors = _.defaultTo(floors, 0);
     totalProperties = _.defaultTo(totalProperties, 0);
     lowestFloor = _.defaultTo(lowestFloor, 0);
+    console.log("properties", properties)
     this.setState({
       floors: floors,
       properties: totalProperties,
@@ -225,6 +226,7 @@ class Building extends Component {
               names={this.state.names}
             />
           )}
+          {console.log("names", this.state.names)}
         </div>
         {this.state.showFloatingButton ? (
           <FloatingButton

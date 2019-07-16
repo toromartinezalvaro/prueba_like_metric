@@ -1,7 +1,8 @@
 import { API_PATH } from '../../config/config';
 
 const SalesRoomDefinitions = {
-  putState: `${API_PATH}salesRoom`
+  salesRoom: towerId => `${API_PATH}salesRoom/${towerId}`,
+  putState: towerId => `${API_PATH}salesRoom/putState/${towerId}`
 };
 
 export default SalesRoomDefinitions;

@@ -12,7 +12,8 @@ export const DashboardRoutes = {
   rackAreas: { value: '/rackAreas/' , withIndicator: '/rackAreas/:towerId' },
   clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' },
   increments: { value: '/increments/' , withIndicator: '/increments/:towerId' },
-  strategy: { value: '/strategy/' , withIndicator: '/strategy/:towerId' }
+  strategy: { value: '/strategy/' , withIndicator: '/strategy/:towerId' },
+  salesRoom: { value: '/salesRoom/' , withIndicator: '/salesRoom/:towerId' }
 }
 
 export const ProjectRoutes = {
