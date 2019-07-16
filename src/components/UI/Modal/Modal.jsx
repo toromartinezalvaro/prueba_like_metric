@@ -8,7 +8,7 @@ class modal extends Component {
   }
   state = {
     blocked: false,
-    heightViewPort: window.innerHeight,
+    heightViewPort: window.innerHeight
   };
 
   componentDidUpdate() {
@@ -23,7 +23,9 @@ class modal extends Component {
       this.props.onConfirm();
     } else if (action === 'cancel') {
       this.props.onCancel();
-    }
+    } else if (action === 'confirmLeft') {
+      this.props.onConfirmLeft();
+    } 
   };
 
   render() {
@@ -38,7 +40,7 @@ class modal extends Component {
               <div className={styles.Actions}>
                 <button
                   className={styles.ConfirmButton}
-                  style={{backgroundColor: this.props.rightColor}}
+                  style={{ backgroundColor: this.props.rightColor }}
                   onClick={() => {
                     this.performAction('confirm');
                   }}
@@ -48,14 +50,25 @@ class modal extends Component {
                     ? this.props.rightButton
                     : 'Confirmar'}
                 </button>
+                {this.props.leftButton ? (
+                  <button
+                    className={styles.ConfirmButton}
+                    style={{ backgroundColor: this.props.leftColor }}
+                    onClick={() => {
+                      this.performAction('confirmLeft');
+                    }}
+                    disabled={this.state.blocked}
+                  >
+                    {this.props.leftButton}
+                  </button>
+                ) : null}
                 <button
                   className={styles.CancelButton}
-                  style={{backgroundColor: this.props.leftColor}}
                   onClick={() => {
                     this.performAction('cancel');
                   }}
                 >
-                  {this.props.leftButton ? this.props.leftButton : 'Cancelar'}
+                  Cancelar
                 </button>
               </div>
             </div>

@@ -3,13 +3,15 @@ import SalesRoomService from '../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
   CardBody,
-  CardFooter,
+  CardFooter
 } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Modal from '../../components/UI/Modal/Modal';
 import _ from 'lodash';
 import variables from '../../assets/styles/variables.scss';
 import NumberFormat from 'react-number-format';
+import Loader from 'react-loader-spinner';
+import Button from '../../components/UI/Button/Button';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -18,15 +20,17 @@ export default class Detail extends Component {
   }
 
   state = {
+    response: {},
     properties: 1,
     floors: 1,
     lowestFloor: 1,
     data: [[]],
     isHidden: true,
+    isLoading: false,
     rightButton: {},
     leftButton: {},
     id: 0,
-    priceSold: 0,
+    priceSold: 0
   };
   componentDidMount() {
     this.services
@@ -36,7 +40,7 @@ export default class Detail extends Component {
       });
   }
 
-  makeArrayOfProperties(properties) {
+  makeArrayOfProperties(properties, active) {
     const data = properties.data;
     let arrayOfNulls = [];
     for (let i = 0; i < data.floors; i++) {
@@ -60,7 +64,7 @@ export default class Detail extends Component {
           backgroundColor = variables.mainColor;
           rightButton = {
             label: 'Opcionado',
-            color: variables.yellowColor,
+            color: variables.yellowColor
           };
           leftButton = { label: 'Disponible', color: variables.greenColor };
         }
@@ -69,7 +73,7 @@ export default class Detail extends Component {
             style={{
               backgroundColor: backgroundColor,
               padding: '0.01em',
-              textAlign: 'center',
+              textAlign: 'center'
             }}
             onClick={() => {
               this.setState({
@@ -77,19 +81,21 @@ export default class Detail extends Component {
                 isHidden: false,
                 rightButton: rightButton,
                 leftButton: leftButton,
-                priceSold: property.price,
+                priceSold: property.price
               });
             }}
           >
-            <p style={{ fontWeight: 'bold', color: "White" }}>
-              {
+            <p style={{ fontWeight: 'bold', color: 'White' }}>
+              {active === 'mts2' ? (
+                property.mts2
+              ) : (
                 <NumberFormat
                   value={parseFloat(property.price).toFixed(2)}
                   displayType={'text'}
                   thousandSeparator={true}
                   prefix={'$'}
                 />
-              }
+              )}
             </p>
           </div>
         );
@@ -97,14 +103,16 @@ export default class Detail extends Component {
       });
     });
     this.setState({
+      response: properties,
       properties: data.totalProperties,
       floors: data.floors,
       lowestFloor: data.lowestFloor,
-      data: arrayOfNulls,
+      data: arrayOfNulls
     });
   }
 
   save = () => {
+    this.setState({ isLoading: true });
     this.services
       .putState(
         {
@@ -116,9 +124,11 @@ export default class Detail extends Component {
               ? 'OPTIONAL'
               : 'SOLD',
           priceSold:
-            this.state.rightButton.label !== 'Disponible' ? this.state.priceSold : null,
+            this.state.rightButton.label !== 'Disponible'
+              ? this.state.priceSold
+              : null
         },
-        this.props.match.params.towerId,
+        this.props.match.params.towerId
       )
       .then(properties => {
         if (properties) {
@@ -126,13 +136,18 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
+          isLoading: false
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        this.setState({ isLoading: false });
+      });
     return true;
   };
 
-  cancel = () => {
+  saveLeft = () => {
+    this.setState({ isLoading: true });
     this.services
       .putState(
         {
@@ -144,9 +159,11 @@ export default class Detail extends Component {
               ? 'OPTIONAL'
               : 'SOLD',
           priceSold:
-            this.state.leftButton.label !== 'Disponible' ? this.state.priceSold : null,
+            this.state.leftButton.label !== 'Disponible'
+              ? this.state.priceSold
+              : null
         },
-        this.props.match.params.towerId,
+        this.props.match.params.towerId
       )
       .then(properties => {
         if (properties) {
@@ -154,47 +171,121 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
+          isLoading: false
         });
         console.log(properties);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        this.setState({ isLoading: false });
+      });
     return true;
+  };
+
+  cancel = () => {
+    this.setState({ isHidden: true });
   };
 
   render() {
     return (
-      <Card>
-        <CardHeader>
-          <p>Propiedades</p>
-        </CardHeader>
-        <CardBody>
-          <div>
-            <Table
-              intersect="Propiedades"
-              headers={[...Array(this.state.properties).keys()].map(o => o + 1)}
-              columns={[...Array(this.state.floors).keys()].map(
-                o => o + this.state.lowestFloor,
-              )}
-              data={this.state.data}
-            />
-          </div>
-        </CardBody>
-        <CardFooter />
-        {this.state.isHidden ? null : (
-          <Modal
-            title={'Nuevo Estado'}
-            hidden={this.props.isHidden}
-            onConfirm={this.save}
-            onCancel={this.cancel}
-            rightButton={this.state.rightButton.label}
-            leftButton={this.state.leftButton.label}
-            rightColor={this.state.rightButton.color}
-            leftColor={this.state.leftButton.color}
-          >
-            Desea cambiar el estado?
-          </Modal>
-        )}
-      </Card>
+      <div>
+        <Card>
+          <CardHeader>
+            <p>Propiedades</p>
+          </CardHeader>
+          <CardBody>
+            <div>
+              <Button
+                onClick={() => {
+                  this.makeArrayOfProperties(this.state.response, 'price');
+                }}
+              >
+                Precio
+              </Button>
+              <Button
+                onClick={() => {
+                  this.makeArrayOfProperties(this.state.response, 'mts2');
+                }}
+              >
+                Mt2
+              </Button>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div
+                style={{
+                  backgroundColor: variables.greenColor,
+                  width: '16px',
+                  height: '16px',
+                  marginRight: '4px'
+                }}
+              />
+              <div style={{ fontSize: '14px', marginRight: '14px' }}>
+                Disponible
+              </div>
+              <div
+                style={{
+                  backgroundColor: variables.yellowColor,
+                  width: '16px',
+                  height: '16px',
+                  marginRight: '4px'
+                }}
+              />
+              <div style={{ fontSize: '14px', marginRight: '14px' }}>
+                Opcionado
+              </div>
+              <div
+                style={{
+                  backgroundColor: variables.mainColor,
+                  width: '16px',
+                  height: '16px',
+                  marginRight: '4px'
+                }}
+              />
+              <div style={{ fontSize: '14px', marginRight: '14px' }}>
+                Vendido
+              </div>
+            </div>
+            <div>
+              <Table
+                intersect="Propiedades"
+                headers={[...Array(this.state.properties).keys()].map(
+                  o => o + 1
+                )}
+                columns={[...Array(this.state.floors).keys()].map(
+                  o => o + this.state.lowestFloor
+                )}
+                data={this.state.data}
+              />
+            </div>
+          </CardBody>
+          <CardFooter />
+          {this.state.isHidden ? null : (
+            <Modal
+              title={'Nuevo Estado'}
+              hidden={this.props.isHidden}
+              onConfirm={this.save}
+              onConfirmLeft={this.saveLeft}
+              onCancel={this.cancel}
+              rightButton={this.state.rightButton.label}
+              leftButton={this.state.leftButton.label}
+              rightColor={this.state.rightButton.color}
+              leftColor={this.state.leftButton.color}
+            >
+              Desea cambiar el estado?
+              {this.state.isLoading ? (
+                <div style={{ justifyContent: 'center', display: 'flex' }}>
+                  <Loader
+                    type="ThreeDots"
+                    color={variables.mainColor}
+                    height="100"
+                    width="100"
+                  />
+                </div>
+              ) : null}
+            </Modal>
+          )}
+        </Card>
+      </div>
     );
   }
 }
