@@ -1,18 +1,23 @@
 import React, { Fragment, Component } from 'react';
 import styles from './Modal.module.scss';
 
-class modal extends Component {
+class Modal extends Component {
   constructor(props) {
     super(props);
     this.divModal = React.createRef();
+
   }
   state = {
     blocked: false,
     heightViewPort: window.innerHeight
   };
 
+  componentWillReceiveProps(nextProps) {
+    //I know this is an antipater but meanwhile let's use derived data, i will solve this
+    this.setState({blocked: nextProps.blocked})
+  }
+  
   componentDidUpdate() {
-    console.log(this.divModal);
     if (this.state.heightModal !== this.divModal.current) {
     }
   }
@@ -79,4 +84,4 @@ class modal extends Component {
   }
 }
 
-export default modal;
+export default Modal;

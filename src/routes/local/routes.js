@@ -24,5 +24,6 @@ export const UserRoutes = {
   base: DashboardRoutes.base + DashboardRoutes.user,
   login: '/login',
   profile: '/profile',
-  create: '/create'
+  create: '/create',
+  assignProjects: '/assignProjects'
 }

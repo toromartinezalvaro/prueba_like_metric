@@ -371,6 +371,7 @@ class Area extends Component {
               message: 'No puede estar vacío',
             },
           ]}
+          zeroDefault={true}
           onChange={target => {
             this.areaChangeHandler(rowIndex, cellIndex, target.value, e2.type);
           }}
