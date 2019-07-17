@@ -3,7 +3,7 @@ import SalesRoomService from '../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
   CardBody,
-  CardFooter
+  CardFooter,
 } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Modal from '../../components/UI/Modal/Modal';
@@ -30,7 +30,7 @@ export default class Detail extends Component {
     rightButton: {},
     leftButton: {},
     id: 0,
-    priceSold: 0
+    priceSold: 0,
   };
   componentDidMount() {
     this.services
@@ -39,6 +39,67 @@ export default class Detail extends Component {
         this.makeArrayOfProperties(properties);
       });
   }
+
+  buttonsStyles(status) {
+    let backgroundColor;
+    let rightButton;
+    let leftButton;
+    if (status === 'AVAILABLE') {
+      backgroundColor = variables.greenColor;
+      rightButton = { label: 'Vendido', color: variables.mainColor };
+      leftButton = { label: 'Opcionado', color: variables.yellowColor };
+    } else if (status === 'OPTIONAL') {
+      backgroundColor = variables.yellowColor;
+      rightButton = { label: 'Vendido', color: variables.mainColor };
+      leftButton = { label: 'Disponible', color: variables.greenColor };
+    } else {
+      backgroundColor = variables.mainColor;
+      rightButton = {
+        label: 'Opcionado',
+        color: variables.yellowColor,
+      };
+      leftButton = { label: 'Disponible', color: variables.greenColor };
+    }
+    return {
+      backgroundColor,
+      rightButton,
+      leftButton,
+    };
+  }
+
+  onClickSelector = (property, buttons) => {
+    this.setState({
+      id: property.id,
+      isHidden: false,
+      rightButton: buttons.rightButton,
+      leftButton: buttons.leftButton,
+      priceSold: property.price,
+    });
+  }
+
+  makeCells = (buttons, property, active) => (
+    <div
+      style={{
+        backgroundColor: buttons.backgroundColor,
+        padding: '0.01em',
+        textAlign: 'center',
+      }}
+      onClick={() => this.onClickSelector(property, buttons)}
+    >
+      <p style={{ fontWeight: 'bold', color: 'White' }}>
+        {active === 'mts2' ? (
+          property.mts2
+        ) : (
+          <NumberFormat
+            value={parseFloat(property.price).toFixed(2)}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+        )}
+      </p>
+    </div>
+  );
 
   makeArrayOfProperties(properties, active) {
     const data = properties.data;
@@ -49,55 +110,11 @@ export default class Detail extends Component {
     data.properties.map(properties => {
       properties.map(property => {
         let floor = arrayOfNulls[property.floor - data.lowestFloor];
-        let backgroundColor;
-        let rightButton;
-        let leftButton;
-        if (property.status === 'AVAILABLE') {
-          backgroundColor = variables.greenColor;
-          rightButton = { label: 'Vendido', color: variables.mainColor };
-          leftButton = { label: 'Opcionado', color: variables.yellowColor };
-        } else if (property.status === 'OPTIONAL') {
-          backgroundColor = variables.yellowColor;
-          rightButton = { label: 'Vendido', color: variables.mainColor };
-          leftButton = { label: 'Disponible', color: variables.greenColor };
-        } else {
-          backgroundColor = variables.mainColor;
-          rightButton = {
-            label: 'Opcionado',
-            color: variables.yellowColor
-          };
-          leftButton = { label: 'Disponible', color: variables.greenColor };
-        }
-        floor[property.location - 1] = (
-          <div
-            style={{
-              backgroundColor: backgroundColor,
-              padding: '0.01em',
-              textAlign: 'center'
-            }}
-            onClick={() => {
-              this.setState({
-                id: property.id,
-                isHidden: false,
-                rightButton: rightButton,
-                leftButton: leftButton,
-                priceSold: property.price
-              });
-            }}
-          >
-            <p style={{ fontWeight: 'bold', color: 'White' }}>
-              {active === 'mts2' ? (
-                property.mts2
-              ) : (
-                <NumberFormat
-                  value={parseFloat(property.price).toFixed(2)}
-                  displayType={'text'}
-                  thousandSeparator={true}
-                  prefix={'$'}
-                />
-              )}
-            </p>
-          </div>
+        const buttons = this.buttonsStyles(property.status);
+        floor[property.location - 1] = this.makeCells(
+          buttons,
+          property,
+          active,
         );
         arrayOfNulls[property.floor - data.lowestFloor] = floor;
       });
@@ -107,7 +124,7 @@ export default class Detail extends Component {
       properties: data.totalProperties,
       floors: data.floors,
       lowestFloor: data.lowestFloor,
-      data: arrayOfNulls
+      data: arrayOfNulls,
     });
   }
 
@@ -126,9 +143,9 @@ export default class Detail extends Component {
           priceSold:
             this.state.rightButton.label !== 'Disponible'
               ? this.state.priceSold
-              : null
+              : null,
         },
-        this.props.match.params.towerId
+        this.props.match.params.towerId,
       )
       .then(properties => {
         if (properties) {
@@ -136,7 +153,7 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
-          isLoading: false
+          isLoading: false,
         });
       })
       .catch(err => {
@@ -161,9 +178,9 @@ export default class Detail extends Component {
           priceSold:
             this.state.leftButton.label !== 'Disponible'
               ? this.state.priceSold
-              : null
+              : null,
         },
-        this.props.match.params.towerId
+        this.props.match.params.towerId,
       )
       .then(properties => {
         if (properties) {
@@ -171,9 +188,8 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
-          isLoading: false
+          isLoading: false,
         });
-        console.log(properties);
       })
       .catch(err => {
         console.log(err);
@@ -216,7 +232,7 @@ export default class Detail extends Component {
                   backgroundColor: variables.greenColor,
                   width: '16px',
                   height: '16px',
-                  marginRight: '4px'
+                  marginRight: '4px',
                 }}
               />
               <div style={{ fontSize: '14px', marginRight: '14px' }}>
@@ -227,7 +243,7 @@ export default class Detail extends Component {
                   backgroundColor: variables.yellowColor,
                   width: '16px',
                   height: '16px',
-                  marginRight: '4px'
+                  marginRight: '4px',
                 }}
               />
               <div style={{ fontSize: '14px', marginRight: '14px' }}>
@@ -238,7 +254,7 @@ export default class Detail extends Component {
                   backgroundColor: variables.mainColor,
                   width: '16px',
                   height: '16px',
-                  marginRight: '4px'
+                  marginRight: '4px',
                 }}
               />
               <div style={{ fontSize: '14px', marginRight: '14px' }}>
@@ -249,10 +265,10 @@ export default class Detail extends Component {
               <Table
                 intersect="Propiedades"
                 headers={[...Array(this.state.properties).keys()].map(
-                  o => o + 1
+                  o => o + 1,
                 )}
                 columns={[...Array(this.state.floors).keys()].map(
-                  o => o + this.state.lowestFloor
+                  o => o + this.state.lowestFloor,
                 )}
                 data={this.state.data}
               />
