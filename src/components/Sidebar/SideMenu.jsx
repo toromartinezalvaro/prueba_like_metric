@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { DashboardRoutes } from "../../routes/local/routes";
-import style from "./SideMenu.module.scss";
-import Icon from "../../assets/icons/Icon";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { DashboardRoutes } from '../../routes/local/routes';
+import style from './SideMenu.module.scss';
+import Icon from '../../assets/icons/Icon';
 
 const sideMenu = props => {
   var itemForSlidebar = (styles, route, iconName, description) => {
@@ -24,73 +24,79 @@ const sideMenu = props => {
     <div
       className={
         style.SideMenu +
-        " " +
+        ' ' +
         `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}`
       }
     >
       <div>
-        <label>{props.tower ? props.tower.name : ""}</label>
+        <label>{props.tower ? props.tower.name : ''}</label>
       </div>
       <div className={style.IconsContainer}>
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.building.value,
-          "fa-building",
-          "Esquema"
+          'fa-building',
+          'Esquema',
         )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.areas.value,
-          "fa-layer-group",
-          "Areas"
+          'fa-layer-group',
+          'Areas',
         )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.prime.value,
-          "fa-sort-amount-up",
-          "Primas"
+          'fa-sort-amount-up',
+          'Primas',
         )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.summary.value,
-          "fa-list-ol",
-          "Resumen"
+          'fa-list-ol',
+          'Resumen',
         )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.rackAreas.value,
-          "fas fa-ruler",
-          "Resumen Areas"
+          'fas fa-ruler',
+          'Resumen Areas',
         )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
-          "fas fa-book-open",
-          "Detalle Admin"
+          'fas fa-book-open',
+          'Detalle Admin',
         )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.detail.value,
-          "fas fa-book-open",
-          "Detalle User"
+          'fas fa-book-open',
+          'Detalle User',
         )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.clustering.value,
-          "fas fa-object-group",
-          "Agrupamiento"
+          'fas fa-object-group',
+          'Agrupamiento',
         )}
-         {itemForSlidebar(
+        {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.increments.value,
-          "fas fa-angle-double-up",
-          "Incrementos"
-        )}  
+          'fas fa-angle-double-up',
+          'Incrementos',
+        )}
         {itemForSlidebar(
           style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.strategy.value,
-          "fas fa-chart-line",
-          "Estrategia"
+          'fas fa-chart-line',
+          'Estrategia',
+        )}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.salesRoom.value,
+          'fas fa-dollar-sign',
+          'Sala de Ventas',
         )}
       </div>
     </div>
