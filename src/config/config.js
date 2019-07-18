@@ -85,6 +85,6 @@ class Agent {
 //   process.env.NODE_ENV === 'production'
 //     ? 'https://pefpiapis.herokuapp.com/api/'
 //     : 'http://localhost:1337/api/';
-console.log("config.serverUrl ", config.serverUrl)
+console.log("config.serverUrl ", config.serverUrl, process.env.NODE_ENV)
 export const API_PATH = config.serverUrl
 export default new Agent();
