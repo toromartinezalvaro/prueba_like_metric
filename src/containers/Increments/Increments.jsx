@@ -18,9 +18,13 @@ class Increments extends Component {
       salesStartDate: new Date().getTime(),
     },
     increments: [],
+    isLoading: false,
+    isLoadingIncrements: false,
+    isEmpty: false,
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then(response => {
@@ -30,9 +34,13 @@ class Increments extends Component {
             anualEffectiveIncrement: 0,
           };
         }
-        this.setState({ incrementsSummary: response.data });
+        this.setState({
+          incrementsSummary: response.data,
+          isLoading: false,
+        });
       })
       .catch(error => {
+        this.setState({ isLoading: false });
         console.error(error);
       });
   }
@@ -55,6 +63,7 @@ class Increments extends Component {
   };
 
   getIncrements = () => {
+    this.setState({ isLoadingIncrements: true });
     this.services
       .getIncrements(this.props.match.params.towerId)
       .then(response => {
@@ -64,8 +73,15 @@ class Increments extends Component {
             anualEffectiveIncrement: 0,
           };
         }
-        this.setState({ incrementsSummary: response.data });
-      });
+        this.setState({
+          incrementsSummary: response.data,
+          isLoadingIncrements: false,
+          isEmpty: false,
+        });
+      })
+      .catch(err =>
+        this.setState({ isLoadingIncrements: false, isEmpty: true }),
+      );
   };
 
   putIncrement = (id, increment) => {
@@ -127,6 +143,8 @@ class Increments extends Component {
           salesSpeedsHandler={this.salesSpeedsHandler}
           anualEffectiveIncrementsHandler={this.anualEffectiveIncrementsHandler}
           incrementsHandler={this.putIncrement}
+          isLoadingIncrement={this.state.isLoadingIncrements}
+          isEmpty={this.state.isEmpty}
         />
         <IncrementsMarket
           putMarketAveragePrice={this.putMarketAveragePrice}
