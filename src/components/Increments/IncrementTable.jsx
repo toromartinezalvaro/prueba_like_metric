@@ -1,26 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NumberFormat from 'react-number-format';
 import Card, { CardHeader, CardBody, CardFooter } from '../UI/Card/Card';
 import Accordion from '../UI/Accordion/Accordion';
 import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 import styles from './IncrementTable.module.scss';
+import Loader from 'react-loader-spinner';
+import variables from '../../assets/styles/variables.scss';
 
-const incrementTable = ({
+let arrayOfIncrements = [];
+
+const IncrementTable = ({
   data,
   salesSpeedsHandler,
   anualEffectiveIncrementsHandler,
   getIncrements,
   incrementsHandler,
+  isLoadingIncrement,
+  isEmpty,
   ...rest
 }) => {
+  const [validation, setValidation] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
+  if (arrayOfIncrements.length === 0)
+    arrayOfIncrements = data.map(increment => [
+      increment.salesSpeed,
+      increment.anualEffectiveIncrement,
+    ]);
   return (
     <Card>
       <CardHeader>
         <span>Incrementos</span>
       </CardHeader>
       <CardBody>
-        {data.map(increment => {
+        {data.map((increment, i) => {
           return (
             <Accordion trigger={increment.name}>
               <div className={styles.AccordionContainer}>
@@ -63,9 +76,14 @@ const incrementTable = ({
                   <div>
                     <Input
                       style={{ width: '50px' }}
-                      validations={[]}
+                      validations={inputValidation(increment.units)}
                       onChange={target => {
                         salesSpeedsHandler(increment.id, target.value);
+                        arrayOfIncrements[i][0] = target.value;
+                        setValidation(
+                          arrayOfIncrements.find(
+                            increment => increment[0] === null || increment[1] === null,
+                          ))
                       }}
                       value={
                         increment.salesSpeed === null
@@ -89,6 +107,11 @@ const incrementTable = ({
                           increment.id,
                           parseFloat(target.value) / 100,
                         );
+                        arrayOfIncrements[i][1] = target.value;
+                        setValidation(
+                          arrayOfIncrements.find(
+                            increment => increment[0] === null || increment[1] === null,
+                          ))
                       }}
                       value={
                         increment.anualEffectiveIncrement === null
@@ -326,12 +349,56 @@ const incrementTable = ({
                   </div> */}
       </CardBody>
       <CardFooter>
+        {validation && isClicked ? (
+          <div
+            style={{ display: 'flex', justifyContent: 'center', color: 'red' }}
+          >
+            <p>
+              Debe ingresar todos los campos para poder realizar el incremento
+            </p>
+          </div>
+        ) : null}
         <div className={styles.ActionContainer}>
-          <Button onClick={getIncrements}>Calcular incrementos</Button>
+          <div style={{ width: '20%' }} />
+          {isLoadingIncrement ? (
+            <Loader
+              type="ThreeDots"
+              color={variables.mainColor}
+              height="50"
+              width="50"
+            />
+          ) : null}
+          <div
+            onClick={() => {
+              /* setValidation(
+                arrayOfIncrements.find(
+                  increment => increment[0] === null || increment[1] === null,
+                ),
+              ); */
+              setIsClicked(true);
+            }}
+          >
+            <div className={styles.Button}>
+              {validation ? (
+                <Button>Calcular incrementos</Button>
+              ) : (
+                <Button onClick={getIncrements}>Calcular incrementos</Button>
+              )}
+            </div>
+          </div>
         </div>
       </CardFooter>
     </Card>
   );
 };
 
-export default incrementTable;
+const inputValidation = units => [
+  {
+    fn: value => {
+      return value <= units;
+    },
+    message: 'Debe ser menor a las unidades',
+  },
+];
+
+export default IncrementTable;

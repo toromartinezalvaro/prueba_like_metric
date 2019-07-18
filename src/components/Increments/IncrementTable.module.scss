@@ -1,6 +1,8 @@
 .ActionContainer {
   display: flex;
-  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 36px;
 }
 
 .Content {
@@ -45,4 +47,8 @@
       flex-grow: 1;
     }
   }
+}
+
+.Button {
+  flex-direction: row-reverse;
 }
