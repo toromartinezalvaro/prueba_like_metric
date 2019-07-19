@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import styles from "./Input.module.scss";
-import NumberFormat from "react-number-format";
-import ReactTooltip from "react-tooltip";
+import React, { useState } from 'react';
+import styles from './Input.module.scss';
+import NumberFormat from 'react-number-format';
+import ReactTooltip from 'react-tooltip';
 
 const Input = props => {
   const errorStyle = {
-    borderBottomColor: "#FF4040"
+    borderBottomColor: '#FF4040',
   };
 
   const [clearValue, setClearValue] = useState(props.clearValue);
   const [dirty, setDirty] = useState(false);
   const [localValue, setLocalValue] = useState();
-  const [errorMessages, setErrorMessages] = useState("");
+  const [errorMessages, setErrorMessages] = useState('');
   const [valid, setValid] = useState(true);
 
   const validation = value => {
-    setErrorMessages("");
+    setErrorMessages('');
     return props.validations.reduce((current, next) => {
       const val = next.fn(cleanValue(value));
       if (!val) {
@@ -37,14 +37,14 @@ const Input = props => {
 
   const syncValues = () => {
     if (valid) {
-      if (dirty && props.zeroDefault && localValue === "") {
-        setLocalValue("0");
+      if (dirty && props.zeroDefault && localValue === '') {
+        setLocalValue('0');
       }
       let value = localValue === undefined ? props.value : localValue;
-      if (value !== props.value) {
+      if (value !== props.value && !props.forceUpdate) {
         props.onChange({
-          name: props.name === undefined ? "" : props.name,
-          value: cleanValue(value)
+          name: props.name === undefined ? '' : props.name,
+          value: cleanValue(value),
         });
       }
       if (clearValue) {
@@ -56,30 +56,30 @@ const Input = props => {
   };
 
   const cleanNumberMask = value => {
-    return value ? value.toString().replace(/,/g, "") : "";
+    return value ? value.toString().replace(/,/g, '') : '';
   };
 
   const cleanCurrencyMask = value => {
-    return cleanNumberMask(value).replace("$", "");
+    return cleanNumberMask(value).replace('$', '');
   };
 
   const cleanPercentageMask = value => {
-    return cleanNumberMask(value).replace("%", "");
+    return cleanNumberMask(value).replace('%', '');
   };
 
   const handleFocus = event => {
     if (localValue == 0 || (localValue === undefined && props.value == 0)) {
       setDirty(true);
-      setLocalValue("");
+      setLocalValue('');
     }
   };
 
   const cleanValue = value => {
-    if (props.mask === "number") {
+    if (props.mask === 'number') {
       return cleanNumberMask(value);
-    } else if (props.mask === "currency") {
+    } else if (props.mask === 'currency') {
       return cleanCurrencyMask(value);
-    } else if (props.mask === "percentage") {
+    } else if (props.mask === 'percentage') {
       return cleanPercentageMask(value);
     } else {
       return value;
@@ -98,16 +98,16 @@ const Input = props => {
 
   return (
     <div className={styles.Container}>
-      {props.mask === "currency" ||
-      props.mask === "number" ||
-      props.mask === "percentage" ? (
+      {props.mask === 'currency' ||
+      props.mask === 'number' ||
+      props.mask === 'percentage' ? (
         <NumberFormat
           data-tip={props.tooltip}
           thousandSeparator={true}
-          prefix={props.mask === "currency" ? "$" : ""}
-          suffix={props.mask === "percentage" ? "%" : ""}
+          prefix={props.mask === 'currency' ? '$' : ''}
+          suffix={props.mask === 'percentage' ? '%' : ''}
           name={props.name}
-          type={props.type === undefined ? "text" : props.type}
+          type={props.type === undefined ? 'text' : props.type}
           style={
             !valid && localValue !== undefined
               ? { ...errorStyle, ...props.style }
@@ -128,7 +128,7 @@ const Input = props => {
         <input
           data-tip={props.tooltip}
           name={props.name}
-          type={props.type === undefined ? "text" : props.type}
+          type={props.type === undefined ? 'text' : props.type}
           style={
             !valid && localValue !== undefined
               ? { ...errorStyle, ...props.style }
@@ -137,6 +137,12 @@ const Input = props => {
           className={`${styles.Input} ${props.className}`}
           onChange={event => {
             localValueHandler(event.target.value);
+            if (props.forceUpdate)  {
+              props.onChange({
+                name: props.name === undefined ? '' : props.name,
+                value: cleanValue(event.target.value),
+              });
+            }
           }}
           onFocus={handleFocus}
           onBlur={syncValues}

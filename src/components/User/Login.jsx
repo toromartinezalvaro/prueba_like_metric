@@ -40,6 +40,7 @@ const login = props => {
                 validations={emailValidation}
                 disable={false}
                 placeholder={'Correo'}
+                forceUpdate={true}
               />
             </div>
             <div className={styles.Row}>
@@ -52,6 +53,7 @@ const login = props => {
                 validations={[]}
                 disable={false}
                 placeholder={'Contraseña'}
+                forceUpdate={true}
               />
 
               <div

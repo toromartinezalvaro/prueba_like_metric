@@ -3,7 +3,7 @@ import SalesRoomService from '../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
   CardBody,
-  CardFooter
+  CardFooter,
 } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Modal from '../../components/UI/Modal/Modal';
@@ -32,17 +32,20 @@ export default class Detail extends Component {
     rightButton: {},
     leftButton: {},
     id: 0,
-    priceSold: 0
+    priceSold: 0,
   };
   componentDidMount() {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true });
     this.services
       .getProperties(this.props.match.params.towerId)
       .then(properties => {
         this.makeArrayOfProperties(properties);
-        this.setState({isLoading: false})
+        this.setState({ isLoading: false });
       })
-      .catch(err => {console.log(err); this.setState({isLoading: false})})
+      .catch(err => {
+        console.log(err);
+        this.setState({ isLoading: false });
+      });
   }
 
   buttonsStyles(status) {
@@ -61,7 +64,7 @@ export default class Detail extends Component {
       backgroundColor = variables.mainColor;
       rightButton = {
         label: 'Opcionado',
-        color: variables.yellowColor
+        color: variables.yellowColor,
       };
       leftButton = { label: 'Disponible', color: variables.greenColor };
     }
@@ -69,7 +72,7 @@ export default class Detail extends Component {
     return {
       backgroundColor,
       rightButton,
-      leftButton
+      leftButton,
     };
   }
 
@@ -79,7 +82,7 @@ export default class Detail extends Component {
       isHidden: false,
       rightButton: buttons.rightButton,
       leftButton: buttons.leftButton,
-      priceSold: property.price
+      priceSold: property.price,
     });
   };
 
@@ -88,7 +91,7 @@ export default class Detail extends Component {
       style={{
         backgroundColor: buttons.backgroundColor,
         padding: '0.01em',
-        textAlign: 'center'
+        textAlign: 'center',
       }}
       onClick={() => this.onClickSelector(property, buttons)}
     >
@@ -110,31 +113,33 @@ export default class Detail extends Component {
   makeArrayOfProperties(properties, active) {
     const data = properties.data;
     let arrayOfNulls = [];
-    for (let i = 0; i < data.floors; i++) {
-      arrayOfNulls.push([]);
-    }
-    data.properties.map(properties => {
-      properties.map(property => {
-        let floor = arrayOfNulls[property.floor - data.lowestFloor];
-        console.log(property.status);
+    if (data !== undefined) {
+      for (let i = 0; i < data.floors; i++) {
+        arrayOfNulls.push([]);
+      }
+      data.properties.map(properties => {
+        properties.map(property => {
+          let floor = arrayOfNulls[property.floor - data.lowestFloor];
+          console.log(property.status);
 
-        const buttons = this.buttonsStyles(property.status);
+          const buttons = this.buttonsStyles(property.status);
 
-        floor[property.location - 1] = this.makeCells(
-          buttons,
-          property,
-          active
-        );
-        arrayOfNulls[property.floor - data.lowestFloor] = floor;
+          floor[property.location - 1] = this.makeCells(
+            buttons,
+            property,
+            active,
+          );
+          arrayOfNulls[property.floor - data.lowestFloor] = floor;
+        });
       });
-    });
-    this.setState({
-      response: properties,
-      properties: data.totalProperties,
-      floors: data.floors,
-      lowestFloor: data.lowestFloor,
-      data: arrayOfNulls
-    });
+      this.setState({
+        response: properties,
+        properties: data.totalProperties,
+        floors: data.floors,
+        lowestFloor: data.lowestFloor,
+        data: arrayOfNulls,
+      });
+    }
   }
 
   save = () => {
@@ -152,9 +157,9 @@ export default class Detail extends Component {
           priceSold:
             this.state.rightButton.label !== 'Disponible'
               ? this.state.priceSold
-              : null
+              : null,
         },
-        this.props.match.params.towerId
+        this.props.match.params.towerId,
       )
       .then(properties => {
         if (properties) {
@@ -162,7 +167,7 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
-          isLoading: false
+          isLoading: false,
         });
       })
       .catch(err => {
@@ -187,9 +192,9 @@ export default class Detail extends Component {
           priceSold:
             this.state.leftButton.label !== 'Disponible'
               ? this.state.priceSold
-              : null
+              : null,
         },
-        this.props.match.params.towerId
+        this.props.match.params.towerId,
       )
       .then(properties => {
         if (properties) {
@@ -197,7 +202,7 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
-          isLoading: false
+          isLoading: false,
         });
       })
       .catch(err => {
