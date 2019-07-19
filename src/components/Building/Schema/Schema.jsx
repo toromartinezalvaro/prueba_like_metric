@@ -82,7 +82,7 @@ const Schema = props => {
           </div>
           <div>
             <p className={styles.Label}>Estrato:</p>
-            <select
+            {/* <select
               value={props.stratum}
               onChange={event => {
                 props.updateStratum(event.target.value);
@@ -91,7 +91,7 @@ const Schema = props => {
               {Object.entries(props.stratums).map(([key, value]) => {
                 return <option value={value.code}>{value.value}</option>;
               })}
-            </select>
+            </select> */}
           </div>
         </div>
       </CardBody>

@@ -119,6 +119,7 @@ const Input = props => {
           }}
           onFocus={handleFocus}
           onBlur={syncValues}
+          onKeyDown={props.onKeyDown}
           value={localValue === undefined ? props.value : localValue}
           disabled={props.disable}
           placeholder={props.placeholder}
@@ -139,6 +140,7 @@ const Input = props => {
           }}
           onFocus={handleFocus}
           onBlur={syncValues}
+          onKeyDown={props.onKeyDown}
           value={localValue === undefined ? props.value : localValue}
           disabled={props.disable}
           placeholder={props.placeholder}

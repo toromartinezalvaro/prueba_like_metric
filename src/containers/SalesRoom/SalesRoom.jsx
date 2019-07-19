@@ -3,7 +3,7 @@ import SalesRoomService from '../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
   CardBody,
-  CardFooter,
+  CardFooter
 } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Modal from '../../components/UI/Modal/Modal';
@@ -11,12 +11,14 @@ import _ from 'lodash';
 import variables from '../../assets/styles/variables.scss';
 import NumberFormat from 'react-number-format';
 import Loader from 'react-loader-spinner';
-import Button from '../../components/UI/Button/Button';
+import Selectors from '../../components/SalesRoom/Selectors';
+import PropertiesTable from '../../components/SalesRoom/PropertiesTable';
 
 export default class Detail extends Component {
   constructor(props) {
     super(props);
     this.services = new SalesRoomService(this);
+    this.makeArrayOfProperties = this.makeArrayOfProperties.bind(this);
   }
 
   state = {
@@ -30,14 +32,17 @@ export default class Detail extends Component {
     rightButton: {},
     leftButton: {},
     id: 0,
-    priceSold: 0,
+    priceSold: 0
   };
   componentDidMount() {
+    this.setState({isLoading: true})
     this.services
       .getProperties(this.props.match.params.towerId)
       .then(properties => {
         this.makeArrayOfProperties(properties);
-      });
+        this.setState({isLoading: false})
+      })
+      .catch(err => {console.log(err); this.setState({isLoading: false})})
   }
 
   buttonsStyles(status) {
@@ -56,14 +61,15 @@ export default class Detail extends Component {
       backgroundColor = variables.mainColor;
       rightButton = {
         label: 'Opcionado',
-        color: variables.yellowColor,
+        color: variables.yellowColor
       };
       leftButton = { label: 'Disponible', color: variables.greenColor };
     }
+    console.log('Hola');
     return {
       backgroundColor,
       rightButton,
-      leftButton,
+      leftButton
     };
   }
 
@@ -73,16 +79,16 @@ export default class Detail extends Component {
       isHidden: false,
       rightButton: buttons.rightButton,
       leftButton: buttons.leftButton,
-      priceSold: property.price,
+      priceSold: property.price
     });
-  }
+  };
 
   makeCells = (buttons, property, active) => (
     <div
       style={{
         backgroundColor: buttons.backgroundColor,
         padding: '0.01em',
-        textAlign: 'center',
+        textAlign: 'center'
       }}
       onClick={() => this.onClickSelector(property, buttons)}
     >
@@ -110,11 +116,14 @@ export default class Detail extends Component {
     data.properties.map(properties => {
       properties.map(property => {
         let floor = arrayOfNulls[property.floor - data.lowestFloor];
+        console.log(property.status);
+
         const buttons = this.buttonsStyles(property.status);
+
         floor[property.location - 1] = this.makeCells(
           buttons,
           property,
-          active,
+          active
         );
         arrayOfNulls[property.floor - data.lowestFloor] = floor;
       });
@@ -124,7 +133,7 @@ export default class Detail extends Component {
       properties: data.totalProperties,
       floors: data.floors,
       lowestFloor: data.lowestFloor,
-      data: arrayOfNulls,
+      data: arrayOfNulls
     });
   }
 
@@ -143,9 +152,9 @@ export default class Detail extends Component {
           priceSold:
             this.state.rightButton.label !== 'Disponible'
               ? this.state.priceSold
-              : null,
+              : null
         },
-        this.props.match.params.towerId,
+        this.props.match.params.towerId
       )
       .then(properties => {
         if (properties) {
@@ -153,7 +162,7 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
-          isLoading: false,
+          isLoading: false
         });
       })
       .catch(err => {
@@ -178,9 +187,9 @@ export default class Detail extends Component {
           priceSold:
             this.state.leftButton.label !== 'Disponible'
               ? this.state.priceSold
-              : null,
+              : null
         },
-        this.props.match.params.towerId,
+        this.props.match.params.towerId
       )
       .then(properties => {
         if (properties) {
@@ -188,7 +197,7 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
-          isLoading: false,
+          isLoading: false
         });
       })
       .catch(err => {
@@ -210,69 +219,18 @@ export default class Detail extends Component {
             <p>Propiedades</p>
           </CardHeader>
           <CardBody>
-            <div>
-              <Button
-                onClick={() => {
-                  this.makeArrayOfProperties(this.state.response, 'price');
-                }}
-              >
-                Precio
-              </Button>
-              <Button
-                onClick={() => {
-                  this.makeArrayOfProperties(this.state.response, 'mts2');
-                }}
-              >
-                Mt2
-              </Button>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <div
-                style={{
-                  backgroundColor: variables.greenColor,
-                  width: '16px',
-                  height: '16px',
-                  marginRight: '4px',
-                }}
-              />
-              <div style={{ fontSize: '14px', marginRight: '14px' }}>
-                Disponible
-              </div>
-              <div
-                style={{
-                  backgroundColor: variables.yellowColor,
-                  width: '16px',
-                  height: '16px',
-                  marginRight: '4px',
-                }}
-              />
-              <div style={{ fontSize: '14px', marginRight: '14px' }}>
-                Opcionado
-              </div>
-              <div
-                style={{
-                  backgroundColor: variables.mainColor,
-                  width: '16px',
-                  height: '16px',
-                  marginRight: '4px',
-                }}
-              />
-              <div style={{ fontSize: '14px', marginRight: '14px' }}>
-                Vendido
-              </div>
-            </div>
-            <div>
-              <Table
-                intersect="Propiedades"
-                headers={[...Array(this.state.properties).keys()].map(
-                  o => o + 1,
-                )}
-                columns={[...Array(this.state.floors).keys()].map(
-                  o => o + this.state.lowestFloor,
-                )}
-                data={this.state.data}
-              />
-            </div>
+            <Selectors
+              makeArrayOfProperties={this.makeArrayOfProperties}
+              response={this.state.response}
+              buttonsStyles={this.buttonsStyles}
+              makeCells={this.makeCells}
+            />
+            <PropertiesTable
+              properties={this.state.properties}
+              floors={this.state.floors}
+              lowestFloor={this.state.lowestFloor}
+              data={this.state.data}
+            />
           </CardBody>
           <CardFooter />
           {this.state.isHidden ? null : (

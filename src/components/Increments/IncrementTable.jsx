@@ -22,11 +22,13 @@ const IncrementTable = ({
 }) => {
   const [validation, setValidation] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
+  console.log(arrayOfIncrements.length)
   if (arrayOfIncrements.length === 0)
     arrayOfIncrements = data.map(increment => [
       increment.salesSpeed,
       increment.anualEffectiveIncrement,
     ]);
+
   return (
     <Card>
       <CardHeader>
@@ -370,11 +372,11 @@ const IncrementTable = ({
           ) : null}
           <div
             onClick={() => {
-              /* setValidation(
+              setValidation(
                 arrayOfIncrements.find(
                   increment => increment[0] === null || increment[1] === null,
                 ),
-              ); */
+              );
               setIsClicked(true);
             }}
           >
