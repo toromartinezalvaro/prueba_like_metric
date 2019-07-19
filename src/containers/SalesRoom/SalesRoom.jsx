@@ -13,6 +13,7 @@ import NumberFormat from 'react-number-format';
 import Loader from 'react-loader-spinner';
 import Selectors from '../../components/SalesRoom/Selectors';
 import PropertiesTable from '../../components/SalesRoom/PropertiesTable';
+import Status from '../../helpers/status';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -52,11 +53,11 @@ export default class Detail extends Component {
     let backgroundColor;
     let rightButton;
     let leftButton;
-    if (status === 'AVAILABLE') {
+    if (status === Status.Available ) {
       backgroundColor = variables.greenColor;
       rightButton = { label: 'Vendido', color: variables.mainColor };
       leftButton = { label: 'Opcionado', color: variables.yellowColor };
-    } else if (status === 'OPTIONAL') {
+    } else if (status === Status.Optional) {
       backgroundColor = variables.yellowColor;
       rightButton = { label: 'Vendido', color: variables.mainColor };
       leftButton = { label: 'Disponible', color: variables.greenColor };
@@ -150,10 +151,10 @@ export default class Detail extends Component {
           id: this.state.id,
           status:
             this.state.rightButton.label === 'Disponible'
-              ? 'AVAILABLE'
+              ? Status.Available
               : this.state.rightButton.label === 'Opcionado'
-              ? 'OPTIONAL'
-              : 'SOLD',
+              ? Status.Optional
+              : Status.Sold,
           priceSold:
             this.state.rightButton.label !== 'Disponible'
               ? this.state.priceSold
@@ -185,10 +186,10 @@ export default class Detail extends Component {
           id: this.state.id,
           status:
             this.state.leftButton.label === 'Disponible'
-              ? 'AVAILABLE'
+              ? Status.Available
               : this.state.leftButton.label === 'Opcionado'
-              ? 'OPTIONAL'
-              : 'SOLD',
+              ? Status.Optional
+              : Status.Sold,
           priceSold:
             this.state.leftButton.label !== 'Disponible'
               ? this.state.priceSold
