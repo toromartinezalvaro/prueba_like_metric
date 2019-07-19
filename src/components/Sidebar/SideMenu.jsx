@@ -1,21 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardRoutes } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
+import agent from '../../config/config';
+import { Role } from '../../helpers';
 
-const sideMenu = props => {
+const SideMenu = props => {
+  const [active, setActive] = useState(window.location.pathname);
   var itemForSlidebar = (styles, route, iconName, description) => {
     if (props.tower !== null) {
       const towerId = props.tower.id;
       route = route + towerId;
     }
     return (
-      <div className={styles}>
-        <Link to={route}>
-          <Icon name={iconName} fixWidth={true} />
-          <label className={style.Description}> {description} </label>
-        </Link>
+      <div onClick={() => setActive(route)}>
+        {active === route ? (
+          <div className={style.Active}>
+            <Link to={route}>
+              <Icon name={iconName} fixWidth={true} />
+              <label className={style.Description}> {description} </label>
+            </Link>
+          </div>
+        ) : (
+          <div className={styles}>
+            <Link to={route}>
+              <Icon name={iconName} fixWidth={true} />
+              <label className={style.Description}> {description} </label>
+            </Link>
+          </div>
+        )}
       </div>
     );
   };
@@ -32,75 +46,86 @@ const sideMenu = props => {
         <label>{props.tower ? props.tower.name : ''}</label>
       </div>
       <div className={style.IconsContainer}>
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.building.value,
-          'fa-building',
-          'Esquema',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.areas.value,
-          'fa-layer-group',
-          'Areas',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.prime.value,
-          'fa-sort-amount-up',
-          'Primas',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.summary.value,
-          'fa-list-ol',
-          'Resumen',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.rackAreas.value,
-          'fas fa-ruler',
-          'Resumen Areas',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
-          'fas fa-book-open',
-          'Detalle Admin',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.detail.value,
-          'fas fa-book-open',
-          'Detalle User',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.clustering.value,
-          'fas fa-object-group',
-          'Agrupamiento',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.increments.value,
-          'fas fa-angle-double-up',
-          'Incrementos',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.strategy.value,
-          'fas fa-chart-line',
-          'Estrategia',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.salesRoom.value,
-          'fas fa-dollar-sign',
-          'Sala de Ventas',
-        )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.building.value,
+            'fa-building',
+            'Esquema',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.areas.value,
+            'fa-layer-group',
+            'Areas',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.prime.value,
+            'fa-sort-amount-up',
+            'Primas',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.summary.value,
+            'fa-list-ol',
+            'Resumen',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.rackAreas.value,
+            'fas fa-ruler',
+            'Resumen Areas',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
+            'fas fa-book-open',
+            'Detalle',
+          )}
+        {agent.isAuthorized([Role.User, Role.User]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.detail.value,
+            'fas fa-book-open',
+            'Detalle',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.clustering.value,
+            'fas fa-object-group',
+            'Agrupamiento',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.increments.value,
+            'fas fa-angle-double-up',
+            'Incrementos',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.strategy.value,
+            'fas fa-chart-line',
+            'Estrategia',
+          )}
+        {agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.salesRoom.value,
+            'fas fa-dollar-sign',
+            'Sala de Ventas',
+          )}
       </div>
     </div>
   );
 };
 
-export default sideMenu;
+export default SideMenu;

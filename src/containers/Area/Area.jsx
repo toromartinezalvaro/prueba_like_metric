@@ -379,7 +379,7 @@ class Area extends Component {
         />
       ));
     });
-    console.log('state', this.state.types);
+  
 
     return (
       <div>
