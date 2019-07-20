@@ -53,6 +53,30 @@ const incrementsChart = ({
       });
   };
 
+  const options = {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            // Include a dollar sign in the ticks
+            callback: function(value, i, values) {
+              const stringValue = value.toString();
+              const index = stringValue.search(/[1-9]/);
+              return (
+                '$' +
+                stringValue.substring(0, index) +
+                stringValue
+                  .substring(index, stringValue.length)
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+              );
+              //return '$' + value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, ',');
+            },
+          },
+        },
+      ],
+    },
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -70,6 +94,7 @@ const incrementsChart = ({
               labels: getLabels(data),
               datasets: parseData(data),
             }}
+            options={options}
           />
         )}
       </CardBody>

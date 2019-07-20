@@ -3,7 +3,13 @@ import Card, { CardHeader, CardBody, CardFooter } from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import Input from '../../UI/Input/Input';
 
-const clientFrom = ({ genders, clientTypes, ...rest }) => {
+const clientFrom = ({
+  genders,
+  clientTypes,
+  clientHandler,
+  saveClient,
+  ...rest
+}) => {
   return (
     <Card>
       <CardHeader>
@@ -13,7 +19,8 @@ const clientFrom = ({ genders, clientTypes, ...rest }) => {
         <div>
           <div>
             <span>Genero</span>
-            <select>
+            <select name="gender" onChange={clientHandler}>
+              <option value={null}>Seleccione el genero</option>
               {Object.entries(genders).map(([_, value]) => {
                 return <option value={value.code}>{value.value}</option>;
               })}
@@ -22,6 +29,7 @@ const clientFrom = ({ genders, clientTypes, ...rest }) => {
           <div>
             <span>Tipo de cliente</span>
             <select>
+              <option value={null}>Seleccione el tipo de cliente</option>
               {Object.entries(clientTypes).map(([_, value]) => {
                 return <option value={value.code}>{value.value}</option>;
               })}
@@ -66,7 +74,7 @@ const clientFrom = ({ genders, clientTypes, ...rest }) => {
         </div>
       </CardBody>
       <CardFooter>
-        <Button>Agregar cliente</Button>
+        <Button onClick={saveClient}>Agregar cliente</Button>
       </CardFooter>
     </Card>
   );

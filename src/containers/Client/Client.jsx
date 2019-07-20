@@ -9,6 +9,19 @@ class Client extends Component {
   }
 
   state = {
+    client: {
+      gender: null,
+      clientType: null,
+      identityDocument: null,
+      socialReason: null,
+      name: null,
+      surname: null,
+      phoneNumber: null,
+      mobileNumber: null,
+      email: null,
+      city: null,
+      module: null,
+    },
     genders: {},
     clientTypes: {},
   };
@@ -20,11 +33,24 @@ class Client extends Component {
     });
   }
 
+  clientHandler = event => {
+    const tempClient = this.state.client;
+    tempClient[event.target.name] = event.target.value;
+    this.setState({ client: tempClient });
+  };
+
+  saveClient = () => {
+    console.log(this.state.client);
+    //this.services.postClient(this.state.client);
+  };
+
   render() {
     return (
       <ClientForm
         genders={this.state.genders}
         clientTypes={this.state.clientTypes}
+        clientHandler={this.clientHandler}
+        saveClient={this.saveClient}
       />
     );
   }
