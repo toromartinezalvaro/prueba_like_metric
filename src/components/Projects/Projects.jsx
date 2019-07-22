@@ -1,7 +1,8 @@
-import React from "react";
-import Card, { CardFooter, CardHeader, CardBody } from "../UI/Card/Card";
-import styles from "./Projects.module.scss";
-import Icon from "../../assets/icons/Icon";
+import React from 'react';
+import Card, { CardFooter, CardHeader, CardBody } from '../UI/Card/Card';
+import styles from './Projects.module.scss';
+import Icon from '../../assets/icons/Icon';
+import Button from '../UI/Button/Button';
 
 const projectItems = props => {
   var items = projects => {
@@ -47,7 +48,7 @@ const projectItems = props => {
     <Card>
       <CardHeader>
         <p>Proyectos</p>
-        <button onClick={props.createProject}> Crear Proyecto</button>
+        <Button onClick={props.createProject}> Crear Proyecto</Button>
       </CardHeader>
       <CardBody>
         <div className={styles.Projects}>{items(props.projects)}</div>

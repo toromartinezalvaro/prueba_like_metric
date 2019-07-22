@@ -123,6 +123,12 @@ const SideMenu = props => {
             'fas fa-dollar-sign',
             'Sala de Ventas',
           )}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.clients.value,
+          'fas fa-users',
+          'Clientes',
+        )}
       </div>
     </div>
   );

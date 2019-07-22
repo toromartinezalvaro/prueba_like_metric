@@ -33,6 +33,7 @@ const Input = props => {
   const localValueHandler = value => {
     setValid(validation(value));
     setLocalValue(value);
+    
   };
 
   const syncValues = () => {

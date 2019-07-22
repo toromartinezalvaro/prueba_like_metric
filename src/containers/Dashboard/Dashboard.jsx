@@ -24,6 +24,7 @@ import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
 import Strategy from '../Strategy/Strategy';
 import SalesRoom from '../SalesRoom/SalesRoom';
+import Client from '../Client/Client';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -159,6 +160,12 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.salesRoom.withIndicator}
           exact
           component={SecureContainer(SalesRoom)}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.clients.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={SecureContainer(Client)}
         />
       </DashboardLayout>
     );

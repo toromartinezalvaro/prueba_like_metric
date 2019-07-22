@@ -1,17 +1,17 @@
 import React from 'react';
+import Button from '../UI/Button/Button';
 
 const user = props => {
-
   return (
     <div>
-      <div 
+      <div
       // className={styles.Actions}
       >
-          <button onClick={props.logoutAction}>Cerrar Sesión</button>
-          <button onClick={props.updatePassword}>Cambiar contraseña</button>
+        <Button onClick={props.logoutAction}>Cerrar Sesión</Button>
+        <Button onClick={props.updatePassword}>Cambiar contraseña</Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default user
+export default user;

@@ -37,7 +37,21 @@ const IncrementTable = ({
       <CardBody>
         {data.map((increment, i) => {
           return (
-            <Accordion trigger={increment.name}>
+            <Accordion
+              trigger={
+                <div>
+                  {increment.name}
+                  {increment.increment !== null ? (
+                    <NumberFormat
+                      value={increment.increment.toFixed(2)}
+                      displayType={'text'}
+                      prefix=" - $"
+                      thousandSeparator={true}
+                    />
+                  ) : null}
+                </div>
+              }
+            >
               <div className={styles.AccordionContainer}>
                 <div className={styles.statContent}>
                   <div>
@@ -181,7 +195,17 @@ const IncrementTable = ({
             </Accordion>
           );
         })}
-
+        Incremento total:{' '}
+        <NumberFormat
+          value={data
+            .reduce((current, next) => {
+              return current + next.increment;
+            }, 0)
+            .toFixed(2)}
+          displayType={'text'}
+          prefix={'$'}
+          thousandSeparator={true}
+        />
         {/* <div className={styles.Content}>
           <div className={styles.Column}>
             <div className={styles.Header}>Tipo</div>

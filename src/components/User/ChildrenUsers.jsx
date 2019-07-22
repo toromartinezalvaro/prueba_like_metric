@@ -4,6 +4,7 @@ import styles from './ChildrenUsers.module.scss';
 import Card, { CardHeader, CardBody } from '../UI/Card/Card';
 import { Role } from '../../helpers';
 import agent from '../../config/config';
+import Button from '../UI/Button/Button';
 
 const ChildrenUsers = props => {
   const optionForUser = user => {
@@ -34,12 +35,12 @@ const ChildrenUsers = props => {
             </select>
           </div>
           <div className={styles.Row}>
-            <button className={styles.Button} onClick={props.openPasswordModal}>
-              Update Password
-            </button>
-            <button className={styles.Button} onClick={props.openProjectModal}>
+            <Button className={styles.Button} onClick={props.openPasswordModal}>
+              Cambiar contraseña
+            </Button>
+            <Button className={styles.Button} onClick={props.openProjectModal}>
               Agregar Proyecto
-            </button>
+            </Button>
           </div>
         </CardBody>
       </Card>
