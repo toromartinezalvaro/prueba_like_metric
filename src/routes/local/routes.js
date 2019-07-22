@@ -12,7 +12,7 @@ export const DashboardRoutes = {
   clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' },
   increments: { value: '/increments/' , withIndicator: '/increments/:towerId' },
   strategy: { value: '/strategy/' , withIndicator: '/strategy/:towerId' },
-  salesRoom: { value: '/salesRoom/' , withIndicator: '/salesRoom/:towerId' }
+  salesRoom: { value: '/salesRoom/' , withIndicator: '/salesRoom/:towerId' },
   clients: { value: '/clients/', withIndicator: '/clients/:towerId' },
 }
   
