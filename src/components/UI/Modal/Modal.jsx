@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import styles from './Modal.module.scss';
+import Button from '../Button/Button'
 
 class Modal extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Modal extends Component {
               <div className={styles.Title}>{this.props.title}</div>
               <div className={styles.Content}>{this.props.children}</div>
               <div className={styles.Actions}>
-                <button
+                <Button
                   className={styles.ConfirmButton}
                   style={{ backgroundColor: this.props.rightColor }}
                   onClick={() => {
@@ -54,9 +55,9 @@ class Modal extends Component {
                   {this.props.rightButton
                     ? this.props.rightButton
                     : 'Confirmar'}
-                </button>
+                </Button>
                 {this.props.leftButton ? (
-                  <button
+                  <Button
                     className={styles.ConfirmButton}
                     style={{ backgroundColor: this.props.leftColor }}
                     onClick={() => {
@@ -65,16 +66,16 @@ class Modal extends Component {
                     disabled={this.state.blocked}
                   >
                     {this.props.leftButton}
-                  </button>
+                  </Button>
                 ) : null}
-                <button
+                <Button
                   className={styles.CancelButton}
                   onClick={() => {
                     this.performAction('cancel');
                   }}
                 >
                   Cancelar
-                </button>
+                </Button>
               </div>
             </div>
           </div>

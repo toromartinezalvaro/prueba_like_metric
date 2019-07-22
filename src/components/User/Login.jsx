@@ -3,6 +3,7 @@ import Input from '../UI/Input/Input';
 import styles from './Login.module.scss';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Error from '../../components/UI/Error/Error';
+import Button from '../UI/Button/Button';
 
 const login = props => {
   const emailValidation = [
@@ -12,8 +13,8 @@ const login = props => {
         const pattern = new RegExp(emailExp);
         return pattern.test(value);
       },
-      message: 'Debe ser un email válido'
-    }
+      message: 'Debe ser un email válido',
+    },
   ];
 
   const keyHandler = e => {
@@ -60,9 +61,9 @@ const login = props => {
               // className={styles.Actions}
               >
                 {
-                  <button className={styles.Button} onClick={props.loginAction}>
+                  <Button className={styles.Button} onClick={props.loginAction}>
                     Login
-                  </button>
+                  </Button>
                 }
               </div>
             </div>
