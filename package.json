@@ -17,6 +17,7 @@
     "react": "^16.8.6",
     "react-chartjs-2": "^2.7.6",
     "react-collapsible": "^2.6.0",
+    "react-date-picker": "^7.7.0",
     "react-day-picker": "^7.3.0",
     "react-dom": "^16.8.6",
     "react-input-mask": "^2.0.4",
