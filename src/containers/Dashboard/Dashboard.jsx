@@ -23,6 +23,7 @@ import Increments from '../Increments/Increments';
 import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
 import Strategy from '../Strategy/Strategy';
+import SalesRoom from '../SalesRoom/SalesRoom';
 import Client from '../Client/Client';
 
 class Dashboard extends Component {
@@ -154,6 +155,11 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={SecureContainer(Increments)}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.salesRoom.withIndicator}
+          exact
+          component={SecureContainer(SalesRoom)}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.clients.withIndicator}

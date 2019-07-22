@@ -1,11 +1,11 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import Naming from "../../components/Building/Naming/Naming";
-import Schema from "../../components/Building/Schema/Schema";
-import Error from "../../components/UI/Error/Error";
-import errorHandling from "../../services/commons/errorHelper";
-import SchemeServices from "../../services/schema/SchemaServices";
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import _ from 'lodash';
+import React, { Component } from 'react';
+import Naming from '../../components/Building/Naming/Naming';
+import Schema from '../../components/Building/Schema/Schema';
+import Error from '../../components/UI/Error/Error';
+import errorHandling from '../../services/commons/errorHelper';
+import SchemeServices from '../../services/schema/SchemaServices';
+import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 
 class Building extends Component {
   constructor(props) {
@@ -20,10 +20,11 @@ class Building extends Component {
     disable: false,
     update: false,
     names: [],
-    currentErrorMessage: "",
+    currentErrorMessage: '',
     isLoading: false,
     showFloatingButton: false,
-    loadingNaming: false
+    loadingNaming: false,
+    stratums: {},
   };
 
   componentDidMount() {
@@ -33,7 +34,7 @@ class Building extends Component {
 
   onChangeHandler = target => {
     this.setState({
-      [target.name]: target.value
+      [target.name]: target.value,
     });
   };
 
@@ -53,17 +54,25 @@ class Building extends Component {
         console.log(`🐶 error: ${error}`);
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
         });
-        this.setState({ currentErrorMessage: "" });
+        this.setState({ currentErrorMessage: '' });
       });
   };
 
   updateStatesWithResponse = response => {
-    let { floors, totalProperties, lowestFloor, properties } = response.data;
+    let {
+      floors,
+      totalProperties,
+      lowestFloor,
+      properties,
+      stratum,
+      stratums,
+    } = response.data;
     floors = _.defaultTo(floors, 0);
     totalProperties = _.defaultTo(totalProperties, 0);
     lowestFloor = _.defaultTo(lowestFloor, 0);
+    console.log("properties", properties)
     this.setState({
       floors: floors,
       properties: totalProperties,
@@ -71,7 +80,9 @@ class Building extends Component {
       update: true,
       disable: floors > 0,
       names: properties,
-      isLoading: false
+      isLoading: false,
+      stratum,
+      stratums,
     });
   };
 
@@ -82,7 +93,7 @@ class Building extends Component {
 
     let showFloating = properties.find(arrayProperties => {
       let anyNomenclature = arrayProperties.find(nomenclature => {
-        return nomenclature !== null && nomenclature.name !== "0";
+        return nomenclature !== null && nomenclature.name !== '0';
       });
       return anyNomenclature !== undefined;
     });
@@ -93,7 +104,7 @@ class Building extends Component {
 
   toggleEditMode = () => {
     this.setState(prevState => ({
-      disable: !prevState.disable
+      disable: !prevState.disable,
     }));
   };
 
@@ -104,7 +115,7 @@ class Building extends Component {
         towerId: this.props.match.params.towerId,
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
-        lowestFloor: parseInt(this.state.lowestFloor)
+        lowestFloor: parseInt(this.state.lowestFloor),
       })
       .then(() => {
         this.setState({ floors: [], disable: true, names: [] });
@@ -115,9 +126,9 @@ class Building extends Component {
         let errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
-          loadingNaming: false
+          loadingNaming: false,
         });
-        this.setState({ currentErrorMessage: "" });
+        this.setState({ currentErrorMessage: '' });
       });
   };
 
@@ -128,7 +139,7 @@ class Building extends Component {
         towerId: this.props.match.params.towerId,
         floors: parseInt(this.state.floors),
         properties: parseInt(this.state.properties),
-        lowestFloor: parseInt(this.state.lowestFloor)
+        lowestFloor: parseInt(this.state.lowestFloor),
       })
       .then(() => {
         this.setState({ floors: [], disable: true, names: [] });
@@ -139,21 +150,21 @@ class Building extends Component {
         let errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
-          loadingNaming: false
+          loadingNaming: false,
         });
       });
-    this.setState({ currentErrorMessage: "" });
+    this.setState({ currentErrorMessage: '' });
   };
 
   checkDuplicates = value => {
     const duplicate =
-      value === ""
+      value === ''
         ? true
         : this.state.names.reduce((current, next) => {
             next.map(e => {
               if (e !== null) {
-                if(e.name === value) {
-                  current = e
+                if (e.name === value) {
+                  current = e;
                 }
               }
             });
@@ -169,7 +180,7 @@ class Building extends Component {
       floor: floor,
       location: location,
       name: value,
-      towerId: this.props.match.params.towerId
+      towerId: this.props.match.params.towerId,
     };
     this.services
       .putProperties(names[floor - this.state.lowestFloor][location - 1])
@@ -179,7 +190,7 @@ class Building extends Component {
       });
     this.setState({
       names: names,
-      showFloatingButton: true
+      showFloatingButton: true,
     });
   };
 
@@ -189,10 +200,19 @@ class Building extends Component {
     });
   };
 
+  updateStratum = stratum => {
+    this.services
+      .putStratum(this.props.match.params.towerId, { stratum })
+      .then(response => {
+        this.setState({ stratum });
+        console.log(response);
+      });
+  };
+
   render() {
     return (
       <div>
-        {this.state.currentErrorMessage !== "" ? (
+        {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <div>
@@ -206,6 +226,9 @@ class Building extends Component {
             editMode={this.toggleEditMode}
             saveSchema={this.saveSchema}
             updateSchema={this.updateSchema}
+            stratum={this.state.stratum}
+            stratums={this.state.stratums}
+            updateStratum={this.updateStratum}
           />
           {!this.state.disable ? null : (
             <Naming
@@ -217,7 +240,7 @@ class Building extends Component {
               checkDuplicates={this.checkDuplicates}
               headers={[...Array(this.state.properties).keys()].map(o => o + 1)}
               columns={[...Array(this.state.floors).keys()].map(
-                o => o + this.state.lowestFloor
+                o => o + this.state.lowestFloor,
               )}
               onPropertyNameChange={this.propertyNameChangeHandler}
               onPropertyEmpty={this.propertyDelete}
@@ -225,6 +248,7 @@ class Building extends Component {
               names={this.state.names}
             />
           )}
+          {console.log("names", this.state.names)}
         </div>
         {this.state.showFloatingButton ? (
           <FloatingButton

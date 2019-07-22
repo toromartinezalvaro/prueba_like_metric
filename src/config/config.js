@@ -1,4 +1,7 @@
 import axios from 'axios';
+import Server from './server'
+const env = process.env.NODE_ENV || 'development';
+const config = require('./server')[env];
 
 const jwtKey = 'jwt';
 
@@ -79,9 +82,7 @@ class Agent {
   }
 }
 
-export const API_PATH =
-  process.env.NODE_ENV === 'production'
-    ? 'https://pefpiapis.herokuapp.com/api/'
-    : 'http://localhost:1337/api/';
-//export const API_PATH = "https://pefpi-api-dev.herokuapp.com/api/"
+
+export const API_PATH = Server.development.serverUrl
+// export const API_PATH = Server.staging.serverUrl
 export default new Agent();

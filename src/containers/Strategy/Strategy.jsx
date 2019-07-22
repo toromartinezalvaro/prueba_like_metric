@@ -72,9 +72,15 @@ export default class Strategy extends Component {
       if (groupFilter.strategies.length > 0) {
         this.setState({ dataGraph: groupFilter.strategies });
         let dataGraph = groupFilter.strategies;
-        console.log("dataGraph", dataGraph)
+        console.log('dataGraph', dataGraph);
         if (dataGraph[0] !== undefined) {
-          let lengths = [dataGraph[0].increments.length];
+          let lengths;
+          if (dataGraph[1] !== undefined) {
+            lengths = [dataGraph[1].increments.length];
+          } else {
+            lengths = [dataGraph[0].increments.length];
+          }
+          console.log(lengths);
           return Array(_.max(lengths))
             .fill(null)
             .map((_, index) => {
@@ -99,7 +105,6 @@ export default class Strategy extends Component {
           backgroundColor: this.state.dataHelper[i].backgroundColor,
           fill: this.state.dataHelper[i].fill,
           lineTension: 0.05,
-          hidden: true,
         };
       }
     });
@@ -165,7 +170,8 @@ export default class Strategy extends Component {
       .putStrategy({
         id: this.state.groupActive.id,
         strategy: this.state.strategySelected,
-        incrementList: this.state.groupActive.strategies[this.state.index].percentage,
+        incrementList: this.state.groupActive.strategies[this.state.index]
+          .percentage,
       })
       .then(
         this.setState({
@@ -223,7 +229,7 @@ export default class Strategy extends Component {
                           this.setState({
                             hidden: false,
                             strategySelected: this.state.dataHelper[index].id,
-                            index: index
+                            index: index,
                           });
                         }}
                         style={styleButton}
