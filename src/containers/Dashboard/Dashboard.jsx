@@ -25,6 +25,7 @@ import { Role } from '../../helpers';
 import Strategy from '../Strategy/Strategy';
 import SalesRoom from '../SalesRoom/SalesRoom';
 import Client from '../Client/Client';
+import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -166,6 +167,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={SecureContainer(Client)}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.futureSalesSpeed.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={SecureContainer(FutureSalesSpeed)}
         />
       </DashboardLayout>
     );

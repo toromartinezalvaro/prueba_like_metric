@@ -129,6 +129,12 @@ const SideMenu = props => {
           'fas fa-users',
           'Clientes',
         )}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
+          'fas fa-calendar-alt',
+          'Velocidad ventas futuras',
+        )}
       </div>
     </div>
   );
