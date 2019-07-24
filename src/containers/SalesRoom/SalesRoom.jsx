@@ -5,14 +5,13 @@ import Card, {
   CardBody,
   CardFooter,
 } from '../../components/UI/Card/Card';
-import Table from '../../components/UI/Table/Table';
 import Modal from '../../components/UI/Modal/Modal';
-import _ from 'lodash';
 import variables from '../../assets/styles/variables.scss';
 import NumberFormat from 'react-number-format';
 import Loader from 'react-loader-spinner';
 import Selectors from '../../components/SalesRoom/Selectors';
 import PropertiesTable from '../../components/SalesRoom/PropertiesTable';
+import Message from '../../components/SalesRoom/Message';
 import Status from '../../helpers/status';
 
 export default class Detail extends Component {
@@ -34,6 +33,7 @@ export default class Detail extends Component {
     leftButton: {},
     id: 0,
     priceSold: 0,
+    isEmpty: null,
   };
   componentDidMount() {
     this.setState({ isLoading: true });
@@ -53,7 +53,7 @@ export default class Detail extends Component {
     let backgroundColor;
     let rightButton;
     let leftButton;
-    if (status === Status.Available ) {
+    if (status === Status.Available) {
       backgroundColor = variables.greenColor;
       rightButton = { label: 'Vendido', color: variables.mainColor };
       leftButton = { label: 'Opcionado', color: variables.yellowColor };
@@ -69,7 +69,6 @@ export default class Detail extends Component {
       };
       leftButton = { label: 'Disponible', color: variables.greenColor };
     }
-    console.log('Hola');
     return {
       backgroundColor,
       rightButton,
@@ -114,17 +113,14 @@ export default class Detail extends Component {
   makeArrayOfProperties(properties, active) {
     const data = properties.data;
     let arrayOfNulls = [];
-    if (data !== undefined) {
+    if (data.floors !== null) {
       for (let i = 0; i < data.floors; i++) {
         arrayOfNulls.push([]);
       }
       data.properties.map(properties => {
         properties.map(property => {
           let floor = arrayOfNulls[property.floor - data.lowestFloor];
-          console.log(property.status);
-
           const buttons = this.buttonsStyles(property.status);
-
           floor[property.location - 1] = this.makeCells(
             buttons,
             property,
@@ -139,7 +135,10 @@ export default class Detail extends Component {
         floors: data.floors,
         lowestFloor: data.lowestFloor,
         data: arrayOfNulls,
+        isEmpty: false,
       });
+    } else {
+      this.setState({ isEmpty: true });
     }
   }
 
@@ -220,51 +219,55 @@ export default class Detail extends Component {
   render() {
     return (
       <div>
-        <Card>
-          <CardHeader>
-            <p>Propiedades</p>
-          </CardHeader>
-          <CardBody>
-            <Selectors
-              makeArrayOfProperties={this.makeArrayOfProperties}
-              response={this.state.response}
-              buttonsStyles={this.buttonsStyles}
-              makeCells={this.makeCells}
-            />
-            <PropertiesTable
-              properties={this.state.properties}
-              floors={this.state.floors}
-              lowestFloor={this.state.lowestFloor}
-              data={this.state.data}
-            />
-          </CardBody>
-          <CardFooter />
-          {this.state.isHidden ? null : (
-            <Modal
-              title={'Nuevo Estado'}
-              hidden={this.props.isHidden}
-              onConfirm={this.save}
-              onConfirmLeft={this.saveLeft}
-              onCancel={this.cancel}
-              rightButton={this.state.rightButton.label}
-              leftButton={this.state.leftButton.label}
-              rightColor={this.state.rightButton.color}
-              leftColor={this.state.leftButton.color}
-            >
-              Desea cambiar el estado?
-              {this.state.isLoading ? (
-                <div style={{ justifyContent: 'center', display: 'flex' }}>
-                  <Loader
-                    type="ThreeDots"
-                    color={variables.mainColor}
-                    height="100"
-                    width="100"
-                  />
-                </div>
-              ) : null}
-            </Modal>
-          )}
-        </Card>
+        {this.state.isEmpty === null ? null : this.state.isEmpty ? (
+          <Message route={this.props.match.params.towerId} />
+        ) : (
+          <Card>
+            <CardHeader>
+              <p>Propiedades</p>
+            </CardHeader>
+            <CardBody>
+              <Selectors
+                makeArrayOfProperties={this.makeArrayOfProperties}
+                response={this.state.response}
+                buttonsStyles={this.buttonsStyles}
+                makeCells={this.makeCells}
+              />
+              <PropertiesTable
+                properties={this.state.properties}
+                floors={this.state.floors}
+                lowestFloor={this.state.lowestFloor}
+                data={this.state.data}
+              />
+            </CardBody>
+            <CardFooter />
+            {this.state.isHidden ? null : (
+              <Modal
+                title={'Nuevo Estado'}
+                hidden={this.props.isHidden}
+                onConfirm={this.save}
+                onConfirmLeft={this.saveLeft}
+                onCancel={this.cancel}
+                rightButton={this.state.rightButton.label}
+                leftButton={this.state.leftButton.label}
+                rightColor={this.state.rightButton.color}
+                leftColor={this.state.leftButton.color}
+              >
+                Desea cambiar el estado?
+                {this.state.isLoading ? (
+                  <div style={{ justifyContent: 'center', display: 'flex' }}>
+                    <Loader
+                      type="ThreeDots"
+                      color={variables.mainColor}
+                      height="100"
+                      width="100"
+                    />
+                  </div>
+                ) : null}
+              </Modal>
+            )}
+          </Card>
+        )}
       </div>
     );
   }

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import styles from '../../assets/styles/variables.scss';
 import { DashboardRoutes } from '../../routes/local/routes';
 import moment from 'moment';
+import { Role } from '../../helpers';
 import _ from 'lodash';
 
 export default class Strategy extends Component {
@@ -117,6 +118,11 @@ export default class Strategy extends Component {
       .getStrategies(this.props.match.params.towerId)
       .then(strategies => {
         if (strategies.data !== {}) {
+          let startDate = Date.now();
+          if (strategies.data.salesStartDate !== undefined) {
+            startDate = strategies.data.salesStartDate;
+          }
+          this.setState({ salesStartDate: startDate });
           const groupFilter = this.findGroup(
             strategies.data.increments,
             strategies.data.increments[0],
@@ -130,7 +136,6 @@ export default class Strategy extends Component {
             labels: labels,
             groups: strategies.data.increments,
             strategyActive: strategies.data.increments[0].strategy,
-            salesStartDate: strategies.salesStartDate,
           });
         }
       })
@@ -149,8 +154,7 @@ export default class Strategy extends Component {
     const groupFilter = this.findGroup(this.state.groups, groupActive);
     const labels = this.makeArrayLabels(groupFilter);
     const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
-    console.log('labels', labels);
-
+    console.log(groupActive);
     if (arrayDataSets.length !== 0) {
       this.setState({
         currentGroup: arrayDataSets,
@@ -189,13 +193,22 @@ export default class Strategy extends Component {
 
   render() {
     return (
-      <Card>
+      <Card style={{ marginTop: '-30px' }}>
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          {this.state.groups.map(group => (
-            <Button onClick={() => this.handleClick(group.type)}>
-              {group.type}
-            </Button>
-          ))}
+          {this.state.groups.map(group =>
+            group.type === this.state.groupActive.type ? (
+              <Button onClick={() => this.handleClick(group.type)}>
+                {group.type}
+              </Button>
+            ) : (
+              <Button
+                onClick={() => this.handleClick(group.type)}
+                style={{ backgroundColor: styles.grayColor }}
+              >
+                {group.type}
+              </Button>
+            ),
+          )}
         </div>
         {this.state.groups.length > 0 ? (
           this.state.groupActive.strategies.length !== 0 ? (

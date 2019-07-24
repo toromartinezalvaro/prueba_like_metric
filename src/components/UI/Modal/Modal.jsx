@@ -1,23 +1,24 @@
 import React, { Fragment, Component } from 'react';
 import styles from './Modal.module.scss';
-import Button from '../Button/Button'
+import variables from '../../../assets/styles/variables.scss';
+import Button from '../Button/Button';
 
 class Modal extends Component {
   constructor(props) {
     super(props);
     this.divModal = React.createRef();
-
   }
   state = {
     blocked: false,
-    heightViewPort: window.innerHeight
+    heightViewPort: window.innerHeight,
+    style: this.props.rightColor ? this.props.rightColor : variables.greenColor,
   };
 
   componentWillReceiveProps(nextProps) {
     //I know this is an antipater but meanwhile let's use derived data, i will solve this
-    this.setState({blocked: nextProps.blocked})
+    this.setState({ blocked: nextProps.blocked });
   }
-  
+
   componentDidUpdate() {
     if (this.state.heightModal !== this.divModal.current) {
     }
@@ -31,11 +32,10 @@ class Modal extends Component {
       this.props.onCancel();
     } else if (action === 'confirmLeft') {
       this.props.onConfirmLeft();
-    } 
+    }
   };
 
   render() {
-    console.log(this.state.heightViewPort);
     return (
       <Fragment>
         {this.props.hidden ? null : (
@@ -46,7 +46,7 @@ class Modal extends Component {
               <div className={styles.Actions}>
                 <Button
                   className={styles.ConfirmButton}
-                  style={{ backgroundColor: this.props.rightColor }}
+                  style={{ backgroundColor: this.state.style }}
                   onClick={() => {
                     this.performAction('confirm');
                   }}
