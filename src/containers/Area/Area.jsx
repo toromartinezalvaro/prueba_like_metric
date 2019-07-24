@@ -167,13 +167,10 @@ class Area extends Component {
     this.services
       .getAreas(towerId)
       .then(response => {
-        this.setState({
-          data: response.data.propertiesAreas,
-        });
-        console.log('response', response);
+        let currentState = {}
         if (this.state.calculateTotals === true) {
           let types = [];
-          this.state.data.forEach(arrayAreas => {
+          response.data.propertiesAreas.forEach(arrayAreas => {
             if (arrayAreas !== undefined) {
               arrayAreas.forEach(area => {
                 if (!types.find(type => area.type === type.id)) {
@@ -187,15 +184,10 @@ class Area extends Component {
                 }
                 return types;
               });
-              this.setState({ types: types, calculateTotals: false });
+              currentState = {...currentState, calculateTotals: false, types }
             }
           });
         }
-        this.setState({
-          areaTypes: response.data.areaTypes,
-          properties: response.data.properties,
-          isLoading: false,
-        });
         let showFloating = response.data.propertiesAreas.find(arrayAreas => {
           let anyArea = arrayAreas.find(area => {
             return area !== null && area.measure !== 0;
@@ -203,8 +195,16 @@ class Area extends Component {
           return anyArea !== undefined;
         });
         if (showFloating !== undefined) {
-          this.setState({ showFloatingButton: true });
+          currentState = {...currentState, showFloatingButton: true }
         }
+
+        this.setState({
+          ...currentState,
+          areaTypes: response.data.areaTypes,
+          properties: response.data.properties,
+          isLoading: false,
+          data: response.data.propertiesAreas,
+        });
       })
       .catch(error => {
         let errorHelper = errorHandling(error);
@@ -356,31 +356,40 @@ class Area extends Component {
     }
   };
 
-  render() {
-    const inputs = this.state.data.map((row, rowIndex) => {
-      return row.map((e2, cellIndex) => (
-        <Input
-          mask="number"
-          style={{ width: '75px' }}
-          validations={[
-            {
-              fn: value => {
-                console.log(value);
-                return value !== null;
+  inputsForData = data => {
+    return data.map((row, rowIndex) => {
+      return row.map((e2, cellIndex) => {
+        console.log('state in', this.rowIndex);
+        return (
+          <Input
+            mask="number"
+            style={{ width: '75px' }}
+            validations={[
+              {
+                fn: value => {
+                  console.log(value);
+                  return value !== null;
+                },
+                message: 'No puede estar vacío',
               },
-              message: 'No puede estar vacío',
-            },
-          ]}
-          zeroDefault={true}
-          onChange={target => {
-            this.areaChangeHandler(rowIndex, cellIndex, target.value, e2.type);
-          }}
-          value={e2.measure}
-        />
-      ));
+            ]}
+            zeroDefault={true}
+            onChange={target => {
+              this.areaChangeHandler(
+                rowIndex,
+                cellIndex,
+                target.value,
+                e2.type,
+              );
+            }}
+            value={e2.measure}
+          />
+        );
+      });
     });
-  
+  };
 
+  render() {
     return (
       <div>
         {this.state.currentErrorMessage !== '' ? (
@@ -406,7 +415,9 @@ class Area extends Component {
                   />,
                 ]}
                 columns={this.state.properties}
-                data={[...inputs]}
+                data={[
+                  ...(this.state.data && this.inputsForData(this.state.data)),
+                ]}
                 width={{ width: '125px' }}
               />
             </CardBody>
