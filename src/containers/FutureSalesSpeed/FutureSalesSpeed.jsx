@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import Error from '../../components/UI/Error/Error';
 import errorHandling from '../../services/commons/errorHelper';
@@ -12,7 +13,7 @@ class FutureSalesSpeed extends Component {
 
   state = {
     salesSpeeds: [],
-    currentErrorMessage: ''
+    currentErrorMessage: '',
   };
 
   componentDidMount() {

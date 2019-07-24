@@ -1,0 +1,8 @@
+.InputGroup {
+  display: flex;
+  height: 70px;
+  & * {
+    margin-left: 15px;
+    
+  }
+}

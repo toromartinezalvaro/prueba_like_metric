@@ -1,5 +1,7 @@
 import React from 'react';
 import Card, { CardHeader, CardBody } from '../UI/Card/Card';
+import Input from '../../components/UI/Input/Input';
+import styles from './FutureSalesSpeed.module.scss'
 
 const futureSalesSpeed = ({
   salesSpeeds,
@@ -14,14 +16,18 @@ const futureSalesSpeed = ({
       <CardBody>
         {salesSpeeds.map(salesSpeed => {
           return (
-            <div>
-              {salesSpeed.name}{' '}
-              <input
-                value={salesSpeed.futureSalesSpeed}
-                onChange={event => {
-                  futureSalesSpeedHandler(salesSpeed.id, event.target.value);
-                }}
-              />
+            <div className={styles.InputGroup}>
+              <div>{salesSpeed.name}</div>
+              <div>
+                <Input
+                  validations={[]}
+                  value={salesSpeed.futureSalesSpeed}
+                  style={{ width: '75px' }}
+                  onChange={target => {
+                    futureSalesSpeedHandler(salesSpeed.id, target.value);
+                  }}
+                />
+              </div>
             </div>
           );
         })}
