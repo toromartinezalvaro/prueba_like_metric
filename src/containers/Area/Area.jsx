@@ -18,7 +18,6 @@ class Area extends Component {
   constructor(props) {
     super(props);
     this.services = new AreaServices(this);
-    this.currentCounter = 0;
   }
 
   state = {
@@ -393,7 +392,6 @@ class Area extends Component {
   render() {
     return (
       <div>
-        {(this.currentCounter = this.currentCounter + 1)}
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
