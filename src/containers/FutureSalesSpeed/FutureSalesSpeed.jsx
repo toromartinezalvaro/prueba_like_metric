@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Error from '../../components/UI/Error/Error';
 import errorHandling from '../../services/commons/errorHelper';
 import FutureSalesSpeedCard from '../../components/FutureSalesSpeed/FutureSalesSpeed';
 import FutureSalesSpeedsServices from '../../services/futureSalesSpeeds/FutureSalesSpeedsServices';
@@ -11,6 +12,7 @@ class FutureSalesSpeed extends Component {
 
   state = {
     salesSpeeds: [],
+    currentErrorMessage: ''
   };
 
   componentDidMount() {
