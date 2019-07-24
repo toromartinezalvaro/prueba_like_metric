@@ -8,25 +8,26 @@ class table extends Component {
     this.wrapperBottom = React.createRef();
     this.divTop = React.createRef();
     this.divBot = React.createRef();
-
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.scrollWidth = -1
   }
   state = {
     isSyncingTopScroll: false,
     isSyncingBottomScroll: false,
     width: 0,
     heightViewPort: 0,
-    height: 0
+    height: 0,
   };
 
   componentDidUpdate() {
-    if (this.wrapperTop.current) {
+    if (this.wrapperTop.current && this.scrollWidth !==  this.divBot.current.scrollWidth) {
+
       if (this.divTop.current.scrollWidth !== this.divBot.current.scrollWidth) {
+        this.scrollWidth = this.divBot.current.scrollWidth
         this.setState({
           width: this.divBot.current.scrollWidth
         });
       }
-      if (this.state.height === 0) {
+      if (this.state.height === 0 && this.state.heightViewPort !== window.innerHeight) {
         this.setState({
           heightViewPort: window.innerHeight
         });
@@ -47,7 +48,7 @@ class table extends Component {
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
-  updateWindowDimensions() {
+  updateWindowDimensions = () => {
     this.setState({ heightViewPort: window.innerHeight });
   }
 
@@ -66,10 +67,16 @@ class table extends Component {
     }
     this.setState({ isSyncingBottomScroll: false });
   };
+
+  scrollDidUpdate = () => {
+
+  }
+
   render() {
     return (
       <Fragment>
         <div>
+
           {this.state.heightViewPort * 0.25 < this.state.height ? (
             <div
               className={styles.wrapper1}

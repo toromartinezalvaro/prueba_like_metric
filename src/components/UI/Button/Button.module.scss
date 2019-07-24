@@ -1,10 +1,13 @@
-button {
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+@import '../../../assets/styles/variables.scss';
+
+.Button {
   font-family: inherit;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
-  background: #7d4cdb;
-  padding: 10px 40px;
+  color: $white-color;
+  background: $main-color;
   border-radius: 4px;
+  padding: 10px 40px;
   font-weight: bold;
   text-transform: uppercase;
   transition: all 0.2s ease-in-out;
@@ -13,9 +16,8 @@ button {
   cursor: pointer;
   outline: none;
   margin: 0 10px;
-}
 
-button:hover {
-  color: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 15px rgba(145, 92, 182, .4);
+  &:hover {
+    opacity: 0.8;
+  }
 }

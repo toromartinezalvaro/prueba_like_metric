@@ -1,7 +1,8 @@
-import React from "react";
-import Card, { CardFooter, CardHeader, CardBody } from "../UI/Card/Card";
-import styles from "./Towers.module.scss";
-import Icon from "../../assets/icons/Icon";
+import React from 'react';
+import Card, { CardFooter, CardHeader, CardBody } from '../UI/Card/Card';
+import styles from './Towers.module.scss';
+import Icon from '../../assets/icons/Icon';
+import Button from '../UI/Button/Button';
 
 const towerItems = props => {
   var items = towers => {
@@ -47,7 +48,7 @@ const towerItems = props => {
     <Card>
       <CardHeader>
         <p>Torres</p>
-        <button onClick={props.createTower}>Crear Torre</button>
+        <Button onClick={props.createTower}>Crear Torre</Button>
       </CardHeader>
       <CardBody>
         <div className={styles.Towers}>{items(props.towers)}</div>

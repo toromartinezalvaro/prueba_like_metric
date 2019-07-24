@@ -1,4 +1,4 @@
-@import "../../assets/styles/variables.scss";
+@import '../../assets/styles/variables.scss';
 
 .SideMenu {
   display: flex;
@@ -43,7 +43,6 @@
 }
 
 .MenuItem {
-  
   display: flex;
   justify-content: center;
   width: 100%;
@@ -68,5 +67,28 @@
     background-color: $softGrayBackground-color;
     border-radius: 2px;
   }
+}
 
+.Active {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  a:link,
+  a:visited {
+    flex: 1;
+    border: none;
+    background-color: $softGrayBackground-color;
+    color: $main-color;
+    padding: 10px 2px;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  a:hover,
+  a:active {
+    background-color: $softGrayBackground-color;
+    border-radius: 2px;
+  }
 }

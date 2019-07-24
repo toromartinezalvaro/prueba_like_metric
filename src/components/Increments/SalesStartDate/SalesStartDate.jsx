@@ -1,9 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
+import DayPickerInput from 'react-date-picker';
 import MomentLocaleUtils from 'react-day-picker/moment';
-import 'moment/locale/ja';
-import 'react-day-picker/lib/style.css';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import styles from './SalesStartDate.module.scss';
 
@@ -15,11 +13,10 @@ const salesStartDate = ({ salesStartDate, dayChangeHandler, ...rest }) => {
       </CardHeader>
       <CardBody>
         <DayPickerInput
-          localeUtils={MomentLocaleUtils}
-          locale={'ja'}
-          format="M/D/YYYY"
+        format="dd/MM/yyyy"
+          locale={'es'}         
           value={moment(Number(salesStartDate)).toDate()}
-          onDayChange={date => {
+          onChange={date => {
             dayChangeHandler(date.getTime());
           }}
           {...rest}

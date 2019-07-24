@@ -1,8 +1,9 @@
-import React from "react";
-import Input from "../UI/Input/Input";
-import styles from "./Login.module.scss";
-import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import Error from "../../components/UI/Error/Error";
+import React from 'react';
+import Input from '../UI/Input/Input';
+import styles from './Login.module.scss';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import Error from '../../components/UI/Error/Error';
+import Button from '../UI/Button/Button';
 
 const login = props => {
   const emailValidation = [
@@ -12,16 +13,20 @@ const login = props => {
         const pattern = new RegExp(emailExp);
         return pattern.test(value);
       },
-      message: "Debe ser un email válido"
-    }
+      message: 'Debe ser un email válido',
+    },
   ];
+
+  const keyHandler = e => {
+    return e.key === 'Enter' ? props.loginAction() : null;
+  };
 
   return (
     <div>
-      {props.currentErrorMessage !== "" ? (
+      {props.currentErrorMessage !== '' ? (
         <Error message={props.currentErrorMessage} />
       ) : null}
-      <div className={styles.Container}>
+      <div className={styles.Container} onKeyDown={keyHandler} tabIndex="0">
         <Card>
           <CardHeader>
             <p>Login</p>
@@ -35,7 +40,8 @@ const login = props => {
                 value={props.email}
                 validations={emailValidation}
                 disable={false}
-                placeholder={"Correo"}
+                placeholder={'Correo'}
+                forceUpdate={true}
               />
             </div>
             <div className={styles.Row}>
@@ -47,16 +53,17 @@ const login = props => {
                 value={props.password}
                 validations={[]}
                 disable={false}
-                placeholder={"Contraseña"}
+                placeholder={'Contraseña'}
+                forceUpdate={true}
               />
 
               <div
               // className={styles.Actions}
               >
                 {
-                  <button className={styles.Button} onClick={props.loginAction}>
+                  <Button className={styles.Button} onClick={props.loginAction}>
                     Login
-                  </button>
+                  </Button>
                 }
               </div>
             </div>

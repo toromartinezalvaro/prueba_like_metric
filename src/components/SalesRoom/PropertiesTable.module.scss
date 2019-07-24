@@ -1,0 +1,30 @@
+@import '../../assets/styles/variables.scss';
+
+.Container {
+  display: flex;
+  justify-content: center;
+}
+
+.GreenHelper {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  background-color: $green-color;
+}
+.YellowHelper {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  background-color: $yellow-color;
+}
+.BlueHelper {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  background-color: $main-color;
+}
+
+.Label {
+  font-size: 14px;
+  margin-right: 14px;
+}

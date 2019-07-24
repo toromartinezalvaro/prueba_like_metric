@@ -22,11 +22,13 @@ const IncrementTable = ({
 }) => {
   const [validation, setValidation] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
+  console.log(arrayOfIncrements.length)
   if (arrayOfIncrements.length === 0)
     arrayOfIncrements = data.map(increment => [
       increment.salesSpeed,
       increment.anualEffectiveIncrement,
     ]);
+
   return (
     <Card>
       <CardHeader>
@@ -35,7 +37,21 @@ const IncrementTable = ({
       <CardBody>
         {data.map((increment, i) => {
           return (
-            <Accordion trigger={increment.name}>
+            <Accordion
+              trigger={
+                <div>
+                  {increment.name}
+                  {increment.increment !== null ? (
+                    <NumberFormat
+                      value={increment.increment.toFixed(2)}
+                      displayType={'text'}
+                      prefix=" - $"
+                      thousandSeparator={true}
+                    />
+                  ) : null}
+                </div>
+              }
+            >
               <div className={styles.AccordionContainer}>
                 <div className={styles.statContent}>
                   <div>
@@ -179,7 +195,17 @@ const IncrementTable = ({
             </Accordion>
           );
         })}
-
+        Incremento total:{' '}
+        <NumberFormat
+          value={data
+            .reduce((current, next) => {
+              return current + next.increment;
+            }, 0)
+            .toFixed(2)}
+          displayType={'text'}
+          prefix={'$'}
+          thousandSeparator={true}
+        />
         {/* <div className={styles.Content}>
           <div className={styles.Column}>
             <div className={styles.Header}>Tipo</div>
@@ -370,11 +396,11 @@ const IncrementTable = ({
           ) : null}
           <div
             onClick={() => {
-              /* setValidation(
+              setValidation(
                 arrayOfIncrements.find(
                   increment => increment[0] === null || increment[1] === null,
                 ),
-              ); */
+              );
               setIsClicked(true);
             }}
           >
