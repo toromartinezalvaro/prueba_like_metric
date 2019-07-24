@@ -69,7 +69,6 @@ export default class Detail extends Component {
       };
       leftButton = { label: 'Disponible', color: variables.greenColor };
     }
-    console.log('Hola');
     return {
       backgroundColor,
       rightButton,
@@ -100,6 +99,7 @@ export default class Detail extends Component {
         {active === 'mts2' ? (
           property.mts2
         ) : (
+          console.log(property),
           <NumberFormat
             value={parseFloat(property.price).toFixed(2)}
             displayType={'text'}
@@ -121,10 +121,7 @@ export default class Detail extends Component {
       data.properties.map(properties => {
         properties.map(property => {
           let floor = arrayOfNulls[property.floor - data.lowestFloor];
-          console.log(property.status);
-
           const buttons = this.buttonsStyles(property.status);
-
           floor[property.location - 1] = this.makeCells(
             buttons,
             property,
