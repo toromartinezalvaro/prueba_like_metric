@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import errorHandling from '../../services/commons/errorHelper';
 import FutureSalesSpeedCard from '../../components/FutureSalesSpeed/FutureSalesSpeed';
 import FutureSalesSpeedsServices from '../../services/futureSalesSpeeds/FutureSalesSpeedsServices';
 
@@ -19,7 +20,10 @@ class FutureSalesSpeed extends Component {
         this.setState({ salesSpeeds: results.data });
       })
       .catch(error => {
-        console.error(error);
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message,
+        });
       });
   }
 
@@ -30,16 +34,24 @@ class FutureSalesSpeed extends Component {
         console.log(results);
       })
       .catch(error => {
-        console.error(error);
+        let errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message,
+        });
       });
   };
 
   render() {
     return (
-      <FutureSalesSpeedCard
-        salesSpeeds={this.state.salesSpeeds}
-        futureSalesSpeedHandler={this.futureSalesSpeedHandler}
-      />
+      <React.Fragment>
+        {this.state.currentErrorMessage !== '' ? (
+          <Error message={this.state.currentErrorMessage} />
+        ) : null}
+        <FutureSalesSpeedCard
+          salesSpeeds={this.state.salesSpeeds}
+          futureSalesSpeedHandler={this.futureSalesSpeedHandler}
+        />
+      </React.Fragment>
     );
   }
 }
