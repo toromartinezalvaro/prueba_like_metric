@@ -20,6 +20,7 @@ class Clustering extends Component {
     },
     clusters: [],
     loadingTable: false,
+    waitingForResponse: false,
   };
 
   componentDidMount() {
@@ -44,7 +45,7 @@ class Clustering extends Component {
   };
 
   postClusters = clusterByArea => {
-    this.setState({ loadingTable: true });
+    this.setState({ loadingTable: true, waitingForResponse: true });
     this.services
       .postClusters(this.props.match.params.towerId, {
         groups: parseInt(this.state.groupsSize),
@@ -55,10 +56,11 @@ class Clustering extends Component {
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
           loadingTable: false,
+          waitingForResponse: false,
         });
       })
       .catch(error => {
-        this.setState({ loadingTable: false });
+        this.setState({ loadingTable: false, waitingForResponse: false });
       });
   };
 
@@ -101,6 +103,7 @@ class Clustering extends Component {
                   onClick={() => {
                     this.postClusters(true);
                   }}
+                  disabled={this.state.waitingForResponse}
                 >
                   Agrupar por area
                 </Button>
@@ -108,6 +111,7 @@ class Clustering extends Component {
                   onClick={() => {
                     this.postClusters(false);
                   }}
+                  disabled={this.state.waitingForResponse}
                 >
                   Agrupar por precio
                 </Button>
