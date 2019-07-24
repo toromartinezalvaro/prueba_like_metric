@@ -4,6 +4,7 @@ import Line from '../../components/UI/ChartLine/ChartLine';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
+import SummaryStrategy from '../../components/Strategy/SummaryStrategy';
 import { Link } from 'react-router-dom';
 import styles from '../../assets/styles/variables.scss';
 import { DashboardRoutes } from '../../routes/local/routes';
@@ -177,12 +178,16 @@ export default class Strategy extends Component {
         incrementList: this.state.groupActive.strategies[this.state.index]
           .percentage,
       })
-      .then(
+      .then(res => {
+        return this.services.getStrategies(this.props.match.params.towerId);
+      })
+      .then(strategies => {
         this.setState({
           hidden: true,
           strategyActive: this.state.strategySelected,
-        }),
-      )
+          groups: strategies.data.increments
+        });
+      })
       .catch(err => console.log(err));
   };
 
@@ -252,6 +257,10 @@ export default class Strategy extends Component {
                     );
                   }
                 })}
+                <SummaryStrategy
+                  groups={this.state.groups}
+                  helper={this.state.dataHelper}
+                />
               </div>
             </div>
           ) : null
