@@ -17,13 +17,21 @@ class FutureSalesSpeed extends Component {
       .getFutureSalesSpeeds(this.props.match.params.towerId)
       .then(results => {
         this.setState({ salesSpeeds: results.data });
+      })
+      .catch(error => {
+        console.error(error);
       });
   }
 
   futureSalesSpeedHandler = (id, value) => {
-    this.services.putFutureSalesSpeeds(id, value).then(results => {
-      console.log(results);
-    });
+    this.services
+      .putFutureSalesSpeeds(id, value)
+      .then(results => {
+        console.log(results);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   render() {
