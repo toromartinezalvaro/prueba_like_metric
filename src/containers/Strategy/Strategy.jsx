@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import styles from '../../assets/styles/variables.scss';
 import { DashboardRoutes } from '../../routes/local/routes';
 import moment from 'moment';
+import { Role } from '../../helpers';
 import _ from 'lodash';
 
 export default class Strategy extends Component {
@@ -35,30 +36,30 @@ export default class Strategy extends Component {
         label: ['Continua'],
         borderColor: styles.mainColor,
         backgroundColor: styles.softMainColor,
-        fill: null
+        fill: null,
       },
       {
         id: 3,
         label: ['Semi-Continua'],
         borderColor: styles.greenColor,
         backgroundColor: styles.softGreenColor,
-        fill: null
+        fill: null,
       },
       {
         id: 9,
         label: ['Semi-Escalonada'],
         borderColor: styles.redColor,
         backgroundColor: styles.softRedColor,
-        fill: null
+        fill: null,
       },
       {
         id: 18,
         label: ['Escalonada'],
         borderColor: styles.yellowColor,
         backgroundColor: styles.softRedColor,
-        fill: null
-      }
-    ]
+        fill: null,
+      },
+    ],
   };
 
   findGroup = (groups, active) => {
@@ -104,7 +105,7 @@ export default class Strategy extends Component {
           borderColor: this.state.dataHelper[i].borderColor,
           backgroundColor: this.state.dataHelper[i].backgroundColor,
           fill: this.state.dataHelper[i].fill,
-          lineTension: 0.05
+          lineTension: 0.05,
         };
       }
     });
@@ -124,7 +125,7 @@ export default class Strategy extends Component {
           this.setState({ salesStartDate: startDate });
           const groupFilter = this.findGroup(
             strategies.data.increments,
-            strategies.data.increments[0]
+            strategies.data.increments[0],
           );
           const labels = this.makeArrayLabels(groupFilter);
           const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
@@ -134,14 +135,14 @@ export default class Strategy extends Component {
             currentGroup: arrayDataSets,
             labels: labels,
             groups: strategies.data.increments,
-            strategyActive: strategies.data.increments[0].strategy
+            strategyActive: strategies.data.increments[0].strategy,
           });
         }
       })
       .catch(err =>
         this.setState({
-          isLoading: false
-        })
+          isLoading: false,
+        }),
       );
     console.log('this.state.groups', this.state.groups);
   }
@@ -153,18 +154,17 @@ export default class Strategy extends Component {
     const groupFilter = this.findGroup(this.state.groups, groupActive);
     const labels = this.makeArrayLabels(groupFilter);
     const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
-    console.log('labels', labels);
-
+    console.log(groupActive);
     if (arrayDataSets.length !== 0) {
       this.setState({
         currentGroup: arrayDataSets,
         labels: labels,
         groupActive: groupActive,
-        strategyActive: groupActive.strategy
+        strategyActive: groupActive.strategy,
       });
     } else {
       this.setState({
-        groupActive: groupActive
+        groupActive: groupActive,
       });
     }
   }
@@ -175,13 +175,13 @@ export default class Strategy extends Component {
         id: this.state.groupActive.id,
         strategy: this.state.strategySelected,
         incrementList: this.state.groupActive.strategies[this.state.index]
-          .percentage
+          .percentage,
       })
       .then(
         this.setState({
           hidden: true,
-          strategyActive: this.state.strategySelected
-        })
+          strategyActive: this.state.strategySelected,
+        }),
       )
       .catch(err => console.log(err));
   };
@@ -193,13 +193,22 @@ export default class Strategy extends Component {
 
   render() {
     return (
-      <Card>
+      <Card style={{ marginTop: '-30px' }}>
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          {this.state.groups.map(group => (
-            <Button onClick={() => this.handleClick(group.type)}>
-              {group.type}
-            </Button>
-          ))}
+          {this.state.groups.map(group =>
+            group.type === this.state.groupActive.type ? (
+              <Button onClick={() => this.handleClick(group.type)}>
+                {group.type}
+              </Button>
+            ) : (
+              <Button
+                onClick={() => this.handleClick(group.type)}
+                style={{ backgroundColor: styles.grayColor }}
+              >
+                {group.type}
+              </Button>
+            ),
+          )}
         </div>
         {this.state.groups.length > 0 ? (
           this.state.groupActive.strategies.length !== 0 ? (
@@ -216,7 +225,7 @@ export default class Strategy extends Component {
                 {this.state.groupActive.strategies.map((group, index) => {
                   if (index !== 0) {
                     let styleButton = {
-                      backgroundColor: styles.grayColor
+                      backgroundColor: styles.grayColor,
                     };
                     if (
                       this.state.strategyActive ===
@@ -224,7 +233,7 @@ export default class Strategy extends Component {
                     ) {
                       styleButton = {
                         backgroundColor: this.state.dataHelper[index]
-                          .borderColor
+                          .borderColor,
                       };
                     }
                     return (
@@ -233,7 +242,7 @@ export default class Strategy extends Component {
                           this.setState({
                             hidden: false,
                             strategySelected: this.state.dataHelper[index].id,
-                            index: index
+                            index: index,
                           });
                         }}
                         style={styleButton}
