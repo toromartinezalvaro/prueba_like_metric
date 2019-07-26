@@ -20,18 +20,21 @@ const groupTable = ({
   };
 
   const parseToRow = (property, index) => {
+    console.log(property.group === null);
+    let value = null;
+    if (property.group !== null) value = property.group.id;
     return [
       <Cell>{property.area}</Cell>,
       <Cell>{property.price}</Cell>,
       <Cell>{property.areaGroup}</Cell>,
       <Cell>{property.priceGroup}</Cell>,
       <GroupSelect
-        value={property.group.id}
+        value={value}
         onChange={event => {
           onTypeChange(property.id, event.target.value);
         }}
         groups={towerClusterConfig.groups}
-      />,
+      />
     ];
   };
 
@@ -48,7 +51,7 @@ const groupTable = ({
             'Precio',
             'Tipo por area',
             'Tipo por precio',
-            'Tipo',
+            'Tipo'
           ]}
           columns={getPropertyNames(data)}
           data={getRows(data)}
