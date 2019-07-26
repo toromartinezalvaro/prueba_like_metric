@@ -22,14 +22,15 @@ class Client extends Component {
       city: null,
       module: null,
     },
+    modules: [],
     genders: {},
     clientTypes: {},
   };
 
   componentDidMount() {
-    this.services.getEnums().then(response => {
-      const { genders, clientTypes } = response.data;
-      this.setState({ genders, clientTypes });
+    this.services.getEnums(this.props.match.params.towerId).then(response => {
+      const { genders, clientTypes, modules } = response.data;
+      this.setState({ genders, clientTypes, modules });
     });
   }
 
@@ -40,13 +41,20 @@ class Client extends Component {
   };
 
   saveClient = () => {
-    console.log(this.state.client);
-    //this.services.postClient(this.state.client);
+    this.services
+      .postClient(this.state.client)
+      .then(results => {
+        console.log('OK');
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   render() {
     return (
       <ClientForm
+        modules={this.state.modules}
         genders={this.state.genders}
         clientTypes={this.state.clientTypes}
         clientHandler={this.clientHandler}

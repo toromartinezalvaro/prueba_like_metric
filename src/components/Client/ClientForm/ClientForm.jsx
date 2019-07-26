@@ -4,6 +4,7 @@ import Button from '../../UI/Button/Button';
 import Input from '../../UI/Input/Input';
 
 const clientFrom = ({
+  modules,
   genders,
   clientTypes,
   clientHandler,
@@ -28,7 +29,7 @@ const clientFrom = ({
           </div>
           <div>
             <span>Tipo de cliente</span>
-            <select>
+            <select name="clientType" onChange={clientHandler}>
               <option value={null}>Seleccione el tipo de cliente</option>
               {Object.entries(clientTypes).map(([_, value]) => {
                 return <option value={value.code}>{value.value}</option>;
@@ -37,39 +38,44 @@ const clientFrom = ({
           </div>
           <div>
             <span>Documento de identidad</span>
-            <input />
+            <input name="identityDocument" onChange={clientHandler} />
           </div>
           <div>
             <span>Razon social</span>
-            <input />
+            <input name="socialReason" onChange={clientHandler} />
           </div>
           <div>
             <span>Nombre</span>
-            <input />
+            <input name="name" onChange={clientHandler} />
           </div>
           <div>
             <span>Apellido</span>
-            <input />
+            <input name="surname" onChange={clientHandler} />
           </div>
           <div>
             <span>Numero de telefono</span>
-            <input />
+            <input name="phoneNumber" onChange={clientHandler} />
           </div>
           <div>
             <span>Celular</span>
-            <input />
+            <input name="mobileNumber" onChange={clientHandler} />
           </div>
           <div>
             <span>Email</span>
-            <input />
+            <input name="email" onChange={clientHandler} />
           </div>
           <div>
             <span>Ciudad</span>
-            <input />
+            <input name="city" onChange={clientHandler} />
           </div>
           <div>
             <span>Modulo</span>
-            <input />
+            <select name="module" onChange={clientHandler}>
+              <option value={null}>Seleccione un modulo</option>
+              {modules.map(module => {
+                return <option value={module.id}>{module.name}</option>;
+              })}
+            </select>
           </div>
         </div>
       </CardBody>
