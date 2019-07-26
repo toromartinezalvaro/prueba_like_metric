@@ -1,0 +1,13 @@
+.inputGroup {
+  & .label {
+    justify-content: center;
+    display: flex;
+    flex-flow: column;
+    margin-right: 15px;
+    & span {
+      display: block;
+    }
+  }
+  display: flex;
+  margin-bottom: 25px;
+}

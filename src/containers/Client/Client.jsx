@@ -34,9 +34,22 @@ class Client extends Component {
     });
   }
 
-  clientHandler = event => {
+  genderHandler = value => {
     const tempClient = this.state.client;
-    tempClient[event.target.name] = event.target.value;
+    tempClient.gender = value;
+    this.setState({ client: tempClient });
+  };
+
+  clientTypeHandler = value => {
+    const tempClient = this.state.client;
+    tempClient.clientType = value;
+    this.setState({ client: tempClient });
+  };
+
+  clientHandler = target => {
+    console.log(target);
+    const tempClient = this.state.client;
+    tempClient[target.name] = target.value;
     this.setState({ client: tempClient });
   };
 
@@ -54,6 +67,8 @@ class Client extends Component {
   render() {
     return (
       <ClientForm
+        genderHandler={this.genderHandler}
+        clientTypeHandler={this.clientTypeHandler}
         modules={this.state.modules}
         genders={this.state.genders}
         clientTypes={this.state.clientTypes}
