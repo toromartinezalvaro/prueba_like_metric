@@ -97,7 +97,7 @@ export default class Detail extends Component {
     >
       <p style={{ fontWeight: 'bold', color: 'White' }}>
         {active === 'mts2' ? (
-          property.mts2
+          parseFloat(property.mts2).toFixed(2)
         ) : (
           <NumberFormat
             value={parseFloat(property.price).toFixed(2)}
