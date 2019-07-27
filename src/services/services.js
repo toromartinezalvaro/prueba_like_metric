@@ -19,11 +19,15 @@ class Services {
     return this.axiosPromise(() => this.axios.put(url, data, config));
   }
 
+  
   get(url, data, config) {
     console.log("url 🐒 get", url);
     return this.axiosPromise(() => this.axios.get(url, data, config));
   }
-
+  download(url, data, config) {
+    console.log("url 🐒 get", url);
+    return this.axiosPromise(() => this.axios.get(url, data, config));
+  }
   delete(url, data, config) {
     console.log("url 🐒 delete", url);
     let newConfig = {

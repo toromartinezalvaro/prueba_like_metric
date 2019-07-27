@@ -1,17 +1,19 @@
-import React, { Component } from "react";
-import Pie from "../../components/Detail/pie/Pie";
-import Property from "../../components/Detail/Property/Property";
-import Additional from "../../components/Detail/Aditionals/Aditionals";
-import Totals from "../../components/Detail/Totals/Totals";
-import DetailServices from "../../services/detail/DetailServices";
-import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import styles from "../DetailAdmin/DetailAdmin.module.scss";
-import variables from "../../assets/styles/variables.scss";
-import Table from "../../components/UI/Table/Table";
-import NumberFormat from "react-number-format";
-import errorHandling from "../../services/commons/errorHelper";
-import Error from "../../components/UI/Error/Error";
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import React, { Component } from 'react';
+import Pie from '../../components/Detail/pie/Pie';
+import Property from '../../components/Detail/Property/Property';
+import Additional from '../../components/Detail/Aditionals/Aditionals';
+import Totals from '../../components/Detail/Totals/Totals';
+import DownloadCSV from '../../components/Detail/DownloadCSV/DownloadCSV';
+import DetailServices from '../../services/detail/DetailServices';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import styles from '../DetailAdmin/DetailAdmin.module.scss';
+import variables from '../../assets/styles/variables.scss';
+import Table from '../../components/UI/Table/Table';
+import NumberFormat from 'react-number-format';
+import errorHandling from '../../services/commons/errorHelper';
+import Error from '../../components/UI/Error/Error';
+import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
+import Button from '../../components/UI/Button/Button';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -31,17 +33,17 @@ export default class Detail extends Component {
     additional2: [],
     areasTable: {
       nameAreas: [],
-      priceAreas: []
+      priceAreas: [],
     },
     areasTable2: {
       nameAreas: [],
-      priceAreas: []
+      priceAreas: [],
     },
     style: {},
     active: 0,
     active2: 0,
     id: 0,
-    id2: 0
+    id2: 0,
   };
 
   componentDidMount() {
@@ -62,10 +64,10 @@ export default class Detail extends Component {
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
         });
       });
-    this.setState({ currentErrorMessage: "" });
+    this.setState({ currentErrorMessage: '' });
   };
 
   assignDefaultValues = data => {
@@ -74,10 +76,10 @@ export default class Detail extends Component {
         properties: data,
         property: data[0],
         totals: data[0].totals,
-        areas: data[0].areas.filter(({ areaType }) => areaType.unit === "MT2"),
+        areas: data[0].areas.filter(({ areaType }) => areaType.unit === 'MT2'),
         additional: data[0].areas.filter(
-          ({ areaType }) => areaType.unit === "UNT"
-        )
+          ({ areaType }) => areaType.unit === 'UNT',
+        ),
       });
       this.assignTableData();
       this.setState({ isLoading: false });
@@ -102,17 +104,17 @@ export default class Detail extends Component {
           (current, next) => {
             current.nameAreas.push(next.areaType.name);
             current.priceAreas.push(
-              <p style={{ alignContent: "center" }}>
+              <p style={{ alignContent: 'center' }}>
                 {this.formatPrice(next.price)}
-              </p>
+              </p>,
             );
             return current;
           },
           {
             nameAreas: [],
-            priceAreas: []
-          }
-        )
+            priceAreas: [],
+          },
+        ),
       });
     }
   };
@@ -121,9 +123,9 @@ export default class Detail extends Component {
     return (
       <NumberFormat
         value={value}
-        displayType={"text"}
+        displayType={'text'}
         thousandSeparator={true}
-        prefix={"$"}
+        prefix={'$'}
       />
     );
   };
@@ -160,30 +162,30 @@ export default class Detail extends Component {
               property2: property,
               totals2: property.totals,
               areas2: property.areas.filter(
-                ({ areaType }) => areaType.unit === "MT2"
+                ({ areaType }) => areaType.unit === 'MT2',
               ),
               additional2: property.areas.filter(
-                ({ areaType }) => areaType.unit === "UNT"
-              )
+                ({ areaType }) => areaType.unit === 'UNT',
+              ),
             }),
             this.setState({
               areasTable2: areas.reduce(
                 (current, next) => {
-                  if (next.areaType.unit === "MT2") {
+                  if (next.areaType.unit === 'MT2') {
                     current.nameAreas.push(next.areaType.name);
                     current.priceAreas.push(
-                      <p style={{ alignContent: "center" }}>
+                      <p style={{ alignContent: 'center' }}>
                         {this.formatPrice(next.price)}
-                      </p>
+                      </p>,
                     );
                   }
                   return current;
                 },
                 {
                   nameAreas: [],
-                  priceAreas: []
-                }
-              )
+                  priceAreas: [],
+                },
+              ),
             })
           );
         } else if (
@@ -201,12 +203,12 @@ export default class Detail extends Component {
             property: property,
             totals: property.totals,
             areas: property.areas.filter(
-              ({ areaType }) => areaType.unit === "MT2"
+              ({ areaType }) => areaType.unit === 'MT2',
             ),
             additional: property.areas.filter(
-              ({ areaType }) => areaType.unit === "UNT"
+              ({ areaType }) => areaType.unit === 'UNT',
             ),
-            id: property.id
+            id: property.id,
           });
         } else {
           return this.setState({ id: 0 });
@@ -218,9 +220,9 @@ export default class Detail extends Component {
             property={property}
             style={
               this.state.id === property.id
-                ? { color: "white", backgroundColor: variables.mainColor }
+                ? { color: 'white', backgroundColor: variables.mainColor }
                 : this.state.id2 === property.id
-                ? { color: "white", backgroundColor: variables.greenColor }
+                ? { color: 'white', backgroundColor: variables.greenColor }
                 : {}
             }
           />
@@ -229,17 +231,42 @@ export default class Detail extends Component {
     });
   };
 
+  onClickExport = () => {
+    const towerId = this.props.match.params.towerId;
+    this.services.getExcel(towerId)
+      .then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `Detalle.xlsx`) ;
+        document.body.appendChild(link);
+        link.click();
+      });
+  /*   fetch(this.services.getExcel(towerId))
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Detalle.csv`;
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      }); */
+  };
+
   render() {
     return (
       <div>
-        {this.state.currentErrorMessage !== "" ? (
+        {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
+            <Button onClick={this.onClickExport}>Export to xls</Button>
           </CardHeader>
-          <CardBody style={{ margin: "0" }}>
+          <CardBody style={{ margin: '0' }}>
             <div className={styles.Row}>
               {this.cells(this.state.properties)}
             </div>
@@ -250,20 +277,20 @@ export default class Detail extends Component {
             style={
               this.state.id2 !== 0 && this.state.id !== 0
                 ? {
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: " space-between"
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: ' space-between',
                   }
-                : { display: "flex" }
+                : { display: 'flex' }
             }
           >
             {this.state.id !== 0 ? (
-              <div style={{ display: "flex" }}>
-                <Card style={{ marginTop: "0" }}>
+              <div style={{ display: 'flex' }}>
+                <Card style={{ marginTop: '0' }}>
                   <CardHeader>
                     <p>Areas {this.state.property.nomenclature}</p>
                   </CardHeader>
-                  <CardBody style={{ margin: "0" }}>
+                  <CardBody style={{ margin: '0' }}>
                     <Pie
                       property={this.state.property}
                       nomenclature={this.state.property.nomenclature}
@@ -272,20 +299,20 @@ export default class Detail extends Component {
                     <Totals data={this.state.property} />
                     <div
                       style={{
-                        marginTop: "10px",
-                        overflowX: "auto",
-                        maxWidth: "450px"
+                        marginTop: '10px',
+                        overflowX: 'auto',
+                        maxWidth: '450px',
                       }}
                     >
                       <Table
-                        intersect={"Areas"}
+                        intersect={'Areas'}
                         headers={this.state.areasTable.nameAreas}
                         columns={[
-                          <p style={{ alignContent: "center" }}>PrecioxMts2</p>
+                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>,
                         ]}
                         data={[this.state.areasTable.priceAreas]}
-                        style={{ padding: "0em 1.5em" }}
-                        width={{ width: "100px" }}
+                        style={{ padding: '0em 1.5em' }}
+                        width={{ width: '100px' }}
                       />
                     </div>
                   </CardBody>
@@ -293,12 +320,12 @@ export default class Detail extends Component {
               </div>
             ) : null}
             {this.state.active2 !== 0 ? (
-              <div style={{ display: "flex" }}>
-                <Card style={{ marginTop: "0" }}>
+              <div style={{ display: 'flex' }}>
+                <Card style={{ marginTop: '0' }}>
                   <CardHeader>
                     <p>Areas {this.state.property2.nomenclature}</p>
                   </CardHeader>
-                  <CardBody style={{ margin: "0" }}>
+                  <CardBody style={{ margin: '0' }}>
                     <Pie
                       property={this.state.property2}
                       nomenclature={this.state.property2.nomenclature}
@@ -306,20 +333,20 @@ export default class Detail extends Component {
                     <Totals data={this.state.property2} />
                     <div
                       style={{
-                        marginTop: "10px",
-                        overflowX: "auto",
-                        maxWidth: "450px"
+                        marginTop: '10px',
+                        overflowX: 'auto',
+                        maxWidth: '450px',
                       }}
                     >
                       <Table
-                        intersect={"Areas"}
+                        intersect={'Areas'}
                         headers={this.state.areasTable2.nameAreas}
                         columns={[
-                          <p style={{ alignContent: "center" }}>PrecioxMts2</p>
+                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>,
                         ]}
                         data={[this.state.areasTable2.priceAreas]}
-                        style={{ padding: "0em 1.5em" }}
-                        width={{ width: "100px" }}
+                        style={{ padding: '0em 1.5em' }}
+                        width={{ width: '100px' }}
                       />
                     </div>
                   </CardBody>
@@ -330,15 +357,15 @@ export default class Detail extends Component {
               <div
                 style={
                   this.state.id !== 0 && this.state.id2 !== 0
-                    ? { flexGrow: "1" }
-                    : { display: "flex" }
+                    ? { flexGrow: '1' }
+                    : { display: 'flex' }
                 }
               >
-                <Card style={{ marginTop: "0" }}>
+                <Card style={{ marginTop: '0' }}>
                   <CardHeader>
                     <p>Adicionales</p>
                   </CardHeader>
-                  <CardBody style={{ margin: "0" }}>
+                  <CardBody style={{ margin: '0' }}>
                     {this.printAdditional(this.state.additional)}
                     <Additional
                       Title="Total"
@@ -348,7 +375,7 @@ export default class Detail extends Component {
                       Value1={this.state.totals.quantityAdditional}
                       Value2={this.formatPrice(this.state.totals.priceXUnit)}
                       Value3={this.formatPrice(
-                        this.state.totals.priceAdditional
+                        this.state.totals.priceAdditional,
                       )}
                     />
                   </CardBody>
@@ -359,15 +386,15 @@ export default class Detail extends Component {
               <div
                 style={
                   this.state.id2 !== 0 && this.state.id !== 0
-                    ? { flexGrow: "1" }
-                    : { display: "flex" }
+                    ? { flexGrow: '1' }
+                    : { display: 'flex' }
                 }
               >
-                <Card style={{ marginTop: "0" }}>
+                <Card style={{ marginTop: '0' }}>
                   <CardHeader>
                     <p>Adicionales</p>
                   </CardHeader>
-                  <CardBody style={{ margin: "0" }}>
+                  <CardBody style={{ margin: '0' }}>
                     {this.printAdditional(this.state.additional2)}
 
                     <Additional
@@ -378,7 +405,7 @@ export default class Detail extends Component {
                       Value1={this.state.totals2.quantityAdditional}
                       Value2={this.formatPrice(this.state.totals2.priceXUnit)}
                       Value3={this.formatPrice(
-                        this.state.totals2.priceAdditional
+                        this.state.totals2.priceAdditional,
                       )}
                     />
                   </CardBody>
@@ -388,12 +415,12 @@ export default class Detail extends Component {
           </div>
         ) : null}
         <FloatingButton
-            route="summary"
-            projectId={this.props.match.params.projectId}
-            towerId={this.props.match.params.towerId}
-          >
-            Resumen
-          </FloatingButton>
+          route="summary"
+          projectId={this.props.match.params.projectId}
+          towerId={this.props.match.params.towerId}
+        >
+          Resumen
+        </FloatingButton>
       </div>
     );
   }
