@@ -14,18 +14,19 @@ class FutureSalesSpeed extends Component {
   state = {
     salesSpeeds: [],
     currentErrorMessage: '',
+    isLoading: false,
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
       .getFutureSalesSpeeds(this.props.match.params.towerId)
-      .then(results => {
-        this.setState({ salesSpeeds: results.data });
-      })
+      .then(results => this.setState({ salesSpeeds: results.data, isLoading: false }))
       .catch(error => {
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
+          isLoading: false,
         });
       });
   }
@@ -33,9 +34,7 @@ class FutureSalesSpeed extends Component {
   futureSalesSpeedHandler = (id, value) => {
     this.services
       .putFutureSalesSpeeds(id, value)
-      .then(results => {
-        console.log(results);
-      })
+      .then(results => console.log(results))
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
