@@ -9,6 +9,20 @@ const getTotal = salesSpeeds => salesSpeeds.reduce((current, next) => {
   return current;
 }, 0);
 
+const inputValidation = units => [
+  {
+    fn: value => value >= 0,
+    message: 'Debe ser mayor 0',
+  },
+  {
+    fn: value => units / value <= 98,
+    message: 'El numero de periodos no puede ser mayor a 98',
+  },
+  {
+    fn: value => value < units,
+    message: 'Debe ser menor a las unidades',
+  },
+];
 
 const FutureSalesSpeed = ({
   salesSpeeds,
@@ -57,7 +71,7 @@ const FutureSalesSpeed = ({
                     </div>
                     <div className={styles.gridItem}>
                       <Input
-                        validations={[]}
+                        validations={inputValidation(group.units)}
                         value={group.futureSalesSpeed}
                         style={{ width: '75px' }}
                         onChange={(target) => {
