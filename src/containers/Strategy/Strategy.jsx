@@ -57,7 +57,7 @@ export default class Strategy extends Component {
         id: 18,
         label: ['Escalonada'],
         borderColor: styles.yellowColor,
-        backgroundColor: styles.softRedColor,
+        backgroundColor: styles.softYellowColor,
         fill: null,
       },
     ],
@@ -185,7 +185,7 @@ export default class Strategy extends Component {
         this.setState({
           hidden: true,
           strategyActive: this.state.strategySelected,
-          groups: strategies.data.increments
+          groups: strategies.data.increments,
         });
       })
       .catch(err => console.log(err));

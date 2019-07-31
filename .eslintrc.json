@@ -1,3 +1,15 @@
 {
-  "extends": "react-app"
+  "plugins": ["react"],
+  "extends": ["airbnb-base", "plugin:react/recommended"],
+  "parser": "babel-eslint",
+  "rules": {
+    "no-set-state": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".json", ".native.js"]
+      }
+    }
+  }
 }
