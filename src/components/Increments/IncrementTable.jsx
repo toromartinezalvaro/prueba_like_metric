@@ -25,8 +25,17 @@ const IncrementTable = ({
 
   const inputValidation = units => [
     {
+      fn: value => value > 0,
+      message: 'La velocidad de ventas debe ser mayor a 0',
+    },
+    {
       fn: value => value <= units,
       message: 'Debe ser menor a las unidades',
+    },
+    {
+      fn: value => units / value <= 98,
+      message:
+        'La velocidad de ventas es demasiado baja para el numero de unidades',
     },
   ];
 
@@ -83,7 +92,9 @@ const IncrementTable = ({
               </div>
               <div className={styles.statContent}>
                 <div>
-                  <span className={styles.label}>Precio Promedio (Sin primas):</span>
+                  <span className={styles.label}>
+                    Precio Promedio (Sin primas):
+                  </span>
                 </div>
                 <div>
                   <NumberFormat
