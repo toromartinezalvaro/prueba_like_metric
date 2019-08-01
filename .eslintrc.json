@@ -3,7 +3,8 @@
   "extends": ["airbnb-base", "plugin:react/recommended"],
   "parser": "babel-eslint",
   "rules": {
-    "no-set-state": "off"
+    "no-set-state": "off",
+    "arrow-parens": "off"
   },
   "settings": {
     "import/resolver": {
