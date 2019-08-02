@@ -7,6 +7,7 @@ import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 import styles from './IncrementTable.module.scss';
 import variables from '../../assets/styles/variables.scss';
+import GeneralInfo from '../Increments/IncrementTable/GeneralInfo';
 
 let arrayOfIncrements = [];
 
@@ -23,25 +24,24 @@ const IncrementTable = ({
   const [validation, setValidation] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
 
-  const inputValidation = units => [
+  const inputValidation = (units) => [
     {
-      fn: value => value > 0,
+      fn: (value) => value > 0,
       message: 'La velocidad de ventas debe ser mayor a 0',
     },
     {
-      fn: value => value <= units,
+      fn: (value) => value <= units,
       message: 'Debe ser menor a las unidades',
     },
     {
-      fn: value => units / value <= 98,
+      fn: (value) => units / value <= 98,
       message:
         'La velocidad de ventas es demasiado baja para el numero de unidades',
     },
   ];
 
-  console.log(arrayOfIncrements.length);
   if (arrayOfIncrements.length === 0) {
-    arrayOfIncrements = data.map(increment => [
+    arrayOfIncrements = data.map((increment) => [
       increment.salesSpeed,
       increment.anualEffectiveIncrement,
     ]);
@@ -71,6 +71,7 @@ const IncrementTable = ({
             }
           >
             <div className={styles.AccordionContainer}>
+              <GeneralInfo />
               <div className={styles.statContent}>
                 <div>
                   <span className={styles.label}>Unidades:</span>
@@ -113,12 +114,12 @@ const IncrementTable = ({
                   <Input
                     style={{ width: '50px' }}
                     validations={inputValidation(increment.units)}
-                    onChange={target => {
+                    onChange={(target) => {
                       salesSpeedsHandler(increment.id, target.value);
                       arrayOfIncrements[i][0] = target.value;
                       setValidation(
                         arrayOfIncrements.find(
-                          increment =>
+                          (increment) =>
                             increment[0] === null || increment[1] === null,
                         ),
                       );
@@ -140,7 +141,7 @@ const IncrementTable = ({
                     mask="percentage"
                     style={{ width: '50px' }}
                     validations={[]}
-                    onChange={target => {
+                    onChange={(target) => {
                       anualEffectiveIncrementsHandler(
                         increment.id,
                         parseFloat(target.value) / 100,
@@ -148,7 +149,7 @@ const IncrementTable = ({
                       arrayOfIncrements[i][1] = target.value;
                       setValidation(
                         arrayOfIncrements.find(
-                          increment =>
+                          (increment) =>
                             increment[0] === null || increment[1] === null,
                         ),
                       );
@@ -214,7 +215,7 @@ const IncrementTable = ({
                       mask="currency"
                       style={{ width: '100px' }}
                       validations={[]}
-                      onChange={target => {
+                      onChange={(target) => {
                         incrementsHandler(increment.id, target.value);
                       }}
                       value={
@@ -238,173 +239,6 @@ const IncrementTable = ({
           prefix={'$'}
           thousandSeparator={true}
         />
-        {/* <div className={styles.Content}>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Tipo</div>
-            {data.map(increment => {
-              return <div className={styles.Text}>{increment.name}</div>;
-            })}
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Unidades</div>
-            {data.map(increment => {
-              return <div className={styles.Text}>{increment.units}</div>;
-            })}
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Area promedio</div>
-            {data.map(increment => {
-              return (
-                <div className={styles.Text}>
-                  <NumberFormat
-                    value={parseFloat(increment.averageArea).toFixed(2)}
-                    displayType={'text'}
-                    thousandSeparator={true}
-                    suffix=" m²"
-                  />
-                </div>
-              );
-            })}
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Precio Promedio</div>
-            {data.map(increment => {
-              return (
-                <div className={styles.Text}>
-                  <NumberFormat
-                    value={parseFloat(increment.averagePrice).toFixed(2)}
-                    displayType={'text'}
-                    prefix={'$'}
-                    thousandSeparator={true}
-                  />
-                </div>
-              );
-            })}
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Velocidad de ventas</div>
-            <div>
-              {data.map(increment => {
-                return (
-                  <div className={styles.Text}>
-                    <Input
-                      style={{ width: '50px' }}
-                      validations={[]}
-                      onChange={target => {
-                        salesSpeedsHandler(increment.id, target.value);
-                      }}
-                      value={
-                        increment.salesSpeed === null
-                          ? null
-                          : increment.salesSpeed.toFixed(1)
-                      }
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Meta Var e.a</div>
-            <div>
-              {data.map(increment => {
-                return (
-                  <div className={styles.Text}>
-                    <Input
-                      mask="percentage"
-                      style={{ width: '50px' }}
-                      validations={[]}
-                      onChange={target => {
-                        anualEffectiveIncrementsHandler(
-                          increment.id,
-                          parseFloat(target.value) / 100,
-                        );
-                      }}
-                      value={
-                        increment.anualEffectiveIncrement === null
-                          ? null
-                          : (increment.anualEffectiveIncrement * 100).toFixed(1)
-                      }
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Incremento recaudado</div>
-            <div>
-              {data.map(increment => {
-                return (
-                  <div className={styles.Text}>
-                    <NumberFormat
-                      value={parseFloat(increment.collectedIncrement).toFixed(
-                        2,
-                      )}
-                      displayType={'text'}
-                      prefix={'$'}
-                      thousandSeparator={true}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Incremento restante</div>
-            <div>
-              {data.map(increment => {
-                return (
-                  <div className={styles.Text}>
-                    <NumberFormat
-                      value={parseFloat(
-                        increment.increment - increment.collectedIncrement,
-                      ).toFixed(2)}
-                      displayType={'text'}
-                      prefix={'$'}
-                      thousandSeparator={true}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className={styles.Column}>
-            <div className={styles.Header}>Incremento</div>
-            <div className={styles.Text}>
-              {data.map(increment => {
-                return increment.increment === null ? (
-                  <div>-</div>
-                ) : (
-                  <div>
-                    <Input
-                      mask="currency"
-                      style={{ width: '100px' }}
-                      validations={[]}
-                      onChange={target => {
-                        incrementsHandler(increment.id, target.value);
-                      }}
-                      value={increment.increment.toFixed(2)}
-                    />
-                  </div>
-                );
-              })}
-              <div className={styles.Header}>Incremento total</div>
-              <div className={styles.Text}>
-                <NumberFormat
-                  value={data
-                    .reduce((current, next) => {
-                      return current + next.increment;
-                    }, 0)
-                    .toFixed(2)}
-                  displayType={'text'}
-                  prefix={'$'}
-                  thousandSeparator={true}
-                />
-              </div>
-            </div>
-          </div>
-                  </div> */}
       </CardBody>
       <CardFooter>
         {validation && isClicked ? (
@@ -430,7 +264,7 @@ const IncrementTable = ({
             onClick={() => {
               setValidation(
                 arrayOfIncrements.find(
-                  increment => increment[0] === null || increment[1] === null,
+                  (increment) => increment[0] === null || increment[1] === null,
                 ),
               );
               setIsClicked(true);

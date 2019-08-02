@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import SalesStartDate from '../../components/Increments/SalesStartDate/SalesStartDate';
 import IncrementsTable from '../../components/Increments/IncrementTable';
 import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
@@ -164,12 +163,6 @@ class Increments extends Component {
   render() {
     return (
       <Fragment>
-        <SalesStartDate
-          salesStartDate={this.state.incrementsSummary.salesStartDate}
-          endOfSalesDate={this.state.incrementsSummary.endOfSalesDate}
-          dayChangeHandler={this.putSalesStartDate}
-          endOfSalesDateHandler={this.putEndOfSalesDate}
-        />
         <IncrementsTable
           getIncrements={this.getIncrements}
           data={this.state.incrementsSummary.groups}
