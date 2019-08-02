@@ -16,6 +16,7 @@ class Increments extends Component {
       market: { averagePrice: 0, anualEffectiveIncrement: 0 },
       groups: [],
       salesStartDate: new Date().getTime(),
+      endOfSalesDate: new Date().getTime(),
     },
     increments: [],
     isLoading: false,
@@ -27,9 +28,12 @@ class Increments extends Component {
     this.setState({ isLoading: true });
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
-      .then(response => {
+      .then((response) => {
         if (response.data.salesStartDate === null) {
           response.data.salesStartDate = new Date().getTime();
+        }
+        if (response.data.endOfSalesDate === null) {
+          response.data.endOfSalesDate = new Date().getTime();
         }
         if (response.data.market === null) {
           response.data.market = {
@@ -42,7 +46,7 @@ class Increments extends Component {
           isLoading: false,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isLoading: false });
         console.error(error);
       });
@@ -60,7 +64,7 @@ class Increments extends Component {
   calcIncrements = () => {
     this.services
       .putIncrements(this.props.match.params.towerId)
-      .then(results => {
+      .then((results) => {
         this.setState({ increments: results.data });
       });
   };
@@ -69,7 +73,7 @@ class Increments extends Component {
     this.setState({ isLoadingIncrements: true });
     this.services
       .getIncrements(this.props.match.params.towerId)
-      .then(response => {
+      .then((response) => {
         if (response.data.salesStartDate === null) {
           response.data.salesStartDate = new Date().getTime();
         }
@@ -85,7 +89,7 @@ class Increments extends Component {
           isEmpty: false,
         });
       })
-      .catch(err =>
+      .catch((err) =>
         this.setState({ isLoadingIncrements: false, isEmpty: true }),
       );
   };
@@ -96,7 +100,7 @@ class Increments extends Component {
         groupId: id,
         increment,
       })
-      .then(response => {
+      .then((response) => {
         if (response.data.salesStartDate === null) {
           response.data.salesStartDate = new Date().getTime();
         }
@@ -113,18 +117,18 @@ class Increments extends Component {
   getPeriodsIncrements = () => {
     this.services
       .getPeriodsIncrements(this.props.match.params.towerId)
-      .then(response => {
+      .then((response) => {
         this.setState({ increments: response.data });
       });
   };
 
-  putMarketAveragePrice = averagePrice => {
+  putMarketAveragePrice = (averagePrice) => {
     this.services.putMarketAveragePrice(this.props.match.params.towerId, {
       averagePrice,
     });
   };
 
-  putMarketAnnualEffectiveIncrement = anualEffectiveIncrement => {
+  putMarketAnnualEffectiveIncrement = (anualEffectiveIncrement) => {
     this.services.putMarketAnualEffectiveIncrement(
       this.props.match.params.towerId,
       {
@@ -133,14 +137,26 @@ class Increments extends Component {
     );
   };
 
-  putSalesStartDate = salesStartDate => {
+  putSalesStartDate = (salesStartDate) => {
     this.services
       .putSalesStartDate(this.props.match.params.towerId, {
         salesStartDate,
       })
-      .then(response => {
+      .then((response) => {
         const tempIncrementsSummary = { ...this.state.incrementsSummary };
         tempIncrementsSummary.salesStartDate = salesStartDate;
+        this.setState({ incrementsSummary: tempIncrementsSummary });
+      });
+  };
+
+  putEndOfSalesDate = (endOfSalesDate) => {
+    this.services
+      .putEndOfSalesDate(this.props.match.params.towerId, {
+        endOfSalesDate,
+      })
+      .then((response) => {
+        const tempIncrementsSummary = { ...this.state.incrementsSummary };
+        tempIncrementsSummary.endOfSalesDate = endOfSalesDate;
         this.setState({ incrementsSummary: tempIncrementsSummary });
       });
   };
@@ -150,7 +166,9 @@ class Increments extends Component {
       <Fragment>
         <SalesStartDate
           salesStartDate={this.state.incrementsSummary.salesStartDate}
+          endOfSalesDate={this.state.incrementsSummary.endOfSalesDate}
           dayChangeHandler={this.putSalesStartDate}
+          endOfSalesDateHandler={this.putEndOfSalesDate}
         />
         <IncrementsTable
           getIncrements={this.getIncrements}

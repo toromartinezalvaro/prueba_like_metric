@@ -55,4 +55,11 @@ export default class IncrementsServices extends Services {
       body,
     );
   }
+
+  putEndOfSalesDate(towerId, body) {
+    return this.put(
+      IncrementsServicesDefinition.putEndOfSalesDate(towerId),
+      body,
+    );
+  }
 }
