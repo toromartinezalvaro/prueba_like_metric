@@ -7,7 +7,10 @@ import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 import styles from './IncrementTable.module.scss';
 import variables from '../../assets/styles/variables.scss';
-import GeneralInfo from '../Increments/IncrementTable/GeneralInfo';
+import GeneralInfo from './IncrementTable/GeneralInfo/GeneralInfo';
+import SuggestedIncrement from './IncrementTable/SuggestedIncrement/SuggestedIncrement';
+import Increments from './IncrementTable/Increments/Increments';
+import AccordionTrigger from './IncrementTable/AccordionTrigger/AccordionTrigger';
 
 let arrayOfIncrements = [];
 
@@ -55,177 +58,31 @@ const IncrementTable = ({
       <CardBody>
         {data.map((increment, i) => (
           <Accordion
-            key={`group-accordion ${i}`}
-            trigger={
-              <div>
-                {increment.name}
-                {increment.increment !== null ? (
-                  <NumberFormat
-                    value={increment.increment.toFixed(2)}
-                    displayType={'text'}
-                    prefix=" - $"
-                    thousandSeparator={true}
-                  />
-                ) : null}
-              </div>
-            }
+            key={`group-accordion-${i}`}
+            trigger={<AccordionTrigger group={increment} />}
           >
             <div className={styles.AccordionContainer}>
-              <GeneralInfo />
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>Unidades:</span>
-                </div>
-                <div>{increment.units}</div>
+              <GeneralInfo
+                units={increment.units}
+                averageArea={increment.averageArea}
+                averagePrice={increment.averagePrice}
+              />
+              <div className={styles.incrementContainer}>
+                <SuggestedIncrement
+                  months={increment.salesSpeed}
+                  effectiveAnnualInterestRate={
+                    increment.anualEffectiveIncrement
+                  }
+                  increment={increment.suggestedIncrement}
+                />
+                <Increments
+                  raised={increment.collectedIncrement}
+                  toCollect={increment.increment - increment.collectedIncrement}
+                  goal={increment.increment}
+                />
               </div>
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>Area Promedio:</span>
-                </div>
-                <div>
-                  <NumberFormat
-                    value={parseFloat(increment.averageArea).toFixed(2)}
-                    displayType={'text'}
-                    thousandSeparator={true}
-                    suffix=" m²"
-                  />
-                </div>
-              </div>
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>
-                    Precio Promedio (Sin primas):
-                  </span>
-                </div>
-                <div>
-                  <NumberFormat
-                    value={parseFloat(increment.averagePrice).toFixed(2)}
-                    displayType={'text'}
-                    prefix={'$'}
-                    thousandSeparator={true}
-                  />
-                </div>
-              </div>
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>Velocidad de ventas:</span>
-                </div>
-                <div>
-                  <Input
-                    style={{ width: '50px' }}
-                    validations={inputValidation(increment.units)}
-                    onChange={(target) => {
-                      salesSpeedsHandler(increment.id, target.value);
-                      arrayOfIncrements[i][0] = target.value;
-                      setValidation(
-                        arrayOfIncrements.find(
-                          (increment) =>
-                            increment[0] === null || increment[1] === null,
-                        ),
-                      );
-                    }}
-                    value={
-                      increment.salesSpeed === null
-                        ? null
-                        : increment.salesSpeed.toFixed(1)
-                    }
-                  />
-                </div>
-              </div>
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>Meta Var e.a:</span>
-                </div>
-                <div>
-                  <Input
-                    mask="percentage"
-                    style={{ width: '50px' }}
-                    validations={[]}
-                    onChange={(target) => {
-                      anualEffectiveIncrementsHandler(
-                        increment.id,
-                        parseFloat(target.value) / 100,
-                      );
-                      arrayOfIncrements[i][1] = target.value;
-                      setValidation(
-                        arrayOfIncrements.find(
-                          (increment) =>
-                            increment[0] === null || increment[1] === null,
-                        ),
-                      );
-                    }}
-                    value={
-                      increment.anualEffectiveIncrement === null
-                        ? null
-                        : (increment.anualEffectiveIncrement * 100).toFixed(1)
-                    }
-                  />
-                </div>
-              </div>
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>Incremento sugerido:</span>
-                </div>
-                <div>
-                  <NumberFormat
-                    value={parseFloat(increment.suggestedIncrement).toFixed(2)}
-                    displayType={'text'}
-                    prefix={'$'}
-                    thousandSeparator={true}
-                  />
-                </div>
-              </div>
-
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>Incremento recaudado:</span>
-                </div>
-                <div>
-                  <NumberFormat
-                    value={parseFloat(increment.collectedIncrement).toFixed(2)}
-                    displayType={'text'}
-                    prefix={'$'}
-                    thousandSeparator={true}
-                  />
-                </div>
-              </div>
-              <div className={styles.statContent}>
-                <div>
-                  <span className={styles.label}>Incremento restante:</span>
-                </div>
-                <div>
-                  <NumberFormat
-                    value={parseFloat(
-                      increment.increment - increment.collectedIncrement,
-                    ).toFixed(2)}
-                    displayType={'text'}
-                    prefix={'$'}
-                    thousandSeparator={true}
-                  />
-                </div>
-              </div>
-              <div className={styles.statContent}>
-                <div>
-                  {' '}
-                  <span className={styles.label}>Meta incremento:</span>
-                </div>
-                <div>
-                  <div>
-                    <Input
-                      mask="currency"
-                      style={{ width: '100px' }}
-                      validations={[]}
-                      onChange={(target) => {
-                        incrementsHandler(increment.id, target.value);
-                      }}
-                      value={
-                        increment.increment === null
-                          ? null
-                          : increment.increment.toFixed(2)
-                      }
-                    />
-                  </div>
-                </div>
+              <div className={styles.Button}>
+                <Button>Calcular incremento</Button>
               </div>
             </div>
           </Accordion>
