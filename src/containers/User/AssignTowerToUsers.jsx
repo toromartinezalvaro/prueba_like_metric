@@ -11,7 +11,8 @@ import {
   PasswordEditor,
 } from '../../components/User/ModalsContent';
 import Modal from '../../components/UI/Modal/Modal';
-import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView/EmptyContentMessageView';
+import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
+import { DashboardRoutes, UserRoutes, ProjectRoutes } from '../../routes/local/routes';
 
 class AssignTowerToUsers extends Component {
   constructor(props) {
@@ -245,7 +246,19 @@ class AssignTowerToUsers extends Component {
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
-        {!this.state.currentUser && <EmptyContentMessageView />}
+        {!this.state.currentUser && (
+          <EmptyContentMessageView
+            title="Vamos a administrar los permisos 👨‍🔧!"
+            message="Es fácil, primero debes crear usuarios para que puedan acceder a proyectos y torres"
+            buttonsContent={[
+              {
+                title: 'Creemos un usuario',
+                url:  UserRoutes.base + UserRoutes.create,
+              },
+              { title: 'Creemos un proyecto', url: DashboardRoutes.base + ProjectRoutes.base},
+            ]}
+          />
+        )}
         {this.state.currentUser && (
           <ChildrenUsers
             onChange={this.onChange}
