@@ -4,8 +4,9 @@ import { DashboardRoutes } from '../../routes/local/routes';
 import Button from '../UI/Button/Button';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
-import { style } from './Message.module.scss';
-const Message = props => {
+import style from './Message.module.scss';
+
+const Message = (props) => {
   return agent.isAuthorized([Role.Admin, Role.Super]) ? (
     <div className={style.Container}>
       <h4>
