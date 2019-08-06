@@ -119,7 +119,7 @@ class table extends Component {
               </div>
 
               <div className={styles.Table}>
-                {this.props.data.map(row => (
+                {this.props.data && this.props.data.map(row => (
                   <div className={styles.Row}>
                     {row.map(cell => (
                       <div className={styles.Cell} style={this.props.width}>
