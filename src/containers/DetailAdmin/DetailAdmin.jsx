@@ -4,6 +4,7 @@ import Property from '../../components/Detail/Property/Property';
 import Additional from '../../components/Detail/Aditionals/Aditionals';
 import Totals from '../../components/Detail/Totals/Totals';
 import DownloadCSV from '../../components/Detail/DownloadCSV/DownloadCSV';
+import exportFromJSON from 'export-from-json';
 import DetailServices from '../../services/detail/DetailServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import styles from '../DetailAdmin/DetailAdmin.module.scss';
@@ -33,17 +34,17 @@ export default class Detail extends Component {
     additional2: [],
     areasTable: {
       nameAreas: [],
-      priceAreas: [],
+      priceAreas: []
     },
     areasTable2: {
       nameAreas: [],
-      priceAreas: [],
+      priceAreas: []
     },
     style: {},
     active: 0,
     active2: 0,
     id: 0,
-    id2: 0,
+    id2: 0
   };
 
   componentDidMount() {
@@ -64,7 +65,7 @@ export default class Detail extends Component {
       .catch(error => {
         let errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message,
+          currentErrorMessage: errorHelper.message
         });
       });
     this.setState({ currentErrorMessage: '' });
@@ -78,8 +79,8 @@ export default class Detail extends Component {
         totals: data[0].totals,
         areas: data[0].areas.filter(({ areaType }) => areaType.unit === 'MT2'),
         additional: data[0].areas.filter(
-          ({ areaType }) => areaType.unit === 'UNT',
-        ),
+          ({ areaType }) => areaType.unit === 'UNT'
+        )
       });
       this.assignTableData();
       this.setState({ isLoading: false });
@@ -106,15 +107,15 @@ export default class Detail extends Component {
             current.priceAreas.push(
               <p style={{ alignContent: 'center' }}>
                 {this.formatPrice(next.price)}
-              </p>,
+              </p>
             );
             return current;
           },
           {
             nameAreas: [],
-            priceAreas: [],
-          },
-        ),
+            priceAreas: []
+          }
+        )
       });
     }
   };
@@ -162,11 +163,11 @@ export default class Detail extends Component {
               property2: property,
               totals2: property.totals,
               areas2: property.areas.filter(
-                ({ areaType }) => areaType.unit === 'MT2',
+                ({ areaType }) => areaType.unit === 'MT2'
               ),
               additional2: property.areas.filter(
-                ({ areaType }) => areaType.unit === 'UNT',
-              ),
+                ({ areaType }) => areaType.unit === 'UNT'
+              )
             }),
             this.setState({
               areasTable2: areas.reduce(
@@ -176,16 +177,16 @@ export default class Detail extends Component {
                     current.priceAreas.push(
                       <p style={{ alignContent: 'center' }}>
                         {this.formatPrice(next.price)}
-                      </p>,
+                      </p>
                     );
                   }
                   return current;
                 },
                 {
                   nameAreas: [],
-                  priceAreas: [],
-                },
-              ),
+                  priceAreas: []
+                }
+              )
             })
           );
         } else if (
@@ -203,12 +204,12 @@ export default class Detail extends Component {
             property: property,
             totals: property.totals,
             areas: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'MT2',
+              ({ areaType }) => areaType.unit === 'MT2'
             ),
             additional: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'UNT',
+              ({ areaType }) => areaType.unit === 'UNT'
             ),
-            id: property.id,
+            id: property.id
           });
         } else {
           return this.setState({ id: 0 });
@@ -233,26 +234,11 @@ export default class Detail extends Component {
 
   onClickExport = () => {
     const towerId = this.props.match.params.towerId;
-    this.services.getExcel(towerId)
-      .then(response => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `Detalle.xlsx`) ;
-        document.body.appendChild(link);
-        link.click();
-      });
-  /*   fetch(this.services.getExcel(towerId))
-      .then(response => response.blob())
-      .then(blob => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `Detalle.csv`;
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-      }); */
+    this.services.getExcel(towerId).then(response => {
+      const fileName = 'download';
+      const exportType = 'xls';
+      exportFromJSON({ data: response.data, fileName, exportType });
+    });
   };
 
   render() {
@@ -279,7 +265,7 @@ export default class Detail extends Component {
                 ? {
                     display: 'flex',
                     flexWrap: 'wrap',
-                    justifyContent: ' space-between',
+                    justifyContent: ' space-between'
                   }
                 : { display: 'flex' }
             }
@@ -301,14 +287,14 @@ export default class Detail extends Component {
                       style={{
                         marginTop: '10px',
                         overflowX: 'auto',
-                        maxWidth: '450px',
+                        maxWidth: '450px'
                       }}
                     >
                       <Table
                         intersect={'Areas'}
                         headers={this.state.areasTable.nameAreas}
                         columns={[
-                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>,
+                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>
                         ]}
                         data={[this.state.areasTable.priceAreas]}
                         style={{ padding: '0em 1.5em' }}
@@ -335,14 +321,14 @@ export default class Detail extends Component {
                       style={{
                         marginTop: '10px',
                         overflowX: 'auto',
-                        maxWidth: '450px',
+                        maxWidth: '450px'
                       }}
                     >
                       <Table
                         intersect={'Areas'}
                         headers={this.state.areasTable2.nameAreas}
                         columns={[
-                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>,
+                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>
                         ]}
                         data={[this.state.areasTable2.priceAreas]}
                         style={{ padding: '0em 1.5em' }}
@@ -375,7 +361,7 @@ export default class Detail extends Component {
                       Value1={this.state.totals.quantityAdditional}
                       Value2={this.formatPrice(this.state.totals.priceXUnit)}
                       Value3={this.formatPrice(
-                        this.state.totals.priceAdditional,
+                        this.state.totals.priceAdditional
                       )}
                     />
                   </CardBody>
@@ -405,7 +391,7 @@ export default class Detail extends Component {
                       Value1={this.state.totals2.quantityAdditional}
                       Value2={this.formatPrice(this.state.totals2.priceXUnit)}
                       Value3={this.formatPrice(
-                        this.state.totals2.priceAdditional,
+                        this.state.totals2.priceAdditional
                       )}
                     />
                   </CardBody>
