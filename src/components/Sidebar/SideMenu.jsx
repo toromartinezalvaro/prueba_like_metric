@@ -6,9 +6,9 @@ import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
 
-const SideMenu = props => {
+const SideMenu = (props) => {
   const [active, setActive] = useState(window.location.pathname);
-  var itemForSlidebar = (styles, route, iconName, description) => {
+  const itemForSlidebar = (styles, route, iconName, description) => {
     if (props.tower !== null) {
       const towerId = props.tower.id;
       route = route + towerId;
@@ -33,6 +33,10 @@ const SideMenu = props => {
       </div>
     );
   };
+
+  const exclusiveAuthorizations = () => (agent.currentUser.id === 1
+    || agent.currentUser.id === 2
+    || agent.currentUser.id === 4);
 
   return (
     <div
@@ -102,39 +106,44 @@ const SideMenu = props => {
             'fas fa-object-group',
             'Agrupamiento',
           )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
-          'fas fa-calendar-alt',
-          'Velocidad ventas futuras',
-        )}
-        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+        {exclusiveAuthorizations() &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
+            'fas fa-calendar-alt',
+            'Velocidad ventas futuras',
+          )}
+        {exclusiveAuthorizations() &&
+          agent.isAuthorized([Role.Admin, Role.Super]) &&
           itemForSlidebar(
             style.MenuItem,
             DashboardRoutes.base + DashboardRoutes.increments.value,
             'fas fa-angle-double-up',
             'Incrementos',
           )}
-        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+        {exclusiveAuthorizations() &&
+          agent.isAuthorized([Role.Admin, Role.Super]) &&
           itemForSlidebar(
             style.MenuItem,
             DashboardRoutes.base + DashboardRoutes.strategy.value,
             'fas fa-chart-line',
             'Estrategia',
           )}
-        {agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
+        {exclusiveAuthorizations() &&
+          agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
           itemForSlidebar(
             style.MenuItem,
             DashboardRoutes.base + DashboardRoutes.salesRoom.value,
             'fas fa-dollar-sign',
             'Sala de Ventas',
           )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.clients.value,
-          'fas fa-users',
-          'Clientes',
-        )}
+        {exclusiveAuthorizations() &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.clients.value,
+            'fas fa-users',
+            'Clientes',
+          )}
       </div>
     </div>
   );
