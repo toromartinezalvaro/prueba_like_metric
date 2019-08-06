@@ -22,31 +22,54 @@ class Client extends Component {
       city: null,
       module: null,
     },
+    modules: [],
     genders: {},
     clientTypes: {},
   };
 
   componentDidMount() {
-    this.services.getEnums().then(response => {
-      const { genders, clientTypes } = response.data;
-      this.setState({ genders, clientTypes });
+    this.services.getEnums(this.props.match.params.towerId).then(response => {
+      const { genders, clientTypes, modules } = response.data;
+      this.setState({ genders, clientTypes, modules });
     });
   }
 
-  clientHandler = event => {
+  genderHandler = value => {
     const tempClient = this.state.client;
-    tempClient[event.target.name] = event.target.value;
+    tempClient.gender = value;
+    this.setState({ client: tempClient });
+  };
+
+  clientTypeHandler = value => {
+    const tempClient = this.state.client;
+    tempClient.clientType = value;
+    this.setState({ client: tempClient });
+  };
+
+  clientHandler = target => {
+    console.log(target);
+    const tempClient = this.state.client;
+    tempClient[target.name] = target.value;
     this.setState({ client: tempClient });
   };
 
   saveClient = () => {
-    console.log(this.state.client);
-    //this.services.postClient(this.state.client);
+    this.services
+      .postClient(this.state.client)
+      .then(results => {
+        console.log('OK');
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   render() {
     return (
       <ClientForm
+        genderHandler={this.genderHandler}
+        clientTypeHandler={this.clientTypeHandler}
+        modules={this.state.modules}
         genders={this.state.genders}
         clientTypes={this.state.clientTypes}
         clientHandler={this.clientHandler}

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import Loader from 'react-loader-spinner';
 import UserServices from '../../services/user/UserServices';
 import { ChildrenUsers } from '../../components/User';
 import { ProjectList } from '../../components/Projects';
-import Loader from 'react-loader-spinner';
 import styles from './AssignTowerToUsers.module.scss';
 import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
@@ -11,6 +11,8 @@ import {
   PasswordEditor,
 } from '../../components/User/ModalsContent';
 import Modal from '../../components/UI/Modal/Modal';
+import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
+import { DashboardRoutes, UserRoutes, ProjectRoutes } from '../../routes/local/routes';
 
 class AssignTowerToUsers extends Component {
   constructor(props) {
@@ -36,14 +38,14 @@ class AssignTowerToUsers extends Component {
     this.loadCurrentUserInfo();
   }
 
-  onChange = target => {
+  onChange = (target) => {
     if (target.name && target.value) {
       this.setState({
         [target.name]: target.value,
       });
     } else {
       const userId = target;
-      let currentUser = this.state.users.find(user => {
+      let currentUser = this.state.users.find((user) => {
         console.log('id ', user.id, userId);
         return user.id == userId;
       });
@@ -63,7 +65,7 @@ class AssignTowerToUsers extends Component {
     });
   };
 
-  onConfirm = isPassword => {
+  onConfirm = (isPassword) => {
     if (isPassword) {
       if (
         this.state.password === this.state.confirmPassword &&
@@ -138,16 +140,16 @@ class AssignTowerToUsers extends Component {
 
   addLocalProjectToUser = (projectId, user) => {
     let currentUser = user;
-    if (currentUser.projects.find(project => project.id == projectId)) {
+    if (currentUser.projects.find((project) => project.id == projectId)) {
       return;
     }
 
     const project = this.state.projects.find(
-      project => project.id == projectId,
+      (project) => project.id == projectId,
     );
     currentUser.projects.push(project);
     const filteredUsers = this.state.users.filter(
-      user => currentUser.id !== user.id,
+      (user) => currentUser.id !== user.id,
     );
     const newUsers = [...filteredUsers, currentUser];
     console.log(newUsers);
@@ -157,12 +159,12 @@ class AssignTowerToUsers extends Component {
   };
 
   removeLocalProjectToUser = (projectId, user) => {
-    let currentUser = user;
+    const currentUser = user;
     const filteredUsers = this.state.users.filter(
-      user => currentUser.id !== user.id,
+      (user) => currentUser.id !== user.id,
     );
     const projects = currentUser.projects.filter(
-      project => project.id !== projectId,
+      (project) => project.id !== projectId,
     );
     currentUser.projects = projects;
     const newUsers = [...filteredUsers, currentUser];
@@ -178,12 +180,13 @@ class AssignTowerToUsers extends Component {
 
     this.services
       .childrenInfo()
-      .then(response => {
+      .then((response) => {
         const { users, projects } = response.data;
+        console.log('response --<', response);
         this.setState({
           isLoading: false,
-          users: users ? users : [],
-          projects: projects ? projects : [],
+          users: users || [],
+          projects: projects || [],
           currentUser: users[0],
           currentProject: projects[0] ? projects[0].id : null,
         });
@@ -191,8 +194,9 @@ class AssignTowerToUsers extends Component {
       .catch(this.genericCatch);
   };
 
-  genericCatch = error => {
-    let errorHelper = errorHandling(error);
+  genericCatch = (error) => {
+    console.log('response --<', error);
+    const errorHelper = errorHandling(error);
     this.setState({
       currentErrorMessage: errorHelper.message,
       isLoading: false,
@@ -201,13 +205,13 @@ class AssignTowerToUsers extends Component {
     });
   };
 
-  openPasswordModal = event => {
+  openPasswordModal = () => {
     this.setState({
       isUpdatingPasswordMode: true,
     });
   };
 
-  openProjectModal = event => {
+  openProjectModal = () => {
     this.setState({
       isAddingProjectMode: true,
     });
@@ -242,6 +246,19 @@ class AssignTowerToUsers extends Component {
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
+        {!this.state.currentUser && (
+          <EmptyContentMessageView
+            title="Vamos a administrar los permisos 👨‍🔧!"
+            message="Es fácil, primero debes crear usuarios para que puedan acceder a proyectos y torres"
+            buttonsContent={[
+              {
+                title: 'Creemos un usuario',
+                url:  UserRoutes.base + UserRoutes.create,
+              },
+              { title: 'Creemos un proyecto', url: DashboardRoutes.base + ProjectRoutes.base},
+            ]}
+          />
+        )}
         {this.state.currentUser && (
           <ChildrenUsers
             onChange={this.onChange}
@@ -259,10 +276,9 @@ class AssignTowerToUsers extends Component {
         )}
 
         <Modal
-          title={
-            'Modificar contraseña del usuario ' +
-            (this.state.currentUser ? this.state.currentUser.name : '')
-          }
+          title={`Modificar contravene del usuario ${
+            this.state.currentUser ? this.state.currentUser.name : ''
+          }`}
           hidden={!this.state.isUpdatingPasswordMode}
           onConfirm={() => this.onConfirm(true)}
           onCancel={this.onCancel}
@@ -278,10 +294,9 @@ class AssignTowerToUsers extends Component {
           {this.loaderView()}
         </Modal>
         <Modal
-          title={
-            'Agregar proyectos al usuario ' +
-            (this.state.currentUser ? this.state.currentUser.name : '')
-          }
+          title={`Agregar proyectos al usuario ${
+            this.state.currentUser ? this.state.currentUser.name : ''
+          }`}
           hidden={!this.state.isAddingProjectMode}
           onConfirm={() => this.onConfirm(false)}
           onCancel={this.onCancel}

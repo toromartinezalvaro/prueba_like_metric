@@ -3,7 +3,6 @@ import Pie from '../../components/Detail/pie/Pie';
 import Property from '../../components/Detail/Property/Property';
 import Additional from '../../components/Detail/Aditionals/Aditionals';
 import Totals from '../../components/Detail/Totals/Totals';
-import DownloadCSV from '../../components/Detail/DownloadCSV/DownloadCSV';
 import exportFromJSON from 'export-from-json';
 import DetailServices from '../../services/detail/DetailServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
@@ -34,17 +33,17 @@ export default class Detail extends Component {
     additional2: [],
     areasTable: {
       nameAreas: [],
-      priceAreas: []
+      priceAreas: [],
     },
     areasTable2: {
       nameAreas: [],
-      priceAreas: []
+      priceAreas: [],
     },
     style: {},
     active: 0,
     active2: 0,
     id: 0,
-    id2: 0
+    id2: 0,
   };
 
   componentDidMount() {
@@ -53,25 +52,25 @@ export default class Detail extends Component {
   }
 
   getDetails = () => {
-    const towerId = this.props.match.params.towerId;
+    const { towerId } = this.props.match.params;
     if (!towerId) {
       return;
     }
     this.services
       .getDetails(towerId)
-      .then(response => {
+      .then((response) => {
         this.assignDefaultValues(response.data);
       })
-      .catch(error => {
-        let errorHelper = errorHandling(error);
+      .catch((error) => {
+        const errorHelper = errorHandling(error);
         this.setState({
-          currentErrorMessage: errorHelper.message
+          currentErrorMessage: errorHelper.message,
         });
       });
     this.setState({ currentErrorMessage: '' });
   };
 
-  assignDefaultValues = data => {
+  assignDefaultValues = (data) => {
     if (data.length !== 0) {
       this.setState({
         properties: data,
@@ -79,27 +78,25 @@ export default class Detail extends Component {
         totals: data[0].totals,
         areas: data[0].areas.filter(({ areaType }) => areaType.unit === 'MT2'),
         additional: data[0].areas.filter(
-          ({ areaType }) => areaType.unit === 'UNT'
-        )
+          ({ areaType }) => areaType.unit === 'UNT',
+        ),
       });
       this.assignTableData();
       this.setState({ isLoading: false });
     }
   };
 
-  sortData = data => {
-    return data.sort((a, b) => {
-      const aInt = parseInt(a.areaType.id);
-      const bInt = parseInt(b.areaType.id);
-      if (aInt > bInt) return 1;
-      if (aInt < bInt) return -1;
-      return 0;
-    });
-  };
+  sortData = data => data.sort((a, b) => {
+    const aInt = parseInt(a.areaType.id, 10);
+    const bInt = parseInt(b.areaType.id, 10);
+    if (aInt > bInt) return 1;
+    if (aInt < bInt) return -1;
+    return 0;
+  });
 
-  assignTableData = data => {
+  assignTableData = () => {
     if (this.state.areas) {
-      let areas = this.sortData(this.state.areas);
+      const areas = this.sortData(this.state.areas);
       this.setState({
         areasTable: areas.reduce(
           (current, next) => {
@@ -107,20 +104,20 @@ export default class Detail extends Component {
             current.priceAreas.push(
               <p style={{ alignContent: 'center' }}>
                 {this.formatPrice(next.price)}
-              </p>
+              </p>,
             );
             return current;
           },
           {
             nameAreas: [],
-            priceAreas: []
-          }
-        )
+            priceAreas: [],
+          },
+        ),
       });
     }
   };
 
-  formatPrice = value => {
+  formatPrice = (value) => {
     return (
       <NumberFormat
         value={value}
@@ -131,14 +128,15 @@ export default class Detail extends Component {
     );
   };
 
-  printAdditional = data => {
-    return data.map(aditional => {
+  printAdditional = (data) => {
+    return data.map((aditional) => {
       return (
         <Additional
           Title={aditional.areaType.name}
           Title1="Cantidad"
           Title2="Precio"
           Title3="Adicionales"
+          key={aditional.id}
           Value1={aditional.measure}
           Value2={this.formatPrice(aditional.price)}
           Value3={this.formatPrice(aditional.unitPrice)}
@@ -147,14 +145,14 @@ export default class Detail extends Component {
     });
   };
 
-  cells = properties => {
-    return properties.map(property => {
+  cells = (properties) => {
+    return properties.map((property) => {
       const handleOnClick = () => {
-        let areas = this.sortData(property.areas);
+        const areas = this.sortData(property.areas);
         if (
-          this.state.id2 !== property.id &&
-          this.state.id !== property.id &&
-          this.state.id !== 0
+          this.state.id2 !== property.id
+          && this.state.id !== property.id
+          && this.state.id !== 0
         ) {
           return (
             this.setState({
@@ -163,11 +161,11 @@ export default class Detail extends Component {
               property2: property,
               totals2: property.totals,
               areas2: property.areas.filter(
-                ({ areaType }) => areaType.unit === 'MT2'
+                ({ areaType }) => areaType.unit === 'MT2',
               ),
               additional2: property.areas.filter(
-                ({ areaType }) => areaType.unit === 'UNT'
-              )
+                ({ areaType }) => areaType.unit === 'UNT',
+              ),
             }),
             this.setState({
               areasTable2: areas.reduce(
@@ -177,19 +175,19 @@ export default class Detail extends Component {
                     current.priceAreas.push(
                       <p style={{ alignContent: 'center' }}>
                         {this.formatPrice(next.price)}
-                      </p>
+                      </p>,
                     );
                   }
                   return current;
                 },
                 {
                   nameAreas: [],
-                  priceAreas: []
-                }
-              )
+                  priceAreas: [],
+                },
+              ),
             })
           );
-        } else if (
+        } if (
           this.state.id2 === property.id &&
           this.state.id !== Property.id
         ) {
@@ -201,19 +199,18 @@ export default class Detail extends Component {
           this.state.id === 0
         ) {
           return this.setState({
-            property: property,
+            property,
             totals: property.totals,
             areas: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'MT2'
+              ({ areaType }) => areaType.unit === 'MT2',
             ),
             additional: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'UNT'
+              ({ areaType }) => areaType.unit === 'UNT',
             ),
-            id: property.id
+            id: property.id,
           });
-        } else {
-          return this.setState({ id: 0 });
         }
+        return this.setState({ id: 0 });
       };
       return (
         <div key={property.nomenclature} onClick={handleOnClick}>
@@ -260,18 +257,11 @@ export default class Detail extends Component {
         </Card>
         {this.state.id !== 0 || this.state.id2 !== 0 ? (
           <div
-            style={
-              this.state.id2 !== 0 && this.state.id !== 0
-                ? {
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: ' space-between'
-                  }
-                : { display: 'flex' }
-            }
+          className={ styles.Container }
           >
             {this.state.id !== 0 ? (
-              <div style={{ display: 'flex' }}>
+            <div className={styles.AreaContainer}>
+              <div>
                 <Card style={{ marginTop: '0' }}>
                   <CardHeader>
                     <p>Areas {this.state.property.nomenclature}</p>
@@ -287,14 +277,14 @@ export default class Detail extends Component {
                       style={{
                         marginTop: '10px',
                         overflowX: 'auto',
-                        maxWidth: '450px'
+                        maxWidth: '450px',
                       }}
                     >
                       <Table
                         intersect={'Areas'}
                         headers={this.state.areasTable.nameAreas}
                         columns={[
-                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>
+                          <p key="PrecioxMts21" style={{ alignContent: 'center' }}>PrecioxMts2</p>,
                         ]}
                         data={[this.state.areasTable.priceAreas]}
                         style={{ padding: '0em 1.5em' }}
@@ -304,9 +294,41 @@ export default class Detail extends Component {
                   </CardBody>
                 </Card>
               </div>
+              {this.state.id !== 0 ? (
+                <div
+                  style={
+                    this.state.id !== 0 && this.state.id2 !== 0
+                      ? { flexGrow: '1' }
+                      : { display: 'flex' }
+                  }
+                >
+                  <Card style={{ marginTop: '0', width: '100%' }}>
+                    <CardHeader>
+                      <p>Adicionales</p>
+                    </CardHeader>
+                    <CardBody style={{ margin: '0' }}>
+                      {this.printAdditional(this.state.additional)}
+                      <Additional
+                        Title="Total"
+                        Title1="Cantidad"
+                        Title2="Promedio"
+                        Title3="Total"
+                        Value1={this.state.totals.quantityAdditional}
+                        Value2={this.formatPrice(this.state.totals.priceXUnit)}
+                        Value3={this.formatPrice(
+                          this.state.totals.priceAdditional,
+                        )}
+                      />
+                    </CardBody>
+                  </Card>
+                </div>
+              ) : null}
+
+            </div>
             ) : null}
             {this.state.active2 !== 0 ? (
-              <div style={{ display: 'flex' }}>
+            <div className={styles.AreaContainer}>
+              <div>
                 <Card style={{ marginTop: '0' }}>
                   <CardHeader>
                     <p>Areas {this.state.property2.nomenclature}</p>
@@ -321,14 +343,14 @@ export default class Detail extends Component {
                       style={{
                         marginTop: '10px',
                         overflowX: 'auto',
-                        maxWidth: '450px'
+                        maxWidth: '450px',
                       }}
                     >
                       <Table
                         intersect={'Areas'}
                         headers={this.state.areasTable2.nameAreas}
                         columns={[
-                          <p style={{ alignContent: 'center' }}>PrecioxMts2</p>
+                          <p key="PrecioxMts2C" style={{ alignContent: 'center' }}>PrecioxMts2</p>,
                         ]}
                         data={[this.state.areasTable2.priceAreas]}
                         style={{ padding: '0em 1.5em' }}
@@ -338,65 +360,37 @@ export default class Detail extends Component {
                   </CardBody>
                 </Card>
               </div>
-            ) : null}
-            {this.state.id !== 0 ? (
-              <div
-                style={
-                  this.state.id !== 0 && this.state.id2 !== 0
-                    ? { flexGrow: '1' }
-                    : { display: 'flex' }
-                }
-              >
-                <Card style={{ marginTop: '0' }}>
-                  <CardHeader>
-                    <p>Adicionales</p>
-                  </CardHeader>
-                  <CardBody style={{ margin: '0' }}>
-                    {this.printAdditional(this.state.additional)}
-                    <Additional
-                      Title="Total"
-                      Title1="Cantidad"
-                      Title2="Promedio"
-                      Title3="Total"
-                      Value1={this.state.totals.quantityAdditional}
-                      Value2={this.formatPrice(this.state.totals.priceXUnit)}
-                      Value3={this.formatPrice(
-                        this.state.totals.priceAdditional
-                      )}
-                    />
-                  </CardBody>
-                </Card>
-              </div>
-            ) : null}
-            {this.state.active2 !== 0 ? (
-              <div
-                style={
-                  this.state.id2 !== 0 && this.state.id !== 0
-                    ? { flexGrow: '1' }
-                    : { display: 'flex' }
-                }
-              >
-                <Card style={{ marginTop: '0' }}>
-                  <CardHeader>
-                    <p>Adicionales</p>
-                  </CardHeader>
-                  <CardBody style={{ margin: '0' }}>
-                    {this.printAdditional(this.state.additional2)}
-
-                    <Additional
-                      Title="Total"
-                      Title1="Cantidad"
-                      Title2="Promedio"
-                      Title3="Total"
-                      Value1={this.state.totals2.quantityAdditional}
-                      Value2={this.formatPrice(this.state.totals2.priceXUnit)}
-                      Value3={this.formatPrice(
-                        this.state.totals2.priceAdditional
-                      )}
-                    />
-                  </CardBody>
-                </Card>
-              </div>
+              {this.state.active2 !== 0 ? (
+                <div
+                  style={
+                    this.state.id2 !== 0 && this.state.id !== 0
+                      ? { flexGrow: '1' }
+                      : { display: 'flex' }
+                  }
+                >
+                  <Card style={{ marginTop: '0' }}>
+                    <CardHeader>
+                      <p>Adicionales</p>
+                    </CardHeader>
+                    <CardBody style={{ margin: '0' }}>
+                      {this.printAdditional(this.state.additional2)}
+  
+                      <Additional
+                        Title="Total"
+                        Title1="Cantidad"
+                        Title2="Promedio"
+                        Title3="Total"
+                        Value1={this.state.totals2.quantityAdditional}
+                        Value2={this.formatPrice(this.state.totals2.priceXUnit)}
+                        Value3={this.formatPrice(
+                          this.state.totals2.priceAdditional,
+                        )}
+                      />
+                    </CardBody>
+                  </Card>
+                </div>
+              ) : null}
+            </div>
             ) : null}
           </div>
         ) : null}
