@@ -260,7 +260,9 @@ export default class Detail extends Component {
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
-            <Button onClick={this.onClickExport}>Export to xls</Button>
+            <Button style={{ display: 'none' }} onClick={this.onClickExport}>
+              Export to xls
+            </Button>
           </CardHeader>
           <CardBody style={{ margin: '0' }}>
             <div className={styles.Row}>
