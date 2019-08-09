@@ -82,7 +82,7 @@ class Summary extends Component {
     if (!summary) {
       return null;
     }
-    summary.rack.map((row) =>
+    return summary.rack.map((row) =>
       row.map((value) => (
         <SummaryCell
           k={key}
