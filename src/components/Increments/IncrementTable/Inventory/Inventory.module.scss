@@ -1,0 +1,82 @@
+.inventory {
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'inv-header' 'inv-date' 'inv-units' 'inv-area' 'inv-price' 'inv-price-m2-addons' 'inv-price-m2' 'inv-sales-l0' 'inv-increment-goal' 'inv-sales-future' 'inv-increment-base' 'inv-analysis-inverse' 'inv-retention-months' 'inv-ear' 'inv-sales-wizard' 'inv-inventory-retention' 'inv-ear-suggestion' 'inv-increment-goal-suggestion';
+  grid-area: inventory;
+}
+
+.inv-header {
+  font-weight: 700;
+  font-size: 20px;
+  grid-area: inv-header;
+}
+
+.inv-date {
+  grid-area: inv-date;
+}
+
+.inv-units {
+  grid-area: inv-units;
+}
+
+.inv-area {
+  grid-area: inv-area;
+}
+
+.inv-price {
+  grid-area: inv-price;
+}
+
+.inv-price-m2-addons {
+  grid-area: inv-price-m2-addons;
+}
+
+.inv-price-m2 {
+  grid-area: inv-price-m2;
+}
+
+.inv-sales-l0 {
+  grid-area: inv-sales-l0;
+}
+
+.inv-increment-goal {
+  grid-area: inv-increment-goal;
+}
+
+.inv-sales-future {
+  grid-area: inv-sales-future;
+}
+
+.inv-increment-base {
+  grid-area: inv-increment-base;
+}
+
+.inv-analysis-inverse {
+  grid-area: inv-analysis-inverse;
+}
+
+.inv-retention-months {
+  grid-area: inv-retention-months;
+}
+
+.inv-ear {
+  grid-area: inv-ear;
+}
+
+.inv-sales-wizard {
+  grid-area: inv-sales-wizard;
+}
+
+.inv-inventory-retention {
+  grid-area: inv-inventory-retention;
+}
+
+.inv-ear-suggestion {
+  grid-area: inv-ear-suggestion;
+}
+
+.inv-increment-goal-suggestion {
+  grid-area: inv-increment-goal-suggestion;
+}

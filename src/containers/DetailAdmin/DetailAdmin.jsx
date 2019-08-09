@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import NumberFormat from 'react-number-format';
 import Pie from '../../components/Detail/pie/Pie';
 import Property from '../../components/Detail/Property/Property';
 import Additional from '../../components/Detail/Aditionals/Aditionals';
 import Totals from '../../components/Detail/Totals/Totals';
+import exportFromJSON from 'export-from-json';
 import DetailServices from '../../services/detail/DetailServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
-import styles from './DetailAdmin.module.scss';
+import styles from '../DetailAdmin/DetailAdmin.module.scss';
 import variables from '../../assets/styles/variables.scss';
 import Table from '../../components/UI/Table/Table';
+import NumberFormat from 'react-number-format';
 import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
+import Button from '../../components/UI/Button/Button';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -227,6 +229,15 @@ export default class Detail extends Component {
     });
   };
 
+  onClickExport = () => {
+    const towerId = this.props.match.params.towerId;
+    this.services.getExcel(towerId).then(response => {
+      const fileName = 'download';
+      const exportType = 'xls';
+      exportFromJSON({ data: response.data, fileName, exportType });
+    });
+  };
+
   render() {
     return (
       <div>
@@ -236,6 +247,7 @@ export default class Detail extends Component {
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
+            <Button onClick={this.onClickExport}>Export to xls</Button>
           </CardHeader>
           <CardBody style={{ margin: '0' }}>
             <div className={styles.Row}>

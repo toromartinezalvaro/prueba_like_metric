@@ -13,6 +13,8 @@ import Increments from './IncrementTable/Increments/Increments';
 import AccordionTrigger from './IncrementTable/AccordionTrigger/AccordionTrigger';
 import Definitions from './IncrementTable/Definitions/Definitions';
 import Totals from './IncrementTable/Totals/Totals';
+import Sales from './IncrementTable/Sales/Sales';
+import Inventory from './IncrementTable/Inventory/Inventory';
 
 let arrayOfIncrements = [];
 
@@ -64,71 +66,11 @@ const IncrementTable = ({
             trigger={<AccordionTrigger group={increment} />}
           >
             <div className={styles.AccordionContainer}>
-              <GeneralInfo
-                units={increment.units}
-                averageArea={increment.averageArea}
-                averagePrice={increment.averagePrice}
-              />
-              <div className={styles.incrementContainer}>
-                <SuggestedIncrement
-                  months={increment.salesSpeed}
-                  effectiveAnnualInterestRate={
-                    increment.anualEffectiveIncrement
-                  }
-                  increment={increment.suggestedIncrement}
-                />
-                <Increments
-                  raised={increment.collectedIncrement}
-                  toCollect={increment.increment - increment.collectedIncrement}
-                  goal={increment.increment}
-                />
-              </div>
-              <div className={styles.Button}>
-                <Button>Calcular incremento</Button>
-              </div>
-            </div>
-            <div className={styles['grid-container']}>
-              <Definitions className={styles.definitions} />
-              <Totals className={styles.total} />
-              <div className="sold">
-                <div className="sold-header" />
-                <div className="sold-date" />
-                <div className="sold-units" />
-                <div className="sold-area" />
-                <div className="sold-price" />
-                <div className="sold-price-m2-addons" />
-                <div className="sold-price-m2" />
-                <div className="sold-increment-goal" />
-                <div className="sold-sales-l0" />
-                <div className="sold-sales-future" />
-                <div className="sold-increment-base" />
-                <div className="sold-analysis-inverse" />
-                <div className="sold-retention-months" />
-                <div className="sold-ear" />
-                <div className="sold-sales-wizard" />
-                <div className="sold-inventory-retention" />
-                <div className="sold-ear-suggestion" />
-                <div className="sold-increment-goal-suggestion" />
-              </div>
-              <div className="inventory">
-                <div className="inv-header" />
-                <div className="inv-date" />
-                <div className="inv-units" />
-                <div className="inv-area" />
-                <div className="inv-price" />
-                <div className="inv-price-m2-addons" />
-                <div className="inv-price-m2" />
-                <div className="inv-sales-l0" />
-                <div className="inv-increment-goal" />
-                <div className="inv-sales-future" />
-                <div className="inv-increment-base" />
-                <div className="inv-analysis-inverse" />
-                <div className="inv-retention-months" />
-                <div className="inv-ear" />
-                <div className="inv-sales-wizard" />
-                <div className="inv-inventory-retention" />
-                <div className="inv-ear-suggestion" />
-                <div className="inv-increment-goal-suggestion" />
+              <div className={styles['grid-container']}>
+                <Definitions className={styles.definitions} />
+                <Totals className={styles.total} />
+                <Sales className={styles.sold} />
+                <Inventory className={styles.inventory} />
               </div>
             </div>
           </Accordion>

@@ -11,6 +11,7 @@
     "big-integer": "^1.6.44",
     "chart.js": "^2.8.0",
     "chartjs-plugin-annotation": "^0.5.7",
+    "export-from-json": "^1.1.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "nivo": "^0.31.0",

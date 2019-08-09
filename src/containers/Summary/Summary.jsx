@@ -57,11 +57,13 @@ class Summary extends Component {
     this.setState({ isLoading: true });
     this.services
       .getSummaries(this.props.match.params.towerId)
-      .then(response => {
+      .then((response) => {
         const data = response.data;
         this.setState({
-          locations: [...Array(data.totalProperties).keys()].map(o => o + 1),
-          floors: [...Array(data.floors).keys()].map(o => o + data.lowestFloor),
+          locations: [...Array(data.totalProperties).keys()].map((o) => o + 1),
+          floors: [...Array(data.floors).keys()].map(
+            (o) => o + data.lowestFloor,
+          ),
           areas: data.areas,
           pricesWithAdditions: data.pricesWithAdditions,
           pricePerMT2WithAdditions: data.pricePerMT2WithAdditions,
@@ -71,14 +73,17 @@ class Summary extends Component {
         });
         console.log('areas', this.state.areas);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isLoading: false });
       });
   }
 
-  getData = (summary, key) =>
-    summary.rack.map(row =>
-      row.map(value => (
+  getData = (summary, key) => {
+    if (!summary) {
+      return null;
+    }
+    summary.rack.map((row) =>
+      row.map((value) => (
         <SummaryCell
           k={key}
           style={{
@@ -95,17 +100,18 @@ class Summary extends Component {
         </SummaryCell>
       )),
     );
+  };
 
-  firstFeeHandler = target => {
+  firstFeeHandler = (target) => {
     this.setState({
       firstFee: target.value,
       credit: 100 - target.value,
     });
   };
-  periodsHandler = target => {
+  periodsHandler = (target) => {
     this.setState({ periods: target.value });
   };
-  creditHandler = target => {
+  creditHandler = (target) => {
     this.setState({
       credit: target.value,
       firstFee: 100 - target.value,
@@ -113,6 +119,12 @@ class Summary extends Component {
   };
   calcFees = () => {
     let items = 0;
+    if (
+      this.state.pricesWithAdditions.rack[0] === undefined ||
+      !this.state.pricesWithAdditions.rack[0][0]
+    ) {
+      return null;
+    }
     let fees = {
       min: this.state.pricesWithAdditions.rack[0][0].price,
       max: this.state.pricesWithAdditions.rack[0][0].price,
@@ -120,8 +132,8 @@ class Summary extends Component {
       sum: 0,
       rack: [],
     };
-    fees.rack = this.state.pricesWithAdditions.rack.map(row => {
-      return row.map(value => {
+    fees.rack = this.state.pricesWithAdditions.rack.map((row) => {
+      return row.map((value) => {
         if (value) {
           if (value.price < fees.min) {
             fees.min = value.price;
@@ -192,7 +204,7 @@ class Summary extends Component {
                     zeroDefault={true}
                     validations={[
                       {
-                        fn: value =>
+                        fn: (value) =>
                           parseFloat(value) >= 0 && parseFloat(value) <= 100,
                         message: 'El valor debe estar entre 0% y 100%',
                       },
@@ -213,7 +225,7 @@ class Summary extends Component {
                     onChange={this.creditHandler}
                     validations={[
                       {
-                        fn: value =>
+                        fn: (value) =>
                           parseFloat(value) >= 0 && parseFloat(value) <= 100,
                         message: 'El valor debe estar entre 0% y 100%',
                       },

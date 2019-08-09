@@ -102,6 +102,12 @@ const SideMenu = props => {
             'fas fa-object-group',
             'Agrupamiento',
           )}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
+          'fas fa-calendar-alt',
+          'Velocidad ventas futuras',
+        )}
         {agent.isAuthorized([Role.Admin, Role.Super]) &&
           itemForSlidebar(
             style.MenuItem,
@@ -128,12 +134,6 @@ const SideMenu = props => {
           DashboardRoutes.base + DashboardRoutes.clients.value,
           'fas fa-users',
           'Clientes',
-        )}
-        {itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
-          'fas fa-calendar-alt',
-          'Velocidad ventas futuras',
         )}
       </div>
     </div>
