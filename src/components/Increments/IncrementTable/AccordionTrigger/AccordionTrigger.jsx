@@ -8,7 +8,7 @@ function AccordionTrigger({ group }) {
       <span>{group.name}</span>
       {group.increment !== null ? (
         <NumberFormat
-          value={group.increment.toFixed(2)}
+          value={0}
           displayType={'text'}
           prefix=" - $"
           thousandSeparator={true}

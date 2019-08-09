@@ -1,36 +1,16 @@
-import React, { useState } from 'react';
-import NumberFormat from 'react-number-format';
-import Loader from 'react-loader-spinner';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Card, { CardHeader, CardBody, CardFooter } from '../UI/Card/Card';
 import Accordion from '../UI/Accordion/Accordion';
-import Input from '../UI/Input/Input';
-import Button from '../UI/Button/Button';
 import styles from './IncrementTable.module.scss';
-import variables from '../../assets/styles/variables.scss';
-import GeneralInfo from './IncrementTable/GeneralInfo/GeneralInfo';
-import SuggestedIncrement from './IncrementTable/SuggestedIncrement/SuggestedIncrement';
-import Increments from './IncrementTable/Increments/Increments';
 import AccordionTrigger from './IncrementTable/AccordionTrigger/AccordionTrigger';
 import Definitions from './IncrementTable/Definitions/Definitions';
 import Totals from './IncrementTable/Totals/Totals';
 import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
+import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
 
-let arrayOfIncrements = [];
-
-const IncrementTable = ({
-  data,
-  salesSpeedsHandler,
-  anualEffectiveIncrementsHandler,
-  getIncrements,
-  incrementsHandler,
-  isLoadingIncrement,
-  isEmpty,
-  ...rest
-}) => {
-  const [validation, setValidation] = useState(true);
-  const [isClicked, setIsClicked] = useState(false);
-
+function IncrementTable({ data }) {
   const inputValidation = (units) => [
     {
       fn: (value) => value > 0,
@@ -47,86 +27,43 @@ const IncrementTable = ({
     },
   ];
 
-  if (arrayOfIncrements.length === 0) {
-    arrayOfIncrements = data.map((increment) => [
-      increment.salesSpeed,
-      increment.anualEffectiveIncrement,
-    ]);
-  }
-
   return (
     <Card>
       <CardHeader>
         <span>Incrementos</span>
       </CardHeader>
       <CardBody>
-        {data.map((increment, i) => (
+        {data.map((group, i) => (
           <Accordion
             key={`group-accordion-${i}`}
-            trigger={<AccordionTrigger group={increment} />}
+            trigger={<AccordionTrigger group={group} />}
           >
             <div className={styles.AccordionContainer}>
               <div className={styles['grid-container']}>
                 <Definitions className={styles.definitions} />
-                <Totals className={styles.total} />
-                <Sales className={styles.sold} />
-                <Inventory className={styles.inventory} />
+                <Totals className={styles.total} groupSummary={group.total} />
+                <Sales className={styles.sold} groupSummary={group.sales} />
+                <Inventory
+                  className={styles.inventory}
+                  groupSummary={group.inventory}
+                />
               </div>
             </div>
           </Accordion>
         ))}
-        Incremento total:{' '}
-        <NumberFormat
-          value={data
-            .reduce((current, next) => current + next.increment, 0)
-            .toFixed(2)}
-          displayType={'text'}
-          prefix={'$'}
-          thousandSeparator={true}
-        />
+        {/* <TotalIncrement totalIncrement={data} /> Cambiar modo de calcular los incrementos totales */}
       </CardBody>
-      <CardFooter>
-        {validation && isClicked ? (
-          <div
-            style={{ display: 'flex', justifyContent: 'center', color: 'red' }}
-          >
-            <p>
-              Debe ingresar todos los campos para poder realizar el incremento
-            </p>
-          </div>
-        ) : null}
-        <div className={styles.ActionContainer}>
-          <div style={{ width: '20%' }} />
-          {isLoadingIncrement ? (
-            <Loader
-              type="ThreeDots"
-              color={variables.mainColor}
-              height="50"
-              width="50"
-            />
-          ) : null}
-          <div
-            onClick={() => {
-              setValidation(
-                arrayOfIncrements.find(
-                  (increment) => increment[0] === null || increment[1] === null,
-                ),
-              );
-              setIsClicked(true);
-            }}
-          >
-            <div className={styles.Button}>
-              {validation ? (
-                <Button>Calcular incrementos</Button>
-              ) : (
-                <Button onClick={getIncrements}>Calcular incrementos</Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </CardFooter>
+      <CardFooter />
     </Card>
   );
+}
+
+IncrementTable.propTypes = {
+  data: PropTypes.array,
+};
+
+IncrementTable.defaultProps = {
+  data: [],
 };
 
 export default IncrementTable;
