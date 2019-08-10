@@ -17,7 +17,7 @@ const LoaderSpinner = ({ children, isLoading, ...rest }) => {
       />
     </div>
   ) : (
-    <Fragment>{children};</Fragment>
+    <Fragment>{children}</Fragment>
   );
 };
 
