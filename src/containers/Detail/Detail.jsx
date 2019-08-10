@@ -1,19 +1,21 @@
-import React, { Component } from "react";
-import Insights from "../../components/Detail/Insights/Insights";
-import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import DetailServices from "../../services/detail/DetailServices";
-import Property from "../../components/Detail/Property/Property";
-import variables from "../../assets/styles/variables.scss";
-import styles from "../DetailAdmin/DetailAdmin.module.scss";
-import NumberFormat from "react-number-format";
-import Additional from "../../components/Detail/Aditionals/Aditionals";
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import React, { Component } from 'react';
+import NumberFormat from 'react-number-format';
+import Insights from '../../components/Detail/Insights/Insights';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import DetailServices from '../../services/detail/DetailServices';
+import Property from '../../components/Detail/Property/Property';
+import variables from '../../assets/styles/variables.scss';
+import styles from '../DetailAdmin/DetailAdmin.module.scss';
+import Additional from '../../components/Detail/Aditionals/Aditionals';
+import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
+import LoadableContainer from '../../components/UI/Loader';
 
 export default class Detail extends Component {
   constructor(props) {
     super(props);
     this.services = new DetailServices(this);
   }
+
   state = {
     properties: [],
     property: {},
@@ -22,31 +24,33 @@ export default class Detail extends Component {
       priceAdditional: 0,
       priceWithAdditional: 0,
       mts2: 0,
-      priceXMts2: 0
+      priceXMts2: 0,
     },
     additional: [],
-    id: 0
+    id: 0,
+    isLoading: false,
   };
 
   componentDidMount() {
     this.getDetails();
   }
 
-  formatPrice = value => {
+  formatPrice = (value) => {
     return (
       <NumberFormat
         value={Number(value.toFixed(3))}
-        displayType={"text"}
+        displayType={'text'}
         thousandSeparator={true}
-        prefix={"$"}
+        prefix={'$'}
       />
     );
   };
 
-  printAdditional = data => {
-    return data.map(additional => {
+  printAdditional = (data) => {
+    return data.map((additional) => {
       return (
         <Additional
+          key={`additional ${additional.id}`}
           Title={additional.areaType.name}
           Title1="Cantidad"
           Title2="Precio"
@@ -61,35 +65,42 @@ export default class Detail extends Component {
 
   getDetails = () => {
     const towerId = this.props.match.params.towerId;
-    console.log("towerID ->> ", towerId);
+    console.log('towerID ->> ', towerId);
     if (!towerId) {
       return;
     }
-    console.log("towerID ->> ", towerId);
-    this.services.getDetails(towerId).then(response => {
+    console.log('towerID ->> ', towerId);
+
+    this.setState({ isLoading: true });
+    this.services.getDetails(towerId).then((response) => {
+      let newState = {};
       if (response.data.length !== 0) {
-        this.setState({
+        newState = {
           properties: response.data,
           property: response.data[0],
           totals: response.data[0].totals,
           additional: response.data[0].areas.filter(
-            ({ areaType }) => areaType.unit === "UNT"
-          )
-        });
+            ({ areaType }) => areaType.unit === 'UNT',
+          ),
+        };
       }
+      this.setState({
+        isLoading: false,
+        ...newState,
+      });
     });
   };
 
-  cells = properties => {
-    return properties.map(property => {
+  cells = (properties) => {
+    return properties.map((property) => {
       const handleOnClick = () => {
         return this.setState({
           property: property,
           totals: property.totals,
           additional: property.areas.filter(
-            ({ areaType }) => areaType.unit === "UNT"
+            ({ areaType }) => areaType.unit === 'UNT',
           ),
-          id: property.id
+          id: property.id,
         });
       };
       return (
@@ -98,9 +109,9 @@ export default class Detail extends Component {
             property={property}
             style={
               this.state.id === property.id
-                ? { color: "white", backgroundColor: variables.mainColor }
+                ? { color: 'white', backgroundColor: variables.mainColor }
                 : this.state.id2 === property.id
-                ? { color: "white", backgroundColor: variables.greenColor }
+                ? { color: 'white', backgroundColor: variables.greenColor }
                 : {}
             }
           />
@@ -108,27 +119,28 @@ export default class Detail extends Component {
       );
     });
   };
+
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
           </CardHeader>
-          <CardBody style={{ margin: "0" }}>
+          <CardBody style={{ margin: '0' }}>
             <div className={styles.Row}>
               {this.cells(this.state.properties)}
             </div>
           </CardBody>
         </Card>
-        <div style={{ display: "flex" }}>
-          <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex' }}>
             <Card>
               <CardHeader>
                 <p>Valores</p>
               </CardHeader>
               <CardBody>
-                <div style={{ display: "flex", flexFlow: "row wrap" }}>
+                <div style={{ display: 'flex', flexFlow: 'row wrap' }}>
                   <Insights
                     title="Inmueble"
                     value={this.formatPrice(this.state.totals.priceArea)}
@@ -144,7 +156,7 @@ export default class Detail extends Component {
                   <Insights
                     title="Total"
                     value={this.formatPrice(
-                      this.state.totals.priceWithAdditional
+                      this.state.totals.priceWithAdditional,
                     )}
                     color="#A2C3A4"
                     icon="fas fa-money-bill-wave"
@@ -154,9 +166,9 @@ export default class Detail extends Component {
                     value={
                       <NumberFormat
                         value={Number(this.state.totals.mts2.toFixed(3))}
-                        displayType={"text"}
+                        displayType={'text'}
                         thousandSeparator={true}
-                        suffix={" MT2"}
+                        suffix={' MT2'}
                       />
                     }
                     color="#80A4ED"
@@ -172,7 +184,7 @@ export default class Detail extends Component {
               </CardBody>
             </Card>
           </div>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             <Card>
               <CardHeader>Adicionales</CardHeader>
               <CardBody>{this.printAdditional(this.state.additional)}</CardBody>
@@ -180,13 +192,13 @@ export default class Detail extends Component {
           </div>
         </div>
         <FloatingButton
-            route="summary"
-            projectId={this.props.match.params.projectId}
-            towerId={this.props.match.params.towerId}
-          >
-            Resumen
-          </FloatingButton>
-      </div>
+          route="summary"
+          projectId={this.props.match.params.projectId}
+          towerId={this.props.match.params.towerId}
+        >
+          Resumen
+        </FloatingButton>
+      </LoadableContainer>
     );
   }
 }

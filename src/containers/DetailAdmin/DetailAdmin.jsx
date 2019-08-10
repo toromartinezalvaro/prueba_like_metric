@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
+import exportFromJSON from 'export-from-json';
+import NumberFormat from 'react-number-format';
 import Pie from '../../components/Detail/pie/Pie';
 import Property from '../../components/Detail/Property/Property';
 import Additional from '../../components/Detail/Aditionals/Aditionals';
 import Totals from '../../components/Detail/Totals/Totals';
-import exportFromJSON from 'export-from-json';
 import DetailServices from '../../services/detail/DetailServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import styles from '../DetailAdmin/DetailAdmin.module.scss';
 import variables from '../../assets/styles/variables.scss';
 import Table from '../../components/UI/Table/Table';
-import NumberFormat from 'react-number-format';
 import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import Button from '../../components/UI/Button/Button';
+import LoadableContainer from '../../components/UI/Loader';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -44,11 +45,12 @@ export default class Detail extends Component {
     active2: 0,
     id: 0,
     id2: 0,
+    isLoading: false,
   };
 
   componentDidMount() {
-    this.getDetails();
     this.setState({ isLoading: true });
+    this.getDetails();
   }
 
   getDetails = () => {
@@ -253,7 +255,7 @@ export default class Detail extends Component {
 
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
@@ -425,7 +427,7 @@ export default class Detail extends Component {
         >
           Resumen
         </FloatingButton>
-      </div>
+      </LoadableContainer>
     );
   }
 }

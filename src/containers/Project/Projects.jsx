@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import ProjectServices from "../../services/Projects/ProjectServices";
-import ProjectItems from "../../components/Projects/Projects";
-import Modal from "../../components/UI/Modal/Modal";
-import Input from "../../components/UI/Input/Input";
-import { DashboardRoutes } from "../../routes/local/routes";
-// import Error from "../../components/UI/Error/Error";
+import React, { Component } from 'react';
+import ProjectServices from '../../services/Projects/ProjectServices';
+import ProjectItems from '../../components/Projects/Projects';
+import Modal from '../../components/UI/Modal/Modal';
+import Input from '../../components/UI/Input/Input';
+import { DashboardRoutes } from '../../routes/local/routes';
+import LoadableContainer from '../../components/UI/Loader';
 
 export default class Projects extends Component {
   constructor(props) {
@@ -15,137 +15,136 @@ export default class Projects extends Component {
   state = {
     projects: [],
     modalIsHidden: true,
-    newTitleProject: "",
-    newDescriptionProject: "",
-    alertMessage: "",
+    newTitleProject: '',
+    newDescriptionProject: '',
+    alertMessage: '',
     alertIsHidden: true,
-    alertAccept: () => {}
+    alertAccept: () => {},
+    isLoading: false,
   };
 
   componentDidMount() {
-    if (this.props.additionalProps) {
-      this.props.additionalProps.changeTower(null);
+    if (this.props.changeTower) {
+      this.props.changeTower(null);
     }
     this.loadCurrentProjects();
   }
 
-  openProjectHandler = id => {
-    console.log("tower id ", id);
+  openProjectHandler = (id) => {
     this.props.history.push({
-      pathname: this.props.match.url + DashboardRoutes.towers.value + id
+      pathname: this.props.match.url + DashboardRoutes.towers.value + id,
     });
   };
 
   createProjectHandler = () => {
     this.setState({
-      modalIsHidden: false
+      modalIsHidden: false,
     });
   };
 
-  removeProjectHandler = id => {
+  removeProjectHandler = (id) => {
     const onAccept = () => {
       this.setState({
-        alertIsHidden: true
+        alertIsHidden: true,
       });
       this.services
         .removeProject({ projectId: id })
-        .then(response => {
+        .then((response) => {
           let project = response.data.projects;
           if (project) {
             this.setState({
               projects: project,
-              modalIsHidden: project.length > 0
+              modalIsHidden: project.length > 0,
             });
           }
         })
-        .catch(error => {
-          console.log("ERROR::: ", error);
+        .catch((error) => {
+          console.log('ERROR::: ', error);
         });
     };
 
     this.setState({
       alertAccept: onAccept,
       alertMessage:
-        "Está seguro de que quiere eliminar todo el proyecto? Al hacer esto eliminará toda la info interna",
-      alertIsHidden: false
+        'Está seguro de que quiere eliminar todo el proyecto? Al hacer esto eliminará toda la info interna',
+      alertIsHidden: false,
     });
   };
 
   loadCurrentProjects = () => {
-    this.setState({ isLoading: true})
+    this.setState({ isLoading: true });
     this.services
       .getProjects()
-      .then(response => {
-        console.log("response ---> ", response.data.projects);
+      .then((response) => {
         this.setState({
           projects: response.data.projects ? response.data.projects : [],
-          modalIsHidden: response.data.projects.length > 0
+          modalIsHidden: response.data.projects.length > 0,
         });
-        this.setState({ isLoading: false})
+        this.setState({ isLoading: false });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({
           projects: [],
-          modalIsHidden: true
+          modalIsHidden: true,
         });
-        this.setState({ isLoading: false})
+        this.setState({ isLoading: false });
       });
   };
 
   onCreate = () => {
-    if (this.state.newTitleProject === "") {
-      alert("Ingrese por lo menos un nombre para poder crear un proyecto");
+    if (this.state.newTitleProject === '') {
+      alert('Dale un lindo nombre a tu proyecto');
       return;
     }
 
-    console.log("onCreate :((((((");
     this.services
       .createProject({
         name: this.state.newTitleProject,
-        description: this.state.newDescriptionProject
+        description: this.state.newDescriptionProject,
       })
-      .then(response => {
-        console.log("response ---> ", response.data);
+      .then((response) => {
         this.setState({
           projects: response.data.projects ? response.data.projects : [],
-          modalIsHidden: response.data.projects.length > 0
+          modalIsHidden: response.data.projects.length > 0,
         });
       })
-      .catch(error => {
-        console.log("ERROR::: ", error);
+      .catch((error) => {
+        console.log('ERROR::: ', error);
       });
 
     this.setState({
       modalIsHidden: true,
-      newTitleProject: "",
-      newDescriptionProject: ""
+      newTitleProject: '',
+      newDescriptionProject: '',
     });
   };
 
   cancel = () => {
     this.setState({
-      alertIsHidden: true
+      alertIsHidden: true,
     });
 
     if (this.state.projects.length > 0) {
       this.setState({
-        modalIsHidden: true
+        modalIsHidden: true,
       });
     } else {
-      alert("Debes tener por lo menos un proyecto para continuar");
+      alert(
+        'Para acceder a todos los beneficios de esta plataform primero debes tener por lo menos un proyecto',
+      );
     }
   };
 
-  onChange = target => {
+  onChange = (target) => {
     this.setState({
-      [target.name]: target.value
+      [target.name]: target.value,
     });
   };
 
   createModal = () => {
     return (
       <Modal
-        title={"Crear proyecto"}
+        title={'Crear proyecto'}
         hidden={this.state.modalIsHidden}
         onConfirm={this.onCreate}
         onCancel={this.cancel}
@@ -156,7 +155,7 @@ export default class Projects extends Component {
             name="newTitleProject"
             onChange={this.onChange}
             validations={[]}
-             style={{ width: "75px" }}
+            style={{ width: '75px' }}
             value={this.state.newTitleProject}
           />
         </div>
@@ -166,7 +165,7 @@ export default class Projects extends Component {
             name="newDescriptionProject"
             onChange={this.onChange}
             validations={[]}
-             style={{ width: "75px" }}
+            style={{ width: '75px' }}
             value={this.state.newDescriptionProject}
           />
         </div>
@@ -177,7 +176,7 @@ export default class Projects extends Component {
   createAlert() {
     return (
       <Modal
-        title={"Alerta!"}
+        title={'Alerta!'}
         hidden={this.state.alertIsHidden}
         onConfirm={this.state.alertAccept}
         onCancel={this.cancel}
@@ -189,7 +188,7 @@ export default class Projects extends Component {
 
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {/* <Error /> */}
         {this.state.projects.length > 0 && (
           <ProjectItems
@@ -201,7 +200,7 @@ export default class Projects extends Component {
         )}
         {!this.state.modalIsHidden && this.createModal()}
         {!this.state.alertIsHidden && this.createAlert()}
-      </div>
+      </LoadableContainer>
     );
   }
 }

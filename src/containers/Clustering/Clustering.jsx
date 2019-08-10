@@ -5,6 +5,8 @@ import Input from '../../components/UI/Input/Input';
 import ClusteringServices from '../../services/clustering/ClusteringServices';
 import GroupTable from '../../components/Clustering/GroupTable/GroupTable';
 import styles from './Clustering.module.scss';
+import LoadableContainer from '../../components/UI/Loader';
+
 
 class Clustering extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class Clustering extends Component {
     clusters: [],
     loadingTable: false,
     waitingForResponse: false,
+    isLoading: false
   };
 
   componentDidMount() {
@@ -81,7 +84,7 @@ class Clustering extends Component {
 
   render() {
     return (
-      <Fragment>
+      <LoadableContainer isLoading={this.state.isLoading}>
         <Card>
           <CardBody>
             <div className={styles.InputContainer}>
@@ -127,7 +130,7 @@ class Clustering extends Component {
             loading={this.state.loadingTable}
           />
         ) : null}
-      </Fragment>
+      </LoadableContainer>
     );
   }
 }

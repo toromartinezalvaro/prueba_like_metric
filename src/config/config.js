@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Server from './server'
+import Server from './server';
 const env = process.env.NODE_ENV || 'development';
 const config = require('./server')[env];
 
@@ -15,22 +15,24 @@ class Agent {
   get currentUser() {
     if (this.user) {
       return this.user;
-    } else {
-      return this.reloadCurrentUser();
     }
+    return this.reloadCurrentUser();
   }
 
   get currentToken() {
     if (this.token) {
       return this.token;
-    } else {
-      const user = this.reloadCurrentUser();
-      return user ? user.token : null;
     }
+    const user = this.currentUser;
+    return user ? user.token : null;
   }
 
   isAuthorized(roles) {
-    return roles && this.currentUser && roles.indexOf(this.currentUser.userType) !== -1;
+    return (
+      roles
+      && this.currentUser
+      && roles.indexOf(this.currentUser.userType) !== -1
+    );
   }
 
   reloadCurrentUser() {
@@ -41,14 +43,15 @@ class Agent {
           this.user = user;
           this.setToken(user.token);
         } else {
-          this.logout()
+          this.logout();
         }
         return user;
       } catch {
-        this.logout()
-        return null
+        this.logout();
+        return null;
       }
     }
+    return this.user;
   }
 
   logout() {
@@ -82,7 +85,6 @@ class Agent {
   }
 }
 
-
-export const API_PATH = Server.development.serverUrl
+export const API_PATH = Server.development.serverUrl;
 // export const API_PATH = Server.staging.serverUrl
 export default new Agent();
