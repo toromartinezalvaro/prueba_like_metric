@@ -4,7 +4,7 @@ import agent from '../config/config';
 class Services {
   constructor() {
     this.axios = axios;
-    axios.defaults.timeout = 1000 * 15;
+    axios.defaults.timeout = 1000 * 40;
     this.setupAuthentication();
   }
 

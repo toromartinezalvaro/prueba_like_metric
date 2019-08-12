@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import NumberFormat from 'react-number-format';
 import SalesRoomService from '../../services/salesRoom/salesRoomService';
-import Card, {
-  CardHeader,
-  CardBody,
-  CardFooter,
-} from '../../components/UI/Card/Card';
+import Card, { CardHeader, CardBody, CardFooter } from '../../components/UI/Card/Card';
 import Modal from '../../components/UI/Modal/Modal';
 import variables from '../../assets/styles/variables.scss';
 import Selectors from '../../components/SalesRoom/Selectors';
@@ -33,8 +29,10 @@ export default class Detail extends Component {
     rightButton: {},
     leftButton: {},
     id: 0,
+    groupId: 0,
     priceSold: 0,
     isEmpty: null,
+    isLoadingModal: false
   };
   componentDidMount() {
     this.setState({ isLoading: true });
@@ -80,10 +78,11 @@ export default class Detail extends Component {
   onClickSelector = (property, buttons) => {
     this.setState({
       id: property.id,
+      groupId: property.groupId,
       isHidden: false,
       rightButton: buttons.rightButton,
       leftButton: buttons.leftButton,
-      priceSold: property.price,
+      priceSold: property.priceWithIncrement,
     });
   };
 
@@ -101,7 +100,7 @@ export default class Detail extends Component {
           parseFloat(property.mts2).toFixed(2)
         ) : (
           <NumberFormat
-            value={parseFloat(property.price).toFixed(2)}
+            value={parseFloat(property.priceWithIncrement).toFixed(2)}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -111,7 +110,7 @@ export default class Detail extends Component {
     </div>
   );
 
-  makeArrayOfProperties(properties, active) {
+    makeArrayOfProperties(properties, active) {
     const data = properties.data;
     let arrayOfNulls = [];
     if (data.floors !== null) {
@@ -122,11 +121,7 @@ export default class Detail extends Component {
         properties.map((property) => {
           let floor = arrayOfNulls[property.floor - data.lowestFloor];
           const buttons = this.buttonsStyles(property.status);
-          floor[property.location - 1] = this.makeCells(
-            buttons,
-            property,
-            active,
-          );
+          floor[property.location - 1] = this.makeCells(buttons, property, active);
           arrayOfNulls[property.floor - data.lowestFloor] = floor;
         });
       });
@@ -143,8 +138,26 @@ export default class Detail extends Component {
     }
   }
 
+  calculateCollectedIncrement(status) {
+    const properties = this.state.response.data.properties[0];
+    return properties.reduce((current, next) => {
+      const increment = next.priceWithIncrement - next.price;
+      if (
+        next.groupId === this.state.groupId
+        && next.status !== Status.Available
+        && next.id !== this.state.id
+      ) {
+        current += increment;
+      } else if (next.id === this.state.id && status !== 'Disponible') {
+        current += increment;
+      }
+      return current;
+    }, 0);
+  }
+
   save = () => {
-    this.setState({ isLoading: true });
+    const collectedIncrement = this.calculateCollectedIncrement(this.state.rightButton.label);
+    this.setState({ isLoadingModal: true })
     this.services
       .putState(
         {
@@ -155,31 +168,32 @@ export default class Detail extends Component {
               : this.state.rightButton.label === 'Opcionado'
               ? Status.Optional
               : Status.Sold,
-          priceSold:
-            this.state.rightButton.label !== 'Disponible'
-              ? this.state.priceSold
-              : null,
+          priceSold: this.state.rightButton.label !== 'Disponible' ? this.state.priceSold : null,
+          collectedIncrement,
+          groupId: this.state.groupId,
         },
         this.props.match.params.towerId,
       )
       .then((properties) => {
+        console.log(properties)
         if (properties) {
           this.makeArrayOfProperties(properties);
         }
         this.setState({
           isHidden: true,
-          isLoading: false,
+          isLoadingModal: false,
         });
       })
       .catch((err) => {
         console.log(err);
-        this.setState({ isLoading: false });
+        this.setState({ isLoadingModal: false });
       });
     return true;
   };
 
   saveLeft = () => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoadingModal: true });
+    const collectedIncrement = this.calculateCollectedIncrement(this.state.leftButton.label);
     this.services
       .putState(
         {
@@ -190,10 +204,9 @@ export default class Detail extends Component {
               : this.state.leftButton.label === 'Opcionado'
               ? Status.Optional
               : Status.Sold,
-          priceSold:
-            this.state.leftButton.label !== 'Disponible'
-              ? this.state.priceSold
-              : null,
+          priceSold: this.state.leftButton.label !== 'Disponible' ? this.state.priceSold : null,
+          collectedIncrement,
+          groupId: this.state.groupId,
         },
         this.props.match.params.towerId,
       )
@@ -203,12 +216,12 @@ export default class Detail extends Component {
         }
         this.setState({
           isHidden: true,
-          isLoading: false,
+          isLoadingModal: false,
         });
       })
       .catch((err) => {
         console.log(err);
-        this.setState({ isLoading: false });
+        this.setState({ isLoadingModal: false });
       });
     return true;
   };
@@ -255,14 +268,9 @@ export default class Detail extends Component {
                 leftColor={this.state.leftButton.color}
               >
                 Desea cambiar el estado?
-                {this.state.isLoading ? (
+                {this.state.isLoadingModal ? (
                   <div style={{ justifyContent: 'center', display: 'flex' }}>
-                    <Loader
-                      type="ThreeDots"
-                      color={variables.mainColor}
-                      height="100"
-                      width="100"
-                    />
+                    <Loader type="ThreeDots" color={variables.mainColor} height="100" width="100" />
                   </div>
                 ) : null}
               </Modal>
