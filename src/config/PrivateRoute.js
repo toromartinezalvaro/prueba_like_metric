@@ -1,33 +1,60 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import agent from './config';
-import { UserRoutes, DashboardRoutes, ProjectRoutes } from '../routes/local/routes';
+import Agent from './config';
+import {
+  UserRoutes,
+  DashboardRoutes,
+  ProjectRoutes,
+} from '../routes/local/routes';
+import Context from '../Context';
 
-const PrivateRoute = ({ component: Component, roles, ...rest }) => (
-  <Route
-    {...rest}
-    render={props => {
-      const currentUser = agent.currentUser
-      // console.log("authorized", currentUser)
-      if (!agent.currentToken || !currentUser) {
+const PrivateRoute = ({
+  component: Component,
+  roles,
+  isPrivate = true,
+  changeTower,
+  ...rest
+}) => {
+  const { isAuth, activateAuth } = useContext(Context.Shared);
+
+  return (
+    <Route
+      {...rest}
+      render={(props) => {
+        const pushTo = (route) => {
+          props.history.push(route);
+        };
+
+        if (!isAuth && isPrivate) {
+          return (
+            <Redirect
+              to={{
+                pathname: UserRoutes.login,
+                state: { from: props.location },
+              }}
+            />
+          );
+        }
+
+        if (roles && !Agent.isAuthorized(roles)) {
+          return (
+            <Redirect
+              to={{ pathname: DashboardRoutes.base + ProjectRoutes.base }}
+            />
+          );
+        }
+
         return (
-          <Redirect
-            to={{
-              pathName: UserRoutes.login,
-              state: { from: props.location },
-            }}
+          <Component
+            pushTo={pushTo}
+            activateAuth={activateAuth}
+            changeTower={changeTower}
+            {...props}
           />
         );
-      }
-
-      if (roles && !agent.isAuthorized(roles)) {
-        // console.log("isAuthorized")
-        return <Redirect to={{ pathname: DashboardRoutes.base + ProjectRoutes.base }} />;
-      }
-
-      return <Component {...props} />;
-    }}
-  />
-);
+      }}
+    />
+  );
+};
 
 export default PrivateRoute;

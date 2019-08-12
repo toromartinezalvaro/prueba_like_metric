@@ -6,6 +6,7 @@ import Error from '../../components/UI/Error/Error';
 import errorHandling from '../../services/commons/errorHelper';
 import SchemeServices from '../../services/schema/SchemaServices';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
+import LoadableContainer from '../../components/UI/Loader';
 
 class Building extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class Building extends Component {
     this.setState({ isLoading: true });
   }
 
-  onChangeHandler = target => {
+  onChangeHandler = (target) => {
     this.setState({
       [target.name]: target.value,
     });
@@ -42,7 +43,7 @@ class Building extends Component {
     this.setState({ isLoading: true });
     this.services
       .getSchema(this.props.match.params.towerId)
-      .then(response => {
+      .then((response) => {
         if (response.data.length !== 0) {
           this.updateStatesWithResponse(response);
           this.setupShowFloatingButton(response.data.properties);
@@ -50,7 +51,7 @@ class Building extends Component {
         this.setState({ isLoading: false });
         console.log(`🦄 No entro al error`);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`🐶 error: ${error}`);
         let errorHelper = errorHandling(error);
         this.setState({
@@ -60,7 +61,7 @@ class Building extends Component {
       });
   };
 
-  updateStatesWithResponse = response => {
+  updateStatesWithResponse = (response) => {
     let {
       floors,
       totalProperties,
@@ -72,7 +73,7 @@ class Building extends Component {
     floors = _.defaultTo(floors, 0);
     totalProperties = _.defaultTo(totalProperties, 0);
     lowestFloor = _.defaultTo(lowestFloor, 0);
-    console.log("properties", properties)
+    console.log('properties', properties);
     this.setState({
       floors: floors,
       properties: totalProperties,
@@ -86,13 +87,13 @@ class Building extends Component {
     });
   };
 
-  setupShowFloatingButton = properties => {
+  setupShowFloatingButton = (properties) => {
     if (properties.length <= 0) {
       return;
     }
 
-    let showFloating = properties.find(arrayProperties => {
-      let anyNomenclature = arrayProperties.find(nomenclature => {
+    let showFloating = properties.find((arrayProperties) => {
+      let anyNomenclature = arrayProperties.find((nomenclature) => {
         return nomenclature !== null && nomenclature.name !== '0';
       });
       return anyNomenclature !== undefined;
@@ -103,7 +104,7 @@ class Building extends Component {
   };
 
   toggleEditMode = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       disable: !prevState.disable,
     }));
   };
@@ -122,7 +123,7 @@ class Building extends Component {
         this.updateNames();
         this.setState({ loadingNaming: false });
       })
-      .catch(error => {
+      .catch((error) => {
         let errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
@@ -146,7 +147,7 @@ class Building extends Component {
         this.updateNames();
         this.setState({ loadingNaming: false });
       })
-      .catch(error => {
+      .catch((error) => {
         let errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
@@ -156,12 +157,12 @@ class Building extends Component {
     this.setState({ currentErrorMessage: '' });
   };
 
-  checkDuplicates = value => {
+  checkDuplicates = (value) => {
     const duplicate =
       value === ''
         ? true
         : this.state.names.reduce((current, next) => {
-            next.map(e => {
+            next.map((e) => {
               if (e !== null) {
                 if (e.name === value) {
                   current = e;
@@ -184,7 +185,7 @@ class Building extends Component {
     };
     this.services
       .putProperties(names[floor - this.state.lowestFloor][location - 1])
-      .then(data => {
+      .then((data) => {
         console.log(data);
         this.updateNames();
       });
@@ -194,16 +195,16 @@ class Building extends Component {
     });
   };
 
-  propertyDelete = id => {
-    this.services.deleteProperties(id).then(data => {
+  propertyDelete = (id) => {
+    this.services.deleteProperties(id).then((data) => {
       this.updateNames();
     });
   };
 
-  updateStratum = stratum => {
+  updateStratum = (stratum) => {
     this.services
       .putStratum(this.props.match.params.towerId, { stratum })
-      .then(response => {
+      .then((response) => {
         this.setState({ stratum });
         console.log(response);
       });
@@ -211,7 +212,7 @@ class Building extends Component {
 
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
@@ -238,9 +239,11 @@ class Building extends Component {
               lowestFloor={this.state.lowestFloor}
               disable={this.state.disable}
               checkDuplicates={this.checkDuplicates}
-              headers={[...Array(this.state.properties).keys()].map(o => o + 1)}
+              headers={[...Array(this.state.properties).keys()].map(
+                (o) => o + 1,
+              )}
               columns={[...Array(this.state.floors).keys()].map(
-                o => o + this.state.lowestFloor,
+                (o) => o + this.state.lowestFloor,
               )}
               onPropertyNameChange={this.propertyNameChangeHandler}
               onPropertyEmpty={this.propertyDelete}
@@ -248,7 +251,7 @@ class Building extends Component {
               names={this.state.names}
             />
           )}
-          {console.log("names", this.state.names)}
+          {console.log('names', this.state.names)}
         </div>
         {this.state.showFloatingButton ? (
           <FloatingButton
@@ -259,7 +262,7 @@ class Building extends Component {
             Areas
           </FloatingButton>
         ) : null}
-      </div>
+      </LoadableContainer>
     );
   }
 }

@@ -28,8 +28,8 @@ export default class UserSettings extends Component {
   };
 
   componentDidMount() {
-    if (this.props.additionalProps) {
-      this.props.additionalProps.changeTower(null);
+    if (this.props.changeTower) {
+      this.props.changeTower(null);
     }
     this.loadCurrentUserInfo();
   }

@@ -43,136 +43,133 @@ class Dashboard extends Component {
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)
-        .then(response => {
+        .then((response) => {
           this.setState({ tower: response.data });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log('ERROR >', error);
         });
     }
   }
 
-  onChangeTower = tower => {
+  onChangeTower = (tower) => {
     if (
-      tower === this.state.tower ||
-      (this.state.tower === null && tower === null)
+      tower === this.state.tower
+      || (this.state.tower === null && tower === null)
     ) {
       return;
     }
     this.setState({
-      tower: tower,
+      tower,
     });
   };
 
   render() {
     const { match, location } = this.props;
-    const tower = this.state.tower;
+    const {tower} = this.state;
     return (
       <DashboardLayout tower={tower} location={location}>
-        <Route
+        <PrivateRoute
           path={match.url + ProjectRoutes.base}
           exact
-          component={SecureContainer(Projects, {
-            changeTower: this.onChangeTower,
-          })}
+          component={Projects}
+          changeTower= {this.onChangeTower}
         />
-        <Route
+        <PrivateRoute
           path={
-            match.url +
-            ProjectRoutes.base +
-            DashboardRoutes.towers.withIndicator
+            match.url
+            + ProjectRoutes.base
+            + DashboardRoutes.towers.withIndicator
           }
           exact
-          component={SecureContainer(Towers, {
-            changeTower: this.onChangeTower,
-          })}
+          component={Towers}
+          changeTower= {this.onChangeTower}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.building.withIndicator}
           exact
-          component={SecureContainer(Building)}
+          component={Building}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.areas.withIndicator}
           exact
-          component={SecureContainer(Areas)}
+          component={Areas}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.user}
           exact
-          component={SecureContainer(UserSettings, {
-            changeTower: this.onChangeTower,
-          })}
+          component={UserSettings}
+          changeTower= {this.onChangeTower}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.prime.withIndicator}
           exact
-          component={SecureContainer(Prime)}
+          component={Prime}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.summary.withIndicator}
           exact
-          component={SecureContainer(Summary)}
+          component={Summary}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.detailAdmin.withIndicator}
           exact
-          component={SecureContainer(DetailAdmin)}
+          component={DetailAdmin}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.detail.withIndicator}
           exact
-          component={SecureContainer(Detail)}
+          component={Detail}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.rackAreas.withIndicator}
           exact
-          component={SecureContainer(RackAreas)}
+          component={RackAreas}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.clustering.withIndicator}
           exact
-          component={SecureContainer(Clustering)}
+          component={Clustering}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.user + UserRoutes.create}
           roles={[Role.Admin, Role.Super]}
           exact
-          component={SecureContainer(CreateUser)}
+          component={CreateUser}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.user + UserRoutes.assignProjects}
           roles={[Role.Admin, Role.Super]}
           exact
-          component={SecureContainer(AssignTowerToUsers)}
+          component={AssignTowerToUsers}
         />
-        <Route
+        <PrivateRoute
           path={match.url + DashboardRoutes.strategy.withIndicator}
           exact
-          component={SecureContainer(Strategy)}
+          component={Strategy}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.increments.withIndicator}
           roles={[Role.Admin, Role.Super]}
           exact
-          component={SecureContainer(Increments)}
+          component={Increments}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.salesRoom.withIndicator}
           exact
-          component={SecureContainer(SalesRoom)}
+          component={SalesRoom}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.clients.withIndicator}
           roles={[Role.Admin, Role.Super]}
           exact
-          component={SecureContainer(Client)}
+          component={Client}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.futureSalesSpeed.withIndicator}
           roles={[Role.Admin, Role.Super]}
           exact
-          component={SecureContainer(FutureSalesSpeed)}
+          component={FutureSalesSpeed}
         />
       </DashboardLayout>
     );
