@@ -53,9 +53,9 @@ class Increments extends Component {
       });
   }
 
-  salesSpeedsHandler = (id, salesSpeed) => {
-    salesSpeed = salesSpeed.replace(/,/g, '.');
-    this.services.putSalesSpeeds(id, { salesSpeed });
+  putSalesSpeed = (id, retentionMonths) => {
+    // const salesSpeed = salesSpeed.replace(/,/g, '.');
+    this.services.putSalesSpeeds(id, { retentionMonths });
   };
 
   anualEffectiveIncrementsHandler = (id, anualEffectiveIncrement) => {
@@ -165,7 +165,11 @@ class Increments extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        <IncrementsTable data={this.state.increments} />
+        <IncrementsTable
+          data={this.state.increments}
+          putIncrement={this.putIncrement}
+          putSalesSpeed={this.putSalesSpeed}
+        />
         {/* <IncrementsMarket
           putMarketAveragePrice={this.putMarketAveragePrice}
           putMarketAnnualEffectiveIncrement={

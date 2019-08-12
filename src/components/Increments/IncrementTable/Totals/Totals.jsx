@@ -4,7 +4,7 @@ import NumberFormat from 'react-number-format';
 import Input from '../../../UI/Input/Input';
 import Styles from './Totals.module.scss';
 
-function Totals({ className, groupSummary }) {
+function Totals({ className, groupSummary, putIncrement, putSalesSpeed }) {
   const {
     units,
     averageArea,
@@ -63,7 +63,7 @@ function Totals({ className, groupSummary }) {
           validations={[]}
           value={increment.toFixed(2)}
           onChange={(target) => {
-            console.log(target.value);
+            putIncrement(target.value);
           }}
         />
       </div>
@@ -89,7 +89,7 @@ function Totals({ className, groupSummary }) {
           validations={[]}
           value={retentionMonths}
           onChange={(target) => {
-            console.log(target.value);
+            putSalesSpeed(target.value);
           }}
         />
       </div>
@@ -129,6 +129,8 @@ Totals.propTypes = {
     incrementRate: PropTypes.number,
     suggestedIncrement: PropTypes.number,
   }).isRequired,
+  putIncrement: PropTypes.func.isRequired,
+  putSalesSpeed: PropTypes.func.isRequired,
 };
 
 Totals.defaultProps = {

@@ -10,7 +10,7 @@ import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
 import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
 
-function IncrementTable({ data }) {
+function IncrementTable({ data, putIncrement, putSalesSpeed }) {
   const inputValidation = (units) => [
     {
       fn: (value) => value > 0,
@@ -41,7 +41,16 @@ function IncrementTable({ data }) {
             <div className={styles.AccordionContainer}>
               <div className={styles['grid-container']}>
                 <Definitions className={styles.definitions} />
-                <Totals className={styles.total} groupSummary={group.total} />
+                <Totals
+                  className={styles.total}
+                  groupSummary={group.total}
+                  putIncrement={(increment) => {
+                    putIncrement(group.id, increment);
+                  }}
+                  putSalesSpeed={(retentionMonths) => {
+                    putSalesSpeed(group.id, retentionMonths);
+                  }}
+                />
                 <Sales className={styles.sold} groupSummary={group.sales} />
                 <Inventory
                   className={styles.inventory}
@@ -60,6 +69,7 @@ function IncrementTable({ data }) {
 
 IncrementTable.propTypes = {
   data: PropTypes.array,
+  putIncrement: PropTypes.func.isRequired,
 };
 
 IncrementTable.defaultProps = {
