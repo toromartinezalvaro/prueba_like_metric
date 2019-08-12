@@ -1,48 +1,118 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NumberFormat from 'react-number-format';
+import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
 
-function Inventory({
-  className,
-  date,
-  units,
-  area,
-  price,
-  priceM2WithAddons,
-  priceM2,
-  salesL0,
-  incrementGoal,
-  salesFuture,
-  incrementBase,
-  retentionMonths,
-  ear,
-  inventoryRetention,
-  earSuggestion,
-  incrementGoalSuggestion,
-}) {
+function Inventory({ className, groupSummary }) {
+  const {
+    units,
+    averageArea,
+    averagePrice,
+    pricePerMT2,
+    l0,
+    increment,
+    estimatedSales,
+    incrementRate,
+    retentionMonths,
+    ear,
+    suggestedIncrement,
+  } = groupSummary;
   return (
     <div className={`${Styles.inventory} ${className}`}>
       <div className={Styles['inv-header']}>Inventario</div>
-      <div className={Styles['inv-date']}>{date}</div>
-      <div className={Styles['inv-units']}>{units}</div>
-      <div className={Styles['inv-area']}>{area}</div>
-      <div className={Styles['inv-price']}>{price}</div>
-      <div className={Styles['inv-price-m2-addons']}>{priceM2WithAddons}</div>
-      <div className={Styles['inv-price-m2']}>{priceM2}</div>
-      <div className={Styles['inv-sales-l0']}>{salesL0}</div>
-      <div className={Styles['inv-increment-goal']}>{incrementGoal}</div>
-      <div className={Styles['inv-sales-future']}>{salesFuture}</div>
-      <div className={Styles['inv-increment-base']}>{incrementBase}</div>
+      <div className={Styles['inv-date']}>...</div>
+      <div className={Styles['inv-units']}>
+        <span>{units}</span>
+      </div>
+      <div className={Styles['inv-area']}>
+        <NumberFormat
+          value={averageArea.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          suffix="m²"
+        />
+      </div>
+      <div className={Styles['inv-price']}>
+        <NumberFormat
+          value={averagePrice.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-price-m2']}>
+        <NumberFormat
+          value={pricePerMT2.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-sales-l0']}>
+        <NumberFormat
+          value={l0.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-increment-goal']}>
+        <NumberFormat
+          value={increment.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-sales-future']}>
+        <NumberFormat
+          value={estimatedSales.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-increment-base']}>
+        <NumberFormat
+          value={incrementRate.toFixed(2) * 100}
+          displayType="text"
+          thousandSeparator={true}
+          suffix="%"
+        />
+      </div>
       <div className={Styles['inv-analysis-inverse']} />
-      <div className={Styles['inv-retention-months']}>{retentionMonths}</div>
+      <div className={Styles['inv-retention-months']}>
+        <Input
+          validations={[]}
+          value={retentionMonths}
+          onChange={(target) => {
+            console.log(target.value);
+          }}
+        />
+      </div>
       <div className={Styles['inv-ear']}>{ear}</div>
       <div className={Styles['inv-sales-wizard']} />
       <div className={Styles['inv-inventory-retention']}>
-        {inventoryRetention}
+        <span>{retentionMonths}</span>
       </div>
-      <div className={Styles['inv-ear-suggestion']}>{earSuggestion}</div>
+      <div className={Styles['inv-ear-suggestion']}>
+        <Input
+          mask="percentage"
+          validations={[]}
+          value={0}
+          onChange={(target) => {
+            console.log(target.value);
+          }}
+        />
+      </div>
       <div className={Styles['inv-increment-goal-suggestion']}>
-        {incrementGoalSuggestion}
+        <NumberFormat
+          value={suggestedIncrement.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
       </div>
     </div>
   );
@@ -50,40 +120,21 @@ function Inventory({
 
 Inventory.propTypes = {
   className: PropTypes.string,
-  date: PropTypes.string,
-  units: PropTypes.number,
-  area: PropTypes.number,
-  price: PropTypes.number,
-  priceM2WithAddons: PropTypes.number,
-  priceM2: PropTypes.number,
-  salesL0: PropTypes.number,
-  incrementGoal: PropTypes.number,
-  salesFuture: PropTypes.number,
-  incrementBase: PropTypes.number,
-  retentionMonths: PropTypes.number,
-  ear: PropTypes.number,
-  inventoryRetention: PropTypes.number,
-  earSuggestion: PropTypes.number,
-  incrementGoalSuggestion: PropTypes.number,
+  groupSummary: PropTypes.exact({
+    units: PropTypes.number,
+    averageArea: PropTypes.number,
+    averagePrice: PropTypes.number,
+    pricePerMT2: PropTypes.number,
+    l0: PropTypes.number,
+    increment: PropTypes.number,
+    estimatedSales: PropTypes.number,
+    incrementRate: PropTypes.number,
+    suggestedIncrement: PropTypes.number,
+  }).isRequired,
 };
 
 Inventory.defaultProps = {
   className: '',
-  date: '',
-  units: 0,
-  area: 0,
-  price: 0,
-  priceM2WithAddons: 0,
-  priceM2: 0,
-  salesL0: 0,
-  incrementGoal: 0,
-  salesFuture: 0,
-  incrementBase: 0,
-  retentionMonths: 0,
-  ear: 0,
-  inventoryRetention: 0,
-  earSuggestion: 0,
-  incrementGoalSuggestion: 0,
 };
 
 export default Inventory;

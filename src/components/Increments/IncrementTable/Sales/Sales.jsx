@@ -1,48 +1,96 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NumberFormat from 'react-number-format';
 import Styles from './Sales.module.scss';
 
-function Sales({
-  className,
-  date,
-  units,
-  area,
-  price,
-  priceM2WithAddons,
-  priceM2,
-  salesL0,
-  incrementGoal,
-  salesFuture,
-  incrementBase,
-  retentionMonths,
-  ear,
-  inventoryRetention,
-  earSuggestion,
-  incrementGoalSuggestion,
-}) {
+function Sales({ className, groupSummary }) {
+  const {
+    units,
+    averageArea,
+    averagePrice,
+    pricePerMT2,
+    l0,
+    increment,
+    estimatedSales,
+    incrementRate,
+    suggestedIncrement,
+  } = groupSummary;
   return (
     <div className={`${Styles.sold} ${className}`}>
       <div className={Styles['sold-header']}>Vendidas</div>
-      <div className={Styles['sold-date']}>{date}</div>
-      <div className={Styles['sold-units']}>{units}</div>
-      <div className={Styles['sold-area']}>{area}</div>
-      <div className={Styles['sold-price']}>{price}</div>
-      <div className={Styles['sold-price-m2-addons']}>{priceM2WithAddons}</div>
-      <div className={Styles['sold-price-m2']}>{priceM2}</div>
-      <div className={Styles['sold-sales-l0']}>{salesL0}</div>
-      <div className={Styles['sold-increment-goal']}>{incrementGoal}</div>
-      <div className={Styles['sold-sales-future']}>{salesFuture}</div>
-      <div className={Styles['sold-increment-base']}>{incrementBase}</div>
-      <div className={Styles['sold-analysis-inverse']} />
-      <div className={Styles['sold-retention-months']}>{retentionMonths}</div>
-      <div className={Styles['sold-ear']}>{ear}</div>
-      <div className={Styles['sold-sales-wizard']} />
-      <div className={Styles['sold-inventory-retention']}>
-        {inventoryRetention}
+      <div className={Styles['sold-date']}>...</div>
+      <div className={Styles['sold-units']}>
+        <span>{units}</span>
       </div>
-      <div className={Styles['sold-ear-suggestion']}>{earSuggestion}</div>
+      <div className={Styles['sold-area']}>
+        <NumberFormat
+          value={averageArea.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          suffix="m²"
+        />
+      </div>
+      <div className={Styles['sold-price']}>
+        <NumberFormat
+          value={averagePrice.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['sold-price-m2']}>
+        <NumberFormat
+          value={pricePerMT2.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['sold-sales-l0']}>
+        <NumberFormat
+          value={l0.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['sold-increment-goal']}>
+        <NumberFormat
+          value={increment.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['sold-sales-future']}>
+        <NumberFormat
+          value={estimatedSales.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['sold-increment-base']}>
+        <NumberFormat
+          value={incrementRate.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          suffix="%"
+        />
+      </div>
+      <div className={Styles['sold-analysis-inverse']} />
+      <div className={Styles['sold-retention-months']} />
+      <div className={Styles['sold-ear']} />
+      <div className={Styles['sold-sales-wizard']} />
+      <div className={Styles['sold-inventory-retention']} />
+      <div className={Styles['sold-ear-suggestion']} />
       <div className={Styles['sold-increment-goal-suggestion']}>
-        {incrementGoalSuggestion}
+        <NumberFormat
+          value={suggestedIncrement.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
       </div>
     </div>
   );
@@ -50,40 +98,21 @@ function Sales({
 
 Sales.propTypes = {
   className: PropTypes.string,
-  date: PropTypes.string,
-  units: PropTypes.number,
-  area: PropTypes.number,
-  price: PropTypes.number,
-  priceM2WithAddons: PropTypes.number,
-  priceM2: PropTypes.number,
-  salesL0: PropTypes.number,
-  incrementGoal: PropTypes.number,
-  salesFuture: PropTypes.number,
-  incrementBase: PropTypes.number,
-  retentionMonths: PropTypes.number,
-  ear: PropTypes.number,
-  inventoryRetention: PropTypes.number,
-  earSuggestion: PropTypes.number,
-  incrementGoalSuggestion: PropTypes.number,
+  groupSummary: PropTypes.exact({
+    units: PropTypes.number,
+    averageArea: PropTypes.number,
+    averagePrice: PropTypes.number,
+    pricePerMT2: PropTypes.number,
+    l0: PropTypes.number,
+    increment: PropTypes.number,
+    estimatedSales: PropTypes.number,
+    incrementRate: PropTypes.number,
+    suggestedIncrement: PropTypes.number,
+  }).isRequired,
 };
 
 Sales.defaultProps = {
   className: '',
-  date: '',
-  units: 0,
-  area: 0,
-  price: 0,
-  priceM2WithAddons: 0,
-  priceM2: 0,
-  salesL0: 0,
-  incrementGoal: 0,
-  salesFuture: 0,
-  incrementBase: 0,
-  retentionMonths: 0,
-  ear: 0,
-  inventoryRetention: 0,
-  earSuggestion: 0,
-  incrementGoalSuggestion: 0,
 };
 
 export default Sales;

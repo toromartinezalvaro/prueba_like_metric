@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NumberFormat from 'react-number-format';
+import Input from '../../../UI/Input/Input';
 import Styles from './Totals.module.scss';
 
 function Totals({ className, groupSummary }) {
@@ -13,31 +15,102 @@ function Totals({ className, groupSummary }) {
     estimatedSales,
     incrementRate,
     retentionMonths,
+    ear,
     suggestedIncrement,
   } = groupSummary;
   return (
     <div className={`${Styles.total} ${className}`}>
       <div className={Styles['total-header']}>Total</div>
-      <div className={Styles['total-date']} />
-      <div className={Styles['total-units']}>{units}</div>
-      <div className={Styles['total-area']}>{averageArea}</div>
-      <div className={Styles['total-price']}>{averagePrice}</div>
-      <div className={Styles['total-price-m2-addons']}>{pricePerMT2}</div>
-      <div className={Styles['total-price-m2']}>{l0}</div>
-      <div className={Styles['total-sales-l0']}>Borrar</div>
-      <div className={Styles['total-increment-goal']}>{increment}</div>
-      <div className={Styles['total-sales-future']}>{estimatedSales}</div>
-      <div className={Styles['total-increment-base']}>{incrementRate}</div>
-      <div className={Styles['total-analysis-inverse']} />
-      <div className={Styles['total-retention-months']}>{retentionMonths}</div>
-      <div className={Styles['total-ear']}></div>
-      <div className={Styles['total-sales-wizard']} />
-      <div className={Styles['total-inventory-retention']}>
-        
+      <div className={Styles['total-date']}>...</div>
+      <div className={Styles['total-units']}>
+        <span>{units}</span>
       </div>
-      <div className={Styles['total-ear-suggestion']}></div>
+      <div className={Styles['total-area']}>
+        <NumberFormat
+          value={averageArea.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          suffix={'m²'}
+        />
+      </div>
+      <div className={Styles['total-price']}>
+        <NumberFormat
+          value={averagePrice.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
+      </div>
+      <div className={Styles['total-price-m2']}>
+        <NumberFormat
+          value={pricePerMT2.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
+      </div>
+      <div className={Styles['total-sales-l0']}>
+        <NumberFormat
+          value={l0.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
+      </div>
+      <div className={Styles['total-increment-goal']}>
+        <Input
+          mask="currency"
+          validations={[]}
+          value={increment.toFixed(2)}
+          onChange={(target) => {
+            console.log(target.value);
+          }}
+        />
+      </div>
+      <div className={Styles['total-sales-future']}>
+        <NumberFormat
+          value={estimatedSales.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
+      </div>
+      <div className={Styles['total-increment-base']}>
+        <NumberFormat
+          value={incrementRate.toFixed(2) * 100}
+          displayType={'text'}
+          thousandSeparator={true}
+          suffix={'%'}
+        />
+      </div>
+      <div className={Styles['total-analysis-inverse']} />
+      <div className={Styles['total-retention-months']}>
+        <Input
+          validations={[]}
+          value={retentionMonths}
+          onChange={(target) => {
+            console.log(target.value);
+          }}
+        />
+      </div>
+      <div className={Styles['total-ear']}>
+        <NumberFormat
+          value={ear.toFixed(2) * 100}
+          displayType={'text'}
+          thousandSeparator={true}
+          suffix={'%'}
+        />
+      </div>
+      <div className={Styles['total-sales-wizard']} />
+      <div className={Styles['total-inventory-retention']} />
+      <div className={Styles['total-ear-suggestion']} />
       <div className={Styles['total-increment-goal-suggestion']}>
-        {suggestedIncrement}
+        <NumberFormat
+          value={suggestedIncrement.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
       </div>
     </div>
   );

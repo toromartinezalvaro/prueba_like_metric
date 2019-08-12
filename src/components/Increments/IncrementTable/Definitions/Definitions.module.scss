@@ -1,15 +1,14 @@
 .definitions {
-  font-family: 'Didact Gothic';
+  font-family: 'Roboto';
   font-weight: 700;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas: 'def-header' 'def-date' 'def-units' 'def-area' 'def-price' 'def-price-m2-addons' 'def-price-m2' 'def-sales-l0' 'def-increment-goal' 'def-sales-future' 'def-increment-base' 'def-analysis-inverse' 'def-retention-months' 'def-ear' 'def-sales-wizard' 'def-inventory-retention' 'def-ear-suggestion' 'def-increment-goal-suggestion';
+  grid-template-areas: 'def-header' 'def-date' 'def-units' 'def-area' 'def-price' 'def-price-m2' 'def-sales-l0' 'def-increment-goal' 'def-sales-future' 'def-increment-base' 'def-analysis-inverse' 'def-retention-months' 'def-ear' 'def-sales-wizard' 'def-inventory-retention' 'def-ear-suggestion' 'def-increment-goal-suggestion';
 
   .def-header {
     font-weight: 700;
     font-size: 20px;
-    font-family: 'Roboto';
     grid-area: def-header;
   }
 
@@ -27,10 +26,6 @@
 
   .def-price {
     grid-area: def-price;
-  }
-
-  .def-price-m2-addons {
-    grid-area: def-price-m2-addons;
   }
 
   .def-price-m2 {

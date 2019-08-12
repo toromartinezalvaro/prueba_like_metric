@@ -6,24 +6,23 @@ function AccordionTrigger({ group }) {
   return (
     <div>
       <span>{group.name}</span>
-      {group.increment !== null ? (
-        <NumberFormat
-          value={0}
-          displayType={'text'}
-          prefix=" - $"
-          thousandSeparator={true}
-        />
-      ) : null}
+      <NumberFormat
+        value={group.total.increment}
+        displayType={'text'}
+        prefix=" - $"
+        thousandSeparator={true}
+      />
     </div>
   );
 }
 
 AccordionTrigger.propTypes = {
-  group: PropTypes.object,
-};
-
-AccordionTrigger.defaultProps = {
-  group: { name: '', increment: null },
+  group: PropTypes.shape({
+    name: PropTypes.string,
+    total: PropTypes.shape({
+      increment: PropTypes.number,
+    }),
+  }).isRequired,
 };
 
 export default AccordionTrigger;
