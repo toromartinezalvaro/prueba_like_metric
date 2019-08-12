@@ -7,6 +7,7 @@ import Error from '../../components/UI/Error/Error';
 import errorHandling from '../../services/commons/errorHelper';
 import SchemeServices from '../../services/schema/SchemaServices';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
+import LoadableContainer from '../../components/UI/Loader';
 
 class Building extends Component {
   constructor(props) {
@@ -240,7 +241,7 @@ class Building extends Component {
 
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
@@ -296,7 +297,7 @@ class Building extends Component {
             Areas
           </FloatingButton>
         ) : null}
-      </div>
+      </LoadableContainer>
     );
   }
 }

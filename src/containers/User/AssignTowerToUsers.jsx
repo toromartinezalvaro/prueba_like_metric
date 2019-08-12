@@ -11,8 +11,13 @@ import {
   PasswordEditor,
 } from '../../components/User/ModalsContent';
 import Modal from '../../components/UI/Modal/Modal';
-//import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
-import { DashboardRoutes, UserRoutes, ProjectRoutes } from '../../routes/local/routes';
+import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
+import {
+  DashboardRoutes,
+  UserRoutes,
+  ProjectRoutes,
+} from '../../routes/local/routes';
+import LoadableContainer from '../../components/UI/Loader';
 
 class AssignTowerToUsers extends Component {
   constructor(props) {
@@ -242,76 +247,81 @@ class AssignTowerToUsers extends Component {
 
   render() {
     return (
-      <div className={styles.Container}>
-        {this.state.currentErrorMessage !== '' ? (
-          <Error message={this.state.currentErrorMessage} />
-        ) : null}
-        {/* {!this.state.currentUser && (
-          <EmptyContentMessageView
-            title="Vamos a administrar los permisos 👨‍🔧!"
-            message="Es fácil, primero debes crear usuarios para que puedan acceder a proyectos y torres"
-            buttonsContent={[
-              {
-                title: 'Creemos un usuario',
-                url:  UserRoutes.base + UserRoutes.create,
-              },
-              { title: 'Creemos un proyecto', url: DashboardRoutes.base + ProjectRoutes.base},
-            ]}
-          />
-        )} */}
-        {this.state.currentUser && (
-          <ChildrenUsers
-            onChange={this.onChange}
-            users={this.state.users}
-            currentUser={this.state.currentUser}
-            openPasswordModal={this.openPasswordModal}
-            openProjectModal={this.openProjectModal}
-          />
-        )}
-        {this.state.currentUser && (
-          <ProjectList
-            currentUser={this.state.currentUser}
-            removeOnClick={this.removeOnClick}
-          />
-        )}
-
-        <Modal
-          title={`Modificar contravene del usuario ${
-            this.state.currentUser ? this.state.currentUser.name : ''
-          }`}
-          hidden={!this.state.isUpdatingPasswordMode}
-          onConfirm={() => this.onConfirm(true)}
-          onCancel={this.onCancel}
-          blocked={this.state.isModalLocked}
-        >
-          {!this.state.isModalLoading && (
-            <PasswordEditor
-              password={this.state.password}
-              confirmPassword={this.state.confirmPassword}
+      <LoadableContainer isLoading={this.state.isLoading}>
+        <div className={styles.Container}>
+          {this.state.currentErrorMessage !== '' ? (
+            <Error message={this.state.currentErrorMessage} />
+          ) : null}
+          {!this.state.currentUser && (
+            <EmptyContentMessageView
+              title="Vamos a administrar los permisos 👨‍🔧!"
+              message="Es fácil, primero debes crear usuarios para que puedan acceder a proyectos y torres"
+              buttonsContent={[
+                {
+                  title: 'Creemos un usuario',
+                  url: UserRoutes.base + UserRoutes.create,
+                },
+                {
+                  title: 'Creemos un proyecto',
+                  url: DashboardRoutes.base + ProjectRoutes.base,
+                },
+              ]}
+            />
+          )}
+          {this.state.currentUser && (
+            <ChildrenUsers
               onChange={this.onChange}
+              users={this.state.users}
+              currentUser={this.state.currentUser}
+              openPasswordModal={this.openPasswordModal}
+              openProjectModal={this.openProjectModal}
             />
           )}
-          {this.loaderView()}
-        </Modal>
-        <Modal
-          title={`Agregar proyectos al usuario ${
-            this.state.currentUser ? this.state.currentUser.name : ''
-          }`}
-          hidden={!this.state.isAddingProjectMode}
-          onConfirm={() => this.onConfirm(false)}
-          onCancel={this.onCancel}
-          blocked={this.state.isModalLocked}
-        >
-          {!this.state.isModalLoading && (
-            <UserProductAssigner
-              currentProject={this.state.currentProject}
-              projects={this.state.projects}
-              userOnChange={this.onChange}
+          {this.state.currentUser && (
+            <ProjectList
+              currentUser={this.state.currentUser}
+              removeOnClick={this.removeOnClick}
             />
           )}
-          {this.loaderView()}
-        </Modal>
-      </div>
+
+          <Modal
+            title={`Modificar contravene del usuario ${
+              this.state.currentUser ? this.state.currentUser.name : ''
+            }`}
+            hidden={!this.state.isUpdatingPasswordMode}
+            onConfirm={() => this.onConfirm(true)}
+            onCancel={this.onCancel}
+            blocked={this.state.isModalLocked}
+          >
+            {!this.state.isModalLoading && (
+              <PasswordEditor
+                password={this.state.password}
+                confirmPassword={this.state.confirmPassword}
+                onChange={this.onChange}
+              />
+            )}
+            {this.loaderView()}
+          </Modal>
+          <Modal
+            title={`Agregar proyectos al usuario ${
+              this.state.currentUser ? this.state.currentUser.name : ''
+            }`}
+            hidden={!this.state.isAddingProjectMode}
+            onConfirm={() => this.onConfirm(false)}
+            onCancel={this.onCancel}
+            blocked={this.state.isModalLocked}
+          >
+            {!this.state.isModalLoading && (
+              <UserProductAssigner
+                currentProject={this.state.currentProject}
+                projects={this.state.projects}
+                userOnChange={this.onChange}
+              />
+            )}
+            {this.loaderView()}
+          </Modal>
+        </div>
+      </LoadableContainer>
     );
   }
 }

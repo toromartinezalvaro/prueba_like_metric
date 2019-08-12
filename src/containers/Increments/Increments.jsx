@@ -3,6 +3,7 @@ import IncrementsTable from '../../components/Increments/IncrementTable';
 import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
 import IncrementsServices from '../../services/increments/IncrementsServices';
+import LoadableContainer from '../../components/UI/Loader';
 
 class Increments extends Component {
   constructor(props) {
@@ -163,7 +164,7 @@ class Increments extends Component {
 
   render() {
     return (
-      <Fragment>
+      <LoadableContainer isLoading={this.state.isLoading}>
         <IncrementsTable data={this.state.increments} />
         {/* <IncrementsMarket
           putMarketAveragePrice={this.putMarketAveragePrice}
@@ -177,7 +178,7 @@ class Increments extends Component {
           data={this.state.increments}
           getData={this.getPeriodsIncrements}
         /> */}
-      </Fragment>
+      </LoadableContainer>
     );
   }
 }

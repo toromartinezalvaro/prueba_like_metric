@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Loader from 'react-loader-spinner';
+import NumberFormat from 'react-number-format';
 import SalesRoomService from '../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
@@ -7,12 +9,11 @@ import Card, {
 } from '../../components/UI/Card/Card';
 import Modal from '../../components/UI/Modal/Modal';
 import variables from '../../assets/styles/variables.scss';
-import NumberFormat from 'react-number-format';
-import Loader from 'react-loader-spinner';
 import Selectors from '../../components/SalesRoom/Selectors';
 import PropertiesTable from '../../components/SalesRoom/PropertiesTable';
 import Message from '../../components/SalesRoom/Message';
 import Status from '../../helpers/status';
+import LoadableContainer from '../../components/UI/Loader';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -39,11 +40,11 @@ export default class Detail extends Component {
     this.setState({ isLoading: true });
     this.services
       .getProperties(this.props.match.params.towerId)
-      .then(properties => {
+      .then((properties) => {
         this.makeArrayOfProperties(properties);
         this.setState({ isLoading: false });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false });
       });
@@ -117,8 +118,8 @@ export default class Detail extends Component {
       for (let i = 0; i < data.floors; i++) {
         arrayOfNulls.push([]);
       }
-      data.properties.map(properties => {
-        properties.map(property => {
+      data.properties.map((properties) => {
+        properties.map((property) => {
           let floor = arrayOfNulls[property.floor - data.lowestFloor];
           const buttons = this.buttonsStyles(property.status);
           floor[property.location - 1] = this.makeCells(
@@ -161,7 +162,7 @@ export default class Detail extends Component {
         },
         this.props.match.params.towerId,
       )
-      .then(properties => {
+      .then((properties) => {
         if (properties) {
           this.makeArrayOfProperties(properties);
         }
@@ -170,7 +171,7 @@ export default class Detail extends Component {
           isLoading: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false });
       });
@@ -196,7 +197,7 @@ export default class Detail extends Component {
         },
         this.props.match.params.towerId,
       )
-      .then(properties => {
+      .then((properties) => {
         if (properties) {
           this.makeArrayOfProperties(properties);
         }
@@ -205,7 +206,7 @@ export default class Detail extends Component {
           isLoading: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false });
       });
@@ -218,7 +219,7 @@ export default class Detail extends Component {
 
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.isEmpty === null ? null : this.state.isEmpty ? (
           <Message route={this.props.match.params.towerId} />
         ) : (
@@ -268,7 +269,7 @@ export default class Detail extends Component {
             )}
           </Card>
         )}
-      </div>
+      </LoadableContainer>
     );
   }
 }

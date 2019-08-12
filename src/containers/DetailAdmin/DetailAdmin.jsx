@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
+import exportFromJSON from 'export-from-json';
+import NumberFormat from 'react-number-format';
 import Pie from '../../components/Detail/pie/Pie';
 import Property from '../../components/Detail/Property/Property';
 import Additional from '../../components/Detail/Aditionals/Aditionals';
 import Totals from '../../components/Detail/Totals/Totals';
-import exportFromJSON from 'export-from-json';
 import DetailServices from '../../services/detail/DetailServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import styles from '../DetailAdmin/DetailAdmin.module.scss';
 import variables from '../../assets/styles/variables.scss';
 import Table from '../../components/UI/Table/Table';
-import NumberFormat from 'react-number-format';
 import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import Button from '../../components/UI/Button/Button';
+import LoadableContainer from '../../components/UI/Loader';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -44,11 +45,12 @@ export default class Detail extends Component {
     active2: 0,
     id: 0,
     id2: 0,
+    isLoading: false,
   };
 
   componentDidMount() {
-    this.getDetails();
     this.setState({ isLoading: true });
+    this.getDetails();
   }
 
   getDetails = () => {
@@ -86,13 +88,14 @@ export default class Detail extends Component {
     }
   };
 
-  sortData = data => data.sort((a, b) => {
-    const aInt = parseInt(a.areaType.id, 10);
-    const bInt = parseInt(b.areaType.id, 10);
-    if (aInt > bInt) return 1;
-    if (aInt < bInt) return -1;
-    return 0;
-  });
+  sortData = (data) =>
+    data.sort((a, b) => {
+      const aInt = parseInt(a.areaType.id, 10);
+      const bInt = parseInt(b.areaType.id, 10);
+      if (aInt > bInt) return 1;
+      if (aInt < bInt) return -1;
+      return 0;
+    });
 
   assignTableData = () => {
     if (this.state.areas) {
@@ -150,9 +153,9 @@ export default class Detail extends Component {
       const handleOnClick = () => {
         const areas = this.sortData(property.areas);
         if (
-          this.state.id2 !== property.id
-          && this.state.id !== property.id
-          && this.state.id !== 0
+          this.state.id2 !== property.id &&
+          this.state.id !== property.id &&
+          this.state.id !== 0
         ) {
           return (
             this.setState({
@@ -187,10 +190,8 @@ export default class Detail extends Component {
               ),
             })
           );
-        } if (
-          this.state.id2 === property.id &&
-          this.state.id !== Property.id
-        ) {
+        }
+        if (this.state.id2 === property.id && this.state.id !== Property.id) {
           return this.setState({ id2: 0, active2: 0 });
         }
 
@@ -230,17 +231,31 @@ export default class Detail extends Component {
   };
 
   onClickExport = () => {
-    const towerId = this.props.match.params.towerId;
-    this.services.getExcel(towerId).then(response => {
-      const fileName = 'download';
-      const exportType = 'xls';
-      exportFromJSON({ data: response.data, fileName, exportType });
+    const { towerId } = this.props.match.params;
+    this.services
+      .getExcel(towerId)
+      .then((response) => {
+        if (!response.data) {
+          throw Error('No response');
+        }
+        const fileName = 'download';
+        const exportType = 'xls';
+        exportFromJSON({ data: response.data, fileName, exportType });
+      })
+      .catch(this.genericCatch);
+  };
+
+  genericCatch = (error) => {
+    const errorHelper = errorHandling(error);
+    this.setState({
+      currentErrorMessage: errorHelper.message,
+      isLoading: false,
     });
   };
 
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
@@ -256,141 +271,152 @@ export default class Detail extends Component {
           </CardBody>
         </Card>
         {this.state.id !== 0 || this.state.id2 !== 0 ? (
-          <div
-          className={ styles.Container }
-          >
+          <div className={styles.Container}>
             {this.state.id !== 0 ? (
-            <div className={styles.AreaContainer}>
-              <div>
-                <Card style={{ marginTop: '0' }}>
-                  <CardHeader>
-                    <p>Areas {this.state.property.nomenclature}</p>
-                  </CardHeader>
-                  <CardBody style={{ margin: '0' }}>
-                    <Pie
-                      property={this.state.property}
-                      nomenclature={this.state.property.nomenclature}
-                    />
-
-                    <Totals data={this.state.property} />
-                    <div
-                      style={{
-                        marginTop: '10px',
-                        overflowX: 'auto',
-                        maxWidth: '450px',
-                      }}
-                    >
-                      <Table
-                        intersect={'Areas'}
-                        headers={this.state.areasTable.nameAreas}
-                        columns={[
-                          <p key="PrecioxMts21" style={{ alignContent: 'center' }}>PrecioxMts2</p>,
-                        ]}
-                        data={[this.state.areasTable.priceAreas]}
-                        style={{ padding: '0em 1.5em' }}
-                        width={{ width: '100px' }}
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-              {this.state.id !== 0 ? (
-                <div
-                  style={
-                    this.state.id !== 0 && this.state.id2 !== 0
-                      ? { flexGrow: '1' }
-                      : { display: 'flex' }
-                  }
-                >
-                  <Card style={{ marginTop: '0', width: '100%' }}>
-                    <CardHeader>
-                      <p>Adicionales</p>
-                    </CardHeader>
-                    <CardBody style={{ margin: '0' }}>
-                      {this.printAdditional(this.state.additional)}
-                      <Additional
-                        Title="Total"
-                        Title1="Cantidad"
-                        Title2="Promedio"
-                        Title3="Total"
-                        Value1={this.state.totals.quantityAdditional}
-                        Value2={this.formatPrice(this.state.totals.priceXUnit)}
-                        Value3={this.formatPrice(
-                          this.state.totals.priceAdditional,
-                        )}
-                      />
-                    </CardBody>
-                  </Card>
-                </div>
-              ) : null}
-
-            </div>
-            ) : null}
-            {this.state.active2 !== 0 ? (
-            <div className={styles.AreaContainer}>
-              <div>
-                <Card style={{ marginTop: '0' }}>
-                  <CardHeader>
-                    <p>Areas {this.state.property2.nomenclature}</p>
-                  </CardHeader>
-                  <CardBody style={{ margin: '0' }}>
-                    <Pie
-                      property={this.state.property2}
-                      nomenclature={this.state.property2.nomenclature}
-                    />
-                    <Totals data={this.state.property2} />
-                    <div
-                      style={{
-                        marginTop: '10px',
-                        overflowX: 'auto',
-                        maxWidth: '450px',
-                      }}
-                    >
-                      <Table
-                        intersect={'Areas'}
-                        headers={this.state.areasTable2.nameAreas}
-                        columns={[
-                          <p key="PrecioxMts2C" style={{ alignContent: 'center' }}>PrecioxMts2</p>,
-                        ]}
-                        data={[this.state.areasTable2.priceAreas]}
-                        style={{ padding: '0em 1.5em' }}
-                        width={{ width: '100px' }}
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-              {this.state.active2 !== 0 ? (
-                <div
-                  style={
-                    this.state.id2 !== 0 && this.state.id !== 0
-                      ? { flexGrow: '1' }
-                      : { display: 'flex' }
-                  }
-                >
+              <div className={styles.AreaContainer}>
+                <div>
                   <Card style={{ marginTop: '0' }}>
                     <CardHeader>
-                      <p>Adicionales</p>
+                      <p>Areas {this.state.property.nomenclature}</p>
                     </CardHeader>
                     <CardBody style={{ margin: '0' }}>
-                      {this.printAdditional(this.state.additional2)}
-  
-                      <Additional
-                        Title="Total"
-                        Title1="Cantidad"
-                        Title2="Promedio"
-                        Title3="Total"
-                        Value1={this.state.totals2.quantityAdditional}
-                        Value2={this.formatPrice(this.state.totals2.priceXUnit)}
-                        Value3={this.formatPrice(
-                          this.state.totals2.priceAdditional,
-                        )}
+                      <Pie
+                        property={this.state.property}
+                        nomenclature={this.state.property.nomenclature}
                       />
+
+                      <Totals data={this.state.property} />
+                      <div
+                        style={{
+                          marginTop: '10px',
+                          overflowX: 'auto',
+                          maxWidth: '450px',
+                        }}
+                      >
+                        <Table
+                          intersect={'Areas'}
+                          headers={this.state.areasTable.nameAreas}
+                          columns={[
+                            <p
+                              key="PrecioxMts21"
+                              style={{ alignContent: 'center' }}
+                            >
+                              PrecioxMts2
+                            </p>,
+                          ]}
+                          data={[this.state.areasTable.priceAreas]}
+                          style={{ padding: '0em 1.5em' }}
+                          width={{ width: '100px' }}
+                        />
+                      </div>
                     </CardBody>
                   </Card>
                 </div>
-              ) : null}
-            </div>
+                {this.state.id !== 0 ? (
+                  <div
+                    style={
+                      this.state.id !== 0 && this.state.id2 !== 0
+                        ? { flexGrow: '1' }
+                        : { display: 'flex' }
+                    }
+                  >
+                    <Card style={{ marginTop: '0', width: '100%' }}>
+                      <CardHeader>
+                        <p>Adicionales</p>
+                      </CardHeader>
+                      <CardBody style={{ margin: '0' }}>
+                        {this.printAdditional(this.state.additional)}
+                        <Additional
+                          Title="Total"
+                          Title1="Cantidad"
+                          Title2="Promedio"
+                          Title3="Total"
+                          Value1={this.state.totals.quantityAdditional}
+                          Value2={this.formatPrice(
+                            this.state.totals.priceXUnit,
+                          )}
+                          Value3={this.formatPrice(
+                            this.state.totals.priceAdditional,
+                          )}
+                        />
+                      </CardBody>
+                    </Card>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+            {this.state.active2 !== 0 ? (
+              <div className={styles.AreaContainer}>
+                <div>
+                  <Card style={{ marginTop: '0' }}>
+                    <CardHeader>
+                      <p>Areas {this.state.property2.nomenclature}</p>
+                    </CardHeader>
+                    <CardBody style={{ margin: '0' }}>
+                      <Pie
+                        property={this.state.property2}
+                        nomenclature={this.state.property2.nomenclature}
+                      />
+                      <Totals data={this.state.property2} />
+                      <div
+                        style={{
+                          marginTop: '10px',
+                          overflowX: 'auto',
+                          maxWidth: '450px',
+                        }}
+                      >
+                        <Table
+                          intersect={'Areas'}
+                          headers={this.state.areasTable2.nameAreas}
+                          columns={[
+                            <p
+                              key="PrecioxMts2C"
+                              style={{ alignContent: 'center' }}
+                            >
+                              PrecioxMts2
+                            </p>,
+                          ]}
+                          data={[this.state.areasTable2.priceAreas]}
+                          style={{ padding: '0em 1.5em' }}
+                          width={{ width: '100px' }}
+                        />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </div>
+                {this.state.active2 !== 0 ? (
+                  <div
+                    style={
+                      this.state.id2 !== 0 && this.state.id !== 0
+                        ? { flexGrow: '1' }
+                        : { display: 'flex' }
+                    }
+                  >
+                    <Card style={{ marginTop: '0' }}>
+                      <CardHeader>
+                        <p>Adicionales</p>
+                      </CardHeader>
+                      <CardBody style={{ margin: '0' }}>
+                        {this.printAdditional(this.state.additional2)}
+
+                        <Additional
+                          Title="Total"
+                          Title1="Cantidad"
+                          Title2="Promedio"
+                          Title3="Total"
+                          Value1={this.state.totals2.quantityAdditional}
+                          Value2={this.formatPrice(
+                            this.state.totals2.priceXUnit,
+                          )}
+                          Value3={this.formatPrice(
+                            this.state.totals2.priceAdditional,
+                          )}
+                        />
+                      </CardBody>
+                    </Card>
+                  </div>
+                ) : null}
+              </div>
             ) : null}
           </div>
         ) : null}
@@ -401,7 +427,7 @@ export default class Detail extends Component {
         >
           Resumen
         </FloatingButton>
-      </div>
+      </LoadableContainer>
     );
   }
 }

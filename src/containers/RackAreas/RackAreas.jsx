@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import RackAreasService from "../../services/rackAreas/RackAreasServices";
-import SummaryTable from "../../components/Summary/SummaryTable/SummaryTable";
-import SummaryCell from "../../components/Summary/SummaryCell/SummaryCell";
-import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import _ from "lodash";
-import getHeat from "../../components/Summary/HeatMap/HeatMap";
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import React, { Component } from 'react';
+import _ from 'lodash';
+import RackAreasService from '../../services/rackAreas/RackAreasServices';
+import SummaryTable from '../../components/Summary/SummaryTable/SummaryTable';
+import SummaryCell from '../../components/Summary/SummaryCell/SummaryCell';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import getHeat from '../../components/Summary/HeatMap/HeatMap';
+import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
+import LoadableContainer from '../../components/UI/Loader';
 
 export default class RackAreas extends Component {
   constructor(props) {
@@ -20,9 +21,10 @@ export default class RackAreas extends Component {
     maxLocation: 0,
     maxFloor: 0,
     minFloor: 1,
-    mts2: [[{ id: 0, area: 0, nomenclature: "0" }]],
+    mts2: [[{ id: 0, area: 0, nomenclature: '0' }]],
     arrayAreas: [],
-    totals: {}
+    totals: {},
+    isLoading: false,
   };
 
   componentDidMount() {
@@ -34,53 +36,57 @@ export default class RackAreas extends Component {
     if (!towerId) {
       return;
     }
-    this.services.getAreas(towerId).then(response => {
+    this.setState({ isLoading: true });
+    this.services.getAreas(towerId).then((response) => {
       const data = response.data;
       let floors = [];
-      const locations = data.map(area => {
+      const locations = data.map((area) => {
         if (area.floor !== undefined) {
           floors.push(area.floor);
         }
         return area.location !== undefined ? area.location : 0;
       });
+      let newState = {};
       if (floors.length > 0) {
-        this.setState({
+        newState = {
           areas: data,
           maxLocation: Math.max(...locations),
           maxFloor: Math.max(...floors),
           minFloor: Math.min(...floors),
           locations: _.range(1, Math.max(...locations) + 1),
-          floors: _.range(Math.min(...floors), Math.max(...floors) + 1)
-        });
+          floors: _.range(Math.min(...floors), Math.max(...floors) + 1),
+        };
       }
+
+      this.setState({ isLoading: false, ...newState });
 
       let arrayEmpty = [[]];
       if (this.state.maxFloor > 0) {
         arrayEmpty = this.createNullMatrix(
           this.state.maxFloor - this.state.minFloor + 1,
-          this.state.maxLocation
+          this.state.maxLocation,
         );
       }
       this.assignTableValues(arrayEmpty);
     });
   };
 
-  assignTableValues = arrayEmpty => {
+  assignTableValues = (arrayEmpty) => {
     if (this.state.areas) {
       let objectAreas = [];
       let objectTotals = [];
-      this.state.areas.forEach(property => {
+      this.state.areas.forEach((property) => {
         if (property.id !== undefined) {
           objectTotals = this.asignValues(property, arrayEmpty);
         } else {
-          const ids = property.totalAreas.map(area => {
+          const ids = property.totalAreas.map((area) => {
             if (this.state.maxFloor > 0) {
               arrayEmpty = this.createNullMatrix(
                 this.state.maxFloor - this.state.minFloor + 1,
-                this.state.maxLocation
+                this.state.maxLocation,
               );
             }
-            this.state.areas.forEach(property => {
+            this.state.areas.forEach((property) => {
               if (property.id !== undefined) {
                 objectAreas = this.asignValues(property, arrayEmpty, area.id);
               } else {
@@ -92,7 +98,7 @@ export default class RackAreas extends Component {
               name: objectAreas.name,
               min: area.mts2.min,
               max: area.mts2.max,
-              avg: area.mts2.avg
+              avg: area.mts2.avg,
             };
           });
           this.setState({ arrayAreas: ids });
@@ -104,15 +110,15 @@ export default class RackAreas extends Component {
     }
   };
 
-  assignTableHeatMapValues = objectTotals => {
+  assignTableHeatMapValues = (objectTotals) => {
     let total = 0;
     let length = 0;
     let min = 0;
     let max = 0;
     let avg = 0;
-    console.log("arrayArea", objectTotals.array);
+    console.log('arrayArea', objectTotals.array);
     if (objectTotals.array !== undefined) {
-      objectTotals.array.map(area => {
+      objectTotals.array.map((area) => {
         total = area.reduce((current, next) => {
           if (next) {
             current = current + next.area;
@@ -137,13 +143,13 @@ export default class RackAreas extends Component {
       totals: {
         min: min,
         max: max,
-        avg: avg
-      }
+        avg: avg,
+      },
     });
   };
 
   asignValues = (area, array, id) => {
-    let name = "";
+    let name = '';
     if (area.id !== undefined) {
       const { floor, location } = area;
       const total = area.areas.reduce((current, next) => {
@@ -160,7 +166,7 @@ export default class RackAreas extends Component {
       array[floor - this.state.minFloor][location - 1] = {
         id: area.id,
         area: total,
-        name: area.nomenclature
+        name: area.nomenclature,
       };
     }
     return { array, name };
@@ -174,8 +180,8 @@ export default class RackAreas extends Component {
 
   getData = (summary, key, totals) => {
     if (summary !== undefined) {
-      return summary.map(row =>
-        row.map(value => (
+      return summary.map((row) =>
+        row.map((value) => (
           <SummaryCell
             k={key}
             style={{
@@ -184,25 +190,25 @@ export default class RackAreas extends Component {
                 totals.max,
                 totals.avg,
                 value,
-                key
-              )
+                key,
+              ),
             }}
           >
             {value}
           </SummaryCell>
-        ))
+        )),
       );
     }
   };
 
-  makeSummary = data => {
-    return data.map(area => (
+  makeSummary = (data) => {
+    return data.map((area) => (
       <SummaryTable
         title={area.name}
         intersect="Areas"
         headers={this.state.locations}
         columns={this.state.floors}
-        data={this.getData(area.areas, "area", area)}
+        data={this.getData(area.areas, 'area', area)}
         stats={[{}]}
       />
     ));
@@ -210,34 +216,35 @@ export default class RackAreas extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader>
-          <p>Resumen Areas</p>
-        </CardHeader>
-        <CardBody>
-          
-          {this.state.floors.length > 0 ? 
-            <SummaryTable
-            title="Totales"
-            intersect="Areas"
-            headers={this.state.locations}
-            columns={this.state.floors}
-            data={this.getData(this.state.mts2, "area", this.state.totals)}
-            stats={[{}]}
-          />: null}
-          
-          
-          {console.log(this.state.totals)}
-          {this.makeSummary(this.state.arrayAreas)}
-        </CardBody>
-        <FloatingButton
-          route="detailAdmin"
-          projectId={this.props.match.params.projectId}
-          towerId={this.props.match.params.towerId}
-        >
-          Detalle
-        </FloatingButton>
-      </Card>
+      <LoadableContainer isLoading={this.state.isLoading}>
+        <Card>
+          <CardHeader>
+            <p>Resumen Areas</p>
+          </CardHeader>
+          <CardBody>
+            {this.state.floors.length > 0 ? (
+              <SummaryTable
+                title="Totales"
+                intersect="Areas"
+                headers={this.state.locations}
+                columns={this.state.floors}
+                data={this.getData(this.state.mts2, 'area', this.state.totals)}
+                stats={[{}]}
+              />
+            ) : null}
+
+            {console.log(this.state.totals)}
+            {this.makeSummary(this.state.arrayAreas)}
+          </CardBody>
+          <FloatingButton
+            route="detailAdmin"
+            projectId={this.props.match.params.projectId}
+            towerId={this.props.match.params.towerId}
+          >
+            Detalle
+          </FloatingButton>
+        </Card>
+      </LoadableContainer>
     );
   }
 }

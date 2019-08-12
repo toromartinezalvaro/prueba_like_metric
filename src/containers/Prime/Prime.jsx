@@ -5,6 +5,7 @@ import Locations from "../../components/Primes/Locations";
 import Altitudes from "../../components/Primes/Altitudes";
 import PrimeServices from "../../services/prime/PrimeServices";
 import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import LoadableContainer from '../../components/UI/Loader';
 
 class Prime extends Component {
   constructor(props) {
@@ -176,7 +177,7 @@ class Prime extends Component {
 
   render() {
     return (
-      <Fragment>
+      <LoadableContainer isLoading={this.state.isLoading}>
         <Altitudes
           unitHandler={this.unitHandler}
           unit={this.state.altitude.unit}
@@ -201,7 +202,7 @@ class Prime extends Component {
             Resumen
           </FloatingButton>
         ) : null}
-      </Fragment>
+      </LoadableContainer>
     );
   }
 }

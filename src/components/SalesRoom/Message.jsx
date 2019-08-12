@@ -12,7 +12,7 @@ const Message = (props) => {
       <h4>
         Antes de poder ver la sala de ventas necesita escoger las estrategias
       </h4>
-      <Link to={DashboardRoutes.base + '/strategy' + '/' + props.route}>
+      <Link to={`${DashboardRoutes.base}/strategy/${props.route}`}>
         <Button>
           Ir a Estrategia <i className="fas fa-angle-double-right" />
         </Button>
