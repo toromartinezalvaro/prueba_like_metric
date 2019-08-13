@@ -238,7 +238,7 @@ export default class Detail extends Component {
         if (!response.data) {
           throw Error('No response');
         }
-        const fileName = 'download';
+        const fileName = 'Detalle';
         const exportType = 'xls';
         exportFromJSON({ data: response.data, fileName, exportType });
       })
@@ -262,7 +262,7 @@ export default class Detail extends Component {
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
-            <Button onClick={this.onClickExport}>Export to xls</Button>
+            <Button onClick={this.onClickExport}>Exportar a Excel</Button>
           </CardHeader>
           <CardBody style={{ margin: '0' }}>
             <div className={styles.Row}>
