@@ -11,7 +11,7 @@ const FloatingButton = props => {
       to={
         DashboardRoutes.base +
         '/' +
-        props.route.toLowerCase() +
+        props.route +
         '/' +
         props.towerId
       }
