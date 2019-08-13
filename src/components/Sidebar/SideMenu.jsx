@@ -8,6 +8,9 @@ import { Role } from '../../helpers';
 
 const SideMenu = props => {
   const [active, setActive] = useState(window.location.pathname);
+  if (window.location.pathname !== active) {
+    setActive(window.location.pathname)
+  }
   var itemForSlidebar = (styles, route, iconName, description) => {
     if (props.tower !== null) {
       const towerId = props.tower.id;
