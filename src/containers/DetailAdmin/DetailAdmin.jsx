@@ -84,8 +84,8 @@ export default class Detail extends Component {
         ),
       });
       this.assignTableData();
-      this.setState({ isLoading: false });
     }
+  this.setState({ isLoading: false });
   };
 
   sortData = (data) =>

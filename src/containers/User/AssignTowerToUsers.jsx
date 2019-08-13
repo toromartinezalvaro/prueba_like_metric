@@ -285,7 +285,7 @@ class AssignTowerToUsers extends Component {
           )}
 
           <Modal
-            title={`Modificar contravene del usuario ${
+            title={`Modificar contraseña del usuario ${
               this.state.currentUser ? this.state.currentUser.name : ''
             }`}
             hidden={!this.state.isUpdatingPasswordMode}

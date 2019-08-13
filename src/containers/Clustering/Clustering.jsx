@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Card, { CardBody } from '../../components/UI/Card/Card';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
@@ -6,7 +6,8 @@ import ClusteringServices from '../../services/clustering/ClusteringServices';
 import GroupTable from '../../components/Clustering/GroupTable/GroupTable';
 import styles from './Clustering.module.scss';
 import LoadableContainer from '../../components/UI/Loader';
-
+import { DashboardRoutes } from '../../routes/local/routes';
+import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
 
 class Clustering extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class Clustering extends Component {
     clusters: [],
     loadingTable: false,
     waitingForResponse: false,
-    isLoading: false
+    isLoading: false,
+    isEmpty: false,
   };
 
   componentDidMount() {
@@ -31,6 +33,9 @@ class Clustering extends Component {
     this.services
       .getClusters(this.props.match.params.towerId)
       .then(response => {
+        if (!Object.keys(response.data).length) {
+          return this.setState({ isEmpty: true, isLoading: false });
+        }
         this.setState({
           groupsSize: response.data.towerClustersConfig.groups.length,
           towerClusterConfig: response.data.towerClustersConfig,
@@ -85,7 +90,18 @@ class Clustering extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        <Card>
+        {this.state.isEmpty ?
+          <EmptyContentMessageView
+          title="Vamos a crear apartamentos 🏢!"
+          message="Para poder agrupar primero debes tener apartamentos"
+          buttonsContent={[
+            {
+              title: 'Creemos apartamentos',
+              url: DashboardRoutes.base + DashboardRoutes.building.value + this.props.match.params.towerId,
+            }
+          ]}
+        />
+          : <Card> {console.log(this.state.isEmpty)}
           <CardBody>
             <div className={styles.InputContainer}>
               <div>
@@ -122,6 +138,7 @@ class Clustering extends Component {
             </div>
           </CardBody>
         </Card>
+        }
         {this.state.towerClusterConfig.groups.length !== 0 ? (
           <GroupTable
             data={this.state.clusters}
