@@ -70,6 +70,7 @@ function IncrementTable({
                     putSuggestedEffectiveAnnualInterestRate(
                       group.id,
                       effectiveAnnualInterestRate,
+                      i,
                     );
                   }}
                 />

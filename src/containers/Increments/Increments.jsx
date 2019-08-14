@@ -55,10 +55,22 @@ class Increments extends Component {
   putSuggestedEffectiveAnnualInterestRate = (
     id,
     effectiveAnnualInterestRate,
+    index,
   ) => {
-    this.services.putSuggestedEffectiveAnnualInterestRate(id, {
-      effectiveAnnualInterestRate,
-    });
+    this.services
+      .putSuggestedEffectiveAnnualInterestRate(id, {
+        effectiveAnnualInterestRate,
+      })
+      .then((response) => {
+        const tempGroups = [...this.state.increments];
+        const group = tempGroups[index];
+        group.inventory.suggestedIncrement = response.data;
+        tempGroups[index] = group;
+        this.setState({ increments: tempGroups });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   putIncrement = (id, increment, index) => {
@@ -108,7 +120,7 @@ class Increments extends Component {
       .then((response) => {
         const tempGroups = [...this.state.increments];
         const group = tempGroups[index];
-        group.total.ear = response.data;
+        group.inventory.suggestedIncrement = response.data;
         tempGroups[index] = group;
         this.setState({ increments: tempGroups });
       })
