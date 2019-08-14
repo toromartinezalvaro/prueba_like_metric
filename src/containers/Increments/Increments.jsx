@@ -14,6 +14,7 @@ class Increments extends Component {
   state = {
     market: { averagePrice: 0, anualEffectiveIncrement: 0 },
     increments: [],
+    graphData: [],
     isLoading: false,
     isLoadingIncrements: false,
     isEmpty: false,
@@ -94,7 +95,7 @@ class Increments extends Component {
     this.services
       .getPeriodsIncrements(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ increments: response.data });
+        this.setState({ graphData: response.data });
       });
   };
 
@@ -147,11 +148,11 @@ class Increments extends Component {
           }
           marketData={this.state.market}
         />
-        {/*<IncrementsChart
-          salesStartDate={this.state.incrementsSummary.salesStartDate}
-          data={this.state.increments}
+        <IncrementsChart
+          salesStartDate={new Date().getTime()}
+          data={this.state.graphData}
           getData={this.getPeriodsIncrements}
-        /> */}
+        />
       </LoadableContainer>
     );
   }
