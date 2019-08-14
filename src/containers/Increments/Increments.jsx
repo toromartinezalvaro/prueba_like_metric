@@ -12,12 +12,7 @@ class Increments extends Component {
   }
 
   state = {
-    incrementsSummary: {
-      market: { averagePrice: 0, anualEffectiveIncrement: 0 },
-      groups: [],
-      salesStartDate: new Date().getTime(),
-      endOfSalesDate: new Date().getTime(),
-    },
+    market: { averagePrice: 0, anualEffectiveIncrement: 0 },
     increments: [],
     isLoading: false,
     isLoadingIncrements: false,
@@ -29,7 +24,11 @@ class Increments extends Component {
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ increments: response.data, isLoading: false });
+        this.setState({
+          increments: response.data.increments,
+          market: response.data.market,
+          isLoading: false,
+        });
       })
       .catch((error) => {
         this.setState({ isLoading: false });
@@ -141,14 +140,14 @@ class Increments extends Component {
             this.putSuggestedEffectiveAnnualInterestRate
           }
         />
-        {/* <IncrementsMarket
+        <IncrementsMarket
           putMarketAveragePrice={this.putMarketAveragePrice}
           putMarketAnnualEffectiveIncrement={
             this.putMarketAnnualEffectiveIncrement
           }
-          marketData={this.state.incrementsSummary.market}
+          marketData={this.state.market}
         />
-        <IncrementsChart
+        {/*<IncrementsChart
           salesStartDate={this.state.incrementsSummary.salesStartDate}
           data={this.state.increments}
           getData={this.getPeriodsIncrements}
