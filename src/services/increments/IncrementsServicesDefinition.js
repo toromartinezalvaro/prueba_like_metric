@@ -19,8 +19,11 @@ const IncrementsServiceDefinition = {
   putSalesSpeed: (id) => {
     return `${API_PATH}pricing/definitions/salesSpeeds/${id}`;
   },
-  putAnualEffectiveIncrement: (id) => {
-    return `${API_PATH}pricing/definitions/anualEffectiveIncrements/${id}`;
+  putSuggestedSalesSpeed: (id) => {
+    return `${API_PATH}pricing/definitions/suggestedSalesSpeeds/${id}`;
+  },
+  putSuggestedEffectiveAnnualInterestRate: (id) => {
+    return `${API_PATH}pricing/definitions/suggestedEffectiveAnnualInterestRate/${id}`;
   },
   putMarketAnualEffectiveIncrement: (towerId) => {
     return `${API_PATH}pricing/definitions/markets/anualEffectiveIncrements/${towerId}`;

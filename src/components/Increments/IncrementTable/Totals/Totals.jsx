@@ -77,7 +77,7 @@ function Totals({ className, groupSummary, putIncrement, putSalesSpeed }) {
       </div>
       <div className={Styles['total-increment-base']}>
         <NumberFormat
-          value={incrementRate.toFixed(2) * 100}
+          value={(incrementRate * 100).toFixed(2)}
           displayType={'text'}
           thousandSeparator={true}
           suffix={'%'}
@@ -95,7 +95,7 @@ function Totals({ className, groupSummary, putIncrement, putSalesSpeed }) {
       </div>
       <div className={Styles['total-ear']}>
         <NumberFormat
-          value={ear.toFixed(2) * 100}
+          value={(ear * 100).toFixed(2)}
           displayType={'text'}
           thousandSeparator={true}
           suffix={'%'}
@@ -128,6 +128,8 @@ Totals.propTypes = {
     estimatedSales: PropTypes.number,
     incrementRate: PropTypes.number,
     suggestedIncrement: PropTypes.number,
+    retentionMonths: PropTypes.number,
+    ear: PropTypes.number,
   }).isRequired,
   putIncrement: PropTypes.func.isRequired,
   putSalesSpeed: PropTypes.func.isRequired,

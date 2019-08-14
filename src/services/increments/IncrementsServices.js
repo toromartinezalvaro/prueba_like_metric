@@ -5,9 +5,11 @@ export default class IncrementsServices extends Services {
   putIncrements(towerId) {
     return this.put(IncrementsServicesDefinition.putIncrements(towerId));
   }
+
   getIncrements(towerId) {
     return this.put(IncrementsServicesDefinition.putIncrements(towerId));
   }
+
   getIncrementsSummary(towerId) {
     return this.get(IncrementsServicesDefinition.getIncrementsSummary(towerId));
   }
@@ -28,10 +30,17 @@ export default class IncrementsServices extends Services {
     return this.put(IncrementsServicesDefinition.putSalesSpeed(id), salesSpeed);
   }
 
-  putAnualEffectiveIncrements(id, anualEffectiveIncrement) {
+  putSuggestedSalesSpeeds(id, salesSpeed) {
     return this.put(
-      IncrementsServicesDefinition.putAnualEffectiveIncrement(id),
-      anualEffectiveIncrement,
+      IncrementsServicesDefinition.putSuggestedSalesSpeed(id),
+      salesSpeed,
+    );
+  }
+
+  putSuggestedEffectiveAnnualInterestRate(id, EffectiveAnnualInterestRate) {
+    return this.put(
+      IncrementsServicesDefinition.putSuggestedEffectiveAnnualInterestRate(id),
+      EffectiveAnnualInterestRate,
     );
   }
 

@@ -10,7 +10,13 @@ import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
 import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
 
-function IncrementTable({ data, putIncrement, putSalesSpeed }) {
+function IncrementTable({
+  data,
+  putIncrement,
+  putSalesSpeed,
+  putSuggestedSalesSpeed,
+  putSuggestedEffectiveAnnualInterestRate,
+}) {
   const inputValidation = (units) => [
     {
       fn: (value) => value > 0,
@@ -45,16 +51,27 @@ function IncrementTable({ data, putIncrement, putSalesSpeed }) {
                   className={styles.total}
                   groupSummary={group.total}
                   putIncrement={(increment) => {
-                    putIncrement(group.id, increment);
+                    putIncrement(group.id, increment, i);
                   }}
                   putSalesSpeed={(retentionMonths) => {
-                    putSalesSpeed(group.id, retentionMonths);
+                    putSalesSpeed(group.id, retentionMonths, i);
                   }}
                 />
                 <Sales className={styles.sold} groupSummary={group.sales} />
                 <Inventory
                   className={styles.inventory}
                   groupSummary={group.inventory}
+                  putSuggestedSalesSpeed={(retentionMonths) => {
+                    putSuggestedSalesSpeed(group.id, retentionMonths, i);
+                  }}
+                  putSuggestedEffectiveAnnualInterestRate={(
+                    effectiveAnnualInterestRate,
+                  ) => {
+                    putSuggestedEffectiveAnnualInterestRate(
+                      group.id,
+                      effectiveAnnualInterestRate,
+                    );
+                  }}
                 />
               </div>
             </div>
@@ -70,6 +87,9 @@ function IncrementTable({ data, putIncrement, putSalesSpeed }) {
 IncrementTable.propTypes = {
   data: PropTypes.array,
   putIncrement: PropTypes.func.isRequired,
+  putSalesSpeed: PropTypes.func.isRequired,
+  putSuggestedSalesSpeed: PropTypes.func.isRequired,
+  putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
 };
 
 IncrementTable.defaultProps = {

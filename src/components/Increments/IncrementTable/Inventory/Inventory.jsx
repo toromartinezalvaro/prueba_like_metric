@@ -4,7 +4,12 @@ import NumberFormat from 'react-number-format';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
 
-function Inventory({ className, groupSummary }) {
+function Inventory({
+  className,
+  groupSummary,
+  putSuggestedSalesSpeed,
+  putSuggestedEffectiveAnnualInterestRate,
+}) {
   const {
     units,
     averageArea,
@@ -87,11 +92,13 @@ function Inventory({ className, groupSummary }) {
           validations={[]}
           value={retentionMonths}
           onChange={(target) => {
-            console.log(target.value);
+            putSuggestedSalesSpeed(target.value);
           }}
         />
       </div>
-      <div className={Styles['inv-ear']}>{ear}</div>
+      <div className={Styles['inv-ear']}>
+        <span>{(ear * 100).toFixed(2)}%</span>
+      </div>
       <div className={Styles['inv-sales-wizard']} />
       <div className={Styles['inv-inventory-retention']}>
         <span>{retentionMonths}</span>
@@ -100,9 +107,9 @@ function Inventory({ className, groupSummary }) {
         <Input
           mask="percentage"
           validations={[]}
-          value={0}
+          value={(ear * 100).toFixed(2)}
           onChange={(target) => {
-            console.log(target.value);
+            putSuggestedEffectiveAnnualInterestRate(target.value / 100);
           }}
         />
       </div>
@@ -130,7 +137,11 @@ Inventory.propTypes = {
     estimatedSales: PropTypes.number,
     incrementRate: PropTypes.number,
     suggestedIncrement: PropTypes.number,
+    retentionMonths: PropTypes.number,
+    ear: PropTypes.number,
   }).isRequired,
+  putSuggestedSalesSpeed: PropTypes.func.isRequired,
+  putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
 };
 
 Inventory.defaultProps = {
