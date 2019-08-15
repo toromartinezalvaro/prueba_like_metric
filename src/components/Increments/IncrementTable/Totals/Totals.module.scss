@@ -4,9 +4,14 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas: 'total-header' 'total-date' 'total-units' 'total-area' 'total-price' 'total-price-m2' 'total-sales-l0' 'total-increment-goal' 'total-sales-future' 'total-increment-base' 'total-analysis-inverse' 'total-retention-months' 'total-ear' 'total-sales-wizard' 'total-inventory-retention' 'total-ear-suggestion' 'total-increment-goal-suggestion';
+  & * {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .total-header {
+  background-color: #ededed;
   font-weight: 700;
   font-size: 20px;
   grid-area: total-header;
@@ -34,6 +39,7 @@
 
 .total-sales-l0 {
   grid-area: total-sales-l0;
+  margin-bottom: 20px;
 }
 
 .total-increment-goal {
@@ -49,6 +55,7 @@
 }
 
 .total-analysis-inverse {
+  background-color: #ededed;
   grid-area: total-analysis-inverse;
 }
 
@@ -61,6 +68,7 @@
 }
 
 .total-sales-wizard {
+  background-color: #ededed;
   grid-area: total-sales-wizard;
 }
 
