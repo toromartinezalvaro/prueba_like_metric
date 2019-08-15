@@ -45,7 +45,7 @@ class Building extends Component {
   };
 
   updateNames = () => {
-    this.setState({ isLoading: true });
+    this.setState({ loadingNaming: true });
     this.services
       .getSchema(this.props.match.params.towerId)
       .then((response) => {
@@ -53,7 +53,7 @@ class Building extends Component {
           this.updateStatesWithResponse(response);
           this.setupShowFloatingButton(response.data.properties);
         }
-        this.setState({ isLoading: false });
+        this.setState({ loadingNaming: false });
         console.log(`🦄 No entro al error`);
       })
       .catch((error) => {

@@ -109,15 +109,18 @@ class Summary extends Component {
       credit: 100 - target.value,
     });
   };
+
   periodsHandler = (target) => {
     this.setState({ periods: target.value });
   };
+
   creditHandler = (target) => {
     this.setState({
       credit: target.value,
       firstFee: 100 - target.value,
     });
   };
+
   calcFees = () => {
     let items = 0;
     if (

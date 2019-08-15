@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
+import Loader from 'react-loader-spinner';
 import styles from "./Naming.module.scss";
 import Card, { CardHeader, CardBody, CardFooter } from "../../UI/Card/Card";
 import Input from "../../UI/Input/Input";
 import Table from "../../UI/Table/Table";
+import commonStyles from '../../../assets/styles/variables.scss';
 import Modal from "../../../components/UI/Modal/Modal";
 
 const Naming = props => {
@@ -77,9 +79,19 @@ const Naming = props => {
   };
 
   return (
-    <Card loading={props.loadingNaming}>
+    <Card>
       <CardHeader>
-        <p>Nomenclatura</p>
+        <p>Nomenclatura
+        {
+          props.loadingNaming ? 
+          <div className={styles.Loader}><Loader
+          type="ThreeDots"
+          color={commonStyles.mainColor}
+          height="100"
+          width="100"
+        /></div> : null
+        }</p>
+        
       </CardHeader>
       <CardBody>
         <div>
