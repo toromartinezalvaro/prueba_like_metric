@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Server from './server';
+
 const env = process.env.NODE_ENV || 'development';
 const config = require('./server')[env];
 
@@ -77,14 +78,14 @@ class Agent {
 
   setupAxios(currentToken) {
     if (currentToken !== undefined && currentToken !== '') {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken;
+      axios.defaults.headers.common.Authorization = `Bearer ${  currentToken}`;
       axios.defaults.withCredentials = true;
     } else {
-      axios.defaults.headers.common['Authorization'] = '';
+      axios.defaults.headers.common.Authorization = '';
     }
   }
 }
 
-export const API_PATH = Server.development.serverUrl;
-// export const API_PATH = Server.staging.serverUrl
+// export const API_PATH = Server.development.serverUrl;
+export const API_PATH = Server.staging.serverUrl;
 export default new Agent();
