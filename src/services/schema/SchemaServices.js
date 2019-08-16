@@ -26,4 +26,12 @@ export default class SchemeServices extends Services {
   putStratum(id, body) {
     return this.put(SchemaServiceDefinitions.putStratum(id), body);
   }
+
+  putSalesStartDate(towerId, body) {
+    return this.put(SchemaServiceDefinitions.putSalesStartDate(towerId), body);
+  }
+
+  putEndOfSalesDate(towerId, body) {
+    return this.put(SchemaServiceDefinitions.putEndOfSalesDate(towerId), body);
+  }
 }

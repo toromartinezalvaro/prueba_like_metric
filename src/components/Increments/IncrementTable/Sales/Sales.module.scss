@@ -1,0 +1,84 @@
+.sold {
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'sold-header' 'sold-date' 'sold-units' 'sold-area' 'sold-price' 'sold-price-m2' 'sold-sales-l0' 'sold-increment-goal' 'sold-sales-future' 'sold-increment-base' 'sold-analysis-inverse' 'sold-retention-months' 'sold-ear' 'sold-sales-wizard' 'sold-inventory-retention' 'sold-ear-suggestion' 'sold-increment-goal-suggestion';
+  & * {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.sold-header {
+  background-color: #ededed;
+  font-weight: 700;
+  font-size: 20px;
+  grid-area: sold-header;
+}
+
+.sold-date {
+  grid-area: sold-date;
+}
+
+.sold-units {
+  grid-area: sold-units;
+}
+
+.sold-area {
+  grid-area: sold-area;
+}
+
+.sold-price {
+  grid-area: sold-price;
+}
+
+.sold-price-m2 {
+  grid-area: sold-price-m2;
+}
+
+.sold-increment-goal {
+  grid-area: sold-increment-goal;
+}
+
+.sold-sales-l0 {
+  grid-area: sold-sales-l0;
+}
+
+.sold-sales-future {
+  grid-area: sold-sales-future;
+}
+
+.sold-increment-base {
+  grid-area: sold-increment-base;
+}
+
+.sold-analysis-inverse {
+  background-color: #ededed;
+  grid-area: sold-analysis-inverse;
+}
+
+.sold-retention-months {
+  grid-area: sold-retention-months;
+}
+
+.sold-ear {
+  grid-area: sold-ear;
+}
+
+.sold-sales-wizard {
+  background-color: #ededed;
+  grid-area: sold-sales-wizard;
+}
+
+.sold-inventory-retention {
+  grid-area: sold-inventory-retention;
+}
+
+.sold-ear-suggestion {
+  grid-area: sold-ear-suggestion;
+}
+
+.sold-increment-goal-suggestion {
+  grid-area: sold-increment-goal-suggestion;
+}

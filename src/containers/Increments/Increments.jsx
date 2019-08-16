@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import SalesStartDate from '../../components/Increments/SalesStartDate/SalesStartDate';
+import React, { Component } from 'react';
 import IncrementsTable from '../../components/Increments/IncrementTable';
 import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
@@ -13,12 +12,9 @@ class Increments extends Component {
   }
 
   state = {
-    incrementsSummary: {
-      market: { averagePrice: 0, anualEffectiveIncrement: 0 },
-      groups: [],
-      salesStartDate: new Date().getTime(),
-    },
+    market: { averagePrice: 0, anualEffectiveIncrement: 0 },
     increments: [],
+    graphData: [],
     isLoading: false,
     isLoadingIncrements: false,
     isEmpty: false,
@@ -28,104 +24,88 @@ class Increments extends Component {
     this.setState({ isLoading: true });
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
-      .then(response => {
-        if (response.data.salesStartDate === null) {
-          response.data.salesStartDate = new Date().getTime();
-        }
-        if (response.data.market === null) {
-          response.data.market = {
-            averagePrice: 0,
-            anualEffectiveIncrement: 0,
-          };
-        }
+      .then((response) => {
         this.setState({
-          incrementsSummary: response.data,
+          increments: response.data.increments,
+          market: response.data.market,
           isLoading: false,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isLoading: false });
         console.error(error);
       });
   }
 
-  salesSpeedsHandler = (id, salesSpeed) => {
-    salesSpeed = salesSpeed.replace(/,/g, '.');
-    this.services.putSalesSpeeds(id, { salesSpeed });
-  };
-
-  anualEffectiveIncrementsHandler = (id, anualEffectiveIncrement) => {
-    this.services.putAnualEffectiveIncrements(id, { anualEffectiveIncrement });
-  };
-
-  calcIncrements = () => {
+  putSalesSpeed = (id, retentionMonths, index) => {
     this.services
-      .putIncrements(this.props.match.params.towerId)
-      .then(results => {
-        this.setState({ increments: results.data });
+      .putSalesSpeeds(id, { retentionMonths })
+      .then((response) => {
+        const tempGroups = [...this.state.increments];
+        const group = tempGroups[index];
+        group.total.ear = response.data;
+        tempGroups[index] = group;
+        this.setState({ increments: tempGroups });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
-  getIncrements = () => {
-    this.setState({ isLoadingIncrements: true });
+  putSuggestedEffectiveAnnualInterestRate = (
+    id,
+    effectiveAnnualInterestRate,
+    index,
+  ) => {
     this.services
-      .getIncrements(this.props.match.params.towerId)
-      .then(response => {
-        if (response.data.salesStartDate === null) {
-          response.data.salesStartDate = new Date().getTime();
-        }
-        if (response.data.market === null) {
-          response.data.market = {
-            averagePrice: 0,
-            anualEffectiveIncrement: 0,
-          };
-        }
-        this.setState({
-          incrementsSummary: response.data,
-          isLoadingIncrements: false,
-          isEmpty: false,
-        });
+      .putSuggestedEffectiveAnnualInterestRate(id, {
+        effectiveAnnualInterestRate,
       })
-      .catch(err =>
-        this.setState({ isLoadingIncrements: false, isEmpty: true }),
-      );
+      .then((response) => {
+        const tempGroups = [...this.state.increments];
+        const group = tempGroups[index];
+        group.inventory.suggestedIncrement = response.data;
+        tempGroups[index] = group;
+        this.setState({ increments: tempGroups });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  putIncrement = (id, increment) => {
+  putIncrement = (id, increment, index) => {
     this.services
       .putIncrement(this.props.match.params.towerId, {
         groupId: id,
         increment,
       })
-      .then(response => {
-        if (response.data.salesStartDate === null) {
-          response.data.salesStartDate = new Date().getTime();
-        }
-        if (response.data.market === null) {
-          response.data.market = {
-            averagePrice: 0,
-            anualEffectiveIncrement: 0,
-          };
-        }
-        this.setState({ incrementsSummary: response.data });
+      .then((response) => {
+        const tempGroups = [...this.state.increments];
+        const group = tempGroups[index];
+        group.total.ear = response.data;
+        tempGroups[index] = group;
+        this.setState({ increments: tempGroups });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
   getPeriodsIncrements = () => {
     this.services
       .getPeriodsIncrements(this.props.match.params.towerId)
-      .then(response => {
-        this.setState({ increments: response.data });
+      .then((response) => {
+        this.setState({ graphData: response.data });
       });
   };
 
-  putMarketAveragePrice = averagePrice => {
+  putMarketAveragePrice = (averagePrice) => {
     this.services.putMarketAveragePrice(this.props.match.params.towerId, {
       averagePrice,
     });
   };
 
-  putMarketAnnualEffectiveIncrement = anualEffectiveIncrement => {
+  putMarketAnnualEffectiveIncrement = (anualEffectiveIncrement) => {
     this.services.putMarketAnualEffectiveIncrement(
       this.props.match.params.towerId,
       {
@@ -134,44 +114,43 @@ class Increments extends Component {
     );
   };
 
-  putSalesStartDate = salesStartDate => {
+  putSuggestedSalesSpeed = (id, retentionMonths, index) => {
     this.services
-      .putSalesStartDate(this.props.match.params.towerId, {
-        salesStartDate,
+      .putSuggestedSalesSpeeds(id, { retentionMonths })
+      .then((response) => {
+        const tempGroups = [...this.state.increments];
+        const group = tempGroups[index];
+        group.inventory.suggestedIncrement = response.data;
+        tempGroups[index] = group;
+        this.setState({ increments: tempGroups });
       })
-      .then(response => {
-        const tempIncrementsSummary = { ...this.state.incrementsSummary };
-        tempIncrementsSummary.salesStartDate = salesStartDate;
-        this.setState({ incrementsSummary: tempIncrementsSummary });
+      .catch((error) => {
+        console.error(error);
       });
   };
 
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        <SalesStartDate
-          salesStartDate={this.state.incrementsSummary.salesStartDate}
-          dayChangeHandler={this.putSalesStartDate}
-        />
         <IncrementsTable
-          getIncrements={this.getIncrements}
-          data={this.state.incrementsSummary.groups}
-          salesSpeedsHandler={this.salesSpeedsHandler}
-          anualEffectiveIncrementsHandler={this.anualEffectiveIncrementsHandler}
-          incrementsHandler={this.putIncrement}
-          isLoadingIncrement={this.state.isLoadingIncrements}
-          isEmpty={this.state.isEmpty}
+          data={this.state.increments}
+          putIncrement={this.putIncrement}
+          putSalesSpeed={this.putSalesSpeed}
+          putSuggestedSalesSpeed={this.putSuggestedSalesSpeed}
+          putSuggestedEffectiveAnnualInterestRate={
+            this.putSuggestedEffectiveAnnualInterestRate
+          }
         />
         <IncrementsMarket
           putMarketAveragePrice={this.putMarketAveragePrice}
           putMarketAnnualEffectiveIncrement={
             this.putMarketAnnualEffectiveIncrement
           }
-          marketData={this.state.incrementsSummary.market}
+          marketData={this.state.market}
         />
         <IncrementsChart
-          salesStartDate={this.state.incrementsSummary.salesStartDate}
-          data={this.state.increments}
+          salesStartDate={new Date().getTime()}
+          data={this.state.graphData}
           getData={this.getPeriodsIncrements}
         />
       </LoadableContainer>
