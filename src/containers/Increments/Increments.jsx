@@ -22,6 +22,10 @@ class Increments extends Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
+    this.updateIncrements();
+  }
+
+  updateIncrements = () => {
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then((response) => {
@@ -35,17 +39,13 @@ class Increments extends Component {
         this.setState({ isLoading: false });
         console.error(error);
       });
-  }
+  };
 
   putSalesSpeed = (id, retentionMonths, index) => {
     this.services
       .putSalesSpeeds(id, { retentionMonths })
       .then((response) => {
-        const tempGroups = [...this.state.increments];
-        const group = tempGroups[index];
-        group.total.ear = response.data;
-        tempGroups[index] = group;
-        this.setState({ increments: tempGroups });
+        this.updateIncrements();
       })
       .catch((error) => {
         console.error(error);
@@ -62,11 +62,7 @@ class Increments extends Component {
         effectiveAnnualInterestRate,
       })
       .then((response) => {
-        const tempGroups = [...this.state.increments];
-        const group = tempGroups[index];
-        group.inventory.suggestedIncrement = response.data;
-        tempGroups[index] = group;
-        this.setState({ increments: tempGroups });
+        this.updateIncrements();
       })
       .catch((error) => {
         console.error(error);
@@ -80,11 +76,7 @@ class Increments extends Component {
         increment,
       })
       .then((response) => {
-        const tempGroups = [...this.state.increments];
-        const group = tempGroups[index];
-        group.total.ear = response.data;
-        tempGroups[index] = group;
-        this.setState({ increments: tempGroups });
+        this.updateIncrements();
       })
       .catch((error) => {
         console.error(error);
@@ -118,11 +110,7 @@ class Increments extends Component {
     this.services
       .putSuggestedSalesSpeeds(id, { retentionMonths })
       .then((response) => {
-        const tempGroups = [...this.state.increments];
-        const group = tempGroups[index];
-        group.inventory.suggestedIncrement = response.data;
-        tempGroups[index] = group;
-        this.setState({ increments: tempGroups });
+        this.updateIncrements();
       })
       .catch((error) => {
         console.error(error);

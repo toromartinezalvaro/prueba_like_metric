@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Card, { CardHeader, CardBody, CardFooter } from '../UI/Card/Card';
 import Accordion from '../UI/Accordion/Accordion';
 import styles from './IncrementTable.module.scss';
@@ -17,19 +18,14 @@ function IncrementTable({
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
 }) {
-  const inputValidation = (units) => [
+  const inputValidations = [
     {
       fn: (value) => value > 0,
-      message: 'La velocidad de ventas debe ser mayor a 0',
+      message: 'Los meses de retención deben ser mayores a 0',
     },
     {
-      fn: (value) => value <= units,
-      message: 'Debe ser menor a las unidades',
-    },
-    {
-      fn: (value) => units / value <= 98,
-      message:
-        'La velocidad de ventas es demasiado baja para el numero de unidades',
+      fn: (value) => value <= 98,
+      message: 'Los meses de retención deben ser menores a 98 }',
     },
   ];
 
@@ -46,8 +42,14 @@ function IncrementTable({
           >
             <div className={styles.AccordionContainer}>
               <div className={styles['grid-container']}>
+                cosa{' '}
+                {moment(Number(group.sales.date)).diff(
+                  moment(Number(group.total.date)),
+                  'month',
+                )}
                 <Definitions className={styles.definitions} />
                 <Totals
+                  blockIncrements={group.total.units === 1}
                   className={styles.total}
                   groupSummary={group.total}
                   putIncrement={(increment) => {
@@ -56,9 +58,23 @@ function IncrementTable({
                   putSalesSpeed={(retentionMonths) => {
                     putSalesSpeed(group.id, retentionMonths, i);
                   }}
+                  validations={[
+                    ...inputValidations,
+                    {
+                      fn: (value) =>
+                        value <=
+                        moment(Number(group.sales.date)).diff(
+                          moment(Number(group.total.date)),
+                          'month',
+                        ),
+                      message:
+                        'Los meses de retencion superan la fecha final de ventas',
+                    },
+                  ]}
                 />
                 <Sales className={styles.sold} groupSummary={group.sales} />
                 <Inventory
+                  blockIncrements={group.total.units === 1}
                   className={styles.inventory}
                   groupSummary={group.inventory}
                   putSuggestedSalesSpeed={(retentionMonths) => {
@@ -73,6 +89,19 @@ function IncrementTable({
                       i,
                     );
                   }}
+                  validations={[
+                    ...inputValidations,
+                    {
+                      fn: (value) =>
+                        value <=
+                        moment(Number(group.sales.date)).diff(
+                          moment(Number(group.total.date)),
+                          'month',
+                        ),
+                      message:
+                        'Los meses de retencion superan la fecha final de ventas',
+                    },
+                  ]}
                 />
               </div>
             </div>
