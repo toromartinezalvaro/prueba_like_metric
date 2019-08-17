@@ -1,10 +1,13 @@
 import React from 'react';
+import moment from 'moment';
+import 'moment/locale/es';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import Styles from './Sales.module.scss';
 
 function Sales({ className, groupSummary }) {
   const {
+    date,
     units,
     averageArea,
     averagePrice,
@@ -18,7 +21,13 @@ function Sales({ className, groupSummary }) {
   return (
     <div className={`${Styles.sold} ${className}`}>
       <div className={Styles['sold-header']}>Vendidas</div>
-      <div className={Styles['sold-date']}>...</div>
+      <div className={Styles['sold-date']}>
+        <span>
+          {moment(Number(date))
+            .locale('es')
+            .format('DD-MMM-YY')}
+        </span>
+      </div>
       <div className={Styles['sold-units']}>
         <span>{units}</span>
       </div>
@@ -99,6 +108,7 @@ function Sales({ className, groupSummary }) {
 Sales.propTypes = {
   className: PropTypes.string,
   groupSummary: PropTypes.exact({
+    date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     units: PropTypes.number,
     averageArea: PropTypes.number,
     averagePrice: PropTypes.number,

@@ -9,6 +9,8 @@ function Inventory({
   groupSummary,
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
+  validations,
+  blockIncrements,
 }) {
   const {
     units,
@@ -80,7 +82,7 @@ function Inventory({
       </div>
       <div className={Styles['inv-increment-base']}>
         <NumberFormat
-          value={incrementRate.toFixed(2) * 100}
+          value={(incrementRate * 100).toFixed(2)}
           displayType="text"
           thousandSeparator={true}
           suffix="%"
@@ -89,7 +91,7 @@ function Inventory({
       <div className={Styles['inv-analysis-inverse']} />
       <div className={Styles['inv-retention-months']}>
         <Input
-          validations={[]}
+          validations={validations}
           value={retentionMonths}
           onChange={(target) => {
             putSuggestedSalesSpeed(target.value);
@@ -104,14 +106,18 @@ function Inventory({
         <span>{retentionMonths}</span>
       </div>
       <div className={Styles['inv-ear-suggestion']}>
-        <Input
-          mask="percentage"
-          validations={[]}
-          value={(ear * 100).toFixed(2)}
-          onChange={(target) => {
-            putSuggestedEffectiveAnnualInterestRate(target.value / 100);
-          }}
-        />
+        {blockIncrements ? (
+          <span>No se puede incrementar con 1 unidad</span>
+        ) : (
+          <Input
+            mask="percentage"
+            validations={[]}
+            value={(ear * 100).toFixed(2)}
+            onChange={(target) => {
+              putSuggestedEffectiveAnnualInterestRate(target.value / 100);
+            }}
+          />
+        )}
       </div>
       <div className={Styles['inv-increment-goal-suggestion']}>
         <NumberFormat
@@ -142,10 +148,14 @@ Inventory.propTypes = {
   }).isRequired,
   putSuggestedSalesSpeed: PropTypes.func.isRequired,
   putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
+  validations: PropTypes.array,
+  blockIncrements: PropTypes.bool,
 };
 
 Inventory.defaultProps = {
   className: '',
+  validations: [],
+  blockIncrements: false,
 };
 
 export default Inventory;
