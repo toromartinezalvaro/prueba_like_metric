@@ -28,7 +28,7 @@ function Inventory({
   return (
     <div className={`${Styles.inventory} ${className}`}>
       <div className={Styles['inv-header']}>Inventario</div>
-      <div className={Styles['inv-date']}>...</div>
+      <div className={Styles['inv-date']} />
       <div className={Styles['inv-units']}>
         <span>{units}</span>
       </div>

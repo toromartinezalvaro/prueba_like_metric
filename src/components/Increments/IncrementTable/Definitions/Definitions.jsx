@@ -12,10 +12,10 @@ function Definitions({ className }) {
       <div className={Styles['def-units']}>Unidades</div>
       <div className={Styles['def-area']}>Área Promedio</div>
       <div className={Styles['def-price']}>
-        Precio Promedio (Con Adicionales)
+        Precio Promedio (Sin Adicionales)
       </div>
       <div className={Styles['def-price-m2']}>
-        Precio m2 (Con Adicionales)
+        Precio m2 (Sin Adicionales)
       </div>
       <div className={Styles['def-increment-goal']}>
         Incremento Pesos (Meta)
