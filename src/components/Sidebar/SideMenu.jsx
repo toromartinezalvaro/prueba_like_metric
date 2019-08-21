@@ -6,10 +6,10 @@ import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
 
-const SideMenu = props => {
+const SideMenu = (props) => {
   const [active, setActive] = useState(window.location.pathname);
   if (window.location.pathname !== active) {
-    setActive(window.location.pathname)
+    setActive(window.location.pathname);
   }
   var itemForSlidebar = (styles, route, iconName, description) => {
     if (props.tower !== null) {
@@ -137,6 +137,12 @@ const SideMenu = props => {
           DashboardRoutes.base + DashboardRoutes.clients.value,
           'fas fa-users',
           'Clientes',
+        )}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.schedule.value,
+          'fas fa-users',
+          'Calendario',
         )}
       </div>
     </div>

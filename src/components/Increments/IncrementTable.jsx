@@ -42,11 +42,6 @@ function IncrementTable({
           >
             <div className={styles.AccordionContainer}>
               <div className={styles['grid-container']}>
-                cosa{' '}
-                {moment(Number(group.sales.date)).diff(
-                  moment(Number(group.total.date)),
-                  'month',
-                )}
                 <Definitions className={styles.definitions} />
                 <Totals
                   blockIncrements={group.total.units === 1}
