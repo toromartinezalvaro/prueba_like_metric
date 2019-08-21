@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Services from '../../services/user/UserServices'
+import Loader from 'react-loader-spinner';
+import Services from '../../services/user/UserServices';
 import LoginComponent from '../../components/User/Login';
-import Loader from 'react-loader-spinner'
-import agent from '../../config/config'
-import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes'
-import styles from './Login.module.scss'
-import errorHandling from '../../services/commons/errorHelper'
-
+import agent from '../../config/config';
+import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes';
+import styles from './Login.module.scss';
+import errorHandling from '../../services/commons/errorHelper';
 
 class Login extends Component {
 
@@ -74,8 +73,8 @@ class Login extends Component {
         }
         this.setState({ isLoading: false })
       })
-      .catch(error => {
-        let errorHelper = errorHandling(error)
+      .catch((error) => {
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
           isLoading: false 

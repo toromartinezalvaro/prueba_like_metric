@@ -58,7 +58,7 @@ class Summary extends Component {
     this.services
       .getSummaries(this.props.match.params.towerId)
       .then((response) => {
-        const data = response.data;
+        const {data} = response;
         this.setState({
           locations: [...Array(data.totalProperties).keys()].map((o) => o + 1),
           floors: [...Array(data.floors).keys()].map(
@@ -82,7 +82,7 @@ class Summary extends Component {
     if (!summary) {
       return null;
     }
-    summary.rack.map((row) =>
+    return summary.rack.map((row) =>
       row.map((value) => (
         <SummaryCell
           k={key}
@@ -108,15 +108,18 @@ class Summary extends Component {
       credit: 100 - target.value,
     });
   };
+
   periodsHandler = (target) => {
     this.setState({ periods: target.value });
   };
+
   creditHandler = (target) => {
     this.setState({
       credit: target.value,
       firstFee: 100 - target.value,
     });
   };
+
   calcFees = () => {
     let items = 0;
     if (
@@ -125,7 +128,7 @@ class Summary extends Component {
     ) {
       return null;
     }
-    let fees = {
+    const fees = {
       min: this.state.pricesWithAdditions.rack[0][0].price,
       max: this.state.pricesWithAdditions.rack[0][0].price,
       avg: 0,
@@ -147,9 +150,9 @@ class Summary extends Component {
           newValue.price =
             value.price * (this.state.firstFee / 100) * this.state.periods;
           return newValue;
-        } else {
+        } 
           return null;
-        }
+        
       });
     });
     fees.avg = fees.sum /= items;

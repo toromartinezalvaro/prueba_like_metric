@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import exportFromJSON from 'export-from-json';
+import _ from 'lodash'
+import NumberFormat from 'react-number-format';
 import Pie from '../../components/Detail/pie/Pie';
 import Property from '../../components/Detail/Property/Property';
 import Additional from '../../components/Detail/Aditionals/Aditionals';
 import Totals from '../../components/Detail/Totals/Totals';
-import exportFromJSON from 'export-from-json';
 import DetailServices from '../../services/detail/DetailServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
-import styles from '../DetailAdmin/DetailAdmin.module.scss';
+import styles from "./DetailAdmin.module.scss";
 import variables from '../../assets/styles/variables.scss';
 import Table from '../../components/UI/Table/Table';
-import NumberFormat from 'react-number-format';
 import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
@@ -86,14 +87,12 @@ export default class Detail extends Component {
     }
   };
 
-  sortData = (data) =>
-    data.sort((a, b) => {
-      const aInt = parseInt(a.areaType.id, 10);
-      const bInt = parseInt(b.areaType.id, 10);
-      if (aInt > bInt) return 1;
-      if (aInt < bInt) return -1;
-      return 0;
-    });
+  sortData = (data) => {
+    const s = _.sortBy(data, ['floor', 'location'], ['asc', 'asc']);
+
+    console.log("sss. ", s, data)
+    return  s
+  }
 
   assignTableData = () => {
     if (this.state.areas) {
@@ -260,7 +259,7 @@ export default class Detail extends Component {
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
-            <Button style={{ display: 'none' }} onClick={this.onClickExport}>
+            <Button onClick={this.onClickExport}>
               Export to xls
             </Button>
           </CardHeader>

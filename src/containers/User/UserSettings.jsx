@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loader from 'react-loader-spinner';
 import UserServices from '../../services/user/UserServices';
 import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
@@ -6,7 +7,6 @@ import agent from '../../config/config';
 import User from '../../components/User/User';
 import { UserRoutes } from '../../routes/local/routes';
 import styles from './UserSettings.module.scss';
-import Loader from 'react-loader-spinner';
 import Modal from '../../components/UI/Modal/Modal';
 import { PasswordEditor } from '../../components/User/ModalsContent';
 
@@ -35,27 +35,24 @@ export default class UserSettings extends Component {
   }
 
   logoutAction = () => {
+    agent.logout();
+    this.props.history.push(UserRoutes.login);
     this.services
       .logout()
-      .then(response => {
-        if (response.status === 200) {
-          agent.logout();
-          this.props.history.push(UserRoutes.login);
-        }
-      })
+      .then()
       .catch(this.genericCatch);
   };
 
   updatePasswordAction = () => {
     this.setState({
-      isUpdatingPasswordMode: true
-    })
-  }
-  
+      isUpdatingPasswordMode: true,
+    });
+  };
+
   updatePassword = () => {
     if (
-      this.state.password !== this.state.confirmPassword ||
-      this.state.password.length == 0
+      this.state.password !== this.state.confirmPassword
+      || this.state.password.length === 0
     ) {
       return;
     }
@@ -72,15 +69,15 @@ export default class UserSettings extends Component {
           currentErrorMessage:
             '¡Listo! Se ha actualizado la contraseña del usuario',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
         });
-        console.log("get into this")
+        console.log('get into this');
       })
       .catch(this.genericCatch);
   };
 
-  genericCatch = error => {
-    let errorHelper = errorHandling(error);
+  genericCatch = (error) => {
+    const errorHelper = errorHandling(error);
     this.setState({
       currentErrorMessage: errorHelper.message,
       isLoading: false,
@@ -95,12 +92,12 @@ export default class UserSettings extends Component {
 
       this.services
         .currentUser()
-        .then(response => {
-          var user = {};
+        .then((response) => {
+          let user = {};
           if (response.data.user) {
             user = response.data.user;
           }
-          this.setState({ isLoading: false, user: user });
+          this.setState({ isLoading: false, user });
         })
         .catch(this.genericCatch);
     } else {
@@ -108,8 +105,7 @@ export default class UserSettings extends Component {
     }
   };
 
-  loaderView = () => {
-    return this.state.isModalLoading ? (
+  loaderView = () => (this.state.isModalLoading ? (
       <div className={styles.Loader}>
         <Loader
           type="ThreeDots"
@@ -118,10 +114,9 @@ export default class UserSettings extends Component {
           width="100"
         />
       </div>
-    ) : null;
-  };
+    ) : null);
 
-  onChange = target => {
+  onChange = (target) => {
     this.setState({
       [target.name]: target.value,
     });
@@ -131,9 +126,9 @@ export default class UserSettings extends Component {
     this.setState({
       isUpdatingPasswordMode: false,
       password: '',
-      confirmPassword: ''
-    })
-  }
+      confirmPassword: '',
+    });
+  };
 
   render() {
     return (
@@ -149,8 +144,8 @@ export default class UserSettings extends Component {
         />
         <Modal
           title={
-            'Modificar contraseña del usuario ' +
-            (this.state.currentUser ? this.state.currentUser.name : '')
+            `Modificar contraseña del usuario ${
+              this.state.currentUser ? this.state.currentUser.name : ''}`
           }
           hidden={!this.state.isUpdatingPasswordMode}
           onConfirm={this.updatePassword}
