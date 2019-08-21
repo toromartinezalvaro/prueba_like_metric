@@ -6,17 +6,23 @@ export const DashboardRoutes = {
   prime: { value: '/prime/', withIndicator: '/prime/:towerId' },
   user: '/user',
   summary: { value: '/summary/', withIndicator: '/summary/:towerId' },
-  detailAdmin: { value: '/detailAdmin/' , withIndicator: '/detailAdmin/:towerId' },
-  detail: { value: '/detail/' , withIndicator: '/detail/:towerId' },
-  rackAreas: { value: '/rackAreas/' , withIndicator: '/rackAreas/:towerId' },
-  clustering: { value: '/clustering/' , withIndicator: '/clustering/:towerId' },
-  increments: { value: '/increments/' , withIndicator: '/increments/:towerId' },
-  strategy: { value: '/strategy/' , withIndicator: '/strategy/:towerId' },
-  salesRoom: { value: '/salesRoom/' , withIndicator: '/salesRoom/:towerId' },
+  detailAdmin: {
+    value: '/detailAdmin/',
+    withIndicator: '/detailAdmin/:towerId',
+  },
+  detail: { value: '/detail/', withIndicator: '/detail/:towerId' },
+  rackAreas: { value: '/rackAreas/', withIndicator: '/rackAreas/:towerId' },
+  clustering: { value: '/clustering/', withIndicator: '/clustering/:towerId' },
+  increments: { value: '/increments/', withIndicator: '/increments/:towerId' },
+  strategy: { value: '/strategy/', withIndicator: '/strategy/:towerId' },
+  salesRoom: { value: '/salesRoom/', withIndicator: '/salesRoom/:towerId' },
   clients: { value: '/clients/', withIndicator: '/clients/:towerId' },
-  futureSalesSpeed: { value: '/futureSalesSpeed/', withIndicator: '/futureSalesSpeed/:towerId' }
-}
-  
+  futureSalesSpeed: {
+    value: '/futureSalesSpeed/',
+    withIndicator: '/futureSalesSpeed/:towerId',
+  },
+  schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
+};
 
 export const ProjectRoutes = {
   base: '/projects',

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import Naming from '../../components/Building/Naming/Naming';
-import SalesStartDate from '../../components/Building/SalesStartDate/SalesDateRange';
+
 import Schema from '../../components/Building/Schema/Schema';
 import Error from '../../components/UI/Error/Error';
 import errorHandling from '../../services/commons/errorHelper';
@@ -246,12 +246,7 @@ class Building extends Component {
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <div>
-          <SalesStartDate
-            salesStartDate={this.state.salesDates.salesStartDate}
-            endOfSalesDate={this.state.salesDates.endOfSalesDate}
-            salesStartDateHandler={this.putSalesStartDate}
-            endOfSalesDateHandler={this.putEndOfSalesDate}
-          />
+         
           <Schema
             floors={this.state.floors}
             properties={this.state.properties}

@@ -26,6 +26,7 @@ import Strategy from '../Strategy/Strategy';
 import SalesRoom from '../SalesRoom/SalesRoom';
 import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
+import Schedule from '../Schedule/Schedule';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -54,8 +55,8 @@ class Dashboard extends Component {
 
   onChangeTower = (tower) => {
     if (
-      tower === this.state.tower
-      || (this.state.tower === null && tower === null)
+      tower === this.state.tower ||
+      (this.state.tower === null && tower === null)
     ) {
       return;
     }
@@ -66,24 +67,24 @@ class Dashboard extends Component {
 
   render() {
     const { match, location } = this.props;
-    const {tower} = this.state;
+    const { tower } = this.state;
     return (
       <DashboardLayout tower={tower} location={location}>
         <PrivateRoute
           path={match.url + ProjectRoutes.base}
           exact
           component={Projects}
-          changeTower= {this.onChangeTower}
+          changeTower={this.onChangeTower}
         />
         <PrivateRoute
           path={
-            match.url
-            + ProjectRoutes.base
-            + DashboardRoutes.towers.withIndicator
+            match.url +
+            ProjectRoutes.base +
+            DashboardRoutes.towers.withIndicator
           }
           exact
           component={Towers}
-          changeTower= {this.onChangeTower}
+          changeTower={this.onChangeTower}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.building.withIndicator}
@@ -99,7 +100,7 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.user}
           exact
           component={UserSettings}
-          changeTower= {this.onChangeTower}
+          changeTower={this.onChangeTower}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.prime.withIndicator}
@@ -170,6 +171,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={FutureSalesSpeed}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.schedule.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Schedule}
         />
       </DashboardLayout>
     );
