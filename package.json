@@ -11,8 +11,8 @@
     "big-integer": "^1.6.44",
     "chart.js": "^2.8.0",
     "chartjs-plugin-annotation": "^0.5.7",
-    "express": "^4.17.1",
     "export-from-json": "^1.1.4",
+    "express": "^4.17.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "nivo": "^0.31.0",
@@ -54,8 +54,11 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-react": "^7.14.3"
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2"
   },
   "prettier": {
     "arrowParens": "always",

@@ -1,6 +1,6 @@
 {
-  "plugins": ["react"],
-  "extends": ["airbnb-base", "plugin:react/recommended"],
+  "plugins": ["react", "prettier"],
+  "extends": ["airbnb-base", "plugin:react/recommended", "prettier"],
   "parser": "babel-eslint",
   "rules": {
     "no-set-state": "off",
