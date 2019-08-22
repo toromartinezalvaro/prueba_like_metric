@@ -19,7 +19,18 @@ function SalesDateRange({
       <CardBody>
         <div className={Styles.wrapper}>
           <div className={Styles.container}>
-            <div className={Styles.label}>Fecha de inicio:</div>
+            <div className={Styles.label}>Fecha de Corte:</div>
+            <DayPickerInput
+              clearIcon={null}
+              format="dd/MM/yyyy"
+              locale={'es'}
+              value={moment().toDate()}
+              disabled
+              disableCalendar
+            />
+          </div>
+          <div className={Styles.container}>
+            <div className={Styles.label}>Inicio de Pre-Ventas :</div>
             <DayPickerInput
               clearIcon={null}
               format="dd/MM/yyyy"
@@ -31,7 +42,7 @@ function SalesDateRange({
             />
           </div>
           <div className={Styles.container}>
-            <div className={Styles.label}>Fecha de finalización:</div>
+            <div className={Styles.label}>Fin de la Construcción:</div>
             <DayPickerInput
               clearIcon={null}
               format="dd/MM/yyyy"
