@@ -1,23 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
+import Input from '../../UI/Input/Input';
+import Styles from './InitialFees.modules.scss';
 
-function InitialFees({ firstSale, toToday, lastSale, ...rest }) {
+function InitialFees({ firstSale, endOfSalesDate, firstSaleHandler }) {
   return (
     <Card>
       <CardHeader>
         <span>Plazos cuota inicial</span>
       </CardHeader>
       <CardBody>
-        <div>
-          <span>Plazo primer comprado:</span> <span>{firstSale}</span>
+        <div className={Styles.container}>
+          <div>
+            <span>Plazo primer comprado:</span>
+          </div>
+          <div>
+            <Input
+              validations={[]}
+              value={firstSale}
+              onChange={(target) => {
+                firstSaleHandler(target.value);
+              }}
+            />
+          </div>
         </div>
         <div>
-          <span>Plazo hoy:</span> <span>{toToday}</span>
+          <span>Plazo hoy:</span>{' '}
+          <span>{moment(Number(endOfSalesDate)).diff(moment(), 'month')}</span>
         </div>
-        <div>
-          <span>Plazo ultima venta:</span> <span>{lastSale}</span>
-        </div>
+        {/* <div>
+          <span>Plazo ultima venta:</span> <span>0</span>
+        </div> */}
       </CardBody>
     </Card>
   );
@@ -25,14 +40,14 @@ function InitialFees({ firstSale, toToday, lastSale, ...rest }) {
 
 InitialFees.propTypes = {
   firstSale: PropTypes.number,
-  toToday: PropTypes.number,
-  lastSale: PropTypes.number,
+  salesStartDate: PropTypes.number,
+  firstSaleHandler: PropTypes.func,
 };
 
 InitialFees.defaultProps = {
-  firstSale: 36,
-  toToday: 36,
-  lastSale: 6,
+  firstSale: 0,
+  salesStartDate: 0,
+  firstSaleHandler: () => null,
 };
 
 export default InitialFees;
