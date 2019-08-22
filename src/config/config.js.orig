@@ -1,12 +1,14 @@
 import axios from 'axios';
+import Server from './server';
+
+const env = process.env.NODE_ENV || 'development';
+const config = require('./server')[env];
 
 const jwtKey = 'jwt';
 
 class Agent {
   constructor() {
     this.token = null;
-<<<<<<< HEAD
-=======
     this.user = null;
     this.reloadCurrentUser();
   }
@@ -14,62 +16,59 @@ class Agent {
   get currentUser() {
     if (this.user) {
       return this.user;
-    } else {
-      return this.reloadCurrentUser();
     }
->>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
+    return this.reloadCurrentUser();
   }
 
   get currentToken() {
     if (this.token) {
       return this.token;
-    } else {
-      const user = this.reloadCurrentUser();
-      return user ? user.token : null;
     }
+    const user = this.currentUser;
+    return user ? user.token : null;
   }
 
   isAuthorized(roles) {
-    return roles && this.currentUser && roles.indexOf(this.currentUser.userType) !== -1;
+    return (
+      roles
+      && this.currentUser
+      && roles.indexOf(this.currentUser.userType) !== -1
+    );
   }
 
   reloadCurrentUser() {
     if (this.user === null || this.token === null) {
-      const user = JSON.parse(window.localStorage.getItem(jwtKey));
-      if (user) {
-        this.user = user;
-        this.setToken(user.token);
+      try {
+        const user = JSON.parse(window.localStorage.getItem(jwtKey));
+        if (user && user.token) {
+          this.user = user;
+          this.setToken(user.token);
+        } else {
+          this.logout();
+        }
+        return user;
+      } catch {
+        this.logout();
+        return null;
       }
-      return user;
     }
+    return this.user;
   }
 
-<<<<<<< HEAD
-  removeToken() {
-    window.localStorage.setItem(jwtKey, '');
-    this.token = '';
-=======
   logout() {
     window.localStorage.setItem(jwtKey, null);
     this.token = null;
     this.user = null;
->>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
   }
 
   reloadHeaderToken() {
     this.setToken(this.currentToken);
   }
 
-<<<<<<< HEAD
-  saveToken(newToken) {
-    this.setToken(newToken);
-    window.localStorage.setItem(jwtKey, newToken);
-=======
   saveUser(newUser) {
     this.setToken(newUser.token);
     this.user = newUser;
     window.localStorage.setItem(jwtKey, JSON.stringify(newUser));
->>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
   }
 
   setToken(newToken) {
@@ -79,29 +78,19 @@ class Agent {
 
   setupAxios(currentToken) {
     if (currentToken !== undefined && currentToken !== '') {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken;
+      axios.defaults.headers.common.Authorization = `Bearer ${  currentToken}`;
       axios.defaults.withCredentials = true;
-<<<<<<< HEAD
-      console.log('headers -->', axios.defaults.headers);
-=======
->>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
     } else {
-      axios.defaults.headers.common['Authorization'] = '';
+      axios.defaults.headers.common.Authorization = '';
     }
   }
 }
 
 <<<<<<< HEAD
-// export const API_PATH =
-//   process.env.NODE_ENV === 'production'
-//     ? 'https://pefpiapis.herokuapp.com/api/'
-//     : 'http://localhost:1337/api/';
-export const API_PATH = "https://pefpiapis.herokuapp.com/api/"
+export const API_PATH = Server.development.serverUrl;
+//export const API_PATH = Server.staging.serverUrl;
 =======
-export const API_PATH =
-  process.env.NODE_ENV === 'production'
-    ? 'https://pefpiapis.herokuapp.com/api/'
-    : 'http://localhost:1337/api/';
-// export const API_PATH = "https://pefpiapis.herokuapp.com/api/"
->>>>>>> 3d9f3e5d84dfc1d1d9da3f56ac0de095e1e9260c
+// export const API_PATH = Server.development.serverUrl;
+export const API_PATH = Server.staging.serverUrl;
+>>>>>>> 676d1979167b0036fc632a38b1538c7e69f08266
 export default new Agent();
