@@ -71,7 +71,7 @@ const SummaryStrategy = (props) => {
             />
           </p>
           <p className={styles.gridItem}>{averageMts2.toFixed(2)}</p>
-          <p className={styles.gridItem}>{futureSalesSpeed}</p>
+          <p className={styles.gridItem}>{futureSalesSpeed.toFixed(2)}</p>
           <p className={styles.gridItem} />
           <p className={styles.gridItem}>{`${incrementPercentage.toFixed(
             2,
