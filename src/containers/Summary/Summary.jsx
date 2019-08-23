@@ -122,15 +122,21 @@ class Summary extends Component {
 
   calcFees = () => {
     let items = 0;
+    console.log(this.state.pricesWithAdditions.rack, "HIPUTO")
+    let secondIndex = -1
+    const firstIndex = this.state.pricesWithAdditions.rack.findIndex((i) => {
+        secondIndex = i.findIndex((j) => j !== undefined && j !== null)
+        return  secondIndex > -1
+      },
+    );
     if (
-      this.state.pricesWithAdditions.rack[0] === undefined ||
-      !this.state.pricesWithAdditions.rack[0][0]
+      firstIndex === -1
     ) {
       return null;
     }
     const fees = {
-      min: this.state.pricesWithAdditions.rack[0][0].price,
-      max: this.state.pricesWithAdditions.rack[0][0].price,
+      min: this.state.pricesWithAdditions.rack[firstIndex][secondIndex].price,
+      max: this.state.pricesWithAdditions.rack[firstIndex][secondIndex].price,
       avg: 0,
       sum: 0,
       rack: [],
