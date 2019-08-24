@@ -1,3 +1,5 @@
+@import "../../../../assets/styles/variables.scss";
+
 .inventory {
   text-align: center;
   display: grid;
@@ -53,6 +55,7 @@
 
 .inv-increment-base {
   grid-area: inv-increment-base;
+  color: $gray-color;
 }
 
 .inv-analysis-inverse {

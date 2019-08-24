@@ -1,3 +1,5 @@
+@import "../../../../assets/styles/variables.scss";
+
 .total {
   text-align: center;
   display: grid;
@@ -52,6 +54,7 @@
 
 .total-increment-base {
   grid-area: total-increment-base;
+  color: $gray-color;
 }
 
 .total-analysis-inverse {
