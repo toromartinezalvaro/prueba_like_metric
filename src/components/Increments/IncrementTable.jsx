@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import NumberFormat from 'react-number-format';
 import Card, { CardHeader, CardBody, CardFooter } from '../UI/Card/Card';
 import Accordion from '../UI/Accordion/Accordion';
 import styles from './IncrementTable.module.scss';
@@ -35,6 +36,19 @@ function IncrementTable({
         <span>Incrementos</span>
       </CardHeader>
       <CardBody>
+        <div>
+          <span>Incremento total: </span>
+          <NumberFormat
+            value={data
+              .reduce((current, group) => {
+                return current + group.total.increment;
+              }, 0)
+              .toFixed(2)}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+        </div>
         {data.map((group, i) => (
           <Accordion
             key={`group-accordion-${i}`}

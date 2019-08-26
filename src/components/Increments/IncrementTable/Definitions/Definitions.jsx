@@ -20,7 +20,7 @@ function Definitions({ className }) {
       <div className={Styles['def-increment-goal']}>
         Incremento Pesos (Meta)
       </div>
-      <div className={Styles['def-sales-l0']}>Ventas L0</div>
+      <div className={Styles['def-sales-l0']}>Ventas L0 con adicionales</div>
       <div className={Styles['def-sales-future']}>Ventas Proyectadas</div>
       <div className={Styles['def-increment-base']}>Incremento / Base</div>
       <div className={Styles['def-analysis-inverse']}>Análisis Inverso</div>
