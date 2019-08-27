@@ -23,7 +23,7 @@ function Sales({ className, groupSummary }) {
       <div className={Styles['sold-header']}>Vendidas</div>
       <div className={Styles['sold-date']}>
         <span>
-          {moment(Number(date))
+          {moment()
             .locale('es')
             .format('DD-MMM-YY')}
         </span>
