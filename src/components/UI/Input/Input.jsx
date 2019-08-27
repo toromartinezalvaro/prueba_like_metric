@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Input.module.scss';
 import NumberFormat from 'react-number-format';
 import ReactTooltip from 'react-tooltip';
@@ -13,6 +13,12 @@ const Input = (props) => {
   const [localValue, setLocalValue] = useState();
   const [errorMessages, setErrorMessages] = useState('');
   const [valid, setValid] = useState(true);
+
+  useEffect(() => {
+    if (props.updateWithProp) {
+      setLocalValue(props.value);
+    }
+  }, [props.value]);
 
   const validation = (value) => {
     setErrorMessages('');

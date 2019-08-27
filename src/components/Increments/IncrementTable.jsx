@@ -62,7 +62,12 @@ function IncrementTable({
                   className={styles.total}
                   groupSummary={group.total}
                   putIncrement={(increment) => {
-                    putIncrement(group.id, increment, i);
+                    putIncrement(
+                      group.id,
+                      increment,
+                      group.inventory.units,
+                      group.sales.increment,
+                    );
                   }}
                   putSalesSpeed={(retentionMonths) => {
                     putSalesSpeed(group.id, retentionMonths, i);

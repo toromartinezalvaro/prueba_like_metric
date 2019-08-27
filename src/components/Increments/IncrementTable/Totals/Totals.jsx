@@ -84,6 +84,7 @@ function Totals({
             onChange={(target) => {
               putIncrement(target.value);
             }}
+            updateWithProp
           />
         )}
       </div>
