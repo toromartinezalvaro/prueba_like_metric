@@ -24,7 +24,7 @@ class Modal extends Component {
     }
   }
 
-  performAction = action => {
+  performAction = (action) => {
     if (action === 'confirm') {
       this.setState({ blocked: true });
       this.props.onConfirm();
@@ -68,14 +68,16 @@ class Modal extends Component {
                     {this.props.leftButton}
                   </Button>
                 ) : null}
-                <Button
-                  className={styles.CancelButton}
-                  onClick={() => {
-                    this.performAction('cancel');
-                  }}
-                >
-                  Cancelar
-                </Button>
+                {this.props.onlyConfirm ? null : (
+                  <Button
+                    className={styles.CancelButton}
+                    onClick={() => {
+                      this.performAction('cancel');
+                    }}
+                  >
+                    Cancelar
+                  </Button>
+                )}
               </div>
             </div>
           </div>

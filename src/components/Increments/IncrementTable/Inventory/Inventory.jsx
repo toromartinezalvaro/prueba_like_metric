@@ -23,6 +23,7 @@ function Inventory({
     incrementRate,
     retentionMonths,
     ear,
+    suggestedEffectiveAnnualInterestRate,
     suggestedIncrement,
   } = groupSummary;
   return (
@@ -112,7 +113,7 @@ function Inventory({
           <Input
             mask="percentage"
             validations={[]}
-            value={(ear * 100).toFixed(2)}
+            value={(suggestedEffectiveAnnualInterestRate * 100).toFixed(2)}
             onChange={(target) => {
               putSuggestedEffectiveAnnualInterestRate(target.value / 100);
             }}
