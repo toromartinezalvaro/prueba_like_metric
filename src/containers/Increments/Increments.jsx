@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from '../../components/UI/Modal/Modal';
 import IncrementsTable from '../../components/Increments/IncrementTable';
 import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
@@ -18,6 +19,7 @@ class Increments extends Component {
     isLoading: false,
     isLoadingIncrements: false,
     isEmpty: false,
+    hidden: true,
   };
 
   componentDidMount() {
@@ -69,18 +71,30 @@ class Increments extends Component {
       });
   };
 
-  putIncrement = (id, increment, index) => {
-    this.services
-      .putIncrement(this.props.match.params.towerId, {
-        groupId: id,
-        increment,
-      })
-      .then((response) => {
-        this.updateIncrements();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  putIncrement = (id, increment, inventoryUnits, collectedIncrement) => {
+    if (inventoryUnits === 1 && increment !== collectedIncrement.toFixed(2)) {
+      this.setState({ hidden: false });
+    } else {
+      this.services
+        .putIncrement(this.props.match.params.towerId, {
+          groupId: id,
+          increment,
+        })
+        .then((response) => {
+          this.updateIncrements();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  toggleModal = () => {
+    this.setState((prevState) => ({
+      increments: [],
+      hidden: !prevState.hidden,
+    }));
+    this.updateIncrements();
   };
 
   getPeriodsIncrements = () => {
@@ -141,6 +155,17 @@ class Increments extends Component {
           data={this.state.graphData}
           getData={this.getPeriodsIncrements}
         />
+        {this.state.hidden ? null : (
+          <Modal
+            title="Error de incremento"
+            hidden={this.state.hidden}
+            onConfirm={this.toggleModal}
+            onlyConfirm
+          >
+            Solo queda 1 unidad en el inventario. El incremento solo puede ser
+            el que esta actualmente o el recaudado
+          </Modal>
+        )}
       </LoadableContainer>
     );
   }

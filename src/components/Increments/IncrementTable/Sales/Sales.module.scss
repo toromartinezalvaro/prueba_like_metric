@@ -1,3 +1,5 @@
+@import "../../../../assets/styles/variables.scss";
+
 .sold {
   text-align: center;
   display: grid;
@@ -51,6 +53,7 @@
 
 .sold-increment-base {
   grid-area: sold-increment-base;
+  color: $gray-color;
 }
 
 .sold-analysis-inverse {

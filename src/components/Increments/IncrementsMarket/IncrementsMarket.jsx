@@ -18,7 +18,7 @@ function IncrementsMarket({
       <CardBody>
         <div className={styles.MarketInputs}>
           <div className={styles.MarketInput}>
-            <div className={styles.MarketInputLabel}>Precio promedio</div>
+            <div className={styles.MarketInputLabel}>Precio promedio del mercado sin adicionales</div>
             <div>
               <Input
                 mask="currency"

@@ -1,3 +1,5 @@
+@import "../../../../assets/styles/variables.scss";
+
 .definitions {
   box-sizing: border-box;
   font-family: 'Roboto';
@@ -55,6 +57,7 @@
 
   .def-increment-base {
     grid-area: def-increment-base;
+    color: $gray-color;
   }
 
   .def-analysis-inverse {
