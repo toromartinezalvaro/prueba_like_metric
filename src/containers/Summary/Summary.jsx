@@ -208,6 +208,7 @@ class Summary extends Component {
                   title: 'Cuota inicial',
                   value: (
                     <Input
+                      updateWithProp
                       mask="percentage"
                       zeroDefault={true}
                       validations={[
@@ -227,6 +228,7 @@ class Summary extends Component {
                   title: 'Credito',
                   value: (
                     <Input
+                      updateWithProp
                       mask="percentage"
                       style={{ width: '75px', fontSize: '16px' }}
                       value={this.state.credit}

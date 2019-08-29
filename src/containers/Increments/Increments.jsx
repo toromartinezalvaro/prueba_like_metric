@@ -158,9 +158,6 @@ class Increments extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        <div className={Styles.Loader}>
-          <Loader type="ThreeDots" color={commonStyles.mainColor} />
-        </div>
         <IncrementsTable
           data={this.state.increments}
           putIncrement={this.putIncrement}
