@@ -4,8 +4,10 @@
 }
 
 .Loader {
+  position: sticky;
+  top: 0;
+  height: 100px;
   display: flex;
   justify-content: center;
-  margin-top: -60px;
-  margin-bottom: -46px;
+  width: 100%;
 }

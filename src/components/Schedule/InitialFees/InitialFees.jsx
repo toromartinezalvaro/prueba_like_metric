@@ -13,7 +13,7 @@ function InitialFees({ firstSale, endOfSalesDate, firstSaleHandler }) {
       </CardHeader>
       <CardBody>
         <div className={Styles.Container}>
-            <span className={Styles.Item}>Plazo primer comprado:</span>
+            <span className={Styles.Item}>Plazo primer comprador:</span>
             <Input
               className={Styles.Item}
               validations={[]}
