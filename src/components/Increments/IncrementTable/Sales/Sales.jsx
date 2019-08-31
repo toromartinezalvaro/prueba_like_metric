@@ -81,7 +81,7 @@ function Sales({ className, groupSummary }) {
       </div>
       <div className={Styles['sold-increment-base']}>
         <NumberFormat
-          value={incrementRate.toFixed(2) * 100}
+          value={(incrementRate * 100).toFixed(2)}
           displayType="text"
           thousandSeparator={true}
           suffix="%"

@@ -1,6 +1,7 @@
-.Loader {
-  display: flex;
-  justify-content: center;
-  margin-top: -60px;
-  margin-bottom: -46px;
+.loaderContainer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  z-index: 99;
+  border-radius: 0.25rem;
 }

@@ -23,7 +23,7 @@ class Increments extends Component {
     isLoadingIncrements: false,
     isEmpty: false,
     hidden: true,
-    loadingAPI: true,
+    loadingAPI: false,
   };
 
   componentDidMount() {
@@ -49,13 +49,14 @@ class Increments extends Component {
   };
 
   putSalesSpeed = (id, retentionMonths, index) => {
-    this.setState({ isLoading: true });
+    this.setState({ loadingAPI: true });
     this.services
       .putSalesSpeeds(id, { retentionMonths })
       .then((response) => {
         this.updateIncrements();
       })
       .catch((error) => {
+        this.setState({ loadingAPI: false });
         console.error(error);
       });
   };
@@ -65,7 +66,7 @@ class Increments extends Component {
     effectiveAnnualInterestRate,
     index,
   ) => {
-    this.setState({ isLoading: true });
+    this.setState({ loadingAPI: true });
     this.services
       .putSuggestedEffectiveAnnualInterestRate(id, {
         effectiveAnnualInterestRate,
@@ -74,6 +75,7 @@ class Increments extends Component {
         this.updateIncrements();
       })
       .catch((error) => {
+        this.setState({ loadingAPI: false });
         console.error(error);
       });
   };
@@ -82,7 +84,7 @@ class Increments extends Component {
     if (inventoryUnits === 1 && increment !== collectedIncrement.toFixed(2)) {
       this.setState({ hidden: false });
     } else {
-      this.setState({ isLoading: true });
+      this.setState({ loadingAPI: true });
       this.services
         .putIncrement(this.props.match.params.towerId, {
           groupId: id,
@@ -92,6 +94,7 @@ class Increments extends Component {
           this.updateIncrements();
         })
         .catch((error) => {
+          this.setState({ loadingAPI: false });
           console.error(error);
         });
     }
@@ -99,7 +102,7 @@ class Increments extends Component {
 
   toggleModal = () => {
     this.setState((prevState) => ({
-      isLoading: true,
+      loadingAPI: true,
       increments: [],
       hidden: !prevState.hidden,
     }));
@@ -107,25 +110,29 @@ class Increments extends Component {
   };
 
   getPeriodsIncrements = () => {
-    this.setState({ isLoading: true });
+    this.setState({ loadingAPI: true });
     this.services
       .getPeriodsIncrements(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ graphData: response.data, isLoading: false });
+        this.setState({ graphData: response.data, loadingAPI: false });
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({ loadingAPI: false });
       });
   };
 
   putMarketAveragePrice = (averagePrice) => {
-    this.setState({ isLoading: true });
+    this.setState({ loadingAPI: true });
     this.services
       .putMarketAveragePrice(this.props.match.params.towerId, {
         averagePrice,
       })
       .then(() => {
-        this.setState({ isLoading: false });
+        this.setState({ loadingAPI: false });
       })
       .catch((error) => {
-        this.setState({ isLoading: false });
+        this.setState({ loadingAPI: false });
       });
   };
 
@@ -136,10 +143,10 @@ class Increments extends Component {
         anualEffectiveIncrement,
       })
       .then(() => {
-        this.setState({ isLoading: false });
+        this.setState({ loadingAPI: false });
       })
       .catch((error) => {
-        this.setState({ isLoading: false });
+        this.setState({ loadingAPI: false });
       });
   };
 
@@ -151,6 +158,7 @@ class Increments extends Component {
         this.updateIncrements();
       })
       .catch((error) => {
+        this.setState({ loadingAPI: false });
         console.error(error);
       });
   };
@@ -158,6 +166,16 @@ class Increments extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
+        {this.state.loadingAPI ? (
+          <div className={Styles.loaderContainer}>
+            <Loader
+              type="ThreeDots"
+              color={commonStyles.mainColor}
+              height="100"
+              width="100"
+            />
+          </div>
+        ) : null}
         <IncrementsTable
           data={this.state.increments}
           putIncrement={this.putIncrement}

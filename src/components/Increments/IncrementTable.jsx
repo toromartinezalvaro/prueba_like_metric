@@ -109,7 +109,7 @@ function IncrementTable({
                       fn: (value) =>
                         value <=
                         moment(Number(group.sales.date)).diff(
-                          moment(Number(group.total.date)),
+                          moment(),
                           'month',
                         ),
                       message:
