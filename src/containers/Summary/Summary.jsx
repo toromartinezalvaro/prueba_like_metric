@@ -70,6 +70,7 @@ class Summary extends Component {
           pricePerMT2WithAdditions: data.pricePerMT2WithAdditions,
           propertiesPrices: data.propertiesPrices,
           pricePerMT2: data.pricePerMT2,
+          periods: data.periods,
           isLoading: false,
         });
         console.log('areas', this.state.areas);
@@ -245,14 +246,7 @@ class Summary extends Component {
                 },
                 {
                   title: 'Plazo',
-                  value: (
-                    <Input
-                      validations={[]}
-                      onChange={this.periodsHandler}
-                      style={{ width: '75px', fontSize: '16px' }}
-                      value={this.state.periods}
-                    />
-                  ),
+                  value: <span>{this.state.periods}</span>,
                 },
               ]}
             />
