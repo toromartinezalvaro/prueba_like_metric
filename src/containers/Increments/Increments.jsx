@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import Loader from 'react-loader-spinner';
+import commonStyles from '../../assets/styles/variables.scss';
 import Modal from '../../components/UI/Modal/Modal';
 import IncrementsTable from '../../components/Increments/IncrementTable';
 import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
 import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
+import Styles from './Increments.module.scss';
 
 class Increments extends Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class Increments extends Component {
     isLoadingIncrements: false,
     isEmpty: false,
     hidden: true,
+    loadingAPI: false,
   };
 
   componentDidMount() {
@@ -35,21 +39,24 @@ class Increments extends Component {
           increments: response.data.increments,
           market: response.data.market,
           isLoading: false,
+          loadingAPI: false,
         });
       })
       .catch((error) => {
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, loadingAPI: false });
         console.error(error);
       });
   };
 
   putSalesSpeed = (id, retentionMonths, index) => {
+    this.setState({ loadingAPI: true });
     this.services
       .putSalesSpeeds(id, { retentionMonths })
       .then((response) => {
         this.updateIncrements();
       })
       .catch((error) => {
+        this.setState({ loadingAPI: false });
         console.error(error);
       });
   };
@@ -59,6 +66,7 @@ class Increments extends Component {
     effectiveAnnualInterestRate,
     index,
   ) => {
+    this.setState({ loadingAPI: true });
     this.services
       .putSuggestedEffectiveAnnualInterestRate(id, {
         effectiveAnnualInterestRate,
@@ -67,6 +75,7 @@ class Increments extends Component {
         this.updateIncrements();
       })
       .catch((error) => {
+        this.setState({ loadingAPI: false });
         console.error(error);
       });
   };
@@ -75,6 +84,7 @@ class Increments extends Component {
     if (inventoryUnits === 1 && increment !== collectedIncrement.toFixed(2)) {
       this.setState({ hidden: false });
     } else {
+      this.setState({ loadingAPI: true });
       this.services
         .putIncrement(this.props.match.params.towerId, {
           groupId: id,
@@ -84,6 +94,7 @@ class Increments extends Component {
           this.updateIncrements();
         })
         .catch((error) => {
+          this.setState({ loadingAPI: false });
           console.error(error);
         });
     }
@@ -91,6 +102,7 @@ class Increments extends Component {
 
   toggleModal = () => {
     this.setState((prevState) => ({
+      loadingAPI: true,
       increments: [],
       hidden: !prevState.hidden,
     }));
@@ -98,35 +110,55 @@ class Increments extends Component {
   };
 
   getPeriodsIncrements = () => {
+    this.setState({ loadingAPI: true });
     this.services
       .getPeriodsIncrements(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ graphData: response.data });
+        this.setState({ graphData: response.data, loadingAPI: false });
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({ loadingAPI: false });
       });
   };
 
   putMarketAveragePrice = (averagePrice) => {
-    this.services.putMarketAveragePrice(this.props.match.params.towerId, {
-      averagePrice,
-    });
+    this.setState({ loadingAPI: true });
+    this.services
+      .putMarketAveragePrice(this.props.match.params.towerId, {
+        averagePrice,
+      })
+      .then(() => {
+        this.setState({ loadingAPI: false });
+      })
+      .catch((error) => {
+        this.setState({ loadingAPI: false });
+      });
   };
 
   putMarketAnnualEffectiveIncrement = (anualEffectiveIncrement) => {
-    this.services.putMarketAnualEffectiveIncrement(
-      this.props.match.params.towerId,
-      {
+    this.setState({ loadingAPI: true });
+    this.services
+      .putMarketAnualEffectiveIncrement(this.props.match.params.towerId, {
         anualEffectiveIncrement,
-      },
-    );
+      })
+      .then(() => {
+        this.setState({ loadingAPI: false });
+      })
+      .catch((error) => {
+        this.setState({ loadingAPI: false });
+      });
   };
 
   putSuggestedSalesSpeed = (id, retentionMonths, index) => {
+    this.setState({ loadingAPI: true });
     this.services
       .putSuggestedSalesSpeeds(id, { retentionMonths })
       .then((response) => {
         this.updateIncrements();
       })
       .catch((error) => {
+        this.setState({ loadingAPI: false });
         console.error(error);
       });
   };
@@ -134,6 +166,16 @@ class Increments extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
+        {this.state.loadingAPI ? (
+          <div className={Styles.loaderContainer}>
+            <Loader
+              type="ThreeDots"
+              color={commonStyles.mainColor}
+              height="100"
+              width="100"
+            />
+          </div>
+        ) : null}
         <IncrementsTable
           data={this.state.increments}
           putIncrement={this.putIncrement}

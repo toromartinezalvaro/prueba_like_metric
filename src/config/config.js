@@ -30,9 +30,9 @@ class Agent {
 
   isAuthorized(roles) {
     return (
-      roles
-      && this.currentUser
-      && roles.indexOf(this.currentUser.userType) !== -1
+      roles &&
+      this.currentUser &&
+      roles.indexOf(this.currentUser.userType) !== -1
     );
   }
 

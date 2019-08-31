@@ -44,6 +44,7 @@ function SalesDateRange({
           <div className={Styles.container}>
             <div className={Styles.label}>Fin de la Construcción:</div>
             <DayPickerInput
+              minDate={moment(Number(salesStartDate)).toDate()}
               clearIcon={null}
               format="dd/MM/yyyy"
               locale={'es'}
