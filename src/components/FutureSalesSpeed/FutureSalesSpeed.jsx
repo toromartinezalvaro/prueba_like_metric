@@ -4,22 +4,23 @@ import Card, { CardHeader, CardBody } from '../UI/Card/Card';
 import Input from '../UI/Input/Input';
 import styles from './FutureSalesSpeed.module.scss';
 
-const getTotal = salesSpeeds => salesSpeeds.reduce((current, next) => {
-  current += next;
-  return current;
-}, 0);
+const getTotal = (salesSpeeds) =>
+  salesSpeeds.reduce((current, next) => {
+    current += next;
+    return current;
+  }, 0);
 
-const inputValidation = units => [
+const inputValidation = (units) => [
   {
-    fn: value => value >= 0,
+    fn: (value) => value >= 0,
     message: 'Debe ser mayor 0',
   },
   {
-    fn: value => units / value <= 98,
+    fn: (value) => units / value <= 98,
     message: 'El numero de periodos no puede ser mayor a 98',
   },
   {
-    fn: value => value < units,
+    fn: (value) => value < units,
     message: 'Debe ser menor a las unidades',
   },
 ];
@@ -31,11 +32,11 @@ const FutureSalesSpeed = ({
 }) => {
   const [total, setTotal] = useState(0);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [arraySalesSpeeds, setArraySalesSpeeds] = useState([])
+  const [arraySalesSpeeds, setArraySalesSpeeds] = useState([]);
   const { groups } = salesSpeeds;
   if (groups !== undefined) {
     if (isEmpty) {
-      const arrayTemporal = groups.map(group => group.futureSalesSpeed)
+      const arrayTemporal = groups.map((group) => group.futureSalesSpeed);
       setArraySalesSpeeds(arrayTemporal);
       setTotal(getTotal(arrayTemporal));
       setIsEmpty(false);
@@ -48,14 +49,16 @@ const FutureSalesSpeed = ({
         <span>Velocidad de ventas futuras</span>
       </CardHeader>
       <CardBody>
-        <div className={styles.ContainerFlex}>
-          <h4 className={styles.gridItem}>Tipo</h4>
-          <h4 className={styles.gridItem}>Unidades</h4>
-          <h4 className={styles.gridItem}>Valor prom</h4>
-          <h4 className={styles.gridItem}>m² prom</h4>
-          <h4 className={styles.gridItem}>Velocidad ventas futura</h4>
-          {groups !== undefined
-            ? groups.map((group, i) => <Fragment key={`fragment ${group.id}`}>
+        {arraySalesSpeeds.length !== 0 ? (
+          <div className={styles.ContainerFlex}>
+            <h4 className={styles.gridItem}>Tipo</h4>
+            <h4 className={styles.gridItem}>Unidades</h4>
+            <h4 className={styles.gridItem}>Valor prom</h4>
+            <h4 className={styles.gridItem}>m² prom</h4>
+            <h4 className={styles.gridItem}>Velocidad ventas futura</h4>
+            {groups !== undefined
+              ? groups.map((group, i) => (
+                  <Fragment key={`fragment ${group.id}`}>
                     <div className={styles.gridItem}>{group.name.slice(5)}</div>
                     <div className={styles.gridItem}> {group.units}</div>
                     <div className={styles.gridItem}>
@@ -81,14 +84,18 @@ const FutureSalesSpeed = ({
                         }}
                       />
                     </div>
-                  </Fragment>)
-            : null}
-          <div className={styles.gridItem} />
-          <div className={styles.gridItem} />
-          <div className={styles.gridItem} />
-          <h4 className={styles.gridItem}>Total: </h4>
-          <div className={styles.gridItem}>{total}</div>
-        </div>
+                  </Fragment>
+                ))
+              : null}
+            <div className={styles.gridItem} />
+            <div className={styles.gridItem} />
+            <div className={styles.gridItem} />
+            <h4 className={styles.gridItem}>Total: </h4>
+            <div className={styles.gridItem}>{total}</div>
+          </div>
+        ) : (
+          <span>No hay grupos disponibles</span>
+        )}
       </CardBody>
     </Card>
   );

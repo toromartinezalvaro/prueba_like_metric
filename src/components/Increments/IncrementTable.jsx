@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
+import { Link } from 'react-router-dom';
+import { DashboardRoutes } from '../../routes/local/routes';
 import Card, { CardHeader, CardBody, CardFooter } from '../UI/Card/Card';
 import Accordion from '../UI/Accordion/Accordion';
+import Button from '../UI/Button/Button';
 import styles from './IncrementTable.module.scss';
 import AccordionTrigger from './IncrementTable/AccordionTrigger/AccordionTrigger';
 import Definitions from './IncrementTable/Definitions/Definitions';
@@ -18,6 +21,7 @@ function IncrementTable({
   putSalesSpeed,
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
+  towerId,
 }) {
   const inputValidations = [
     {
@@ -55,69 +59,80 @@ function IncrementTable({
             trigger={<AccordionTrigger group={group} />}
           >
             <div className={styles.AccordionContainer}>
-              <div className={styles['grid-container']}>
-                <Definitions className={styles.definitions} />
-                <Totals
-                  blockIncrements={group.total.units === 1}
-                  className={styles.total}
-                  groupSummary={group.total}
-                  putIncrement={(increment) => {
-                    putIncrement(
-                      group.id,
-                      increment,
-                      group.inventory.units,
-                      group.sales.increment,
-                    );
-                  }}
-                  putSalesSpeed={(retentionMonths) => {
-                    putSalesSpeed(group.id, retentionMonths, i);
-                  }}
-                  validations={[
-                    ...inputValidations,
-                    {
-                      fn: (value) =>
-                        value <=
-                        moment(Number(group.sales.date)).diff(
-                          moment(Number(group.total.date)),
-                          'month',
-                        ),
-                      message:
-                        'Los meses de retencion superan la fecha final de ventas',
-                    },
-                  ]}
-                />
-                <Sales className={styles.sold} groupSummary={group.sales} />
-                <Inventory
-                  blockIncrements={group.total.units === 1}
-                  className={styles.inventory}
-                  groupSummary={group.inventory}
-                  putSuggestedSalesSpeed={(retentionMonths) => {
-                    putSuggestedSalesSpeed(group.id, retentionMonths, i);
-                  }}
-                  putSuggestedEffectiveAnnualInterestRate={(
-                    effectiveAnnualInterestRate,
-                  ) => {
-                    putSuggestedEffectiveAnnualInterestRate(
-                      group.id,
+              {group.total.date === null || group.inventory.date === null ? (
+                <div>
+                  <span>Primero se deben configurar las fechas</span>
+                  <Link
+                    to={`${DashboardRoutes.base}${DashboardRoutes.schedule.value}${towerId}`}
+                  >
+                    <Button>Ir a calendario</Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className={styles['grid-container']}>
+                  <Definitions className={styles.definitions} />
+                  <Totals
+                    blockIncrements={group.total.units < 2}
+                    className={styles.total}
+                    groupSummary={group.total}
+                    putIncrement={(increment) => {
+                      putIncrement(
+                        group.id,
+                        increment,
+                        group.inventory.units,
+                        group.sales.increment,
+                      );
+                    }}
+                    putSalesSpeed={(retentionMonths) => {
+                      putSalesSpeed(group.id, retentionMonths, i);
+                    }}
+                    validations={[
+                      ...inputValidations,
+                      {
+                        fn: (value) =>
+                          value <=
+                          moment(Number(group.sales.date)).diff(
+                            moment(Number(group.total.date)),
+                            'month',
+                          ),
+                        message:
+                          'Los meses de retencion superan la fecha final de ventas',
+                      },
+                    ]}
+                  />
+                  <Sales className={styles.sold} groupSummary={group.sales} />
+                  <Inventory
+                    blockIncrements={group.total.units < 2}
+                    className={styles.inventory}
+                    groupSummary={group.inventory}
+                    putSuggestedSalesSpeed={(retentionMonths) => {
+                      putSuggestedSalesSpeed(group.id, retentionMonths, i);
+                    }}
+                    putSuggestedEffectiveAnnualInterestRate={(
                       effectiveAnnualInterestRate,
-                      i,
-                    );
-                  }}
-                  validations={[
-                    ...inputValidations,
-                    {
-                      fn: (value) =>
-                        value <=
-                        moment(Number(group.sales.date)).diff(
-                          moment(),
-                          'month',
-                        ),
-                      message:
-                        'Los meses de retencion superan la fecha final de ventas',
-                    },
-                  ]}
-                />
-              </div>
+                    ) => {
+                      putSuggestedEffectiveAnnualInterestRate(
+                        group.id,
+                        effectiveAnnualInterestRate,
+                        i,
+                      );
+                    }}
+                    validations={[
+                      ...inputValidations,
+                      {
+                        fn: (value) =>
+                          value <=
+                          moment(Number(group.sales.date)).diff(
+                            moment(),
+                            'month',
+                          ),
+                        message:
+                          'Los meses de retencion superan la fecha final de ventas',
+                      },
+                    ]}
+                  />
+                </div>
+              )}
             </div>
           </Accordion>
         ))}
@@ -134,6 +149,7 @@ IncrementTable.propTypes = {
   putSalesSpeed: PropTypes.func.isRequired,
   putSuggestedSalesSpeed: PropTypes.func.isRequired,
   putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
+  towerId: PropTypes.string,
 };
 
 IncrementTable.defaultProps = {

@@ -184,6 +184,7 @@ class Increments extends Component {
           putSuggestedEffectiveAnnualInterestRate={
             this.putSuggestedEffectiveAnnualInterestRate
           }
+          towerId={this.props.match.params.towerId}
         />
         <IncrementsMarket
           putMarketAveragePrice={this.putMarketAveragePrice}
