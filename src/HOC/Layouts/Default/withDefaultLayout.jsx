@@ -1,43 +1,70 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Message from '../../../components/UI/Message';
+import Alert from '../../../components/UI/Alert';
+
+const ErrorStackContainer = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+  margin-top: 42px;
+  margin-right: 24px;
+`;
 
 function withDefaultLayout(WrappedComponent) {
-  const Container = styled.div`
-    position: relative;
-  `;
-
-  const ErrorStackContainer = styled.div`
-    position: absolute;
-    top: 0;
-    right: 0;
-  `;
-
   class WithDefaultLayout extends Component {
     state = {
-      messages: ['Test message'],
+      messages: [],
     };
 
-    stackMessage = (message) => {
+    addMessage = (message, type, title) => {
       this.setState((prevState) => ({
-        messages: [...prevState.messages, message],
+        messages: [
+          ...prevState.messages,
+          {
+            type,
+            title,
+            text: message,
+            timeout: setTimeout(() => {
+              this.close();
+            }, 3000),
+          },
+        ],
       }));
+    };
+
+    close = (index) => {
+      clearTimeout(this.state.messages[0].timeout);
+      this.setState((prevState) => {
+        const tempMessages = [...prevState.messages];
+        tempMessages.splice(index, 1);
+        return { messages: tempMessages };
+      });
     };
 
     // eslint-disable-next-line class-methods-use-this
     render() {
       return (
-        <Container>
+        <div>
           <ErrorStackContainer>
             {this.state.messages.map((message, index) => (
-              <Message key={`errorMessage${index}`}>{message}</Message>
+              <Alert
+                key={`errorMessage${index}`}
+                close={() => {
+                  this.close(index);
+                }}
+                type={message.type}
+                title={message.title}
+              >
+                {message.text}
+              </Alert>
             ))}
           </ErrorStackContainer>
           <WrappedComponent
             {...this.props}
-            spawnMessage={this.stackMessage}
+            spawnMessage={this.addMessage}
           ></WrappedComponent>
-        </Container>
+        </div>
       );
     }
   }

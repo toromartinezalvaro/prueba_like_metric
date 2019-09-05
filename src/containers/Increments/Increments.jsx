@@ -34,7 +34,6 @@ class Increments extends Component {
   }
 
   updateIncrements = () => {
-    this.props.spawnMessage('Mensaje enviado');
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then((response) => {
