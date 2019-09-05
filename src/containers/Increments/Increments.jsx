@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import commonStyles from '../../assets/styles/variables.scss';
 import Modal from '../../components/UI/Modal/Modal';
@@ -8,6 +9,7 @@ import IncrementsChart from '../../components/Increments/IncrementsChart/Increme
 import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
 import Styles from './Increments.module.scss';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 class Increments extends Component {
   constructor(props) {
@@ -32,6 +34,7 @@ class Increments extends Component {
   }
 
   updateIncrements = () => {
+    this.props.spawnMessage('Mensaje enviado');
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then((response) => {
@@ -214,4 +217,4 @@ class Increments extends Component {
   }
 }
 
-export default Increments;
+export default withDefaultLayout(Increments);
