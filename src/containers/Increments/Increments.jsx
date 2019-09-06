@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import commonStyles from '../../assets/styles/variables.scss';
 import Modal from '../../components/UI/Modal/Modal';

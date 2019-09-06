@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import Styles from './styles.module.scss';
 import Alert from '../../../components/UI/Alert';
-
-const ErrorStackContainer = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 9999;
-  margin-top: 42px;
-  margin-right: 24px;
-`;
 
 function withDefaultLayout(WrappedComponent) {
   class WithDefaultLayout extends Component {
@@ -46,7 +37,7 @@ function withDefaultLayout(WrappedComponent) {
     render() {
       return (
         <div>
-          <ErrorStackContainer>
+          <div className={Styles.errorStackContainer}>
             {this.state.messages.map((message, index) => (
               <Alert
                 key={`errorMessage${index}`}
@@ -59,7 +50,7 @@ function withDefaultLayout(WrappedComponent) {
                 {message.text}
               </Alert>
             ))}
-          </ErrorStackContainer>
+          </div>
           <WrappedComponent
             {...this.props}
             spawnMessage={this.addMessage}
