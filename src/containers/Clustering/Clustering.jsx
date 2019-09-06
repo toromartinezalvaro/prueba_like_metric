@@ -7,7 +7,9 @@ import GroupTable from '../../components/Clustering/GroupTable/GroupTable';
 import styles from './Clustering.module.scss';
 import LoadableContainer from '../../components/UI/Loader';
 import { DashboardRoutes } from '../../routes/local/routes';
-import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
+import EmptyProperties from '../../components/Clustering/EmptyContentMessages/EmptyProperties/EmptyPropeties';
+import EmptyAreasAndPrices from '../../components/Clustering/EmptyContentMessages/EmptyAreasAndPrices/EmptyAreasAndPrices';
+import EmptyPrices from '../../components/Clustering/EmptyContentMessages/EmptyPrices/EmptyPrices';
 
 class Clustering extends Component {
   constructor(props) {
@@ -26,21 +28,30 @@ class Clustering extends Component {
     waitingForResponse: false,
     isLoading: false,
     isEmpty: false,
+    isEmptyAreasAndPrices: false,
+    message: 0,
   };
 
   componentDidMount() {
     this.setState({ isLoading: true });
     this.services
       .getClusters(this.props.match.params.towerId)
-      .then(response => {
+      .then((response) => {
         if (!Object.keys(response.data).length) {
           return this.setState({ isEmpty: true, isLoading: false });
+        }
+        if (Object.keys(response.data)[0] === 'message') {
+          return this.setState({
+            isEmptyAreasAndPrices: true,
+            isLoading: false,
+          });
         }
         this.setState({
           groupsSize: response.data.towerClustersConfig.groups.length,
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
           isLoading: false,
+          message: response.data.message.message,
         });
       })
       .catch(() => {
@@ -48,18 +59,18 @@ class Clustering extends Component {
       });
   }
 
-  clusterGroupsHandler = target => {
+  clusterGroupsHandler = (target) => {
     this.setState({ groupsSize: target.value });
   };
 
-  postClusters = clusterByArea => {
+  postClusters = (clusterByArea) => {
     this.setState({ loadingTable: true, waitingForResponse: true });
     this.services
       .postClusters(this.props.match.params.towerId, {
         groups: parseInt(this.state.groupsSize),
         clusterByArea,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
@@ -67,7 +78,7 @@ class Clustering extends Component {
           waitingForResponse: false,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ loadingTable: false, waitingForResponse: false });
       });
   };
@@ -78,67 +89,70 @@ class Clustering extends Component {
         type,
         towerId: this.props.match.params.towerId,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
         });
       })
-      .catch(error => {});
+      .catch((error) => {});
   };
 
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        {this.state.isEmpty ?
-          <EmptyContentMessageView
-          title="Vamos a crear apartamentos 🏢!"
-          message="Para poder agrupar primero debes tener apartamentos"
-          buttonsContent={[
-            {
-              title: 'Creemos apartamentos',
-              url: DashboardRoutes.base + DashboardRoutes.building.value + this.props.match.params.towerId,
-            }
-          ]}
-        />
-          : <Card> {console.log(this.state.isEmpty)}
-          <CardBody>
-            <div className={styles.InputContainer}>
-              <div>
-                <span>Numero de grupos:</span>
+        {this.state.isEmpty ? (
+          <EmptyProperties towerId={this.props.match.params.towerId} />
+        ) : null}
+        {this.state.isEmptyAreasAndPrices ? (
+          <EmptyAreasAndPrices towerId={this.props.match.params.towerId} />
+        ) : (
+          <Card>
+            {console.log(this.state.isEmpty)}
+            <CardBody>
+              <div className={styles.InputContainer}>
+                <div>
+                  <span>Numero de grupos:</span>
+                </div>
+                <div>
+                  <Input
+                    mask="number"
+                    validations={[]}
+                    style={{ width: '75px' }}
+                    onChange={this.clusterGroupsHandler}
+                    value={this.state.groupsSize}
+                    placeholder="Grupos"
+                  />
+                </div>
+                <div>
+                  <Button
+                    onClick={() => {
+                      this.postClusters(true);
+                    }}
+                    disabled={this.state.waitingForResponse}
+                  >
+                    Agrupar por area
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      this.postClusters(false);
+                    }}
+                    disabled={
+                      this.state.waitingForResponse || this.state.message === 2
+                    }
+                  >
+                    Agrupar por precio
+                  </Button>
+                </div>
               </div>
-              <div>
-                <Input
-                  mask="number"
-                  validations={[]}
-                  style={{ width: '75px' }}
-                  onChange={this.clusterGroupsHandler}
-                  value={this.state.groupsSize}
-                  placeholder="Grupos"
-                />
-              </div>
-              <div>
-                <Button
-                  onClick={() => {
-                    this.postClusters(true);
-                  }}
-                  disabled={this.state.waitingForResponse}
-                >
-                  Agrupar por area
-                </Button>
-                <Button
-                  onClick={() => {
-                    this.postClusters(false);
-                  }}
-                  disabled={this.state.waitingForResponse}
-                >
-                  Agrupar por precio
-                </Button>
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-        }
+              {this.state.message === 2 ? (
+                <EmptyPrices
+                  towerId={this.props.match.params.towerId}
+                ></EmptyPrices>
+              ) : null}
+            </CardBody>
+          </Card>
+        )}
         {this.state.towerClusterConfig.groups.length !== 0 ? (
           <GroupTable
             data={this.state.clusters}
