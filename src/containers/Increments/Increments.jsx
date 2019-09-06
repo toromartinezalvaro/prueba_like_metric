@@ -8,6 +8,7 @@ import IncrementsChart from '../../components/Increments/IncrementsChart/Increme
 import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
 import Styles from './Increments.module.scss';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 class Increments extends Component {
   constructor(props) {
@@ -214,4 +215,4 @@ class Increments extends Component {
   }
 }
 
-export default Increments;
+export default withDefaultLayout(Increments);

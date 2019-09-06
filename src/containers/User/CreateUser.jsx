@@ -7,6 +7,7 @@ import { DashboardRoutes, ProjectRoutes } from '../../routes/local/routes';
 import styles from './CreateUser.module.scss';
 import errorHandling from '../../services/commons/errorHelper';
 import { Role } from '../../helpers';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 class CreateUser extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class CreateUser extends Component {
     isLoading: false,
   };
 
-  onChange = target => {
+  onChange = (target) => {
     const { name, value } = target;
     if (name && value) {
       this.setState({
@@ -43,17 +44,16 @@ class CreateUser extends Component {
         email,
         password,
       })
-      .then(user => {
+      .then((user) => {
         console.log('user --> ', user);
         if (user.email) {
           this.props.history.push(DashboardRoutes.base + ProjectRoutes.base);
         }
         this.setState({ isLoading: false });
       })
-      .catch(error => {
-        let errorHelper = errorHandling(error);
+      .catch((error) => {
+        this.props.spawnMessage(error.response.data.message, 'error');
         this.setState({
-          currentErrorMessage: errorHelper.message,
           isLoading: false,
         });
       });
@@ -73,11 +73,10 @@ class CreateUser extends Component {
           email={this.state.email}
           password={this.state.password}
           createUser={this.createUserHandler}
-          currentErrorMessage={this.state.currentErrorMessage}
         />
       </div>
     );
   }
 }
 
-export default CreateUser;
+export default withDefaultLayout(CreateUser);

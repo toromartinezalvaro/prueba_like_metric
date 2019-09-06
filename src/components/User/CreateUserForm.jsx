@@ -7,9 +7,9 @@ import { Role } from '../../helpers';
 import agent from '../../config/config';
 import Button from '../UI/Button/Button';
 
-const CreateUserForm = props => {
+const CreateUserForm = (props) => {
   const noEmptyValidation = {
-    fn: value => {
+    fn: (value) => {
       return value.length > 0;
     },
     message: 'No puede estar vacío este campo',
@@ -17,7 +17,7 @@ const CreateUserForm = props => {
 
   const emailValidation = [
     {
-      fn: value => {
+      fn: (value) => {
         let emailExp = /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
         const pattern = new RegExp(emailExp);
         return pattern.test(value);
@@ -28,9 +28,6 @@ const CreateUserForm = props => {
 
   return (
     <div>
-      {props.currentErrorMessage !== '' ? (
-        <Error message={props.currentErrorMessage} />
-      ) : null}
       <div className={styles.Container}>
         <Card>
           <CardHeader>
@@ -41,7 +38,7 @@ const CreateUserForm = props => {
               <select
                 className={styles.Input}
                 name="role"
-                onChange={event => {
+                onChange={(event) => {
                   console.log('onchange i ', event.target.value);
                   if (event) {
                     props.onChange({ name: 'role', value: event.target.value });
