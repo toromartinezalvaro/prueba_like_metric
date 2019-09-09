@@ -22,6 +22,7 @@ export const DashboardRoutes = {
     withIndicator: '/futureSalesSpeed/:towerId',
   },
   schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
+  report: { value: '/report/', withIndicator: '/report/:towerId' },
 };
 
 export const ProjectRoutes = {
