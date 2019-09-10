@@ -1,4 +1,4 @@
-import { API_PATH } from '../../config/config'
+import { API_PATH } from '../../config/config';
 
 const UserServiceDefinitions = Object.freeze({
   login: `${API_PATH}user/login`,
@@ -8,6 +8,8 @@ const UserServiceDefinitions = Object.freeze({
   childrenInfo: `${API_PATH}user/allChildrenInfo`,
   updatePassword: `${API_PATH}user/updatePassword`,
   updatePasswordFromAdmin: `${API_PATH}user/updatePasswordFromAdmin`,
+  renewToken: `${API_PATH}user/renewToken`,
+  revokeToken: `${API_PATH}user/revokeToken`,
 });
 
-export default UserServiceDefinitions
+export default UserServiceDefinitions;
