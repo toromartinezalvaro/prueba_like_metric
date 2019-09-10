@@ -27,6 +27,7 @@ import SalesRoom from '../SalesRoom/SalesRoom';
 import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
+import Report from '../Report';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -177,6 +178,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Schedule}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.report.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Report}
         />
       </DashboardLayout>
     );

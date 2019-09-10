@@ -40,8 +40,7 @@ const SideMenu = (props) => {
   return (
     <div
       className={
-        `${style.SideMenu 
-        } ` +
+        `${style.SideMenu} ` +
         `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}`
       }
     >
@@ -49,12 +48,13 @@ const SideMenu = (props) => {
         <label>{props.tower ? props.tower.name : ''}</label>
       </div>
       <div className={style.IconsContainer}>
-      {agent.isAuthorized([Role.Admin, Role.Super]) && itemForSlidebar(
-          style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.schedule.value,
-          'fas fa-users',
-          'Calendario',
-        )}
+        {agent.isAuthorized([Role.Admin, Role.Super]) &&
+          itemForSlidebar(
+            style.MenuItem,
+            DashboardRoutes.base + DashboardRoutes.schedule.value,
+            'fas fa-users',
+            'Calendario',
+          )}
         {agent.isAuthorized([Role.Admin, Role.Super]) &&
           itemForSlidebar(
             style.MenuItem,
@@ -143,6 +143,12 @@ const SideMenu = (props) => {
           DashboardRoutes.base + DashboardRoutes.clients.value,
           'fas fa-users',
           'Clientes',
+        )}{' '}
+        {itemForSlidebar(
+          style.MenuItem,
+          DashboardRoutes.base + DashboardRoutes.report.value,
+          'fas fa-file-alt',
+          'Reporte',
         )}
       </div>
     </div>
