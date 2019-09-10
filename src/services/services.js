@@ -1,11 +1,12 @@
 import axios from 'axios';
 import agent from '../config/config';
+import UserServices from './user/UserServiceDefinitions';
 
 class Services {
   constructor() {
     this.axios = axios;
     axios.defaults.timeout = 1000 * 40;
-    this.setupAuthentication();
+    Services.setupAuthentication();
   }
 
   post(url, data, config) {
@@ -30,11 +31,32 @@ class Services {
 
   delete(url, data, config) {
     console.log('url 🐒 delete', url);
-    let newConfig = {
+    const newConfig = {
       ...config,
-      data: data,
+      data,
     };
     return this.axiosPromise(() => this.axios.delete(url, newConfig));
+  }
+
+  renewToken(refreshToken, promise, resolve, reject) {
+    this.axios
+      .post(UserServices.renewToken, { refreshToken })
+      .then((response) => {
+        if (response.data.token) {
+          agent.saveUser(response.data);
+          this.axiosPromise(promise)
+            .then(resolve)
+            .catch(reject);
+
+          return;
+        }
+        throw new Error('401');
+      })
+      .catch((error) => {
+        agent.logout();
+        window.location.reload();
+        reject(error);
+      });
   }
 
   axiosPromise(promise) {
@@ -53,6 +75,15 @@ class Services {
             // if (this.delegate.executeNoAuthorization) {
             //   this.delegate.executeNoAuthorization();
             // }
+            if (agent.currentUser.refreshToken) {
+              this.renewToken(
+                agent.currentUser.refreshToken,
+                promise,
+                resolve,
+                reject,
+              );
+              return;
+            }
             agent.logout();
             window.location.reload();
             console.log('error -->', error.response.status);
@@ -63,13 +94,13 @@ class Services {
     });
   }
 
-  setupAuthentication() {
-    const currentToken = agent.currentToken;
+  static setupAuthentication() {
+    const { currentToken } = agent;
     if (currentToken !== undefined && currentToken !== '') {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken;
+      axios.defaults.headers.common.Authorization = `Bearer ${currentToken}`;
       axios.defaults.withCredentials = true;
     } else {
-      axios.defaults.headers.common['Authorization'] = '';
+      axios.defaults.headers.common.Authorization = '';
     }
   }
 }

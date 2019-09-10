@@ -11,6 +11,14 @@
       "node": {
         "extensions": [".js", ".jsx", ".json", ".native.js"]
       }
+    },
+    "react": {
+      "pragma": "React",
+      "version": "detect"
     }
+  },
+  "env": {
+    "browser": true,
+    "node": true
   }
 }

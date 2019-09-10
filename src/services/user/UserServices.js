@@ -10,14 +10,20 @@ export default class UserServices extends Services {
     agent.reloadHeaderToken();
   }
 
-  login(email, pass) {
+  login = (email, pass) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(UserServiceDefinitions.login, { email, password: pass })
+        .post(
+          UserServiceDefinitions.login,
+          {},
+          {
+            auth: { username: email, password: pass },
+          },
+        )
+
         .then((res) => {
           if (res.status === 200) {
-            // agent.saveUser(res.data.user)
-            resolve(res.data.user);
+            resolve(res.data);
           } else {
             reject(res);
           }
@@ -26,16 +32,15 @@ export default class UserServices extends Services {
           reject(error);
         });
     });
-  }
+  };
 
-  currentUser() {
-    console.log('header ', axios.headers);
+  currentUser = () => {
     return axios.get(UserServiceDefinitions.user);
-  }
+  };
 
-  logout() {
+  logout = () => {
     return axios.post(UserServiceDefinitions.logout);
-  }
+  };
 
   signup(data) {
     return this.post(UserServiceDefinitions.user, data);
