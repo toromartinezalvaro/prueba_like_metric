@@ -38,8 +38,8 @@ export default class UserServices extends Services {
     return axios.get(UserServiceDefinitions.user);
   };
 
-  logout = () => {
-    return axios.post(UserServiceDefinitions.logout);
+  logout = (data) => {
+    return axios.post(UserServiceDefinitions.logout, data);
   };
 
   signup(data) {
