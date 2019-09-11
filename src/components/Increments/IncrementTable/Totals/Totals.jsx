@@ -122,17 +122,6 @@ function Totals({
           suffix={'%'}
         />
       </div>
-      <div className={Styles['total-sales-wizard']} />
-      <div className={Styles['total-inventory-retention']} />
-      <div className={Styles['total-ear-suggestion']} />
-      <div className={Styles['total-increment-goal-suggestion']}>
-        <NumberFormat
-          value={suggestedIncrement.toFixed(2)}
-          displayType={'text'}
-          thousandSeparator={true}
-          prefix={'$'}
-        />
-      </div>
     </div>
   );
 }

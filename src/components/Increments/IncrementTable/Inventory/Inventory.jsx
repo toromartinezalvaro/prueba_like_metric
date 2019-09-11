@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
@@ -11,6 +12,7 @@ function Inventory({
   putSuggestedEffectiveAnnualInterestRate,
   validations,
   blockIncrements,
+  salesStartDate,
 }) {
   const {
     units,
@@ -98,36 +100,17 @@ function Inventory({
             putSuggestedSalesSpeed(target.value);
           }}
         />
+
+        <div>
+          <span>Meses a hoy: </span>
+          {retentionMonths -
+            moment().diff(moment(Number(salesStartDate)), 'month')}
+        </div>
       </div>
       <div className={Styles['inv-ear']}>
         <span>{(ear * 100).toFixed(2)}%</span>
       </div>
-      <div className={Styles['inv-sales-wizard']} />
-      <div className={Styles['inv-inventory-retention']}>
-        <span>{retentionMonths}</span>
-      </div>
-      <div className={Styles['inv-ear-suggestion']}>
-        {blockIncrements ? (
-          <span>No se puede incrementar con 1 unidad</span>
-        ) : (
-          <Input
-            mask="percentage"
-            validations={[]}
-            value={(suggestedEffectiveAnnualInterestRate * 100).toFixed(2)}
-            onChange={(target) => {
-              putSuggestedEffectiveAnnualInterestRate(target.value / 100);
-            }}
-          />
-        )}
-      </div>
-      <div className={Styles['inv-increment-goal-suggestion']}>
-        <NumberFormat
-          value={suggestedIncrement.toFixed(2)}
-          displayType={'text'}
-          thousandSeparator={true}
-          prefix={'$'}
-        />
-      </div>
+      
     </div>
   );
 }
@@ -151,12 +134,14 @@ Inventory.propTypes = {
   putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
   validations: PropTypes.array,
   blockIncrements: PropTypes.bool,
+  salesStartDate: PropTypes.number,
 };
 
 Inventory.defaultProps = {
   className: '',
   validations: [],
   blockIncrements: false,
+  salesStartDate: new Date().getTime(),
 };
 
 export default Inventory;

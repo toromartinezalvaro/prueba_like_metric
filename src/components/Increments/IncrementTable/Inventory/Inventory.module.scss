@@ -4,7 +4,7 @@
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas: 'inv-header' 'inv-date' 'inv-units' 'inv-area' 'inv-price' 'inv-price-m2' 'inv-sales-l0' 'inv-increment-goal' 'inv-sales-future' 'inv-increment-base' 'inv-analysis-inverse' 'inv-retention-months' 'inv-ear' 'inv-sales-wizard' 'inv-inventory-retention' 'inv-ear-suggestion' 'inv-increment-goal-suggestion';
   grid-area: inventory;
 

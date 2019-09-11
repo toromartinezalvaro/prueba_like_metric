@@ -14,6 +14,7 @@ import Totals from './IncrementTable/Totals/Totals';
 import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
 import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
+import SalesWizard from './IncrementTable/SalesWizard';
 
 function IncrementTable({
   data,
@@ -30,7 +31,7 @@ function IncrementTable({
     },
     {
       fn: (value) => value <= 98,
-      message: 'Los meses de retención deben ser menores a 98 }',
+      message: 'Los meses de retención deben ser menores a 98',
     },
   ];
 
@@ -69,54 +70,73 @@ function IncrementTable({
                   </Link>
                 </div>
               ) : (
-                <div className={styles['grid-container']}>
-                  <Definitions className={styles.definitions} />
-                  <Totals
-                    blockIncrements={group.total.units < 2}
-                    className={styles.total}
-                    groupSummary={group.total}
-                    putIncrement={(increment) => {
-                      putIncrement(
-                        group.id,
-                        increment,
-                        group.inventory.units,
-                        group.sales.increment,
-                      );
-                    }}
-                    putSalesSpeed={(retentionMonths) => {
-                      putSalesSpeed(group.id, retentionMonths, i);
-                    }}
-                    validations={[
-                      ...inputValidations,
-                      {
-                        fn: (value) =>
-                          value <=
-                          moment(Number(group.sales.date)).diff(
-                            moment(Number(group.total.date)),
-                            'month',
-                          ),
-                        message:
-                          'Los meses de retencion superan la fecha final de ventas',
-                      },
-                    ]}
-                  />
-                  <Sales className={styles.sold} groupSummary={group.sales} />
-                  <Inventory
-                    blockIncrements={group.total.units < 2}
-                    className={styles.inventory}
-                    groupSummary={group.inventory}
-                    putSuggestedSalesSpeed={(retentionMonths) => {
-                      putSuggestedSalesSpeed(group.id, retentionMonths, i);
-                    }}
-                    putSuggestedEffectiveAnnualInterestRate={(
-                      effectiveAnnualInterestRate,
-                    ) => {
-                      putSuggestedEffectiveAnnualInterestRate(
-                        group.id,
+                <React.Fragment>
+                  <div className={styles['grid-container']}>
+                    <Definitions className={styles.definitions} />
+                    <Totals
+                      blockIncrements={group.total.units < 2}
+                      className={styles.total}
+                      groupSummary={group.total}
+                      putIncrement={(increment) => {
+                        putIncrement(
+                          group.id,
+                          increment,
+                          group.inventory.units,
+                          group.sales.increment,
+                        );
+                      }}
+                      putSalesSpeed={(retentionMonths) => {
+                        putSalesSpeed(group.id, retentionMonths, i);
+                      }}
+                      validations={[
+                        ...inputValidations,
+                        {
+                          fn: (value) =>
+                            value <=
+                            moment(Number(group.sales.date)).diff(
+                              moment(Number(group.total.date)),
+                              'month',
+                            ),
+                          message:
+                            'Los meses de retencion superan la fecha final de ventas',
+                        },
+                      ]}
+                    />
+                    <Sales className={styles.sold} groupSummary={group.sales} />
+                    <Inventory
+                      blockIncrements={group.total.units < 2}
+                      salesStartDate={group.total.date}
+                      className={styles.inventory}
+                      groupSummary={group.inventory}
+                      putSuggestedSalesSpeed={(retentionMonths) => {
+                        putSuggestedSalesSpeed(group.id, retentionMonths, i);
+                      }}
+                      putSuggestedEffectiveAnnualInterestRate={(
                         effectiveAnnualInterestRate,
-                        i,
-                      );
-                    }}
+                      ) => {
+                        putSuggestedEffectiveAnnualInterestRate(
+                          group.id,
+                          effectiveAnnualInterestRate,
+                          i,
+                        );
+                      }}
+                      validations={[
+                        ...inputValidations,
+                        {
+                          fn: (value) =>
+                            value <=
+                            moment(Number(group.sales.date)).diff(
+                              moment(),
+                              'month',
+                            ),
+                          message:
+                            'Los meses de retencion superan la fecha final de ventas',
+                        },
+                      ]}
+                    />
+                  </div>
+                  <SalesWizard
+                    data={group}
                     validations={[
                       ...inputValidations,
                       {
@@ -130,8 +150,17 @@ function IncrementTable({
                           'Los meses de retencion superan la fecha final de ventas',
                       },
                     ]}
+                    putSuggestedEffectiveAnnualInterestRate={(
+                      effectiveAnnualInterestRate,
+                    ) => {
+                      putSuggestedEffectiveAnnualInterestRate(
+                        group.id,
+                        effectiveAnnualInterestRate,
+                        i,
+                      );
+                    }}
                   />
-                </div>
+                </React.Fragment>
               )}
             </div>
           </Accordion>

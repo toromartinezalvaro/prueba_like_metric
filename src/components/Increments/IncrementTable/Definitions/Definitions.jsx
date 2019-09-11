@@ -28,14 +28,6 @@ function Definitions({ className }) {
         Meses Retención de Inventario
       </div>
       <div className={Styles['def-ear']}>Tasas Incremento e.a</div>
-      <div className={Styles['def-sales-wizard']}>Ayuda Ventas</div>
-      <div className={Styles['def-inventory-retention']}>
-        Meses Retención de Inventario
-      </div>
-      <div className={Styles['def-ear-suggestion']}>Tasas Incremento e.a</div>
-      <div className={Styles['def-increment-goal-suggestion']}>
-        Incremento Pesos (Meta)
-      </div>
     </div>
   );
 }
