@@ -4,7 +4,7 @@
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas: 'sold-header' 'sold-date' 'sold-units' 'sold-area' 'sold-price' 'sold-price-m2' 'sold-sales-l0' 'sold-increment-goal' 'sold-sales-future' 'sold-increment-base' 'sold-analysis-inverse' 'sold-retention-months' 'sold-ear' 'sold-sales-wizard' 'sold-inventory-retention' 'sold-ear-suggestion' 'sold-increment-goal-suggestion';
   & * {
     display: flex;

@@ -1,5 +1,6 @@
 import React, { Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import NumberFormat from 'react-number-format';
 import Styles from './styles.module.scss';
 
@@ -48,7 +49,7 @@ const General = ({ data }) => {
       <div>
         <span className={Styles.header}>Ingresos totales</span>
       </div>
-      {data.map((group, i) => (
+      {_.sortBy(data, (o) => o.name).map((group, i) => (
         <Fragment key={`GeneralRow${i}`}>
           <div>
             <span>{group.name}</span>

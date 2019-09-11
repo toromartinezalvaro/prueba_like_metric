@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr auto auto auto 1fr 1fr;
   grid-row-gap: 20px;
   grid-column-gap: 30px;
 
@@ -13,23 +13,20 @@
   }
 
   .combinedHeader {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
   .subHeader {
-    flex-grow: 1;
     font-weight: 700;
-    display: block;
-    text-align: start;
   }
 
   .combinedRow {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
   .subRow {
-    text-align: start;
-    flex-grow: 1;
     display: block;
   }
 }

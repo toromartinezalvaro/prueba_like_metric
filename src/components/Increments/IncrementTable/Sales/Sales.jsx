@@ -90,17 +90,7 @@ function Sales({ className, groupSummary }) {
       <div className={Styles['sold-analysis-inverse']} />
       <div className={Styles['sold-retention-months']} />
       <div className={Styles['sold-ear']} />
-      <div className={Styles['sold-sales-wizard']} />
-      <div className={Styles['sold-inventory-retention']} />
-      <div className={Styles['sold-ear-suggestion']} />
-      <div className={Styles['sold-increment-goal-suggestion']}>
-        <NumberFormat
-          value={suggestedIncrement.toFixed(2)}
-          displayType="text"
-          thousandSeparator={true}
-          prefix="$"
-        />
-      </div>
+    
     </div>
   );
 }
