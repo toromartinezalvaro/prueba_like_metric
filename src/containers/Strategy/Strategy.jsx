@@ -171,10 +171,15 @@ export default class Strategy extends Component {
   }
 
   save = () => {
-    const arrayOfIncrementList = this.state.groupActive.strategies.map(strategy => {if(strategy.id) {
-      return strategy.percentage
-    }})
-    arrayOfIncrementList.shift();
+    const arrayOfIncrementList = this.state.groupActive.strategies.reduce(
+      (current, next) => {
+        if (next.id) {
+          current.push(next.percentage);
+        }
+        return current;
+      },
+      [],
+    );
     this.services
       .putStrategy({
         id: this.state.groupActive.id,
