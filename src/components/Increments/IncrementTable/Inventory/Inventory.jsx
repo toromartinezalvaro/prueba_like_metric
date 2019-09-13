@@ -28,6 +28,12 @@ function Inventory({
     suggestedEffectiveAnnualInterestRate,
     suggestedIncrement,
   } = groupSummary;
+
+  const limitTodayDate =
+    retentionMonths -
+    moment()
+      .startOf('month')
+      .diff(moment(Number(salesStartDate)).startOf('month'), 'month');
   return (
     <div className={`${Styles.inventory} ${className}`}>
       <div className={Styles['inv-header']}>Inventario</div>
@@ -103,14 +109,12 @@ function Inventory({
 
         <div>
           <span>Meses a hoy: </span>
-          {retentionMonths -
-            moment().diff(moment(Number(salesStartDate)), 'month')}
+          {limitTodayDate > 0 ? limitTodayDate : 0}
         </div>
       </div>
       <div className={Styles['inv-ear']}>
         <span>{(ear * 100).toFixed(2)}%</span>
       </div>
-      
     </div>
   );
 }

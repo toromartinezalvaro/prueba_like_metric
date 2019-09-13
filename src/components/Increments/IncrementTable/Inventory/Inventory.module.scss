@@ -1,4 +1,4 @@
-@import "../../../../assets/styles/variables.scss";
+@import '../../../../assets/styles/variables.scss';
 
 .inventory {
   text-align: center;
@@ -15,7 +15,8 @@
 }
 
 .inv-header {
-  background-color: #ededed;
+  background-color: #f3f3f3;
+  color: #777;
   font-weight: 700;
   font-size: 20px;
   grid-area: inv-header;
@@ -59,7 +60,8 @@
 }
 
 .inv-analysis-inverse {
-  background-color: #ededed;
+  background-color: #f3f3f3;
+  color: #777;
   grid-area: inv-analysis-inverse;
 }
 

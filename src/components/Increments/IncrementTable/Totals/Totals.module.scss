@@ -1,4 +1,4 @@
-@import "../../../../assets/styles/variables.scss";
+@import '../../../../assets/styles/variables.scss';
 
 .total {
   text-align: center;
@@ -13,7 +13,8 @@
 }
 
 .total-header {
-  background-color: #ededed;
+  background-color: #f3f3f3;
+  color: #777;
   font-weight: 700;
   font-size: 20px;
   grid-area: total-header;
@@ -58,7 +59,8 @@
 }
 
 .total-analysis-inverse {
-  background-color: #ededed;
+  background-color: #f3f3f3;
+  color: #777;
   grid-area: total-analysis-inverse;
 }
 

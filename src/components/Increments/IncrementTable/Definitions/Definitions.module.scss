@@ -17,7 +17,8 @@
   }
 
   .def-header {
-    background-color: #ededed;
+    background-color: #f3f3f3;
+    color: #777;
     font-weight: 700;
     font-size: 20px;
     grid-area: def-header;
@@ -62,7 +63,8 @@
 
   .def-analysis-inverse {
     font-size: 20px;
-    background-color: #ededed;
+    background-color: #f3f3f3;
+    color: #777;
     grid-area: def-analysis-inverse;
   }
 
