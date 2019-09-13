@@ -51,7 +51,7 @@ class Clustering extends Component {
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
           isLoading: false,
-          message: response.data.message.message,
+          message: response.data.message ? response.data.message.message : 0,
         });
       })
       .catch(() => {
