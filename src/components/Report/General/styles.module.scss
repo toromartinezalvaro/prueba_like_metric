@@ -1,0 +1,32 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto auto auto 1fr 1fr;
+  grid-row-gap: 20px;
+  grid-column-gap: 30px;
+
+  & * {
+    text-align: center;
+  }
+
+  .header {
+    font-weight: 700;
+  }
+
+  .combinedHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .subHeader {
+    font-weight: 700;
+  }
+
+  .combinedRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .subRow {
+    display: block;
+  }
+}

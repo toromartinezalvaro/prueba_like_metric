@@ -1,7 +1,8 @@
 import axios from 'axios';
-import Server from './server'
-const env = process.env.NODE_ENV || 'development';
-const config = require('./server')[env];
+import Server from './server';
+
+// const env = process.env.NODE_ENV || 'development';
+// const config = require('./server')[env];
 
 const jwtKey = 'jwt';
 
@@ -15,22 +16,24 @@ class Agent {
   get currentUser() {
     if (this.user) {
       return this.user;
-    } else {
-      return this.reloadCurrentUser();
     }
+    return this.reloadCurrentUser();
   }
 
   get currentToken() {
     if (this.token) {
       return this.token;
-    } else {
-      const user = this.reloadCurrentUser();
-      return user ? user.token : null;
     }
+    const user = this.currentUser;
+    return user ? user.token : null;
   }
 
   isAuthorized(roles) {
-    return roles && this.currentUser && roles.indexOf(this.currentUser.userType) !== -1;
+    return (
+      roles &&
+      this.currentUser &&
+      roles.indexOf(this.currentUser.userType) !== -1
+    );
   }
 
   reloadCurrentUser() {
@@ -41,14 +44,15 @@ class Agent {
           this.user = user;
           this.setToken(user.token);
         } else {
-          this.logout()
+          this.logout();
         }
         return user;
       } catch {
-        this.logout()
-        return null
+        this.logout();
+        return null;
       }
     }
+    return this.user;
   }
 
   logout() {
@@ -69,15 +73,15 @@ class Agent {
 
   setToken(newToken) {
     this.token = newToken;
-    this.setupAxios(newToken);
+    Agent.setupAxios(newToken);
   }
 
-  setupAxios(currentToken) {
+  static setupAxios(currentToken) {
     if (currentToken !== undefined && currentToken !== '') {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentToken;
+      axios.defaults.headers.common.Authorization = `Bearer ${currentToken}`;
       axios.defaults.withCredentials = true;
     } else {
-      axios.defaults.headers.common['Authorization'] = '';
+      axios.defaults.headers.common.Authorization = '';
     }
   }
 }

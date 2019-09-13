@@ -4,6 +4,7 @@ import Error from '../../components/UI/Error/Error';
 import errorHandling from '../../services/commons/errorHelper';
 import FutureSalesSpeedCard from '../../components/FutureSalesSpeed/FutureSalesSpeed';
 import FutureSalesSpeedsServices from '../../services/futureSalesSpeeds/FutureSalesSpeedsServices';
+import LoadableContainer from '../../components/UI/Loader';
 
 class FutureSalesSpeed extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class FutureSalesSpeed extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
@@ -53,7 +54,7 @@ class FutureSalesSpeed extends Component {
           salesSpeeds={this.state.salesSpeeds}
           futureSalesSpeedHandler={this.futureSalesSpeedHandler}
         />
-      </React.Fragment>
+      </LoadableContainer>
     );
   }
 }

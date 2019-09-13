@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Input.module.scss';
 import NumberFormat from 'react-number-format';
 import ReactTooltip from 'react-tooltip';
 
-const Input = props => {
+const Input = (props) => {
   const errorStyle = {
     borderBottomColor: '#FF4040',
   };
@@ -14,7 +14,13 @@ const Input = props => {
   const [errorMessages, setErrorMessages] = useState('');
   const [valid, setValid] = useState(true);
 
-  const validation = value => {
+  useEffect(() => {
+    if (props.updateWithProp) {
+      setLocalValue(props.value);
+    }
+  }, [props.value]);
+
+  const validation = (value) => {
     setErrorMessages('');
     return props.validations.reduce((current, next) => {
       const val = next.fn(cleanValue(value));
@@ -30,10 +36,9 @@ const Input = props => {
       return current && val;
     }, true);
   };
-  const localValueHandler = value => {
+  const localValueHandler = (value) => {
     setValid(validation(value));
     setLocalValue(value);
-    
   };
 
   const syncValues = () => {
@@ -56,26 +61,26 @@ const Input = props => {
     }
   };
 
-  const cleanNumberMask = value => {
+  const cleanNumberMask = (value) => {
     return value ? value.toString().replace(/,/g, '') : '';
   };
 
-  const cleanCurrencyMask = value => {
+  const cleanCurrencyMask = (value) => {
     return cleanNumberMask(value).replace('$', '');
   };
 
-  const cleanPercentageMask = value => {
+  const cleanPercentageMask = (value) => {
     return cleanNumberMask(value).replace('%', '');
   };
 
-  const handleFocus = event => {
+  const handleFocus = (event) => {
     if (localValue == 0 || (localValue === undefined && props.value == 0)) {
       setDirty(true);
       setLocalValue('');
     }
   };
 
-  const cleanValue = value => {
+  const cleanValue = (value) => {
     if (props.mask === 'number') {
       return cleanNumberMask(value);
     } else if (props.mask === 'currency') {
@@ -115,12 +120,18 @@ const Input = props => {
               : props.style
           }
           className={`${styles.Input} ${props.className}`}
-          onChange={event => {
+          onChange={(event) => {
             localValueHandler(event.target.value);
+          }}
+          onKeyDown={(event) => {
+            if (event.keyCode === 13) {
+              localValueHandler(event.target.value);
+              event.target.blur();
+            }
+            props.onKeyDown();
           }}
           onFocus={handleFocus}
           onBlur={syncValues}
-          onKeyDown={props.onKeyDown}
           value={localValue === undefined ? props.value : localValue}
           disabled={props.disable}
           placeholder={props.placeholder}
@@ -136,18 +147,24 @@ const Input = props => {
               : props.style
           }
           className={`${styles.Input} ${props.className}`}
-          onChange={event => {
+          onChange={(event) => {
             localValueHandler(event.target.value);
-            if (props.forceUpdate)  {
+            if (props.forceUpdate) {
               props.onChange({
                 name: props.name === undefined ? '' : props.name,
                 value: cleanValue(event.target.value),
               });
             }
           }}
+          onKeyDown={(event) => {
+            if (event.keyCode === 13) {
+              localValueHandler(event.target.value);
+              event.target.blur();
+            }
+            props.onKeyDown();
+          }}
           onFocus={handleFocus}
           onBlur={syncValues}
-          onKeyDown={props.onKeyDown}
           value={localValue === undefined ? props.value : localValue}
           disabled={props.disable}
           placeholder={props.placeholder}
@@ -157,6 +174,10 @@ const Input = props => {
       <ReactTooltip />
     </div>
   );
+};
+
+Input.defaultProps = {
+  onKeyDown: () => null,
 };
 
 export default Input;

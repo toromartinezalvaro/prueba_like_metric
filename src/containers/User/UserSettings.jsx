@@ -28,19 +28,21 @@ export default class UserSettings extends Component {
   };
 
   componentDidMount() {
-    if (this.props.additionalProps) {
-      this.props.additionalProps.changeTower(null);
+    if (this.props.changeTower) {
+      this.props.changeTower(null);
     }
     this.loadCurrentUserInfo();
   }
 
   logoutAction = () => {
-    agent.logout();
     this.props.history.push(UserRoutes.login);
     this.services
-      .logout()
+      .logout({
+        refreshToken: agent.currentUser.refreshToken,
+      })
       .then()
       .catch(this.genericCatch);
+    agent.logout();
   };
 
   updatePasswordAction = () => {
@@ -51,8 +53,8 @@ export default class UserSettings extends Component {
 
   updatePassword = () => {
     if (
-      this.state.password !== this.state.confirmPassword
-      || this.state.password.length === 0
+      this.state.password !== this.state.confirmPassword ||
+      this.state.password.length === 0
     ) {
       return;
     }
@@ -105,7 +107,8 @@ export default class UserSettings extends Component {
     }
   };
 
-  loaderView = () => (this.state.isModalLoading ? (
+  loaderView = () =>
+    this.state.isModalLoading ? (
       <div className={styles.Loader}>
         <Loader
           type="ThreeDots"
@@ -114,7 +117,7 @@ export default class UserSettings extends Component {
           width="100"
         />
       </div>
-    ) : null);
+    ) : null;
 
   onChange = (target) => {
     this.setState({
@@ -143,10 +146,9 @@ export default class UserSettings extends Component {
           updatePassword={this.updatePasswordAction}
         />
         <Modal
-          title={
-            `Modificar contraseña del usuario ${
-              this.state.currentUser ? this.state.currentUser.name : ''}`
-          }
+          title={`Modificar contraseña del usuario ${
+            this.state.currentUser ? this.state.currentUser.name : ''
+          }`}
           hidden={!this.state.isUpdatingPasswordMode}
           onConfirm={this.updatePassword}
           onCancel={this.onCancel}

@@ -33,17 +33,9 @@
 .AccordionContainer {
   box-sizing: border-box;
   padding: 25px;
-  & .label {
-    font-weight: bold;
-  }
-
-  & .statContent {
+  .incrementContainer {
     display: flex;
-    margin-bottom: 5px;
-
     & * {
-      width: 50%;
-      text-align: left;
       flex-grow: 1;
     }
   }
@@ -51,4 +43,27 @@
 
 .Button {
   flex-direction: row-reverse;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory' 'definitions total sold inventory';
+}
+
+.definitions {
+  grid-area: definitions;
+}
+
+.total {
+  grid-area: total;
+}
+
+.sold {
+  grid-area: sold;
+}
+
+.inventory {
+  grid-area: inventory;
 }

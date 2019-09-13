@@ -1,5 +1,5 @@
 
-![Instabuild Inc.](https://pefpi.herokuapp.com/) Rappi Inc.
+![Instabuild Inc.](https://pefpi.herokuapp.com/).
 ======================================
 
 # Instabuild Guidelines and Documentation

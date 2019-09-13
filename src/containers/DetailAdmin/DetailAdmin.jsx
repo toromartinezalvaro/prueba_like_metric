@@ -15,6 +15,7 @@ import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import Button from '../../components/UI/Button/Button';
+import LoadableContainer from '../../components/UI/Loader';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -45,11 +46,12 @@ export default class Detail extends Component {
     active2: 0,
     id: 0,
     id2: 0,
+    isLoading: false,
   };
 
   componentDidMount() {
-    this.getDetails();
     this.setState({ isLoading: true });
+    this.getDetails();
   }
 
   getDetails = () => {
@@ -83,8 +85,8 @@ export default class Detail extends Component {
         ),
       });
       this.assignTableData();
-      this.setState({ isLoading: false });
     }
+  this.setState({ isLoading: false });
   };
 
   sortData = (data) => {
@@ -235,7 +237,7 @@ export default class Detail extends Component {
         if (!response.data) {
           throw Error('No response');
         }
-        const fileName = 'download';
+        const fileName = 'Detalle';
         const exportType = 'xls';
         exportFromJSON({ data: response.data, fileName, exportType });
       })
@@ -252,16 +254,14 @@ export default class Detail extends Component {
 
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <Card>
           <CardHeader>
             <p>Inmuebles</p>
-            <Button onClick={this.onClickExport}>
-              Export to xls
-            </Button>
+            <Button onClick={this.onClickExport}>Exportar a Excel</Button>
           </CardHeader>
           <CardBody style={{ margin: '0' }}>
             <div className={styles.Row}>
@@ -426,7 +426,7 @@ export default class Detail extends Component {
         >
           Resumen
         </FloatingButton>
-      </div>
+      </LoadableContainer>
     );
   }
 }

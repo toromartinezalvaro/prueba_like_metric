@@ -1,36 +1,42 @@
 import { API_PATH } from '../../config/config';
 
 const IncrementsServiceDefinition = {
-  putIncrements: towerId => {
-    return `${API_PATH}pricing/${towerId}`;
+  putIncrements: (towerId) => {
+    return `${API_PATH}pricingv2/${towerId}`;
   },
-  getIncrements: towerId => {
-    return `${API_PATH}pricing/increments/${towerId}`;
+  getIncrements: (towerId) => {
+    return `${API_PATH}pricingv2/increments/${towerId}`;
   },
-  getIncrementsSummary: towerId => {
-    return `${API_PATH}pricing/${towerId}`;
+  getIncrementsSummary: (towerId) => {
+    return `${API_PATH}pricingv2/${towerId}`;
   },
-  getPeriodsIncrements: towerId => {
-    return `${API_PATH}pricing/increments/${towerId}`;
+  getPeriodsIncrements: (towerId) => {
+    return `${API_PATH}pricingv2/increments/${towerId}`;
   },
-  putIncrement: id => {
-    return `${API_PATH}pricing/definitions/increments/${id}`;
+  putIncrement: (id) => {
+    return `${API_PATH}pricingv2/definitions/increments/${id}`;
   },
-  putSalesSpeed: id => {
-    return `${API_PATH}pricing/definitions/salesSpeeds/${id}`;
+  putSalesSpeed: (id) => {
+    return `${API_PATH}pricingv2/definitions/salesSpeeds/${id}`;
   },
-  putAnualEffectiveIncrement: id => {
-    return `${API_PATH}pricing/definitions/anualEffectiveIncrements/${id}`;
+  putSuggestedSalesSpeed: (id) => {
+    return `${API_PATH}pricingv2/definitions/suggestedSalesSpeeds/${id}`;
   },
-  putMarketAnualEffectiveIncrement: towerId => {
-    return `${API_PATH}pricing/definitions/markets/anualEffectiveIncrements/${towerId}`;
+  putSuggestedEffectiveAnnualInterestRate: (id) => {
+    return `${API_PATH}pricingv2/definitions/suggestedEffectiveAnnualInterestRate/${id}`;
   },
-  putMarketAveragePrice: towerId => {
-    return `${API_PATH}pricing/definitions/markets/averagePrices/${towerId}`;
+  putMarketAnualEffectiveIncrement: (towerId) => {
+    return `${API_PATH}pricingv2/definitions/markets/anualEffectiveIncrements/${towerId}`;
   },
-  putSalesStartDate: towerId => {
-    return `${API_PATH}pricing/definitions/salesStartDates/${towerId}`
-  }
+  putMarketAveragePrice: (towerId) => {
+    return `${API_PATH}pricingv2/definitions/markets/averagePrices/${towerId}`;
+  },
+  putSalesStartDate: (towerId) => {
+    return `${API_PATH}pricingv2/definitions/salesStartDates/${towerId}`;
+  },
+  putEndOfSalesDate: (towerId) => {
+    return `${API_PATH}pricingv2/definitions/endOfSalesDate/${towerId}`;
+  },
 };
 
 export default IncrementsServiceDefinition;

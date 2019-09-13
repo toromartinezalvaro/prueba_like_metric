@@ -8,92 +8,85 @@ import styles from './Login.module.scss';
 import errorHandling from '../../services/commons/errorHelper';
 
 class Login extends Component {
-
   constructor(props) {
-    super(props)
-    this.services = new Services()
+    super(props);
+    this.services = new Services();
   }
 
   state = {
-    email: "",
-    password: "",
-    currentErrorMessage: "",
-    isLoading: false
-  }
+    email: '',
+    password: '',
+    currentErrorMessage: '',
+    isLoading: false,
+  };
 
   componentDidMount() {
-    this.loadCurrentUserInfo()
+    this.loadCurrentUserInfo();
   }
 
-  onChange = target => {
-    const { name, value } = target
+  onChange = (target) => {
+    const { name, value } = target;
     if (name && value) {
       this.setState({
-        [name]: value
-      })
+        [name]: value,
+      });
     }
-  }
+  };
 
   loadCurrentUserInfo = () => {
     if (agent.currentToken) {
       this.setState({
-        isLoading: true
-      })
+        isLoading: true,
+      });
 
       this.services
         .currentUser()
-        .then(response => {
+        .then((response) => {
           if (response.data.user) {
-            this.props.history.push(DashboardRoutes.base + ProjectRoutes.base)
+            this.props.history.push(DashboardRoutes.base + ProjectRoutes.base);
           } else {
-            agent.logout()
+            agent.logout();
           }
-          this.setState({ isLoading: false })
+          this.setState({ isLoading: false });
         })
-        .catch(error => {
-          agent.logout()
+        .catch((error) => {
+          agent.logout();
           this.setState({
-            isLoading: false
-          })
-        })
+            isLoading: false,
+          });
+        });
     } else {
-      this.setState({ isLoading: false })
+      this.setState({ isLoading: false });
     }
-  }
+  };
 
   loginActionHandler = () => {
-    this.setState({ isLoading: true })
+    this.setState({ isLoading: true });
 
     this.services
       .login(this.state.email, this.state.password)
-      .then(user => {
-
-        if (user.email) {
-            this.props.history.push(DashboardRoutes.base + ProjectRoutes.base)
+      .then((user) => {
+        if (user) {
+          this.props.activateAuth(user);
+          this.props.pushTo(DashboardRoutes.base + ProjectRoutes.base);
         }
-        this.setState({ isLoading: false })
+        this.setState({ isLoading: false });
       })
       .catch((error) => {
         const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
-          isLoading: false 
-        })
-      })
-  }
-
+          isLoading: false,
+        });
+      });
+  };
 
   render() {
-    return (this.state.isLoading ?
+    return this.state.isLoading ? (
       <div className="Container">
-        <Loader
-          type="Puff"
-          color={styles.mainColor}
-          height="100"
-          width="100"
-        />
+        <Loader type="Puff" color={styles.mainColor} height="100" width="100" />
       </div>
-      :
+    ) : (
       <div>
         <LoginComponent
           onChange={this.onChange}

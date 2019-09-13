@@ -43,7 +43,7 @@ function errorHandling(error) {
     Error: {
       code: 0,
       status: 'Error',
-      message: 'Ha ocurrido un error intente nuevamente',
+      message: 'Ha ocurrido un error',
     },
   });
 
