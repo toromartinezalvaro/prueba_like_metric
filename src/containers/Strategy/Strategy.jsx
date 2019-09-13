@@ -171,12 +171,22 @@ export default class Strategy extends Component {
   }
 
   save = () => {
+    const arrayOfIncrementList = this.state.groupActive.strategies.reduce(
+      (current, next) => {
+        if (next.id) {
+          current.push(next.percentage);
+        }
+        return current;
+      },
+      [],
+    );
     this.services
       .putStrategy({
         id: this.state.groupActive.id,
         strategy: this.state.strategySelected,
         incrementList: this.state.groupActive.strategies[this.state.index]
           .percentage,
+        arrayIncrementList: arrayOfIncrementList,
       })
       .then((res) => {
         return this.services.getStrategies(this.props.match.params.towerId);
