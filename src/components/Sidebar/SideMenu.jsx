@@ -140,12 +140,6 @@ const SideMenu = (props) => {
           )}
         {itemForSlidebar(
           style.MenuItem,
-          DashboardRoutes.base + DashboardRoutes.clients.value,
-          'fas fa-users',
-          'Clientes',
-        )}{' '}
-        {itemForSlidebar(
-          style.MenuItem,
           DashboardRoutes.base + DashboardRoutes.report.value,
           'fas fa-file-alt',
           'Reporte',
