@@ -6,7 +6,6 @@ import ClusteringServices from '../../services/clustering/ClusteringServices';
 import GroupTable from '../../components/Clustering/GroupTable/GroupTable';
 import styles from './Clustering.module.scss';
 import LoadableContainer from '../../components/UI/Loader';
-import { DashboardRoutes } from '../../routes/local/routes';
 import EmptyProperties from '../../components/Clustering/EmptyContentMessages/EmptyProperties/EmptyPropeties';
 import EmptyAreasAndPrices from '../../components/Clustering/EmptyContentMessages/EmptyAreasAndPrices/EmptyAreasAndPrices';
 import EmptyPrices from '../../components/Clustering/EmptyContentMessages/EmptyPrices/EmptyPrices';
@@ -107,51 +106,54 @@ class Clustering extends Component {
         {this.state.isEmptyAreasAndPrices ? (
           <EmptyAreasAndPrices towerId={this.props.match.params.towerId} />
         ) : (
-          <Card>
-            {console.log(this.state.isEmpty)}
-            <CardBody>
-              <div className={styles.InputContainer}>
-                <div>
-                  <span>Numero de grupos:</span>
+          !this.state.isEmpty && (
+            <Card>
+              <CardBody>
+                <div className={styles.InputContainer}>
+                  <div>
+                    <span>Numero de grupos:</span>
+                  </div>
+                  <div>
+                    <Input
+                      mask="number"
+                      validations={[]}
+                      style={{ width: '75px' }}
+                      onChange={this.clusterGroupsHandler}
+                      value={this.state.groupsSize}
+                      placeholder="Grupos"
+                      forceUpdate={true}
+                    />
+                  </div>
+                  <div>
+                    <Button
+                      onClick={() => {
+                        this.postClusters(true);
+                      }}
+                      disabled={this.state.waitingForResponse}
+                    >
+                      Agrupar por area
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.postClusters(false);
+                      }}
+                      disabled={
+                        this.state.waitingForResponse ||
+                        this.state.message === 2
+                      }
+                    >
+                      Agrupar por precio
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <Input
-                    mask="number"
-                    validations={[]}
-                    style={{ width: '75px' }}
-                    onChange={this.clusterGroupsHandler}
-                    value={this.state.groupsSize}
-                    placeholder="Grupos"
-                  />
-                </div>
-                <div>
-                  <Button
-                    onClick={() => {
-                      this.postClusters(true);
-                    }}
-                    disabled={this.state.waitingForResponse}
-                  >
-                    Agrupar por area
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      this.postClusters(false);
-                    }}
-                    disabled={
-                      this.state.waitingForResponse || this.state.message === 2
-                    }
-                  >
-                    Agrupar por precio
-                  </Button>
-                </div>
-              </div>
-              {this.state.message === 2 ? (
-                <EmptyPrices
-                  towerId={this.props.match.params.towerId}
-                ></EmptyPrices>
-              ) : null}
-            </CardBody>
-          </Card>
+                {this.state.message === 2 ? (
+                  <EmptyPrices
+                    towerId={this.props.match.params.towerId}
+                  ></EmptyPrices>
+                ) : null}
+              </CardBody>
+            </Card>
+          )
         )}
         {this.state.towerClusterConfig.groups.length !== 0 ? (
           <GroupTable

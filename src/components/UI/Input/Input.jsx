@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from './Input.module.scss';
 import NumberFormat from 'react-number-format';
 import ReactTooltip from 'react-tooltip';
+import styles from './Input.module.scss';
 
 const Input = (props) => {
   const errorStyle = {
@@ -26,7 +26,7 @@ const Input = (props) => {
       const val = next.fn(cleanValue(value));
       if (!val) {
         return setErrorMessages(next.message);
-      } else if (val !== true) {
+      } if (val !== true) {
         if (val.floor === props.floor && val.location === props.location) {
           return true;
         } else {
@@ -46,7 +46,7 @@ const Input = (props) => {
       if (dirty && props.zeroDefault && localValue === '') {
         setLocalValue('0');
       }
-      let value = localValue === undefined ? props.value : localValue;
+      const value = localValue === undefined ? props.value : localValue;
       if (value !== props.value && !props.forceUpdate) {
         props.onChange({
           name: props.name === undefined ? '' : props.name,
@@ -83,7 +83,7 @@ const Input = (props) => {
   const cleanValue = (value) => {
     if (props.mask === 'number') {
       return cleanNumberMask(value);
-    } else if (props.mask === 'currency') {
+    } if (props.mask === 'currency') {
       return cleanCurrencyMask(value);
     } else if (props.mask === 'percentage') {
       return cleanPercentageMask(value);
@@ -122,6 +122,12 @@ const Input = (props) => {
           className={`${styles.Input} ${props.className}`}
           onChange={(event) => {
             localValueHandler(event.target.value);
+            if (props.forceUpdate) {
+              props.onChange({
+                name: props.name === undefined ? '' : props.name,
+                value: cleanValue(event.target.value),
+              });
+            }
           }}
           onKeyDown={(event) => {
             if (event.keyCode === 13) {
