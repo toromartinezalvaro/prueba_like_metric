@@ -31,7 +31,7 @@ export default class Towers extends Component {
     tower = { ...tower, projectId: this.props.match.params.projectId };
     this.props.changeTower(tower);
     this.props.history.push(
-      DashboardRoutes.base + DashboardRoutes.building.value + tower.id,
+      DashboardRoutes.base + DashboardRoutes.schedule.value + tower.id,
     );
   };
 
@@ -52,7 +52,7 @@ export default class Towers extends Component {
           towerId: id,
         })
         .then((response) => {
-          let tower = response.data.towers;
+          const tower = response.data.towers;
           if (tower) {
             this.setState({
               towers: tower,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
   DashboardRoutes,
   ProjectRoutes,
@@ -15,7 +15,6 @@ import Prime from '../Prime/Prime';
 import DetailAdmin from '../DetailAdmin/DetailAdmin';
 import Detail from '../Detail/Detail';
 import RackAreas from '../RackAreas/RackAreas';
-import SecureContainer from '../../HOC/Common/SecureContainer';
 import TowerServices from '../../services/Towers/TowerServices';
 import Summary from '../Summary/Summary';
 import Clustering from '../Clustering/Clustering';
@@ -71,6 +70,11 @@ class Dashboard extends Component {
     const { tower } = this.state;
     return (
       <DashboardLayout tower={tower} location={location}>
+        <Redirect
+          from={DashboardRoutes.base}
+          exact
+          to={DashboardRoutes.base + ProjectRoutes.base}
+        />
         <PrivateRoute
           path={match.url + ProjectRoutes.base}
           exact

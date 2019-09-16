@@ -1,20 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 import Loader from 'react-loader-spinner';
-import styles from "./Naming.module.scss";
-import Card, { CardHeader, CardBody, CardFooter } from "../../UI/Card/Card";
-import Input from "../../UI/Input/Input";
-import Table from "../../UI/Table/Table";
+import styles from './Naming.module.scss';
+import Card, { CardHeader, CardBody, CardFooter } from '../../UI/Card/Card';
+import Input from '../../UI/Input/Input';
+import Table from '../../UI/Table/Table';
 import commonStyles from '../../../assets/styles/variables.scss';
-import Modal from "../../../components/UI/Modal/Modal";
+import Modal from '../../UI/Modal/Modal';
+import LoadableContainer from '../../UI/Loader';
 
-const Naming = props => {
+const Naming = (props) => {
   const [hidden, setHidden] = useState(true);
   const [id, setId] = useState();
   const [FloorState, setFloorState] = useState();
   const [propertyIndexState, setPropertyIndexState] = useState();
-  const [property, setProperty] = useState("");
-  const [clear, setClear] = useState();
-
+  const [property, setProperty] = useState('');
 
   const getInputs = () => {
     return props.names.map((floor, floorIndex) =>
@@ -26,16 +25,16 @@ const Naming = props => {
             validations={[
               {
                 fn: props.checkDuplicates,
-                message: "Nombres únicos"
-              }
+                message: 'Nombres únicos',
+              },
             ]}
             location={propertyIndex + 1}
             floor={floorIndex + props.lowestFloor}
-            onChange={target => {
-              if (target.value === "" && property !== null) {
+            onChange={(target) => {
+              if (target.value === '' && property !== null) {
                 setProperty(property.name);
-                setFloorState(floorIndex + props.lowestFloor) 
-                setPropertyIndexState(propertyIndex + 1)
+                setFloorState(floorIndex + props.lowestFloor);
+                setPropertyIndexState(propertyIndex + 1);
                 setId(property.id);
                 setHidden(false);
               } else {
@@ -43,70 +42,59 @@ const Naming = props => {
                   property ? property.id : null,
                   floorIndex + props.lowestFloor,
                   propertyIndex + 1,
-                  target.value
+                  target.value,
                 );
               }
             }}
             value={property ? property.name : undefined}
             clearValue={true}
-
           />
         );
-      })
+      }),
     );
   };
   const confirm = () => {
     setHidden(true);
-    setClear(false)
     props.onPropertyEmpty(id);
-    props.onPropertyNameChange(
-      id,
-      FloorState,
-      propertyIndexState,
-      ""
-    );
+    props.onPropertyNameChange(id, FloorState, propertyIndexState, '');
   };
 
   const cancel = () => {
     setHidden(true);
-    setClear(true)
-    props.onPropertyNameChange(
-      id,
-      FloorState,
-      propertyIndexState,
-      property
-    );
+    props.onPropertyNameChange(id, FloorState, propertyIndexState, property);
   };
 
   return (
     <Card>
       <CardHeader>
-        <p>Nomenclatura
-        {
-          props.loadingNaming ? 
-          <div className={styles.Loader}><Loader
-          type="ThreeDots"
-          color={commonStyles.mainColor}
-          height="100"
-          width="100"
-        /></div> : null
-        }</p>
-        
+        <p>
+          Nomenclatura
+          {props.loadingNaming ? (
+            <div className={styles.Loader}>
+              <Loader
+                type="ThreeDots"
+                color={commonStyles.mainColor}
+                height="50"
+                width="100"
+              />
+            </div>
+          ) : null}
+        </p>
       </CardHeader>
       <CardBody>
-        <div>
+        <LoadableContainer isLoading={props.isLoading}>
           <Table
             intersect="Propiedades"
             headers={props.headers}
             columns={props.columns}
             data={getInputs()}
           />
-        </div>
+        </LoadableContainer>
       </CardBody>
       <CardFooter />
       {hidden ? null : (
         <Modal
-          title={"Eliminar Propiedad " + property}
+          title={`Eliminar Propiedad ${property}`}
           hidden={hidden}
           onConfirm={confirm}
           onCancel={cancel}
