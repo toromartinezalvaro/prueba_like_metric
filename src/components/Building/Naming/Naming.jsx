@@ -14,7 +14,6 @@ const Naming = (props) => {
   const [FloorState, setFloorState] = useState();
   const [propertyIndexState, setPropertyIndexState] = useState();
   const [property, setProperty] = useState('');
-  const [, setClear] = useState();
 
   const getInputs = () => {
     return props.names.map((floor, floorIndex) =>
@@ -56,14 +55,12 @@ const Naming = (props) => {
   };
   const confirm = () => {
     setHidden(true);
-    setClear(false);
     props.onPropertyEmpty(id);
     props.onPropertyNameChange(id, FloorState, propertyIndexState, '');
   };
 
   const cancel = () => {
     setHidden(true);
-    setClear(true);
     props.onPropertyNameChange(id, FloorState, propertyIndexState, property);
   };
 

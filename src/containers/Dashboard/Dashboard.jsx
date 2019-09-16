@@ -15,7 +15,6 @@ import Prime from '../Prime/Prime';
 import DetailAdmin from '../DetailAdmin/DetailAdmin';
 import Detail from '../Detail/Detail';
 import RackAreas from '../RackAreas/RackAreas';
-// import SecureContainer from '../../HOC/Common/SecureContainer';
 import TowerServices from '../../services/Towers/TowerServices';
 import Summary from '../Summary/Summary';
 import Clustering from '../Clustering/Clustering';
