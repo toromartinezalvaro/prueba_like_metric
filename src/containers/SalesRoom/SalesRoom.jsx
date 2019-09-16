@@ -283,7 +283,11 @@ export default class Detail extends Component {
                 onConfirm={this.save}
                 onCancel={this.cancel}
               >
-                <SalesRoomModal property={this.state.selectedProperty} />
+                <SalesRoomModal
+                  property={this.state.selectedProperty}
+                  discount={null}
+                  tradeDiscount={null}
+                />
                 {this.state.isLoadingModal ? (
                   <div style={{ justifyContent: 'center', display: 'flex' }}>
                     <Loader

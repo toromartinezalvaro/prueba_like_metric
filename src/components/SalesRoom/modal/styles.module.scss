@@ -1,11 +1,18 @@
 .inputContainer {
   display: flex;
   align-items: center;
-  padding: 10px 0;
-  
+  padding: 20px 0;
+
+  .row {
+    flex-grow: 1;
+    display: flex;
+    margin-right: 15px;
+  }
+
   .label {
     flex-grow: 1;
-    margin-right: 15px;
+    display: flex;
+    align-items: center;
   }
 
   .input {
