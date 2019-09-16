@@ -27,6 +27,7 @@ class Building extends Component {
     showFloatingButton: false,
     loadingNaming: false,
     stratums: {},
+    isLoadingSchemas: false,
     salesDates: {
       salesStartDate: new Date().getTime(),
       endOfSalesDate: new Date().getTime(),
@@ -44,21 +45,26 @@ class Building extends Component {
     });
   };
 
-  updateNames = () => {
-    this.setState({ loadingNaming: true });
+  updateNames = (isLoadingSchemas = false) => {
+    const trueLoading = isLoadingSchemas
+      ? { isLoadingSchemas: true }
+      : { loadingNaming: true };
+
+    const falseLoading = isLoadingSchemas
+      ? { isLoadingSchemas: false }
+      : { loadingNaming: false };
+
+    this.setState(trueLoading);
     this.services
       .getSchema(this.props.match.params.towerId)
       .then((response) => {
         if (response.data.length !== 0) {
-          this.updateStatesWithResponse(response);
+          this.updateStatesWithResponse(response, falseLoading);
           this.setupShowFloatingButton(response.data.properties);
         }
-        this.setState({ loadingNaming: false });
-        console.log(`🦄 No entro al error`);
       })
       .catch((error) => {
-        console.log(`🐶 error: ${error}`);
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
         });
@@ -66,29 +72,23 @@ class Building extends Component {
       });
   };
 
-  updateStatesWithResponse = (response) => {
-    let {
-      floors,
-      totalProperties,
-      lowestFloor,
-      properties,
-      stratum,
-      stratums,
-    } = response.data;
+  updateStatesWithResponse = (response, loading) => {
+    let { floors, totalProperties, lowestFloor } = response.data;
+    const { properties, stratum, stratums } = response.data;
     floors = _.defaultTo(floors, 0);
     totalProperties = _.defaultTo(totalProperties, 0);
     lowestFloor = _.defaultTo(lowestFloor, 0);
-    console.log('properties', properties);
     this.setState({
-      floors: floors,
+      floors,
       properties: totalProperties,
-      lowestFloor: lowestFloor,
+      lowestFloor,
       update: true,
       disable: floors > 0,
       names: properties,
       isLoading: false,
       stratum,
       stratums,
+      ...loading,
     });
   };
 
@@ -97,8 +97,8 @@ class Building extends Component {
       return;
     }
 
-    let showFloating = properties.find((arrayProperties) => {
-      let anyNomenclature = arrayProperties.find((nomenclature) => {
+    const showFloating = properties.find((arrayProperties) => {
+      const anyNomenclature = arrayProperties.find((nomenclature) => {
         return nomenclature !== null && nomenclature.name !== '0';
       });
       return anyNomenclature !== undefined;
@@ -115,48 +115,48 @@ class Building extends Component {
   };
 
   saveSchema = () => {
-    this.setState({ loadingNaming: true, disable: true });
+    this.setState({ isLoadingSchemas: true, disable: true });
     this.services
       .postSchema({
         towerId: this.props.match.params.towerId,
-        floors: parseInt(this.state.floors),
-        properties: parseInt(this.state.properties),
-        lowestFloor: parseInt(this.state.lowestFloor),
+        floors: parseInt(this.state.floors, 10),
+        properties: parseInt(this.state.properties, 10),
+        lowestFloor: parseInt(this.state.lowestFloor, 10),
       })
       .then(() => {
         this.setState({ floors: [], disable: true, names: [] });
-        this.updateNames();
-        this.setState({ loadingNaming: false });
+        this.updateNames(true);
+        this.setState({ isLoadingSchemas: false });
       })
       .catch((error) => {
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
-          loadingNaming: false,
+          isLoadingSchemas: false,
         });
         this.setState({ currentErrorMessage: '' });
       });
   };
 
   updateSchema = () => {
-    this.setState({ loadingNaming: true, disable: true });
+    this.setState({ isLoadingSchemas: true, disable: true });
     this.services
       .putSchema({
         towerId: this.props.match.params.towerId,
-        floors: parseInt(this.state.floors),
-        properties: parseInt(this.state.properties),
-        lowestFloor: parseInt(this.state.lowestFloor),
+        floors: parseInt(this.state.floors, 10),
+        properties: parseInt(this.state.properties, 10),
+        lowestFloor: parseInt(this.state.lowestFloor, 10),
       })
       .then(() => {
         this.setState({ floors: [], disable: true, names: [] });
-        this.updateNames();
-        this.setState({ loadingNaming: false });
+        this.updateNames(true);
+        this.setState({ isLoadingSchemas: false });
       })
       .catch((error) => {
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
-          loadingNaming: false,
+          isLoadingSchemas: false,
         });
       });
     this.setState({ currentErrorMessage: '' });
@@ -180,22 +180,21 @@ class Building extends Component {
   };
 
   propertyNameChangeHandler = (id, floor, location, value) => {
-    let names = [...this.state.names];
+    const names = [...this.state.names];
     names[floor - this.state.lowestFloor][location - 1] = {
-      id: id,
-      floor: floor,
-      location: location,
+      id,
+      floor,
+      location,
       name: value,
       towerId: this.props.match.params.towerId,
     };
     this.services
       .putProperties(names[floor - this.state.lowestFloor][location - 1])
       .then((data) => {
-        console.log(data);
         this.updateNames();
       });
     this.setState({
-      names: names,
+      names,
       showFloatingButton: true,
     });
   };
@@ -209,21 +208,8 @@ class Building extends Component {
   updateStratum = (stratum) => {
     this.services
       .putStratum(this.props.match.params.towerId, { stratum })
-      .then((response) => {
+      .then(() => {
         this.setState({ stratum });
-        console.log(response);
-      });
-  };
-
-  putSalesStartDate = (salesStartDate) => {
-    this.services
-      .putSalesStartDate(this.props.match.params.towerId, {
-        salesStartDate,
-      })
-      .then((response) => {
-        const tempSalesDates = { ...this.state.salesDates };
-        tempSalesDates.salesStartDate = salesStartDate;
-        this.setState({ salesDates: tempSalesDates });
       });
   };
 
@@ -232,7 +218,7 @@ class Building extends Component {
       .putEndOfSalesDate(this.props.match.params.towerId, {
         endOfSalesDate,
       })
-      .then((response) => {
+      .then(() => {
         const tempSalesDates = { ...this.state.salesDates };
         tempSalesDates.endOfSalesDate = endOfSalesDate;
         this.setState({ salesDates: tempSalesDates });
@@ -246,7 +232,6 @@ class Building extends Component {
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <div>
-         
           <Schema
             floors={this.state.floors}
             properties={this.state.properties}
@@ -263,6 +248,7 @@ class Building extends Component {
           />
           {!this.state.disable ? null : (
             <Naming
+              isLoading={this.state.isLoadingSchemas}
               loadingNaming={this.state.loadingNaming}
               floors={this.state.floors}
               properties={this.state.properties}

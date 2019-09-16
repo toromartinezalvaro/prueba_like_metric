@@ -5,20 +5,20 @@ import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
 import Modal from '../../UI/Modal/Modal';
 
-const Schema = props => {
+const Schema = (props) => {
   const [hidden, setHidden] = useState(true);
 
   const inputValidation = [
     {
-      fn: value => {
+      fn: (value) => {
         const pattern = new RegExp('^[0-9]*$');
         return pattern.test(value);
       },
       message: 'Debe ser un numero',
     },
     {
-      fn: value => {
-        return parseInt(value) >= 1;
+      fn: (value) => {
+        return parseInt(value, 10) >= 1;
       },
       message: 'Debe ser mayor o igual a 1',
     },
@@ -84,7 +84,7 @@ const Schema = props => {
             <p className={styles.Label}>Estrato:</p>
             <select
               value={props.stratum}
-              onChange={event => {
+              onChange={(event) => {
                 props.updateStratum(event.target.value);
               }}
             >
