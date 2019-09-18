@@ -10,8 +10,8 @@ import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
 import StyleVariables from '../../../assets/styles/variables.scss';
 
-const SalesRoomModal = ({ property, discount, tradeDiscount }) => {
-  const { status, price, priceSold } = property;
+const SalesRoomModal = ({ property, onChange }) => {
+  const { status, price, priceSold, discount, tradeDiscount } = property;
 
   const [currentState, setCurrentState] = useState(status);
   const [currentDiscount, setCurrentDiscount] = useState(
@@ -43,17 +43,20 @@ const SalesRoomModal = ({ property, discount, tradeDiscount }) => {
 
   return (
     <div>
-      <RadioGroup
-        value={currentState}
-        onChange={(value) => {
-          setCurrentState(value);
-        }}
-        horizontal
-      >
-        <RadioButton value="AVAILABLE">Disponible</RadioButton>
-        <RadioButton value="OPTIONAL">Opcionado</RadioButton>
-        <RadioButton value="SOLD">Vendido</RadioButton>
-      </RadioGroup>
+      <div className={Styles.status}>
+        <RadioGroup
+          value={currentState}
+          onChange={(value) => {
+            onChange('status', value);
+            setCurrentState(value);
+          }}
+          horizontal
+        >
+          <RadioButton value="AVAILABLE">Disponible</RadioButton>
+          <RadioButton value="OPTIONAL">Opcionado</RadioButton>
+          <RadioButton value="SOLD">Vendido</RadioButton>
+        </RadioGroup>
+      </div>
       {currentState === 'AVAILABLE' ? null : (
         <div>
           <div className={Styles.inputContainer}>
@@ -71,13 +74,18 @@ const SalesRoomModal = ({ property, discount, tradeDiscount }) => {
               />
             </div>
           </div>
-          <div className={Styles.inputContainer}>
+          <div className={Styles.dividedInputContainer}>
             <div className={Styles.row}>
+              <div className={Styles.label}>
+                <span>Comercial</span>
+              </div>
               <div>
                 <RadioGroup
                   value={discountState}
                   onChange={(value) => {
-                    setCurrentDiscount(currentDiscount * -1);
+                    const changedCurrentDiscount = currentDiscount * -1;
+                    onChange('discount', changedCurrentDiscount);
+                    setCurrentDiscount(changedCurrentDiscount);
                     setDiscountState(value);
                   }}
                   horizontal
@@ -96,20 +104,18 @@ const SalesRoomModal = ({ property, discount, tradeDiscount }) => {
                   </ReversedRadioButton>
                 </RadioGroup>
               </div>
-              <div className={Styles.label}>
-                <span>Comercial</span>
-              </div>
             </div>
             <Input
               mask="currency"
               className={Styles.input}
               validations={[]}
               onChange={(target) => {
-                setCurrentDiscount(
+                const calculatedDiscount =
                   discountState === 'DISCOUNT'
                     ? target.value
-                    : target.value * -1,
-                );
+                    : target.value * -1;
+                onChange('discount', calculatedDiscount);
+                setCurrentDiscount(calculatedDiscount);
               }}
               value={Math.abs(currentDiscount)}
             />
@@ -123,13 +129,19 @@ const SalesRoomModal = ({ property, discount, tradeDiscount }) => {
               prefix="$"
             />
           </div>
-          <div className={Styles.inputContainer}>
+          <div className={Styles.dividedInputContainer}>
             <div className={Styles.row}>
+              <div className={Styles.label}>
+                <span>Financiero</span>
+              </div>
               <div>
                 <RadioGroup
                   value={tradeDiscountState}
                   onChange={(value) => {
-                    setCurrentTradeDiscount(currentTradeDiscount * -1);
+                    const changedCurrentTradeDiscount =
+                      currentTradeDiscount * -1;
+                    onChange('tradeDiscount', changedCurrentTradeDiscount);
+                    setCurrentTradeDiscount(changedCurrentTradeDiscount);
                     setTradeDiscountState(value);
                   }}
                   horizontal
@@ -148,9 +160,6 @@ const SalesRoomModal = ({ property, discount, tradeDiscount }) => {
                   </ReversedRadioButton>
                 </RadioGroup>
               </div>
-              <div className={Styles.label}>
-                <span>Financiero</span>
-              </div>
             </div>
 
             <Input
@@ -158,11 +167,12 @@ const SalesRoomModal = ({ property, discount, tradeDiscount }) => {
               className={Styles.input}
               validations={[]}
               onChange={(target) => {
-                setCurrentTradeDiscount(
+                const calculatedCurrentTradeDiscount =
                   tradeDiscountState === 'DISCOUNT'
                     ? target.value
-                    : target.value * -1,
-                );
+                    : target.value * -1;
+                onChange('tradeDiscount', calculatedCurrentTradeDiscount);
+                setCurrentTradeDiscount(calculatedCurrentTradeDiscount);
               }}
               value={Math.abs(currentTradeDiscount)}
             />

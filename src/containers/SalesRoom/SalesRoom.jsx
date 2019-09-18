@@ -39,7 +39,20 @@ export default class Detail extends Component {
     isEmpty: null,
     isLoadingModal: false,
     selectedProperty: null,
+    mierda: {
+      id: null,
+      status: null,
+      discount: null,
+      tradeDiscount: null,
+    },
   };
+
+  mierdaHandler = (key, value) => {
+    const temp = { ...this.state.mierda };
+    temp[key] = value;
+    this.setState({ mierda: temp });
+  };
+
   componentDidMount() {
     this.setState({ isLoading: true });
     this.services
@@ -175,15 +188,18 @@ export default class Detail extends Component {
       .putState(
         {
           id: this.state.id,
-          status:
-            this.state.rightButton.label === 'Disponible'
-              ? Status.Available
-              : this.state.rightButton.label === 'Opcionado'
-              ? Status.Optional
-              : Status.Sold,
+          status: this.state.mierda.status,
           priceSold:
-            this.state.rightButton.label !== 'Disponible'
-              ? this.state.priceSold
+            this.state.mierda.status !== 'AVAILABLE'
+              ? this.state.priceSold - this.state.mierda.discount
+              : null,
+          discount:
+            this.state.mierda.status !== 'AVAILABLE'
+              ? this.state.mierda.discount
+              : null,
+          tradeDiscount:
+            this.state.mierda.status !== 'AVAILABLE'
+              ? this.state.mierda.tradeDiscount
               : null,
           collectedIncrement,
           groupId: this.state.groupId,
@@ -285,8 +301,7 @@ export default class Detail extends Component {
               >
                 <SalesRoomModal
                   property={this.state.selectedProperty}
-                  discount={null}
-                  tradeDiscount={null}
+                  onChange={this.mierdaHandler}
                 />
                 {this.state.isLoadingModal ? (
                   <div style={{ justifyContent: 'center', display: 'flex' }}>
