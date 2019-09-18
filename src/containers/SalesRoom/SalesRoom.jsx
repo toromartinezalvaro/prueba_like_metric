@@ -15,6 +15,7 @@ import Message from '../../components/SalesRoom/Message';
 import Status from '../../helpers/status';
 import LoadableContainer from '../../components/UI/Loader';
 import SalesRoomModal from '../../components/SalesRoom/modal';
+import SalesRoomEnum from './SalesRoom.enum';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -184,16 +185,19 @@ export default class Detail extends Component {
           id: this.state.selectedProperty.id,
           status: this.state.selectedProperty.status,
           priceSold:
-            this.state.selectedProperty.status !== 'AVAILABLE'
-              ? this.state.selectedProperty.price -
+            this.state.selectedProperty.status !==
+            SalesRoomEnum.status.AVAILABLE
+              ? this.state.selectedProperty.priceWithIncrement -
                 this.state.selectedProperty.discount
               : null,
           discount:
-            this.state.selectedProperty.status !== 'AVAILABLE'
+            this.state.selectedProperty.status !==
+            SalesRoomEnum.status.AVAILABLE
               ? this.state.selectedProperty.discount
               : null,
           tradeDiscount:
-            this.state.selectedProperty.status !== 'AVAILABLE'
+            this.state.selectedProperty.status !==
+            SalesRoomEnum.status.AVAILABLE
               ? this.state.selectedProperty.tradeDiscount
               : null,
           collectedIncrement,
@@ -203,46 +207,6 @@ export default class Detail extends Component {
       )
       .then((properties) => {
         console.log(properties);
-        if (properties) {
-          this.makeArrayOfProperties(properties);
-        }
-        this.setState({
-          isHidden: true,
-          isLoadingModal: false,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({ isLoadingModal: false });
-      });
-    return true;
-  };
-
-  saveLeft = () => {
-    this.setState({ isLoadingModal: true });
-    const collectedIncrement = this.calculateCollectedIncrement(
-      this.state.leftButton.label,
-    );
-    this.services
-      .putState(
-        {
-          id: this.state.id,
-          status:
-            this.state.leftButton.label === 'Disponible'
-              ? Status.Available
-              : this.state.leftButton.label === 'Opcionado'
-              ? Status.Optional
-              : Status.Sold,
-          priceSold:
-            this.state.leftButton.label !== 'Disponible'
-              ? this.state.priceSold
-              : null,
-          collectedIncrement,
-          groupId: this.state.groupId,
-        },
-        this.props.match.params.towerId,
-      )
-      .then((properties) => {
         if (properties) {
           this.makeArrayOfProperties(properties);
         }
@@ -294,10 +258,6 @@ export default class Detail extends Component {
                 onConfirm={this.save}
                 onCancel={this.cancel}
               >
-                <SalesRoomModal
-                  property={this.state.selectedProperty}
-                  onChange={this.propertyHandler}
-                />
                 {this.state.isLoadingModal ? (
                   <div style={{ justifyContent: 'center', display: 'flex' }}>
                     <Loader
@@ -307,7 +267,12 @@ export default class Detail extends Component {
                       width="100"
                     />
                   </div>
-                ) : null}
+                ) : (
+                  <SalesRoomModal
+                    property={this.state.selectedProperty}
+                    onChange={this.propertyHandler}
+                  />
+                )}
               </Modal>
             )}
           </Card>

@@ -122,6 +122,12 @@ const Input = (props) => {
           className={`${styles.Input} ${props.className}`}
           onChange={(event) => {
             localValueHandler(event.target.value);
+            if (props.forceUpdate) {
+              props.onChange({
+                name: props.name === undefined ? '' : props.name,
+                value: cleanValue(event.target.value),
+              });
+            }
           }}
           onKeyDown={(event) => {
             if (event.keyCode === 13) {

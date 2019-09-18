@@ -9,10 +9,26 @@ import NumberFormat from 'react-number-format';
 import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
 import StyleVariables from '../../../assets/styles/variables.scss';
+import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
+
+// Internal constants definitions
+const DISCOUNT = 'DISCOUNT';
+const INCREMENT = 'INCREMENT';
 
 const SalesRoomModal = ({ property, onChange }) => {
-  const { status, price, priceSold, discount, tradeDiscount } = property;
+  const {
+    status,
+    priceWithIncrement,
+    priceSold,
+    discount,
+    tradeDiscount,
+  } = property;
 
+  const [fixedPrice, _] = useState(
+    priceSold !== null
+      ? (parseFloat(priceSold) + parseFloat(discount)).toFixed(2)
+      : priceWithIncrement.toFixed(2),
+  );
   const [currentState, setCurrentState] = useState(status);
   const [currentDiscount, setCurrentDiscount] = useState(
     discount === null ? 0 : discount,
@@ -21,24 +37,18 @@ const SalesRoomModal = ({ property, onChange }) => {
     tradeDiscount === null ? 0 : tradeDiscount,
   );
   const [discountState, setDiscountState] = useState(
-    discount === null || discount >= 0 ? 'DISCOUNT' : 'INCREMENT',
+    discount === null || discount >= 0 ? DISCOUNT : INCREMENT,
   );
   const [tradeDiscountState, setTradeDiscountState] = useState(
-    tradeDiscount === null || tradeDiscount >= 0 ? 'DISCOUNT' : 'INCREMENT',
+    tradeDiscount === null || tradeDiscount >= 0 ? DISCOUNT : INCREMENT,
   );
 
   const getTradePrice = () => {
-    return priceSold !== null
-      ? parseFloat(priceSold + discount - currentDiscount).toFixed(2)
-      : price.toFixed(2) - currentDiscount;
+    return fixedPrice - currentDiscount;
   };
 
   const getFinalTradePrice = () => {
-    return priceSold !== null
-      ? parseFloat(
-          priceSold + discount - currentDiscount - currentTradeDiscount,
-        ).toFixed(2)
-      : price.toFixed(2) - currentDiscount - currentTradeDiscount;
+    return fixedPrice - currentDiscount - currentTradeDiscount;
   };
 
   return (
@@ -52,12 +62,16 @@ const SalesRoomModal = ({ property, onChange }) => {
           }}
           horizontal
         >
-          <RadioButton value="AVAILABLE">Disponible</RadioButton>
-          <RadioButton value="OPTIONAL">Opcionado</RadioButton>
-          <RadioButton value="SOLD">Vendido</RadioButton>
+          <RadioButton value={SalesRoomEnum.status.AVAILABLE}>
+            Disponible
+          </RadioButton>
+          <RadioButton value={SalesRoomEnum.status.OPTIONAL}>
+            Opcionado
+          </RadioButton>
+          <RadioButton value={SalesRoomEnum.status.SOLD}>Vendido</RadioButton>
         </RadioGroup>
       </div>
-      {currentState === 'AVAILABLE' ? null : (
+      {currentState === SalesRoomEnum.status.AVAILABLE ? null : (
         <div>
           <div className={Styles.inputContainer}>
             <span className={Styles.label}>Valor de venta</span>
@@ -65,8 +79,8 @@ const SalesRoomModal = ({ property, onChange }) => {
               <NumberFormat
                 value={
                   priceSold === null
-                    ? price.toFixed(2)
-                    : parseFloat(priceSold + discount).toFixed(2)
+                    ? priceWithIncrement.toFixed(2)
+                    : fixedPrice
                 }
                 displayType="text"
                 thousandSeparator
@@ -91,13 +105,13 @@ const SalesRoomModal = ({ property, onChange }) => {
                   horizontal
                 >
                   <ReversedRadioButton
-                    value="DISCOUNT"
+                    value={DISCOUNT}
                     pointColor={StyleVariables.greenColor}
                   >
                     Descuento
                   </ReversedRadioButton>
                   <ReversedRadioButton
-                    value="INCREMENT"
+                    value={INCREMENT}
                     pointColor={StyleVariables.redColor}
                   >
                     Incremento
@@ -106,14 +120,13 @@ const SalesRoomModal = ({ property, onChange }) => {
               </div>
             </div>
             <Input
+              forceUpdate
               mask="currency"
               className={Styles.input}
               validations={[]}
               onChange={(target) => {
                 const calculatedDiscount =
-                  discountState === 'DISCOUNT'
-                    ? target.value
-                    : target.value * -1;
+                  discountState === DISCOUNT ? target.value : target.value * -1;
                 onChange('discount', calculatedDiscount);
                 setCurrentDiscount(calculatedDiscount);
               }}
@@ -147,13 +160,13 @@ const SalesRoomModal = ({ property, onChange }) => {
                   horizontal
                 >
                   <ReversedRadioButton
-                    value="DISCOUNT"
+                    value={DISCOUNT}
                     pointColor={StyleVariables.greenColor}
                   >
                     Descuento
                   </ReversedRadioButton>
                   <ReversedRadioButton
-                    value="INCREMENT"
+                    value={INCREMENT}
                     pointColor={StyleVariables.redColor}
                   >
                     Incremento
@@ -163,12 +176,13 @@ const SalesRoomModal = ({ property, onChange }) => {
             </div>
 
             <Input
+              forceUpdate={true}
               mask="currency"
               className={Styles.input}
               validations={[]}
               onChange={(target) => {
                 const calculatedCurrentTradeDiscount =
-                  tradeDiscountState === 'DISCOUNT'
+                  tradeDiscountState === DISCOUNT
                     ? target.value
                     : target.value * -1;
                 onChange('tradeDiscount', calculatedCurrentTradeDiscount);
