@@ -39,18 +39,12 @@ export default class Detail extends Component {
     isEmpty: null,
     isLoadingModal: false,
     selectedProperty: null,
-    mierda: {
-      id: null,
-      status: null,
-      discount: null,
-      tradeDiscount: null,
-    },
   };
 
-  mierdaHandler = (key, value) => {
-    const temp = { ...this.state.mierda };
+  propertyHandler = (key, value) => {
+    const temp = { ...this.state.selectedProperty };
     temp[key] = value;
-    this.setState({ mierda: temp });
+    this.setState({ selectedProperty: temp });
   };
 
   componentDidMount() {
@@ -187,19 +181,20 @@ export default class Detail extends Component {
     this.services
       .putState(
         {
-          id: this.state.id,
-          status: this.state.mierda.status,
+          id: this.state.selectedProperty.id,
+          status: this.state.selectedProperty.status,
           priceSold:
-            this.state.mierda.status !== 'AVAILABLE'
-              ? this.state.priceSold - this.state.mierda.discount
+            this.state.selectedProperty.status !== 'AVAILABLE'
+              ? this.state.selectedProperty.price -
+                this.state.selectedProperty.discount
               : null,
           discount:
-            this.state.mierda.status !== 'AVAILABLE'
-              ? this.state.mierda.discount
+            this.state.selectedProperty.status !== 'AVAILABLE'
+              ? this.state.selectedProperty.discount
               : null,
           tradeDiscount:
-            this.state.mierda.status !== 'AVAILABLE'
-              ? this.state.mierda.tradeDiscount
+            this.state.selectedProperty.status !== 'AVAILABLE'
+              ? this.state.selectedProperty.tradeDiscount
               : null,
           collectedIncrement,
           groupId: this.state.groupId,
@@ -301,7 +296,7 @@ export default class Detail extends Component {
               >
                 <SalesRoomModal
                   property={this.state.selectedProperty}
-                  onChange={this.mierdaHandler}
+                  onChange={this.propertyHandler}
                 />
                 {this.state.isLoadingModal ? (
                   <div style={{ justifyContent: 'center', display: 'flex' }}>
