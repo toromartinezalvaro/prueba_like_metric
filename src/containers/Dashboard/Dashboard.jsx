@@ -70,11 +70,11 @@ class Dashboard extends Component {
     const { tower } = this.state;
     return (
       <DashboardLayout tower={tower} location={location}>
-        <Redirect
+        {/* <Redirect
           from={DashboardRoutes.base}
           exact
           to={DashboardRoutes.base + ProjectRoutes.base}
-        />
+        /> */}
         <PrivateRoute
           path={match.url + ProjectRoutes.base}
           exact
