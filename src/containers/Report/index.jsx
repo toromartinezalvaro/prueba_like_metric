@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import Services from '../../services/Report';
 import Report from '../../components/Report';
+import LoadableContainer from '../../components/UI/Loader';
 
 class ReportContainer extends Component {
   constructor(props) {
@@ -12,21 +13,28 @@ class ReportContainer extends Component {
 
   state = {
     reportData: [],
+    isLoading: false,
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
       .getReport(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ reportData: response.data });
+        this.setState({ reportData: response.data, isLoading: false });
       })
       .catch((error) => {
+        this.setState({ isLoading: false });
         this.props.spawnMessage(error.response.data.message, 'error');
       });
   }
 
   render() {
-    return <Report data={this.state.reportData} />;
+    return (
+      <LoadableContainer isLoading={this.state.isLoading}>
+        <Report data={this.state.reportData} />
+      </LoadableContainer>
+    );
   }
 }
 
