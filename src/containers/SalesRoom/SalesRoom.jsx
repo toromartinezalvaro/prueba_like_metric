@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import NumberFormat from 'react-number-format';
 import SalesRoomService from '../../services/salesRoom/salesRoomService';
-import Card, { CardHeader, CardBody, CardFooter } from '../../components/UI/Card/Card';
+import Card, {
+  CardHeader,
+  CardBody,
+  CardFooter,
+} from '../../components/UI/Card/Card';
 import Modal from '../../components/UI/Modal/Modal';
 import variables from '../../assets/styles/variables.scss';
 import Selectors from '../../components/SalesRoom/Selectors';
@@ -10,6 +14,8 @@ import PropertiesTable from '../../components/SalesRoom/PropertiesTable';
 import Message from '../../components/SalesRoom/Message';
 import Status from '../../helpers/status';
 import LoadableContainer from '../../components/UI/Loader';
+import SalesRoomModal from '../../components/SalesRoom/modal';
+import SalesRoomEnum from './SalesRoom.enum';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -32,8 +38,16 @@ export default class Detail extends Component {
     groupId: 0,
     priceSold: 0,
     isEmpty: null,
-    isLoadingModal: false
+    isLoadingModal: false,
+    selectedProperty: null,
   };
+
+  propertyHandler = (key, value) => {
+    const temp = { ...this.state.selectedProperty };
+    temp[key] = value;
+    this.setState({ selectedProperty: temp });
+  };
+
   componentDidMount() {
     this.setState({ isLoading: true });
     this.services
@@ -83,6 +97,7 @@ export default class Detail extends Component {
       rightButton: buttons.rightButton,
       leftButton: buttons.leftButton,
       priceSold: property.priceWithIncrement,
+      selectedProperty: property,
     });
   };
 
@@ -110,7 +125,7 @@ export default class Detail extends Component {
     </div>
   );
 
-    makeArrayOfProperties(properties, active) {
+  makeArrayOfProperties(properties, active) {
     const data = properties.data;
     let arrayOfNulls = [];
     if (data.floors !== null) {
@@ -121,7 +136,11 @@ export default class Detail extends Component {
         properties.map((property) => {
           let floor = arrayOfNulls[property.floor - data.lowestFloor];
           const buttons = this.buttonsStyles(property.status);
-          floor[property.location - 1] = this.makeCells(buttons, property, active);
+          floor[property.location - 1] = this.makeCells(
+            buttons,
+            property,
+            active,
+          );
           arrayOfNulls[property.floor - data.lowestFloor] = floor;
         });
       });
@@ -143,9 +162,9 @@ export default class Detail extends Component {
     return properties.reduce((current, next) => {
       const increment = next.priceWithIncrement - next.price;
       if (
-        next.groupId === this.state.groupId
-        && next.status !== Status.Available
-        && next.id !== this.state.id
+        next.groupId === this.state.groupId &&
+        next.status !== Status.Available &&
+        next.id !== this.state.id
       ) {
         current += increment;
       } else if (next.id === this.state.id && status !== 'Disponible') {
@@ -156,61 +175,38 @@ export default class Detail extends Component {
   }
 
   save = () => {
-    const collectedIncrement = this.calculateCollectedIncrement(this.state.rightButton.label);
-    this.setState({ isLoadingModal: true })
-    this.services
-      .putState(
-        {
-          id: this.state.id,
-          status:
-            this.state.rightButton.label === 'Disponible'
-              ? Status.Available
-              : this.state.rightButton.label === 'Opcionado'
-              ? Status.Optional
-              : Status.Sold,
-          priceSold: this.state.rightButton.label !== 'Disponible' ? this.state.priceSold : null,
-          collectedIncrement,
-          groupId: this.state.groupId,
-        },
-        this.props.match.params.towerId,
-      )
-      .then((properties) => {
-        console.log(properties)
-        if (properties) {
-          this.makeArrayOfProperties(properties);
-        }
-        this.setState({
-          isHidden: true,
-          isLoadingModal: false,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({ isLoadingModal: false });
-      });
-    return true;
-  };
-
-  saveLeft = () => {
+    const collectedIncrement = this.calculateCollectedIncrement(
+      this.state.rightButton.label,
+    );
     this.setState({ isLoadingModal: true });
-    const collectedIncrement = this.calculateCollectedIncrement(this.state.leftButton.label);
     this.services
       .putState(
         {
-          id: this.state.id,
-          status:
-            this.state.leftButton.label === 'Disponible'
-              ? Status.Available
-              : this.state.leftButton.label === 'Opcionado'
-              ? Status.Optional
-              : Status.Sold,
-          priceSold: this.state.leftButton.label !== 'Disponible' ? this.state.priceSold : null,
+          id: this.state.selectedProperty.id,
+          status: this.state.selectedProperty.status,
+          priceSold:
+            this.state.selectedProperty.status !==
+            SalesRoomEnum.status.AVAILABLE
+              ? this.state.selectedProperty.priceWithIncrement -
+                this.state.selectedProperty.discount
+              : null,
+          discount:
+            this.state.selectedProperty.status !==
+            SalesRoomEnum.status.AVAILABLE
+              ? this.state.selectedProperty.discount
+              : null,
+          tradeDiscount:
+            this.state.selectedProperty.status !==
+            SalesRoomEnum.status.AVAILABLE
+              ? this.state.selectedProperty.tradeDiscount
+              : null,
           collectedIncrement,
           groupId: this.state.groupId,
         },
         this.props.match.params.towerId,
       )
       .then((properties) => {
+        console.log(properties);
         if (properties) {
           this.makeArrayOfProperties(properties);
         }
@@ -260,19 +256,23 @@ export default class Detail extends Component {
                 title={'Nuevo Estado'}
                 hidden={this.props.isHidden}
                 onConfirm={this.save}
-                onConfirmLeft={this.saveLeft}
                 onCancel={this.cancel}
-                rightButton={this.state.rightButton.label}
-                leftButton={this.state.leftButton.label}
-                rightColor={this.state.rightButton.color}
-                leftColor={this.state.leftButton.color}
               >
-                Desea cambiar el estado?
                 {this.state.isLoadingModal ? (
                   <div style={{ justifyContent: 'center', display: 'flex' }}>
-                    <Loader type="ThreeDots" color={variables.mainColor} height="100" width="100" />
+                    <Loader
+                      type="ThreeDots"
+                      color={variables.mainColor}
+                      height="100"
+                      width="100"
+                    />
                   </div>
-                ) : null}
+                ) : (
+                  <SalesRoomModal
+                    property={this.state.selectedProperty}
+                    onChange={this.propertyHandler}
+                  />
+                )}
               </Modal>
             )}
           </Card>
