@@ -160,7 +160,7 @@ export default class Detail extends Component {
   calculateCollectedIncrement(status) {
     const properties = this.state.response.data.properties[0];
     return properties.reduce((current, next) => {
-      const increment = next.priceWithIncrement - next.price;
+      let increment = next.priceSold - next.price;
       if (
         next.groupId === this.state.groupId &&
         next.status !== Status.Available &&
@@ -168,6 +168,7 @@ export default class Detail extends Component {
       ) {
         current += increment;
       } else if (next.id === this.state.id && status !== 'Disponible') {
+        increment = this.state.priceSold - next.price;
         current += increment;
       }
       return current;
