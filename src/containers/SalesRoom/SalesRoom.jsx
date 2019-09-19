@@ -62,7 +62,7 @@ export default class Detail extends Component {
       });
   }
 
-  buttonsStyles(status) {
+  buttonsStyles = (status) => {
     let backgroundColor;
     let rightButton;
     let leftButton;
@@ -87,7 +87,7 @@ export default class Detail extends Component {
       rightButton,
       leftButton,
     };
-  }
+  };
 
   onClickSelector = (property, buttons) => {
     this.setState({
@@ -126,15 +126,15 @@ export default class Detail extends Component {
   );
 
   makeArrayOfProperties(properties, active) {
-    const data = properties.data;
-    let arrayOfNulls = [];
+    const { data } = properties;
+    const arrayOfNulls = [];
     if (data.floors !== null) {
       for (let i = 0; i < data.floors; i++) {
         arrayOfNulls.push([]);
       }
       data.properties.map((properties) => {
         properties.map((property) => {
-          let floor = arrayOfNulls[property.floor - data.lowestFloor];
+          const floor = arrayOfNulls[property.floor - data.lowestFloor];
           const buttons = this.buttonsStyles(property.status);
           floor[property.location - 1] = this.makeCells(
             buttons,
@@ -230,9 +230,10 @@ export default class Detail extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        {this.state.isEmpty === null ? null : this.state.isEmpty ? (
+        {this.state.isEmpty && (
           <Message route={this.props.match.params.towerId} />
-        ) : (
+        )}
+        {!this.state.isEmpty && (
           <Card>
             <CardHeader>
               <p>Propiedades</p>
@@ -252,7 +253,7 @@ export default class Detail extends Component {
               />
             </CardBody>
             <CardFooter />
-            {this.state.isHidden ? null : (
+            {!this.state.isHidden && (
               <Modal
                 title={'Nuevo Estado'}
                 hidden={this.props.isHidden}

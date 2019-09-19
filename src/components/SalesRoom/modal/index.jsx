@@ -26,13 +26,11 @@ const SalesRoomModal = ({ property, onChange }) => {
 
   const [fixedPrice, _] = useState(
     priceSold !== null
-      ? (parseFloat(priceSold) + parseFloat(discount)).toFixed(2)
+      ? (parseFloat(priceSold) + parseFloat(discount || 0)).toFixed(2)
       : priceWithIncrement.toFixed(2),
   );
   const [currentState, setCurrentState] = useState(status);
-  const [currentDiscount, setCurrentDiscount] = useState(
-    discount === null ? 0 : discount,
-  );
+  const [currentDiscount, setCurrentDiscount] = useState(discount || 0);
   const [currentTradeDiscount, setCurrentTradeDiscount] = useState(
     tradeDiscount === null ? 0 : tradeDiscount,
   );
@@ -207,7 +205,24 @@ const SalesRoomModal = ({ property, onChange }) => {
 };
 
 SalesRoomModal.propTypes = {
-  propertyState: PropTypes.any,
+  property: PropTypes.shape({
+    status: PropTypes.string,
+    priceWithIncrement: PropTypes.number,
+    priceSold: PropTypes.number,
+    discount: PropTypes.number,
+    tradeDiscount: PropTypes.number,
+  }).isRequired,
+  onChange: PropTypes.func,
+};
+
+SalesRoomModal.defaultProps = {
+  property: {
+    status: SalesRoomEnum.status.OPTIONAL,
+    priceWithIncrement: 0,
+    priceSold: 0,
+    discount: 0,
+    tradeDiscount: 0,
+  },
 };
 
 export default SalesRoomModal;
