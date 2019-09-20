@@ -167,7 +167,10 @@ export default class Detail extends Component {
         next.id !== this.state.id
       ) {
         current += increment;
-      } else if (next.id === this.state.id && status !== 'Disponible') {
+      } else if (
+        next.id === this.state.id &&
+        this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE
+      ) {
         increment = this.state.priceSold - next.price;
         current += increment;
       }
