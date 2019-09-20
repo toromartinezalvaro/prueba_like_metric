@@ -135,7 +135,7 @@ export default class Detail extends Component {
 
     if (data.floors !== null) {
       const matrix = this.createNullMatrix(data.floors, data.totalProperties);
-      console.log('BEFORE MATRIX', matrix);
+    
       data.properties.forEach((row, n) => {
         row.forEach((property, m) => {
           const buttons = this.buttonsStyles(property.status);
@@ -144,7 +144,6 @@ export default class Detail extends Component {
           ] = this.makeCells(buttons, property, active);
         });
       });
-      console.log('MATRIX', matrix);
 
       this.setState({
         response: properties,

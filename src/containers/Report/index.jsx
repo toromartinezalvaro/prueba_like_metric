@@ -36,7 +36,7 @@ class ReportContainer extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        {this.state.reportData.length !== 0 ? (
+        {this.state.reportData.length > 0 ? (
           <Report data={this.state.reportData} />
         ) : null}
       </LoadableContainer>
