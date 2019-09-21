@@ -16,6 +16,7 @@ import Status from '../../helpers/status';
 import LoadableContainer from '../../components/UI/Loader';
 import SalesRoomModal from '../../components/SalesRoom/modal';
 import SalesRoomEnum from './SalesRoom.enum';
+import ReactTooltip from 'react-tooltip';
 
 export default class Detail extends Component {
   constructor(props) {
@@ -110,7 +111,10 @@ export default class Detail extends Component {
       }}
       onClick={() => this.onClickSelector(property, buttons)}
     >
-      <p style={{ fontWeight: 'bold', color: 'White' }}>
+      <p
+        style={{ fontWeight: 'bold', color: 'White' }}
+        data-tip={property.name}
+      >
         {active === 'mts2' ? (
           parseFloat(property.mts2).toFixed(2)
         ) : (
@@ -122,34 +126,31 @@ export default class Detail extends Component {
           />
         )}
       </p>
+      <ReactTooltip />
     </div>
   );
 
   makeArrayOfProperties(properties, active) {
     const { data } = properties;
-    const arrayOfNulls = [];
+
     if (data.floors !== null) {
-      for (let i = 0; i < data.floors; i++) {
-        arrayOfNulls.push([]);
-      }
-      data.properties.map((properties) => {
-        properties.map((property) => {
-          const floor = arrayOfNulls[property.floor - data.lowestFloor];
+      const matrix = this.createNullMatrix(data.floors, data.totalProperties);
+    
+      data.properties.forEach((row, n) => {
+        row.forEach((property, m) => {
           const buttons = this.buttonsStyles(property.status);
-          floor[property.location - 1] = this.makeCells(
-            buttons,
-            property,
-            active,
-          );
-          arrayOfNulls[property.floor - data.lowestFloor] = floor;
+          matrix[property.floor - data.lowestFloor][
+            property.location - 1
+          ] = this.makeCells(buttons, property, active);
         });
       });
+
       this.setState({
         response: properties,
         properties: data.totalProperties,
         floors: data.floors,
         lowestFloor: data.lowestFloor,
-        data: arrayOfNulls,
+        data: matrix,
         isEmpty: false,
       });
     } else {
@@ -228,6 +229,12 @@ export default class Detail extends Component {
 
   cancel = () => {
     this.setState({ isHidden: true });
+  };
+
+  createNullMatrix = (m, n) => {
+    return Array(m)
+      .fill()
+      .map(() => Array(n).fill());
   };
 
   render() {

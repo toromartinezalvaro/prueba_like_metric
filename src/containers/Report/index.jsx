@@ -25,14 +25,20 @@ class ReportContainer extends Component {
       })
       .catch((error) => {
         this.setState({ isLoading: false });
-        this.props.spawnMessage(error.response.data.message, 'error');
+        if (error.response === undefined) {
+          this.props.spawnMessage('Error de conexión', 'error');
+        } else {
+          this.props.spawnMessage(error.response.data.message, 'error');
+        }
       });
   }
 
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        <Report data={this.state.reportData} />
+        {this.state.reportData.length > 0 ? (
+          <Report data={this.state.reportData} />
+        ) : null}
       </LoadableContainer>
     );
   }

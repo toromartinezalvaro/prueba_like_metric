@@ -1,22 +1,32 @@
-import React from "react";
-import Card, { CardHeader, CardBody } from "../UI/Card/Card";
-import Table from "../UI/Table/Table";
+import React from 'react';
+import Select from 'react-select';
+import Card, { CardHeader, CardBody } from '../UI/Card/Card';
+import Table from '../UI/Table/Table';
 
-const locations = props => {
+const locations = (props) => {
   return (
     <Card>
       <CardHeader>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
           <p>Primas por Ubicación</p>
-          <select
-            onChange={event => {
-              props.unitHandler("LCT", event.target.value);
+          <div
+            style={{
+              width: '200px',
+              marginLeft: '15px',
+              zIndex: '9999',
             }}
-            value={props.unit.code}
           >
-            <option value="UNT">Unidad</option>
-            <option value="MT2">m²</option>
-          </select>
+            <Select
+              onChange={(value) => {
+                props.unitHandler('LCT', value.value);
+              }}
+              value={{ value: props.unit.code, label: props.unit.value }}
+              options={[
+                { value: 'UNT', label: 'Unidad' },
+                { value: 'MT2', label: 'm²' },
+              ]}
+            />
+          </div>
         </div>
       </CardHeader>
       <CardBody>
