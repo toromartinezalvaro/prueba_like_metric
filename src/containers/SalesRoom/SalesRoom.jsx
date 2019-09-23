@@ -38,6 +38,7 @@ export default class Detail extends Component {
     id: 0,
     groupId: 0,
     priceSold: 0,
+    discountApplied: 0,
     isEmpty: null,
     isLoadingModal: false,
     selectedProperty: null,
@@ -99,6 +100,7 @@ export default class Detail extends Component {
       leftButton: buttons.leftButton,
       priceSold: property.priceWithIncrement,
       selectedProperty: property,
+      discountApplied: property.discount,
     });
   };
 
@@ -182,7 +184,8 @@ export default class Detail extends Component {
         increment =
           this.state.priceSold -
           next.price -
-          this.state.selectedProperty.discount;
+          this.state.selectedProperty.discount +
+          this.state.discountApplied;
         current += increment;
       }
       return current;
@@ -203,7 +206,8 @@ export default class Detail extends Component {
             this.state.selectedProperty.status !==
             SalesRoomEnum.status.AVAILABLE
               ? this.state.selectedProperty.priceWithIncrement -
-                this.state.selectedProperty.discount
+                this.state.selectedProperty.discount +
+                this.state.discountApplied
               : null,
           discount:
             this.state.selectedProperty.status !==
