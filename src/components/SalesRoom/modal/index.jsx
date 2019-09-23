@@ -42,11 +42,11 @@ const SalesRoomModal = ({ property, onChange }) => {
   );
 
   const getTradePrice = () => {
-    return fixedPrice - currentDiscount;
+    return (fixedPrice - currentDiscount).toFixed(2);
   };
 
   const getFinalTradePrice = () => {
-    return fixedPrice - currentDiscount - currentTradeDiscount;
+    return (fixedPrice - currentDiscount - currentTradeDiscount).toFixed(2);
   };
 
   return (
