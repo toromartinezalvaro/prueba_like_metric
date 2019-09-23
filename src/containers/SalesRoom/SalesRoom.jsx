@@ -158,8 +158,15 @@ export default class Detail extends Component {
     }
   }
 
+  findGroup = (properties) =>
+    properties.find((group) => group[0].groupId === this.state.groupId);
+
   calculateCollectedIncrement(status) {
-    const properties = this.state.response.data.properties[0];
+    const groups = this.state.response.data.properties;
+    let properties = groups[0];
+    if (groups.length > 1) {
+      properties = this.findGroup(groups);
+    }
     return properties.reduce((current, next) => {
       let increment = next.priceSold - next.price;
       if (
@@ -172,7 +179,10 @@ export default class Detail extends Component {
         next.id === this.state.id &&
         this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE
       ) {
-        increment = this.state.priceSold - next.price;
+        increment =
+          this.state.priceSold -
+          next.price -
+          this.state.selectedProperty.discount;
         current += increment;
       }
       return current;
