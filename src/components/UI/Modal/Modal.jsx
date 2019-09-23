@@ -12,6 +12,7 @@ class Modal extends Component {
     blocked: false,
     heightViewPort: window.innerHeight,
     style: this.props.rightColor ? this.props.rightColor : variables.greenColor,
+    isCenter: this.props.isCenter ? { justifyContent: 'center' } : null,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -43,7 +44,7 @@ class Modal extends Component {
             <div className={styles.Modal} ref={this.divModal}>
               <div className={styles.Title}>{this.props.title}</div>
               <div className={styles.Content}>{this.props.children}</div>
-              <div className={styles.Actions}>
+              <div className={styles.Actions} style={this.state.isCenter}>
                 <Button
                   className={styles.ConfirmButton}
                   style={{ backgroundColor: this.state.style }}

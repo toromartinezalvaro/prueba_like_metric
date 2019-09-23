@@ -252,6 +252,11 @@ export default class Detail extends Component {
   };
 
   render() {
+    let isStrategyNull = false;
+    if (this.state.selectedProperty)
+      isStrategyNull =
+        this.state.selectedProperty.increment > 0 &&
+        !this.state.selectedProperty.strategy;
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.isEmpty && (
@@ -283,22 +288,27 @@ export default class Detail extends Component {
                 hidden={this.props.isHidden}
                 onConfirm={this.save}
                 onCancel={this.cancel}
+                isCenter={isStrategyNull}
               >
-                {this.state.isLoadingModal ? (
-                  <div style={{ justifyContent: 'center', display: 'flex' }}>
-                    <Loader
-                      type="ThreeDots"
-                      color={variables.mainColor}
-                      height="100"
-                      width="100"
+                {isStrategyNull &&
+                  'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
+                {(this.state.selectedProperty.strategy > 0 ||
+                  !this.state.selectedProperty.increment) &&
+                  (this.state.isLoadingModal ? (
+                    <div style={{ justifyContent: 'center', display: 'flex' }}>
+                      <Loader
+                        type="ThreeDots"
+                        color={variables.mainColor}
+                        height="100"
+                        width="100"
+                      />
+                    </div>
+                  ) : (
+                    <SalesRoomModal
+                      property={this.state.selectedProperty}
+                      onChange={this.propertyHandler}
                     />
-                  </div>
-                ) : (
-                  <SalesRoomModal
-                    property={this.state.selectedProperty}
-                    onChange={this.propertyHandler}
-                  />
-                )}
+                  ))}
               </Modal>
             )}
           </Card>
