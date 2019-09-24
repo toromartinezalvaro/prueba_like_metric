@@ -118,6 +118,94 @@ const General = ({ data }) => {
           </div>
         </Fragment>
       ))}
+      <div>
+        <span>Total</span>
+      </div>
+      <div>
+        <NumberFormat
+          thousandSeparator=","
+          suffix="m²"
+          value={data
+            .reduce(
+              (current, next) => current + next.averageArea / data.length,
+              0,
+            )
+            .toFixed(2)}
+          displayType="text"
+        />
+      </div>
+      <div>
+        <NumberFormat
+          thousandSeparator=","
+          prefix="$"
+          value={data
+            .reduce(
+              (current, next) => current + next.averagePrice / data.length,
+              0,
+            )
+            .toFixed(2)}
+          displayType="text"
+        />
+      </div>
+      <div className={Styles.combinedRow}>
+        <span className={Styles.subRow}>
+          {data.reduce((current, next) => current + next.sold.units, 0)}
+        </span>
+        <NumberFormat
+          thousandSeparator=","
+          prefix="$"
+          value={data
+            .reduce((current, next) => current + next.sold.balance, 0)
+            .toFixed(2)}
+          displayType="text"
+        />
+      </div>
+      <div className={Styles.combinedRow}>
+        <span className={Styles.subRow}>
+          {data.reduce((current, next) => current + next.inventory.units, 0)}
+        </span>
+        <NumberFormat
+          thousandSeparator=","
+          prefix="$"
+          value={data
+            .reduce((current, next) => current + next.inventory.balance, 0)
+            .toFixed(2)}
+          displayType="text"
+        />
+      </div>
+      <div className={Styles.combinedRow}>
+        <span className={Styles.subRow}>
+          {data.reduce((current, next) => current + next.total.units, 0)}
+        </span>
+        <NumberFormat
+          thousandSeparator=","
+          prefix="$"
+          value={data
+            .reduce((current, next) => current + next.total.balance, 0)
+            .toFixed(2)}
+          displayType="text"
+        />
+      </div>
+      <div>
+        <NumberFormat
+          thousandSeparator=","
+          prefix="$"
+          value={data
+            .reduce((current, next) => current + next.discounts, 0)
+            .toFixed(2)}
+          displayType="text"
+        />
+      </div>
+      <div>
+        <NumberFormat
+          thousandSeparator=","
+          prefix="$"
+          value={data
+            .reduce((current, next) => current + next.balance, 0)
+            .toFixed(2)}
+          displayType="text"
+        />
+      </div>
     </div>
   );
 };

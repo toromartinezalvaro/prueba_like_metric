@@ -20,6 +20,7 @@ class Building extends Component {
     properties: 1,
     lowestFloor: 1,
     disable: false,
+    disableWarning: false,
     update: false,
     names: [],
     currentErrorMessage: '',
@@ -111,6 +112,12 @@ class Building extends Component {
   toggleEditMode = () => {
     this.setState((prevState) => ({
       disable: !prevState.disable,
+    }));
+  };
+
+  toggleWarning = () => {
+    this.setState((prevState) => ({
+      disableWarning: !prevState.disableWarning,
     }));
   };
 
@@ -245,6 +252,8 @@ class Building extends Component {
             stratum={this.state.stratum}
             stratums={this.state.stratums}
             updateStratum={this.updateStratum}
+            disableWarning={this.state.disableWarning}
+            toggleWarning={this.toggleWarning}
           />
           {!this.state.disable ? null : (
             <Naming

@@ -33,6 +33,10 @@ const Schema = (props) => {
     setHidden(true);
   };
 
+  const toggleWarning= () => {
+    props.toggleWarning();
+  }
+
   const cancel = () => {
     props.editMode();
     setHidden(true);
@@ -98,7 +102,7 @@ const Schema = (props) => {
       <CardFooter>
         <div className={styles.Actions}>
           {props.disable ? (
-            <Button onClick={props.editMode}>Editar</Button>
+            <Button onClick={() => { props.editMode(); toggleWarning();}}>Editar</Button>
           ) : (
             <Button
               onClick={() => {
@@ -108,7 +112,18 @@ const Schema = (props) => {
               Guardar
             </Button>
           )}
+          {
+          props.disableWarning && (<Modal
+          title={'Atención'}
+          hidden={!props.disableWarning}
+           onConfirm={toggleWarning}
+           onCancel={() => { props.editMode(); toggleWarning();}}
+        >
+          <span>Si edita el esquema tenga en cuenta que se <span className={styles.RedText}>ELIMINARAN</span>  <br/>las Areas, Agrupamientos, Estrategias y Ventas ya realizadas.
+        </span></Modal>)
+        }
         </div>
+        
         {hidden ? null : (
           <Modal
             title={'Actualizar nomenclatura'}
