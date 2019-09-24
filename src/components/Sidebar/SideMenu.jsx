@@ -95,9 +95,9 @@ const SideMenu = (props) => {
             style.MenuItem,
             DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
             'fas fa-book-open',
-            'Detalle',
+            'Detalle admin',
           )}
-        {agent.isAuthorized([Role.User, Role.User]) &&
+        {agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
           itemForSlidebar(
             style.MenuItem,
             DashboardRoutes.base + DashboardRoutes.detail.value,
