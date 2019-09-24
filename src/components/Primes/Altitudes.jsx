@@ -1,22 +1,32 @@
-import React from "react";
-import Card, { CardHeader, CardBody } from "../../components/UI/Card/Card";
-import Table from "../../components/UI/Table/Table";
+import React from 'react';
+import Select from 'react-select';
+import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
+import Table from '../../components/UI/Table/Table';
 
-const altitudes = props => {
+const altitudes = (props) => {
   return (
     <Card>
       <CardHeader>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
           <p>Primas por altura</p>
-          <select
-            onChange={event => {
-              props.unitHandler("ALT", event.target.value);
+          <div
+            style={{
+              width: '200px',
+              marginLeft: '15px',
+              zIndex: '9999',
             }}
-            value={props.unit.code}
           >
-            <option value="UNT">Unidad</option>
-            <option value="MT2">m²</option>
-          </select>
+            <Select
+              onChange={(value) => {
+                props.unitHandler('ALT', value.value);
+              }}
+              value={{ value: props.unit.code, label: props.unit.value }}
+              options={[
+                { value: 'UNT', label: 'Unidad' },
+                { value: 'MT2', label: 'm²' },
+              ]}
+            />
+          </div>
         </div>
       </CardHeader>
       <CardBody>

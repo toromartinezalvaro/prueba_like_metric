@@ -29,20 +29,10 @@ const SalesWizard = ({ putSuggestedEffectiveAnnualInterestRate, data }) => {
         </div>
         <div className={Styles.definition}>Incremento Pesos (Meta)</div>
         <div>
-          <NumberFormat
-            value={data.total.suggestedIncrement.toFixed(2)}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
+          
         </div>
         <div>
-          <NumberFormat
-            value={data.sales.suggestedIncrement.toFixed(2)}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
+         
         </div>
         <div>
           <NumberFormat

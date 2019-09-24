@@ -59,22 +59,14 @@ class Services {
       });
   }
 
-  axiosPromise(promise) {
+  axiosPromise(promise, retry = 2) {
     return new Promise((resolve, reject) => {
       promise()
         .then((response) => {
-          console.log('DONE -->', response);
           resolve(response);
         })
         .catch((error) => {
-          // if (this.delegate === undefined) {
-          //   reject(new Error('Should set delegate'));
-          //   return;
-          // }
           if (error.response && error.response.status === 401) {
-            // if (this.delegate.executeNoAuthorization) {
-            //   this.delegate.executeNoAuthorization();
-            // }
             if (agent.currentUser.refreshToken) {
               this.renewToken(
                 agent.currentUser.refreshToken,
@@ -86,10 +78,16 @@ class Services {
             }
             agent.logout();
             window.location.reload();
-            console.log('error -->', error.response.status);
+            reject(error);
           }
-
-          reject(error);
+          if (retry >= 1 && retry < 5) {
+            const newRetry = retry - 1;
+            this.axiosPromise(promise, newRetry)
+              .then(resolve)
+              .catch(reject);
+          } else {
+            reject(error);
+          }
         });
     });
   }

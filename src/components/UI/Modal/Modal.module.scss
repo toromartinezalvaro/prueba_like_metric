@@ -23,7 +23,7 @@
 }
 
 .Title {
-  font-family: "Didact Gothic";
+  font-family: 'Didact Gothic';
   font-weight: bold;
   font-size: 23px;
 }
@@ -34,6 +34,7 @@
   margin: 25px 0;
   flex-grow: 1;
   color: #6c7293;
+  overflow-y: auto;
 }
 
 .Actions {
@@ -42,7 +43,7 @@
 }
 
 .ConfirmButton {
-  background: #00c781 ;
+  background: #00c781;
   &:disabled {
     background: #aaa;
   }

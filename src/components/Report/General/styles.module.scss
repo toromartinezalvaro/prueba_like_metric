@@ -1,11 +1,15 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr auto auto auto 1fr 1fr;
-  grid-row-gap: 20px;
-  grid-column-gap: 30px;
 
   & * {
     text-align: center;
+    padding: 10px;
+  }
+
+  & > div {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
   }
 
   .header {

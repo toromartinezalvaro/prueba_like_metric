@@ -1,0 +1,47 @@
+.status {
+  margin-bottom: 25px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+
+  .row {
+    flex-grow: 1;
+    display: flex;
+    margin-right: 15px;
+  }
+
+  .label {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .input {
+    text-align: end;
+  }
+}
+
+.dividedInputContainer {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid black;
+
+  .row {
+    flex-grow: 1;
+    margin-right: 15px;
+  }
+
+  .label {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .input {
+    text-align: end;
+  }
+}
