@@ -121,7 +121,12 @@ const SalesRoomModal = ({ property, onChange }) => {
               forceUpdate
               mask="currency"
               className={Styles.input}
-              validations={[]}
+              validations={[
+                {
+                  fn: (value) => value >= 0,
+                  message: 'No se permiten valores negativos',
+                },
+              ]}
               onChange={(target) => {
                 const calculatedDiscount =
                   discountState === DISCOUNT ? target.value : target.value * -1;
@@ -177,7 +182,12 @@ const SalesRoomModal = ({ property, onChange }) => {
               forceUpdate={true}
               mask="currency"
               className={Styles.input}
-              validations={[]}
+              validations={[
+                {
+                  fn: (value) => value >= 0,
+                  message: 'No se permiten valores negativos',
+                },
+              ]}
               onChange={(target) => {
                 const calculatedCurrentTradeDiscount =
                   tradeDiscountState === DISCOUNT
