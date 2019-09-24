@@ -5,8 +5,8 @@ import agent from '../../config/config';
 import Services from '../services';
 
 export default class UserServices extends Services {
-  constructor(delegate) {
-    super(delegate);
+  constructor() {
+    super();
     agent.reloadHeaderToken();
   }
 
