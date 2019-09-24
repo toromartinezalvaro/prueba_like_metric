@@ -38,6 +38,7 @@ export default class Detail extends Component {
     id: 0,
     groupId: 0,
     priceSold: 0,
+    discountApplied: 0,
     isEmpty: null,
     isLoadingModal: false,
     selectedProperty: null,
@@ -99,6 +100,7 @@ export default class Detail extends Component {
       leftButton: buttons.leftButton,
       priceSold: property.priceWithIncrement,
       selectedProperty: property,
+      discountApplied: property.discount,
     });
   };
 
@@ -158,8 +160,15 @@ export default class Detail extends Component {
     }
   }
 
+  findGroup = (properties) =>
+    properties.find((group) => group[0].groupId === this.state.groupId);
+
   calculateCollectedIncrement(status) {
-    const properties = this.state.response.data.properties[0];
+    const groups = this.state.response.data.properties;
+    let properties = groups[0];
+    if (groups.length > 1) {
+      properties = this.findGroup(groups);
+    }
     return properties.reduce((current, next) => {
       let increment = next.priceSold - next.price;
       if (
@@ -172,7 +181,11 @@ export default class Detail extends Component {
         next.id === this.state.id &&
         this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE
       ) {
-        increment = this.state.priceSold - next.price;
+        increment =
+          this.state.priceSold -
+          next.price -
+          this.state.selectedProperty.discount +
+          this.state.discountApplied;
         current += increment;
       }
       return current;
@@ -193,7 +206,8 @@ export default class Detail extends Component {
             this.state.selectedProperty.status !==
             SalesRoomEnum.status.AVAILABLE
               ? this.state.selectedProperty.priceWithIncrement -
-                this.state.selectedProperty.discount
+                this.state.selectedProperty.discount +
+                this.state.discountApplied
               : null,
           discount:
             this.state.selectedProperty.status !==
@@ -238,6 +252,11 @@ export default class Detail extends Component {
   };
 
   render() {
+    let isStrategyNull = false;
+    if (this.state.selectedProperty)
+      isStrategyNull =
+        this.state.selectedProperty.increment > 0 &&
+        !this.state.selectedProperty.strategy;
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.isEmpty && (
@@ -269,22 +288,27 @@ export default class Detail extends Component {
                 hidden={this.props.isHidden}
                 onConfirm={this.save}
                 onCancel={this.cancel}
+                isCenter={isStrategyNull}
               >
-                {this.state.isLoadingModal ? (
-                  <div style={{ justifyContent: 'center', display: 'flex' }}>
-                    <Loader
-                      type="ThreeDots"
-                      color={variables.mainColor}
-                      height="100"
-                      width="100"
+                {isStrategyNull &&
+                  'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
+                {(this.state.selectedProperty.strategy > 0 ||
+                  !this.state.selectedProperty.increment) &&
+                  (this.state.isLoadingModal ? (
+                    <div style={{ justifyContent: 'center', display: 'flex' }}>
+                      <Loader
+                        type="ThreeDots"
+                        color={variables.mainColor}
+                        height="100"
+                        width="100"
+                      />
+                    </div>
+                  ) : (
+                    <SalesRoomModal
+                      property={this.state.selectedProperty}
+                      onChange={this.propertyHandler}
                     />
-                  </div>
-                ) : (
-                  <SalesRoomModal
-                    property={this.state.selectedProperty}
-                    onChange={this.propertyHandler}
-                  />
-                )}
+                  ))}
               </Modal>
             )}
           </Card>
