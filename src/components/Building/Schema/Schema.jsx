@@ -33,9 +33,9 @@ const Schema = (props) => {
     setHidden(true);
   };
 
-  const toggleWarning= () => {
+  const toggleWarning = () => {
     props.toggleWarning();
-  }
+  };
 
   const cancel = () => {
     props.editMode();
@@ -102,28 +102,52 @@ const Schema = (props) => {
       <CardFooter>
         <div className={styles.Actions}>
           {props.disable ? (
-            <Button onClick={() => { props.editMode(); toggleWarning();}}>Editar</Button>
-          ) : (
             <Button
               onClick={() => {
-                setHidden(false);
+                props.editMode();
+                toggleWarning();
               }}
             >
-              Guardar
+              Editar
             </Button>
+          ) : (
+            <div>
+              <Button
+                className={styles.CancelButton}
+                onClick={() => {
+                  props.editMode();
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={() => {
+                  setHidden(false);
+                }}
+              >
+                Guardar
+              </Button>
+            </div>
           )}
-          {
-          props.disableWarning && (<Modal
-          title={'Atención'}
-          hidden={!props.disableWarning}
-           onConfirm={toggleWarning}
-           onCancel={() => { props.editMode(); toggleWarning();}}
-        >
-          <span>Si edita el esquema tenga en cuenta que se <span className={styles.RedText}>ELIMINARAN</span>  <br/>las Areas, Agrupamientos, Estrategias y Ventas ya realizadas.
-        </span></Modal>)
-        }
+          {props.disableWarning && (
+            <Modal
+              title={'Atención'}
+              hidden={!props.disableWarning}
+              onConfirm={toggleWarning}
+              onCancel={() => {
+                props.editMode();
+                toggleWarning();
+              }}
+            >
+              <span>
+                Si edita el esquema tenga en cuenta que se{' '}
+                <span className={styles.RedText}>ELIMINARAN</span> <br />
+                las Areas, Agrupamientos, Estrategias y Ventas ya realizadas.
+              </span>
+            </Modal>
+          )}
         </div>
-        
+
         {hidden ? null : (
           <Modal
             title={'Actualizar nomenclatura'}
