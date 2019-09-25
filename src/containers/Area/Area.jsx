@@ -364,6 +364,7 @@ class Area extends Component {
         console.log('state in', this.rowIndex);
         return (
           <Input
+            updateWithProp
             mask="number"
             style={{ width: '75px' }}
             validations={[
