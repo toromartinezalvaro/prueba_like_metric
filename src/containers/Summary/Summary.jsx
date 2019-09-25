@@ -124,7 +124,6 @@ class Summary extends Component {
 
   calcFees = () => {
     let items = 0;
-    console.log(this.state.pricesWithAdditions.rack, "HIPUTO")
     let secondIndex = -1
     const firstIndex = this.state.pricesWithAdditions.rack.findIndex((i) => {
         secondIndex = i.findIndex((j) => j !== undefined && j !== null)
