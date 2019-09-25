@@ -28,9 +28,12 @@
   flex-direction: row-reverse;
 }
 
+.CancelButton {
+  background: #ff4040 !important;
+}
+
 .RedText {
   color: red;
   font-weight: bold;
-  white-space:nowrap;
-
+  white-space: nowrap;
 }
