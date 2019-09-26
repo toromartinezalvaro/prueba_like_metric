@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import NumberFormat from 'react-number-format';
+import Loader from 'react-loader-spinner';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Table from '../../components/UI/Table/Table';
 import Input from '../../components/UI/Input/Input';
@@ -10,8 +12,6 @@ import Prices from '../../components/Area/Prices/Prices';
 import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
-import NumberFormat from 'react-number-format';
-import Loader from 'react-loader-spinner';
 import commonStyles from '../../assets/styles/variables.scss';
 import LoadableContainer from '../../components/UI/Loader';
 
@@ -64,35 +64,34 @@ class Area extends Component {
           />
         </Fragment>
       );
-    } else {
-      return this.state.modalIsLoading ? (
-        <div>
-          <Loader
-            type="ThreeDots"
-            color={commonStyles.mainColor}
-            height="100"
-            width="100"
-          />
-        </div>
-      ) : (
-        <div style={{ display: 'flex' }}>
-          <Input
-            name="areaType"
-            validations={[]}
-            onChange={this.areaTypeHandler}
-            value={this.state.areaType}
-          />
-          <select
-            onChange={this.measurementUnitHandler}
-            placeholder={'Tipo de medida'}
-            value={this.state.areaMeasurementUnit}
-          >
-            <option value={'MT2'}>MT2</option>
-            <option value={'UNT'}>Unidad</option>
-          </select>
-        </div>
-      );
     }
+    return this.state.modalIsLoading ? (
+      <div>
+        <Loader
+          type="ThreeDots"
+          color={commonStyles.mainColor}
+          height="100"
+          width="100"
+        />
+      </div>
+    ) : (
+      <div style={{ display: 'flex' }}>
+        <Input
+          name="areaType"
+          validations={[]}
+          onChange={this.areaTypeHandler}
+          value={this.state.areaType}
+        />
+        <select
+          onChange={this.measurementUnitHandler}
+          placeholder={'Tipo de medida'}
+          value={this.state.areaMeasurementUnit}
+        >
+          <option value={'MT2'}>MT2</option>
+          <option value={'UNT'}>Unidad</option>
+        </select>
+      </div>
+    );
   };
 
   processHeaders = (headers, totals) => {
@@ -162,7 +161,7 @@ class Area extends Component {
   }
 
   updateTableInformation = () => {
-    const towerId = this.props.match.params.towerId;
+    const { towerId } = this.props.match.params;
     if (!towerId) {
       return;
     }
@@ -171,7 +170,7 @@ class Area extends Component {
       .then((response) => {
         let currentState = {};
         if (this.state.calculateTotals === true) {
-          let types = [];
+          const types = [];
           response.data.propertiesAreas.forEach((arrayAreas) => {
             if (arrayAreas !== undefined) {
               arrayAreas.forEach((area) => {
@@ -179,7 +178,7 @@ class Area extends Component {
                   types.push({ id: area.type, total: 0 });
                 }
                 if (types !== undefined) {
-                  let index = types.findIndex((obj) => obj.id === area.type);
+                  const index = types.findIndex((obj) => obj.id === area.type);
                   if (types[index] !== undefined) {
                     types[index].total += area.measure;
                   }
@@ -190,12 +189,14 @@ class Area extends Component {
             }
           });
         }
-        let showFloating = response.data.propertiesAreas.find((arrayAreas) => {
-          let anyArea = arrayAreas.find((area) => {
-            return area !== null && area.measure !== 0;
-          });
-          return anyArea !== undefined;
-        });
+        const showFloating = response.data.propertiesAreas.find(
+          (arrayAreas) => {
+            const anyArea = arrayAreas.find((area) => {
+              return area !== null && area.measure !== 0;
+            });
+            return anyArea !== undefined;
+          },
+        );
         if (showFloating !== undefined) {
           currentState = { ...currentState, showFloatingButton: true };
         }
@@ -209,7 +210,7 @@ class Area extends Component {
         });
       })
       .catch((error) => {
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
         });
@@ -260,7 +261,7 @@ class Area extends Component {
         this.updateTableInformation();
       })
       .catch((error) => {
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
         });
@@ -284,7 +285,7 @@ class Area extends Component {
         this.setState({ modalIsLoading: false });
       })
       .catch((error) => {
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
           modalIsLoading: false,
@@ -310,7 +311,7 @@ class Area extends Component {
         this.setState({ modalIsLoading: false });
       })
       .catch((error) => {
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
           modalIsLoading: false,
@@ -320,7 +321,7 @@ class Area extends Component {
   };
 
   sumTotalHeader(actualValue, value, type, arrayTotals) {
-    let index = arrayTotals.findIndex((obj) => obj.id === type);
+    const index = arrayTotals.findIndex((obj) => obj.id === type);
     if (arrayTotals[index] !== undefined) {
       console.log('actualValue', actualValue);
 
@@ -333,26 +334,27 @@ class Area extends Component {
   }
 
   areaChangeHandler = (rowIndex, cellIndex, value, type) => {
-    console.log(rowIndex, cellIndex, value, type);
     if (value !== '') {
       const currentData = this.state.data;
-      let actualValue = currentData[rowIndex][cellIndex].measure;
+      const actualValue = currentData[rowIndex][cellIndex].measure;
       currentData[rowIndex][cellIndex].measure = value;
       this.services
         .putAreasByTowerId(
           this.props.match.params.towerId,
           currentData[rowIndex][cellIndex],
         )
-        .then((response) => {
+        .then(() => {
           this.setState({ data: currentData, showFloatingButton: true });
           this.sumTotalHeader(actualValue, value, type, this.state.types);
-          this.updateTableInformation();
+          this.setState({ isLoading: false });
         })
         .catch((error) => {
-          let errorHelper = errorHandling(error);
+          const errorHelper = errorHandling(error);
           this.setState({
             currentErrorMessage: errorHelper.message,
           });
+          this.setState({ isLoading: true });
+          this.updateTableInformation();
         });
       this.setState({ currentErrorMessage: '' });
     }
