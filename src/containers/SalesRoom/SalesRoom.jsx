@@ -92,6 +92,7 @@ export default class Detail extends Component {
   };
 
   onClickSelector = (property, buttons) => {
+    console.log(property)
     this.setState({
       id: property.id,
       groupId: property.groupId,
@@ -220,6 +221,7 @@ export default class Detail extends Component {
               ? this.state.selectedProperty.tradeDiscount
               : null,
           collectedIncrement,
+          baseValueList: this.state.selectedProperty.baseValueList,
           groupId: this.state.groupId,
         },
         this.props.match.params.towerId,
