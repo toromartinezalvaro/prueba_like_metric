@@ -1,0 +1,19 @@
+@import '../../assets/styles/variables.scss';
+
+.collapseAndExpandRow {
+  align-self: center;
+  background-color: $main-color;
+  border-radius: 50%;
+  color: $defaultWhite-color;
+  height: 4vh !important;
+  text-align: center;
+  width: 6vh !important;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.arrowPosition {
+  margin-bottom: 20% !important;
+  font-size: 10px;
+}

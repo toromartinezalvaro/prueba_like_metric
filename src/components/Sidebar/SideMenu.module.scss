@@ -1,7 +1,7 @@
 @import '../../assets/styles/variables.scss';
 
 .SideMenu {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   flex-basis: 5rem;
   flex-shrink: 0;
@@ -12,6 +12,14 @@
   align-items: center;
   overflow: hidden;
   transition: all 0.2s ease;
+  &:hover,
+  .collapseAndExpandRow {
+    -webkit-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
+    box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
+    border-left-color: $main-color;
+  }
+  z-index: 5;
 }
 
 .ZeroWidth {
@@ -27,6 +35,7 @@
   flex-direction: column;
   width: 80%;
   margin-top: 3vh;
+  z-index: 3;
 }
 
 .Description {
@@ -43,10 +52,10 @@
 }
 
 .MenuItem {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  z-index: 3;
   a:link,
   a:visited {
     flex: 1;
@@ -91,4 +100,10 @@
     background-color: $softGrayBackground-color;
     border-radius: 2px;
   }
+}
+
+.fixedWidth {
+  min-width: 150px;
+  overflow-x: hidden;
+  margin-left: 16%;
 }
