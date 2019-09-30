@@ -1,0 +1,32 @@
+.ratings {
+  overflow-y: auto;
+  .ratingsTitle {
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  .rating {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    padding: 10px 25px;
+    border-radius: 4px;
+    margin: 0 auto 25px auto;
+    width: 90%;
+    .ratingHeader {
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .ratingPrimes {
+      display: flex;
+      font-size: 16px;
+      .ratingPrime {
+        display: flex;
+        margin-right: 15px;
+        .primeTitle {
+          margin-right: 15px;
+        }
+        .primeValue {
+        }
+      }
+    }
+  }
+}
