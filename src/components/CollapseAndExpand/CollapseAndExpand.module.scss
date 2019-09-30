@@ -1,7 +1,7 @@
 @import '../../assets/styles/variables.scss';
 
 .collapseAndExpandRow {
-  align-self: center;
+  align-self: flex-start;
   background-color: $main-color;
   border-radius: 50%;
   color: $defaultWhite-color;
