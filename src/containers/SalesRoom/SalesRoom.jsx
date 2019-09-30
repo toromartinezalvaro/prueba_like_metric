@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
+import ReactTooltip from 'react-tooltip';
 import NumberFormat from 'react-number-format';
 import SalesRoomService from '../../services/salesRoom/salesRoomService';
 import Card, {
@@ -16,9 +17,11 @@ import Status from '../../helpers/status';
 import LoadableContainer from '../../components/UI/Loader';
 import SalesRoomModal from '../../components/SalesRoom/modal';
 import SalesRoomEnum from './SalesRoom.enum';
-import ReactTooltip from 'react-tooltip';
+import DashboardContext, { countIncrement } from '../Dashboard/Context';
 
 export default class Detail extends Component {
+  static contextType = DashboardContext;
+
   constructor(props) {
     super(props);
     this.services = new SalesRoomService(this);
@@ -92,7 +95,6 @@ export default class Detail extends Component {
   };
 
   onClickSelector = (property, buttons) => {
-    console.log(property)
     this.setState({
       id: property.id,
       groupId: property.groupId,
@@ -138,7 +140,7 @@ export default class Detail extends Component {
 
     if (data.floors !== null) {
       const matrix = this.createNullMatrix(data.floors, data.totalProperties);
-    
+
       data.properties.forEach((row, n) => {
         row.forEach((property, m) => {
           const buttons = this.buttonsStyles(property.status);
@@ -193,10 +195,18 @@ export default class Detail extends Component {
     }, 0);
   }
 
+  counterIncrement(counter) {
+    const val = counter + 1;
+    this.context.updateCounter('counter', val);
+  }
+
   save = () => {
     const collectedIncrement = this.calculateCollectedIncrement(
       this.state.rightButton.label,
     );
+    if (Math.trunc(collectedIncrement) > this.state.selectedProperty.increment)
+      this.counterIncrement(this.context.counter);
+
     this.setState({ isLoadingModal: true });
     this.services
       .putState(
