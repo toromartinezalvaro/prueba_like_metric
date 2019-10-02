@@ -45,7 +45,10 @@ class Dashboard extends Component {
       this.services
         .getTower(towerId)
         .then((response) => {
-          this.setState({ tower: response.data });
+          this.setState({
+            tower: response.data,
+          });
+          this.props.activateBadgeIncrement(response.data.isBadgeIncrement);
         })
         .catch((error) => {
           console.log('ERROR >', error);
@@ -69,7 +72,7 @@ class Dashboard extends Component {
     const { match, location } = this.props;
     const { tower } = this.state;
     return (
-      <DashboardLayout tower={tower} location={location}>
+      <DashboardLayout tower={tower} location={location} {...this.props}>
         {/* <Redirect
           from={DashboardRoutes.base}
           exact
