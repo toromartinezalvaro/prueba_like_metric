@@ -7,7 +7,7 @@ import styles from './Dashboard.module.scss';
 import { UserRoutes } from '../../../routes/local/routes';
 
 const Dashboard = (props) => {
-  const [resizableWidth, setResizableWidth] = useState('210px');
+  const [resizableWidth, setResizableWidth] = useState('200px');
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);

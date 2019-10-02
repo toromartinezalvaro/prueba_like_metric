@@ -61,8 +61,8 @@ const SideMenu = (props) => {
           height: `${resizable_Heigh}`,
         }}
       >
-        <div className={`${style.fixedWidth}`} >
-          <div>
+        <div className={style.fixedWidth + style.NoVisible} >
+          <div className={style.IconsContainer}>
             <label>{props.tower ? props.tower.name : ''}</label>
           </div>
 

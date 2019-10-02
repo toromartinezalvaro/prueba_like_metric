@@ -6,7 +6,7 @@ const CollapseAndExpand = (props) => {
   let ArrowType = collapseActive ? 'fa-arrow-left' : 'fa-arrow-right';
   const handleClick = () => {
     setCollapseActive(!collapseActive);
-    let expandableValue = ArrowType == 'fa-arrow-left' ? '10px' : '210';
+    let expandableValue = ArrowType == 'fa-arrow-left' ? '0px' : '200';
     props.onChange(expandableValue);
   };
 
@@ -19,7 +19,7 @@ const CollapseAndExpand = (props) => {
 
   if (props.isHidenArrow) {
     return (
-      <div onMouseEnter = {handleEnterEvent} onMouseLeave = {handleLeaveEvent} className={style.collapseAndExpandRow} onClick={handleClick}>
+      <div onMouseEnter = {handleEnterEvent} className={style.collapseAndExpandRow} onClick={handleClick}>
         <span
           className={`${style.arrowPosition}` + ' ' + `fas ${ArrowType} `}
         ></span>
