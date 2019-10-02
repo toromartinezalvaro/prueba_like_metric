@@ -5,15 +5,19 @@
   background-color: $main-color;
   border-radius: 50%;
   color: $defaultWhite-color;
-  height: 4vh !important;
+  height: 25px !important;
+  margin-top: 15px;
+  position: sticky;
+  left: 15%;
   text-align: center;
-  width: 6vh !important;
+  width: 40px !important;
+  z-index: 5000;
   &:hover {
     cursor: pointer;
   }
 }
 
 .arrowPosition {
-  margin-bottom: 20% !important;
+  margin-top:15% !important;
   font-size: 10px;
 }

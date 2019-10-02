@@ -8,8 +8,16 @@ import { Role } from '../../helpers';
 import { Resizable } from 're-resizable';
 
 const SideMenu = (props) => {
-  const Resizable_Heigh = '100vh';
+  const resizable_Heigh = '100vh';
   const [active, setActive] = useState(window.location.pathname);
+
+  const handleEnterEvent = () => {
+    props.onHideArrow(true);
+  };
+  const handleLeaveEvent = () => {
+    props.onHideArrow(false);
+  };
+
   if (window.location.pathname !== active) {
     setActive(window.location.pathname);
   }
@@ -46,18 +54,19 @@ const SideMenu = (props) => {
           `${style.SideMenu} ` +
           `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}`
         }
-
+        onMouseEnter={handleEnterEvent}
+        onMouseLeave={handleLeaveEvent}
         size={{
-          width: `${props.Resizable_Width}`,
-          height: `${Resizable_Heigh}`,
+          width: `${props.resizableWidth}`,
+          height: `${resizable_Heigh}`,
         }}
       >
-        <div className={style.fixedWidth}>
+        <div className={`${style.fixedWidth}`} >
           <div>
             <label>{props.tower ? props.tower.name : ''}</label>
           </div>
 
-          <div className={style.IconsContainer}>
+          <div className={style.IconsContainer} >
             {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
                 style.MenuItem,

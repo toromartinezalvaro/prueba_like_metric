@@ -7,10 +7,23 @@ import styles from './Dashboard.module.scss';
 import { UserRoutes } from '../../../routes/local/routes';
 
 const Dashboard = (props) => {
-  const [ResizableWidth, setResizableWidth] = useState('210px');
+  const [resizableWidth, setResizableWidth] = useState('210px');
+  const [isHidenArrow, setIsHidenArrow] = useState(false);
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
   };
+  const onHideArrow = (arrowValue) => {
+    setIsHidenArrow(arrowValue)
+  }
+
+  const hideLetter = () => {
+    if(isHidenArrow) {
+      return(true);
+    }
+    else {
+      return (false)
+    }
+  }
 
   return (
     <div className={styles.Dashboard}>
@@ -19,9 +32,9 @@ const Dashboard = (props) => {
         {props.location.pathname.includes(UserRoutes.base) ? (
           <UserSideMenu />
         ) : (
-          <SideMenu Resizable_Width={ResizableWidth} tower={props.tower} />
+          <SideMenu onHideArrow={onHideArrow} hideLetter = {hideLetter} resizableWidth={resizableWidth} tower={props.tower} />
         )}
-        <CollapseAndExpand onChange={onChangeSize} />
+        <CollapseAndExpand onHideArrow={onHideArrow} isHidenArrow = {isHidenArrow} onChange={onChangeSize} />
       </nav>
 
       <main className={styles.Content}>{props.children}</main>
