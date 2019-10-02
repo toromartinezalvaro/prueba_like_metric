@@ -38,10 +38,6 @@ class Dashboard extends Component {
     tower: null,
   };
 
-  updateValue = (key, val) => {
-    this.setState({ [key]: val });
-  };
-
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
 

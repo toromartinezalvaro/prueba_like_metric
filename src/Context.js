@@ -7,7 +7,7 @@ const Provider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(
     () => Agent.currentToken !== null && Agent.currentUser !== null,
   );
-  const [isBadgeIncrement, setIsBadgeIncrement] = useState(false);
+  const [isBadgeIncrement, setBadgeIncrement] = useState(false);
   const value = {
     isAuth,
     activateAuth: (user) => {
@@ -16,7 +16,7 @@ const Provider = ({ children }) => {
       setIsAuth(true);
     },
     isBadgeIncrement,
-    activateBadgeIncrement: (showBadge) => setIsBadgeIncrement(showBadge),
+    activateBadgeIncrement: (showBadge) => setBadgeIncrement(showBadge),
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
