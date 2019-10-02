@@ -17,11 +17,8 @@ import Status from '../../helpers/status';
 import LoadableContainer from '../../components/UI/Loader';
 import SalesRoomModal from '../../components/SalesRoom/modal';
 import SalesRoomEnum from './SalesRoom.enum';
-import DashboardContext from '../Dashboard/Context';
 
 export default class Detail extends Component {
-  static contextType = DashboardContext;
-
   constructor(props) {
     super(props);
     this.services = new SalesRoomService(this);
@@ -195,20 +192,18 @@ export default class Detail extends Component {
     }, 0);
   }
 
-  changeIsBadgeIncrement(val) {
-    this.context.updateValue('isBadgeIncrement', val);
-  }
-
   save = () => {
     const collectedIncrement = this.calculateCollectedIncrement(
       this.state.rightButton.label,
     );
     let isBadgeIncrement = false;
-    if (Math.trunc(collectedIncrement) > this.state.selectedProperty.increment) {
+    if (
+      Math.trunc(collectedIncrement) > this.state.selectedProperty.increment
+    ) {
       isBadgeIncrement = true;
-      this.changeIsBadgeIncrement(true);
+      this.props.activateBadgeIncrement(true);
     } else {
-      this.changeIsBadgeIncrement(false);
+      this.props.activateBadgeIncrement(false);
     }
 
     this.setState({ isLoadingModal: true });

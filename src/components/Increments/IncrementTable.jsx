@@ -15,7 +15,6 @@ import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
 import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
 import SalesWizard from './IncrementTable/SalesWizard';
-import DashboardContext from '../../containers/Dashboard/Context';
 
 function IncrementTable({
   data,
@@ -24,9 +23,10 @@ function IncrementTable({
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
   towerId,
+  ...props
 }) {
-  const context = useContext(DashboardContext)
-  const [isBadgeIncrement] = useState(context.isBadgeIncrement)
+  const [isBadgeIncrement] = useState(props.isBadgeIncrement);
+
   const inputValidations = [
     {
       fn: (value) => value > 0,
@@ -58,13 +58,13 @@ function IncrementTable({
           />
         </div>
         {data.map((group, i) => (
-          
           <Accordion
             key={`group-accordion-${i}`}
-            open={ group.sales.increment > group.total.increment && isBadgeIncrement }
+            open={
+              group.sales.increment > group.total.increment && isBadgeIncrement
+            }
             trigger={<AccordionTrigger group={group} />}
           >
-            
             <div className={styles.AccordionContainer}>
               {group.total.date === null || group.inventory.date === null ? (
                 <div>
@@ -185,6 +185,7 @@ IncrementTable.propTypes = {
   putSuggestedSalesSpeed: PropTypes.func.isRequired,
   putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
   towerId: PropTypes.string,
+  isBadgeIncrement: PropTypes.bool,
 };
 
 IncrementTable.defaultProps = {

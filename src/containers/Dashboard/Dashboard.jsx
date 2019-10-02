@@ -37,7 +37,6 @@ class Dashboard extends Component {
 
   state = {
     tower: null,
-    isBadgeIncrement: false,
   };
 
   updateValue = (key, val) => {
@@ -51,7 +50,10 @@ class Dashboard extends Component {
       this.services
         .getTower(towerId)
         .then((response) => {
-          this.setState({ tower: response.data, isBadgeIncrement: response.data.isBadgeIncrement });
+          this.setState({
+            tower: response.data,
+          });
+          this.props.activateBadgeIncrement(response.data.isBadgeIncrement);
         })
         .catch((error) => {
           console.log('ERROR >', error);
@@ -75,135 +77,127 @@ class Dashboard extends Component {
     const { match, location } = this.props;
     const { tower } = this.state;
     return (
-      <DashboardProvider
-        value={{
-          isBadgeIncrement: this.state.isBadgeIncrement,
-          updateValue: this.updateValue,
-        }}
-      >
-        {console.log(this.state.isBadgeIncrement)}
-        <DashboardLayout tower={tower} location={location}>
-          {/* <Redirect
+      <DashboardLayout tower={tower} location={location} {...this.props}>
+        {/* <Redirect
           from={DashboardRoutes.base}
           exact
           to={DashboardRoutes.base + ProjectRoutes.base}
         /> */}
-          <PrivateRoute
-            path={match.url + ProjectRoutes.base}
-            exact
-            component={Projects}
-            changeTower={this.onChangeTower}
-          />
-          <PrivateRoute
-            path={
-              match.url +
-              ProjectRoutes.base +
-              DashboardRoutes.towers.withIndicator
-            }
-            exact
-            component={Towers}
-            changeTower={this.onChangeTower}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.building.withIndicator}
-            exact
-            component={Building}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.areas.withIndicator}
-            exact
-            component={Areas}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.user}
-            exact
-            component={UserSettings}
-            changeTower={this.onChangeTower}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.prime.withIndicator}
-            exact
-            component={Prime}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.summary.withIndicator}
-            exact
-            component={Summary}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.detailAdmin.withIndicator}
-            exact
-            component={DetailAdmin}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.detail.withIndicator}
-            exact
-            component={Detail}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.rackAreas.withIndicator}
-            exact
-            component={RackAreas}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.clustering.withIndicator}
-            exact
-            component={Clustering}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.user + UserRoutes.create}
-            roles={[Role.Admin, Role.Super]}
-            exact
-            component={CreateUser}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.user + UserRoutes.assignProjects}
-            roles={[Role.Admin, Role.Super]}
-            exact
-            component={AssignTowerToUsers}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.strategy.withIndicator}
-            exact
-            component={Strategy}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.increments.withIndicator}
-            roles={[Role.Admin, Role.Super]}
-            exact
-            component={Increments}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.salesRoom.withIndicator}
-            exact
-            component={SalesRoom}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.clients.withIndicator}
-            roles={[Role.Admin, Role.Super]}
-            exact
-            component={Client}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.futureSalesSpeed.withIndicator}
-            roles={[Role.Admin, Role.Super]}
-            exact
-            component={FutureSalesSpeed}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.schedule.withIndicator}
-            roles={[Role.Admin, Role.Super]}
-            exact
-            component={Schedule}
-          />
-          <PrivateRoute
-            path={match.url + DashboardRoutes.report.withIndicator}
-            roles={[Role.Admin, Role.Super]}
-            exact
-            component={Report}
-          />
-        </DashboardLayout>
-      </DashboardProvider>
+        <PrivateRoute
+          path={match.url + ProjectRoutes.base}
+          exact
+          component={Projects}
+          changeTower={this.onChangeTower}
+        />
+        <PrivateRoute
+          path={
+            match.url +
+            ProjectRoutes.base +
+            DashboardRoutes.towers.withIndicator
+          }
+          exact
+          component={Towers}
+          changeTower={this.onChangeTower}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.building.withIndicator}
+          exact
+          component={Building}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.areas.withIndicator}
+          exact
+          component={Areas}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.user}
+          exact
+          component={UserSettings}
+          changeTower={this.onChangeTower}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.prime.withIndicator}
+          exact
+          component={Prime}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.summary.withIndicator}
+          exact
+          component={Summary}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.detailAdmin.withIndicator}
+          exact
+          component={DetailAdmin}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.detail.withIndicator}
+          exact
+          component={Detail}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.rackAreas.withIndicator}
+          exact
+          component={RackAreas}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.clustering.withIndicator}
+          exact
+          component={Clustering}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.user + UserRoutes.create}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={CreateUser}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.user + UserRoutes.assignProjects}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={AssignTowerToUsers}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.strategy.withIndicator}
+          exact
+          component={Strategy}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.increments.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Increments}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.salesRoom.withIndicator}
+          exact
+          component={SalesRoom}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.clients.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Client}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.futureSalesSpeed.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={FutureSalesSpeed}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.schedule.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Schedule}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.report.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Report}
+        />
+      </DashboardLayout>
     );
   }
 }

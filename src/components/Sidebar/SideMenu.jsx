@@ -5,11 +5,8 @@ import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
-import DashboardContext from '../../containers/Dashboard/Context';
 
 const SideMenu = (props) => {
-  const context = useContext(DashboardContext);
-
   const [active, setActive] = useState(window.location.pathname);
   if (window.location.pathname !== active) {
     setActive(window.location.pathname);
@@ -129,7 +126,7 @@ const SideMenu = (props) => {
             DashboardRoutes.base + DashboardRoutes.increments.value,
             'fas fa-angle-double-up',
             'Incrementos',
-            context.isBadgeIncrement,
+            props.isBadgeIncrement,
           )}
         {agent.isAuthorized([Role.Admin, Role.Super]) &&
           itemForSlidebar(

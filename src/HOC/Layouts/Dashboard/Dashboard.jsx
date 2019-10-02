@@ -5,14 +5,14 @@ import UserSideMenu from '../../../components/Sidebar/UserSideMenu';
 import styles from './Dashboard.module.scss';
 import { UserRoutes } from '../../../routes/local/routes';
 
-const dashboard = props => (
+const dashboard = (props) => (
   <div className={styles.Dashboard}>
     <nav className={styles.Navigation}>
       <Sidebar />
       {props.location.pathname.includes(UserRoutes.base) ? (
-        <UserSideMenu/>
+        <UserSideMenu />
       ) : (
-        <SideMenu tower={props.tower} />
+        <SideMenu tower={props.tower} {...props} />
       )}
     </nav>
 
