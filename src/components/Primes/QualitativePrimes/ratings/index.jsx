@@ -1,76 +1,27 @@
 import React from 'react';
-import Input from '../../../UI/Input/Input';
+import Rating from './Rating';
 import Styles from './Ratings.module.scss';
 
-const Ratings = () => {
+const Ratings = ({ ratings, addRatingHandler, deleteRatingHandler }) => {
   return (
-    <div className={Styles.ratings}>
-      <div className={Styles.ratingsTitle}>
-        <span>Calificaciones</span>
-      </div>
-      <div className={Styles.rating}>
-        <div className={Styles.ratingHeader}>
-          <span>Calificación: </span>
-          <span>1</span>
+    <div className={Styles.container}>
+      <div className={Styles.header}>
+        <div className={Styles.title}>
+          <span>Calificaciones</span>
         </div>
-        <div className={Styles.ratingPrimes}>
-          <div className={Styles.ratingPrime}>
-            <div className={Styles.primeTitle}>
-              <span>m²:</span>
-            </div>
-            <div className={Styles.primeValue}>
-              <Input
-                style={{ padding: 0 }}
-                validations={[]}
-                Change={() => null}
-              />
-            </div>
-          </div>
-          <div className={Styles.ratingPrime}>
-            <div className={Styles.primeTitle}>
-              <span>Unidad:</span>
-            </div>
-            <div className={Styles.primeValue}>
-              <Input
-                style={{ padding: 0 }}
-                validations={[]}
-                Change={() => null}
-              />
-            </div>
-          </div>
+        <div className={Styles.actions}>
+          <button className={Styles.button} onClick={addRatingHandler}>
+            Agregar calificación
+          </button>
+          <button className={Styles.button} onClick={deleteRatingHandler}>
+            Eliminar calificación
+          </button>
         </div>
       </div>
-      <div className={Styles.rating}>
-        <div className={Styles.ratingHeader}>
-          <span>Calificación: </span>
-          <span>2</span>
-        </div>
-        <div className={Styles.ratingPrimes}>
-          <div className={Styles.ratingPrime}>
-            <div className={Styles.primeTitle}>
-              <span>m²:</span>
-            </div>
-            <div className={Styles.primeValue}>
-              <Input
-                style={{ padding: 0 }}
-                validations={[]}
-                Change={() => null}
-              />
-            </div>
-          </div>
-          <div className={Styles.ratingPrime}>
-            <div className={Styles.primeTitle}>
-              <span>Unidad:</span>
-            </div>
-            <div className={Styles.primeValue}>
-              <Input
-                style={{ padding: 0 }}
-                validations={[]}
-                Change={() => null}
-              />
-            </div>
-          </div>
-        </div>
+      <div className={Styles.ratings}>
+        {ratings.map((rating, index) => {
+          return <Rating key={`rating-${index}`} rating={rating} />;
+        })}
       </div>
     </div>
   );

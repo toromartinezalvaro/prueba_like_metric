@@ -1,0 +1,48 @@
+.container {
+  // .border-0
+  border-width: 0;
+  // .flex
+  display: flex;
+  // .items-center
+  align-items: center;
+  // .border-solid
+  border-style: solid;
+  // .border-b
+  border-bottom-width: 1px;
+  // .border-gray-500
+  border-color: #a0aec0;
+
+  .input {
+    // Fixed
+    font-family: inherit;
+    font-size: inherit;
+    // .appearance-none
+    appearance: none;
+    // .bg-transparent
+    background-color: transparent;
+    // .border-none
+    border-style: none;
+    // .w-full
+    width: 100%;
+    // .text-gray-700
+    color: #4a5568;
+    // .leading-tight
+    line-height: 1.25;
+    // .py-1
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    //.px-2
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+
+    &:focus {
+      // .outline-none
+      outline: none;
+    }
+  }
+
+  &:focus-within {
+    //.border-blue-700
+    border-color: #2b6cb0;
+  }
+}

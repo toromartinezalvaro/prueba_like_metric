@@ -5,11 +5,51 @@ import Ratings from './ratings';
 import DefinitionsPropertyRatings from './DefinitionsPropertyRatings';
 import Primes from './Primes';
 import 'react-tabs/style/react-tabs.css';
+import Services from '../../../services/prime/QualitativePrimes';
 
-const QualitativePrimes = () => {
-  const [data, setData] = useState({});
+const QualitativePrimes = ({ towerId }) => {
+  const services = new Services();
 
-  useEffect(() => {});
+  const [ratings, setRatings] = useState([]);
+
+  useEffect(() => {
+    services
+      .getRatings(towerId)
+      .then((response) => {
+        setRatings(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const handleAddRating = () => {
+    services
+      .postRate(towerId, {
+        m2Prime: 0,
+        unitPrime: 0,
+      })
+      .then((response) => {
+        const tempRatings = [...ratings];
+        tempRatings.push(response.data);
+        setRatings(tempRatings);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleDeleteRating = (id) => {
+    services
+      .deleteRate(towerId)
+      .then((response) => {
+        const tempRatings = ratings.slice(0, ratings.length - 1);
+        setRatings(tempRatings);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <Tabs>
@@ -20,7 +60,11 @@ const QualitativePrimes = () => {
       </TabList>
 
       <TabPanel>
-        <Ratings />
+        <Ratings
+          ratings={ratings}
+          addRatingHandler={handleAddRating}
+          deleteRatingHandler={handleDeleteRating}
+        />
       </TabPanel>
       <TabPanel>
         <DefinitionsPropertyRatings />

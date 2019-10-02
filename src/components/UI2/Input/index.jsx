@@ -1,14 +1,12 @@
 import React from 'react';
-import styles from './styles.module.scss';
+import Styles from './Input.module.scss';
 
-export default function input({ id, label, ...rest }) {
+const Input = ({ ...rest }) => {
   return (
-    <div className={styles.container}>
-      <input id={id} className={styles.input} {...rest} />
-      <label className={styles.label} >
-        {label}
-      </label>
-      <span className={styles.border} />
+    <div className={Styles.container}>
+      <input className={Styles.input} {...rest} />
     </div>
   );
-}
+};
+
+export default Input;
