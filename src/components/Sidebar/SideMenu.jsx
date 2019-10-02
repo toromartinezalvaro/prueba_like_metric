@@ -9,7 +9,7 @@ import DashboardContext from '../../containers/Dashboard/Context';
 
 const SideMenu = (props) => {
   const context = useContext(DashboardContext);
-  
+
   const [active, setActive] = useState(window.location.pathname);
   if (window.location.pathname !== active) {
     setActive(window.location.pathname);
@@ -19,7 +19,7 @@ const SideMenu = (props) => {
       const towerId = props.tower.id;
       route += towerId;
     }
-    let badgeStyle = "";
+    let badgeStyle = '';
     if (isBadge) badgeStyle = style.Badge;
     return (
       <div onClick={() => setActive(route)}>
@@ -27,22 +27,16 @@ const SideMenu = (props) => {
           <div className={style.Active}>
             <Link to={route}>
               <Icon name={iconName} fixWidth={true} />
-              <label className={style.Description}> {description} </label>
+              <span className={style.Description}> {description} </span>
             </Link>
           </div>
         ) : (
           <div className={styles}>
             <Link to={route}>
               <Icon name={iconName} fixWidth={true} />
-              <label className={style.Description}> {description} </label>
-              {isBadge ?
-                <span className={badgeStyle}>
-                !
-                </span> : null
-              }
-              
+              <span className={style.Description}> {description}</span>
+              {isBadge ? <span className={badgeStyle}></span> : null}
             </Link>
-            
           </div>
         )}
       </div>
@@ -135,7 +129,7 @@ const SideMenu = (props) => {
             DashboardRoutes.base + DashboardRoutes.increments.value,
             'fas fa-angle-double-up',
             'Incrementos',
-            context.isBadgeIncrement
+            context.isBadgeIncrement,
           )}
         {agent.isAuthorized([Role.Admin, Role.Super]) &&
           itemForSlidebar(
