@@ -37,10 +37,10 @@ class Dashboard extends Component {
 
   state = {
     tower: null,
-    counter: 0,
+    isBadgeIncrement: false,
   };
 
-  updateCounter = (key, val) => {
+  updateValue = (key, val) => {
     this.setState({ [key]: val });
   };
 
@@ -51,7 +51,7 @@ class Dashboard extends Component {
       this.services
         .getTower(towerId)
         .then((response) => {
-          this.setState({ tower: response.data });
+          this.setState({ tower: response.data, isBadgeIncrement: response.data.isBadgeIncrement });
         })
         .catch((error) => {
           console.log('ERROR >', error);
@@ -77,11 +77,11 @@ class Dashboard extends Component {
     return (
       <DashboardProvider
         value={{
-          counter: this.state.counter,
-          updateCounter: this.updateCounter,
+          isBadgeIncrement: this.state.isBadgeIncrement,
+          updateValue: this.updateValue,
         }}
       >
-        {console.log(this.state.counter)}
+        {console.log(this.state.isBadgeIncrement)}
         <DashboardLayout tower={tower} location={location}>
           {/* <Redirect
           from={DashboardRoutes.base}

@@ -9,8 +9,11 @@ import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
 import Styles from './Increments.module.scss';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
+import DashboardContext from '../Dashboard/Context';
 
 class Increments extends Component {
+  static contextType = DashboardContext;
+
   constructor(props) {
     super(props);
     this.services = new IncrementsServices(this);
@@ -25,11 +28,15 @@ class Increments extends Component {
     isEmpty: false,
     hidden: true,
     loadingAPI: false,
-  };
+    isShowBadgeAlert: false,
+    };
 
   componentDidMount() {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, isShowBadgeAlert: this.context.isBadgeIncrement });
     this.updateIncrements();
+    console.log(this.context.isBadgeIncrement)
+/*     this.context.updateValue('isBadgeIncrement', false);
+ */
   }
 
   updateIncrements = () => {
@@ -42,6 +49,7 @@ class Increments extends Component {
           isLoading: false,
           loadingAPI: false,
         });
+        this.context.updateValue('isBadgeIncrement', false);
       })
       .catch((error) => {
         this.setState({ isLoading: false, loadingAPI: false });
@@ -108,6 +116,12 @@ class Increments extends Component {
       hidden: !prevState.hidden,
     }));
     this.updateIncrements();
+  };
+
+  toggleBadgeModal = () => {
+    this.setState((prevState) => ({
+      isShowBadgeAlert: !prevState.isShowBadgeAlert,
+    }));
   };
 
   getPeriodsIncrements = () => {
@@ -177,6 +191,13 @@ class Increments extends Component {
             />
           </div>
         ) : null}
+        {this.state.isShowBadgeAlert && <Modal
+            title="Alerta!"
+            onConfirm={this.toggleBadgeModal}
+            onlyConfirm
+          >
+            El incremento recaudado de uno o más grupos es mayor a la meta
+          </Modal>}
         <IncrementsTable
           data={this.state.increments}
           putIncrement={this.putIncrement}

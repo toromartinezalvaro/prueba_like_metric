@@ -17,7 +17,7 @@ import Status from '../../helpers/status';
 import LoadableContainer from '../../components/UI/Loader';
 import SalesRoomModal from '../../components/SalesRoom/modal';
 import SalesRoomEnum from './SalesRoom.enum';
-import DashboardContext, { countIncrement } from '../Dashboard/Context';
+import DashboardContext from '../Dashboard/Context';
 
 export default class Detail extends Component {
   static contextType = DashboardContext;
@@ -195,17 +195,21 @@ export default class Detail extends Component {
     }, 0);
   }
 
-  counterIncrement(counter) {
-    const val = counter + 1;
-    this.context.updateCounter('counter', val);
+  changeIsBadgeIncrement(val) {
+    this.context.updateValue('isBadgeIncrement', val);
   }
 
   save = () => {
     const collectedIncrement = this.calculateCollectedIncrement(
       this.state.rightButton.label,
     );
-    if (Math.trunc(collectedIncrement) > this.state.selectedProperty.increment)
-      this.counterIncrement(this.context.counter);
+    let isBadgeIncrement = false;
+    if (Math.trunc(collectedIncrement) > this.state.selectedProperty.increment) {
+      isBadgeIncrement = true;
+      this.changeIsBadgeIncrement(true);
+    } else {
+      this.changeIsBadgeIncrement(false);
+    }
 
     this.setState({ isLoadingModal: true });
     this.services
@@ -231,8 +235,8 @@ export default class Detail extends Component {
               ? this.state.selectedProperty.tradeDiscount
               : null,
           collectedIncrement,
-          baseValueList: this.state.selectedProperty.baseValueList,
           groupId: this.state.groupId,
+          isBadgeIncrement,
         },
         this.props.match.params.towerId,
       )

@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardRoutes } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
+import DashboardContext from '../../containers/Dashboard/Context';
 
 const SideMenu = (props) => {
+  const context = useContext(DashboardContext);
+  
   const [active, setActive] = useState(window.location.pathname);
   if (window.location.pathname !== active) {
     setActive(window.location.pathname);
   }
-  const itemForSlidebar = (styles, route, iconName, description) => {
+  const itemForSlidebar = (styles, route, iconName, description, isBadge) => {
     if (props.tower !== null) {
       const towerId = props.tower.id;
       route += towerId;
     }
+    let badgeStyle = "";
+    if (isBadge) badgeStyle = style.Badge;
     return (
       <div onClick={() => setActive(route)}>
         {active === route ? (
@@ -30,7 +35,14 @@ const SideMenu = (props) => {
             <Link to={route}>
               <Icon name={iconName} fixWidth={true} />
               <label className={style.Description}> {description} </label>
+              {isBadge ?
+                <span className={badgeStyle}>
+                !
+                </span> : null
+              }
+              
             </Link>
+            
           </div>
         )}
       </div>
@@ -123,6 +135,7 @@ const SideMenu = (props) => {
             DashboardRoutes.base + DashboardRoutes.increments.value,
             'fas fa-angle-double-up',
             'Incrementos',
+            context.isBadgeIncrement
           )}
         {agent.isAuthorized([Role.Admin, Role.Super]) &&
           itemForSlidebar(

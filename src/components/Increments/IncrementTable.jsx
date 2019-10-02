@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
@@ -15,6 +15,7 @@ import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
 import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
 import SalesWizard from './IncrementTable/SalesWizard';
+import DashboardContext from '../../containers/Dashboard/Context';
 
 function IncrementTable({
   data,
@@ -24,6 +25,8 @@ function IncrementTable({
   putSuggestedEffectiveAnnualInterestRate,
   towerId,
 }) {
+  const context = useContext(DashboardContext)
+  const [isBadgeIncrement] = useState(context.isBadgeIncrement)
   const inputValidations = [
     {
       fn: (value) => value > 0,
@@ -55,10 +58,13 @@ function IncrementTable({
           />
         </div>
         {data.map((group, i) => (
+          
           <Accordion
             key={`group-accordion-${i}`}
+            open={ group.sales.increment > group.total.increment && isBadgeIncrement }
             trigger={<AccordionTrigger group={group} />}
           >
+            
             <div className={styles.AccordionContainer}>
               {group.total.date === null || group.inventory.date === null ? (
                 <div>
