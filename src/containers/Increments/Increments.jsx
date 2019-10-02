@@ -9,7 +9,6 @@ import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
 import Styles from './Increments.module.scss';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
-import DashboardContext from '../Dashboard/Context';
 
 class Increments extends Component {
   constructor(props) {
