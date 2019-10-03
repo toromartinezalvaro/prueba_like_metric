@@ -32,15 +32,12 @@ const QualitativePrimes = ({ towerId }) => {
       .then((response) => {
         const orderedDescriptors = _.sortBy(response.data, (e) => e.id);
         setDescriptors(orderedDescriptors);
+        descriptors2.current = orderedDescriptors
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
-  useEffect(() => {
-    console.log('CONSOLE.LOG DESDE EFFECT', descriptors2);
-  }, [descriptors2]);
 
   const handleAddRating = () => {
     services
@@ -106,10 +103,12 @@ const QualitativePrimes = ({ towerId }) => {
         const descriptorIndex = _.findIndex(descriptors, (e) => e.id === id);
         if (descriptorIndex !== -1) {
           const tempDescriptors = [...descriptors];
-          descriptors2.current = response.data;
+          const tempDescriptors2 = [...descriptors2.current]
           tempDescriptors[descriptorIndex] = response.data;
-          setDescriptors(tempDescriptors);
-          console.log('......', response.data, descriptors, tempDescriptors);
+          tempDescriptors2[descriptorIndex] = response.data;
+          setDescriptors(tempDescriptors2);
+          descriptors2.current = tempDescriptors2
+          console.log('juju', response.data, descriptors, tempDescriptors, descriptors2.current);
         }
       })
       .catch((error) => {
