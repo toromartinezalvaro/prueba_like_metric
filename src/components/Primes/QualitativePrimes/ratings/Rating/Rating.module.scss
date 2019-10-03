@@ -1,4 +1,4 @@
-.rating {
+.container {
   color: #000;
   // .font-sans
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
@@ -24,16 +24,16 @@
     font-weight: 700;
     font-size: 1.25em;
   }
-  .ratingPrimes {
+  .primes {
     display: flex;
     font-size: 16px;
-    .ratingPrime {
+    .prime {
       display: flex;
       margin-right: 15px;
-      .primeTitle {
+      .title {
         margin-right: 15px;
       }
-      .primeValue {
+      .value {
       }
     }
   }
