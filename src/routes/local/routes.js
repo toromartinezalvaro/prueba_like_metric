@@ -31,6 +31,7 @@ export const ProjectRoutes = {
 
 export const UserRoutes = {
   base: DashboardRoutes.base + DashboardRoutes.user,
+  slideProjectsOnly: DashboardRoutes.base + ProjectRoutes.base,
   login: '/login',
   profile: '/profile',
   create: '/create',

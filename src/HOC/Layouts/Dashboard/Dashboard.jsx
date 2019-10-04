@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
@@ -13,28 +13,51 @@ const Dashboard = (props) => {
     setResizableWidth(expandibleValue);
   };
   const onHideArrow = (arrowValue) => {
-    setIsHidenArrow(arrowValue)
-  }
+    setIsHidenArrow(arrowValue);
+  };
 
   const hideLetter = () => {
-    if(isHidenArrow) {
-      return(true);
+    if (isHidenArrow) {
+      return true;
+    } else {
+      return false;
     }
-    else {
-      return (false)
-    }
-  }
+  };
 
   return (
     <div className={styles.Dashboard}>
       <nav className={styles.Navigation}>
         <Sidebar />
-        {props.location.pathname.includes(UserRoutes.base) ? (
-          <UserSideMenu />
-        ) : (
-          <SideMenu onHideArrow={onHideArrow} hideLetter = {hideLetter} resizableWidth={resizableWidth} tower={props.tower} />
+        {props.location.pathname.includes(UserRoutes.base) && (
+          <Fragment>
+            <UserSideMenu
+              onHideArrow={onHideArrow}
+              hideLetter={hideLetter}
+              resizableWidth={resizableWidth}
+            />
+          </Fragment>
         )}
-        <CollapseAndExpand onHideArrow={onHideArrow} isHidenArrow = {isHidenArrow} onChange={onChangeSize} />
+        {props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
+        props.location.pathname.includes(UserRoutes.base) ? (
+          <div></div>
+        ) : (
+          <Fragment>
+            <SideMenu
+              onHideArrow={onHideArrow}
+              hideLetter={hideLetter}
+              resizableWidth={resizableWidth}
+              tower={props.tower}
+            />
+            
+          </Fragment>
+        )}
+        <div className="containerNoRezise">
+              <CollapseAndExpand
+                onHideArrow={onHideArrow}
+                isHidenArrow={isHidenArrow}
+                onChange={onChangeSize}
+              />
+            </div>
       </nav>
 
       <main className={styles.Content}>{props.children}</main>
