@@ -8,15 +8,25 @@ import { Role } from '../../helpers';
 import { Resizable } from 're-resizable';
 
 const UserSideMenu = (props) => {
-  const [width, setWidth] = useState(210);
+  const [width, setWidth] = useState(200);
   const [user, setUser] = useState(agent.currentUser);
-  const Resizable_Width = 210;
+  const onChangeResize = (change) => {
+    console.log(props.resizableWidth * 0.3, -change, props.resizableWidth);
+    props.onChange(props.resizableWidth * 0.3 <= -change ? `${0}px` : change);
+    props.onHideArrow(true);
+  };
+
   const handleEnterEvent = () => {
     props.onHideArrow(true);
   };
   const handleLeaveEvent = () => {
-    props.onHideArrow(false);
+    if (props.resizableWidth > 0) {
+      props.onHideArrow(false);
+    } else {
+      props.onHideArrow(true);
+    }
   };
+
   useEffect(() => {
     setUser(agent.currentUser);
   });
@@ -35,11 +45,8 @@ const UserSideMenu = (props) => {
   return (
     <Resizable
       className={style.SideMenu + ' ' + style.OriginalWidth}
-      size={{ width }}
-      onResizeStop={(e, direction, ref, d) => {
-        setWidth(width + d.width);
-        width <= '150px' && setWidth('0px');
-      }}
+      size={{ width: `${props.resizableWidth}`, height: '100vh' }}
+      onResizeStop={(e, direction, ref, d) => onChangeResize(d.width)}
       onMouseEnter={handleEnterEvent}
       onMouseLeave={handleLeaveEvent}
     >

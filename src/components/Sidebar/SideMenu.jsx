@@ -12,16 +12,16 @@ const SideMenu = (props) => {
   const [active, setActive] = useState(window.location.pathname);
 
   const onChangeResize = (change) => {
-    console.log(props.resizableWidth*0.30, -change, props.resizableWidth )
-    props.onChange(props.resizableWidth*0.30 <= -change ? `${0}px` : change);
+    console.log(props.resizableWidth * 0.3, -change, props.resizableWidth);
+    props.onChange(props.resizableWidth * 0.3 <= -change ? `${0}px` : change);
     props.onHideArrow(true);
-  }
+  };
 
   const handleEnterEvent = () => {
     props.onHideArrow(true);
   };
   const handleLeaveEvent = () => {
-      props.onHideArrow(props.resizableWidth > 0 ? false : true);
+    props.onHideArrow(props.resizableWidth > 0 ? false : true);
   };
 
   if (window.location.pathname !== active) {
@@ -66,9 +66,7 @@ const SideMenu = (props) => {
         onMouseEnter={handleEnterEvent}
         onMouseLeave={handleLeaveEvent}
         size={{ width: `${props.resizableWidth}`, height: '100vh' }}
-        onResizeStop={(e, direction, ref, d) => 
-          onChangeResize(d.width)
-        }
+        onResizeStop={(e, direction, ref, d) => onChangeResize(d.width)}
       >
         <div className={style.fixedWidth + style.NoVisible}>
           <div className={style.IconsContainer}>
