@@ -50,6 +50,11 @@
   grid-area: inv-increment-goal;
 }
 
+.inv-increment-goal-text-red {
+  grid-area: inv-increment-goal;
+  color: $red-color;
+}
+
 .inv-sales-future {
   grid-area: inv-sales-future;
 }

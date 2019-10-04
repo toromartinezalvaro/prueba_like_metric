@@ -34,6 +34,11 @@ function Inventory({
     moment()
       .startOf('month')
       .diff(moment(Number(salesStartDate)).startOf('month'), 'month');
+
+  let incrementTextColor = Styles['inv-increment-goal'];
+  if (increment < 0) {
+    incrementTextColor = Styles['inv-increment-goal-text-red'];
+  }
   return (
     <div className={`${Styles.inventory} ${className}`}>
       <div className={Styles['inv-header']}>Inventario</div>
@@ -73,7 +78,7 @@ function Inventory({
           prefix="$"
         />
       </div>
-      <div className={Styles['inv-increment-goal']}>
+      <div className={incrementTextColor}>
         <NumberFormat
           value={increment.toFixed(2)}
           displayType="text"

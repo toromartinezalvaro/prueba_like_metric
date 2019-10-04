@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardRoutes } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
@@ -21,25 +21,28 @@ const SideMenu = (props) => {
   if (window.location.pathname !== active) {
     setActive(window.location.pathname);
   }
-  const itemForSlidebar = (styles, route, iconName, description) => {
+  const itemForSlidebar = (styles, route, iconName, description, isBadge) => {
     if (props.tower !== null) {
       const towerId = props.tower.id;
       route += towerId;
     }
+    let badgeStyle = '';
+    if (isBadge) badgeStyle = style.Badge;
     return (
       <div onClick={() => setActive(route)}>
         {active === route ? (
           <div className={style.Active}>
             <Link to={route}>
               <Icon name={iconName} fixWidth={true} />
-              <label className={style.Description}> {description} </label>
+              <span className={style.Description}> {description} </span>
             </Link>
           </div>
         ) : (
           <div className={styles}>
             <Link to={route}>
               <Icon name={iconName} fixWidth={true} />
-              <label className={style.Description}> {description} </label>
+              <span className={style.Description}> {description}</span>
+              {isBadge ? <span className={badgeStyle}></span> : null}
             </Link>
           </div>
         )}

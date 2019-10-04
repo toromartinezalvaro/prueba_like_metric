@@ -16,6 +16,9 @@ const PrivateRoute = ({
   ...rest
 }) => {
   const { isAuth, activateAuth } = useContext(Context.Shared);
+  const { isBadgeIncrement, activateBadgeIncrement } = useContext(
+    Context.Shared,
+  );
 
   return (
     <Route
@@ -48,6 +51,8 @@ const PrivateRoute = ({
           <Component
             pushTo={pushTo}
             activateAuth={activateAuth}
+            isBadgeIncrement={isBadgeIncrement}
+            activateBadgeIncrement={activateBadgeIncrement}
             changeTower={changeTower}
             {...props}
           />

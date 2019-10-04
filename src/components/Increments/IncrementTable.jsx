@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
@@ -23,7 +23,10 @@ function IncrementTable({
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
   towerId,
+  ...props
 }) {
+  const [isBadgeIncrement] = useState(props.isBadgeIncrement);
+
   const inputValidations = [
     {
       fn: (value) => value > 0,
@@ -57,6 +60,9 @@ function IncrementTable({
         {data.map((group, i) => (
           <Accordion
             key={`group-accordion-${i}`}
+            open={
+              group.sales.increment > group.total.increment && isBadgeIncrement
+            }
             trigger={<AccordionTrigger group={group} />}
           >
             <div className={styles.AccordionContainer}>
@@ -179,6 +185,7 @@ IncrementTable.propTypes = {
   putSuggestedSalesSpeed: PropTypes.func.isRequired,
   putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
   towerId: PropTypes.string,
+  isBadgeIncrement: PropTypes.bool,
 };
 
 IncrementTable.defaultProps = {
