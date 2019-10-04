@@ -45,7 +45,7 @@ const UserSideMenu = (props) => {
   return (
     <Resizable
       className={style.SideMenu + ' ' + style.OriginalWidth}
-      size={{ width: `${props.resizableWidth}`, height: '100vh' }}
+      size={{ width: `${props.resizableWidth}px`, height: '100vh' }}
       onResizeStop={(e, direction, ref, d) => onChangeResize(d.width)}
       onMouseEnter={handleEnterEvent}
       onMouseLeave={handleLeaveEvent}

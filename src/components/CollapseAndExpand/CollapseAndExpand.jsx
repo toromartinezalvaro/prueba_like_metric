@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import style from './CollapseAndExpand.module.scss';
 
 const CollapseAndExpand = (props) => {
-  const [collapseActive, setCollapseActive] = useState(true);
-  let ArrowType = collapseActive ? 'fa-arrow-left' : 'fa-arrow-right';
+  const [collapseActive, setCollapseActive] = useState(props.isMenuHidden);
+  let ArrowType = !props.isMenuHidden ? 'fa-arrow-left' : 'fa-arrow-right';
+  console.log("props.isMenuHidden ", props.isMenuHidden)
   const handleClick = () => {
     setCollapseActive(!collapseActive);
-    let expandableValue = ArrowType == 'fa-arrow-left' ? `${0}px` : 200;
+    let expandableValue = collapseActive ? 0 : 200;
     props.onChange(expandableValue);
   };
 

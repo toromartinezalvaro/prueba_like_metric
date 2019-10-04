@@ -9,8 +9,11 @@ import { UserRoutes } from '../../../routes/local/routes';
 const Dashboard = (props) => {
   const [resizableWidth, setResizableWidth] = useState(200);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
+  const [isMenuHidden, setHideMenu] = useState(false);
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
+    console.log(expandibleValue);
+    setHideMenu(expandibleValue <= 0)
   };
   const onHideArrow = (arrowValue) => {
     setIsHidenArrow(arrowValue);
@@ -57,6 +60,7 @@ const Dashboard = (props) => {
                 onHideArrow={onHideArrow}
                 isHidenArrow={isHidenArrow}
                 onChange={onChangeSize}
+                isMenuHidden={isMenuHidden}
               />
             </div>
       </nav>
