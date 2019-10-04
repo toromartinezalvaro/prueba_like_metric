@@ -38,6 +38,7 @@ const UserSideMenu = (props) => {
       size={{ width }}
       onResizeStop={(e, direction, ref, d) => {
         setWidth(width + d.width);
+        width <= '150px' && setWidth('0px');
       }}
       onMouseEnter={handleEnterEvent}
       onMouseLeave={handleLeaveEvent}

@@ -7,7 +7,7 @@ import styles from './Dashboard.module.scss';
 import { UserRoutes } from '../../../routes/local/routes';
 
 const Dashboard = (props) => {
-  const [resizableWidth, setResizableWidth] = useState('200px');
+  const [resizableWidth, setResizableWidth] = useState(200);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
@@ -47,6 +47,7 @@ const Dashboard = (props) => {
               hideLetter={hideLetter}
               resizableWidth={resizableWidth}
               tower={props.tower}
+              onChange={onChangeSize}
             />
             
           </Fragment>
