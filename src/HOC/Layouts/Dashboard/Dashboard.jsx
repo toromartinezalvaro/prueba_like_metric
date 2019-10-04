@@ -13,7 +13,7 @@ const Dashboard = (props) => {
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
     console.log(expandibleValue);
-    setHideMenu(expandibleValue <= 0)
+    setHideMenu(expandibleValue <= 0);
   };
   const onHideArrow = (arrowValue) => {
     setIsHidenArrow(arrowValue);
@@ -35,8 +35,9 @@ const Dashboard = (props) => {
           <Fragment>
             <UserSideMenu
               onHideArrow={onHideArrow}
-              hideLetter={hideLetter}
-              resizableWidth={resizableWidth}
+              isHidenArrow={isHidenArrow}
+              onChange={onChangeSize}
+              isMenuHidden={isMenuHidden}
             />
           </Fragment>
         )}
@@ -52,17 +53,16 @@ const Dashboard = (props) => {
               tower={props.tower}
               onChange={onChangeSize}
             />
-            
           </Fragment>
         )}
         <div className="containerNoRezise">
-              <CollapseAndExpand
-                onHideArrow={onHideArrow}
-                isHidenArrow={isHidenArrow}
-                onChange={onChangeSize}
-                isMenuHidden={isMenuHidden}
-              />
-            </div>
+          <CollapseAndExpand
+            onHideArrow={onHideArrow}
+            isHidenArrow={isHidenArrow}
+            onChange={onChangeSize}
+            isMenuHidden={isMenuHidden}
+          />
+        </div>
       </nav>
 
       <main className={styles.Content}>{props.children}</main>
