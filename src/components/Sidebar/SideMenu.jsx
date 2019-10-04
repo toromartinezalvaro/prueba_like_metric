@@ -145,6 +145,7 @@ const SideMenu = (props) => {
                 DashboardRoutes.base + DashboardRoutes.increments.value,
                 'fas fa-angle-double-up',
                 'Incrementos',
+                props.isBadgeIncrement,
               )}
             {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
