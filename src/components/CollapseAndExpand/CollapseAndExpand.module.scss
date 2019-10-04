@@ -1,0 +1,23 @@
+@import '../../assets/styles/variables.scss';
+
+.collapseAndExpandRow {
+  align-self: flex-start;
+  background-color: $main-color;
+  border-radius: 50%;
+  color: $defaultWhite-color;
+  height: 25px !important;
+  margin-top: 15px;
+  position: sticky;
+  left: 15%;
+  text-align: center;
+  width: 40px !important;
+  z-index: 5000;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.arrowPosition {
+  margin-top:15% !important;
+  font-size: 10px;
+}

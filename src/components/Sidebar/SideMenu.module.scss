@@ -1,10 +1,7 @@
 @import '../../assets/styles/variables.scss';
 
-$border-size: 0.1em;
-$border-color: hsl(0, 90, 40);
-
 .SideMenu {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   flex-basis: 5rem;
   flex-shrink: 0;
@@ -15,6 +12,14 @@ $border-color: hsl(0, 90, 40);
   align-items: center;
   overflow: hidden;
   transition: all 0.2s ease;
+  &:hover,
+  .collapseAndExpandRow {
+    -webkit-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
+    box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
+    border-left-color: $main-color;
+  }
+  z-index: 5;
 }
 
 .ZeroWidth {
@@ -30,6 +35,8 @@ $border-color: hsl(0, 90, 40);
   flex-direction: column;
   width: 80%;
   margin-top: 3vh;
+  margin-left: 16%;
+  z-index: 3;
 }
 
 .Description {
@@ -47,9 +54,9 @@ $border-color: hsl(0, 90, 40);
 
 .MenuItem {
   display: flex;
-  justify-content: center;
-  width: 100%;
-
+  justify-content: center !important;
+  width: 100% !important;
+  z-index: 3;
   a:link,
   a:visited {
     flex: 1;
@@ -72,25 +79,11 @@ $border-color: hsl(0, 90, 40);
   }
 }
 
-.Badge {
-  position: relative;
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  color: #fff;
-  overflow: hidden;
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: 0.2s;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  background: $red-color;
-  top: -10px;
-}
-
 .Active {
   display: flex;
   justify-content: center;
   width: 100%;
+
   a:link,
   a:visited {
     flex: 1;
@@ -109,4 +102,31 @@ $border-color: hsl(0, 90, 40);
     background-color: $softGrayBackground-color;
     border-radius: 2px;
   }
+}
+
+.fixedWidth {
+  min-width: 150px;
+  overflow-x: hidden;
+}
+
+.Visible {
+  display: flex !important;
+}
+.NoVisible {
+  display: none !important;
+}
+
+.Badge {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  color: #fff;
+  overflow: hidden;
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  background: $red-color;
+  top: -10px;
 }
