@@ -5,10 +5,11 @@ import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
+import { Resizable } from 're-resizable';
 
-const UserSideMenu = props => {
+const UserSideMenu = (props) => {
   const [user, setUser] = useState(agent.currentUser);
-
+  const Resizable_Width = 325;
   useEffect(() => {
     setUser(agent.currentUser);
   });
@@ -25,32 +26,37 @@ const UserSideMenu = props => {
   };
 
   return (
-    <div className={style.SideMenu + ' ' + style.OriginalWidth}>
-      <div>
-        <label>{props.tower ? props.tower.name : ''}</label>
-      </div>
-      <div className={style.IconsContainer}>
-        {itemForSidebar(
-          style.MenuItem,
-          UserRoutes.base,
-          'fa-building',
-          'Perfil',
-        )}
-        {agent.isAuthorized([Role.Admin, Role.Super]) &&
-          itemForSidebar(
+    <Resizable
+      className={style.SideMenu + ' ' + style.OriginalWidth}
+      defaultSize={{ width: `${Resizable_Width}` }}
+    >
+      <div className={style.fixedWidth}>
+        <div>
+          <label>{props.tower ? props.tower.name : ''}</label>
+        </div>
+        <div className={style.IconsContainer}>
+          {itemForSidebar(
             style.MenuItem,
-            UserRoutes.base + UserRoutes.create,
+            UserRoutes.base,
             'fa-building',
-            'Crear usuario',
+            'Perfil',
           )}
-        {itemForSidebar(
-          style.MenuItem,
-          UserRoutes.base + UserRoutes.assignProjects,
-          'fa-building',
-          'Admin usuarios',
-        )}
+          {agent.isAuthorized([Role.Admin, Role.Super]) &&
+            itemForSidebar(
+              style.MenuItem,
+              UserRoutes.base + UserRoutes.create,
+              'fa-building',
+              'Crear usuario',
+            )}
+          {itemForSidebar(
+            style.MenuItem,
+            UserRoutes.base + UserRoutes.assignProjects,
+            'fa-building',
+            'Admin usuarios',
+          )}
+        </div>
       </div>
-    </div>
+    </Resizable>
   );
 };
 
