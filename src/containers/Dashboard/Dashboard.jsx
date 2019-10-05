@@ -40,7 +40,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
-
+    console.log("towerId", towerId)
+    //TODO: Remove it for projects and towers
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)

@@ -44,7 +44,7 @@ class Services {
       .then((response) => {
         if (response.data.token) {
           agent.saveUser(response.data);
-          this.axiosPromise(promise)
+          this.axiosPromise(promise, 2, false)
             .then(resolve)
             .catch(reject);
 
@@ -59,7 +59,7 @@ class Services {
       });
   }
 
-  axiosPromise(promise, retry = 2) {
+  axiosPromise(promise, retry = 2, isAuthorizationEnabled = true) {
     return new Promise((resolve, reject) => {
       promise()
         .then((response) => {
@@ -67,7 +67,7 @@ class Services {
         })
         .catch((error) => {
           if (error.response && error.response.status === 401) {
-            if (agent.currentUser.refreshToken) {
+            if (agent.currentUser && agent.currentUser.refreshToken && isAuthorizationEnabled) {
               this.renewToken(
                 agent.currentUser.refreshToken,
                 promise,
@@ -79,8 +79,7 @@ class Services {
             agent.logout();
             window.location.reload();
             reject(error);
-          }
-          if (retry >= 1 && retry < 5) {
+          } else if (retry >= 1 && retry < 5) {
             const newRetry = retry - 1;
             this.axiosPromise(promise, newRetry)
               .then(resolve)

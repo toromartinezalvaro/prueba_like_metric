@@ -8,9 +8,14 @@ const jwtKey = 'jwt';
 
 class Agent {
   constructor() {
-    this.token = null;
-    this.user = null;
+    if (!Agent.instance) {
+      this.token = null;
+      this.user = null;
+      this.reloadCurrentUser();
+      Agent.instance = this;
+    }
     this.reloadCurrentUser();
+    return Agent.instance;
   }
 
   get currentUser() {
@@ -86,6 +91,9 @@ class Agent {
   }
 }
 
- export const API_PATH = Server.development.serverUrl;
-//export const API_PATH = Server.staging.serverUrl;
-export default new Agent();
+export const API_PATH = Server.development.serverUrl;
+// export const API_PATH = Server.staging.serverUrl;
+
+const instance = new Agent();
+// export singleton freezed object
+export default instance;
