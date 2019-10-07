@@ -1,0 +1,17 @@
+.Contracts {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+
+  .Navigation {
+    display: flex;
+    flex-flow: column;
+  }
+
+  .Content {
+    padding: 50px;
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}

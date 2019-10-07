@@ -5,7 +5,7 @@ import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
 import UserSideMenu from '../../../components/Sidebar/UserSideMenu';
 import styles from './Dashboard.module.scss';
-import { UserRoutes } from '../../../routes/local/routes';
+import { UserRoutes, ContractRoutes } from '../../../routes/local/routes';
 
 const Dashboard = (props) => {
   const [resizableWidth, setResizableWidth] = useState(200);
@@ -44,7 +44,8 @@ const Dashboard = (props) => {
           </Fragment>
         )}
         {props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
-        props.location.pathname.includes(UserRoutes.base) ? null : (
+        props.location.pathname.includes(UserRoutes.base) ||
+        props.location.pathname.includes(ContractRoutes.base) ? null : (
           <Fragment>
             <SideMenu
               onHideArrow={onHideArrow}
