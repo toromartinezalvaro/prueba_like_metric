@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from 'react';
+import PropType from 'prop-types';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
@@ -24,8 +25,7 @@ const Dashboard = (props) => {
     if (isHidenArrow) {
       return true;
     }
-      return false;
-    }
+    return false;
   };
 
   return (
@@ -44,9 +44,7 @@ const Dashboard = (props) => {
           </Fragment>
         )}
         {props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
-        props.location.pathname.includes(UserRoutes.base) ? (
-          null
-        ) : (
+        props.location.pathname.includes(UserRoutes.base) ? null : (
           <Fragment>
             <SideMenu
               onHideArrow={onHideArrow}
@@ -71,12 +69,4 @@ const Dashboard = (props) => {
     </div>
   );
 };
-
 export default Dashboard;
-
-Dashboard.proptypes = {
-  isMenuHidden: PropType.func,
-  isHidenArrow: PropType.func,
-  onChange: PropType.func,
-  onHideArrow: PropType.func,
-};
