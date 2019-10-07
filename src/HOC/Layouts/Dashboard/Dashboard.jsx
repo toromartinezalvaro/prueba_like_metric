@@ -23,7 +23,7 @@ const Dashboard = (props) => {
   const hideLetter = () => {
     if (isHidenArrow) {
       return true;
-    } else {
+    }
       return false;
     }
   };
@@ -73,3 +73,10 @@ const Dashboard = (props) => {
 };
 
 export default Dashboard;
+
+Dashboard.proptypes = {
+  isMenuHidden: PropType.func,
+  isHidenArrow: PropType.func,
+  onChange: PropType.func,
+  onHideArrow: PropType.func,
+};
