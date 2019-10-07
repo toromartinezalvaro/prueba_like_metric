@@ -10,11 +10,12 @@ const Dashboard = (props) => {
   const [resizableWidth, setResizableWidth] = useState(200);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const [isMenuHidden, setHideMenu] = useState(false);
+
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
-    console.log(expandibleValue);
     setHideMenu(expandibleValue <= 0);
   };
+
   const onHideArrow = (arrowValue) => {
     setIsHidenArrow(arrowValue);
   };
@@ -36,6 +37,7 @@ const Dashboard = (props) => {
             <UserSideMenu
               onHideArrow={onHideArrow}
               isHidenArrow={isHidenArrow}
+              resizableWidth={resizableWidth}
               onChange={onChangeSize}
               isMenuHidden={isMenuHidden}
             />
