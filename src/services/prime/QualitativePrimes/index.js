@@ -29,6 +29,21 @@ class QualitativePrimesServices extends Services {
   putDescriptor(id, descriptor) {
     return this.put(ServiceDefinitions.putDescriptor(id), descriptor);
   }
+
+  deleteDescriptor(id) {
+    return this.delete(ServiceDefinitions.deleteDescriptor(id));
+  }
+
+  getPropertiesRatings(towerId) {
+    return this.get(ServiceDefinitions.getPropertiesRatings(towerId));
+  }
+
+  postPropertyRating(propertyId, descriptorId, rating) {
+    return this.post(
+      ServiceDefinitions.postPropertyRating(propertyId, descriptorId),
+      rating,
+    );
+  }
 }
 
 export default QualitativePrimesServices;

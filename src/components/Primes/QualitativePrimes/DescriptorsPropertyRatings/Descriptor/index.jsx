@@ -1,12 +1,12 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Input from '../../../../UI2/Input';
-import Button from '../../../../UI2/Button';
-import Styles from './Descriptor.module.scss';
+import DescriptorEdit from './DescriptorEdit';
+import DescriptorDisplay from './DescriptorDisplay';
 
 const Descriptor = ({
   descriptor: { id, name, percentage },
   descriptorUpdateHandler,
+  removeDescriptorHandler,
 }) => {
   const [isEditable, setIsEditable] = useState(false);
   const [descriptorData, setDescriptorData] = useState({});
@@ -18,6 +18,10 @@ const Descriptor = ({
   const handleUpdate = () => {
     setIsEditable(false);
     descriptorUpdateHandler(id, descriptorData);
+  };
+
+  const handleDelete = () => {
+    removeDescriptorHandler(id, descriptorData);
   };
 
   const handleCancel = () => {
@@ -37,39 +41,28 @@ const Descriptor = ({
     setDescriptorData(tempDescriptorData);
   };
 
+  const handleEdit = () => {
+    setIsEditable(true);
+  };
+
   return (
-    <div
-      onDoubleClick={() => {
-        setIsEditable(true);
-      }}
-    >
+    <div>
       {isEditable ? (
-        <div className={Styles.container}>
-          <div className={Styles.actions}>
-            <Button className={Styles.button} onClick={handleUpdate}>
-              <i className="fas fa-check"></i>
-            </Button>
-            <Button className={Styles.button} onClick={handleCancel}>
-              <i className="fas fa-times"></i>
-            </Button>
-          </div>
-          <Input
-            className={Styles.input}
-            value={descriptorData.name}
-            onChange={handleNameChange}
-          />
-          <Input
-            className={Styles.input}
-            mask="percentage"
-            value={descriptorData.percentage * 100}
-            onChange={handlePercentageChange}
-          />
-        </div>
+        <DescriptorEdit
+          name={descriptorData.name}
+          percentage={descriptorData.percentage}
+          handleUpdate={handleUpdate}
+          handleCancel={handleCancel}
+          handleNameChange={handleNameChange}
+          handlePercentageChange={handlePercentageChange}
+        />
       ) : (
-        <Fragment>
-          <div>{name}</div>
-          <div>{(percentage * 100).toFixed(2)}%</div>
-        </Fragment>
+        <DescriptorDisplay
+          name={name}
+          percentage={percentage}
+          updateHandler={handleEdit}
+          deleteHandler={handleDelete}
+        />
       )}
     </div>
   );
@@ -82,6 +75,7 @@ Descriptor.propTypes = {
     percentage: PropTypes.number,
   }).isRequired,
   descriptorUpdateHandler: PropTypes.func.isRequired,
+  removeDescriptorHandler: PropTypes.func.isRequired,
 };
 
 export default Descriptor;

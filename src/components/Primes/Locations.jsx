@@ -50,7 +50,11 @@ const locations = (props) => {
         title="Primas cualitativas"
         hidden={false}
       >
-        <QualitativePrimes towerId={props.towerId} />
+        <QualitativePrimes
+          towerId={props.towerId}
+          headers={props.headers}
+          floorsNames={props.floorsNames}
+        />
       </Modal>
     </React.Fragment>
   );

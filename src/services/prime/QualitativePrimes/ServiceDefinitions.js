@@ -22,6 +22,15 @@ const ServiceDefinitions = {
   putDescriptor: (id) => {
     return `${API_PATH}qualitativePrimes/descriptors/${id}`;
   },
+  deleteDescriptor: (id) => {
+    return `${API_PATH}qualitativePrimes/descriptors/${id}`;
+  },
+  getPropertiesRatings: (towerId) => {
+    return `${API_PATH}qualitativePrimes/properties-rates/${towerId}`;
+  },
+  postPropertyRating: (propertyId, descriptorId) => {
+    return `${API_PATH}qualitativePrimes/properties-rates/property/${propertyId}/descriptor/${descriptorId}`;
+  },
 };
 
 export default ServiceDefinitions;
