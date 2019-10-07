@@ -26,7 +26,7 @@ export const DashboardRoutes = {
 };
 
 export const ContractRoutes = {
-  base: 'dashboard',
+  base: '/contracts',
 };
 
 export const ProjectRoutes = {
