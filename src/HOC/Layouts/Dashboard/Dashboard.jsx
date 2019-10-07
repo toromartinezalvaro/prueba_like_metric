@@ -1,5 +1,4 @@
 import React, { useState, Fragment } from 'react';
-import PropType from 'prop-types';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
