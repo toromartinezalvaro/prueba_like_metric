@@ -30,7 +30,7 @@ const DescriptorEdit = ({
       <Input
         className={Styles.input}
         mask="percentage"
-        value={percentage * 100}
+        value={percentage}
         onChange={handlePercentageChange}
       />
     </div>

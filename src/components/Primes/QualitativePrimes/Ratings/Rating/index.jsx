@@ -19,7 +19,7 @@ const Rating = ({
             <span>m²:</span>
           </div>
           <div className={Styles.value}>
-            {/* TODO: Devolver numeros no strings */}
+            {/* TODO: Devolver números no strings */}
             <Input
               useInternalState
               value={m2Prime}

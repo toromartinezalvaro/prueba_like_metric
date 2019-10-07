@@ -22,15 +22,19 @@ const Ratings = ({
         </div>
       </div>
       <div className={Styles.ratings}>
-        {ratings.map((rating, index) => {
-          return (
-            <Rating
-              key={`rating-${index}`}
-              rating={rating}
-              updateRatingHandler={updateRatingHandler}
-            />
-          );
-        })}
+        {ratings.length > 0 ? (
+          ratings.map((rating, index) => {
+            return (
+              <Rating
+                key={`rating-${index}`}
+                rating={rating}
+                updateRatingHandler={updateRatingHandler}
+              />
+            );
+          })
+        ) : (
+          <span>No hay nada</span>
+        )}
       </div>
     </div>
   );

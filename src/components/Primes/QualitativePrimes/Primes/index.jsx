@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  RadioGroup,
-  RadioButton,
-  ReversedRadioButton,
-} from 'react-radio-buttons';
+import { RadioGroup, RadioButton } from 'react-radio-buttons';
 import _ from 'lodash';
 import Table from '../../../UI/Table/Table';
 
@@ -20,14 +16,22 @@ const Primes = ({
 }) => {
   const [primeType, setPrimeType] = useState(MT2);
 
+  const is100Percent = () => {
+    return (
+      descriptors.reduce((current, next) => {
+        return current + next.percentage;
+      }, 0) === 1
+    );
+  };
+
   const createMatrix = (m, n, content) => {
     return Array(m)
       .fill()
       .map(() => Array(n).fill(content));
   };
 
-  const calculateFinalRating = (ratings) => {
-    return ratings.reduce((current, next) => {
+  const calculateFinalRating = (propertyRatings) => {
+    return propertyRatings.reduce((current, next) => {
       return current + next.descriptorRating.rate * next.percentage;
     }, 0);
   };
@@ -74,19 +78,56 @@ const Primes = ({
           </RadioGroup>
         </div>
       </div>
-      <Table
-        intersect="Nomenclatura"
-        headers={headers}
-        columns={floorsNames}
-        data={makeCells()}
-      />
+      {is100Percent() ? (
+        <Table
+          intersect="Nomenclatura"
+          headers={headers}
+          columns={floorsNames}
+          data={makeCells()}
+        />
+      ) : (
+        <span>No es 100</span>
+      )}
     </div>
   );
 };
 
 Primes.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.number).isRequired,
-  floorsNames: PropTypes.arrayOf(PropTypes.number).isRequired,
+  floorsNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  propertiesRatings: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.name,
+      name: PropTypes.string,
+      location: PropTypes.number,
+      floor: PropTypes.number,
+      qualitativePrimesDescriptors: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          name: PropTypes.string,
+          percentage: PropTypes.number,
+          descriptorRating: PropTypes.shape({
+            id: PropTypes.number,
+            rate: PropTypes.number,
+          }),
+        }),
+      ),
+    }),
+  ).isRequired,
+  ratings: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      m2Prime: PropTypes.number,
+      unitPrime: PropTypes.number,
+    }),
+  ),
+  descriptors: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      percentage: PropTypes.number,
+    }),
+  ).isRequired,
 };
 
 export default Primes;

@@ -7,10 +7,10 @@ const ServiceDefinitions = {
   postRatings: (towerId) => {
     return `${API_PATH}qualitativePrimes/ratings/${towerId}`;
   },
-  putRate: (id) => {
+  putRating: (id) => {
     return `${API_PATH}qualitativePrimes/ratings/${id}`;
   },
-  deleteRate: (towerId) => {
+  deleteRating: (towerId) => {
     return `${API_PATH}qualitativePrimes/ratings/${towerId}`;
   },
   getDescriptors: (towerId) => {
@@ -30,6 +30,9 @@ const ServiceDefinitions = {
   },
   postPropertyRating: (propertyId, descriptorId) => {
     return `${API_PATH}qualitativePrimes/properties-rates/property/${propertyId}/descriptor/${descriptorId}`;
+  },
+  putPropertyRating: (propertyRatingId) => {
+    return `${API_PATH}qualitativePrimes/properties-rates/${propertyRatingId}`;
   },
 };
 

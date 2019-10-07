@@ -22,7 +22,7 @@ class Prime extends Component {
       unit: {},
       prices: [[]],
     },
-    floorsNames: [[]],
+    floorsNames: [],
     showFloatingButton: false,
   };
 

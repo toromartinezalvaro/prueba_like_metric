@@ -53,11 +53,13 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
       .catch((error) => {
         console.error(error);
       });
+
+    return () => {};
   }, []);
 
   const handleAddRating = () => {
     services
-      .postRate(towerId, {
+      .postRating(towerId, {
         m2Prime: 0,
         unitPrime: 0,
       })
@@ -71,9 +73,9 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
       });
   };
 
-  const handleRatingUpdate = (id, rateData) => {
+  const handleRatingUpdate = (id, ratingRata) => {
     services
-      .putRate(id, rateData)
+      .putRating(id, ratingRata)
       .then((response) => {
         const tempRatings = [...ratings];
         const ratingIndex = _.findIndex(ratings, (e) => e.id === id);
@@ -87,9 +89,9 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
       });
   };
 
-  const handleRemoveRating = (id) => {
+  const handleRemoveRating = () => {
     services
-      .deleteRate(towerId)
+      .deleteRating(towerId)
       .then(() => {
         const tempRatings = ratings.slice(0, ratings.length - 1);
         setRatings(tempRatings);
@@ -99,9 +101,9 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
       });
   };
 
-  const handleAddDescriptor = (descriptorData) => {
+  const handleAddDescriptor = () => {
     services
-      .postDescriptor(towerId, { name: 'New descriptor', percentage: 0 })
+      .postDescriptor(towerId, { name: 'Descriptor nuevo', percentage: 0 })
       .then((response) => {
         const tempDescriptors = [...descriptors];
         tempDescriptors.push(response.data);
@@ -132,8 +134,21 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
     services
       .deleteDescriptor(id)
       .then(() => {
-        const tempDescriptors = descriptors.slice(0, descriptors.length - 1);
+        const tempDescriptors = descriptors.filter((descriptor) => {
+          return descriptor.id !== id;
+        });
+        const tempPropertiesRatings = propertiesRatings.map((property) => {
+          const tempProperty = { ...property };
+          const filteredDescriptors = property.qualitativePrimesDescriptors.filter(
+            (descriptor) => {
+              return descriptor.id !== id;
+            },
+          );
+          tempProperty.qualitativePrimesDescriptors = filteredDescriptors;
+          return tempProperty;
+        });
         setDescriptors(tempDescriptors);
+        setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
         console.error(error);
@@ -148,21 +163,42 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
           propertiesRatings,
           (o) => o.id === propertyId,
         );
-        if (propertyIndex !== -1) {
-          const descriptorIndex = _.findIndex(
-            propertiesRatings[propertyIndex].qualitativePrimesDescriptors,
-            (o) => o.id === descriptorId,
-          );
-
-          const tempPropertiesRatings = [...propertiesRatings];
-          tempPropertiesRatings[propertyIndex].qualitativePrimesDescriptors[
-            descriptorIndex
-          ] = response.data;
-          setPropertiesRatings(tempPropertiesRatings);
-        }
+        const tempPropertiesRatings = [...propertiesRatings];
+        tempPropertiesRatings[propertyIndex].qualitativePrimesDescriptors.push(
+          response.data,
+        );
+        setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
+      });
+  };
+
+  const handlePropertyRatingUpdate = (
+    propertyRatingId,
+    propertyId,
+    descriptorId,
+    rating,
+  ) => {
+    services
+      .putPropertyRating(propertyRatingId, { rating })
+      .then((response) => {
+        const propertyIndex = _.findIndex(
+          propertiesRatings,
+          (o) => o.id === propertyId,
+        );
+        const descriptorIndex = _.findIndex(
+          propertiesRatings[propertyIndex].qualitativePrimesDescriptors,
+          (o) => o.id === descriptorId,
+        );
+        const tempPropertiesRatings = [...propertiesRatings];
+        tempPropertiesRatings[propertyIndex].qualitativePrimesDescriptors[
+          descriptorIndex
+        ] = response.data;
+        setPropertiesRatings(tempPropertiesRatings);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -192,6 +228,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
           descriptorUpdateHandler={handleDescriptorUpdate}
           removeDescriptorHandler={handleRemoveDescriptor}
           addPropertyRatingHandler={handleAddPropertyRating}
+          propertyRatingUpdateHandler={handlePropertyRatingUpdate}
         />
       </TabPanel>
       <TabPanel>
@@ -210,7 +247,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
 QualitativePrimes.propTypes = {
   towerId: PropTypes.string.isRequired,
   headers: PropTypes.arrayOf(PropTypes.number).isRequired,
-  floorsNames: PropTypes.arrayOf(PropTypes.number).isRequired,
+  floorsNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default QualitativePrimes;

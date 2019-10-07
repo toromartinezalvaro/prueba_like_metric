@@ -6,16 +6,16 @@ class QualitativePrimesServices extends Services {
     return this.get(ServiceDefinitions.getRatings(towerId));
   }
 
-  postRate(towerId, rate) {
+  postRating(towerId, rate) {
     return this.post(ServiceDefinitions.postRatings(towerId), rate);
   }
 
-  putRate(id, rate) {
-    return this.put(ServiceDefinitions.putRate(id), rate);
+  putRating(id, rate) {
+    return this.put(ServiceDefinitions.putRating(id), rate);
   }
 
-  deleteRate(towerId) {
-    return this.delete(ServiceDefinitions.deleteRate(towerId));
+  deleteRating(towerId) {
+    return this.delete(ServiceDefinitions.deleteRating(towerId));
   }
 
   getDescriptors(towerId) {
@@ -41,6 +41,13 @@ class QualitativePrimesServices extends Services {
   postPropertyRating(propertyId, descriptorId, rating) {
     return this.post(
       ServiceDefinitions.postPropertyRating(propertyId, descriptorId),
+      rating,
+    );
+  }
+
+  putPropertyRating(propertyRatingId, rating) {
+    return this.put(
+      ServiceDefinitions.putPropertyRating(propertyRatingId),
       rating,
     );
   }

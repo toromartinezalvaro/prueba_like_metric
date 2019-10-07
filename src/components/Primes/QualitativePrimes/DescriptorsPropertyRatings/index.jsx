@@ -15,6 +15,7 @@ const DescriptorsPropertyRatings = ({
   descriptorUpdateHandler,
   removeDescriptorHandler,
   addPropertyRatingHandler,
+  propertyRatingUpdateHandler,
 }) => {
   const makeHeaders = () => {
     const headers = descriptors.map((descriptor, index) => {
@@ -46,50 +47,66 @@ const DescriptorsPropertyRatings = ({
     });
   };
 
+  const getOptions = () => {
+    return ratings.map((rating) => ({
+      value: rating.rate,
+      label: rating.rate,
+    }));
+  };
+
+  const getValue = (descriptorIndex, propertyIndex) => {
+    const value =
+      propertyIndex !== -1 && descriptorIndex !== -1
+        ? propertiesRatings[propertyIndex].qualitativePrimesDescriptors[
+            descriptorIndex
+          ].descriptorRating.rate
+        : null;
+    return {
+      value,
+      label: value,
+    };
+  };
+
   const makeCells = () => {
     const matrix = properties.map((property, i) => {
       const propertyIndex = _.findIndex(
         propertiesRatings,
         (o) => o.id === property.id,
       );
-      return descriptors.map((descriptor, j) => {
-        const descriptorIndex = _.findIndex(
-          propertiesRatings[propertyIndex].qualitativePrimesDescriptors,
-          (o) => o.id === descriptor.id,
-        );
-        return (
-          <Select
-            key={`rating-${i}-${j}`}
-            options={ratings.map((rating) => ({
-              value: rating.rate,
-              label: rating.rate,
-            }))}
-            value={
-              descriptorIndex !== -1
-                ? {
-                    value:
-                      propertiesRatings[propertyIndex]
-                        .qualitativePrimesDescriptors[descriptorIndex]
-                        .descriptorRating.rate,
-                    label:
-                      propertiesRatings[propertyIndex]
-                        .qualitativePrimesDescriptors[descriptorIndex]
-                        .descriptorRating.rate,
-                  }
-                : null
-            }
-            onChange={(value) => {
-              if (descriptorIndex === -1) {
-                addPropertyRatingHandler(
-                  property.id,
-                  descriptor.id,
-                  value.value,
-                );
-              }
-            }}
-          />
-        );
-      });
+      if (propertyIndex !== -1) {
+        return descriptors.map((descriptor, j) => {
+          const descriptorIndex = _.findIndex(
+            propertiesRatings[propertyIndex].qualitativePrimesDescriptors,
+            (o) => o.id === descriptor.id,
+          );
+          return (
+            <Select
+              key={`rating-${i}-${j}`}
+              options={getOptions()}
+              value={getValue(descriptorIndex, propertyIndex)}
+              onChange={(value) => {
+                if (descriptorIndex === -1) {
+                  addPropertyRatingHandler(
+                    property.id,
+                    descriptor.id,
+                    value.value,
+                  );
+                } else {
+                  propertyRatingUpdateHandler(
+                    propertiesRatings[propertyIndex]
+                      .qualitativePrimesDescriptors[descriptorIndex]
+                      .descriptorRating.id,
+                    property.id,
+                    descriptor.id,
+                    value.value,
+                  );
+                }
+              }}
+            />
+          );
+        });
+      }
+      return [[]];
     });
 
     return matrix;
@@ -130,9 +147,30 @@ DescriptorsPropertyRatings.propTypes = {
       percentage: PropTypes.number,
     }),
   ).isRequired,
+  propertiesRatings: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.name,
+      name: PropTypes.string,
+      location: PropTypes.number,
+      floor: PropTypes.number,
+      qualitativePrimesDescriptors: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          name: PropTypes.string,
+          percentage: PropTypes.number,
+          descriptorRating: PropTypes.shape({
+            id: PropTypes.number,
+            rate: PropTypes.number,
+          }),
+        }),
+      ),
+    }),
+  ).isRequired,
   addDescriptorHandler: PropTypes.func.isRequired,
   descriptorUpdateHandler: PropTypes.func.isRequired,
   removeDescriptorHandler: PropTypes.func.isRequired,
+  addPropertyRatingHandler: PropTypes.func.isRequired,
+  propertyRatingUpdateHandler: PropTypes.func.isRequired,
 };
 
 export default DescriptorsPropertyRatings;
