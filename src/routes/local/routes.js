@@ -25,6 +25,10 @@ export const DashboardRoutes = {
   report: { value: '/report/', withIndicator: '/report/:towerId' },
 };
 
+export const ContractRoutes = {
+  base: 'dashboard',
+};
+
 export const ProjectRoutes = {
   base: '/projects',
 };
