@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from 'react';
+import PropType from 'prop-types';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
@@ -10,11 +11,12 @@ const Dashboard = (props) => {
   const [resizableWidth, setResizableWidth] = useState(200);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const [isMenuHidden, setHideMenu] = useState(false);
+
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
-    console.log(expandibleValue);
     setHideMenu(expandibleValue <= 0);
   };
+
   const onHideArrow = (arrowValue) => {
     setIsHidenArrow(arrowValue);
   };
@@ -22,9 +24,8 @@ const Dashboard = (props) => {
   const hideLetter = () => {
     if (isHidenArrow) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   return (
@@ -36,15 +37,14 @@ const Dashboard = (props) => {
             <UserSideMenu
               onHideArrow={onHideArrow}
               isHidenArrow={isHidenArrow}
+              resizableWidth={resizableWidth}
               onChange={onChangeSize}
               isMenuHidden={isMenuHidden}
             />
           </Fragment>
         )}
         {props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
-        props.location.pathname.includes(UserRoutes.base) ? (
-          <div></div>
-        ) : (
+        props.location.pathname.includes(UserRoutes.base) ? null : (
           <Fragment>
             <SideMenu
               onHideArrow={onHideArrow}
@@ -69,5 +69,4 @@ const Dashboard = (props) => {
     </div>
   );
 };
-
 export default Dashboard;

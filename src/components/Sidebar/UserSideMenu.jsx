@@ -8,20 +8,19 @@ import { Role } from '../../helpers';
 import { Resizable } from 're-resizable';
 
 const UserSideMenu = (props) => {
-  const [width, setWidth] = useState(200);
   const [user, setUser] = useState(agent.currentUser);
+
   const onChangeResize = (change) => {
-    console.log(props.resizableWidth*0.30, -change, props.resizableWidth )
-    props.onChange(props.resizableWidth*0.30 <= -change ? 0 : change);
+    props.onChange(props.resizableWidth * 0.3 <= -change ? 0 : 200);
     props.onHideArrow(true);
   };
 
-  
   const handleEnterEvent = () => {
     props.onHideArrow(true);
   };
+
   const handleLeaveEvent = () => {
-      props.onHideArrow(props.resizableWidth > 0 ? false : true);
+    props.onHideArrow(props.resizableWidth > 0 ? false : true);
   };
 
   useEffect(() => {

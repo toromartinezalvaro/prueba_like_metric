@@ -7,6 +7,7 @@ import './App.module.scss';
 import CustomRoute from './config/PrivateRoute';
 
 class App extends Component {
+  // eslint-disable-next-line class-methods-use-this
   render() {
     return (
       <BrowserRouter>
