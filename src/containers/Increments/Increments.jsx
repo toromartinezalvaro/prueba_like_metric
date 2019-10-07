@@ -25,10 +25,14 @@ class Increments extends Component {
     isEmpty: false,
     hidden: true,
     loadingAPI: false,
+    isShowBadgeAlert: false,
   };
 
   componentDidMount() {
-    this.setState({ isLoading: true });
+    this.setState({
+      isLoading: true,
+      isShowBadgeAlert: this.props.isBadgeIncrement,
+    });
     this.updateIncrements();
   }
 
@@ -42,6 +46,7 @@ class Increments extends Component {
           isLoading: false,
           loadingAPI: false,
         });
+        this.props.activateBadgeIncrement(false);
       })
       .catch((error) => {
         this.setState({ isLoading: false, loadingAPI: false });
@@ -108,6 +113,12 @@ class Increments extends Component {
       hidden: !prevState.hidden,
     }));
     this.updateIncrements();
+  };
+
+  toggleBadgeModal = () => {
+    this.setState((prevState) => ({
+      isShowBadgeAlert: !prevState.isShowBadgeAlert,
+    }));
   };
 
   getPeriodsIncrements = () => {
@@ -177,6 +188,11 @@ class Increments extends Component {
             />
           </div>
         ) : null}
+        {this.state.isShowBadgeAlert && (
+          <Modal title="Alerta!" onConfirm={this.toggleBadgeModal} onlyConfirm>
+            El incremento recaudado de uno o más grupos es mayor a la meta
+          </Modal>
+        )}
         <IncrementsTable
           data={this.state.increments}
           putIncrement={this.putIncrement}
@@ -186,6 +202,7 @@ class Increments extends Component {
             this.putSuggestedEffectiveAnnualInterestRate
           }
           towerId={this.props.match.params.towerId}
+          {...this.props}
         />
         <IncrementsMarket
           putMarketAveragePrice={this.putMarketAveragePrice}
