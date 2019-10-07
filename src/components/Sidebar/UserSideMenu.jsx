@@ -11,16 +11,16 @@ const UserSideMenu = (props) => {
   const [user, setUser] = useState(agent.currentUser);
 
   const onChangeResize = (change) => {
-    props.onChange(props.resizableWidth*0.30 <= -change ? 0 : 200);
+    props.onChange(props.resizableWidth * 0.3 <= -change ? 0 : 200);
     props.onHideArrow(true);
-  }
+  };
 
-  
   const handleEnterEvent = () => {
     props.onHideArrow(true);
   };
+
   const handleLeaveEvent = () => {
-      props.onHideArrow(props.resizableWidth > 0 ? false : true);
+    props.onHideArrow(props.resizableWidth > 0 ? false : true);
   };
 
   useEffect(() => {

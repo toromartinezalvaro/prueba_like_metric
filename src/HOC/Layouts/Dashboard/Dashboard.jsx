@@ -45,7 +45,7 @@ const Dashboard = (props) => {
         )}
         {props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
         props.location.pathname.includes(UserRoutes.base) ? (
-          <div></div>
+          null
         ) : (
           <Fragment>
             <SideMenu
