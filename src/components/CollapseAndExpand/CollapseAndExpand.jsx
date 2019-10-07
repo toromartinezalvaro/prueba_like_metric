@@ -1,35 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropType from 'prop-types';
 import style from './CollapseAndExpand.module.scss';
 
-const CollapseAndExpand = (props) => {
-  const [collapseActive, setCollapseActive] = useState(true);
-  let ArrowType = collapseActive ? 'fa-arrow-left' : 'fa-arrow-right';
+const CollapseAndExpand = ({
+  isMenuHidden,
+  isHidenArrow,
+  onChange,
+  onHideArrow,
+}) => {
+  const ArrowType = isMenuHidden ? 'fa-arrow-right' : 'fa-arrow-left';
+
   const handleClick = () => {
-    setCollapseActive(!collapseActive);
-    let expandableValue = ArrowType == 'fa-arrow-left' ? '0px' : '200';
-    props.onChange(expandableValue);
+    const expandableValue = isMenuHidden ? 200 : 0;
+    onChange(expandableValue);
   };
 
   const handleEnterEvent = () => {
-    props.onHideArrow(true);
-  }
-  const handleLeaveEvent = () => {
-    props.onHideArrow(false);
-  }
+    onHideArrow(true);
+  };
 
-  if (props.isHidenArrow) {
+  if (isHidenArrow) {
     return (
-      <div onMouseEnter = {handleEnterEvent} className={style.collapseAndExpandRow} onClick={handleClick}>
+      <div
+        onMouseEnter={handleEnterEvent}
+        className={style.collapseAndExpandRow}
+        onClick={handleClick}
+      >
         <span
+          // eslint-disable-next-line no-useless-concat
           className={`${style.arrowPosition}` + ' ' + `fas ${ArrowType} `}
         ></span>
       </div>
     );
-  } else {
-    return(
-      <div></div>
-    )
   }
+  return null;
 };
 
 export default CollapseAndExpand;
+
+CollapseAndExpand.proptypes = {
+  isMenuHidden: PropType.func,
+  isHidenArrow: PropType.func,
+  onChange: PropType.func,
+  onHideArrow: PropType.func,
+};

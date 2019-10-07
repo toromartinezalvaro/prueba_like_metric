@@ -7,23 +7,33 @@ import agent from '../../config/config';
 import { Role } from '../../helpers';
 import { Resizable } from 're-resizable';
 
-const SideMenu = (props) => {
-  const resizable_Heigh = '100vh';
+const SideMenu = ({
+  resizableWidth,
+  onChange,
+  onHideArrow,
+  tower,
+  isBadgeIncrement,
+}) => {
   const [active, setActive] = useState(window.location.pathname);
 
+  const onChangeResize = (change) => {
+    onChange(resizableWidth * 0.3 <= -change ? 0 : 200);
+    onHideArrow(true);
+  };
+
   const handleEnterEvent = () => {
-    props.onHideArrow(true);
+    onHideArrow(true);
   };
   const handleLeaveEvent = () => {
-    props.onHideArrow(false);
+    onHideArrow(resizableWidth <= 0);
   };
 
   if (window.location.pathname !== active) {
     setActive(window.location.pathname);
   }
   const itemForSlidebar = (styles, route, iconName, description, isBadge) => {
-    if (props.tower !== null) {
-      const towerId = props.tower.id;
+    if (tower !== null) {
+      const towerId = tower.id;
       route += towerId;
     }
     let badgeStyle = '';
@@ -55,21 +65,19 @@ const SideMenu = (props) => {
       <Resizable
         className={
           `${style.SideMenu} ` +
-          `${props.tower !== null ? style.OriginalWidth : style.ZeroWidth}`
+          `${tower !== null ? style.OriginalWidth : style.ZeroWidth}`
         }
         onMouseEnter={handleEnterEvent}
         onMouseLeave={handleLeaveEvent}
-        size={{
-          width: `${props.resizableWidth}`,
-          height: `${resizable_Heigh}`,
-        }}
+        size={{ width: `${resizableWidth}`, height: '100vh' }}
+        onResizeStop={(e, direction, ref, d) => onChangeResize(d.width)}
       >
-        <div className={style.fixedWidth + style.NoVisible} >
+        <div className={style.fixedWidth + style.NoVisible}>
           <div className={style.IconsContainer}>
-            <label>{props.tower ? props.tower.name : ''}</label>
+            <label>{tower ? tower.name : ''}</label>
           </div>
 
-          <div className={style.IconsContainer} >
+          <div className={style.IconsContainer}>
             {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
                 style.MenuItem,
@@ -145,7 +153,7 @@ const SideMenu = (props) => {
                 DashboardRoutes.base + DashboardRoutes.increments.value,
                 'fas fa-angle-double-up',
                 'Incrementos',
-                props.isBadgeIncrement,
+                isBadgeIncrement,
               )}
             {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
