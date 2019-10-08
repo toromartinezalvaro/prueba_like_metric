@@ -2,9 +2,10 @@
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
-  grid-template-areas: "Intersect Headers" "Columns Table";
+  grid-template-areas: 'Intersect Headers' 'Columns Table';
   font-size: 16px;
   overflow-y: auto;
+  border-radius: 5px;
 
   .Intersect {
     position: sticky;
@@ -12,10 +13,10 @@
     top: 0;
     grid-area: Intersect;
     z-index: 99;
-    background: #666;
+    background: #daf5ea;
+    color: #00c781;
     padding: 0.75em 1.5em;
     font-weight: bold;
-    color: #fff;
   }
 
   .Header {
@@ -25,30 +26,33 @@
     top: 0;
     left: 0;
     z-index: 98;
-    background: #31bc86;
+    background: #e7e7f3;
+    color: #29339b;
     text-align: center;
     font-weight: bold;
-    color: #fff;
     padding-right: 10px;
     & > * {
       width: 150px;
       line-height: 50px;
     }
-    .Element{
-      vertical-align: middle
-    }
   }
 
+  .Element {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+  }
   .Columns {
     grid-area: Columns;
     position: sticky;
-    left:0;
+    left: 0;
     top: 0;
     z-index: 98;
-    background: #2ea879;
+    background: #e7e7f3;
+    color: #29339b;
     padding: 0.75em 1.5em;
     font-weight: bold;
-    color: #fff;
     display: flex;
     flex-direction: column;
     & > * {
@@ -76,7 +80,7 @@
     }
   }
 }
-.wrapper1{
+.wrapper1 {
   width: inherit;
   border: none 0px RED;
   overflow-x: auto;
