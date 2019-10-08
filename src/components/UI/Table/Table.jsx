@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import styles from "./Table.module.scss";
+import React, { Component, Fragment } from 'react';
+import styles from './Table.module.scss';
 
 class table extends Component {
   constructor(props) {
@@ -8,8 +8,9 @@ class table extends Component {
     this.wrapperBottom = React.createRef();
     this.divTop = React.createRef();
     this.divBot = React.createRef();
-    this.scrollWidth = -1
+    this.scrollWidth = -1;
   }
+
   state = {
     isSyncingTopScroll: false,
     isSyncingBottomScroll: false,
@@ -19,17 +20,22 @@ class table extends Component {
   };
 
   componentDidUpdate() {
-    if (this.wrapperTop.current && this.scrollWidth !==  this.divBot.current.scrollWidth) {
-
+    if (
+      this.wrapperTop.current &&
+      this.scrollWidth !== this.divBot.current.scrollWidth
+    ) {
       if (this.divTop.current.scrollWidth !== this.divBot.current.scrollWidth) {
-        this.scrollWidth = this.divBot.current.scrollWidth
+        this.scrollWidth = this.divBot.current.scrollWidth;
         this.setState({
-          width: this.divBot.current.scrollWidth
+          width: this.divBot.current.scrollWidth,
         });
       }
-      if (this.state.height === 0 && this.state.heightViewPort !== window.innerHeight) {
+      if (
+        this.state.height === 0 &&
+        this.state.heightViewPort !== window.innerHeight
+      ) {
         this.setState({
-          heightViewPort: window.innerHeight
+          heightViewPort: window.innerHeight,
         });
       }
     }
@@ -40,19 +46,19 @@ class table extends Component {
 
   componentDidMount() {
     this.updateWindowDimensions();
-    window.addEventListener("resize", this.updateWindowDimensions);
+    window.addEventListener('resize', this.updateWindowDimensions);
     this.setState({ height: this.wrapperBottom.current.offsetHeight });
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateWindowDimensions);
+    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
   updateWindowDimensions = () => {
     this.setState({ heightViewPort: window.innerHeight });
-  }
+  };
 
-  handleScrollTop = event => {
+  handleScrollTop = (event) => {
     if (!this.state.isSyncingTopScroll) {
       this.setState({ isSyncingBottomScroll: true });
       this.divBot.current.scrollLeft = this.wrapperTop.current.scrollLeft;
@@ -60,7 +66,7 @@ class table extends Component {
     this.setState({ isSyncingTopScroll: false });
   };
 
-  handleScrollBottom = event => {
+  handleScrollBottom = (event) => {
     if (!this.state.isSyncingBottomScroll && this.wrapperTop.current !== null) {
       this.setState({ isSyncingTopScroll: true });
       this.wrapperTop.current.scrollLeft = this.divBot.current.scrollLeft;
@@ -68,15 +74,12 @@ class table extends Component {
     this.setState({ isSyncingBottomScroll: false });
   };
 
-  scrollDidUpdate = () => {
-
-  }
+  scrollDidUpdate = () => {};
 
   render() {
     return (
       <Fragment>
         <div>
-
           {this.state.heightViewPort * 0.25 < this.state.height ? (
             <div
               className={styles.wrapper1}
@@ -98,36 +101,56 @@ class table extends Component {
             <div
               className={styles.Container}
               ref={this.divBot}
-              style={this.props.maxHeight ?  this.props.maxHeight  : { maxHeight: this.state.heightViewPort }}
+              style={
+                this.props.maxHeight
+                  ? this.props.maxHeight
+                  : { maxHeight: this.state.heightViewPort }
+              }
             >
               <div className={styles.Intersect}>
-                <p style={{ marginBlockStart: "0.8em" }}>
+                <p style={{ marginBlockStart: '0.8em' }}>
                   {this.props.intersect}
                 </p>
               </div>
 
               <div className={styles.Header}>
-                {this.props.headers.map(element => (
-                  <div style={this.props.width}>{element}</div>
+                {this.props.headers.map((element, i) => (
+                  <div
+                    key={styles.Element + i}
+                    style={this.props.width}
+                    className={styles.Element}
+                  >
+                    {element}
+                  </div>
                 ))}
               </div>
 
               <div className={styles.Columns} style={this.props.style}>
-                {this.props.columns.map(element => (
-                  <div>{element}</div>
+                {this.props.columns.map((element) => (
+                  <div
+                    key={`${styles.Element + element}-columns`}
+                    className={styles.Element}
+                  >
+                    {element}
+                  </div>
                 ))}
               </div>
 
               <div className={styles.Table}>
-                {this.props.data && this.props.data.map(row => (
-                  <div className={styles.Row}>
-                    {row.map(cell => (
-                      <div className={styles.Cell} style={this.props.width}>
-                        {cell}
-                      </div>
-                    ))}
-                  </div>
-                ))}{" "}
+                {this.props.data &&
+                  this.props.data.map((row, i) => (
+                    <div key={i + styles.Table} className={styles.Row}>
+                      {row.map((cell, cellIndex) => (
+                        <div
+                          key={cellIndex + styles.Row}
+                          className={styles.Cell}
+                          style={this.props.width}
+                        >
+                          {cell}
+                        </div>
+                      ))}
+                    </div>
+                  ))}{' '}
               </div>
             </div>
           </div>
