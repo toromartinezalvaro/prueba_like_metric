@@ -33,7 +33,7 @@ const sidebar = () => {
       )}
       {itemForSlidebar(
         `${style.MenuItem}`,
-        ContractRoutes.base,
+        DashboardRoutes.base + ContractRoutes.base,
         'fas fa-file-signature',
       )}
     </div>

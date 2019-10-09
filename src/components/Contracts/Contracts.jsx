@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './Contracts.module.scss';
+import Navbar from '../Navbar/Navbar';
 const Contracts = (props) => {
   return (
     <div className={styles.Contracts}>
-      <h1>WORKS!</h1>
+      <Navbar></Navbar>
     </div>
   );
 };

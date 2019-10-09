@@ -28,7 +28,7 @@ import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
-import Contracts from '../../HOC/Layouts/Contracts/Contracts';
+import Contracts from '../../components/Contracts/Contracts';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -189,7 +189,6 @@ class Dashboard extends Component {
           exact
           component={Report}
         />
-        {console.log("re ", match.url + ContractRoutes.base)}
         <PrivateRoute
           path={match.url + ContractRoutes.base}
           roles={[Role.Admin, Role.Super]}
