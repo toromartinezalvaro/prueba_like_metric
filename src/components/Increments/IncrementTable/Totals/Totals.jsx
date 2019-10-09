@@ -79,7 +79,12 @@ function Totals({
         ) : (
           <Input
             mask="currency"
-            validations={[]}
+            validations={[
+              {
+                fn: (value) => value !== '.',
+                message: 'Debe ingresar un numero',
+              },
+            ]}
             value={increment.toFixed(2)}
             onChange={(target) => {
               putIncrement(target.value);
