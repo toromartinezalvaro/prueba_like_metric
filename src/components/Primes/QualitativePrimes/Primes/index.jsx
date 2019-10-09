@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { RadioGroup, ReversedRadioButton } from 'react-radio-buttons';
+import NumberFormat from 'react-number-format';
 import _ from 'lodash';
+import Button from '../../../UI2/Button';
 import Table from '../../../UI/Table/Table';
 import Styles from './Primes.module.scss';
 
-const MT2 = 'm2Prime';
+const M2 = 'm2Prime';
 const UNIT = 'unitPrime';
 
 const Primes = ({
@@ -14,8 +16,9 @@ const Primes = ({
   ratings,
   descriptors,
   propertiesRatings,
+  handleUpdatePrimes,
 }) => {
-  const [primeType, setPrimeType] = useState(MT2);
+  const [primeType, setPrimeType] = useState(M2);
 
   const is100Percent = () => {
     return (
@@ -53,7 +56,12 @@ const Primes = ({
         );
         const prime = _.find(ratings, (e) => e.rate === finalRating);
         matrix[propertyRating.floor - 1][propertyRating.location - 1] = (
-          <span>${prime[primeType]}</span>
+          <NumberFormat
+            value={prime[primeType]}
+            displayType="text"
+            thousandSeparator
+            prefix="$"
+          />
         );
       }
     });
@@ -74,18 +82,28 @@ const Primes = ({
             }}
             horizontal
           >
-            <ReversedRadioButton value={MT2}>m²</ReversedRadioButton>
+            <ReversedRadioButton value={M2}>m²</ReversedRadioButton>
             <ReversedRadioButton value={UNIT}>Unidad</ReversedRadioButton>
           </RadioGroup>
         </div>
       </div>
       {is100Percent() ? (
-        <Table
-          intersect="Nomenclatura"
-          headers={headers}
-          columns={floorsNames}
-          data={makeCells()}
-        />
+        <Fragment>
+          <Table
+            intersect="Nomenclatura"
+            headers={headers}
+            columns={floorsNames}
+            data={makeCells()}
+          />
+          <Button
+            style={{ width: '100%', margin: '1em 0' }}
+            onClick={() => {
+              handleUpdatePrimes(primeType);
+            }}
+          >
+            Aplicar primas {primeType === M2 ? 'm²' : 'Unidad'}
+          </Button>
+        </Fragment>
       ) : (
         <div>
           <span>El porcentaje de los descriptores no es 100%</span>
@@ -131,6 +149,7 @@ Primes.propTypes = {
       percentage: PropTypes.number,
     }),
   ).isRequired,
+  handleUpdatePrimes: PropTypes.func.isRequired,
 };
 
 export default Primes;

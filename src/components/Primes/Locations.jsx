@@ -6,7 +6,16 @@ import Button from '../UI/Button/Button';
 import Modal from '../UI/Modal/Modal';
 import QualitativePrimes from './QualitativePrimes';
 
-const locations = (props) => {
+const Locations = (props) => {
+  const [
+    qualitativePrimesModalState,
+    setQualitativePrimesModalState,
+  ] = useState(true);
+
+  const changeModalState = () => {
+    setQualitativePrimesModalState(!qualitativePrimesModalState);
+  };
+
   return (
     <React.Fragment>
       <Card>
@@ -32,7 +41,7 @@ const locations = (props) => {
               />
             </div>
             <div style={{ marginLeft: 'auto', marginRight: 0 }}>
-              <Button>Primas cualitativas</Button>
+              <Button onClick={changeModalState}>Primas cualitativas</Button>
             </div>
           </div>
         </CardHeader>
@@ -48,16 +57,21 @@ const locations = (props) => {
       <Modal
         style={{ height: '90vh', width: '80vw' }}
         title="Primas cualitativas"
-        hidden={true}
+        hidden={qualitativePrimesModalState}
+        onConfirm={changeModalState}
+        basic
       >
         <QualitativePrimes
           towerId={props.towerId}
           headers={props.headers}
           floorsNames={props.floorsNames}
+          changeModalState={changeModalState}
+          reloadPrimes={props.reloadPrimes}
+          alertHandler={props.alertHandler}
         />
       </Modal>
     </React.Fragment>
   );
 };
 
-export default locations;
+export default Locations;

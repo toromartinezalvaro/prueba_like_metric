@@ -6,6 +6,7 @@ import Altitudes from '../../components/Primes/Altitudes';
 import PrimeServices from '../../services/prime/PrimeServices';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import LoadableContainer from '../../components/UI/Loader';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 class Prime extends Component {
   constructor(props) {
@@ -55,6 +56,12 @@ class Prime extends Component {
         isLoading: false,
       });
     });
+    this.getLocationPrimes();
+  }
+
+  getLocationPrimes = () => {
+    this.setState({ isLoading: true });
+    const towerId = this.props.match.params.towerId;
     this.services.getLocationPrimes(towerId).then((response) => {
       const location = { ...this.state.location };
       location.prices = response.data.primes;
@@ -70,7 +77,7 @@ class Prime extends Component {
         this.setState({ showFloatingButton: true, isLoading: false });
       }
     });
-  }
+  };
 
   getInputs(type) {
     if (type === 'ALT') {
@@ -189,6 +196,8 @@ class Prime extends Component {
           prices={this.getInputs('LCT')}
           unit={this.state.location.unit}
           towerId={this.props.match.params.towerId}
+          reloadPrimes={this.getLocationPrimes}
+          alertHandler={this.props.spawnMessage}
         />
         {this.state.showFloatingButton ? (
           <FloatingButton
@@ -204,4 +213,4 @@ class Prime extends Component {
   }
 }
 
-export default Prime;
+export default withDefaultLayout(Prime);

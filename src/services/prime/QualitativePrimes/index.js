@@ -51,6 +51,10 @@ class QualitativePrimesServices extends Services {
       rating,
     );
   }
+
+  postPrimes(primeType, towerId) {
+    return this.post(ServiceDefinitions.postPrimes(primeType, towerId));
+  }
 }
 
 export default QualitativePrimesServices;

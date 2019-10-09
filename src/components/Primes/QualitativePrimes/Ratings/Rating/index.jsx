@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Input from '../../../../UI2/Input';
+import Input from '../../../../UI/Input/Input';
 import Styles from './Rating.module.scss';
 
 const Rating = ({
@@ -23,9 +23,10 @@ const Rating = ({
               mask="currency"
               useInternalState
               value={m2Prime}
-              onBlur={(event) => {
+              validations={[]}
+              onChange={(event) => {
                 const ratingData = {
-                  m2Prime: parseFloat(event.target.value),
+                  m2Prime: parseFloat(event.value),
                   unitPrime,
                 };
                 updateRatingHandler(id, ratingData);
@@ -42,10 +43,11 @@ const Rating = ({
               mask="currency"
               useInternalState
               value={unitPrime}
-              onBlur={(event) => {
+              validations={[]}
+              onChange={(event) => {
                 const ratingData = {
                   m2Prime,
-                  unitPrime: parseFloat(event.target.value),
+                  unitPrime: parseFloat(event.value),
                 };
                 updateRatingHandler(id, ratingData);
               }}

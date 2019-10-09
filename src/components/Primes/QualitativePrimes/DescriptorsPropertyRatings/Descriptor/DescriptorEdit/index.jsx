@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../../../../UI2/Button';
 import Input from '../../../../../UI2/Input';
+import OldInput from '../../../../../UI/Input/Input';
 import Styles from './DescriptorEdit.module.scss';
 
 const DescriptorEdit = ({
@@ -27,7 +28,8 @@ const DescriptorEdit = ({
         value={name}
         onChange={handleNameChange}
       />
-      <Input
+      <OldInput
+        style={{ width: '130px', boxSizing: 'border-box' }}
         className={Styles.input}
         mask="percentage"
         value={percentage * 100}

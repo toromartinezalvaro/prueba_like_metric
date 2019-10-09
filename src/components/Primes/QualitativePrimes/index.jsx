@@ -8,7 +8,14 @@ import Primes from './Primes';
 import Services from '../../../services/prime/QualitativePrimes';
 import 'react-tabs/style/react-tabs.css';
 
-const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
+const QualitativePrimes = ({
+  towerId,
+  headers,
+  floorsNames,
+  changeModalState,
+  reloadPrimes,
+  alertHandler,
+}) => {
   const services = new Services();
 
   const descriptors2 = useRef(null);
@@ -26,7 +33,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setRatings(orderedRatings);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
 
     services
@@ -37,7 +44,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         descriptors2.current = orderedDescriptors;
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
 
     services
@@ -51,7 +58,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setPropertiesRatings(response.data.propertiesRatings);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
 
     return () => {};
@@ -69,7 +76,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setRatings(tempRatings);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -85,7 +92,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -97,7 +104,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setRatings(tempRatings);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -110,7 +117,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setDescriptors(tempDescriptors);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -126,7 +133,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -151,7 +158,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -170,7 +177,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -198,7 +205,20 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
         setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
-        console.error(error);
+        alertHandler(error.response.data.message, 'error');
+      });
+  };
+
+  const handleUpdatePrimes = (primeType) => {
+    services
+      .postPrimes(primeType, towerId)
+      .then(() => {
+        reloadPrimes();
+        changeModalState();
+        alertHandler('Las primas se actualizaron correctamente', 'success');
+      })
+      .catch((error) => {
+        alertHandler(error.response.data.message, 'error');
       });
   };
 
@@ -238,6 +258,7 @@ const QualitativePrimes = ({ towerId, headers, floorsNames }) => {
           ratings={ratings}
           descriptors={descriptors}
           propertiesRatings={propertiesRatings}
+          handleUpdatePrimes={handleUpdatePrimes}
         />
       </TabPanel>
     </Tabs>
@@ -248,6 +269,9 @@ QualitativePrimes.propTypes = {
   towerId: PropTypes.string.isRequired,
   headers: PropTypes.arrayOf(PropTypes.number).isRequired,
   floorsNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  changeModalState: PropTypes.func.isRequired,
+  reloadPrimes: PropTypes.func.isRequired,
+  alertHandler: PropTypes.func.isRequired,
 };
 
 export default QualitativePrimes;

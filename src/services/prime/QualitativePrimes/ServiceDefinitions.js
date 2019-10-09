@@ -34,6 +34,9 @@ const ServiceDefinitions = {
   putPropertyRating: (propertyRatingId) => {
     return `${API_PATH}qualitativePrimes/properties-rates/${propertyRatingId}`;
   },
+  postPrimes: (primeType, towerId) => {
+    return `${API_PATH}qualitativePrimes/prime-type/${primeType}/tower/${towerId}`;
+  },
 };
 
 export default ServiceDefinitions;
