@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import NumberFormat from 'react-number-format';
 import Styles from './Input.module.scss';
 
 const CURRENCY = 'currency';
@@ -24,7 +23,7 @@ const Input = ({
 
   const handleOnChange = (event) => {
     if (useInternalState) {
-      setState(event.target.float);
+      setState(event.target.value);
     } else {
       onChange(event);
     }
@@ -32,12 +31,14 @@ const Input = ({
 
   return (
     <div className={`${Styles.container} ${className}`}>
-      <NumberFormat
+      {mask === CURRENCY ? <span>$</span> : null}
+      <input
         className={Styles.input}
         onChange={handleOnChange}
         value={useInternalState ? state : value}
         {...rest}
-      />
+      ></input>
+      {mask === PERCENTAGE ? <span>%</span> : null}
     </div>
   );
 };

@@ -37,7 +37,7 @@ const Descriptor = ({
 
   const handlePercentageChange = (event) => {
     const tempDescriptorData = { ...descriptorData };
-    tempDescriptorData.percentage = event.target.value;
+    tempDescriptorData.percentage = (event.target.value / 100).toFixed(2);
     setDescriptorData(tempDescriptorData);
   };
 

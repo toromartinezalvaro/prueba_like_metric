@@ -19,13 +19,13 @@ const Rating = ({
             <span>m²:</span>
           </div>
           <div className={Styles.value}>
-            {/* TODO: Devolver números no strings */}
             <Input
+              mask="currency"
               useInternalState
               value={m2Prime}
               onBlur={(event) => {
                 const ratingData = {
-                  m2Prime: event.target.value,
+                  m2Prime: parseFloat(event.target.value),
                   unitPrime,
                 };
                 updateRatingHandler(id, ratingData);
@@ -39,12 +39,13 @@ const Rating = ({
           </div>
           <div className={Styles.value}>
             <Input
+              mask="currency"
               useInternalState
               value={unitPrime}
               onBlur={(event) => {
                 const ratingData = {
                   m2Prime,
-                  unitPrime: event.target.value,
+                  unitPrime: parseFloat(event.target.value),
                 };
                 updateRatingHandler(id, ratingData);
               }}

@@ -48,7 +48,7 @@ const locations = (props) => {
       <Modal
         style={{ height: '90vh', width: '80vw' }}
         title="Primas cualitativas"
-        hidden={false}
+        hidden={true}
       >
         <QualitativePrimes
           towerId={props.towerId}

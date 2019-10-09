@@ -12,7 +12,7 @@
   font-size: 14px;
   // .p-4
   padding: 1em;
-  // Custom
+  // .overflow-y-auto
   overflow-y: auto;
 
   .header {
@@ -29,11 +29,18 @@
     }
 
     .actions {
+      // .mr-0
       margin-right: 0;
+      // .ml-auto
       margin-left: auto;
     }
   }
 
   .ratings {
+    .onBoarding {
+      position: relative;
+      .message {
+      }
+    }
   }
 }

@@ -33,7 +33,11 @@ const Ratings = ({
             );
           })
         ) : (
-          <span>No hay nada</span>
+          <div className={Styles.onBoarding}>
+            <span className={Styles.message}>
+              No hay calificaciones para mostrar
+            </span>
+          </div>
         )}
       </div>
     </div>

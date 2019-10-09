@@ -26,8 +26,22 @@
       font-weight: 700;
       // .text-3xl
       font-size: 1.875rem;
-      //.flex-grow
-      flex-grow: 1;
+    }
+  }
+  .section {
+    // .text-lg
+    font-size: 1.125rem;
+
+    .percentage {
+      //.text-2xl
+      font-size: 1.5rem;
+      //.font-bold
+      font-weight: 700;
+    }
+
+    .alert {
+      // .text-red-500
+      color: #f56565 !important;
     }
   }
 }

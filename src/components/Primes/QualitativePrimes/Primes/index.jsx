@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { RadioGroup, RadioButton } from 'react-radio-buttons';
+import { RadioGroup, ReversedRadioButton } from 'react-radio-buttons';
 import _ from 'lodash';
 import Table from '../../../UI/Table/Table';
+import Styles from './Primes.module.scss';
 
 const MT2 = 'm2Prime';
 const UNIT = 'unitPrime';
@@ -60,9 +61,9 @@ const Primes = ({
   };
 
   return (
-    <div>
-      <div>
-        <div>
+    <div className={Styles.container}>
+      <div className={Styles.header}>
+        <div className={Styles.title}>
           <span>Primas</span>
         </div>
         <div>
@@ -73,8 +74,8 @@ const Primes = ({
             }}
             horizontal
           >
-            <RadioButton value={MT2}>m²</RadioButton>
-            <RadioButton value={UNIT}>Unidad</RadioButton>
+            <ReversedRadioButton value={MT2}>m²</ReversedRadioButton>
+            <ReversedRadioButton value={UNIT}>Unidad</ReversedRadioButton>
           </RadioGroup>
         </div>
       </div>
@@ -86,7 +87,9 @@ const Primes = ({
           data={makeCells()}
         />
       ) : (
-        <span>No es 100</span>
+        <div>
+          <span>El porcentaje de los descriptores no es 100%</span>
+        </div>
       )}
     </div>
   );

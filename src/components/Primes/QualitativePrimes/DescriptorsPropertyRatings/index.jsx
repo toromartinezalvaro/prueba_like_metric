@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Select from 'react-select';
+import ReactTooltip from 'react-tooltip';
 import Table from '../../../UI/Table/Table';
 import Button from '../../../UI2/Button';
 import Descriptor from './Descriptor';
+import Styles from './DescriptorsPropertyRatings.module.scss';
 
 const DescriptorsPropertyRatings = ({
   ratings,
@@ -79,6 +81,7 @@ const DescriptorsPropertyRatings = ({
             propertiesRatings[propertyIndex].qualitativePrimesDescriptors,
             (o) => o.id === descriptor.id,
           );
+          // TODO: Too deep!
           return (
             <Select
               key={`rating-${i}-${j}`}
@@ -112,15 +115,41 @@ const DescriptorsPropertyRatings = ({
     return matrix;
   };
 
+  const calculateDescriptorsTotalPercentage = () => {
+    return descriptors.reduce((current, next) => {
+      return current + next.percentage;
+    }, 0);
+  };
+
   return (
-    <div>
-      <Table
-        intersect="Nomenclatura"
-        headers={makeHeaders()}
-        columns={makeColumns()}
-        data={makeCells()}
-      />
-    </div>
+    <Fragment>
+      <div className={Styles.container}>
+        <div className={Styles.header}>
+          <span className={Styles.title}>Definiciones</span>
+        </div>
+        <div className={Styles.section}>
+          Porcentaje total de las deficinones:{' '}
+          <span className={Styles.percentage}>
+            {calculateDescriptorsTotalPercentage() * 100}%
+          </span>{' '}
+          {calculateDescriptorsTotalPercentage() < 1 ? (
+            <i
+              className={`${Styles.alert} fas fa-info-circle`}
+              data-tip="Las deficiones deben sumar 100% para continuar"
+            ></i>
+          ) : null}
+        </div>
+        <div>
+          <Table
+            intersect="Nomenclatura"
+            headers={makeHeaders()}
+            columns={makeColumns()}
+            data={makeCells()}
+          />
+        </div>
+      </div>
+      <ReactTooltip />
+    </Fragment>
   );
 };
 
