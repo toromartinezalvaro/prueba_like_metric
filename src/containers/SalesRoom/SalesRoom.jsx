@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import ReactTooltip from 'react-tooltip';
 import NumberFormat from 'react-number-format';
-import { isStatement } from '@babel/types';
 import SalesRoomService from '../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
