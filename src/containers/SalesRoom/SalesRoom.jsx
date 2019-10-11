@@ -104,7 +104,7 @@ export default class Detail extends Component {
     });
   };
 
-  makeCells = (buttons, property, active) => (
+  makeCells = (buttons, property, active = 'priceWithIncrements') => (
     <div
       style={{
         backgroundColor: buttons.backgroundColor,
@@ -117,9 +117,8 @@ export default class Detail extends Component {
         style={{ fontWeight: 'bold', color: 'White' }}
         data-tip={property.name}
       >
-        {active === 'mts2' ? (
-          parseFloat(property.mts2).toFixed(2)
-        ) : (
+        {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
+        {active === 'priceWithIncrements' && (
           <NumberFormat
             value={parseFloat(property.priceWithIncrement).toFixed(2)}
             displayType={'text'}
@@ -127,6 +126,15 @@ export default class Detail extends Component {
             prefix={'$'}
           />
         )}
+        {active === 'price' && (
+          <NumberFormat
+            value={parseFloat(property.price).toFixed(2)}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+        )}
+        {active === 'groups' && property.groupName}
       </p>
       <ReactTooltip />
     </div>
