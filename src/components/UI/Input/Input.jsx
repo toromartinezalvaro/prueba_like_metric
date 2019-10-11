@@ -26,7 +26,8 @@ const Input = (props) => {
       const val = next.fn(cleanValue(value));
       if (!val) {
         return setErrorMessages(next.message);
-      } if (val !== true) {
+      }
+      if (val !== true) {
         if (val.floor === props.floor && val.location === props.location) {
           return true;
         } else {
@@ -46,7 +47,16 @@ const Input = (props) => {
       if (dirty && props.zeroDefault && localValue === '') {
         setLocalValue('0');
       }
-      const value = localValue === undefined ? props.value : localValue;
+      let value = localValue === undefined ? props.value : localValue;
+      if (
+        props.mask === 'number' ||
+        props.mask === 'percentage' ||
+        props.mask === 'currency'
+      ) {
+        if (value === '.' || value === '-') {
+          value = 0;
+        }
+      }
       if (value !== props.value && !props.forceUpdate) {
         props.onChange({
           name: props.name === undefined ? '' : props.name,
@@ -83,7 +93,8 @@ const Input = (props) => {
   const cleanValue = (value) => {
     if (props.mask === 'number') {
       return cleanNumberMask(value);
-    } if (props.mask === 'currency') {
+    }
+    if (props.mask === 'currency') {
       return cleanCurrencyMask(value);
     } else if (props.mask === 'percentage') {
       return cleanPercentageMask(value);
