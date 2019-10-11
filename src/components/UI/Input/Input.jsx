@@ -26,7 +26,8 @@ const Input = (props) => {
       const val = next.fn(cleanValue(value));
       if (!val) {
         return setErrorMessages(next.message);
-      } if (val !== true) {
+      }
+      if (val !== true) {
         if (val.floor === props.floor && val.location === props.location) {
           return true;
         } else {
@@ -83,7 +84,8 @@ const Input = (props) => {
   const cleanValue = (value) => {
     if (props.mask === 'number') {
       return cleanNumberMask(value);
-    } if (props.mask === 'currency') {
+    }
+    if (props.mask === 'currency') {
       return cleanCurrencyMask(value);
     } else if (props.mask === 'percentage') {
       return cleanPercentageMask(value);
