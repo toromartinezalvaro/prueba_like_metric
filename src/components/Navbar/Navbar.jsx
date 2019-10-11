@@ -11,14 +11,30 @@ import Accordion from '../UI/Accordion/Accordion';
 import { Link } from 'react-router-dom';
 import styles from './Navbar.module.scss';
 import Select from 'react-select';
+import BusinessPatner from '../BusinessPatner/BusinessPatner';
 
 
 const Navbar = () => {
-  const [inputValue, setInputValue] = useState(' ');
+  const [contractTitleValue, setContractTitleValue] = useState(' ');
+
+  const [contractNumberValue, setContractNumberValue] = useState(' ');
+
   const [modalState, setModalState] = useState(false);
-  const handleInputChange = (target) => {
-    setInputValue(target.value);
+
+  const [createNewPatner, setCreateNewPatner] = useState(false);
+
+  const handleContractTitleValue = (target) => {
+    setContractTitleValue(target.value);
   };
+
+  const handleContractNumber = (target) => {
+    setContractNumberValue(target.value);
+  };
+
+  const handleCreateNewPatner = (isTrue) => {
+    setCreateNewPatner(isTrue)
+  }
+
   return (
     <div>
       <nav className={styles.navigationBar}>
@@ -34,46 +50,60 @@ const Navbar = () => {
           <Accordion
             className={styles.accordion}
             trigger={`General Information`}
-            // eslint-disable-next-line react/no-children-prop
+          // eslint-disable-next-line react/no-children-prop
           >
-            <div>
-              <Input
-                type={'text'}
-                name={'contractTitle'}
-                placeholder={'Contract Title'}
-                validations={[]}
-                onChange={handleInputChange}
-              ></Input>
+            <div className={styles.wrapper}>
+              <div className={styles.gridOne}>
+                <Input
+                  type={'text'}
+                  name={'contractTitle'}
+                  placeholder={'Contract Title'}
+                  validations={[]}
+                  onChange={handleContractTitleValue}
+                ></Input>
 
-              <span>Categoría</span>
-              <Select
-                name="category"
-                options={[{ value: '', label: 'Admin' }]}
-              />
-            </div>
+                <span>Socios</span>
+                <div className="patnerActions">
+                  <Select
+                    name="business patner"
+                    className = { styles.businessPatner}
+                    options={[{ value: '', label: 'upus' }]}
+                  />
+                  <button onClick={handleCreateNewPatner} className={styles.addPatner}>+</button>
+                  {createNewPatner?<Modal style={{ width: '85vw', height: '95vh' }}><BusinessPatner></BusinessPatner></Modal>:null}
+                </div>
 
-            <div>
-              <span>Estado</span>
-              <Select
-                name="status"
-                options={[
-                  { value: '', label: 'Draft' },
-                  { value: '', label: 'In Negotiation' },
-                ]}
-              />
+                <span>Categoría</span>
+                <Select
+                  name="category"
+                  options={[{ value: '', label: 'Admin' }]}
+                />
+                
+              </div>
 
-              <Input
-                name="contractNumber"
-                placeholder="Contract Number"
-                validations={[]}
-                onChange={handleInputChange}
-              ></Input>
+              <div className={styles.gridOne}>
+                <span>Estado</span>
+                <Select
+                  name="status"
+                  options={[
+                    { value: '', label: 'Draft' },
+                    { value: '', label: 'In Negotiation' },
+                  ]}
+                />
 
-              <span>Contrato principal</span>
-              <Select
-                name="masterContract"
-                options={[{ value: '', label: 'Contrato Principal' }]}
-              />
+                <Input
+                  name="contractNumber"
+                  placeholder="Contract Number"
+                  validations={[]}
+                  onChange={handleContractNumber}
+                ></Input>
+
+                <span>Contrato principal</span>
+                <Select
+                  name="masterContract"
+                  options={[{ value: '', label: 'Contrato Principal' }]}
+                />
+              </div>
             </div>
 
             <div>
@@ -83,18 +113,19 @@ const Navbar = () => {
                 cols="30"
                 rows="10"
                 placeholder="description-contracts"
+                className={styles.textComments}
               ></textarea>
             </div>
           </Accordion>
           <Accordion
             className={styles.accordion}
             trigger={`Lyfecicle`}
-            // eslint-disable-next-line react/no-children-prop
+          // eslint-disable-next-line react/no-children-prop
           ></Accordion>
           <Accordion
             className={styles.accordion}
             trigger={`Billing & Financials`}
-            // eslint-disable-next-line react/no-children-prop
+          // eslint-disable-next-line react/no-children-prop
           ></Accordion>
         </Modal>
       ) : null}
