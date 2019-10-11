@@ -6,13 +6,15 @@
 
 import React, { useState } from 'react';
 import Modal from '../../components/UI/Modal/Modal';
-import Input from '../../components/UI/Input/Input';
 import Accordion from '../UI/Accordion/Accordion';
 import { Link } from 'react-router-dom';
 import styles from './Navbar.module.scss';
 import Select from 'react-select';
 import BusinessPatner from '../BusinessPatner/BusinessPatner';
-
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 const Navbar = () => {
   const [contractTitleValue, setContractTitleValue] = useState(' ');
@@ -32,8 +34,8 @@ const Navbar = () => {
   };
 
   const handleCreateNewPatner = (isTrue) => {
-    setCreateNewPatner(isTrue)
-  }
+    setCreateNewPatner(isTrue);
+  };
 
   return (
     <div>
@@ -47,85 +49,34 @@ const Navbar = () => {
 
       {modalState ? (
         <Modal style={{ width: '85vw', height: '95vh' }}>
-          <Accordion
-            className={styles.accordion}
-            trigger={`General Information`}
-          // eslint-disable-next-line react/no-children-prop
-          >
+          <Accordion className={styles.accordion} trigger="General Information">
             <div className={styles.wrapper}>
+              <h3>Agregar Contrato</h3>
               <div className={styles.gridOne}>
-                <Input
-                  type={'text'}
-                  name={'contractTitle'}
-                  placeholder={'Contract Title'}
-                  validations={[]}
-                  onChange={handleContractTitleValue}
-                ></Input>
-
-                <span>Socios</span>
-                <div className="patnerActions">
-                  <Select
-                    name="business patner"
-                    className = { styles.businessPatner}
-                    options={[{ value: '', label: 'upus' }]}
+                <FormControl className="form-control" variant="outlined">
+                  <OutlinedInput
+                    id="component-outlined"
+                    onChange={handleContractTitleValue}
+                    labelWidth="Titulo del contrato"
                   />
-                  <button onClick={handleCreateNewPatner} className={styles.addPatner}>+</button>
-                  {createNewPatner?<Modal style={{ width: '85vw', height: '95vh' }}><BusinessPatner></BusinessPatner></Modal>:null}
-                </div>
-
-                <span>Categoría</span>
-                <Select
-                  name="category"
-                  options={[{ value: '', label: 'Admin' }]}
-                />
-                
+                  <InputLabel htmlFor="component-outlined">
+                    Titulo de contrato
+                  </InputLabel>
+                </FormControl>
               </div>
 
-              <div className={styles.gridOne}>
-                <span>Estado</span>
-                <Select
-                  name="status"
-                  options={[
-                    { value: '', label: 'Draft' },
-                    { value: '', label: 'In Negotiation' },
-                  ]}
-                />
-
-                <Input
-                  name="contractNumber"
-                  placeholder="Contract Number"
-                  validations={[]}
-                  onChange={handleContractNumber}
-                ></Input>
-
-                <span>Contrato principal</span>
-                <Select
-                  name="masterContract"
-                  options={[{ value: '', label: 'Contrato Principal' }]}
-                />
-              </div>
+              <div className={styles.gridTwo}></div>
             </div>
 
-            <div>
-              <textarea
-                name="description"
-                id="description"
-                cols="30"
-                rows="10"
-                placeholder="description-contracts"
-                className={styles.textComments}
-              ></textarea>
-            </div>
+            <div></div>
           </Accordion>
           <Accordion
             className={styles.accordion}
             trigger={`Lyfecicle`}
-          // eslint-disable-next-line react/no-children-prop
           ></Accordion>
           <Accordion
             className={styles.accordion}
             trigger={`Billing & Financials`}
-          // eslint-disable-next-line react/no-children-prop
           ></Accordion>
         </Modal>
       ) : null}

@@ -26,10 +26,7 @@ const CollapseAndExpand = ({
         className={style.collapseAndExpandRow}
         onClick={handleClick}
       >
-        <span
-          // eslint-disable-next-line no-useless-concat
-          className={`${style.arrowPosition}` + ' ' + `fas ${ArrowType} `}
-        ></span>
+        <span className={`${style.arrowPosition} fas ${ArrowType} `}></span>
       </div>
     );
   }
