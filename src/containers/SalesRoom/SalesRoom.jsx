@@ -302,9 +302,8 @@ export default class Detail extends Component {
             <CardFooter />
             {!this.state.isHidden && (
               <Modal
-                title={`Nuevo Estado - ${
-                  this.state.selectedProperty.name
-                }`}
+                title={`Nuevo Estado - ${this.state.selectedProperty.name}`}
+                subtitleRight={this.state.selectedProperty.groupName}
                 hidden={this.props.isHidden}
                 onConfirm={this.save}
                 onCancel={this.cancel}

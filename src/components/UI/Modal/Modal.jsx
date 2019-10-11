@@ -42,7 +42,12 @@ class Modal extends Component {
         {this.props.hidden ? null : (
           <div className={styles.Container}>
             <div className={styles.Modal} ref={this.divModal}>
-              <div className={styles.Title}>{this.props.title}</div>
+              <div className={styles.ContainerTitle}>
+                <div className={styles.Title}>{this.props.title}</div>
+                <div className={styles.SubtitleRight}>
+                  {this.props.subtitleRight}
+                </div>
+              </div>
               <div className={styles.Content}>{this.props.children}</div>
               <div className={styles.Actions} style={this.state.isCenter}>
                 <Button
