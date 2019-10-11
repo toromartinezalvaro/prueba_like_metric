@@ -56,6 +56,10 @@ const FutureSalesSpeed = ({
             <h4 className={styles.gridItem}>Valor prom</h4>
             <h4 className={styles.gridItem}>m² prom</h4>
             <h4 className={styles.gridItem}>Velocidad ventas futura</h4>
+            <h4 className={styles.gridItem}>Separación</h4>
+            <h4 className={styles.gridItem}>Cuota inicial</h4>
+            <h4 className={styles.gridItem}>Cuota Final</h4>
+
             {groups !== undefined
               ? groups.map((group, i) => (
                   <Fragment key={`fragment ${group.id}`}>
@@ -76,6 +80,49 @@ const FutureSalesSpeed = ({
                       <Input
                         validations={inputValidation(group.units)}
                         value={group.futureSalesSpeed}
+                        style={{ width: '75px' }}
+                        onChange={(target) => {
+                          arraySalesSpeeds[i] = Number(target.value);
+                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
+                          futureSalesSpeedHandler(group.id, target.value);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.gridItem}>
+                      <Input
+                        validations={[]}
+                        value={group.separate.toFixed(2)}
+                        mask="percentage"
+                        style={{ width: '75px' }}
+                        onChange={(target) => {
+                          arraySalesSpeeds[i] = Number(target.value);
+                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
+                          futureSalesSpeedHandler(group.id, target.value);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.gridItem}>
+                      <Input
+                        validations={[]}
+                        value={group.initialFee.toFixed(2)}
+                        mask="percentage"
+                        style={{ width: '75px' }}
+                        onChange={(target) => {
+                          arraySalesSpeeds[i] = Number(target.value);
+                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
+                          futureSalesSpeedHandler(group.id, target.value);
+                        }}
+                      />
+                    </div>
+                    <div className={styles.gridItem}>
+                      <Input
+                        validations={[]}
+                        value={(
+                          100 -
+                          group.separate -
+                          group.initialFee
+                        ).toFixed(2)}
+                        mask="percentage"
                         style={{ width: '75px' }}
                         onChange={(target) => {
                           arraySalesSpeeds[i] = Number(target.value);

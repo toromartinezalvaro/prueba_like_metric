@@ -3,13 +3,12 @@
   height: 70px;
   & * {
     margin-left: 15px;
-    
   }
 }
 
 .ContainerFlex {
   display: grid;
-  grid-template-columns: 6% 10% 15% 15% 15%;
+  grid-template-columns: 6% 10% 15% 15% 15% 15% 15% 15%;
   align-items: center;
 }
 
