@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactTooltip from 'react-tooltip';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import SummaryTable from '../../components/Summary/SummaryTable/SummaryTable';
 import SummaryCell from '../../components/Summary/SummaryCell/SummaryCell';
@@ -59,7 +60,7 @@ class Summary extends Component {
     this.services
       .getSummaries(this.props.match.params.towerId)
       .then((response) => {
-        const {data} = response;
+        const { data } = response;
         this.setState({
           locations: [...Array(data.totalProperties).keys()].map((o) => o + 1),
           floors: [...Array(data.floors).keys()].map(
@@ -87,6 +88,7 @@ class Summary extends Component {
     return summary.rack.map((row) =>
       row.map((value) => (
         <SummaryCell
+          data-tip={value.name}
           k={key}
           style={{
             backgroundColor: getHeat(
@@ -124,15 +126,12 @@ class Summary extends Component {
 
   calcFees = () => {
     let items = 0;
-    let secondIndex = -1
+    let secondIndex = -1;
     const firstIndex = this.state.pricesWithAdditions.rack.findIndex((i) => {
-        secondIndex = i.findIndex((j) => j !== undefined && j !== null)
-        return  secondIndex > -1
-      },
-    );
-    if (
-      firstIndex === -1
-    ) {
+      secondIndex = i.findIndex((j) => j !== undefined && j !== null);
+      return secondIndex > -1;
+    });
+    if (firstIndex === -1) {
       return null;
     }
     const fees = {
@@ -157,9 +156,8 @@ class Summary extends Component {
           newValue.price =
             value.price * (this.state.firstFee / 100) * this.state.periods;
           return newValue;
-        } 
-          return null;
-        
+        }
+        return null;
       });
     });
     fees.avg = fees.sum /= items;
@@ -333,6 +331,7 @@ class Summary extends Component {
             Resumen Areas
           </FloatingButton>
         </Card>
+        <ReactTooltip />
       </LoadableContainer>
     );
   }
