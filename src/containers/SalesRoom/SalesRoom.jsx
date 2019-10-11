@@ -266,8 +266,15 @@ export default class Detail extends Component {
     let isStrategyNull = false;
     if (this.state.selectedProperty)
       isStrategyNull =
-        this.state.selectedProperty.increment > 0 &&
+        this.state.selectedProperty.increment !== 0 &&
         !this.state.selectedProperty.strategy;
+
+    let showModalSelectedProperty = false;
+    if (this.state.selectedProperty)
+      showModalSelectedProperty =
+        this.state.selectedProperty.strategy > 0 ||
+        !this.state.selectedProperty.increment;
+
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.isEmpty && (
@@ -303,8 +310,7 @@ export default class Detail extends Component {
               >
                 {isStrategyNull &&
                   'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
-                {(this.state.selectedProperty.strategy > 0 ||
-                  !this.state.selectedProperty.increment) &&
+                {showModalSelectedProperty &&
                   (this.state.isLoadingModal ? (
                     <div style={{ justifyContent: 'center', display: 'flex' }}>
                       <Loader
