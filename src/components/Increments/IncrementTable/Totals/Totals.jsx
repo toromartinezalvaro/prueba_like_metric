@@ -85,7 +85,7 @@ function Totals({
                 message: 'Debe ingresar un numero',
               },
             ]}
-            value={increment.toFixed(2)}
+            value={increment && increment.toFixed(2)}
             onChange={(target) => {
               putIncrement(target.value);
             }}
@@ -95,7 +95,7 @@ function Totals({
       </div>
       <div className={Styles['total-sales-future']}>
         <NumberFormat
-          value={estimatedSales.toFixed(2)}
+          value={estimatedSales && estimatedSales.toFixed(2)}
           displayType={'text'}
           thousandSeparator={true}
           prefix={'$'}
