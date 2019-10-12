@@ -270,6 +270,19 @@ export default class Detail extends Component {
       .map(() => Array(n).fill());
   };
 
+  isThereOneAvailableProperty = (selectedProperty, propertiesMatrix) => {
+    const propertiesArray = propertiesMatrix.find(
+      (propertiesByGroup) =>
+        propertiesByGroup.length > 0 &&
+        propertiesByGroup[0].groupId === selectedProperty.groupId,
+    );
+    
+    return (
+      propertiesArray.filter((property) => property.status === Status.Available)
+        .length === 1
+    );
+  };
+
   render() {
     let isStrategyNull = false;
     if (this.state.selectedProperty)
@@ -282,6 +295,20 @@ export default class Detail extends Component {
       showModalSelectedProperty =
         this.state.selectedProperty.strategy > 0 ||
         !this.state.selectedProperty.increment;
+
+    if (
+      isStrategyNull &&
+      this.state.selectedProperty &&
+      this.state.selectedProperty.increment < 0 &&
+      this.state.selectedProperty.strategy == null
+    ) {
+      const isThereOneProperty = this.isThereOneAvailableProperty(
+        this.state.selectedProperty,
+        this.state.response.data.properties,
+      );
+      isStrategyNull = !isThereOneProperty
+      showModalSelectedProperty = isThereOneProperty
+    }
 
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
