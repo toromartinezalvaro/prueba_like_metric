@@ -1,0 +1,11 @@
+@import '../../assets/styles/variables.scss';
+
+.container {
+  margin-bottom: 14px;
+
+  .outlineButton {
+    background-color: #fff;
+    border: 2px solid $main-color;
+    color: $main-color;
+  }
+}
