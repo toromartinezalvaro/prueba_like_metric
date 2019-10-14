@@ -40,12 +40,16 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
-
+    console.log("towerId", towerId)
+    //TODO: Remove it for projects and towers
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)
         .then((response) => {
-          this.setState({ tower: response.data });
+          this.setState({
+            tower: response.data,
+          });
+          this.props.activateBadgeIncrement(response.data.isBadgeIncrement);
         })
         .catch((error) => {
           console.log('ERROR >', error);
@@ -69,12 +73,7 @@ class Dashboard extends Component {
     const { match, location } = this.props;
     const { tower } = this.state;
     return (
-      <DashboardLayout tower={tower} location={location}>
-        {/* <Redirect
-          from={DashboardRoutes.base}
-          exact
-          to={DashboardRoutes.base + ProjectRoutes.base}
-        /> */}
+      <DashboardLayout tower={tower} location={location} {...this.props}>
         <PrivateRoute
           path={match.url + ProjectRoutes.base}
           exact
