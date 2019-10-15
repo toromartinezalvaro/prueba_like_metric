@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DescriptorEdit from './DescriptorEdit';
 import DescriptorDisplay from './DescriptorDisplay';
+import { Numbers } from '../../../../../helpers';
 
 const Descriptor = ({
   descriptor: { id, name, percentage },
@@ -37,7 +38,7 @@ const Descriptor = ({
 
   const handlePercentageChange = (event) => {
     const tempDescriptorData = { ...descriptorData };
-    tempDescriptorData.percentage = (event.target.value / 100).toFixed(2);
+    tempDescriptorData.percentage = Numbers.toFixed(parseFloat(event.value) / 100)
     setDescriptorData(tempDescriptorData);
   };
 

@@ -35,16 +35,18 @@ const Primes = ({
   };
 
   const calculateFinalRating = (propertyRatings) => {
-    return propertyRatings.reduce((current, next) => {
-      return current + next.descriptorRating.rate * next.percentage;
-    }, 0);
+    return Math.round(
+      propertyRatings.reduce((current, next) => {
+        return current + next.descriptorRating.rate * next.percentage;
+      }, 0),
+    );
   };
 
   const makeCells = () => {
     const matrix = createMatrix(
       headers.length,
       floorsNames.length,
-      <span>-</span>,
+      <span className={Styles.TableElement}>-</span>,
     );
     propertiesRatings.forEach((propertyRating) => {
       if (
@@ -61,6 +63,7 @@ const Primes = ({
             displayType="text"
             thousandSeparator
             prefix="$"
+            className={Styles.TableElement}
           />
         );
       }
@@ -90,7 +93,7 @@ const Primes = ({
       {is100Percent() ? (
         <Fragment>
           <Table
-            intersect="Nomenclatura"
+            intersect="Primas"
             headers={headers}
             columns={floorsNames}
             data={makeCells()}

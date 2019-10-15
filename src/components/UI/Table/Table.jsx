@@ -126,9 +126,9 @@ class table extends Component {
               </div>
 
               <div className={styles.Columns} style={this.props.style}>
-                {this.props.columns.map((element) => (
+                {this.props.columns.map((element, i) => (
                   <div
-                    key={`${styles.Element + element}-columns`}
+                    key={`${styles.Element + i}-columns`}
                     className={styles.Element}
                   >
                     {element}

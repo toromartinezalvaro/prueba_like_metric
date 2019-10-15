@@ -27,10 +27,10 @@ const Schema = (props) => {
   const save = () => {
     if (props.update) {
       props.updateSchema();
+      setHidden(true);
     } else {
       props.saveSchema();
     }
-    setHidden(true);
   };
 
   const toggleWarning = () => {
@@ -102,16 +102,15 @@ const Schema = (props) => {
       <CardFooter>
         <div className={styles.Actions}>
           {props.disable ? (
-            <Button
-              onClick={() => {
-                props.editMode();
-                toggleWarning();
-              }}
-            >
-              Editar
-            </Button>
-          ) : (
             <div>
+              <Button
+                onClick={() => {
+                  props.editMode();
+                  toggleWarning();
+                }}
+              >
+                Editar
+              </Button>
               <Button
                 className={styles.CancelButton}
                 onClick={() => {
@@ -120,6 +119,9 @@ const Schema = (props) => {
               >
                 Cancelar
               </Button>
+            </div>
+          ) : (
+            <div>
               <Button
                 onClick={() => {
                   setHidden(false);
