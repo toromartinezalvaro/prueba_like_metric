@@ -25,38 +25,8 @@
   padding: 15px;
 }
 
-.accordion {
-  margin-bottom: 5%;
-}
-.wrapper {
+.title {
   display: flex;
-  flex-direction: column;
+  align-self: center;
 }
 
-.gridOne {
-  flex: 1 1 auto;
-}
-
-.gridTwo {
-  flex: 1 1 auto;
-}
-
-.textComments {
-  display: flex;
-  flex: 1 1 auto;
-  width: 99%;
-}
-
-.addPatner {
-  display: flex;
-  flex-direction: row;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  color: $defaultWhite-color;
-  background-color: $softGreen-color;
-}
-
-.businessPatner {
-  flex-direction: row;
-}
