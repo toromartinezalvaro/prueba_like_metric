@@ -28,6 +28,8 @@ const inputValidation = (units) => [
 const FutureSalesSpeed = ({
   salesSpeeds,
   futureSalesSpeedHandler,
+  separationHandler,
+  initialFeeHandler,
   ...rest
 }) => {
   const [total, setTotal] = useState(0);
@@ -91,26 +93,26 @@ const FutureSalesSpeed = ({
                     <div className={styles.gridItem}>
                       <Input
                         validations={[]}
-                        value={group.separate.toFixed(2)}
+                        value={(group.separate * 100).toFixed(2)}
                         mask="percentage"
                         style={{ width: '75px' }}
                         onChange={(target) => {
-                          arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
-                          futureSalesSpeedHandler(group.id, target.value);
+                          /* arraySalesSpeeds[i] = Number(target.value);
+                          setTotal(getTotal(arraySalesSpeeds).toFixed(2)); */
+                          separationHandler(group.id, target.value / 100);
                         }}
                       />
                     </div>
                     <div className={styles.gridItem}>
                       <Input
                         validations={[]}
-                        value={group.initialFee.toFixed(2)}
+                        value={(group.initialFee * 100).toFixed(2)}
                         mask="percentage"
                         style={{ width: '75px' }}
                         onChange={(target) => {
-                          arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
-                          futureSalesSpeedHandler(group.id, target.value);
+                          /* arraySalesSpeeds[i] = Number(target.value);
+                          setTotal(getTotal(arraySalesSpeeds).toFixed(2)); */
+                          initialFeeHandler(group.id, target.value / 100);
                         }}
                       />
                     </div>
@@ -118,15 +120,15 @@ const FutureSalesSpeed = ({
                       <Input
                         validations={[]}
                         value={(
-                          100 -
+                          (100 -
                           group.separate -
-                          group.initialFee
+                          group.initialFee) * 100
                         ).toFixed(2)}
                         mask="percentage"
                         style={{ width: '75px' }}
                         onChange={(target) => {
-                          arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
+                          /* arraySalesSpeeds[i] = Number(target.value);
+                          setTotal(getTotal(arraySalesSpeeds).toFixed(2)); */
                           futureSalesSpeedHandler(group.id, target.value);
                         }}
                       />

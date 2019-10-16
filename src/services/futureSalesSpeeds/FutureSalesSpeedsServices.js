@@ -5,9 +5,22 @@ export default class FutureSalesSpeedsServices extends Services {
   getFutureSalesSpeeds(towerId) {
     return this.get(FutureSalesSpeedsDefinitions.getFutureSalesSpeeds(towerId));
   }
+
   putFutureSalesSpeeds(id, futureSalesSpeed) {
     return this.put(FutureSalesSpeedsDefinitions.putFutureSalesSpeeds(id), {
       futureSalesSpeed,
+    });
+  }
+
+  putSeparation(id, separation) {
+    return this.put(FutureSalesSpeedsDefinitions.putSeparation(id), {
+      separation,
+    });
+  }
+
+  putInitialFee(id, initialFee) {
+    return this.put(FutureSalesSpeedsDefinitions.putInitialFee(id), {
+      initialFee,
     });
   }
 }

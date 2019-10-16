@@ -22,8 +22,10 @@ class FutureSalesSpeed extends Component {
     this.setState({ isLoading: true });
     this.services
       .getFutureSalesSpeeds(this.props.match.params.towerId)
-      .then(results => this.setState({ salesSpeeds: results.data, isLoading: false }))
-      .catch(error => {
+      .then((results) =>
+        this.setState({ salesSpeeds: results.data, isLoading: false }),
+      )
+      .catch((error) => {
         const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
@@ -35,9 +37,33 @@ class FutureSalesSpeed extends Component {
   futureSalesSpeedHandler = (id, value) => {
     this.services
       .putFutureSalesSpeeds(id, value)
-      .then(results => console.log(results))
-      .catch(error => {
-        let errorHelper = errorHandling(error);
+      .then((results) => console.log(results))
+      .catch((error) => {
+        const errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message,
+        });
+      });
+  };
+
+  separationHandler = (id, value) => {
+    this.services
+      .putSeparation(id, value)
+      .then((results) => console.log(results))
+      .catch((error) => {
+        const errorHelper = errorHandling(error);
+        this.setState({
+          currentErrorMessage: errorHelper.message,
+        });
+      });
+  };
+
+  initialFeeHandler = (id, value) => {
+    this.services
+      .putInitialFee(id, value)
+      .then((results) => console.log(results))
+      .catch((error) => {
+        const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
         });
@@ -53,6 +79,8 @@ class FutureSalesSpeed extends Component {
         <FutureSalesSpeedCard
           salesSpeeds={this.state.salesSpeeds}
           futureSalesSpeedHandler={this.futureSalesSpeedHandler}
+          separationHandler={this.separationHandler}
+          initialFeeHandler={this.initialFeeHandler}
         />
       </LoadableContainer>
     );
