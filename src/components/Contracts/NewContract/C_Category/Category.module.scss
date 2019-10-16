@@ -1,4 +1,4 @@
-@import '../../../assets/styles/variables.scss';
+@import '../../../../assets/styles/variables.scss';
 .textField {
   width: 30vw !important;
 }
@@ -26,4 +26,15 @@
 .leftEntry {
   position: relative;
   top: -55% !important;
+}
+.buttonMargin {
+  margin-left: 5px !important;
+}
+
+.gridContainer {
+  display: flex;
+  justify-content: center;
+  align-self: center !important;
+  position: relative;
+  left: 65% !important;
 }

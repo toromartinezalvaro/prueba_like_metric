@@ -7,12 +7,12 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import BusinessPatner from '../C_BusinessPatner/BusinessPatner';
-import BillingFinancials from '../C_BillingFinancials/BillingFinancials';
-import Category from '../C_Category/Category';
-import GeneralInformation from '../C_GeneralInfo/GeneralInfo';
-import OrganizationContact from '../C_OrganizationContact/OrganizationContact';
-import Custom from '../C_Custom/Custom';
+import BusinessPatner from './C_BusinessPatner/BusinessPatner';
+import BillingFinancials from './C_BillingFinancials/BillingFinancials';
+import Category from './C_Category/Category';
+import GeneralInformation from './C_GeneralInfo/GeneralInfo';
+import OrganizationContact from './C_OrganizationContact/OrganizationContact';
+import Custom from './C_Custom/Custom';
 
 import styles from './NewContract.module.scss';
 
