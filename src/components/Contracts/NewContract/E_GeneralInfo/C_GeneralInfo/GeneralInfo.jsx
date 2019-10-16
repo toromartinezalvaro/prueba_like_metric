@@ -4,7 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContentText from '@material-ui/core/DialogContentText';
+
 import styles from './GeneralInfo.module.scss';
+import Category from './C_Category/Category';
 
 const GeneralInfo = () => {
   const [open, setOpen] = useState(false);
@@ -102,9 +106,21 @@ const GeneralInfo = () => {
               size="small"
               aria-label="add"
               className={styles.fab}
+              onClick={handleOpen}
             >
               <AddIcon />
             </Fab>
+            <Dialog
+              className={styles.dialogExpand}
+              scroll={scroll}
+              open={open}
+              handleOpen={handleOpen}
+              handleClose={handleClose}
+              fullWidth={fullWidth}
+              maxWidth={maxWidth}
+            >
+              <Category />
+            </Dialog>
             <Fab
               color="secondary"
               mx={2}
