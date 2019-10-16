@@ -120,9 +120,8 @@ const FutureSalesSpeed = ({
                       <Input
                         validations={[]}
                         value={(
-                          (100 -
-                          group.separate -
-                          group.initialFee) * 100
+                          100 -
+                          (group.separate + group.initialFee) * 100
                         ).toFixed(2)}
                         mask="percentage"
                         style={{ width: '75px' }}
