@@ -7,13 +7,12 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import BusinessPatner from './C_BusinessPatner/BusinessPatner';
-import BillingFinancials from './C_BillingFinancials/BillingFinancials';
-import Category from './C_Category/Category';
-import GeneralInformation from './C_GeneralInfo/GeneralInfo';
-import OrganizationContact from './C_OrganizationContact/OrganizationContact';
-import Custom from './C_Custom/Custom';
-
+import ExpandBillingFinancials from './E_BillingFinancials/BillingFinancials';
+import ExpandGeneralInfo from './E_GeneralInfo/GeneralInfo';
+import ExpandLifeCycle from './E_LifeCycle/LifeCycle';
+import ExpandOrganizationContact from './E_OrganizationContact/OrganizationContact';
+import ExpandCustom from './E_Custom/Custom';
+import ExpandAttachment from './E_Attachment/Attachment';
 import styles from './NewContract.module.scss';
 
 const NewContract = ({ open, handleClose, scroll, fullWidth, maxWidth }) => {
@@ -34,114 +33,17 @@ const NewContract = ({ open, handleClose, scroll, fullWidth, maxWidth }) => {
           <h2 className={styles.title}>Agregar Contrato</h2>
         </div>
 
-        <ExpansionPanel className={styles.expansionPanel} mb={4}>
-          <ExpansionPanelSummary aria-controls="generalInformationContent">
-            <Typography className={styles.heading}>
-              <div
-                className={`${styles.circleIcon}  ${styles.circleColorGeneral}`}
-              >
-                <Icon className={`${styles.iconGeneral} fas fa-book-reader`} />
-              </div>
-              <div className={styles.titleExpand}>Información General</div>
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              <GeneralInformation />
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        <ExpandGeneralInfo />
         <br />
-        <ExpansionPanel className={styles.expansionPanel} mt={4}>
-          <ExpansionPanelSummary aria-controls="generalInformationContent">
-            <Typography className={styles.heading}>
-              <div
-                className={`${styles.circleIcon}  ${styles.circleColorCicle}`}
-              >
-                <Icon className={`${styles.icon} fas fa-redo-alt`} />
-              </div>
-              <div className={styles.titleExpand}>Ciclo De Vida</div>
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography></Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        <ExpandLifeCycle />
         <br />
-        <ExpansionPanel className={styles.expansionPanel} mt={4}>
-          <ExpansionPanelSummary aria-controls="generalInformationContent">
-            <Typography className={styles.heading}>
-              <div
-                className={`${styles.circleIcon}  ${styles.circleColorFinantials}`}
-              >
-                <Icon className={`${styles.icon} fas fa-tag`} />
-              </div>
-              <div className={styles.titleExpand}>Facturación y Finanzas</div>
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              <BillingFinancials />
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        <ExpandBillingFinancials />
         <br />
-        <ExpansionPanel className={styles.expansionPanel} mt={4}>
-          <ExpansionPanelSummary aria-controls="generalInformationContent">
-            <Typography className={styles.heading}>
-              <div
-                className={`${styles.circleIcon}  ${styles.circleColorPeople}`}
-              >
-                <Icon className={`${styles.icon} fas fa-user-friends`} />
-              </div>
-              <div className={styles.titleExpand}>
-                Organización y personas de contacto
-              </div>
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              <OrganizationContact />
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        <ExpandOrganizationContact />
         <br />
-        <ExpansionPanel className={styles.expansionPanel} mt={4}>
-          <ExpansionPanelSummary aria-controls="generalInformationContent">
-            <Typography className={styles.heading}>
-              <div
-                className={`${styles.circleIcon}  ${styles.circleColorPersonalized}`}
-              >
-                <Icon className={`${styles.icon} fas fa-paperclip`} />
-              </div>
-              <div className={styles.titleExpand}>
-                Propiedades Personalizadas
-              </div>
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              <Custom />
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        <ExpandCustom />
         <br />
-        <ExpansionPanel className={styles.expansionPanel} mt={4}>
-          <ExpansionPanelSummary aria-controls="generalInformationContent">
-            <Typography className={styles.heading}>
-              <div
-                className={`${styles.circleIcon}  ${styles.circleColorAtachment}`}
-              >
-                <Icon className={`${styles.icon} fas fa-paperclip`} />
-              </div>
-              <div className={styles.titleExpand}>Archivos Adjuntos</div>
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography></Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-
+        <ExpandAttachment />
         <br />
         <div className={styles.actionContainer}>
           <Button

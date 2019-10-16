@@ -1,0 +1,34 @@
+@import '../../../../assets/styles/variables.scss';
+.heading {
+  display: flex;
+  direction: row;
+  align-content: center !important;
+  justify-content: center !important;
+}
+
+.titleExpand {
+  margin-top: 4%;
+  margin-left: 8px;
+}
+
+.expansion-panel {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border: none;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+}
+
+.circleColorFinantials {
+  background-color: $softMain-color;
+}
