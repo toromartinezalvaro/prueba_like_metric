@@ -1,12 +1,14 @@
+
 import React, { useState } from 'react';
-import BusinessPatner from '../C_BusinessPatner/BusinessPatner'
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import styles from './GeneralInfo.module.scss';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import { spacing } from '@material-ui/system';
+import { Link } from 'react-router-dom';
+import styles from './BusinessPatner.module.scss';
+
 import Dialog from '@material-ui/core/Dialog';
 import Fade from '@material-ui/core/Fade';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -19,22 +21,9 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 
 
-const GeneralInfo = () => {
-    const [open, setOpen] = useState(false);
-    const [scroll, setScroll] = useState('body');
-    const [fullWidth, setFullWidth] = useState(true);
-    const [maxWidth, setMaxWidth] = useState('md');
-    const [expanded, setExpanded] = useState('GeneralInfo');
+const bussinesPatner = () => {
 
-    const handleOpen = () => {
-        setOpen(true);
-    }
 
-    const handleClose = () => {
-        setOpen(false);
-    }
-
-    
 
     return (
         <Grid container
@@ -65,7 +54,7 @@ const GeneralInfo = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <Fab color="primary" size="small" aria-label="add" className={styles.fab}>
+                        <Fab color="primary" size="small" aria-label="add" className={styles.fab} onClick={bussinesPatner}>
                             <AddIcon />
                         </Fab>
                         <Fab color="secondary" mx={2} size="small" aria-label="edit" className={styles.fab}>
@@ -130,7 +119,7 @@ const GeneralInfo = () => {
             </Grid>
 
         </Grid>
-    );
+    )
 }
 
-export default GeneralInfo;
+export default bussinesPatner;
