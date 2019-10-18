@@ -85,6 +85,13 @@ const SideMenu = ({
                 'fas fa-users',
                 'Calendario',
               )}
+            {agent.isAuthorized([Role.User]) &&
+              itemForSlidebar(
+                style.MenuItem,
+                DashboardRoutes.base + DashboardRoutes.clients.value,
+                'fas fa-users',
+                'Clientes',
+              )}
             {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
                 style.MenuItem,
@@ -141,7 +148,7 @@ const SideMenu = ({
                 'fas fa-object-group',
                 'Agrupamiento',
               )}
-            {itemForSlidebar(
+            {agent.isAuthorized([Role.Admin, Role.Super]) && itemForSlidebar(
               style.MenuItem,
               DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
               'fas fa-calendar-alt',
@@ -162,14 +169,14 @@ const SideMenu = ({
                 'fas fa-chart-line',
                 'Estrategia',
               )}
-            {agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
+            {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
                 style.MenuItem,
                 DashboardRoutes.base + DashboardRoutes.salesRoom.value,
                 'fas fa-dollar-sign',
                 'Sala de Ventas',
               )}
-            {itemForSlidebar(
+            {agent.isAuthorized([Role.Admin, Role.Super]) && itemForSlidebar(
               style.MenuItem,
               DashboardRoutes.base + DashboardRoutes.report.value,
               'fas fa-file-alt',

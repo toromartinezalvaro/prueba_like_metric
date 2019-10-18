@@ -6,12 +6,13 @@ import { Role } from '../../helpers';
 import agent from '../../config/config';
 import Button from '../UI/Button/Button';
 
-const ChildrenUsers = props => {
-  const optionForUser = user => {
+const ChildrenUsers = (props) => {
+  const optionForUser = (user) => {
     return (
-      <option key={'optionForUser' + user.id} value={user.id}>
+      <option key={`optionForUser${  user.id}`} value={user.id}>
         {' '}
-        {user.email}{' '}
+        {user.email}
+        {` ${  user.userType}`}
       </option>
     );
   };
@@ -26,7 +27,7 @@ const ChildrenUsers = props => {
           <div className={styles.Row}>
             <select
               className={styles.Input}
-              onChange={event => {
+              onChange={(event) => {
                 props.onChange(event.target.value);
               }}
               value={props.currentUser.id}
