@@ -74,7 +74,6 @@ class Summary extends Component {
           periods: data.periods,
           isLoading: false,
         });
-        console.log('areas', this.state.areas);
       })
       .catch((error) => {
         this.setState({ isLoading: false });
@@ -86,23 +85,27 @@ class Summary extends Component {
       return null;
     }
     return summary.rack.map((row) =>
-      row.map((value) => (
-        <SummaryCell
-          data-tip={value.name}
-          k={key}
-          style={{
-            backgroundColor: getHeat(
-              summary.min,
-              summary.max,
-              summary.avg,
-              value,
-              key,
-            ),
-          }}
-        >
-          {value}
-        </SummaryCell>
-      )),
+      row.map((value) => {
+        const wrappedValue = value || {}
+        return (
+          <SummaryCell
+            data-tip={wrappedValue.name}
+            key={key}
+            k={key}
+            style={{
+              backgroundColor: getHeat(
+                summary.min,
+                summary.max,
+                summary.avg,
+                wrappedValue,
+                key,
+              ),
+            }}
+          >
+            {wrappedValue}
+          </SummaryCell>
+        );
+      }),
     );
   };
 
@@ -152,7 +155,7 @@ class Summary extends Component {
           }
           fees.sum += value.price;
           items++;
-          let newValue = { ...value };
+          const newValue = { ...value };
           newValue.price =
             value.price * (this.state.firstFee / 100) * this.state.periods;
           return newValue;
