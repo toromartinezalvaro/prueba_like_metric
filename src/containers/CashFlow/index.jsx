@@ -10,23 +10,18 @@ class ReportContainer extends Component {
   }
 
   state = {
-    type: '',
-    arrayCashFlow: [],
-    endOfConstruction: '',
-    salesStart: '',
+    data: [],
   };
 
   componentDidMount() {
     this.services
       .getCashFlow(this.props.match.params.towerId)
       .then((response) => {
-        const { type, arrayCashFlow } = response.data[0];
-        console.log(response);
-        this.setState({ type, arrayCashFlow });
+        this.setState({ data: response.data });
       });
   }
   render() {
-    return <TableCashFlow data={this.state.arrayCashFlow} />;
+    return <TableCashFlow data={this.state.data} />;
   }
 }
 

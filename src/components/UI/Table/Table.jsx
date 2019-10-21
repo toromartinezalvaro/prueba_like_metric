@@ -80,7 +80,7 @@ class table extends Component {
     return (
       <Fragment>
         <div>
-          {this.state.heightViewPort * 0.25 < this.state.height ? (
+          {this.state.heightViewPort * 0.5 < this.state.height ? (
             <div
               className={styles.wrapper1}
               ref={this.wrapperTop}
