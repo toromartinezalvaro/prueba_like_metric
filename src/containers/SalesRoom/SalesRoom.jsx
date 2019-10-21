@@ -104,7 +104,7 @@ export default class Detail extends Component {
     });
   };
 
-  makeCells = (buttons, property, active) => (
+  makeCells = (buttons, property, active = 'priceWithIncrements') => (
     <div
       style={{
         backgroundColor: buttons.backgroundColor,
@@ -117,9 +117,8 @@ export default class Detail extends Component {
         style={{ fontWeight: 'bold', color: 'White' }}
         data-tip={property.name}
       >
-        {active === 'mts2' ? (
-          parseFloat(property.mts2).toFixed(2)
-        ) : (
+        {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
+        {active === 'priceWithIncrements' && (
           <NumberFormat
             value={parseFloat(property.priceWithIncrement).toFixed(2)}
             displayType={'text'}
@@ -127,6 +126,15 @@ export default class Detail extends Component {
             prefix={'$'}
           />
         )}
+        {active === 'price' && (
+          <NumberFormat
+            value={parseFloat(property.price).toFixed(2)}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+        )}
+        {active === 'groups' && property.groupName}
       </p>
       <ReactTooltip />
     </div>
@@ -262,12 +270,46 @@ export default class Detail extends Component {
       .map(() => Array(n).fill());
   };
 
+  isThereOneAvailableProperty = (selectedProperty, propertiesMatrix) => {
+    const propertiesArray = propertiesMatrix.find(
+      (propertiesByGroup) =>
+        propertiesByGroup.length > 0 &&
+        propertiesByGroup[0].groupId === selectedProperty.groupId,
+    );
+    
+    return (
+      propertiesArray.filter((property) => property.status === Status.Available)
+        .length === 1
+    );
+  };
+
   render() {
     let isStrategyNull = false;
     if (this.state.selectedProperty)
       isStrategyNull =
-        this.state.selectedProperty.increment > 0 &&
+        this.state.selectedProperty.increment !== 0 &&
         !this.state.selectedProperty.strategy;
+
+    let showModalSelectedProperty = false;
+    if (this.state.selectedProperty)
+      showModalSelectedProperty =
+        this.state.selectedProperty.strategy > 0 ||
+        !this.state.selectedProperty.increment;
+
+    if (
+      isStrategyNull &&
+      this.state.selectedProperty &&
+      this.state.selectedProperty.increment < 0 &&
+      this.state.selectedProperty.strategy == null
+    ) {
+      const isThereOneProperty = this.isThereOneAvailableProperty(
+        this.state.selectedProperty,
+        this.state.response.data.properties,
+      );
+      isStrategyNull = !isThereOneProperty
+      showModalSelectedProperty = isThereOneProperty
+    }
+
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.isEmpty && (
@@ -295,7 +337,8 @@ export default class Detail extends Component {
             <CardFooter />
             {!this.state.isHidden && (
               <Modal
-                title={'Nuevo Estado'}
+                title={`Nuevo Estado - ${this.state.selectedProperty.name}`}
+                subtitleRight={this.state.selectedProperty.groupName}
                 hidden={this.props.isHidden}
                 onConfirm={this.save}
                 onCancel={this.cancel}
@@ -303,8 +346,7 @@ export default class Detail extends Component {
               >
                 {isStrategyNull &&
                   'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
-                {(this.state.selectedProperty.strategy > 0 ||
-                  !this.state.selectedProperty.increment) &&
+                {showModalSelectedProperty &&
                   (this.state.isLoadingModal ? (
                     <div style={{ justifyContent: 'center', display: 'flex' }}>
                       <Loader

@@ -100,8 +100,11 @@ export default class Strategy extends Component {
   makeArrayDataSets = (dataGraph) => {
     const arrayData = dataGraph.map((line, i) => {
       if (this.state.dataHelper) {
+        const INCREMENTS_FIXED = line.increments.map(
+          (increment) => increment && increment.toFixed(2),
+        );
         return {
-          data: [...line.increments],
+          data: [...INCREMENTS_FIXED],
           label: this.state.dataHelper[i].label,
           borderColor: this.state.dataHelper[i].borderColor,
           backgroundColor: this.state.dataHelper[i].backgroundColor,

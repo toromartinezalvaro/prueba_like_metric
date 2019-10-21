@@ -26,11 +26,14 @@ const incrementsChart = ({
     'rgba(129, 195, 215, 0.65)',
   ];
 
-  const parseData = data => {
+  const parseData = (data) => {
     return data.map((group, index) => {
+      const INCREMENTS_FIXED = group.increments.map(
+        (increment) => increment && increment.toFixed(2),
+      );
       return {
         label: group.name,
-        data: group.increments,
+        data: INCREMENTS_FIXED,
         borderColor:
           group.name === 'Mercado' ? defaultColor : backgroundColors[index],
         backgroundColor:
@@ -40,8 +43,8 @@ const incrementsChart = ({
     });
   };
 
-  const getLabels = data => {
-    const lengths = data.map(group => {
+  const getLabels = (data) => {
+    const lengths = data.map((group) => {
       return group.increments.length;
     });
     return Array(_.max(lengths))
