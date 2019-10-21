@@ -28,7 +28,7 @@ import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
-import Contracts from '../../components/Contracts/Contracts';
+import Contracts from '../Contract/Contracts';
 
 class Dashboard extends Component {
   constructor(props) {
