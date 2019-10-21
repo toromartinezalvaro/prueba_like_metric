@@ -123,7 +123,7 @@ const FutureSalesSpeed = ({
                           100 -
                           (group.separate + group.initialFee) * 100
                         ).toFixed(2)}
-                        mask="percentage"
+                        mask="percentage"  
                         style={{ width: '75px' }}
                         onChange={(target) => {
                           /* arraySalesSpeeds[i] = Number(target.value);
