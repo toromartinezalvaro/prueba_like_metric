@@ -1,7 +1,7 @@
 /*
- * Created by Jcatman on Wed Oct 16 2019
+ * Created on Tue Oct 22 2019
  *
- * Copyright (c) 2019 Instabuild
+ * Copyright (c) 2019 JCATMAN INSTABUILD
  */
 
 import React, { Component } from 'react';
