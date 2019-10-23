@@ -7,6 +7,14 @@ export default class ContractService extends Services {
   }
 
   postBusinessPatnerContract(contractBusinessPatner, data) {
-    return this.post(ContractServiceDefinitions.postBusinessPatnerContract(contractBusinessPatner), data);
+    return this.post(ContractServiceDefinitions.businessContract(contractBusinessPatner), data);
+  }
+
+  getCategoryToSearch(textToSearch) {
+    return this.get(ContractServiceDefinitions.categoryToSearch(textToSearch));
+  }
+
+  getBusinessPatnerToSearch(textToSearch) {
+    return this.get(ContractServiceDefinitions.businessContractToSearch(textToSearch));
   }
 }
