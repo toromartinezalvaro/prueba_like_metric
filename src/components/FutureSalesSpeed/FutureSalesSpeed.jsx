@@ -36,6 +36,10 @@ const FutureSalesSpeed = ({
   const [total, setTotal] = useState(0);
   const [isEmpty, setIsEmpty] = useState(true);
   const [arraySalesSpeeds, setArraySalesSpeeds] = useState([]);
+  const [separate, setSeparate] = useState(0);
+  const [finalFee, setFinal] = useState(0);
+  const [firstFee, setInitial] = useState(0);
+
   const { groups } = salesSpeeds;
   if (groups !== undefined) {
     if (isEmpty) {
@@ -45,6 +49,20 @@ const FutureSalesSpeed = ({
       setIsEmpty(false);
     }
   }
+
+  const firstFeeHandler = (target) => {
+    this.setState({
+      firstFee: target.value,
+      finalFee: 100 - target.value - separate,
+    });
+  };
+
+  const creditHandler = (target) => {
+    this.setState({
+      credit: target.value,
+      firstFee: 100 - target.value,
+    });
+  };
 
   return (
     <Card>

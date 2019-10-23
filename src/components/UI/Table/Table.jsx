@@ -17,6 +17,7 @@ class table extends Component {
     width: 0,
     heightViewPort: 0,
     height: 0,
+    columnsStyle: styles.Columns,
   };
 
   componentDidUpdate() {
@@ -41,6 +42,14 @@ class table extends Component {
     }
     if (this.state.height !== this.wrapperBottom.current.offsetHeight) {
       this.setState({ height: this.wrapperBottom.current.offsetHeight });
+    }
+    if (
+      this.props.columnsMinWidth &&
+      this.state.columnsStyle !== styles.ColumnsMinWidth
+    ) {
+      this.setState({
+        columnsStyle: styles.ColumnsMinWidth,
+      });
     }
   }
 
@@ -125,7 +134,7 @@ class table extends Component {
                 ))}
               </div>
 
-              <div className={styles.Columns} style={this.props.style}>
+              <div className={this.state.columnsStyle} style={this.props.style}>
                 {this.props.columns.map((element, i) => (
                   <div
                     key={`${styles.Element + i}-columns`}

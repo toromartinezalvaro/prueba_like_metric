@@ -4,6 +4,7 @@ import moment from 'moment';
 import DayPickerInput from 'react-date-picker';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Styles from './SalesDateRange.module.scss';
+import Input from '../../UI/Input/Input';
 
 function SalesDateRange({
   salesStartDate,
@@ -30,7 +31,7 @@ function SalesDateRange({
             />
           </div>
           <div className={Styles.container}>
-            <div className={Styles.label}>Inicio de Pre-Ventas :</div>
+            <div className={Styles.label}>Inicio de Pre-Ventas:</div>
             <DayPickerInput
               clearIcon={null}
               format="dd/MM/yyyy"
@@ -41,6 +42,33 @@ function SalesDateRange({
               }}
             />
           </div>
+          <div className={Styles.container}>
+            <div className={Styles.label}>Punto de equilibrio:</div>
+            <DayPickerInput
+              clearIcon={null}
+              format="dd/MM/yyyy"
+              locale={'es'}
+              value={moment(Number(salesStartDate)).toDate()}
+              onChange={(date) => {
+                salesStartDateHandler(date.getTime());
+              }}
+            />
+          </div>
+          <div className={Styles.container}>
+            <div className={Styles.label}>Inicio de Construcción:</div>
+            <DayPickerInput
+              clearIcon={null}
+              format="dd/MM/yyyy"
+              locale={'es'}
+              value={moment(Number(salesStartDate)).toDate()}
+              onChange={(date) => {
+                salesStartDateHandler(date.getTime());
+              }}
+            />
+            <Input />
+            <div className={Styles.label}>Desplazamiento</div>
+          </div>
+
           <div className={Styles.container}>
             <div className={Styles.label}>Fin de la Construcción:</div>
             <DayPickerInput
@@ -53,6 +81,21 @@ function SalesDateRange({
                 endOfSalesDateHandler(date.getTime());
               }}
             />
+          </div>
+          <div className={Styles.container}>
+            <div className={Styles.label}>Promedio de entrega:</div>
+            <DayPickerInput
+              clearIcon={null}
+              format="dd/MM/yyyy"
+              locale={'es'}
+              value={moment(Number(salesStartDate)).toDate()}
+              onChange={(date) => {
+                salesStartDateHandler(date.getTime());
+              }}
+            />
+            <div className={Styles.label}>Desplazamiento</div>
+
+            <Input />
           </div>
         </div>
       </CardBody>

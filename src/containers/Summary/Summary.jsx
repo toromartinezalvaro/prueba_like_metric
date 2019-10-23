@@ -88,7 +88,6 @@ class Summary extends Component {
     return summary.rack.map((row) =>
       row.map((value) => (
         <SummaryCell
-          data-tip={value.name}
           k={key}
           style={{
             backgroundColor: getHeat(

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SalesStartDate from '../../components/Schedule/SalesStartDate/SalesDateRange';
 // import StageDates from '../../components/Schedule/StageDates/StageDates';
 import InitialFees from '../../components/Schedule/InitialFees/InitialFees';
+import DisplacementDates from '../../components/Schedule/DisplacementDates/DisplacementDates';
 import ScheduleServices from '../../services/schedule/ScheduleServices';
 
 class Schedule extends Component {
@@ -83,6 +84,7 @@ class Schedule extends Component {
           endOfSalesDate={this.state.endOfSalesDate}
           firstSaleHandler={this.firstSaleHandler}
         />
+        <DisplacementDates />
       </div>
     );
   }
