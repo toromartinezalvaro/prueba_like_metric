@@ -3,6 +3,7 @@ import NumberFormat from 'react-number-format';
 import Card, { CardHeader, CardBody } from '../UI/Card/Card';
 import Input from '../UI/Input/Input';
 import styles from './FutureSalesSpeed.module.scss';
+import Numbers from '../../helpers/numbers';
 
 const getTotal = (salesSpeeds) =>
   salesSpeeds.reduce((current, next) => {
@@ -91,7 +92,7 @@ const FutureSalesSpeed = ({
             <div className={styles.gridItem} />
             <div className={styles.gridItem} />
             <h4 className={styles.gridItem}>Total: </h4>
-            <div className={styles.gridItem}>{total.toFixed(2)}</div>
+            <div className={styles.gridItem}>{Numbers.toFixed(total)}</div>
           </div>
         ) : (
           <span>No hay grupos disponibles</span>

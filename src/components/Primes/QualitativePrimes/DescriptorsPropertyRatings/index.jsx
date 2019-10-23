@@ -83,29 +83,31 @@ const DescriptorsPropertyRatings = ({
           );
           // TODO: Too deep!
           return (
-            <Select
-              key={`rating-${i}-${j}`}
-              options={getOptions()}
-              value={getValue(descriptorIndex, propertyIndex)}
-              onChange={(value) => {
-                if (descriptorIndex === -1) {
-                  addPropertyRatingHandler(
-                    property.id,
-                    descriptor.id,
-                    value.value,
-                  );
-                } else {
-                  propertyRatingUpdateHandler(
-                    propertiesRatings[propertyIndex]
-                      .qualitativePrimesDescriptors[descriptorIndex]
-                      .descriptorRating.id,
-                    property.id,
-                    descriptor.id,
-                    value.value,
-                  );
-                }
-              }}
-            />
+            <div key={`rating-${i}-${j}`} className={Styles.SelectorCell}>
+              <Select
+                className={Styles.Selector}
+                options={getOptions()}
+                value={getValue(descriptorIndex, propertyIndex)}
+                onChange={(value) => {
+                  if (descriptorIndex === -1) {
+                    addPropertyRatingHandler(
+                      property.id,
+                      descriptor.id,
+                      value.value,
+                    );
+                  } else {
+                    propertyRatingUpdateHandler(
+                      propertiesRatings[propertyIndex]
+                        .qualitativePrimesDescriptors[descriptorIndex]
+                        .descriptorRating.id,
+                      property.id,
+                      descriptor.id,
+                      value.value,
+                    );
+                  }
+                }}
+              />
+            </div>
           );
         });
       }
