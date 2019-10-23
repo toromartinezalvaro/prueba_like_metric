@@ -1,7 +1,13 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
 import moment from 'moment';
-import Accordion from '../UI/Accordion/Accordion';
+import {
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import Table from '../UI/Table/Table';
 import Numbers from '../../helpers/numbers';
 import styles from './TableCashFlow.module.scss';
@@ -37,22 +43,27 @@ const TableCashFlow = (props) => {
   });
 
   return arrayCashFlowWhitFixed.map((dataTable, i) => (
-    <Accordion key={i} trigger={<span>{dataTable.name}</span>}>
-      <div className={styles.AccordionContainer}>
-        <Table
-          intersect={''}
-          headers={dataTable.header}
-          columnsMinWidth={true}
-          columns={[
-            'Cuotas Iniciales Fiducia',
-            'Cuotas Iniciales Disponibles',
-            'Entregas',
-          ]}
-          data={dataTable.cells}
-          maxHeight={{ maxHeight: '36vh' }}
-        />
-      </div>
-    </Accordion>
+    <ExpansionPanel key={i} /* trigger={} */>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <span>{dataTable.name}</span>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        <div className={styles.AccordionContainer}>
+          <Table
+            intersect={''}
+            headers={dataTable.header}
+            columnsMinWidth={true}
+            columns={[
+              'Cuotas Iniciales Fiducia',
+              'Cuotas Iniciales Disponibles',
+              'Entregas',
+            ]}
+            data={dataTable.cells}
+            maxHeight={{ maxHeight: '36vh' }}
+          />
+        </div>
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
   ));
 };
 

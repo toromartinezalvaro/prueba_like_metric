@@ -4,6 +4,7 @@ import Card, { CardHeader, CardBody } from '../UI/Card/Card';
 import Input from '../UI/Input/Input';
 import styles from './FutureSalesSpeed.module.scss';
 import Numbers from '../../helpers/numbers';
+import DynamicCells from './DynamicCells/DynamicCells';
 
 const getTotal = (salesSpeeds) =>
   salesSpeeds.reduce((current, next) => {
@@ -50,6 +51,10 @@ const FutureSalesSpeed = ({
     }
   }
 
+  const setPropsArraySalesSpeeds = (i, value) => {
+    arraySalesSpeeds[i] = Number(value);
+  };
+
   const firstFeeHandler = (target) => {
     this.setState({
       firstFee: target.value,
@@ -83,75 +88,18 @@ const FutureSalesSpeed = ({
 
             {groups !== undefined
               ? groups.map((group, i) => (
-                  <Fragment key={`fragment ${group.id}`}>
-                    <div className={styles.gridItem}>{group.name.slice(5)}</div>
-                    <div className={styles.gridItem}> {group.units}</div>
-                    <div className={styles.gridItem}>
-                      <NumberFormat
-                        value={group.averagePrice.toFixed(2)}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'$'}
-                      />
-                    </div>
-                    <div className={styles.gridItem}>
-                      {group.averageArea.toFixed(2)}
-                    </div>
-                    <div className={styles.gridItem}>
-                      <Input
-                        validations={inputValidation(group.units)}
-                        value={group.futureSalesSpeed}
-                        style={{ width: '75px' }}
-                        onChange={(target) => {
-                          arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
-                          futureSalesSpeedHandler(group.id, target.value);
-                        }}
-                      />
-                    </div>
-                    <div className={styles.gridItem}>
-                      <Input
-                        validations={[]}
-                        value={(group.separate * 100).toFixed(2)}
-                        mask="percentage"
-                        style={{ width: '75px' }}
-                        onChange={(target) => {
-                          /* arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2)); */
-                          separationHandler(group.id, target.value / 100);
-                        }}
-                      />
-                    </div>
-                    <div className={styles.gridItem}>
-                      <Input
-                        validations={[]}
-                        value={(group.initialFee * 100).toFixed(2)}
-                        mask="percentage"
-                        style={{ width: '75px' }}
-                        onChange={(target) => {
-                          /* arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2)); */
-                          initialFeeHandler(group.id, target.value / 100);
-                        }}
-                      />
-                    </div>
-                    <div className={styles.gridItem}>
-                      <Input
-                        validations={[]}
-                        value={(
-                          100 -
-                          (group.separate + group.initialFee) * 100
-                        ).toFixed(2)}
-                        mask="percentage"
-                        style={{ width: '75px' }}
-                        onChange={(target) => {
-                          /* arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2)); */
-                          futureSalesSpeedHandler(group.id, target.value);
-                        }}
-                      />
-                    </div>
-                  </Fragment>
+                  <DynamicCells
+                    group={group}
+                    i={i}
+                    salesSpeeds={salesSpeeds}
+                    futureSalesSpeedHandler={futureSalesSpeedHandler}
+                    separationHandler={separationHandler}
+                    initialFeeHandler={initialFeeHandler}
+                    setTotal={setTotal}
+                    arraySalesSpeeds={arraySalesSpeeds}
+                    setPropsArraySalesSpeeds={setPropsArraySalesSpeeds}
+                    key={i}
+                  />
                 ))
               : null}
             <div className={styles.gridItem} />

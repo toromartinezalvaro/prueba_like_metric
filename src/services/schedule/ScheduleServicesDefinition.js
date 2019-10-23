@@ -9,6 +9,18 @@ const IncrementsServiceDefinition = {
     return `${API_PATH}schedules/salesStartDates/${towerId}`;
   },
 
+  putBalancePointDate: (towerId) => {
+    return `${API_PATH}schedules/balancePointDate/${towerId}`;
+  },
+
+  putConstructionStartDate: (towerId) => {
+    return `${API_PATH}schedules/constructionStartDate/${towerId}`;
+  },
+
+  putAverageDeliveryDate: (towerId) => {
+    return `${API_PATH}schedules/averageDeliveryDate/${towerId}`;
+  },
+
   putEndOfSalesDate: (towerId) => {
     return `${API_PATH}schedules/endOfSalesDate/${towerId}`;
   },
