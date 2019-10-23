@@ -4,10 +4,13 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import GeneralInfo from './C_GeneralInfo/GeneralInfo';
+import GeneralInfo from '../../C_GeneralInfo/GeneralInfo';
 import styles from './GeneralInfo.module.scss';
 
-const ExpandGeneralInfo = () => {
+const ExpandGeneralInfo = ({
+  handleOpenCategory,
+  handleOpenBusinessPatner,
+}) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
@@ -20,7 +23,10 @@ const ExpandGeneralInfo = () => {
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Typography>
-          <GeneralInfo />
+          <GeneralInfo
+            handleOpenCategory={handleOpenCategory}
+            handleOpenBusinessPatner={handleOpenBusinessPatner}
+          />
         </Typography>
       </ExpansionPanelDetails>
     </ExpansionPanel>

@@ -3,54 +3,94 @@
  *
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 import React, { Component } from 'react';
 import styles from './Contracts.module.scss';
 import Navbar from '../../components/Contracts/Navbar/Navbar';
 import NewContract from '../../components/Contracts/NewContract/NewContract';
+import Category from '../../components/Contracts/NewContract/C_Category/Category';
+import BusinessPatner from '../../components/Contracts/NewContract/C_BusinessPatner/BusinessPatner';
 
 class Contracts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      scroll: 'body',
-      fullWidth: true,
-      maxWidth: 'md',
+      categoryModal: {
+        isOpen: false,
+      },
+      contractModal: {
+        isOpen: false,
+      },
+      BusinessPatnerModal: {
+        isOpen: false,
+      },
       expanded: 'GeneralInfo',
     };
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
   }
 
-  handleOpen = () => {
-    this.setState({ open: true });
+  handleOpenContract = () => {
+    this.setState({ contractModal: { isOpen: true } });
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
+  handleCloseContract = () => {
+    this.setState({ contractModal: { isOpen: false } });
+  };
+
+  handleOpenCategory = () => {
+    this.setState({ categoryModal: { isOpen: true } });
+  };
+
+  handleCloseCategory = () => {
+    this.setState({ categoryModal: { isOpen: false } });
+  };
+
+  handleOpenBusinessPatner = () => {
+    this.setState({ BusinessPatnerModal: { isOpen: true } });
+  };
+
+  handleCloseBusinessPatner = () => {
+    this.setState({ BusinessPatnerModal: { isOpen: false } });
   };
 
   render() {
     return (
       <div className={styles.Contracts}>
-        <Navbar
-          handleOpen={this.handleOpen}
-          handleClose={this.handleClose}
-          scroll={this.state.scroll}
-          fullWidth={this.state.fullWidth}
-          maxWidth={this.state.maxWidth}
-          expanded={this.state.expanded}
-        />
+        <Navbar handleOpenContract={this.handleOpenContract} />
         <NewContract
-          handleOpen={this.handleOpen}
-          handleClose={this.handleClose}
-          scroll={this.state.scroll}
-          fullWidth={this.state.fullWidth}
-          maxWidth={this.state.maxWidth}
           expanded={this.state.expanded}
-          open={this.state.open}
+          isOpen={this.state.contractModal.isOpen}
+          onClose={this.handleCloseContract}
+          handleOpenCategory={this.handleOpenCategory}
+          handleOpenBusinessPatner={this.handleOpenBusinessPatner}
         />
+        <Dialog
+          className={styles.dialogExpand}
+          scroll="body"
+          open={this.state.categoryModal.isOpen}
+          handleOpen={this.state.handleOpen}
+          handleCloseCategory={this.state.handleCloseCategory}
+          fullWidth={true}
+          maxWidth="md"
+        >
+          <DialogContent>
+            <Category handleCloseCategory={this.state.handleCloseCategory} />
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          className={styles.dialogExpand}
+          scroll="body"
+          open={this.state.BusinessPatnerModal.isOpen}
+          handleOpenBusinessPatner={this.handleOpenBusinessPatner}
+          handleCloseBusinessPatner={this.handleCloseBusinessPatner}
+          fullWidth={true}
+          maxWidth="md"
+        >
+          <DialogContent>
+            <BusinessPatner />
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }

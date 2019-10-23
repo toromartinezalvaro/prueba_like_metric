@@ -8,25 +8,16 @@ import React from 'react';
 
 import styles from './Navbar.module.scss';
 
-
-const Navbar = ({
-  handleClose,
-  handleOpen,
-  scroll,
-  maxWidth,
-  open,
-  fullWidth,
-}) => {
+const Navbar = ({ handleOpenContract }) => {
   return (
     <div>
       <nav className={styles.navigationBar}>
         <ul className={styles.menuContainer}>
-          <li className={styles.itemList} onClick={handleOpen}>
+          <li className={styles.itemList} onClick={handleOpenContract}>
             Contracts
           </li>
         </ul>
       </nav>
-
     </div>
   );
 };

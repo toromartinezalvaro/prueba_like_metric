@@ -11,15 +11,23 @@ import ExpandCustom from './E_Custom/Custom';
 import ExpandAttachment from './E_Attachment/Attachment';
 import styles from './NewContract.module.scss';
 
-const NewContract = ({ open, handleClose, scroll, fullWidth, maxWidth }) => {
+const NewContract = ({
+  isOpen,
+  HAND,
+  TransitionComponent,
+  expanded,
+  handleCloseContract,
+  handleOpenCategory,
+  handleOpenBusinessPatner,
+}) => {
   return (
     <Dialog
       className={styles.dialogExpand}
-      open={open}
-      onClose={handleClose}
-      scroll={scroll}
-      fullWidth={fullWidth}
-      maxWidth={maxWidth}
+      open={isOpen}
+      onClose={handleCloseContract}
+      scroll="body"
+      fullWidth={true}
+      maxWidth="md"
     >
       <DialogContentText>
         <div className={styles.title}>
@@ -29,7 +37,10 @@ const NewContract = ({ open, handleClose, scroll, fullWidth, maxWidth }) => {
           <h2 className={styles.title}>Agregar Contrato</h2>
         </div>
 
-        <ExpandGeneralInfo />
+        <ExpandGeneralInfo
+          handleOpenCategory={handleOpenCategory}
+          handleOpenBusinessPatner={handleOpenBusinessPatner}
+        />
         <br />
         <ExpandLifeCycle />
         <br />

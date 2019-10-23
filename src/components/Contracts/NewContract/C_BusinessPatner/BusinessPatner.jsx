@@ -6,17 +6,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import styles from './BusinessPatner.module.scss';
 
-const bussinesPatner = () => {
+const businessPatner = ({ handleCloseBusinessPatner }) => {
   return (
-    <Grid
-      container
-      className={styles.gridContainer}
-      direction="row"
-      justify="center"
-      alignItems="flex-start"
-      spacing={3}
-    >
-      <Grid item xs={6} md={6}>
+    <div className={styles.gridContainer}>
+      <div>
         <TextField
           required
           fullWidth
@@ -25,15 +18,8 @@ const bussinesPatner = () => {
           margin="normal"
           variant="outlined"
         />
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-          className={styles.selects}
-          spacing={2}
-          justify="center"
-        >
-          <Grid item xs={6}>
+        <div alignItems="center" className={styles.selects}>
+          <div>
             <TextField
               fullWidth
               required
@@ -43,14 +29,14 @@ const bussinesPatner = () => {
               margin="normal"
               variant="outlined"
             />
-          </Grid>
-          <Grid item xs={6}>
+          </div>
+          <div>
             <Fab
               color="primary"
               size="small"
               aria-label="add"
               className={styles.fab}
-              onClick={bussinesPatner}
+              onClick={businessPatner}
             >
               <AddIcon />
             </Fab>
@@ -63,17 +49,10 @@ const bussinesPatner = () => {
             >
               <EditIcon />
             </Fab>
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          direction="row"
-          className={styles.selects}
-          alignItems="center"
-          spacing={2}
-          justify="center"
-        >
-          <Grid item xs={6}>
+          </div>
+        </div>
+        <div className={styles.selects}>
+          <div>
             <TextField
               fullWidth
               select
@@ -82,8 +61,8 @@ const bussinesPatner = () => {
               margin="normal"
               variant="outlined"
             />
-          </Grid>
-          <Grid item xs={6}>
+          </div>
+          <div>
             <Fab
               color="primary"
               size="small"
@@ -101,10 +80,10 @@ const bussinesPatner = () => {
             >
               <EditIcon />
             </Fab>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={6} md={6}>
+          </div>
+        </div>
+      </div>
+      <div>
         <TextField
           fullWidth
           select
@@ -127,8 +106,8 @@ const bussinesPatner = () => {
           margin="normal"
           variant="outlined"
         />
-      </Grid>
-      <Grid xs={12} md={12}>
+      </div>
+      <div>
         <TextField
           multiline
           fullWidth
@@ -137,9 +116,9 @@ const bussinesPatner = () => {
           label="Descripción/Comentarios"
           variant="outlined"
         />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 
-export default bussinesPatner;
+export default businessPatner;

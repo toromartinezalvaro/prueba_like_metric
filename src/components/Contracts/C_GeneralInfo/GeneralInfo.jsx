@@ -8,23 +8,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
 import styles from './GeneralInfo.module.scss';
-import Category from './C_Category/Category';
+import Category from '../NewContract/C_Category/Category';
+import BusinessPatner from '../NewContract/C_BusinessPatner/BusinessPatner';
 
-const GeneralInfo = () => {
-  const [open, setOpen] = useState(false);
-  const [scroll, setScroll] = useState('body');
-  const [fullWidth, setFullWidth] = useState(true);
-  const [maxWidth, setMaxWidth] = useState('md');
-  const [expanded, setExpanded] = useState('GeneralInfo');
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+const GeneralInfo = ({ handleOpenCategory, handleOpenBusinessPatner }) => {
   return (
     <Grid
       container
@@ -67,6 +54,7 @@ const GeneralInfo = () => {
               color="primary"
               size="small"
               aria-label="add"
+              onClick = {handleOpenBusinessPatner}
               className={styles.fab}
             >
               <AddIcon />
@@ -106,21 +94,10 @@ const GeneralInfo = () => {
               size="small"
               aria-label="add"
               className={styles.fab}
-              onClick={handleOpen}
+              onClick={handleOpenCategory}
             >
               <AddIcon />
             </Fab>
-            <Dialog
-              className={styles.dialogExpand}
-              scroll={scroll}
-              open={open}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
-              fullWidth={fullWidth}
-              maxWidth={maxWidth}
-            >
-              <Category />
-            </Dialog>
             <Fab
               color="secondary"
               mx={2}
