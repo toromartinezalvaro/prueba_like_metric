@@ -11,10 +11,12 @@ import Navbar from '../../components/Contracts/Navbar/Navbar';
 import NewContract from '../../components/Contracts/NewContract/NewContract';
 import Category from '../../components/Contracts/NewContract/C_Category/Category';
 import BusinessPatner from '../../components/Contracts/NewContract/C_BusinessPatner/BusinessPatner';
+import ContractService from '../../services/contract/contractService';
 
 class Contracts extends Component {
   constructor(props) {
     super(props);
+    this.services = new ContractService();
     this.state = {
       categoryModal: {
         isOpen: false,
@@ -53,6 +55,24 @@ class Contracts extends Component {
     this.setState({ BusinessPatnerModal: { isOpen: false } });
   };
 
+  newCategory = (categoryName) => {
+    this.services
+      .postCategoryContracts('contractcategory', { categoryName })
+      .then(console.log('clean'))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  searchCategory = (textToSearch) => {
+    this.services
+      .getCategoryToSearch({ textToSearch })
+      .then(console.log('finded!'))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -63,6 +83,8 @@ class Contracts extends Component {
           onClose={this.handleCloseContract}
           handleOpenCategory={this.handleOpenCategory}
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
+          searchCategory={this.searchCategory}
+          categories={['prros', 'camilos', 'Josese']}
         />
         <Dialog
           className={styles.dialogExpand}
@@ -74,7 +96,10 @@ class Contracts extends Component {
           maxWidth="md"
         >
           <DialogContent>
-            <Category handleCloseCategory={this.state.handleCloseCategory} />
+            <Category
+              handleCloseCategory={this.state.handleCloseCategory}
+              newCategory={this.newCategory}
+            />
           </DialogContent>
         </Dialog>
 

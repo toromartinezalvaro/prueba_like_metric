@@ -6,12 +6,28 @@ import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Select from 'react-select';
 
 import styles from './GeneralInfo.module.scss';
 import Category from '../NewContract/C_Category/Category';
 import BusinessPatner from '../NewContract/C_BusinessPatner/BusinessPatner';
 
-const GeneralInfo = ({ handleOpenCategory, handleOpenBusinessPatner }) => {
+const GeneralInfo = ({
+  handleOpenCategory,
+  handleOpenBusinessPatner,
+  searchCategory,
+}) => {
+  const loadOptions = (toSearch) => {
+    searchCategory(toSearch).map((suggestion) => ({
+      value: suggestion.label,
+      label: suggestion.label,
+    }));
+  };
+
+  const findOption = (e) => {
+    loadOptions(e.target.value);
+  };
+
   return (
     <Grid
       container
@@ -54,7 +70,7 @@ const GeneralInfo = ({ handleOpenCategory, handleOpenBusinessPatner }) => {
               color="primary"
               size="small"
               aria-label="add"
-              onClick = {handleOpenBusinessPatner}
+              onClick={handleOpenBusinessPatner}
               className={styles.fab}
             >
               <AddIcon />
@@ -79,12 +95,15 @@ const GeneralInfo = ({ handleOpenCategory, handleOpenBusinessPatner }) => {
           justify="center"
         >
           <Grid item xs={6}>
-            <TextField
+            {/*categoryWard*/}
+            <Select
               fullWidth
               select
               className={styles.textField}
               label="Categoria"
               margin="normal"
+              onChange={findOption}
+              options={loadOptions}
               variant="outlined"
             />
           </Grid>

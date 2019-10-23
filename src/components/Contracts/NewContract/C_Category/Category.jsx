@@ -8,7 +8,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import styles from './Category.module.scss';
 
-const Category = ({ handleCloseCategory }) => {
+const Category = ({ handleCloseCategory, newCategory }) => {
+  const [textOfCategory, setTextOfCategory] = useState('');
+  const changeTextOfCategory = (e) => {
+    setTextOfCategory(e.target.value);
+  };
+  const sendTextOfCategory = () => {
+    newCategory(textOfCategory);
+  };
   return (
     <div container className={styles.gridContainer}>
       <div className={styles.categoryCreator}>
@@ -19,6 +26,7 @@ const Category = ({ handleCloseCategory }) => {
           label="Nombre de Categoría"
           margin="normal"
           variant="outlined"
+          onChange={changeTextOfCategory}
         />
       </div>
 
@@ -28,6 +36,7 @@ const Category = ({ handleCloseCategory }) => {
           color="primary"
           className={styles.button}
           startIcon={<AddIcon />}
+          onClick={sendTextOfCategory}
         >
           Crear
         </Button>
