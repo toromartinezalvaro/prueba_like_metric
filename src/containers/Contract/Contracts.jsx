@@ -65,13 +65,13 @@ class Contracts extends Component {
   };
 
   searchCategory = (textToSearch) => {
-    this.services
-      .getCategoryToSearch({ textToSearch })
-      .then(console.log('finded!'))
-      .catch((error) => {
-        console.log(error);
-      });
+    JSON.stringify(this.services
+      .getCategoryToSearch(textToSearch));
   };
+
+  componentDidMount() {
+    console.log(this.searchCategory("Twr"));
+  }
 
   render() {
     return (
@@ -84,7 +84,7 @@ class Contracts extends Component {
           handleOpenCategory={this.handleOpenCategory}
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           searchCategory={this.searchCategory}
-          categories={['prros', 'camilos', 'Josese']}
+          categories={[{ name: 'prros' }, { name: 'camilos' }, { name: 'Josese' }, ]}
         />
         <Dialog
           className={styles.dialogExpand}

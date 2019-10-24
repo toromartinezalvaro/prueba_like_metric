@@ -7,6 +7,7 @@ import Fab from '@material-ui/core/Fab';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Select from 'react-select';
+import PropTypes from 'prop-types';
 
 import styles from './GeneralInfo.module.scss';
 import Category from '../NewContract/C_Category/Category';
@@ -16,18 +17,14 @@ const GeneralInfo = ({
   handleOpenCategory,
   handleOpenBusinessPatner,
   searchCategory,
+  categories
 }) => {
-  const loadOptions = (toSearch) => {
-    searchCategory(toSearch).map((suggestion) => ({
-      value: suggestion.label,
-      label: suggestion.label,
+  const loadOptions = () => {
+    return categories.map(option => ({
+      value: option.name,
+      label: option.name
     }));
-  };
-
-  const findOption = (e) => {
-    loadOptions(e.target.value);
-  };
-
+  }
   return (
     <Grid
       container
@@ -37,6 +34,7 @@ const GeneralInfo = ({
       alignItems="flex-start"
       spacing={3}
     >
+      {console.log(loadOptions())}
       <Grid item xs={6} md={6}>
         <TextField
           required
@@ -98,12 +96,19 @@ const GeneralInfo = ({
             {/*categoryWard*/}
             <Select
               fullWidth
-              select
               className={styles.textField}
+              inputId="react-select-single"
+              TextFieldProps={{
+                label: 'Categoria',
+                InputLabelProps: {
+                  htmlFor: 'react-select-single',
+                  shrink: true,
+                },
+              }}
               label="Categoria"
               margin="normal"
-              onChange={findOption}
               options={loadOptions}
+              components = {Option}
               variant="outlined"
             />
           </Grid>
@@ -165,6 +170,10 @@ const GeneralInfo = ({
       </Grid>
     </Grid>
   );
+};
+
+GeneralInfo.propTypes = {
+  categories: PropTypes.array,
 };
 
 export default GeneralInfo;

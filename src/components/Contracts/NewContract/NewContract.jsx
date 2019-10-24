@@ -19,6 +19,7 @@ const NewContract = ({
   handleCloseContract,
   handleOpenCategory,
   handleOpenBusinessPatner,
+  categories
 }) => {
   return (
     <Dialog
@@ -40,6 +41,7 @@ const NewContract = ({
         <ExpandGeneralInfo
           handleOpenCategory={handleOpenCategory}
           handleOpenBusinessPatner={handleOpenBusinessPatner}
+          categories = {categories}
         />
         <br />
         <ExpandLifeCycle />

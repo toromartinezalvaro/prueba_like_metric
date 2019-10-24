@@ -10,6 +10,7 @@ import styles from './GeneralInfo.module.scss';
 const ExpandGeneralInfo = ({
   handleOpenCategory,
   handleOpenBusinessPatner,
+  categories,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
@@ -26,6 +27,7 @@ const ExpandGeneralInfo = ({
           <GeneralInfo
             handleOpenCategory={handleOpenCategory}
             handleOpenBusinessPatner={handleOpenBusinessPatner}
+            categories = {categories}
           />
         </Typography>
       </ExpansionPanelDetails>
