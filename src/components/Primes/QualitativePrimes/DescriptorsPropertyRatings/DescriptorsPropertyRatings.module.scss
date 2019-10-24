@@ -44,4 +44,15 @@
       color: #f56565 !important;
     }
   }
+
+  .SelectorCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .Selector {
+    width: 80%;
+  }
 }
