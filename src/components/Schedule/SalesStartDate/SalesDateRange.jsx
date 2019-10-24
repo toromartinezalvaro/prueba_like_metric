@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Tooltip } from '@material-ui/core';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 import DayPickerInput from 'react-date-picker';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Styles from './SalesDateRange.module.scss';
@@ -14,15 +13,6 @@ const displacementValidation = () => [
     message: 'Debe ser mayor 0',
   },
 ];
-
-const LightTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 15,
-  },
-}))(Tooltip);
 
 function SalesDateRange({
   endOfSalesDate,
@@ -156,9 +146,9 @@ function SalesDateRange({
             />
             <div className={Styles.label}>
               Desplazamiento
-              <LightTooltip title="Desplazamiento en meses respecto a la fecha de punto de equilibrio">
+              <Tooltip title="Desplazamiento en meses respecto a la fecha de punto de equilibrio">
                 <span className={Styles.Badge}>?</span>
-              </LightTooltip>
+              </Tooltip>
             </div>
           </div>
         </div>
