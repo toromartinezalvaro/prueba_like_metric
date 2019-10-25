@@ -30,45 +30,71 @@ const Option = (props) => {
   );
 };
 
-
-
 const GeneralInfo = ({
   handleOpenCategory,
   handleOpenBusinessPatner,
+  handleCloseCategory,
   searchCategory,
-  categories
+  categories,
 }) => {
-  const suggestions = [{ label: "tower"}, {label: "area" }].map(suggestion => ({
-    value: suggestion.label,
-    label: suggestion.label,
-  }));
+  const suggestions = [{ label: 'tower' }, { label: 'area' }].map(
+    (suggestion) => ({
+      value: suggestion.label,
+      label: suggestion.label,
+    }),
+  );
   return (
     <Fragment>
       <div className={styles.gridContainer}>
-
-        <div className={styles.columnFull}>
-          <TextField required fullWidth className={styles.textField} label="Titulo De Contrato" margin="normal"
-            variant="outlined" />
-          <div className={styles.gridContainer}>
-            <div className={styles.columnFull}>
-              <TextField fullWidth required select className={styles.textField} label="Socio de negocios" margin="normal"
-                variant="outlined" />
+        <div className={styles.columnFullLeft}>
+          <TextField
+            required
+            fullWidth
+            className={styles.textField}
+            label="Titulo De Contrato"
+            margin="normal"
+            variant="outlined"
+          />
+          <div className={styles.gridSubContainer}>
+            <div className={styles.selectColumn}>
+              <Select
+                inputId="react-select-single"
+                TextFieldProps={{
+                  label: 'Socio de negocios',
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single',
+                    shrink: true,
+                  },
+                }}
+                placeholder="Seleccione socio"
+                options={suggestions}
+                components={Option}
+              />
             </div>
-            <div className={styles.columnFull}>
-              <Fab color="primary" size="small" aria-label="add" onClick={handleOpenBusinessPatner}
-                className={styles.fab}>
+            <div className={styles.buttonColumn}>
+              <Fab
+                color="primary"
+                size="small"
+                aria-label="add"
+                onClick={handleOpenBusinessPatner}
+                className={styles.fab}
+              >
                 <AddIcon />
               </Fab>
-              <Fab color="secondary" mx={2} size="small" aria-label="edit" className={styles.fab}>
+              <Fab
+                color="secondary"
+                mx={2}
+                size="small"
+                aria-label="edit"
+                className={styles.fab}
+              >
                 <EditIcon />
               </Fab>
             </div>
           </div>
-          <div className={styles.gridContainer}>
-            <div className={styles.columnFull}>
-              {/*categoryWard*/}
+          <div className={styles.gridSubContainer}>
+            <div className={styles.selectColumn}>
               <Select
-                fullWidth
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'Categoría',
@@ -82,28 +108,75 @@ const GeneralInfo = ({
                 components={Option}
               />
             </div>
-            <div className={styles.columnFull}>
-              <Fab color="primary" size="small" aria-label="add" className={styles.fab} onClick={handleOpenCategory}>
+            <div className={styles.buttonColumn}>
+              <Fab
+                color="primary"
+                size="small"
+                aria-label="add"
+                className={styles.fab}
+                onClick={handleOpenCategory}
+              >
                 <AddIcon />
               </Fab>
-              <Fab color="secondary" mx={2} size="small" aria-label="edit" className={styles.fab}>
+              <Fab
+                color="secondary"
+                mx={2}
+                size="small"
+                aria-label="edit"
+                className={styles.fab}
+              >
                 <EditIcon />
               </Fab>
             </div>
           </div>
         </div>
 
-        <div className={styles.columnFull}>
-          <TextField fullWidth select className={styles.textField} label="Estado" margin="normal" variant="outlined" />
-          <TextField className={styles.leftInputs} label="Numero de contrato" margin="normal" variant="outlined" />
-          <TextField fullWidth select className={styles.textField} label="Contrato principal" margin="normal"
-            variant="outlined" />
+        <div className={styles.columnFullRigth}>
+          <Select
+            className={styles.SelectSimple}
+            inputId="react-select-single"
+            TextFieldProps={{
+              label: 'Estado',
+              InputLabelProps: {
+                htmlFor: 'react-select-single',
+                shrink: true,
+              },
+            }}
+            placeholder="Estado"
+            options={suggestions}
+            components={Option}
+          />
+          <TextField
+            className={styles.leftInputs}
+            label="Numero de contrato"
+            margin="normal"
+            variant="outlined"
+          />
+          <Select
+            className={styles.SelectSimple}
+            inputId="react-select-single"
+            TextFieldProps={{
+              label: 'Contrato principal',
+              InputLabelProps: {
+                htmlFor: 'react-select-single',
+                shrink: true,
+              },
+            }}
+            placeholder="Contrato principal"
+            options={suggestions}
+            components={Option}
+          />
         </div>
-
       </div>
       <div className={styles.gridContainer}>
-        <TextField multiline fullWidth rows="6" className={styles.multiline} label="Descripción/Comentarios"
-          variant="outlined" />
+        <TextField
+          multiline
+          fullWidth
+          rows="6"
+          className={styles.multiline}
+          label="Descripción/Comentarios"
+          variant="outlined"
+        />
       </div>
     </Fragment>
   );

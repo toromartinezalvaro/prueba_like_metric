@@ -18,11 +18,6 @@
   width: 25vw !important;
 }
 
-.button {
-  position: relative;
-  left: 25% !important;
-}
-
 .leftEntry {
   position: relative;
   top: -55% !important;
@@ -32,16 +27,51 @@
 }
 
 .gridContainer {
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: row;
   justify-content: center !important;
-  align-self: center !important;
-  align-content: center !important;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 125vh !important;
 }
 
 .gridSubContainer {
   display: flex;
   direction: row;
   justify-content: center;
-  align-self: flex-start !important;
+  align-self: center !important;
+}
+
+.actionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.heading {
+  display: flex;
+  direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleExpand {
+  margin-left: 8px;
+  color: $grayBlack-color;
+}
+
+.circleColorGeneral {
+  background-color: $green-color;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
 }

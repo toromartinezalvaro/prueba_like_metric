@@ -1,124 +1,239 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
+import Typography from '@material-ui/core/Typography';
+import MenuItem from '@material-ui/core/MenuItem';
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+import Select from 'react-select';
 import styles from './BusinessPatner.module.scss';
 
-const businessPatner = ({ handleCloseBusinessPatner }) => {
+const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner }) => {
+  const [partner, setPartner] = useState({
+    patnerName: '',
+    patnerAdress: '',
+    patnerPostalCode: '',
+    patnerCity: '',
+    patnerCountry: '',
+    patnerWebsite: '',
+    patnerContactPerson: '',
+    patnerEmail: '',
+    patnerPhone: '',
+    patnerFiscalInformation: '',
+    patnerVatNumber: '',
+  });
+
+  const onChangeInformation = (name) => (e) => {
+    setPartner({ ...partner, [name]: e.target.value });
+  };
+
+  const sendPartner = () => {
+    console.log(partner);
+    // newBusinessPartner(partner);
+    handleCloseBusinessPatner();
+  };
+
+  const Option = (props) => {
+    return (
+      <MenuItem
+        ref={props.innerRef}
+        selected={props.isFocused}
+        component="div"
+        style={{
+          fontWeight: props.isSelected ? 500 : 400,
+        }}
+        {...props.innerProps}
+      >
+        {props.children}
+      </MenuItem>
+    );
+  };
+
+  const suggestions = [
+    { label: 'Colombia' },
+    { label: 'Mexico' },
+    { label: 'Chile' },
+    { label: 'Brasil' },
+  ].map((suggestion) => ({
+    value: suggestion.label,
+    label: suggestion.label,
+  }));
+
   return (
-    <div className={styles.gridContainer}>
-      <div>
-        <TextField
-          required
-          fullWidth
-          className={styles.textField}
-          label="Titulo De Contrato"
-          margin="normal"
-          variant="outlined"
-        />
-        <div alignItems="center" className={styles.selects}>
-          <div>
-            <TextField
-              fullWidth
-              required
-              select
-              className={styles.textField}
-              label="Socio de negocios"
-              margin="normal"
-              variant="outlined"
-            />
-          </div>
-          <div>
-            <Fab
-              color="primary"
-              size="small"
-              aria-label="add"
-              className={styles.fab}
-              onClick={businessPatner}
-            >
-              <AddIcon />
-            </Fab>
-            <Fab
-              color="secondary"
-              mx={2}
-              size="small"
-              aria-label="edit"
-              className={styles.fab}
-            >
-              <EditIcon />
-            </Fab>
-          </div>
+    <Fragment>
+      <Typography className={styles.headingTitle} variant="h4">
+        <div className={`${styles.circleIcon}  ${styles.circleColorForTitle}`}>
+          <Icon className={`${styles.iconGeneral} fas fa-handshake`} />
         </div>
-        <div className={styles.selects}>
-          <div>
-            <TextField
-              fullWidth
-              select
-              className={styles.textField}
-              label="Categoria"
-              margin="normal"
-              variant="outlined"
-            />
-          </div>
-          <div>
-            <Fab
-              color="primary"
-              size="small"
-              aria-label="add"
-              className={styles.fab}
-            >
-              <AddIcon />
-            </Fab>
-            <Fab
-              color="secondary"
-              mx={2}
-              size="small"
-              aria-label="edit"
-              className={styles.fab}
-            >
-              <EditIcon />
-            </Fab>
-          </div>
+        <div className={styles.titleExpandForTitle}>
+          Nuevo Socio de Negocios
+        </div>
+      </Typography>
+
+      <Typography className={styles.heading}>
+        <div className={`${styles.circleIcon}  ${styles.circleColorGeneral}`}>
+          <Icon className={`${styles.iconGeneral} fas fa-book-reader`} />
+        </div>
+        <div className={styles.titleExpand}>Nombre y Dirección</div>
+      </Typography>
+
+      <div className={styles.gridContainer}>
+        <div className={styles.columnFullLeft}>
+          <TextField
+            required
+            fullWidth
+            className={styles.textField}
+            label="Nombre"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerName')}
+          />
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Dirección"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerAdress')}
+          />
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Codigo postal"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerPostalCode')}
+          />
+        </div>
+        <div className={styles.columnFullRigth}>
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="City"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerCity')}
+          />
+          <Select
+            className={styles.Select}
+            inputId="react-select-single"
+            TextFieldProps={{
+              label: 'País',
+              InputLabelProps: {
+                htmlFor: 'react-select-single',
+                shrink: true,
+              },
+            }}
+            placeholder="Seleccione un país"
+            options={suggestions}
+            components={Option}
+          />
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Sitio web"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerWebsite')}
+          />
         </div>
       </div>
-      <div>
-        <TextField
-          fullWidth
-          select
-          className={styles.textField}
-          label="Estado"
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          className={styles.leftInputs}
-          label="Numero de contrato"
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          fullWidth
-          select
-          className={styles.textField}
-          label="Contrato principal"
-          margin="normal"
-          variant="outlined"
-        />
+
+      <Typography className={styles.heading}>
+        <div className={`${styles.circleIcon}  ${styles.circleColorPeople}`}>
+          <Icon className={`${styles.iconGeneral} fas fa-user-friends`} />
+        </div>
+        <div className={styles.titleExpand}>Persona de contacto</div>
+      </Typography>
+
+      <div className={styles.gridContainer}>
+        <div className={styles.columnFullLeft}>
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Persona de Contacto"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerContactPerson')}
+          />
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Email"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerEmail')}
+          />
+        </div>
+        <div className={styles.columnFullRigth}>
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Telefono"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerPhone')}
+          />
+        </div>
       </div>
-      <div>
-        <TextField
-          multiline
-          fullWidth
-          rows="6"
-          className={styles.multiline}
-          label="Descripción/Comentarios"
-          variant="outlined"
-        />
+
+      <Typography className={styles.heading}>
+        <div
+          className={`${styles.circleIcon}  ${styles.circleColorFinantials}`}
+        >
+          <Icon className={`${styles.iconGeneral}  fas fa-tag`} />
+        </div>
+        <div className={styles.titleExpand}>Información Financiera</div>
+      </Typography>
+
+      <div className={styles.gridContainer}>
+        <div className={styles.columnFullLeft}>
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Información Fiscal"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerFiscalInformation')}
+          />
+        </div>
+        <div className={styles.columnFullRigth}>
+          <TextField
+            fullWidth
+            className={styles.textField}
+            label="Numero de RUT"
+            margin="normal"
+            variant="outlined"
+            onChange={onChangeInformation('patnerVatNumber')}
+          />
+        </div>
       </div>
-    </div>
+
+      <div className={styles.actionContainer}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={styles.button}
+          startIcon={<AddIcon />}
+          onClick={sendPartner}
+        >
+          Agregar Socio de negocios
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={`${styles.button} ${styles.buttonMargin}`}
+          startIcon={<Icon className="fas fa-ban" />}
+          onClick={handleCloseBusinessPatner}
+        >
+          Cancelar
+        </Button>
+      </div>
+    </Fragment>
   );
 };
 
-export default businessPatner;
+export default BusinessPatner;

@@ -64,15 +64,27 @@ class Contracts extends Component {
       });
   };
 
+  newBusinessPartner = (partner) => {
+    console.log(partner);
+    this.services
+      .postBusinessPatnerContract('businesspatner', partner)
+      .then(console.log('clean'))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   searchCategory = (textToSearch) => {
-    JSON.stringify(this.services
-      .getCategoryToSearch(textToSearch));
+    JSON.stringify(this.services.getCategoryToSearch(textToSearch));
   };
 
   getAllCategories = () => {
-    this.services
-      .getAllCategories('contractcategory');
-  }
+    this.services.getAllCategories('contractcategory');
+  };
+
+  getAllPatners = () => {
+    this.services.getAllPatners('businessPatner');
+  };
 
   render() {
     return (
@@ -82,24 +94,23 @@ class Contracts extends Component {
         <NewContract
           expanded={this.state.expanded}
           isOpen={this.state.contractModal.isOpen}
-          onClose={this.handleCloseContract}
+          handleCloseContract={this.handleCloseContract}
           handleOpenCategory={this.handleOpenCategory}
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           searchCategory={this.searchCategory}
-          categories = {this.getAllCategories}
+          categories={this.getAllCategories}
         />
         <Dialog
           className={styles.dialogExpand}
           scroll="body"
           open={this.state.categoryModal.isOpen}
-          handleOpen={this.state.handleOpen}
-          handleCloseCategory={this.state.handleCloseCategory}
+          handleCloseCategory={this.handleCloseCategory}
           fullWidth={true}
           maxWidth="md"
         >
           <DialogContent>
             <Category
-              handleCloseCategory={this.state.handleCloseCategory}
+              handleCloseCategory={this.handleCloseCategory}
               newCategory={this.newCategory}
             />
           </DialogContent>
@@ -109,13 +120,15 @@ class Contracts extends Component {
           className={styles.dialogExpand}
           scroll="body"
           open={this.state.BusinessPatnerModal.isOpen}
-          handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           handleCloseBusinessPatner={this.handleCloseBusinessPatner}
           fullWidth={true}
           maxWidth="md"
         >
           <DialogContent>
-            <BusinessPatner />
+            <BusinessPatner
+              handleCloseBusinessPatner={this.handleCloseBusinessPatner}
+              newBusinessPartner={this.newBusinessPartner}
+            />
           </DialogContent>
         </Dialog>
       </div>

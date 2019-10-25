@@ -4,7 +4,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import BillingFinancials from '../C_BillingFinancials/BillingFinancials';
+import BillingFinancials from '../../C_BillingFinancials/BillingFinancials';
 import styles from './BillingFinancials.module.scss';
 
 const ExpandBillingFinancials = () => {

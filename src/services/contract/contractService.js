@@ -1,13 +1,20 @@
 import ContractServiceDefinitions from './contractServiceDefinitions';
-import Services from "../services";
+import Services from '../services';
 
 export default class ContractService extends Services {
   postCategoryContracts(contractcategory, data) {
-    return this.post(ContractServiceDefinitions.category(contractcategory), data);
+    return this.post(
+      ContractServiceDefinitions.category(contractcategory),
+      data,
+    );
   }
 
   postBusinessPatnerContract(contractBusinessPatner, data) {
-    return this.post(ContractServiceDefinitions.businessContract(contractBusinessPatner), data);
+    console.log(data);
+    return this.post(
+      ContractServiceDefinitions.businessContract(contractBusinessPatner),
+      data,
+    );
   }
 
   getCategoryToSearch(textToSearch) {
@@ -15,10 +22,18 @@ export default class ContractService extends Services {
   }
 
   getAllCategories(contractcategory) {
-    return this.get(ContractServiceDefinitions.getAllCategories(contractcategory));
+    return this.get(
+      ContractServiceDefinitions.getAllCategories(contractcategory),
+    );
   }
 
   getBusinessPatnerToSearch(textToSearch) {
-    return this.get(ContractServiceDefinitions.businessContractToSearch(textToSearch));
+    return this.get(
+      ContractServiceDefinitions.businessContractToSearch(textToSearch),
+    );
+  }
+
+  getAllPatners(businessPatner) {
+    return this.get(ContractServiceDefinitions.getAllPatners(businessPatner));
   }
 }

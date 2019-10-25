@@ -13,19 +13,16 @@ import styles from './NewContract.module.scss';
 
 const NewContract = ({
   isOpen,
-  HAND,
-  TransitionComponent,
-  expanded,
+  handleCloseCategory,
   handleCloseContract,
   handleOpenCategory,
   handleOpenBusinessPatner,
-  categories
+  categories,
 }) => {
   return (
     <Dialog
       className={styles.dialogExpand}
       open={isOpen}
-      onClose={handleCloseContract}
       scroll="body"
       fullWidth={true}
       maxWidth="md"
@@ -40,8 +37,9 @@ const NewContract = ({
 
         <ExpandGeneralInfo
           handleOpenCategory={handleOpenCategory}
+          handleCloseCategory={handleCloseCategory}
           handleOpenBusinessPatner={handleOpenBusinessPatner}
-          categories = {categories}
+          categories={categories}
         />
         <br />
         <ExpandLifeCycle />
@@ -68,6 +66,7 @@ const NewContract = ({
             color="secondary"
             className={`${styles.button} ${styles.buttonMargin}`}
             startIcon={<Icon className="fas fa-ban" />}
+            onClick={handleCloseContract}
           >
             Cancelar
           </Button>
