@@ -3,6 +3,8 @@ import NumberFormat from 'react-number-format';
 import Card, { CardHeader, CardBody } from '../UI/Card/Card';
 import Input from '../UI/Input/Input';
 import styles from './FutureSalesSpeed.module.scss';
+import Numbers from '../../helpers/numbers';
+import DynamicCells from './DynamicCells/DynamicCells';
 
 const getTotal = (salesSpeeds) =>
   salesSpeeds.reduce((current, next) => {
@@ -28,11 +30,17 @@ const inputValidation = (units) => [
 const FutureSalesSpeed = ({
   salesSpeeds,
   futureSalesSpeedHandler,
+  separationHandler,
+  initialFeeHandler,
   ...rest
 }) => {
   const [total, setTotal] = useState(0);
   const [isEmpty, setIsEmpty] = useState(true);
   const [arraySalesSpeeds, setArraySalesSpeeds] = useState([]);
+  const [separate, setSeparate] = useState(0);
+  const [finalFee, setFinal] = useState(0);
+  const [firstFee, setInitial] = useState(0);
+
   const { groups } = salesSpeeds;
   if (groups !== undefined) {
     if (isEmpty) {
@@ -42,6 +50,24 @@ const FutureSalesSpeed = ({
       setIsEmpty(false);
     }
   }
+
+  const setPropsArraySalesSpeeds = (i, value) => {
+    arraySalesSpeeds[i] = Number(value);
+  };
+
+  const firstFeeHandler = (target) => {
+    this.setState({
+      firstFee: target.value,
+      finalFee: 100 - target.value - separate,
+    });
+  };
+
+  const creditHandler = (target) => {
+    this.setState({
+      credit: target.value,
+      firstFee: 100 - target.value,
+    });
+  };
 
   return (
     <Card>
@@ -56,42 +82,33 @@ const FutureSalesSpeed = ({
             <h4 className={styles.gridItem}>Valor prom</h4>
             <h4 className={styles.gridItem}>m² prom</h4>
             <h4 className={styles.gridItem}>Velocidad ventas futura</h4>
+            <h4 className={styles.gridItem}>Separación</h4>
+            <h4 className={styles.gridItem}>Cuota inicial</h4>
+            <h4 className={styles.gridItem}>Cuota Final</h4>
+
             {groups !== undefined
               ? groups.map((group, i) => (
-                  <Fragment key={`fragment ${group.id}`}>
-                    <div className={styles.gridItem}>{group.name.slice(5)}</div>
-                    <div className={styles.gridItem}> {group.units}</div>
-                    <div className={styles.gridItem}>
-                      <NumberFormat
-                        value={group.averagePrice.toFixed(2)}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'$'}
-                      />
-                    </div>
-                    <div className={styles.gridItem}>
-                      {group.averageArea.toFixed(2)}
-                    </div>
-                    <div className={styles.gridItem}>
-                      <Input
-                        validations={inputValidation(group.units)}
-                        value={group.futureSalesSpeed}
-                        style={{ width: '75px' }}
-                        onChange={(target) => {
-                          arraySalesSpeeds[i] = Number(target.value);
-                          setTotal(getTotal(arraySalesSpeeds).toFixed(2));
-                          futureSalesSpeedHandler(group.id, target.value);
-                        }}
-                      />
-                    </div>
-                  </Fragment>
+                  <DynamicCells
+                    group={group}
+                    i={i}
+                    salesSpeeds={salesSpeeds}
+                    futureSalesSpeedHandler={futureSalesSpeedHandler}
+                    separationHandler={separationHandler}
+                    initialFeeHandler={initialFeeHandler}
+                    setTotal={setTotal}
+                    arraySalesSpeeds={arraySalesSpeeds}
+                    setPropsArraySalesSpeeds={setPropsArraySalesSpeeds}
+                    key={i}
+                  />
                 ))
               : null}
             <div className={styles.gridItem} />
             <div className={styles.gridItem} />
             <div className={styles.gridItem} />
             <h4 className={styles.gridItem}>Total: </h4>
-            <div className={styles.gridItem}>{total.toFixed(2)}</div>
+            <div className={styles.gridItem}>
+              {Numbers.toFixed(Number(total))}
+            </div>
           </div>
         ) : (
           <span>No hay grupos disponibles</span>
