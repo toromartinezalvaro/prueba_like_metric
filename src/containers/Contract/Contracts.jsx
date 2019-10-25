@@ -69,10 +69,6 @@ class Contracts extends Component {
       .getCategoryToSearch(textToSearch));
   };
 
-  componentDidMount() {
-    console.log(this.searchCategory("Twr"));
-  }
-
   render() {
     return (
       <div className={styles.Contracts}>
@@ -84,7 +80,6 @@ class Contracts extends Component {
           handleOpenCategory={this.handleOpenCategory}
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           searchCategory={this.searchCategory}
-          categories={[{ name: 'prros' }, { name: 'camilos' }, { name: 'Josese' }, ]}
         />
         <Dialog
           className={styles.dialogExpand}

@@ -5,6 +5,29 @@
   justify-content: center;
 }
 
+.gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100% !important;
+}
+
+.columnFull {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 100% !important;
+}
+
+.multiline {
+  width: 100% !important;
+}
+
 .actionContainer {
   display: flex !important;
   direction: row !important;
