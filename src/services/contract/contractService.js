@@ -14,6 +14,10 @@ export default class ContractService extends Services {
     return this.get(ContractServiceDefinitions.categoryToSearch(textToSearch));
   }
 
+  getAllCategories(contractcategory) {
+    return this.get(ContractServiceDefinitions.getAllCategories(contractcategory));
+  }
+
   getBusinessPatnerToSearch(textToSearch) {
     return this.get(ContractServiceDefinitions.businessContractToSearch(textToSearch));
   }

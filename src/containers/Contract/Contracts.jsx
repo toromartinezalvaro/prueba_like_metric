@@ -69,9 +69,15 @@ class Contracts extends Component {
       .getCategoryToSearch(textToSearch));
   };
 
+  getAllCategories = () => {
+    this.services
+      .getAllCategories('contractcategory');
+  }
+
   render() {
     return (
       <div className={styles.Contracts}>
+        {console.log(this.getAllCategories())}
         <Navbar handleOpenContract={this.handleOpenContract} />
         <NewContract
           expanded={this.state.expanded}
@@ -80,6 +86,7 @@ class Contracts extends Component {
           handleOpenCategory={this.handleOpenCategory}
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           searchCategory={this.searchCategory}
+          categories = {this.getAllCategories}
         />
         <Dialog
           className={styles.dialogExpand}

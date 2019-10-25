@@ -30,16 +30,7 @@ const Option = (props) => {
   );
 };
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' }
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
+
 
 const GeneralInfo = ({
   handleOpenCategory,
@@ -47,6 +38,10 @@ const GeneralInfo = ({
   searchCategory,
   categories
 }) => {
+  const suggestions = [{ label: "tower"}, {label: "area" }].map(suggestion => ({
+    value: suggestion.label,
+    label: suggestion.label,
+  }));
   return (
     <Fragment>
       <div className={styles.gridContainer}>
