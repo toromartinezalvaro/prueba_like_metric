@@ -160,11 +160,11 @@ class Dashboard extends Component {
           exact
           component={Increments}
         />
-        {/* <PrivateRoute
+         <PrivateRoute
           path={match.url + DashboardRoutes.salesRoom.withIndicator}
           exact
           component={SalesRoom}
-        /> */}
+        /> 
         <PrivateRoute
           path={match.url + DashboardRoutes.salesRoomClient.withIndicator}
           exact
