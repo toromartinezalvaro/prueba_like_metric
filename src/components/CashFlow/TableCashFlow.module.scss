@@ -1,0 +1,13 @@
+.Cell {
+  height: inherit;
+  justify-content: center;
+  display: flex;
+  align-items: flex-end;
+  font-weight: bold;
+}
+
+.AccordionContainer {
+  box-sizing: border-box;
+  padding: 25px;
+  overflow: auto;
+}
