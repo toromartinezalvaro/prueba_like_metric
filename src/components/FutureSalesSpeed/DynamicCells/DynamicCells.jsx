@@ -88,9 +88,21 @@ const DinamicCells = ({
           mask="percentage"
           style={{ width: '75px' }}
           onChange={(target) => {
-            setFinalFee(target.value / 100 + firstFee);
-            setSeparate(target.value / 100);
-            separationHandler(group.id, Numbers.toFixed(target.value / 100));
+            separationHandler(
+              group.id,
+              Numbers.toFixed(target.value / 100),
+              (isRollback) => {
+                if (isRollback) {
+                  setFirstFee(0);
+                  setFinalFee(0);
+                  setFirstFee(separate);
+                  setFinalFee(separate / 100 + firstFee);
+                } else {
+                  setFirstFee(target.value / 100);
+                  setFinalFee(target.value / 100 + firstFee);
+                }
+              },
+            );
           }}
         />
       </div>
@@ -101,9 +113,21 @@ const DinamicCells = ({
           mask="percentage"
           style={{ width: '75px' }}
           onChange={(target) => {
-            setFinalFee(target.value / 100 + separate);
-            setFirstFee(target.value / 100);
-            initialFeeHandler(group.id, Numbers.toFixed(target.value / 100));
+            initialFeeHandler(
+              group.id,
+              Numbers.toFixed(target.value / 100),
+              (isRollback) => {
+                if (isRollback) {
+                  setFirstFee(0);
+                  setFinalFee(0);
+                  setFirstFee(firstFee);
+                  setFinalFee(firstFee / 100 + separate);
+                } else {
+                  setFirstFee(target.value / 100);
+                  setFinalFee(target.value / 100 + separate);
+                }
+              },
+            );
           }}
         />
       </div>

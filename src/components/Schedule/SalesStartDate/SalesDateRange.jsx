@@ -94,17 +94,7 @@ function SalesDateRange({
             />
             <div className={Styles.label}>
               Desplazamiento
-              <Tooltip
-                /* style={{
-                  tooltip: {
-                    fontSize: '100px',
-                  },
-                }} */
-                // classes={{
-                //   fontSize: '100px',
-                // }}
-                title="Desplazamiento en meses respecto a la fecha de punto de equilibrio"
-              >
+              <Tooltip title="Desplazamiento en meses respecto a la fecha de punto de equilibrio">
                 <span className={Styles.Badge}>?</span>
               </Tooltip>
             </div>

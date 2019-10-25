@@ -6,27 +6,27 @@ const IncrementsServiceDefinition = {
   },
 
   putSalesStartDate: (towerId) => {
-    return `${API_PATH}schedules/salesStartDates/${towerId}`;
+    return `${API_PATH}schedules/sales-start-dates/${towerId}`;
   },
 
   putBalancePointDate: (towerId) => {
-    return `${API_PATH}schedules/balancePointDate/${towerId}`;
+    return `${API_PATH}schedules/balance-point-date/${towerId}`;
   },
 
   putConstructionStartDate: (towerId) => {
-    return `${API_PATH}schedules/constructionStartDate/${towerId}`;
+    return `${API_PATH}schedules/construction-start-date/${towerId}`;
   },
 
   putAverageDeliveryDate: (towerId) => {
-    return `${API_PATH}schedules/averageDeliveryDate/${towerId}`;
+    return `${API_PATH}schedules/average-delivery-date/${towerId}`;
   },
 
   putEndOfSalesDate: (towerId) => {
-    return `${API_PATH}schedules/endOfSalesDate/${towerId}`;
+    return `${API_PATH}schedules/end-of-sales-date/${towerId}`;
   },
 
   putFirstSaleHandler: (towerId) => {
-    return `${API_PATH}schedules/firstSales/${towerId}`;
+    return `${API_PATH}schedules/first-sales/${towerId}`;
   },
 };
 

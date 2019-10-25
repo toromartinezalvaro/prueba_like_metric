@@ -11,7 +11,7 @@ const futureSalesSpeedsDefinitions = {
     return `${API_PATH}pricing/definitions/separation/${id}`;
   },
   putInitialFee: (id) => {
-    return `${API_PATH}pricing/definitions/initialFee/${id}`;
+    return `${API_PATH}pricing/definitions/initial-fee/${id}`;
   },
 };
 

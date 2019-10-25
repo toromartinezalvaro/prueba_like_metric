@@ -46,10 +46,16 @@ class FutureSalesSpeed extends Component {
       });
   };
 
-  separationHandler = (id, value) => {
+  separationHandler = (id, value, rollback) => {
     this.services
       .putSeparation(id, value)
-      .then((results) => console.log(results))
+      .then((results) => {
+        if (!results.data) {
+          rollback(true);
+        } else {
+          rollback(false);
+        }
+      })
       .catch((error) => {
         const errorHelper = errorHandling(error);
         this.setState({
@@ -58,15 +64,22 @@ class FutureSalesSpeed extends Component {
       });
   };
 
-  initialFeeHandler = (id, value) => {
+  initialFeeHandler = (id, value, rollback) => {
     this.services
       .putInitialFee(id, value)
-      .then((results) => console.log(results))
+      .then((results) => {
+        if (!results.data) {
+          rollback(true);
+        } else {
+          rollback(false);
+        }
+      })
       .catch((error) => {
         const errorHelper = errorHandling(error);
         this.setState({
           currentErrorMessage: errorHelper.message,
         });
+        rollback(true);
       });
   };
 

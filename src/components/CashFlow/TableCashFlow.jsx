@@ -43,7 +43,7 @@ const TableCashFlow = (props) => {
   });
 
   return arrayCashFlowWhitFixed.map((dataTable, i) => (
-    <ExpansionPanel key={i} /* trigger={} */>
+    <ExpansionPanel key={i}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <span>{dataTable.name}</span>
       </ExpansionPanelSummary>

@@ -23,7 +23,7 @@ export const DashboardRoutes = {
   },
   schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
   report: { value: '/report/', withIndicator: '/report/:towerId' },
-  cashFlow: { value: '/cashFlow/', withIndicator: '/cashFlow/:towerId' },
+  cashFlow: { value: '/cash-flow/', withIndicator: '/cash-flow/:towerId' },
 };
 
 export const ContractRoutes = {
