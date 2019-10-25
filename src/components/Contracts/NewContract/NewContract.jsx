@@ -18,6 +18,7 @@ const NewContract = ({
   handleOpenCategory,
   handleOpenBusinessPatner,
   categories,
+  searchCategory,
 }) => {
   return (
     <Dialog
@@ -39,6 +40,7 @@ const NewContract = ({
           handleOpenCategory={handleOpenCategory}
           handleCloseCategory={handleCloseCategory}
           handleOpenBusinessPatner={handleOpenBusinessPatner}
+          searchCategory={searchCategory}
           categories={categories}
         />
         <br />

@@ -12,6 +12,7 @@ const ExpandGeneralInfo = ({
   handleCloseCategory,
   handleOpenBusinessPatner,
   categories,
+  searchCategory,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
@@ -30,6 +31,7 @@ const ExpandGeneralInfo = ({
             handleCloseCategory={handleCloseCategory}
             handleOpenBusinessPatner={handleOpenBusinessPatner}
             categories={categories}
+            searchCategory={searchCategory}
           />
         </Typography>
       </ExpansionPanelDetails>

@@ -58,7 +58,6 @@ class Contracts extends Component {
   newCategory = (categoryName) => {
     this.services
       .postCategoryContracts('contractcategory', { categoryName })
-      .then(console.log('clean'))
       .catch((error) => {
         console.log(error);
       });
@@ -68,14 +67,13 @@ class Contracts extends Component {
     console.log(partner);
     this.services
       .postBusinessPatnerContract('businesspatner', partner)
-      .then(console.log('clean'))
       .catch((error) => {
         console.log(error);
       });
   };
 
   searchCategory = (textToSearch) => {
-    JSON.stringify(this.services.getCategoryToSearch(textToSearch));
+    this.services.getCategoryToSearch(textToSearch);
   };
 
   getAllCategories = () => {
@@ -89,7 +87,7 @@ class Contracts extends Component {
   render() {
     return (
       <div className={styles.Contracts}>
-        {console.log(this.getAllCategories())}
+        {console.log(this.getAllCategories)}
         <Navbar handleOpenContract={this.handleOpenContract} />
         <NewContract
           expanded={this.state.expanded}

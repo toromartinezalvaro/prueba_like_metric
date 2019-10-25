@@ -30,9 +30,13 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner }) => {
     setPartner({ ...partner, [name]: e.target.value });
   };
 
+  const onChangeSelect = (name) => (label) => {
+    setPartner({ ...partner, [name]: label.value });
+  };
+
   const sendPartner = () => {
     console.log(partner);
-    // newBusinessPartner(partner);
+    newBusinessPartner(partner);
     handleCloseBusinessPatner();
   };
 
@@ -130,6 +134,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner }) => {
             placeholder="Seleccione un país"
             options={suggestions}
             components={Option}
+            onChange={onChangeSelect('patnerCountry')}
           />
           <TextField
             fullWidth
