@@ -52,7 +52,8 @@ const QualitativePrimes = ({
       .then((response) => {
         const orderedProperties = _.sortBy(
           response.data.properties,
-          (e) => e.id,
+          ['floor', 'location'],
+          ['asc', 'asc'],
         );
         setProperties(orderedProperties);
         setPropertiesRatings(response.data.propertiesRatings);
