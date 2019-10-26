@@ -23,7 +23,7 @@ const Primes = ({
   const is100Percent = () => {
     return (
       descriptors.reduce((current, next) => {
-        return current + next.percentage;
+        return current + parseFloat(next.percentage);
       }, 0) === 1
     );
   };
@@ -90,6 +90,7 @@ const Primes = ({
           </RadioGroup>
         </div>
       </div>
+      {console.log('RERENDER', JSON.stringify(descriptors))}
       {is100Percent() ? (
         <Fragment>
           <Table
