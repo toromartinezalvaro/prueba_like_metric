@@ -15,7 +15,7 @@ import Category from '../NewContract/C_Category/Category';
 import BusinessPatner from '../NewContract/C_BusinessPatner/BusinessPatner';
 
 const Option = (props) => {
-  return <components.Option {...props} />;
+  return <components.Option {...props} className={styles.options} />;
 };
 
 const GeneralInfo = ({
@@ -92,6 +92,7 @@ const GeneralInfo = ({
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
               <Select
+                className={styles.selectOption}
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'Selecciona Una ctaegoría',
