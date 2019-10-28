@@ -17,6 +17,7 @@ const Primes = ({
   descriptors,
   propertiesRatings,
   handleUpdatePrimes,
+  lowestFloor,
 }) => {
   const [primeType, setPrimeType] = useState(M2);
 
@@ -44,8 +45,8 @@ const Primes = ({
 
   const makeCells = () => {
     const matrix = createMatrix(
-      headers.length,
       floorsNames.length,
+      headers.length,
       <span className={Styles.TableElement}>-</span>,
     );
     propertiesRatings.forEach((propertyRating) => {
@@ -57,7 +58,8 @@ const Primes = ({
           propertyRating.qualitativePrimesDescriptors,
         );
         const prime = _.find(ratings, (e) => e.rate === finalRating);
-        matrix[propertyRating.floor - 1][propertyRating.location - 1] = (
+        
+        matrix[propertyRating.floor - lowestFloor][propertyRating.location - 1] = (
           <NumberFormat
             value={prime[primeType]}
             displayType="text"

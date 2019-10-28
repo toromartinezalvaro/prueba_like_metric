@@ -66,7 +66,18 @@ const Locations = (props) => {
         classes={{ root: Styles.modal }}
         fullScreen
       >
-        <DialogTitle id="scroll-dialog-title">Primas cualitativas</DialogTitle>
+        <DialogTitle id="scroll-dialog-title">
+          <div className={Styles.title}>
+            <span> Primas cualitativas</span>
+            <Button
+              onClick={changeModalState}
+              color="primary"
+              className={Styles.button}
+            >
+              <i className="fas fa-times"></i>
+            </Button>
+          </div>
+        </DialogTitle>
         <DialogContent>
           <QualitativePrimes
             towerId={props.towerId}
@@ -75,6 +86,7 @@ const Locations = (props) => {
             changeModalState={changeModalState}
             reloadPrimes={props.reloadPrimes}
             alertHandler={props.alertHandler}
+            lowestFloor={props.lowestFloor}
           />
         </DialogContent>
         <DialogActions>
