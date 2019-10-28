@@ -15,6 +15,7 @@ const QualitativePrimes = ({
   changeModalState,
   reloadPrimes,
   alertHandler,
+  lowestFloor,
 }) => {
   const services = new Services();
 
@@ -260,6 +261,7 @@ const QualitativePrimes = ({
           descriptors={descriptors}
           propertiesRatings={propertiesRatings}
           handleUpdatePrimes={handleUpdatePrimes}
+          lowestFloor={lowestFloor}
         />
       </TabPanel>
     </Tabs>
@@ -273,6 +275,7 @@ QualitativePrimes.propTypes = {
   changeModalState: PropTypes.func.isRequired,
   reloadPrimes: PropTypes.func.isRequired,
   alertHandler: PropTypes.func.isRequired,
+  lowestFloor: PropTypes.number.isRequired,
 };
 
 export default QualitativePrimes;

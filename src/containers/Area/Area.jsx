@@ -461,6 +461,7 @@ class Area extends Component {
             Primas
           </FloatingButton>
         ) : null}
+        
       </LoadableContainer>
     );
   }
