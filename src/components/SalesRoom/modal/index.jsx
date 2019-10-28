@@ -5,7 +5,12 @@ import {
   RadioButton,
   ReversedRadioButton,
 } from 'react-radio-buttons';
+import moment from 'moment';
 import NumberFormat from 'react-number-format';
+import DayPickerInput from 'react-date-picker';
+import esLocale from 'date-fns/locale/es';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
 import StyleVariables from '../../../assets/styles/variables.scss';
@@ -69,7 +74,27 @@ const SalesRoomModal = ({ property, onChange }) => {
           <RadioButton value={SalesRoomEnum.status.SOLD}>Vendido</RadioButton>
         </RadioGroup>
       </div>
-      {currentState === SalesRoomEnum.status.AVAILABLE ? null : (
+      {currentState === SalesRoomEnum.status.OPTIONAL ? (
+        <div>
+          <div className={Styles.inputContainer}>
+            Seleccione la fecha de vencimiento:
+          </div>
+          <div className={Styles.DateTimePicker}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+              <DateTimePicker
+                locale="es"
+                minDate={moment().toDate()}
+                maxDate={moment()
+                  .add(15, 'd')
+                  .toDate()}
+                cancelLabel="Cancelar"
+                okLabel="Aceptar"
+              ></DateTimePicker>
+            </MuiPickersUtilsProvider>
+          </div>
+        </div>
+      ) : null}
+      {currentState === SalesRoomEnum.status.SOLD ? (
         <div>
           <div className={Styles.inputContainer}>
             <span className={Styles.label}>Valor de venta</span>
@@ -209,7 +234,7 @@ const SalesRoomModal = ({ property, onChange }) => {
             />
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

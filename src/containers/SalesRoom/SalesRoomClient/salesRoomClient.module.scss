@@ -1,0 +1,18 @@
+/*
+ * Created on Mon Oct 28 2019
+ *
+ * Copyright (c) 2019 Your Company
+ */
+
+.TitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfirmButton {
+  background: #00c781;
+}
+
+.CancelButton {
+  background: #ff4040 !important;
+}
