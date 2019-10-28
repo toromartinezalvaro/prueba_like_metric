@@ -9,8 +9,8 @@ const ContractServiceDefinitions = {
   categoryToSearch: (textToSearch) => `${API_PATH}contract/${textToSearch}`,
   businessContractToSearch: (textToSearch) =>
     `${API_PATH}contract/${textToSearch}`,
-  getAllPatners: (contractBusinessPatner) =>
-    `${API_PATH}contract/${contractBusinessPatner}`,
+  getAllPatners: (businessPartner) =>
+    `${API_PATH}contract/${businessPartner}`,
 };
 
 export default ContractServiceDefinitions;

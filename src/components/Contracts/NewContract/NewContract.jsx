@@ -18,6 +18,7 @@ const NewContract = ({
   handleOpenCategory,
   handleOpenBusinessPatner,
   categories,
+  partners,
   searchCategory,
 }) => {
   return (
@@ -42,6 +43,7 @@ const NewContract = ({
           handleOpenBusinessPatner={handleOpenBusinessPatner}
           searchCategory={searchCategory}
           categories={categories}
+          partners={partners}
         />
         <br />
         <ExpandLifeCycle />

@@ -6,7 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -15,19 +15,7 @@ import Category from '../NewContract/C_Category/Category';
 import BusinessPatner from '../NewContract/C_BusinessPatner/BusinessPatner';
 
 const Option = (props) => {
-  return (
-    <MenuItem
-      ref={props.innerRef}
-      selected={props.isFocused}
-      component="div"
-      style={{
-        fontWeight: props.isSelected ? 500 : 400,
-      }}
-      {...props.innerProps}
-    >
-      {props.children}
-    </MenuItem>
-  );
+  return <components.Option {...props} />;
 };
 
 const GeneralInfo = ({
@@ -36,15 +24,24 @@ const GeneralInfo = ({
   handleCloseCategory,
   searchCategory,
   categories,
+  partners,
 }) => {
-  const suggestions = [{ label: 'tower' }, { label: 'area' }].map(
-    (suggestion) => ({
-      value: suggestion.label,
-      label: suggestion.label,
-    }),
-  );
+  const statusOfContract = [
+    { state: 'Activo' },
+    { state: 'En Negociación' },
+    { state: 'Pendiente' },
+    { state: 'Terminado' },
+    { state: 'Archivado' },
+    { state: 'Expirado' },
+  ].map((contract) => {
+    return {
+      value: contract.state,
+      label: contract.state,
+    };
+  });
   return (
     <Fragment>
+      {console.log('las categorias', categories)}
       <div className={styles.gridContainer}>
         <div className={styles.columnFullLeft}>
           <TextField
@@ -67,7 +64,7 @@ const GeneralInfo = ({
                   },
                 }}
                 placeholder="Seleccione socio"
-                options={suggestions}
+                options={partners}
                 components={Option}
               />
             </div>
@@ -97,14 +94,14 @@ const GeneralInfo = ({
               <Select
                 inputId="react-select-single"
                 TextFieldProps={{
-                  label: 'Categoría',
+                  label: 'Selecciona Una ctaegoría',
                   InputLabelProps: {
                     htmlFor: 'react-select-single',
                     shrink: true,
                   },
                 }}
-                placeholder="Seleccione una categoria"
-                options={suggestions}
+                placeholder="Selecciona una categoría"
+                options={categories}
                 components={Option}
               />
             </div>
@@ -143,7 +140,7 @@ const GeneralInfo = ({
               },
             }}
             placeholder="Estado"
-            options={suggestions}
+            options={statusOfContract}
             components={Option}
           />
           <TextField
@@ -163,7 +160,7 @@ const GeneralInfo = ({
               },
             }}
             placeholder="Contrato principal"
-            options={suggestions}
+            options={categories}
             components={Option}
           />
         </div>
@@ -180,6 +177,10 @@ const GeneralInfo = ({
       </div>
     </Fragment>
   );
+};
+
+GeneralInfo.propTypes = {
+  categories: PropTypes.array,
 };
 
 export default GeneralInfo;

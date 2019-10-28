@@ -12,6 +12,7 @@ const ExpandGeneralInfo = ({
   handleCloseCategory,
   handleOpenBusinessPatner,
   categories,
+  partners,
   searchCategory,
 }) => {
   return (
@@ -32,6 +33,7 @@ const ExpandGeneralInfo = ({
             handleOpenBusinessPatner={handleOpenBusinessPatner}
             categories={categories}
             searchCategory={searchCategory}
+            partners={partners}
           />
         </Typography>
       </ExpansionPanelDetails>

@@ -28,7 +28,52 @@ class Contracts extends Component {
         isOpen: false,
       },
       expanded: 'GeneralInfo',
+      categories: [],
+      partners: [],
     };
+  }
+
+  componentDidMount() {
+    this.services
+      .getAllCategories('contractcategory')
+      .then((response) => {
+        const categories = response.data.map((category) => {
+          return {
+            value: category.categoryName,
+            label: category.categoryName,
+          };
+        });
+        categories.unshift({
+          value: '',
+          label: 'Selecciona una categoría',
+        });
+        this.setState({
+          categories,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    this.services
+      .getAllPatners('businessPartner')
+      .then((response) => {
+        const partners = response.data.map((partner) => {
+          return {
+            value: partner.patnerName,
+            label: partner.patnerName,
+          };
+        });
+        partners.unshift({
+          value: '',
+          label: 'Selecciona un socio',
+        });
+        this.setState({
+          partners,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleOpenContract = () => {
@@ -76,10 +121,6 @@ class Contracts extends Component {
     this.services.getCategoryToSearch(textToSearch);
   };
 
-  getAllCategories = () => {
-    this.services.getAllCategories('contractcategory');
-  };
-
   getAllPatners = () => {
     this.services.getAllPatners('businessPatner');
   };
@@ -87,7 +128,6 @@ class Contracts extends Component {
   render() {
     return (
       <div className={styles.Contracts}>
-        {console.log(this.getAllCategories)}
         <Navbar handleOpenContract={this.handleOpenContract} />
         <NewContract
           expanded={this.state.expanded}
@@ -96,7 +136,8 @@ class Contracts extends Component {
           handleOpenCategory={this.handleOpenCategory}
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           searchCategory={this.searchCategory}
-          categories={this.getAllCategories}
+          categories={this.state.categories}
+          partners={this.state.partners}
         />
         <Dialog
           className={styles.dialogExpand}

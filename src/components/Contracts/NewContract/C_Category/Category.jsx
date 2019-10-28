@@ -16,6 +16,7 @@ const Category = ({ handleCloseCategory, newCategory }) => {
   };
   const sendTextOfCategory = () => {
     newCategory(textOfCategory);
+    handleCloseCategory();
   };
   return (
     <Fragment>

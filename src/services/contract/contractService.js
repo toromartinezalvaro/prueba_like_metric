@@ -33,7 +33,7 @@ export default class ContractService extends Services {
     );
   }
 
-  getAllPatners(businessPatner) {
-    return this.get(ContractServiceDefinitions.getAllPatners(businessPatner));
+  getAllPatners(businessPartner) {
+    return this.get(ContractServiceDefinitions.getAllPatners(businessPartner));
   }
 }
