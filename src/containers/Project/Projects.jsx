@@ -5,6 +5,9 @@ import Modal from '../../components/UI/Modal/Modal';
 import Input from '../../components/UI/Input/Input';
 import { DashboardRoutes } from '../../routes/local/routes';
 import LoadableContainer from '../../components/UI/Loader';
+import CompanyModal from '../../components/Projects/company/CreateCompanyModal';
+import Agent from '../../config/config';
+import { Role } from '../../helpers';
 
 export default class Projects extends Component {
   constructor(props) {
@@ -13,6 +16,7 @@ export default class Projects extends Component {
   }
 
   state = {
+    projectIsMissingCompany: null,
     projects: [],
     modalIsHidden: true,
     newTitleProject: '',
@@ -50,7 +54,7 @@ export default class Projects extends Component {
       this.services
         .removeProject({ projectId: id })
         .then((response) => {
-          let project = response.data.projects;
+          const project = response.data.projects;
           if (project) {
             this.setState({
               projects: project,
@@ -76,9 +80,13 @@ export default class Projects extends Component {
     this.services
       .getProjects()
       .then((response) => {
+        const nullCompany = response.data.projects.find(
+          (project) => !project.companyId,
+        );
         this.setState({
+          projectIsMissingCompany: nullCompany,
           projects: response.data.projects ? response.data.projects : [],
-          modalIsHidden: response.data.projects.length > 0,
+          modalIsHidden: response.data.projects.length > 0 || nullCompany,
         });
         this.setState({ isLoading: false });
       })
@@ -187,12 +195,18 @@ export default class Projects extends Component {
   }
 
   render() {
+    const { projectIsMissingCompany, projects } = this.state;
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        {/* <Error /> */}
-        {this.state.projects.length > 0 && (
+        {Agent.isAuthorized([Role.Super, Role.Admin]) && (
+          <CompanyModal
+            isOpen={true} // {projectIsMissingCompany || projects.length < 1}
+            project={projectIsMissingCompany}
+          />
+        )}
+        {projects.length > 0 && (
           <ProjectItems
-            projects={this.state.projects}
+            projects={projects}
             openProject={this.openProjectHandler}
             createProject={this.createProjectHandler}
             removeProject={this.removeProjectHandler}

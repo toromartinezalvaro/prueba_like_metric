@@ -4,19 +4,13 @@ import styles from './Projects.module.scss';
 import Icon from '../../assets/icons/Icon';
 import Button from '../UI/Button/Button';
 
-const projectItems = props => {
-  var items = projects => {
-    return projects.map(project => {
-      return itemFromProject(project);
-    });
-  };
-
-  var itemFromProject = project => {
+const projectItems = (props) => {
+  const itemFromProject = (project) => {
     return (
       <div
         className={styles.ItemContainer}
         key={project.id}
-        onClick={event => {
+        onClick={(event) => {
           event.stopPropagation();
           props.openProject(project.id);
         }}
@@ -24,7 +18,7 @@ const projectItems = props => {
         <div className={styles.DescriptionItem}>
           <div
             className={styles.Remove}
-            onClick={event => {
+            onClick={(event) => {
               event.stopPropagation();
               props.removeProject(project.id);
             }}
@@ -42,6 +36,12 @@ const projectItems = props => {
         </div>
       </div>
     );
+  };
+
+  const items = (projects) => {
+    return projects.map((project) => {
+      return itemFromProject(project);
+    });
   };
 
   return (
