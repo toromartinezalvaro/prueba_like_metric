@@ -23,6 +23,7 @@ import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
 import Strategy from '../Strategy/Strategy';
 import SalesRoom from '../SalesRoom/SalesRoom';
+import SalesRoomClient from '../SalesRoom/SalesRoomClient';
 import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
@@ -160,14 +161,19 @@ class Dashboard extends Component {
           exact
           component={Increments}
         />
-        <PrivateRoute
+         <PrivateRoute
           path={match.url + DashboardRoutes.salesRoom.withIndicator}
           exact
           component={SalesRoom}
+        /> 
+        <PrivateRoute
+          path={match.url + DashboardRoutes.salesRoomClient.withIndicator}
+          exact
+          component={SalesRoomClient}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.clients.withIndicator}
-          roles={[Role.Admin, Role.Super]}
+          roles={[Role.User]}
           exact
           component={Client}
         />

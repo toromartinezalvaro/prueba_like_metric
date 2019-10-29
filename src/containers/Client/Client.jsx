@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import ClientForm from '../../components/Client/ClientForm/ClientForm';
+import ClientList from '../../components/Client/List';
 import ClientsServices from '../../services/client/ClientsServices';
+import SearchOrNewClient from '../../components/Client/SearchOrNew';
+import { DashboardRoutes } from '../../routes/local/routes';
 
+const SAVE = 'save';
+const ADD = 'add';
 class Client extends Component {
   constructor(props) {
     super(props);
@@ -9,72 +15,127 @@ class Client extends Component {
   }
 
   state = {
-    client: {
-      gender: null,
-      clientType: null,
-      identityDocument: null,
-      socialReason: null,
-      name: null,
-      surname: null,
-      phoneNumber: null,
-      mobileNumber: null,
-      email: null,
-      city: null,
-      module: null,
+    action: SAVE,
+    currentClient: {
+      identityDocument: '',
+      name: '',
+      email: '',
+      phoneNumber: '',
     },
-    modules: [],
-    genders: {},
-    clientTypes: {},
+    isOpen: false,
+    clients: [],
   };
 
   componentDidMount() {
-    this.services.getEnums(this.props.match.params.towerId).then(response => {
-      const { genders, clientTypes, modules } = response.data;
-      this.setState({ genders, clientTypes, modules });
-    });
+    this.services
+      .getClients(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ clients: response.data });
+      });
   }
 
-  genderHandler = value => {
-    const tempClient = this.state.client;
-    tempClient.gender = value;
-    this.setState({ client: tempClient });
-  };
-
-  clientTypeHandler = value => {
-    const tempClient = this.state.client;
-    tempClient.clientType = value;
-    this.setState({ client: tempClient });
-  };
-
-  clientHandler = target => {
-    console.log(target);
-    const tempClient = this.state.client;
-    tempClient[target.name] = target.value;
-    this.setState({ client: tempClient });
-  };
-
-  saveClient = () => {
+  handleSave = (client) => {
     this.services
-      .postClient(this.state.client)
-      .then(results => {
-        console.log('OK');
+      .postClient(this.props.match.params.towerId, client)
+      .then((response) => {
+        const tempClients = [...this.state.clients];
+        tempClients.push(response.data);
+        this.setState({ clients: tempClients, isOpen: false });
+      });
+  };
+
+  handleUpdate = (client) => {
+    this.services
+      .putClient(
+        client.identityDocument,
+        this.props.match.params.towerId,
+        client,
+      )
+      .then((response) => {
+        const tempClients = [...this.state.clients];
+        const clientIndex = _.findIndex(
+          tempClients,
+          (e) => e.identityDocument === client.identityDocument,
+        );
+        if (clientIndex !== -1) {
+          tempClients[clientIndex] = response.data;
+          this.setState({ clients: tempClients, isOpen: false });
+        }
+      });
+  };
+
+  handleAdd = (client) => {
+    this.services
+      .addClient(this.props.match.params.towerId, client)
+      .then((response) => {
+        const tempClients = [...this.state.clients];
+        tempClients.push(response.data);
+        this.setState({ clients: tempClients, isOpen: false });
+      });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({
+      isOpen: false,
+      currentClient: {
+        identityDocument: '',
+        name: '',
+        email: '',
+        phoneNumber: '',
+      },
+    });
+  };
+
+  openSearchAndEdit = () => {
+    this.setState({
+      isOpen: true,
+    });
+  };
+
+  goToSalesRoom = (clientId) => {
+    const { towerId } = this.props.match.params;
+    this.props.history.push(
+      `${DashboardRoutes.base +
+        DashboardRoutes.salesRoomClient.value +
+        towerId}/${clientId}`,
+    );
+  };
+
+  searchNumber = (idNumber) => {
+    this.services
+      .getClient(idNumber)
+      .then((response) => {
+        this.setState({ currentClient: response.data, action: ADD });
       })
-      .catch(error => {
-        console.error(error);
+      .catch((error) => {
+        if (error.response.status === 404) {
+          this.setState({ action: SAVE });
+        } else {
+          console.error(error);
+        }
       });
   };
 
   render() {
     return (
-      <ClientForm
-        genderHandler={this.genderHandler}
-        clientTypeHandler={this.clientTypeHandler}
-        modules={this.state.modules}
-        genders={this.state.genders}
-        clientTypes={this.state.clientTypes}
-        clientHandler={this.clientHandler}
-        saveClient={this.saveClient}
-      />
+      <div>
+        <ClientList
+          towerId={this.props.match.params.towerId}
+          openSearchAndEdit={this.openSearchAndEdit}
+          clients={this.state.clients}
+        />
+        <SearchOrNewClient
+          open={this.state.isOpen}
+          clientInfo={this.state.currentClient}
+          handleClose={this.handleCloseDialog}
+          pushToSalesRoom={this.goToSalesRoom}
+          searchNumber={this.searchNumber}
+          saveHandler={this.handleSave}
+          updateHandler={this.handleUpdate}
+          addHandler={this.handleAdd}
+          action={this.state.action}
+        />
+      </div>
     );
   }
 }
