@@ -14,6 +14,8 @@ const ExpandGeneralInfo = ({
   categories,
   partners,
   searchCategory,
+  editable,
+  disableEditable,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
@@ -34,6 +36,8 @@ const ExpandGeneralInfo = ({
             categories={categories}
             searchCategory={searchCategory}
             partners={partners}
+            editable={editable}
+            disableEditable={disableEditable}
           />
         </Typography>
       </ExpansionPanelDetails>

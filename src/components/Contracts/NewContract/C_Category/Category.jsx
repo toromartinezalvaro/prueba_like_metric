@@ -9,17 +9,22 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import styles from './Category.module.scss';
 
-const Category = ({ handleCloseCategory, newCategory }) => {
+const Category = ({ handleCloseCategory, newCategory, updateCategory, informationToEdit, editable }) => {
   const [textOfCategory, setTextOfCategory] = useState('');
   const changeTextOfCategory = (e) => {
     setTextOfCategory(e.target.value);
   };
   const sendTextOfCategory = () => {
+    if (editable) {
+      updateCategory(textOfCategory);
+      handleCloseCategory();
+    }
     newCategory(textOfCategory);
     handleCloseCategory();
   };
   return (
     <Fragment>
+      {console.log(informationToEdit)}
       <Typography className={styles.heading} variant="h4">
         <div className={`${styles.circleIcon}  ${styles.circleColorGeneral}`}>
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />

@@ -20,9 +20,12 @@ class Contracts extends Component {
     this.state = {
       categoryModal: {
         isOpen: false,
+        isEditable: false,
+        editableInfo: {},
       },
       contractModal: {
         isOpen: false,
+        isEditable: false,
       },
       BusinessPatnerModal: {
         isOpen: false,
@@ -35,11 +38,11 @@ class Contracts extends Component {
 
   componentDidMount() {
     this.services
-      .getAllCategories('contractcategory')
+      .getAllCategories()
       .then((response) => {
         const categories = response.data.map((category) => {
           return {
-            value: category.categoryName,
+            value: category.id,
             label: category.categoryName,
           };
         });
@@ -55,11 +58,11 @@ class Contracts extends Component {
         console.log(error);
       });
     this.services
-      .getAllPatners('businessPartner')
+      .getAllPatners()
       .then((response) => {
         const partners = response.data.map((partner) => {
           return {
-            value: partner.patnerName,
+            value: partner.id,
             label: partner.patnerName,
           };
         });
@@ -75,6 +78,8 @@ class Contracts extends Component {
         console.log(error);
       });
   }
+
+
 
   handleOpenContract = () => {
     this.setState({ contractModal: { isOpen: true } });
@@ -100,29 +105,42 @@ class Contracts extends Component {
     this.setState({ BusinessPatnerModal: { isOpen: false } });
   };
 
+  enableEditable = () => {
+    this.setState({ catagoryModal: { isEditable: true } });
+  }
+
+  disableEditable = () => {
+    this.setState({ categoryModal: { isEditable: false } });
+  }
+
   newCategory = (categoryName) => {
     this.services
-      .postCategoryContracts('contractcategory', { categoryName })
+      .postCategoryContracts({ categoryName })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  updateCategory = (editable) => {
+    this.services
+      .putCategoryContracts({ editable })
+      .catch((error) => { console.log(error) });
+  }
 
   newBusinessPartner = (partner) => {
-    console.log(partner);
     this.services
-      .postBusinessPatnerContract('businesspatner', partner)
+      .postBusinessPatnerContract(partner)
       .catch((error) => {
         console.log(error);
       });
   };
 
-  searchCategory = (textToSearch) => {
-    this.services.getCategoryToSearch(textToSearch);
+  searchCategory = (categoryToSearch) => {
+    this.setState({ categoryModal: { editableInfo: this.services.getCategoryById(categoryToSearch) } });
   };
 
   getAllPatners = () => {
-    this.services.getAllPatners('businessPatner');
+    this.services.getAllPatners();
   };
 
   render() {
@@ -137,6 +155,8 @@ class Contracts extends Component {
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           searchCategory={this.searchCategory}
           categories={this.state.categories}
+          editable={this.enableEditable}
+          disableEditable={this.disableEditable}
           partners={this.state.partners}
         />
         <Dialog
@@ -151,6 +171,9 @@ class Contracts extends Component {
             <Category
               handleCloseCategory={this.handleCloseCategory}
               newCategory={this.newCategory}
+              updateCategory={this.updateCategory}
+              editable={this.state.categoryModal.isEditable}
+              informationToEdit={this.state.categoryModal.editableInfo}
             />
           </DialogContent>
         </Dialog>

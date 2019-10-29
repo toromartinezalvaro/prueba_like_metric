@@ -1,16 +1,18 @@
 import { API_PATH } from '../../config/config';
 
 const ContractServiceDefinitions = {
-  category: (contractcategory) => `${API_PATH}contract/${contractcategory}`,
-  getAllCategories: (contractcategory) =>
-    `${API_PATH}contract/${contractcategory}`,
-  businessContract: (contractBusinessPatner) =>
-    `${API_PATH}contract/${contractBusinessPatner}`,
-  categoryToSearch: (textToSearch) => `${API_PATH}contract/${textToSearch}`,
+  category: () => `${API_PATH}contract/contractcategory`,
+  getAllCategories: () =>
+    `${API_PATH}contract/contractcategory`,
+  businessContract: () =>
+    `${API_PATH}contract/businesspatner`,
+  categoryToSearch: (categoryToSearch) => `${API_PATH}contract/contractcategory/${categoryToSearch}`,
   businessContractToSearch: (textToSearch) =>
     `${API_PATH}contract/${textToSearch}`,
-  getAllPatners: (businessPartner) =>
-    `${API_PATH}contract/${businessPartner}`,
+  getAllPatners: () =>
+    `${API_PATH}contract/businessPartner`,
+  getCategoryById: (categoryToSearch) =>
+    `${API_PATH}contract/contractcategory/find/${categoryToSearch}`,
 };
 
 export default ContractServiceDefinitions;

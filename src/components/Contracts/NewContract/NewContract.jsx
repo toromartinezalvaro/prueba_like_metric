@@ -19,6 +19,8 @@ const NewContract = ({
   handleOpenBusinessPatner,
   categories,
   partners,
+  editable,
+  disableEditable,
   searchCategory,
 }) => {
   return (
@@ -44,6 +46,8 @@ const NewContract = ({
           searchCategory={searchCategory}
           categories={categories}
           partners={partners}
+          editable={editable}
+          disableEditable={disableEditable}
         />
         <br />
         <ExpandLifeCycle />

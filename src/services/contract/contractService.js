@@ -2,28 +2,34 @@ import ContractServiceDefinitions from './contractServiceDefinitions';
 import Services from '../services';
 
 export default class ContractService extends Services {
-  postCategoryContracts(contractcategory, data) {
+  postCategoryContracts(data) {
     return this.post(
-      ContractServiceDefinitions.category(contractcategory),
+      ContractServiceDefinitions.category(),
       data,
     );
   }
 
-  postBusinessPatnerContract(contractBusinessPatner, data) {
+  postBusinessPatnerContract(data) {
     console.log(data);
     return this.post(
-      ContractServiceDefinitions.businessContract(contractBusinessPatner),
+      ContractServiceDefinitions.businessContract(),
       data,
     );
   }
 
-  getCategoryToSearch(textToSearch) {
-    return this.get(ContractServiceDefinitions.categoryToSearch(textToSearch));
+  getCategoryToSearch(categoryToSearch) {
+    return this.get(ContractServiceDefinitions.categoryToSearch(categoryToSearch));
   }
 
-  getAllCategories(contractcategory) {
+  getAllCategories() {
     return this.get(
-      ContractServiceDefinitions.getAllCategories(contractcategory),
+      ContractServiceDefinitions.getAllCategories(),
+    );
+  }
+
+  getCategoryById(categoryToSearch) {
+    return this.get(
+      ContractServiceDefinitions.getCategoryById(categoryToSearch),
     );
   }
 
@@ -33,7 +39,11 @@ export default class ContractService extends Services {
     );
   }
 
-  getAllPatners(businessPartner) {
-    return this.get(ContractServiceDefinitions.getAllPatners(businessPartner));
+  getAllPatners() {
+    return this.get(ContractServiceDefinitions.getAllPatners());
+  }
+
+  putCategoryContracts(data) {
+    return this.put(ContractServiceDefinitions.category(), data);
   }
 }
