@@ -39,11 +39,13 @@ const SearchClientForm = ({ client, handleChange, isEditing }) => {
 };
 
 SearchClientForm.propTypes = {
-  openSearchAndEdit: PropTypes.func.isRequired,
-  //   name: PropTypes.string.isRequired,
-  //   percentage: PropTypes.number.isRequired,
-  //   updateHandler: PropTypes.func.isRequired,
-  //   deleteHandler: PropTypes.func.isRequired,
+  client: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+    phoneNumber: PropTypes.string,
+  }).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool.isRequired,
 };
 
 export default SearchClientForm;
