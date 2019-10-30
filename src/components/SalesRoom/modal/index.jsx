@@ -7,9 +7,8 @@ import {
 } from 'react-radio-buttons';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
-import DayPickerInput from 'react-date-picker';
-import esLocale from 'date-fns/locale/es';
-import DateFnsUtils from '@date-io/date-fns';
+import 'moment/locale/es';
+import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
@@ -79,13 +78,19 @@ const SalesRoomModal = ({
           <RadioButton value={SalesRoomEnum.status.SOLD}>Vendido</RadioButton>
         </RadioGroup>
       </div>
-      {currentState === SalesRoomEnum.status.OPTIONAL ? (
+      {currentState === SalesRoomEnum.status.OPTIONAL && (
         <div>
           <div className={Styles.inputContainer}>
             Seleccione la fecha de vencimiento:
           </div>
           <div className={Styles.DateTimePicker}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+            {console.log('moment', moment.locale('es'))}
+
+            <MuiPickersUtilsProvider
+              libInstance={moment}
+              utils={MomentUtils}
+              locale={moment.locale('es')}
+            >
               <DateTimePicker
                 value={deadlineDate}
                 onChange={onChangeDeadlineDate}
@@ -100,8 +105,8 @@ const SalesRoomModal = ({
             </MuiPickersUtilsProvider>
           </div>
         </div>
-      ) : null}
-      {currentState === SalesRoomEnum.status.SOLD ? (
+      )}
+      {currentState === SalesRoomEnum.status.SOLD && (
         <div>
           <div className={Styles.inputContainer}>
             <span className={Styles.label}>Valor de venta</span>
@@ -241,7 +246,7 @@ const SalesRoomModal = ({
             />
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };

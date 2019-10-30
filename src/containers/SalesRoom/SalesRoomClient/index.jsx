@@ -368,15 +368,7 @@ class SalesRoom extends Component {
               />
             </CardBody>
             <CardFooter />
-            <Dialog
-              open={this.state.isOpen}
-              /* title={`Nuevo Estado - ${this.state.selectedProperty.name}`}
-              subtitleRight={this.state.selectedProperty.groupName}
-              hidden={this.props.isOpen}
-              onConfirm={this.save}
-              onCancel={this.cancel}
-              isCenter={isStrategyNull} */
-            >
+            <Dialog open={this.state.isOpen}>
               <DialogTitle>
                 {`Nuevo Estado - ${this.state.selectedProperty.name}`}
               </DialogTitle>

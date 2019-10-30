@@ -4,15 +4,17 @@
  * Copyright (c) 2019 Your Company
  */
 
+@import '../../../assets/styles/variables.scss';
+
 .TitleContainer {
   display: flex;
   justify-content: space-between;
 }
 
 .ConfirmButton {
-  background: #00c781;
+  background: $softGreenColor;
 }
 
 .CancelButton {
-  background: #ff4040 !important;
+  background: $redButton-color !important;
 }

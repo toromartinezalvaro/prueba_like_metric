@@ -167,7 +167,6 @@ class Dashboard extends Component {
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.clients.withIndicator}
-          roles={[Role.User, Role.Admin, Role.Super]}
           exact
           component={Client}
         />
