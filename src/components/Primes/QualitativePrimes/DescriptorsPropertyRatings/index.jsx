@@ -119,7 +119,7 @@ const DescriptorsPropertyRatings = ({
 
   const calculateDescriptorsTotalPercentage = () => {
     return descriptors.reduce((current, next) => {
-      return current + next.percentage;
+      return current + Number(next.percentage);
     }, 0);
   };
 

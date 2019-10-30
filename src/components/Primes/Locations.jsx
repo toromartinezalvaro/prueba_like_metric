@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Card, { CardHeader, CardBody } from '../UI/Card/Card';
 import Table from '../UI/Table/Table';
 import Button from '../UI/Button/Button';
-import Modal from '../UI/Modal/Modal';
 import QualitativePrimes from './QualitativePrimes';
+import Styles from './Location.module.scss';
 
 const Locations = (props) => {
   const [
     qualitativePrimesModalState,
     setQualitativePrimesModalState,
-  ] = useState(true);
+  ] = useState(false);
 
   const changeModalState = () => {
     setQualitativePrimesModalState(!qualitativePrimesModalState);
@@ -54,22 +58,43 @@ const Locations = (props) => {
           />
         </CardBody>
       </Card>
-      <Modal
-        style={{ height: '90vh', width: '80vw' }}
-        title="Primas cualitativas"
-        hidden={qualitativePrimesModalState}
-        onConfirm={changeModalState}
-        basic
+
+      <Dialog
+        open={qualitativePrimesModalState}
+        scroll="body"
+        maxWidth="lg"
+        classes={{ root: Styles.modal }}
+        fullScreen
       >
-        <QualitativePrimes
-          towerId={props.towerId}
-          headers={props.headers}
-          floorsNames={props.floorsNames}
-          changeModalState={changeModalState}
-          reloadPrimes={props.reloadPrimes}
-          alertHandler={props.alertHandler}
-        />
-      </Modal>
+        <DialogTitle id="scroll-dialog-title">
+          <div className={Styles.title}>
+            <span> Primas cualitativas</span>
+            <Button
+              onClick={changeModalState}
+              color="primary"
+              className={Styles.button}
+            >
+              <i className="fas fa-times"></i>
+            </Button>
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <QualitativePrimes
+            towerId={props.towerId}
+            headers={props.headers}
+            floorsNames={props.floorsNames}
+            changeModalState={changeModalState}
+            reloadPrimes={props.reloadPrimes}
+            alertHandler={props.alertHandler}
+            lowestFloor={props.lowestFloor}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={changeModalState} color="primary">
+            Guardar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 };

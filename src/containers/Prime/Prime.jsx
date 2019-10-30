@@ -25,6 +25,7 @@ class Prime extends Component {
     },
     floorsNames: [],
     showFloatingButton: false,
+    lowestFloor: 0,
   };
 
   componentDidMount() {
@@ -35,6 +36,12 @@ class Prime extends Component {
     }
 
     this.services.getAltitudePrimes(towerId).then((response) => {
+      if (response.data.primes.length !== 0) {
+        this.setState({
+          lowestFloor: response.data.primes[0].tower.lowestFloor,
+        });
+      }
+
       const floorsNames = [];
 
       const altitude = { ...this.state.altitude };
@@ -198,6 +205,7 @@ class Prime extends Component {
           towerId={this.props.match.params.towerId}
           reloadPrimes={this.getLocationPrimes}
           alertHandler={this.props.spawnMessage}
+          lowestFloor={this.state.lowestFloor}
         />
         {this.state.showFloatingButton ? (
           <FloatingButton

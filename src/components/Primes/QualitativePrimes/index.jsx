@@ -15,6 +15,7 @@ const QualitativePrimes = ({
   changeModalState,
   reloadPrimes,
   alertHandler,
+  lowestFloor,
 }) => {
   const services = new Services();
 
@@ -52,7 +53,8 @@ const QualitativePrimes = ({
       .then((response) => {
         const orderedProperties = _.sortBy(
           response.data.properties,
-          (e) => e.id,
+          ['floor', 'location'],
+          ['asc', 'asc'],
         );
         setProperties(orderedProperties);
         setPropertiesRatings(response.data.propertiesRatings);
@@ -259,6 +261,7 @@ const QualitativePrimes = ({
           descriptors={descriptors}
           propertiesRatings={propertiesRatings}
           handleUpdatePrimes={handleUpdatePrimes}
+          lowestFloor={lowestFloor}
         />
       </TabPanel>
     </Tabs>
@@ -272,6 +275,7 @@ QualitativePrimes.propTypes = {
   changeModalState: PropTypes.func.isRequired,
   reloadPrimes: PropTypes.func.isRequired,
   alertHandler: PropTypes.func.isRequired,
+  lowestFloor: PropTypes.number.isRequired,
 };
 
 export default QualitativePrimes;

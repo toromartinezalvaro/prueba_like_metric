@@ -28,6 +28,7 @@ import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
+import CashFlow from '../CashFlow';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -193,6 +194,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Report}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.cashFlow.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={CashFlow}
         />
       </DashboardLayout>
     );

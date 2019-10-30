@@ -178,9 +178,21 @@ const SideMenu = ({
               )}
             {agent.isAuthorized([Role.Admin, Role.Super]) && itemForSlidebar(
               style.MenuItem,
+              DashboardRoutes.base + DashboardRoutes.clients.value,
+              'fas fa-users',
+              'Clientes',
+            )}
+            {itemForSlidebar(
+              style.MenuItem,
               DashboardRoutes.base + DashboardRoutes.report.value,
               'fas fa-file-alt',
               'Reporte',
+            )}
+            {itemForSlidebar(
+              style.MenuItem,
+              DashboardRoutes.base + DashboardRoutes.cashFlow.value,
+              'fas fa-cash-register',
+              'Flujo de caja',
             )}
           </div>
         </div>
