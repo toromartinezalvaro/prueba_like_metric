@@ -3,7 +3,7 @@ import { API_PATH } from '../../config/config';
 const ContractServiceDefinitions = {
   category: () => `${API_PATH}contract/contractCategory`,
   getAllCategories: () => `${API_PATH}contract/contractCategory`,
-  businessContract: () => `${API_PATH}contract/businesspatner`,
+  businessContract: () => `${API_PATH}contract/businesspartner`,
   categoryToSearch: (categoryToSearch) =>
     `${API_PATH}contract/contractcategory/${categoryToSearch}`,
   businessContractToSearch: (textToSearch) =>

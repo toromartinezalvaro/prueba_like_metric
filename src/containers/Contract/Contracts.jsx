@@ -119,18 +119,43 @@ class Contracts extends Component {
   };
 
   updateCategory = (id, categoryName, contractId) => {
-    console.log('landing', id, categoryName, contractId);
     this.services
       .putCategoryContracts(id, categoryName, contractId)
+      .then((response) => {
+        const index = this.state.categories.findIndex(
+          (category) => category.value === response.data.id,
+        );
+        let temporal = this.state.categories;
+        temporal[index] = {
+          value: response.data.id,
+          label: response.data.categoryName,
+        };
+        this.setState({ categories: temporal });
+      })
       .catch((error) => {
         console.log(error);
       });
+    console.log(this.state.categories);
   };
 
   updatePartner = (editable) => {
-    this.services.putBusinessPartner( editable ).catch((error) => {
-      console.log(error);
-    });
+    this.services
+      .putBusinessPartner(editable)
+      .then((response) => {
+        const index = this.state.partners.findIndex(
+          (partners) => partners.value === response.data.id,
+        );
+        let temporal = this.state.partners;
+        temporal[index] = {
+          value: response.data.id,
+          label: response.data.patnerName,
+        };
+        this.setState({ partners: temporal });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      console.log(this.state.partners);
   };
 
   newBusinessPartner = (partner) => {
