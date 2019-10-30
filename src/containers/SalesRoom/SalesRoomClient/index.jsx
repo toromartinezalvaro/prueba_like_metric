@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import ReactTooltip from 'react-tooltip';
 import NumberFormat from 'react-number-format';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@material-ui/core';
+import Button from '../../../components/UI/Button/Button';
+
 import SalesRoomService from '../../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
@@ -17,6 +25,7 @@ import Status from '../../../helpers/status';
 import LoadableContainer from '../../../components/UI/Loader';
 import SalesRoomModal from '../../../components/SalesRoom/modal';
 import SalesRoomEnum from '../SalesRoom.enum';
+import Styles from './salesRoomClient.module.scss';
 
 class SalesRoom extends Component {
   constructor(props) {
@@ -31,7 +40,7 @@ class SalesRoom extends Component {
     floors: 1,
     lowestFloor: 1,
     data: [[]],
-    isHidden: true,
+    isOpen: false,
     isLoading: false,
     rightButton: {},
     leftButton: {},
@@ -41,7 +50,9 @@ class SalesRoom extends Component {
     discountApplied: 0,
     isEmpty: null,
     isLoadingModal: false,
-    selectedProperty: null,
+    selectedProperty: { name: '' },
+    clientName: null,
+    deadlineDate: new Date(),
   };
 
   propertyHandler = (key, value) => {
@@ -51,12 +62,17 @@ class SalesRoom extends Component {
   };
 
   componentDidMount() {
+    const { towerId, clientId } = this.props.match.params;
     this.setState({ isLoading: true });
     this.services
-      .getProperties(this.props.match.params.towerId)
+      .getProperties(towerId, clientId)
       .then((properties) => {
-        this.makeArrayOfProperties(properties);
-        this.setState({ isLoading: false });
+        const { data } = properties;
+        this.makeArrayOfProperties(data.incrementList);
+        this.setState({
+          isLoading: false,
+          clientName: data.client.name,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -92,16 +108,18 @@ class SalesRoom extends Component {
   };
 
   onClickSelector = (property, buttons) => {
-    this.setState({
-      id: property.id,
-      groupId: property.groupId,
-      isHidden: false,
-      rightButton: buttons.rightButton,
-      leftButton: buttons.leftButton,
-      priceSold: property.priceWithIncrement,
-      selectedProperty: property,
-      discountApplied: property.discount,
-    });
+    if (this.state.clientName) {
+      this.setState({
+        id: property.id,
+        groupId: property.groupId,
+        isOpen: true,
+        rightButton: buttons.rightButton,
+        leftButton: buttons.leftButton,
+        priceSold: property.priceWithIncrement,
+        selectedProperty: property,
+        discountApplied: property.discount,
+      });
+    }
   };
 
   makeCells = (buttons, property, active = 'priceWithIncrements') => (
@@ -141,7 +159,7 @@ class SalesRoom extends Component {
   );
 
   makeArrayOfProperties(properties, active) {
-    const { data } = properties;
+    const data = properties;
 
     if (data.floors !== null) {
       const matrix = this.createNullMatrix(data.floors, data.totalProperties);
@@ -172,7 +190,7 @@ class SalesRoom extends Component {
     properties.find((group) => group[0].groupId === this.state.groupId);
 
   calculateCollectedIncrement(status) {
-    const groups = this.state.response.data.properties;
+    const groups = this.state.response.properties;
     let properties = groups[0];
     if (groups.length > 1) {
       properties = this.findGroup(groups);
@@ -240,16 +258,18 @@ class SalesRoom extends Component {
           collectedIncrement,
           groupId: this.state.groupId,
           isBadgeIncrement,
+          deadlineDate: Number(this.state.deadlineDate.getTime()),
         },
         this.props.match.params.towerId,
+        this.props.match.params.clientId,
       )
-      .then((properties) => {
-        console.log(properties);
-        if (properties) {
-          this.makeArrayOfProperties(properties);
+      .then((response) => {
+        const { incrementList } = response.data;
+        if (incrementList) {
+          this.makeArrayOfProperties(incrementList);
         }
         this.setState({
-          isHidden: true,
+          isOpen: false,
           isLoadingModal: false,
         });
       })
@@ -261,7 +281,7 @@ class SalesRoom extends Component {
   };
 
   cancel = () => {
-    this.setState({ isHidden: true });
+    this.setState({ isOpen: false });
   };
 
   createNullMatrix = (m, n) => {
@@ -276,11 +296,17 @@ class SalesRoom extends Component {
         propertiesByGroup.length > 0 &&
         propertiesByGroup[0].groupId === selectedProperty.groupId,
     );
-    
+
     return (
       propertiesArray.filter((property) => property.status === Status.Available)
         .length === 1
     );
+  };
+
+  deadlineDateHandler = (value) => {
+    this.setState({
+      deadlineDate: value,
+    });
   };
 
   render() {
@@ -306,8 +332,8 @@ class SalesRoom extends Component {
         this.state.selectedProperty,
         this.state.response.data.properties,
       );
-      isStrategyNull = !isThereOneProperty
-      showModalSelectedProperty = isThereOneProperty
+      isStrategyNull = !isThereOneProperty;
+      showModalSelectedProperty = isThereOneProperty;
     }
 
     return (
@@ -318,7 +344,14 @@ class SalesRoom extends Component {
         {!this.state.isEmpty && (
           <Card>
             <CardHeader>
-              <p>Propiedades</p>
+              <div className={Styles.TitleContainer}>
+                <p>Propiedades</p>
+                {this.state.clientName ? (
+                  <p>Cliente: {this.state.clientName}</p>
+                ) : (
+                  <p>No se ha seleccionado ningun cliente</p>
+                )}
+              </div>
             </CardHeader>
             <CardBody>
               <Selectors
@@ -335,15 +368,11 @@ class SalesRoom extends Component {
               />
             </CardBody>
             <CardFooter />
-            {!this.state.isHidden && (
-              <Modal
-                title={`Nuevo Estado - ${this.state.selectedProperty.name}`}
-                subtitleRight={this.state.selectedProperty.groupName}
-                hidden={this.props.isHidden}
-                onConfirm={this.save}
-                onCancel={this.cancel}
-                isCenter={isStrategyNull}
-              >
+            <Dialog open={this.state.isOpen}>
+              <DialogTitle>
+                {`Nuevo Estado - ${this.state.selectedProperty.name}`}
+              </DialogTitle>
+              <DialogContent>
                 {isStrategyNull &&
                   'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
                 {showModalSelectedProperty &&
@@ -360,10 +389,20 @@ class SalesRoom extends Component {
                     <SalesRoomModal
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
+                      deadlineDate={this.state.deadlineDate}
+                      onChangeDeadlineDate={this.deadlineDateHandler}
                     />
                   ))}
-              </Modal>
-            )}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.cancel} className={Styles.CancelButton}>
+                  Cancelar
+                </Button>
+                <Button onClick={this.save} className={Styles.ConfirmButton}>
+                  Aceptar
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Card>
         )}
       </LoadableContainer>
@@ -371,4 +410,4 @@ class SalesRoom extends Component {
   }
 }
 
-export default SalesRoom
+export default SalesRoom;

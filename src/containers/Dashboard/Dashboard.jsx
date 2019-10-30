@@ -22,7 +22,6 @@ import Increments from '../Increments/Increments';
 import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
 import Strategy from '../Strategy/Strategy';
-import SalesRoom from '../SalesRoom/SalesRoom';
 import SalesRoomClient from '../SalesRoom/SalesRoomClient';
 import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
@@ -42,8 +41,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
-    console.log("towerId", towerId)
-    //TODO: Remove it for projects and towers
+    console.log('towerId', towerId);
+    // TODO: Remove it for projects and towers
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)
@@ -161,11 +160,6 @@ class Dashboard extends Component {
           exact
           component={Increments}
         />
-         <PrivateRoute
-          path={match.url + DashboardRoutes.salesRoom.withIndicator}
-          exact
-          component={SalesRoom}
-        /> 
         <PrivateRoute
           path={match.url + DashboardRoutes.salesRoomClient.withIndicator}
           exact
@@ -173,7 +167,6 @@ class Dashboard extends Component {
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.clients.withIndicator}
-          roles={[Role.User]}
           exact
           component={Client}
         />

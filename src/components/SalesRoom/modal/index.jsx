@@ -5,7 +5,11 @@ import {
   RadioButton,
   ReversedRadioButton,
 } from 'react-radio-buttons';
+import moment from 'moment';
 import NumberFormat from 'react-number-format';
+import 'moment/locale/es';
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
 import StyleVariables from '../../../assets/styles/variables.scss';
@@ -15,7 +19,12 @@ import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
 const DISCOUNT = 'DISCOUNT';
 const INCREMENT = 'INCREMENT';
 
-const SalesRoomModal = ({ property, onChange }) => {
+const SalesRoomModal = ({
+  property,
+  onChange,
+  deadlineDate,
+  onChangeDeadlineDate,
+}) => {
   const {
     status,
     priceWithIncrement,
@@ -69,7 +78,35 @@ const SalesRoomModal = ({ property, onChange }) => {
           <RadioButton value={SalesRoomEnum.status.SOLD}>Vendido</RadioButton>
         </RadioGroup>
       </div>
-      {currentState === SalesRoomEnum.status.AVAILABLE ? null : (
+      {currentState === SalesRoomEnum.status.OPTIONAL && (
+        <div>
+          <div className={Styles.inputContainer}>
+            Seleccione la fecha de vencimiento:
+          </div>
+          <div className={Styles.DateTimePicker}>
+            {console.log('moment', moment.locale('es'))}
+
+            <MuiPickersUtilsProvider
+              libInstance={moment}
+              utils={MomentUtils}
+              locale={moment.locale('es')}
+            >
+              <DateTimePicker
+                value={deadlineDate}
+                onChange={onChangeDeadlineDate}
+                locale="es"
+                minDate={moment().toDate()}
+                maxDate={moment()
+                  .add(15, 'd')
+                  .toDate()}
+                cancelLabel="Cancelar"
+                okLabel="Aceptar"
+              ></DateTimePicker>
+            </MuiPickersUtilsProvider>
+          </div>
+        </div>
+      )}
+      {currentState === SalesRoomEnum.status.SOLD && (
         <div>
           <div className={Styles.inputContainer}>
             <span className={Styles.label}>Valor de venta</span>

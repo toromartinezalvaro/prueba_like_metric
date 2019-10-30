@@ -1,0 +1,20 @@
+/*
+ * Created on Mon Oct 28 2019
+ *
+ * Copyright (c) 2019 Your Company
+ */
+
+@import '../../../assets/styles/variables.scss';
+
+.TitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfirmButton {
+  background: $softGreenColor;
+}
+
+.CancelButton {
+  background: $redButton-color !important;
+}

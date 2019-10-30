@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { Resizable } from 're-resizable';
 import { DashboardRoutes } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
-import { Resizable } from 're-resizable';
 
 const SideMenu = ({
   resizableWidth,
@@ -82,7 +82,7 @@ const SideMenu = ({
               itemForSlidebar(
                 style.MenuItem,
                 DashboardRoutes.base + DashboardRoutes.schedule.value,
-                'fas fa-users',
+                'fas fa-calendar-alt',
                 'Calendario',
               )}
             {agent.isAuthorized([Role.User]) &&
@@ -148,12 +148,13 @@ const SideMenu = ({
                 'fas fa-object-group',
                 'Agrupamiento',
               )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) && itemForSlidebar(
-              style.MenuItem,
-              DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
-              'fas fa-calendar-alt',
-              'Velocidad ventas futuras',
-            )}
+            {agent.isAuthorized([Role.Admin, Role.Super]) &&
+              itemForSlidebar(
+                style.MenuItem,
+                DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
+                'fas fa-tachometer-alt',
+                'Velocidad ventas futuras',
+              )}
             {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
                 style.MenuItem,
@@ -172,28 +173,24 @@ const SideMenu = ({
             {agent.isAuthorized([Role.Admin, Role.Super]) &&
               itemForSlidebar(
                 style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.salesRoom.value,
-                'fas fa-dollar-sign',
-                'Sala de Ventas',
+                DashboardRoutes.base + DashboardRoutes.clients.value,
+                'fas fa-users',
+                'Clientes',
               )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) && itemForSlidebar(
-              style.MenuItem,
-              DashboardRoutes.base + DashboardRoutes.clients.value,
-              'fas fa-users',
-              'Clientes',
-            )}
-            {itemForSlidebar(
-              style.MenuItem,
-              DashboardRoutes.base + DashboardRoutes.report.value,
-              'fas fa-file-alt',
-              'Reporte',
-            )}
-            {itemForSlidebar(
-              style.MenuItem,
-              DashboardRoutes.base + DashboardRoutes.cashFlow.value,
-              'fas fa-cash-register',
-              'Flujo de caja',
-            )}
+            {agent.isAuthorized([Role.Admin, Role.Super]) &&
+              itemForSlidebar(
+                style.MenuItem,
+                DashboardRoutes.base + DashboardRoutes.report.value,
+                'fas fa-file-alt',
+                'Reporte',
+              )}
+            {agent.isAuthorized([Role.Admin, Role.Super]) &&
+              itemForSlidebar(
+                style.MenuItem,
+                DashboardRoutes.base + DashboardRoutes.cashFlow.value,
+                'fas fa-cash-register',
+                'Flujo de caja',
+              )}
           </div>
         </div>
       </Resizable>

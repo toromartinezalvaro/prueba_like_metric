@@ -18,7 +18,7 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
         client.phoneNumber,
         <Link
           key={`link-${index}`}
-          to={`${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${client.identityDocument}`}
+          to={`${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${client.id}`}
         >
           <Button2>Sala de ventas</Button2>
         </Link>,
@@ -49,8 +49,8 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
         <CardBody>
           <div>
             <Table
-              intersect="clients"
-              headers={['cedula', 'nombre', 'correo', 'celular']}
+              intersect="Clientes"
+              headers={['Cedula', 'Nombre', 'Correo', 'Celular']}
               columns={[]}
               data={getData()}
             ></Table>
