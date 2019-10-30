@@ -25,10 +25,11 @@ class Contracts extends Component {
       },
       contractModal: {
         isOpen: false,
-        isEditable: false,
       },
       BusinessPatnerModal: {
         isOpen: false,
+        isEditable: false,
+        editableInfo: {}
       },
       expanded: 'GeneralInfo',
       categories: [],
@@ -127,6 +128,12 @@ class Contracts extends Component {
       .catch((error) => { console.log(error) });
   }
 
+  updatePartner = (editable) => {
+    this.services
+      .putBusinessPartner({ editable })
+      .catch((error) => { console.log(error) });
+  }
+
   newBusinessPartner = (partner) => {
     this.services
       .postBusinessPatnerContract(partner)
@@ -136,7 +143,32 @@ class Contracts extends Component {
   };
 
   searchCategory = (categoryToSearch) => {
-    this.setState({ categoryModal: { editableInfo: this.services.getCategoryById(categoryToSearch) } });
+    this.services.getCategoryById(categoryToSearch)
+      .then((response) => {
+        this.setState({
+          categoryModal: {
+            editableInfo: response.data
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  searchBusinessPartner = (partnerToSearch) => {
+    this.services.getPartnerById(partnerToSearch)
+      .then((response) => {
+        console.log("The partner is", response.data)
+        this.setState({
+          BusinessPatnerModal: {
+            editableInfo: response.data
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   getAllPatners = () => {
@@ -154,6 +186,7 @@ class Contracts extends Component {
           handleOpenCategory={this.handleOpenCategory}
           handleOpenBusinessPatner={this.handleOpenBusinessPatner}
           searchCategory={this.searchCategory}
+          searchBusinessPartner={this.searchBusinessPartner}
           categories={this.state.categories}
           editable={this.enableEditable}
           disableEditable={this.disableEditable}
@@ -190,6 +223,9 @@ class Contracts extends Component {
             <BusinessPatner
               handleCloseBusinessPatner={this.handleCloseBusinessPatner}
               newBusinessPartner={this.newBusinessPartner}
+              updatePartner = {this.updatePartner}
+              editable={this.state.BusinessPatnerModal.isEditable}
+              informationToEdit={this.state.BusinessPatnerModal.editableInfo}
             />
           </DialogContent>
         </Dialog>

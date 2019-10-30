@@ -20,6 +20,7 @@ const NewContract = ({
   categories,
   partners,
   editable,
+  searchBusinessPartner,
   disableEditable,
   searchCategory,
 }) => {
@@ -44,6 +45,7 @@ const NewContract = ({
           handleCloseCategory={handleCloseCategory}
           handleOpenBusinessPatner={handleOpenBusinessPatner}
           searchCategory={searchCategory}
+          searchBusinessPartner={searchBusinessPartner}
           categories={categories}
           partners={partners}
           editable={editable}

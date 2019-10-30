@@ -14,6 +14,7 @@ const ExpandGeneralInfo = ({
   categories,
   partners,
   searchCategory,
+  searchBusinessPartner,
   editable,
   disableEditable,
 }) => {
@@ -35,6 +36,7 @@ const ExpandGeneralInfo = ({
             handleOpenBusinessPatner={handleOpenBusinessPatner}
             categories={categories}
             searchCategory={searchCategory}
+            searchBusinessPartner={searchBusinessPartner}
             partners={partners}
             editable={editable}
             disableEditable={disableEditable}

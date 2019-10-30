@@ -19,12 +19,12 @@ const Option = (props) => {
 };
 
 const GeneralInfo =
-
   ({
     handleOpenCategory,
     handleOpenBusinessPatner,
     handleCloseCategory,
     searchCategory,
+    searchBusinessPartner,
     categories,
     partners,
     editable,
@@ -43,9 +43,25 @@ const GeneralInfo =
         label: contract.state,
       };
     });
-    const changeForSearch = (label) => {
-      console.log(label.value);
-      return label.value;
+    const [categoryToSearch, setCategoryToSearch] = useState('');
+    const [partnerToSearch, setPatnerToSearch] = useState('');
+    const changeForSearchCategory = (label) => {
+      setCategoryToSearch(label.value);
+    }
+    const changeForSearchPartner = (label) => {
+      setPatnerToSearch(label.value);
+    }
+    const searchForCategory = () => {
+      if (categoryToSearch !== '') {
+        searchCategory(categoryToSearch);
+        handleOpenCategory();
+      }
+    }
+    const searchForPatner = () => {
+      if (partnerToSearch !== '') {
+        searchBusinessPartner(partnerToSearch);
+        handleOpenBusinessPatner();
+      }
     }
 
     return (
@@ -74,6 +90,7 @@ const GeneralInfo =
                   placeholder="Seleccione socio"
                   options={partners}
                   components={Option}
+                  onChange={changeForSearchPartner}
                 />
               </div>
               <div className={styles.buttonColumn}>
@@ -92,6 +109,7 @@ const GeneralInfo =
                   size="small"
                   aria-label="edit"
                   className={styles.fab}
+                  onClick={searchForPatner}
                 >
                   <EditIcon />
                 </Fab>
@@ -103,7 +121,7 @@ const GeneralInfo =
                   className={styles.selectOption}
                   inputId="react-select-single"
                   TextFieldProps={{
-                    label: 'Selecciona Una ctaegoría',
+                    label: 'Selecciona Una categoría',
                     InputLabelProps: {
                       htmlFor: 'react-select-single',
                       shrink: true,
@@ -112,6 +130,7 @@ const GeneralInfo =
                   placeholder="Selecciona una categoría"
                   options={categories}
                   components={Option}
+                  onChange={changeForSearchCategory}
                 />
               </div>
               <div className={styles.buttonColumn}>
@@ -130,7 +149,7 @@ const GeneralInfo =
                   size="small"
                   aria-label="edit"
                   className={styles.fab}
-                  onClick={searchCategory}
+                  onClick={searchForCategory}
                 >
                   <EditIcon />
                 </Fab>
@@ -170,7 +189,6 @@ const GeneralInfo =
                 },
               }}
               placeholder="Contrato principal"
-              onChange={changeForSearch}
               options={categories}
               components={Option}
             />

@@ -11,7 +11,7 @@ import Icon from '@material-ui/core/Icon';
 import Select from 'react-select';
 import styles from './BusinessPatner.module.scss';
 
-const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner }) => {
+const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updatePartner, informationToEdit, editable }) => {
   const [partner, setPartner] = useState({
     patnerName: '',
     patnerAdress: '',
@@ -36,6 +36,10 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner }) => {
 
   const sendPartner = () => {
     console.log(partner);
+    if (editable) {
+      updatePartner(partner);
+      handleCloseBusinessPatner();
+    }
     newBusinessPartner(partner);
     handleCloseBusinessPatner();
   };
@@ -68,6 +72,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner }) => {
 
   return (
     <Fragment>
+      {console.log("Data is:", informationToEdit)}
       <Typography className={styles.headingTitle} variant="h4">
         <div className={`${styles.circleIcon}  ${styles.circleColorForTitle}`}>
           <Icon className={`${styles.iconGeneral} fas fa-handshake`} />

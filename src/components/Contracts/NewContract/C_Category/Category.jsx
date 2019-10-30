@@ -1,4 +1,5 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
@@ -22,16 +23,21 @@ const Category = ({ handleCloseCategory, newCategory, updateCategory, informatio
     newCategory(textOfCategory);
     handleCloseCategory();
   };
+
+  useEffect(() => {
+    if (informationToEdit.categoryName !== '') {
+      setTextOfCategory(informationToEdit.categoryName);
+    }
+  }, []);
   return (
     <Fragment>
-      {console.log(informationToEdit)}
+      {console.log("Data is:", informationToEdit)}
       <Typography className={styles.heading} variant="h4">
         <div className={`${styles.circleIcon}  ${styles.circleColorGeneral}`}>
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
         <div className={styles.titleExpand}>Nueva Categoría</div>
       </Typography>
-
       <div container className={styles.gridContainer}>
         <div className={styles.categoryCreator}>
           <TextField
@@ -41,6 +47,7 @@ const Category = ({ handleCloseCategory, newCategory, updateCategory, informatio
             label="Nombre de Categoría"
             margin="normal"
             variant="outlined"
+            value={textOfCategory}
             onChange={changeTextOfCategory}
           />
         </div>
@@ -68,6 +75,10 @@ const Category = ({ handleCloseCategory, newCategory, updateCategory, informatio
       </div>
     </Fragment>
   );
+};
+
+Category.propTypes = {
+  informationToEdit: PropTypes.object,
 };
 
 export default Category;

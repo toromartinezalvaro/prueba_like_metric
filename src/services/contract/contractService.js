@@ -33,6 +33,12 @@ export default class ContractService extends Services {
     );
   }
 
+  getPartnerById(partnerToSearch) {
+    return this.get(
+      ContractServiceDefinitions.getPartnerById(partnerToSearch),
+    );
+  }
+
   getBusinessPatnerToSearch(textToSearch) {
     return this.get(
       ContractServiceDefinitions.businessContractToSearch(textToSearch),
@@ -43,7 +49,11 @@ export default class ContractService extends Services {
     return this.get(ContractServiceDefinitions.getAllPatners());
   }
 
+  putBusinessPartner(data) {
+    return this.put(ContractServiceDefinitions.partnerUpdate(), data)
+  }
+
   putCategoryContracts(data) {
-    return this.put(ContractServiceDefinitions.category(), data);
+    return this.put(ContractServiceDefinitions.categoryUpdate(), data);
   }
 }
