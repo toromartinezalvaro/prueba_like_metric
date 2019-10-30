@@ -186,7 +186,6 @@ const GeneralInfo = ({
               },
             }}
             placeholder="Contrato principal"
-            options={categories}
             components={Option}
           />
         </div>
