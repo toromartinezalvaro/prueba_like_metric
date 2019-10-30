@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
@@ -28,6 +28,10 @@ const GeneralInfo = ({
   partners,
   editable,
   disableEditable,
+  categoryProp,
+  partnerProp,
+  changeForSearchCategory,
+  changeForSearchPartner,
 }) => {
   const statusOfContract = [
     { state: 'Activo' },
@@ -42,27 +46,21 @@ const GeneralInfo = ({
       label: contract.state,
     };
   });
-  const [categoryToSearch, setCategoryToSearch] = useState('');
-  const [partnerToSearch, setPatnerToSearch] = useState('');
-  const changeForSearchCategory = (label) => {
-    setCategoryToSearch(label.value);
-  };
-  const changeForSearchPartner = (label) => {
-    setPatnerToSearch(label.value);
-  };
+
   const searchForCategory = () => {
-    if (categoryToSearch !== '') {
-      searchCategory(categoryToSearch);
+    if (categoryProp.value !== '') {
+      searchCategory(categoryProp.value);
     }
   };
   const searchForPatner = () => {
-    if (partnerToSearch !== '') {
-      searchBusinessPartner(partnerToSearch);
+    if (partnerProp.value !== '') {
+      searchBusinessPartner(partnerProp.value);
     }
   };
 
   return (
     <Fragment>
+      {console.log('works', categoryProp, changeForSearchCategory)}
       <div className={styles.gridContainer}>
         <div className={styles.columnFullLeft}>
           <TextField
@@ -87,6 +85,7 @@ const GeneralInfo = ({
                 placeholder="Seleccione socio"
                 options={partners}
                 components={Option}
+                value={partnerProp}
                 onChange={changeForSearchPartner}
               />
             </div>
@@ -127,6 +126,7 @@ const GeneralInfo = ({
                 placeholder="Selecciona una categoría"
                 options={categories}
                 components={Option}
+                value={categoryProp}
                 onChange={changeForSearchCategory}
               />
             </div>
@@ -206,6 +206,8 @@ const GeneralInfo = ({
 
 GeneralInfo.propTypes = {
   categories: PropTypes.array,
+  categoryProp: PropTypes.object,
+  partnerProp: PropTypes.object,
 };
 
 export default GeneralInfo;

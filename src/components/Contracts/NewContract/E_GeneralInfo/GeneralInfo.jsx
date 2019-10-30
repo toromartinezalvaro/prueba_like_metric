@@ -17,6 +17,10 @@ const ExpandGeneralInfo = ({
   searchBusinessPartner,
   editable,
   disableEditable,
+  categoryProp,
+  partnerProp,
+  changeForSearchCategory,
+  changeForSearchPartner,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
@@ -40,6 +44,10 @@ const ExpandGeneralInfo = ({
             partners={partners}
             editable={editable}
             disableEditable={disableEditable}
+            categoryProp={categoryProp}
+            partnerProp={partnerProp}
+            changeForSearchCategory={changeForSearchCategory}
+            changeForSearchPartner={changeForSearchPartner}
           />
         </Typography>
       </ExpansionPanelDetails>

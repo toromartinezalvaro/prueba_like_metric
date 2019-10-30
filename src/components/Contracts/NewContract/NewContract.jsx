@@ -23,6 +23,10 @@ const NewContract = ({
   searchBusinessPartner,
   disableEditable,
   searchCategory,
+  categoryProp,
+  partnerProp,
+  changeForSearchCategory,
+  changeForSearchPartner,
 }) => {
   return (
     <Dialog
@@ -50,6 +54,10 @@ const NewContract = ({
           partners={partners}
           editable={editable}
           disableEditable={disableEditable}
+          categoryProp={categoryProp}
+          changeForSearchCategory={changeForSearchCategory}
+          changeForSearchPartner={changeForSearchPartner}
+          partnerProp={partnerProp}
         />
         <br />
         <ExpandLifeCycle />

@@ -22,6 +22,7 @@ class Contracts extends Component {
         isOpen: false,
         isEditable: false,
         editableInfo: {},
+        currentCategory: undefined,
       },
       contractModal: {
         isOpen: false,
@@ -30,6 +31,7 @@ class Contracts extends Component {
         isOpen: false,
         isEditable: false,
         editableInfo: {},
+        currentPatner: undefined,
       },
       expanded: 'GeneralInfo',
       categories: [],
@@ -47,10 +49,6 @@ class Contracts extends Component {
             label: category.categoryName,
           };
         });
-        categories.unshift({
-          value: '',
-          label: 'Selecciona una categoría',
-        });
         this.setState({
           categories,
         });
@@ -67,10 +65,6 @@ class Contracts extends Component {
             label: partner.patnerName,
           };
         });
-        partners.unshift({
-          value: '',
-          label: 'Selecciona un socio',
-        });
         this.setState({
           partners,
         });
@@ -85,23 +79,33 @@ class Contracts extends Component {
   };
 
   handleCloseContract = () => {
-    this.setState({ contractModal: { isOpen: false } });
+    this.setState({
+      contractModal: { ...this.state.categoryModal, isOpen: false },
+    });
   };
 
   handleOpenCategory = () => {
-    this.setState({ categoryModal: { isOpen: true } });
+    this.setState({
+      categoryModal: { ...this.state.categoryModal, isOpen: true },
+    });
   };
 
   handleCloseCategory = () => {
-    this.setState({ categoryModal: { isOpen: false } });
+    this.setState({
+      categoryModal: { ...this.state.categoryModal, isOpen: false },
+    });
   };
 
   handleOpenBusinessPatner = () => {
-    this.setState({ businessPatnerModal: { isOpen: true } });
+    this.setState({
+      businessPatnerModal: { ...this.state.businessPatnerModal, isOpen: true },
+    });
   };
 
   handleCloseBusinessPatner = () => {
-    this.setState({ businessPatnerModal: { isOpen: false } });
+    this.setState({
+      businessPatnerModal: { ...this.state.businessPatnerModal, isOpen: false },
+    });
   };
 
   enableEditable = () => {
@@ -109,13 +113,27 @@ class Contracts extends Component {
   };
 
   disableEditable = () => {
-    this.setState({ categoryModal: { isEditable: false } });
+    this.setState({
+      categoryModal: { ...this.state.categoryModal, isEditable: false },
+    });
   };
 
   newCategory = (categoryName) => {
-    this.services.postCategoryContracts({ categoryName }).catch((error) => {
-      console.log(error);
-    });
+    this.services
+      .postCategoryContracts({ categoryName })
+      .then((response) => {
+        const currentCategory = {
+          value: response.data.id,
+          label: response.data.categoryName,
+        };
+        this.setState({
+          categories: currentCategory,
+          categoryModal: { ...this.state.categoryModal, currentCategory },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   updateCategory = (id, categoryName, contractId) => {
@@ -126,11 +144,15 @@ class Contracts extends Component {
           (category) => category.value === response.data.id,
         );
         let temporal = this.state.categories;
-        temporal[index] = {
+        const currentCategory = {
           value: response.data.id,
           label: response.data.categoryName,
         };
-        this.setState({ categories: temporal });
+        temporal[index] = currentCategory;
+        this.setState({
+          categories: temporal,
+          categoryModal: { ...this.state.categoryModal, currentCategory },
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -155,7 +177,7 @@ class Contracts extends Component {
       .catch((error) => {
         console.log(error);
       });
-      console.log(this.state.partners);
+    console.log(this.state.partners);
   };
 
   newBusinessPartner = (partner) => {
@@ -170,6 +192,7 @@ class Contracts extends Component {
       .then((response) => {
         this.setState({
           categoryModal: {
+            ...this.state.categoryModal,
             editableInfo: response.data,
             isOpen: true,
           },
@@ -186,6 +209,7 @@ class Contracts extends Component {
       .then((response) => {
         this.setState({
           businessPatnerModal: {
+            ...this.state.businessPatnerModal,
             editableInfo: response.data,
             isOpen: true,
           },
@@ -196,6 +220,18 @@ class Contracts extends Component {
       });
   };
 
+  changeForSearchCategory = (currentCategory) => {
+    this.setState({
+      categoryModal: { ...this.state.categoryModal, currentCategory },
+    });
+  };
+
+  changeForSearchPartner = (currentPatner) => {
+    this.setState({
+      businessPatnerModal: { ...this.state.businessPatnerModal, currentPatner },
+    });
+  };
+
   getAllPatners = () => {
     this.services.getAllPatners();
   };
@@ -203,6 +239,7 @@ class Contracts extends Component {
   render() {
     return (
       <div className={styles.Contracts}>
+        {console.log('ANOTHER', this.state.categoryModal.currentCategory)}
         <Navbar handleOpenContract={this.handleOpenContract} />
         <NewContract
           expanded={this.state.expanded}
@@ -216,6 +253,10 @@ class Contracts extends Component {
           editable={this.enableEditable}
           disableEditable={this.disableEditable}
           partners={this.state.partners}
+          categoryProp={this.state.categoryModal.currentCategory}
+          changeForSearchCategory={this.changeForSearchCategory}
+          changeForSearchPartner={this.changeForSearchPartner}
+          partnerProp={this.state.businessPatnerModal.currentPatner}
         />
         <Dialog
           className={styles.dialogExpand}
