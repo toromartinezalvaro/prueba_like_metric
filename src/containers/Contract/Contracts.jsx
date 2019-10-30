@@ -26,10 +26,10 @@ class Contracts extends Component {
       contractModal: {
         isOpen: false,
       },
-      BusinessPatnerModal: {
+      businessPatnerModal: {
         isOpen: false,
         isEditable: false,
-        editableInfo: {}
+        editableInfo: {},
       },
       expanded: 'GeneralInfo',
       categories: [],
@@ -80,8 +80,6 @@ class Contracts extends Component {
       });
   }
 
-
-
   handleOpenContract = () => {
     this.setState({ contractModal: { isOpen: true } });
   };
@@ -99,55 +97,56 @@ class Contracts extends Component {
   };
 
   handleOpenBusinessPatner = () => {
-    this.setState({ BusinessPatnerModal: { isOpen: true } });
+    this.setState({ businessPatnerModal: { isOpen: true } });
   };
 
   handleCloseBusinessPatner = () => {
-    this.setState({ BusinessPatnerModal: { isOpen: false } });
+    this.setState({ businessPatnerModal: { isOpen: false } });
   };
 
   enableEditable = () => {
     this.setState({ catagoryModal: { isEditable: true } });
-  }
+  };
 
   disableEditable = () => {
     this.setState({ categoryModal: { isEditable: false } });
-  }
+  };
 
   newCategory = (categoryName) => {
+    this.services.postCategoryContracts({ categoryName }).catch((error) => {
+      console.log(error);
+    });
+  };
+
+  updateCategory = (id, categoryName, contractId) => {
+    console.log('landing', id, categoryName, contractId);
     this.services
-      .postCategoryContracts({ categoryName })
+      .putCategoryContracts(id, categoryName, contractId)
       .catch((error) => {
         console.log(error);
       });
   };
 
-  updateCategory = (editable) => {
-    this.services
-      .putCategoryContracts({ editable })
-      .catch((error) => { console.log(error) });
-  }
-
   updatePartner = (editable) => {
-    this.services
-      .putBusinessPartner({ editable })
-      .catch((error) => { console.log(error) });
-  }
+    this.services.putBusinessPartner( editable ).catch((error) => {
+      console.log(error);
+    });
+  };
 
   newBusinessPartner = (partner) => {
-    this.services
-      .postBusinessPatnerContract(partner)
-      .catch((error) => {
-        console.log(error);
-      });
+    this.services.postBusinessPatnerContract(partner).catch((error) => {
+      console.log(error);
+    });
   };
 
   searchCategory = (categoryToSearch) => {
-    this.services.getCategoryById(categoryToSearch)
+    this.services
+      .getCategoryById(categoryToSearch)
       .then((response) => {
         this.setState({
           categoryModal: {
-            editableInfo: response.data
+            editableInfo: response.data,
+            isOpen: true,
           },
         });
       })
@@ -157,12 +156,13 @@ class Contracts extends Component {
   };
 
   searchBusinessPartner = (partnerToSearch) => {
-    this.services.getPartnerById(partnerToSearch)
+    this.services
+      .getPartnerById(partnerToSearch)
       .then((response) => {
-        console.log("The partner is", response.data)
         this.setState({
-          BusinessPatnerModal: {
-            editableInfo: response.data
+          businessPatnerModal: {
+            editableInfo: response.data,
+            isOpen: true,
           },
         });
       })
@@ -210,22 +210,23 @@ class Contracts extends Component {
             />
           </DialogContent>
         </Dialog>
-
         <Dialog
           className={styles.dialogExpand}
           scroll="body"
-          open={this.state.BusinessPatnerModal.isOpen}
+          open={this.state.businessPatnerModal.isOpen}
           handleCloseBusinessPatner={this.handleCloseBusinessPatner}
           fullWidth={true}
           maxWidth="md"
         >
           <DialogContent>
+            {console.log(this.state.businessPatnerModal.isEditable)}
+
             <BusinessPatner
               handleCloseBusinessPatner={this.handleCloseBusinessPatner}
               newBusinessPartner={this.newBusinessPartner}
-              updatePartner = {this.updatePartner}
-              editable={this.state.BusinessPatnerModal.isEditable}
-              informationToEdit={this.state.BusinessPatnerModal.editableInfo}
+              updatePartner={this.updatePartner}
+              editable={this.state.businessPatnerModal.isEditable}
+              informationToEdit={this.state.businessPatnerModal.editableInfo}
             />
           </DialogContent>
         </Dialog>

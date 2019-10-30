@@ -18,195 +18,192 @@ const Option = (props) => {
   return <components.Option {...props} className={styles.options} />;
 };
 
-const GeneralInfo =
-  ({
-    handleOpenCategory,
-    handleOpenBusinessPatner,
-    handleCloseCategory,
-    searchCategory,
-    searchBusinessPartner,
-    categories,
-    partners,
-    editable,
-    disableEditable,
-  }) => {
-    const statusOfContract = [
-      { state: 'Activo' },
-      { state: 'En Negociación' },
-      { state: 'Pendiente' },
-      { state: 'Terminado' },
-      { state: 'Archivado' },
-      { state: 'Expirado' },
-    ].map((contract) => {
-      return {
-        value: contract.state,
-        label: contract.state,
-      };
-    });
-    const [categoryToSearch, setCategoryToSearch] = useState('');
-    const [partnerToSearch, setPatnerToSearch] = useState('');
-    const changeForSearchCategory = (label) => {
-      setCategoryToSearch(label.value);
+const GeneralInfo = ({
+  handleOpenCategory,
+  handleOpenBusinessPatner,
+  handleCloseCategory,
+  searchCategory,
+  searchBusinessPartner,
+  categories,
+  partners,
+  editable,
+  disableEditable,
+}) => {
+  const statusOfContract = [
+    { state: 'Activo' },
+    { state: 'En Negociación' },
+    { state: 'Pendiente' },
+    { state: 'Terminado' },
+    { state: 'Archivado' },
+    { state: 'Expirado' },
+  ].map((contract) => {
+    return {
+      value: contract.state,
+      label: contract.state,
+    };
+  });
+  const [categoryToSearch, setCategoryToSearch] = useState('');
+  const [partnerToSearch, setPatnerToSearch] = useState('');
+  const changeForSearchCategory = (label) => {
+    setCategoryToSearch(label.value);
+  };
+  const changeForSearchPartner = (label) => {
+    setPatnerToSearch(label.value);
+  };
+  const searchForCategory = () => {
+    if (categoryToSearch !== '') {
+      searchCategory(categoryToSearch);
     }
-    const changeForSearchPartner = (label) => {
-      setPatnerToSearch(label.value);
+  };
+  const searchForPatner = () => {
+    if (partnerToSearch !== '') {
+      searchBusinessPartner(partnerToSearch);
     }
-    const searchForCategory = () => {
-      if (categoryToSearch !== '') {
-        searchCategory(categoryToSearch);
-        handleOpenCategory();
-      }
-    }
-    const searchForPatner = () => {
-      if (partnerToSearch !== '') {
-        searchBusinessPartner(partnerToSearch);
-        handleOpenBusinessPatner();
-      }
-    }
+  };
 
-    return (
-      <Fragment>
-        <div className={styles.gridContainer}>
-          <div className={styles.columnFullLeft}>
-            <TextField
-              required
-              fullWidth
-              className={styles.textField}
-              label="Titulo De Contrato"
-              margin="normal"
-              variant="outlined"
-            />
-            <div className={styles.gridSubContainer}>
-              <div className={styles.selectColumn}>
-                <Select
-                  inputId="react-select-single"
-                  TextFieldProps={{
-                    label: 'Socio de negocios',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single',
-                      shrink: true,
-                    },
-                  }}
-                  placeholder="Seleccione socio"
-                  options={partners}
-                  components={Option}
-                  onChange={changeForSearchPartner}
-                />
-              </div>
-              <div className={styles.buttonColumn}>
-                <Fab
-                  color="primary"
-                  size="small"
-                  aria-label="add"
-                  onClick={handleOpenBusinessPatner}
-                  className={styles.fab}
-                >
-                  <AddIcon />
-                </Fab>
-                <Fab
-                  color="secondary"
-                  mx={2}
-                  size="small"
-                  aria-label="edit"
-                  className={styles.fab}
-                  onClick={searchForPatner}
-                >
-                  <EditIcon />
-                </Fab>
-              </div>
-            </div>
-            <div className={styles.gridSubContainer}>
-              <div className={styles.selectColumn}>
-                <Select
-                  className={styles.selectOption}
-                  inputId="react-select-single"
-                  TextFieldProps={{
-                    label: 'Selecciona Una categoría',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single',
-                      shrink: true,
-                    },
-                  }}
-                  placeholder="Selecciona una categoría"
-                  options={categories}
-                  components={Option}
-                  onChange={changeForSearchCategory}
-                />
-              </div>
-              <div className={styles.buttonColumn}>
-                <Fab
-                  color="primary"
-                  size="small"
-                  aria-label="add"
-                  className={styles.fab}
-                  onClick={handleOpenCategory}
-                >
-                  <AddIcon />
-                </Fab>
-                <Fab
-                  color="secondary"
-                  mx={2}
-                  size="small"
-                  aria-label="edit"
-                  className={styles.fab}
-                  onClick={searchForCategory}
-                >
-                  <EditIcon />
-                </Fab>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.columnFullRigth}>
-            <Select
-              className={styles.SelectSimple}
-              inputId="react-select-single"
-              TextFieldProps={{
-                label: 'Estado',
-                InputLabelProps: {
-                  htmlFor: 'react-select-single',
-                  shrink: true,
-                },
-              }}
-              placeholder="Estado"
-              options={statusOfContract}
-              components={Option}
-            />
-            <TextField
-              className={styles.leftInputs}
-              label="Numero de contrato"
-              margin="normal"
-              variant="outlined"
-            />
-            <Select
-              className={styles.SelectSimple}
-              inputId="react-select-single"
-              TextFieldProps={{
-                label: 'Contrato principal',
-                InputLabelProps: {
-                  htmlFor: 'react-select-single',
-                  shrink: true,
-                },
-              }}
-              placeholder="Contrato principal"
-              options={categories}
-              components={Option}
-            />
-          </div>
-        </div>
-        <div className={styles.gridContainer}>
+  return (
+    <Fragment>
+      <div className={styles.gridContainer}>
+        <div className={styles.columnFullLeft}>
           <TextField
-            multiline
+            required
             fullWidth
-            rows="6"
-            className={styles.multiline}
-            label="Descripción/Comentarios"
+            className={styles.textField}
+            label="Titulo De Contrato"
+            margin="normal"
             variant="outlined"
           />
+          <div className={styles.gridSubContainer}>
+            <div className={styles.selectColumn}>
+              <Select
+                inputId="react-select-single"
+                TextFieldProps={{
+                  label: 'Socio de negocios',
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single',
+                    shrink: true,
+                  },
+                }}
+                placeholder="Seleccione socio"
+                options={partners}
+                components={Option}
+                onChange={changeForSearchPartner}
+              />
+            </div>
+            <div className={styles.buttonColumn}>
+              <Fab
+                color="primary"
+                size="small"
+                aria-label="add"
+                onClick={handleOpenBusinessPatner}
+                className={styles.fab}
+              >
+                <AddIcon />
+              </Fab>
+              <Fab
+                color="secondary"
+                mx={2}
+                size="small"
+                aria-label="edit"
+                className={styles.fab}
+                onClick={searchForPatner}
+              >
+                <EditIcon />
+              </Fab>
+            </div>
+          </div>
+          <div className={styles.gridSubContainer}>
+            <div className={styles.selectColumn}>
+              <Select
+                className={styles.selectOption}
+                inputId="react-select-single"
+                TextFieldProps={{
+                  label: 'Selecciona Una categoría',
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single',
+                    shrink: true,
+                  },
+                }}
+                placeholder="Selecciona una categoría"
+                options={categories}
+                components={Option}
+                onChange={changeForSearchCategory}
+              />
+            </div>
+            <div className={styles.buttonColumn}>
+              <Fab
+                color="primary"
+                size="small"
+                aria-label="add"
+                className={styles.fab}
+                onClick={handleOpenCategory}
+              >
+                <AddIcon />
+              </Fab>
+              <Fab
+                color="secondary"
+                mx={2}
+                size="small"
+                aria-label="edit"
+                className={styles.fab}
+                onClick={searchForCategory}
+              >
+                <EditIcon />
+              </Fab>
+            </div>
+          </div>
         </div>
-      </Fragment>
-    );
-  };
+
+        <div className={styles.columnFullRigth}>
+          <Select
+            className={styles.SelectSimple}
+            inputId="react-select-single"
+            TextFieldProps={{
+              label: 'Estado',
+              InputLabelProps: {
+                htmlFor: 'react-select-single',
+                shrink: true,
+              },
+            }}
+            placeholder="Estado"
+            options={statusOfContract}
+            components={Option}
+          />
+          <TextField
+            className={styles.leftInputs}
+            label="Numero de contrato"
+            margin="normal"
+            variant="outlined"
+          />
+          <Select
+            className={styles.SelectSimple}
+            inputId="react-select-single"
+            TextFieldProps={{
+              label: 'Contrato principal',
+              InputLabelProps: {
+                htmlFor: 'react-select-single',
+                shrink: true,
+              },
+            }}
+            placeholder="Contrato principal"
+            options={categories}
+            components={Option}
+          />
+        </div>
+      </div>
+      <div className={styles.gridContainer}>
+        <TextField
+          multiline
+          fullWidth
+          rows="6"
+          className={styles.multiline}
+          label="Descripción/Comentarios"
+          variant="outlined"
+        />
+      </div>
+    </Fragment>
+  );
+};
 
 GeneralInfo.propTypes = {
   categories: PropTypes.array,

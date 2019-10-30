@@ -10,33 +10,47 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import styles from './Category.module.scss';
 
-const Category = ({ handleCloseCategory, newCategory, updateCategory, informationToEdit, editable }) => {
+const Category = ({
+  handleCloseCategory,
+  newCategory,
+  updateCategory,
+  informationToEdit,
+}) => {
   const [textOfCategory, setTextOfCategory] = useState('');
   const changeTextOfCategory = (e) => {
     setTextOfCategory(e.target.value);
   };
   const sendTextOfCategory = () => {
-    if (editable) {
-      updateCategory(textOfCategory);
+    if (informationToEdit !== undefined) {
+      updateCategory({
+        id: informationToEdit.id,
+        categoryName: textOfCategory,
+        contractId: informationToEdit.contractId,
+      });
+      handleCloseCategory();
+    } else {
+      newCategory(textOfCategory);
       handleCloseCategory();
     }
-    newCategory(textOfCategory);
-    handleCloseCategory();
   };
 
   useEffect(() => {
-    if (informationToEdit.categoryName !== '') {
+    console.log('WORKS!', informationToEdit);
+    if (informationToEdit !== undefined) {
       setTextOfCategory(informationToEdit.categoryName);
     }
   }, []);
   return (
     <Fragment>
-      {console.log("Data is:", informationToEdit)}
       <Typography className={styles.heading} variant="h4">
         <div className={`${styles.circleIcon}  ${styles.circleColorGeneral}`}>
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
-        <div className={styles.titleExpand}>Nueva Categoría</div>
+        <div className={styles.titleExpand}>
+          {informationToEdit !== undefined
+            ? 'Editar Categoría'
+            : 'Nueva Categoría'}
+        </div>
       </Typography>
       <div container className={styles.gridContainer}>
         <div className={styles.categoryCreator}>
@@ -60,7 +74,7 @@ const Category = ({ handleCloseCategory, newCategory, updateCategory, informatio
           startIcon={<AddIcon />}
           onClick={sendTextOfCategory}
         >
-          Crear
+          {informationToEdit !== undefined ? 'Editar' : 'Crear'}
         </Button>
 
         <Button
@@ -79,6 +93,7 @@ const Category = ({ handleCloseCategory, newCategory, updateCategory, informatio
 
 Category.propTypes = {
   informationToEdit: PropTypes.object,
+  editable: PropTypes.bool,
 };
 
 export default Category;

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
@@ -8,10 +8,17 @@ import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import styles from './BusinessPatner.module.scss';
 
-const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updatePartner, informationToEdit, editable }) => {
+const BusinessPatner = ({
+  handleCloseBusinessPatner,
+  newBusinessPartner,
+  updatePartner,
+  informationToEdit,
+  editable,
+}) => {
   const [partner, setPartner] = useState({
     patnerName: '',
     patnerAdress: '',
@@ -26,6 +33,13 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
     patnerVatNumber: '',
   });
 
+  useEffect(() => {
+    console.log('Information is', informationToEdit);
+    if (informationToEdit !== undefined) {
+      setPartner(informationToEdit);
+    }
+  }, []);
+
   const onChangeInformation = (name) => (e) => {
     setPartner({ ...partner, [name]: e.target.value });
   };
@@ -35,10 +49,9 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
   };
 
   const sendPartner = () => {
-    console.log(partner);
-    if (editable) {
-      updatePartner(partner);
-      handleCloseBusinessPatner();
+    if (informationToEdit !== undefined) {
+      setPartner({ ...partner, id: informationToEdit.id });
+      updatePartner( partner );
     }
     newBusinessPartner(partner);
     handleCloseBusinessPatner();
@@ -65,6 +78,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
     { label: 'Mexico' },
     { label: 'Chile' },
     { label: 'Brasil' },
+    { label: 'Perú' },
   ].map((suggestion) => ({
     value: suggestion.label,
     label: suggestion.label,
@@ -72,13 +86,15 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
 
   return (
     <Fragment>
-      {console.log("Data is:", informationToEdit)}
+      {console.log('Data is:', informationToEdit)}
       <Typography className={styles.headingTitle} variant="h4">
         <div className={`${styles.circleIcon}  ${styles.circleColorForTitle}`}>
           <Icon className={`${styles.iconGeneral} fas fa-handshake`} />
         </div>
         <div className={styles.titleExpandForTitle}>
-          Nuevo Socio de Negocios
+          {informationToEdit !== undefined
+            ? 'Editar Socio de Negocios'
+            : 'Nuevo Socio de Negocios'}
         </div>
       </Typography>
 
@@ -98,6 +114,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Nombre"
             margin="normal"
             variant="outlined"
+            value={partner.patnerName}
             onChange={onChangeInformation('patnerName')}
           />
           <TextField
@@ -106,6 +123,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Dirección"
             margin="normal"
             variant="outlined"
+            value={partner.patnerAdress}
             onChange={onChangeInformation('patnerAdress')}
           />
           <TextField
@@ -114,6 +132,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Codigo postal"
             margin="normal"
             variant="outlined"
+            value={partner.patnerPostalCode}
             onChange={onChangeInformation('patnerPostalCode')}
           />
         </div>
@@ -124,6 +143,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="City"
             margin="normal"
             variant="outlined"
+            value={partner.patnerCity}
             onChange={onChangeInformation('patnerCity')}
           />
           <Select
@@ -139,6 +159,10 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             placeholder="Seleccione un país"
             options={suggestions}
             components={Option}
+            value={{
+              label: partner.patnerCountry,
+              value: partner.patnerCountry,
+            }}
             onChange={onChangeSelect('patnerCountry')}
           />
           <TextField
@@ -147,6 +171,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Sitio web"
             margin="normal"
             variant="outlined"
+            value={partner.patnerWebsite}
             onChange={onChangeInformation('patnerWebsite')}
           />
         </div>
@@ -167,6 +192,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Persona de Contacto"
             margin="normal"
             variant="outlined"
+            value={partner.patnerContactPerson}
             onChange={onChangeInformation('patnerContactPerson')}
           />
           <TextField
@@ -175,6 +201,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Email"
             margin="normal"
             variant="outlined"
+            value={partner.patnerEmail}
             onChange={onChangeInformation('patnerEmail')}
           />
         </div>
@@ -185,6 +212,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Telefono"
             margin="normal"
             variant="outlined"
+            value={partner.patnerPhone}
             onChange={onChangeInformation('patnerPhone')}
           />
         </div>
@@ -207,6 +235,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Información Fiscal"
             margin="normal"
             variant="outlined"
+            value={partner.patnerFiscalInformation}
             onChange={onChangeInformation('patnerFiscalInformation')}
           />
         </div>
@@ -217,6 +246,7 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
             label="Numero de RUT"
             margin="normal"
             variant="outlined"
+            value={partner.patnerVatNumber}
             onChange={onChangeInformation('patnerVatNumber')}
           />
         </div>
@@ -230,7 +260,9 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
           startIcon={<AddIcon />}
           onClick={sendPartner}
         >
-          Agregar Socio de negocios
+          {informationToEdit !== undefined
+            ? 'Editar Socio de negocios'
+            : 'Agregar Socio de negocios'}
         </Button>
         <Button
           variant="contained"
@@ -244,6 +276,10 @@ const BusinessPatner = ({ handleCloseBusinessPatner, newBusinessPartner, updateP
       </div>
     </Fragment>
   );
+};
+BusinessPatner.propTypes = {
+  informationToEdit: PropTypes.object,
+  editable: PropTypes.bool,
 };
 
 export default BusinessPatner;
