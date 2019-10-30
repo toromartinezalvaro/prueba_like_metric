@@ -6,7 +6,7 @@ export default class SalesRoomService extends Services {
     return this.get(SalesRoomDefinitions.salesRoom(towerId, clientId));
   }
 
-  putState(data, towerId) {
-    return this.put(SalesRoomDefinitions.putState(towerId), data);
+  putState(data, towerId, clientId) {
+    return this.put(SalesRoomDefinitions.putState(towerId, clientId), data);
   }
 }

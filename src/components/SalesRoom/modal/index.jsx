@@ -20,7 +20,12 @@ import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
 const DISCOUNT = 'DISCOUNT';
 const INCREMENT = 'INCREMENT';
 
-const SalesRoomModal = ({ property, onChange }) => {
+const SalesRoomModal = ({
+  property,
+  onChange,
+  deadlineDate,
+  onChangeDeadlineDate,
+}) => {
   const {
     status,
     priceWithIncrement,
@@ -82,6 +87,8 @@ const SalesRoomModal = ({ property, onChange }) => {
           <div className={Styles.DateTimePicker}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
               <DateTimePicker
+                value={deadlineDate}
+                onChange={onChangeDeadlineDate}
                 locale="es"
                 minDate={moment().toDate()}
                 maxDate={moment()

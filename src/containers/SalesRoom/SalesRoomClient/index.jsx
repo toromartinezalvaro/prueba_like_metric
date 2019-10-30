@@ -52,6 +52,7 @@ class SalesRoom extends Component {
     isLoadingModal: false,
     selectedProperty: { name: '' },
     clientName: null,
+    deadlineDate: new Date(),
   };
 
   propertyHandler = (key, value) => {
@@ -61,7 +62,7 @@ class SalesRoom extends Component {
   };
 
   componentDidMount() {
-    let { towerId, clientId } = this.props.match.params;
+    const { towerId, clientId } = this.props.match.params;
     this.setState({ isLoading: true });
     this.services
       .getProperties(towerId, clientId)
@@ -189,7 +190,7 @@ class SalesRoom extends Component {
     properties.find((group) => group[0].groupId === this.state.groupId);
 
   calculateCollectedIncrement(status) {
-    const groups = this.state.response.data.properties;
+    const groups = this.state.response.properties;
     let properties = groups[0];
     if (groups.length > 1) {
       properties = this.findGroup(groups);
@@ -257,13 +258,15 @@ class SalesRoom extends Component {
           collectedIncrement,
           groupId: this.state.groupId,
           isBadgeIncrement,
+          deadlineDate: Number(this.state.deadlineDate.getTime()),
         },
         this.props.match.params.towerId,
+        this.props.match.params.clientId,
       )
-      .then((properties) => {
-        console.log(properties);
-        if (properties) {
-          this.makeArrayOfProperties(properties);
+      .then((response) => {
+        const { incrementList } = response.data;
+        if (incrementList) {
+          this.makeArrayOfProperties(incrementList);
         }
         this.setState({
           isOpen: false,
@@ -298,6 +301,12 @@ class SalesRoom extends Component {
       propertiesArray.filter((property) => property.status === Status.Available)
         .length === 1
     );
+  };
+
+  deadlineDateHandler = (value) => {
+    this.setState({
+      deadlineDate: value,
+    });
   };
 
   render() {
@@ -358,7 +367,7 @@ class SalesRoom extends Component {
                 data={this.state.data}
               />
             </CardBody>
-            <CardFooter />(
+            <CardFooter />
             <Dialog
               open={this.state.isOpen}
               /* title={`Nuevo Estado - ${this.state.selectedProperty.name}`}
@@ -388,8 +397,10 @@ class SalesRoom extends Component {
                     <SalesRoomModal
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
+                      deadlineDate={this.state.deadlineDate}
+                      onChangeDeadlineDate={this.deadlineDateHandler}
                     />
-                  ))}{' '}
+                  ))}
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.cancel} className={Styles.CancelButton}>
@@ -400,7 +411,6 @@ class SalesRoom extends Component {
                 </Button>
               </DialogActions>
             </Dialog>
-            )
           </Card>
         )}
       </LoadableContainer>
