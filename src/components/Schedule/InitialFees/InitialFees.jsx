@@ -6,6 +6,14 @@ import Input from '../../UI/Input/Input';
 import Styles from './InitialFees.module.scss';
 
 function InitialFees({ firstSale, endOfSalesDate, firstSaleHandler }) {
+  const yearEndOfSales = moment(Number(endOfSalesDate)).year();
+  const monthEndOfSales = moment(Number(endOfSalesDate)).month();
+  const yearNow = moment().year();
+  const monthNow = moment().month();
+  const endOfSalesDateFormatted = moment(`${yearEndOfSales}-${monthEndOfSales}`)
+    .add(1, 'month')
+    .format('x');
+  const nowFormatted = moment(`${yearNow}-${monthNow}`).format('x');
   return (
     <Card>
       <CardHeader>
@@ -13,18 +21,22 @@ function InitialFees({ firstSale, endOfSalesDate, firstSaleHandler }) {
       </CardHeader>
       <CardBody>
         <div className={Styles.Container}>
-            <span className={Styles.Item}>Plazo primer comprador:</span>
-            <Input
-              className={Styles.Item}
-              validations={[]}
-              value={firstSale}
-              onChange={(target) => {
-                firstSaleHandler(target.value);
-              }}
-            />
-
+          <span className={Styles.Item}>Plazo primer comprador:</span>
+          <Input
+            className={Styles.Item}
+            validations={[]}
+            value={firstSale}
+            onChange={(target) => {
+              firstSaleHandler(target.value);
+            }}
+          />
           <span className={Styles.Item}>Plazo hoy:</span>{' '}
-          <span className={`${Styles.Item  } ${  Styles.Deadline}`}>{moment(Number(endOfSalesDate)).diff(moment(), 'month')}</span>
+          <span className={`${Styles.Item} ${Styles.Deadline}`}>
+            {moment(Number(endOfSalesDateFormatted)).diff(
+              moment(Number(nowFormatted)),
+              'month',
+            )}
+          </span>
         </div>
         {/* <div>
           <span>Plazo ultima venta:</span> <span>0</span>
