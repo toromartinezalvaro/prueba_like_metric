@@ -13,19 +13,26 @@ const SideMenu = ({
   onHideArrow,
   tower,
   isBadgeIncrement,
+  showContent,
+  onChangeShowContent,
 }) => {
   const [active, setActive] = useState(window.location.pathname);
 
-  const onChangeResize = (change) => {
-    onChange(resizableWidth * 0.3 <= -change ? 0 : 200);
+  const onChangeResizeStop = (change) => {
+    onChange(resizableWidth * 0.3 <= -change ? 17 : 200);
     onHideArrow(true);
+    onChangeShowContent(!(resizableWidth * 0.3 <= -change));
+  };
+
+  const onChangeResize = (change) => {
+    onChangeShowContent(change > -170);
   };
 
   const handleEnterEvent = () => {
     onHideArrow(true);
   };
   const handleLeaveEvent = () => {
-    onHideArrow(resizableWidth <= 0);
+    onHideArrow(resizableWidth <= 17);
   };
 
   if (window.location.pathname !== active) {
@@ -70,129 +77,132 @@ const SideMenu = ({
         onMouseEnter={handleEnterEvent}
         onMouseLeave={handleLeaveEvent}
         size={{ width: `${resizableWidth}`, height: '100vh' }}
-        onResizeStop={(e, direction, ref, d) => onChangeResize(d.width)}
+        onResize={(e, direction, ref, d) => onChangeResize(d.width)}
+        onResizeStop={(e, direction, ref, d) => onChangeResizeStop(d.width)}
       >
-        <div className={style.fixedWidth + style.NoVisible}>
-          <div className={style.IconsContainer}>
-            <label>{tower ? tower.name : ''}</label>
+        {showContent && (
+          <div className={style.fixedWidth + style.NoVisible}>
+            {console.log(resizableWidth)}
+            <div className={style.IconsContainer}>
+              <label>{tower ? tower.name : ''}</label>
+            </div>
+            <div className={style.IconsContainer}>
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.schedule.value,
+                  'fas fa-calendar-alt',
+                  'Calendario',
+                )}
+              {agent.isAuthorized([Role.User]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.clients.value,
+                  'fas fa-users',
+                  'Clientes',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.building.value,
+                  'fa-building',
+                  'Esquema',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.areas.value,
+                  'fa-layer-group',
+                  'Areas',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.prime.value,
+                  'fa-sort-amount-up',
+                  'Primas',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.summary.value,
+                  'fa-list-ol',
+                  'Resumen',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.rackAreas.value,
+                  'fas fa-ruler',
+                  'Resumen Areas',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
+                  'fas fa-book-open',
+                  'Detalle admin',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.detail.value,
+                  'fas fa-book-open',
+                  'Detalle',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.clustering.value,
+                  'fas fa-object-group',
+                  'Agrupamiento',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
+                  'fas fa-tachometer-alt',
+                  'Velocidad ventas futuras',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.increments.value,
+                  'fas fa-angle-double-up',
+                  'Incrementos',
+                  isBadgeIncrement,
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.strategy.value,
+                  'fas fa-chart-line',
+                  'Estrategia',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.clients.value,
+                  'fas fa-users',
+                  'Clientes',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.report.value,
+                  'fas fa-file-alt',
+                  'Reporte',
+                )}
+              {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                itemForSlidebar(
+                  style.MenuItem,
+                  DashboardRoutes.base + DashboardRoutes.cashFlow.value,
+                  'fas fa-cash-register',
+                  'Flujo de caja',
+                )}
+            </div>
           </div>
-
-          <div className={style.IconsContainer}>
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.schedule.value,
-                'fas fa-calendar-alt',
-                'Calendario',
-              )}
-            {agent.isAuthorized([Role.User]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.clients.value,
-                'fas fa-users',
-                'Clientes',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.building.value,
-                'fa-building',
-                'Esquema',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.areas.value,
-                'fa-layer-group',
-                'Areas',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.prime.value,
-                'fa-sort-amount-up',
-                'Primas',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.summary.value,
-                'fa-list-ol',
-                'Resumen',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.rackAreas.value,
-                'fas fa-ruler',
-                'Resumen Areas',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
-                'fas fa-book-open',
-                'Detalle admin',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.detail.value,
-                'fas fa-book-open',
-                'Detalle',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.clustering.value,
-                'fas fa-object-group',
-                'Agrupamiento',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value,
-                'fas fa-tachometer-alt',
-                'Velocidad ventas futuras',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.increments.value,
-                'fas fa-angle-double-up',
-                'Incrementos',
-                isBadgeIncrement,
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.strategy.value,
-                'fas fa-chart-line',
-                'Estrategia',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.clients.value,
-                'fas fa-users',
-                'Clientes',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.report.value,
-                'fas fa-file-alt',
-                'Reporte',
-              )}
-            {agent.isAuthorized([Role.Admin, Role.Super]) &&
-              itemForSlidebar(
-                style.MenuItem,
-                DashboardRoutes.base + DashboardRoutes.cashFlow.value,
-                'fas fa-cash-register',
-                'Flujo de caja',
-              )}
-          </div>
-        </div>
+        )}
       </Resizable>
     </div>
   );
