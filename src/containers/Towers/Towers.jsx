@@ -5,6 +5,8 @@ import Modal from '../../components/UI/Modal/Modal';
 import Input from '../../components/UI/Input/Input';
 import { DashboardRoutes } from '../../routes/local/routes';
 import LoadableContainer from '../../components/UI/Loader';
+import Agent from '../../config/config';
+import { Role } from '../../helpers';
 
 export default class Towers extends Component {
   constructor(props) {
@@ -31,9 +33,13 @@ export default class Towers extends Component {
   openTowerHandler = (tower) => {
     tower = { ...tower, projectId: this.props.match.params.projectId };
     this.props.changeTower(tower);
-    this.props.history.push(
-      DashboardRoutes.base + DashboardRoutes.schedule.value + tower.id,
-    );
+    const mainComponentUrl =
+      Agent.currentUser.userType === Role.User
+        ? DashboardRoutes.clients.value
+        : DashboardRoutes.schedule.value;
+    const urlToGo = DashboardRoutes.base + mainComponentUrl + tower.id;
+
+    this.props.history.push(urlToGo);
   };
 
   createTowerHandler = () => {

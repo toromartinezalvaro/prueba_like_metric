@@ -1,5 +1,4 @@
 import React, { useState, Fragment } from 'react';
-import PropType from 'prop-types';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
@@ -11,10 +10,15 @@ const Dashboard = (props) => {
   const [resizableWidth, setResizableWidth] = useState(200);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const [isMenuHidden, setHideMenu] = useState(false);
+  const [showContent, setShowContent] = useState(true);
 
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
-    setHideMenu(expandibleValue <= 0);
+    setHideMenu(expandibleValue <= 17);
+  };
+
+  const onChangeShowContent = (value) => {
+    setShowContent(value);
   };
 
   const onHideArrow = (arrowValue) => {
@@ -53,6 +57,8 @@ const Dashboard = (props) => {
               resizableWidth={resizableWidth}
               tower={props.tower}
               onChange={onChangeSize}
+              showContent={showContent}
+              onChangeShowContent={onChangeShowContent}
             />
           </Fragment>
         )}
@@ -62,6 +68,7 @@ const Dashboard = (props) => {
             isHidenArrow={isHidenArrow}
             onChange={onChangeSize}
             isMenuHidden={isMenuHidden}
+            onChangeShowContent={onChangeShowContent}
           />
         </div>
       </nav>

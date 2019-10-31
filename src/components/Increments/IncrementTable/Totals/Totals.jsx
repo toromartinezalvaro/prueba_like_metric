@@ -79,8 +79,13 @@ function Totals({
         ) : (
           <Input
             mask="currency"
-            validations={[]}
-            value={increment.toFixed(2)}
+            validations={[
+              {
+                fn: (value) => value !== '.',
+                message: 'Debe ingresar un numero',
+              },
+            ]}
+            value={increment && increment.toFixed(2)}
             onChange={(target) => {
               putIncrement(target.value);
             }}
@@ -90,7 +95,7 @@ function Totals({
       </div>
       <div className={Styles['total-sales-future']}>
         <NumberFormat
-          value={estimatedSales.toFixed(2)}
+          value={estimatedSales && estimatedSales.toFixed(2)}
           displayType={'text'}
           thousandSeparator={true}
           prefix={'$'}

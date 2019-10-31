@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 999;
+  z-index: 99999;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,4 +51,14 @@
 
 .CancelButton {
   background: #ff4040 !important;
+}
+
+.SubtitleRight {
+  justify-content: flex-end;
+}
+
+.ContainerTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }

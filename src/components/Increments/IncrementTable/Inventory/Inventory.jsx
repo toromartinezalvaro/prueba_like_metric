@@ -80,7 +80,7 @@ function Inventory({
       </div>
       <div className={incrementTextColor}>
         <NumberFormat
-          value={increment.toFixed(2)}
+          value={increment && increment.toFixed(2)}
           displayType="text"
           thousandSeparator={true}
           prefix="$"
@@ -88,7 +88,7 @@ function Inventory({
       </div>
       <div className={Styles['inv-sales-future']}>
         <NumberFormat
-          value={estimatedSales.toFixed(2)}
+          value={estimatedSales && estimatedSales.toFixed(2)}
           displayType="text"
           thousandSeparator={true}
           prefix="$"

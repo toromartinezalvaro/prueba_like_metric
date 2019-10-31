@@ -16,6 +16,7 @@ export const DashboardRoutes = {
   increments: { value: '/increments/', withIndicator: '/increments/:towerId' },
   strategy: { value: '/strategy/', withIndicator: '/strategy/:towerId' },
   salesRoom: { value: '/salesRoom/', withIndicator: '/salesRoom/:towerId' },
+  salesRoomClient: { value: '/salesRoom/', withIndicator: '/salesRoom/:towerId/:clientId' },
   clients: { value: '/clients/', withIndicator: '/clients/:towerId' },
   futureSalesSpeed: {
     value: '/futureSalesSpeed/',
@@ -24,6 +25,7 @@ export const DashboardRoutes = {
   schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
   report: { value: '/report/', withIndicator: '/report/:towerId' },
   contracts: '/contracts',
+  cashFlow: { value: '/cash-flow/', withIndicator: '/cash-flow/:towerId' },
 };
 
 export const ContractRoutes = {

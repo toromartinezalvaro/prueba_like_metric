@@ -2,23 +2,32 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import ReactTooltip from 'react-tooltip';
 import NumberFormat from 'react-number-format';
-import SalesRoomService from '../../services/salesRoom/salesRoomService';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@material-ui/core';
+import Button from '../../../components/UI/Button/Button';
+
+import SalesRoomService from '../../../services/salesRoom/salesRoomService';
 import Card, {
   CardHeader,
   CardBody,
   CardFooter,
-} from '../../components/UI/Card/Card';
-import Modal from '../../components/UI/Modal/Modal';
-import variables from '../../assets/styles/variables.scss';
-import Selectors from '../../components/SalesRoom/Selectors';
-import PropertiesTable from '../../components/SalesRoom/PropertiesTable';
-import Message from '../../components/SalesRoom/Message';
-import Status from '../../helpers/status';
-import LoadableContainer from '../../components/UI/Loader';
-import SalesRoomModal from '../../components/SalesRoom/modal';
-import SalesRoomEnum from './SalesRoom.enum';
+} from '../../../components/UI/Card/Card';
+import Modal from '../../../components/UI/Modal/Modal';
+import variables from '../../../assets/styles/variables.scss';
+import Selectors from '../../../components/SalesRoom/Selectors';
+import PropertiesTable from '../../../components/SalesRoom/PropertiesTable';
+import Message from '../../../components/SalesRoom/Message';
+import Status from '../../../helpers/status';
+import LoadableContainer from '../../../components/UI/Loader';
+import SalesRoomModal from '../../../components/SalesRoom/modal';
+import SalesRoomEnum from '../SalesRoom.enum';
+import Styles from './salesRoomClient.module.scss';
 
-export default class Detail extends Component {
+class SalesRoom extends Component {
   constructor(props) {
     super(props);
     this.services = new SalesRoomService(this);
@@ -31,7 +40,7 @@ export default class Detail extends Component {
     floors: 1,
     lowestFloor: 1,
     data: [[]],
-    isHidden: true,
+    isOpen: false,
     isLoading: false,
     rightButton: {},
     leftButton: {},
@@ -41,7 +50,9 @@ export default class Detail extends Component {
     discountApplied: 0,
     isEmpty: null,
     isLoadingModal: false,
-    selectedProperty: null,
+    selectedProperty: { name: '' },
+    clientName: null,
+    deadlineDate: new Date(),
   };
 
   propertyHandler = (key, value) => {
@@ -51,12 +62,17 @@ export default class Detail extends Component {
   };
 
   componentDidMount() {
+    const { towerId, clientId } = this.props.match.params;
     this.setState({ isLoading: true });
     this.services
-      .getProperties(this.props.match.params.towerId)
+      .getProperties(towerId, clientId)
       .then((properties) => {
-        this.makeArrayOfProperties(properties);
-        this.setState({ isLoading: false });
+        const { data } = properties;
+        this.makeArrayOfProperties(data.incrementList);
+        this.setState({
+          isLoading: false,
+          clientName: data.client.name,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -92,19 +108,21 @@ export default class Detail extends Component {
   };
 
   onClickSelector = (property, buttons) => {
-    this.setState({
-      id: property.id,
-      groupId: property.groupId,
-      isHidden: false,
-      rightButton: buttons.rightButton,
-      leftButton: buttons.leftButton,
-      priceSold: property.priceWithIncrement,
-      selectedProperty: property,
-      discountApplied: property.discount,
-    });
+    if (this.state.clientName) {
+      this.setState({
+        id: property.id,
+        groupId: property.groupId,
+        isOpen: true,
+        rightButton: buttons.rightButton,
+        leftButton: buttons.leftButton,
+        priceSold: property.priceWithIncrement,
+        selectedProperty: property,
+        discountApplied: property.discount,
+      });
+    }
   };
 
-  makeCells = (buttons, property, active) => (
+  makeCells = (buttons, property, active = 'priceWithIncrements') => (
     <div
       style={{
         backgroundColor: buttons.backgroundColor,
@@ -117,9 +135,8 @@ export default class Detail extends Component {
         style={{ fontWeight: 'bold', color: 'White' }}
         data-tip={property.name}
       >
-        {active === 'mts2' ? (
-          parseFloat(property.mts2).toFixed(2)
-        ) : (
+        {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
+        {active === 'priceWithIncrements' && (
           <NumberFormat
             value={parseFloat(property.priceWithIncrement).toFixed(2)}
             displayType={'text'}
@@ -127,13 +144,22 @@ export default class Detail extends Component {
             prefix={'$'}
           />
         )}
+        {active === 'price' && (
+          <NumberFormat
+            value={parseFloat(property.price).toFixed(2)}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+        )}
+        {active === 'groups' && property.groupName}
       </p>
       <ReactTooltip />
     </div>
   );
 
   makeArrayOfProperties(properties, active) {
-    const { data } = properties;
+    const data = properties;
 
     if (data.floors !== null) {
       const matrix = this.createNullMatrix(data.floors, data.totalProperties);
@@ -164,7 +190,7 @@ export default class Detail extends Component {
     properties.find((group) => group[0].groupId === this.state.groupId);
 
   calculateCollectedIncrement(status) {
-    const groups = this.state.response.data.properties;
+    const groups = this.state.response.properties;
     let properties = groups[0];
     if (groups.length > 1) {
       properties = this.findGroup(groups);
@@ -232,16 +258,18 @@ export default class Detail extends Component {
           collectedIncrement,
           groupId: this.state.groupId,
           isBadgeIncrement,
+          deadlineDate: Number(this.state.deadlineDate.getTime()),
         },
         this.props.match.params.towerId,
+        this.props.match.params.clientId,
       )
-      .then((properties) => {
-        console.log(properties);
-        if (properties) {
-          this.makeArrayOfProperties(properties);
+      .then((response) => {
+        const { incrementList } = response.data;
+        if (incrementList) {
+          this.makeArrayOfProperties(incrementList);
         }
         this.setState({
-          isHidden: true,
+          isOpen: false,
           isLoadingModal: false,
         });
       })
@@ -253,7 +281,7 @@ export default class Detail extends Component {
   };
 
   cancel = () => {
-    this.setState({ isHidden: true });
+    this.setState({ isOpen: false });
   };
 
   createNullMatrix = (m, n) => {
@@ -262,12 +290,52 @@ export default class Detail extends Component {
       .map(() => Array(n).fill());
   };
 
+  isThereOneAvailableProperty = (selectedProperty, propertiesMatrix) => {
+    const propertiesArray = propertiesMatrix.find(
+      (propertiesByGroup) =>
+        propertiesByGroup.length > 0 &&
+        propertiesByGroup[0].groupId === selectedProperty.groupId,
+    );
+
+    return (
+      propertiesArray.filter((property) => property.status === Status.Available)
+        .length === 1
+    );
+  };
+
+  deadlineDateHandler = (value) => {
+    this.setState({
+      deadlineDate: value,
+    });
+  };
+
   render() {
     let isStrategyNull = false;
     if (this.state.selectedProperty)
       isStrategyNull =
-        this.state.selectedProperty.increment > 0 &&
+        this.state.selectedProperty.increment !== 0 &&
         !this.state.selectedProperty.strategy;
+
+    let showModalSelectedProperty = false;
+    if (this.state.selectedProperty)
+      showModalSelectedProperty =
+        this.state.selectedProperty.strategy > 0 ||
+        !this.state.selectedProperty.increment;
+
+    if (
+      isStrategyNull &&
+      this.state.selectedProperty &&
+      this.state.selectedProperty.increment < 0 &&
+      this.state.selectedProperty.strategy == null
+    ) {
+      const isThereOneProperty = this.isThereOneAvailableProperty(
+        this.state.selectedProperty,
+        this.state.response.data.properties,
+      );
+      isStrategyNull = !isThereOneProperty;
+      showModalSelectedProperty = isThereOneProperty;
+    }
+
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.isEmpty && (
@@ -276,7 +344,14 @@ export default class Detail extends Component {
         {!this.state.isEmpty && (
           <Card>
             <CardHeader>
-              <p>Propiedades</p>
+              <div className={Styles.TitleContainer}>
+                <p>Propiedades</p>
+                {this.state.clientName ? (
+                  <p>Cliente: {this.state.clientName}</p>
+                ) : (
+                  <p>No se ha seleccionado ningun cliente</p>
+                )}
+              </div>
             </CardHeader>
             <CardBody>
               <Selectors
@@ -293,18 +368,14 @@ export default class Detail extends Component {
               />
             </CardBody>
             <CardFooter />
-            {!this.state.isHidden && (
-              <Modal
-                title={'Nuevo Estado'}
-                hidden={this.props.isHidden}
-                onConfirm={this.save}
-                onCancel={this.cancel}
-                isCenter={isStrategyNull}
-              >
+            <Dialog open={this.state.isOpen}>
+              <DialogTitle>
+                {`Nuevo Estado - ${this.state.selectedProperty.name}`}
+              </DialogTitle>
+              <DialogContent>
                 {isStrategyNull &&
                   'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
-                {(this.state.selectedProperty.strategy > 0 ||
-                  !this.state.selectedProperty.increment) &&
+                {showModalSelectedProperty &&
                   (this.state.isLoadingModal ? (
                     <div style={{ justifyContent: 'center', display: 'flex' }}>
                       <Loader
@@ -318,13 +389,25 @@ export default class Detail extends Component {
                     <SalesRoomModal
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
+                      deadlineDate={this.state.deadlineDate}
+                      onChangeDeadlineDate={this.deadlineDateHandler}
                     />
                   ))}
-              </Modal>
-            )}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.cancel} className={Styles.CancelButton}>
+                  Cancelar
+                </Button>
+                <Button onClick={this.save} className={Styles.ConfirmButton}>
+                  Aceptar
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Card>
         )}
       </LoadableContainer>
     );
   }
 }
+
+export default SalesRoom;

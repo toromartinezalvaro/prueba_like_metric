@@ -1,11 +1,12 @@
-import React, { Component, Fragment } from "react";
-import _ from "lodash"
-import Input from "../../components/UI/Input/Input";
-import Locations from "../../components/Primes/Locations";
-import Altitudes from "../../components/Primes/Altitudes";
-import PrimeServices from "../../services/prime/PrimeServices";
-import FloatingButton from "../../components/UI/FloatingButton/FloatingButton";
+import React, { Component, Fragment } from 'react';
+import _ from 'lodash';
+import Input from '../../components/UI/Input/Input';
+import Locations from '../../components/Primes/Locations';
+import Altitudes from '../../components/Primes/Altitudes';
+import PrimeServices from '../../services/prime/PrimeServices';
+import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import LoadableContainer from '../../components/UI/Loader';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 class Prime extends Component {
   constructor(props) {
@@ -16,34 +17,41 @@ class Prime extends Component {
   state = {
     altitude: {
       unit: {},
-      prices: [[]]
+      prices: [[]],
     },
     location: {
       unit: {},
-      prices: [[]]
+      prices: [[]],
     },
-    floorsNames: [[]],
-    showFloatingButton: false
+    floorsNames: [],
+    showFloatingButton: false,
+    lowestFloor: 0,
   };
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    const towerId = this.props.match.params.towerId
+    const towerId = this.props.match.params.towerId;
     if (!towerId) {
-      return
+      return;
     }
 
-    this.services.getAltitudePrimes(towerId).then(response => {
+    this.services.getAltitudePrimes(towerId).then((response) => {
+      if (response.data.primes.length !== 0) {
+        this.setState({
+          lowestFloor: response.data.primes[0].tower.lowestFloor,
+        });
+      }
+
       const floorsNames = [];
 
       const altitude = { ...this.state.altitude };
       altitude.prices = response.data.primes;
       altitude.unit = response.data.unit;
 
-      response.data.primes.forEach(element => {
+      response.data.primes.forEach((element) => {
         floorsNames.push(element.reference);
       });
-      let showFloating = response.data.primes.find(prime => {
+      let showFloating = response.data.primes.find((prime) => {
         return prime !== null && prime.price !== 0;
       });
       if (showFloating !== undefined) {
@@ -52,16 +60,22 @@ class Prime extends Component {
       this.setState({
         floorsNames: floorsNames,
         altitude: altitude,
-        isLoading: false
+        isLoading: false,
       });
     });
-    this.services.getLocationPrimes(towerId).then(response => {
+    this.getLocationPrimes();
+  }
+
+  getLocationPrimes = () => {
+    this.setState({ isLoading: true });
+    const towerId = this.props.match.params.towerId;
+    this.services.getLocationPrimes(towerId).then((response) => {
       const location = { ...this.state.location };
       location.prices = response.data.primes;
       location.unit = response.data.unit;
       this.setState({ location: location });
-      let showFloating = response.data.primes.find(arrayPrimes => {
-        let anyPrime = arrayPrimes.find(prime => {
+      let showFloating = response.data.primes.find((arrayPrimes) => {
+        let anyPrime = arrayPrimes.find((prime) => {
           return prime !== null && prime.price !== 0;
         });
         return anyPrime !== undefined;
@@ -70,106 +84,100 @@ class Prime extends Component {
         this.setState({ showFloatingButton: true, isLoading: false });
       }
     });
-  }
+  };
 
   getInputs(type) {
-    if (type === "ALT") {
-      const inputs = this.state.altitude.prices.map(prime => [
+    if (type === 'ALT') {
+      const inputs = this.state.altitude.prices.map((prime) => [
         <Input
           mask="currency"
-           style={{ width: "75px" }}
+          style={{ width: '75px' }}
           validations={[]}
           zeroDefault={true}
-          onChange={target => {
-            this.priceHandler("ALT", prime.id, parseInt(target.value));
+          onChange={(target) => {
+            this.priceHandler('ALT', prime.id, parseInt(target.value));
           }}
           value={prime.price}
-        />
+        />,
       ]);
       return inputs;
-    } else if (type === "LCT") {
-      const inputs = this.state.location.prices.map(primes =>
-        primes.map(prime => {
+    } else if (type === 'LCT') {
+      const inputs = this.state.location.prices.map((primes) =>
+        primes.map((prime) => {
           if (prime) {
             return (
               <Input
                 mask="currency"
-                 style={{ width: "75px" }}
+                style={{ width: '75px' }}
                 value={prime.price}
                 validations={[]}
-                onChange={target => {
-                  this.priceHandler("LCT", prime.id, target.value);
+                onChange={(target) => {
+                  this.priceHandler('LCT', prime.id, target.value);
                 }}
                 placeholder={prime.name}
                 tooltip={prime.name}
               />
             );
           } else {
-            return (
-              <Input
-                 style={{ width: "75px" }}
-                placeholder="-"
-                disable
-              />
-            );
+            return <Input style={{ width: '75px' }} placeholder="-" disable />;
           }
-        })
+        }),
       );
       return inputs;
     }
   }
 
   priceHandler(type, id, price) {
-    if (type === "ALT") {
+    if (type === 'ALT') {
       this.services
         .putAltitudePrimesById(id, { price: parseInt(price) })
-        .then(data => {
+        .then((data) => {
           console.log(data);
           this.setState({ showFloatingButton: true });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    } else if (type === "LCT") {
+    } else if (type === 'LCT') {
       this.services
         .putLocationPrimesById(id, { price: parseInt(price) })
-        .then(data => {
+        .then((data) => {
           console.log(data);
           this.setState({ showFloatingButton: true });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     }
   }
 
   unitHandler = (type, value) => {
-    if (type === "ALT") {
+    if (type === 'ALT') {
       this.services
         .putAltitudePrimeUnit({
           towerId: this.props.match.params.towerId,
-          unit: value
+          unit: value,
         })
-        .then(response => {
+        .then((response) => {
           let altitude = { ...this.state.altitude };
           altitude.unit = response.data;
           this.setState({ altitude: altitude });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    } else if (type === "LCT") {
+    } else if (type === 'LCT') {
       this.services
         .putLocationPrimeUnit({
           towerId: this.props.match.params.towerId,
-          unit: value
+          unit: value,
         })
-        .then(response => {
+        .then((response) => {
           let location = { ...this.state.location };
           location.unit = response.data;
           this.setState({ location: location });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     }
@@ -182,16 +190,22 @@ class Prime extends Component {
           unitHandler={this.unitHandler}
           unit={this.state.altitude.unit}
           floorsNames={this.state.floorsNames}
-          prices={this.getInputs("ALT")}
+          prices={this.getInputs('ALT')}
         />
         <Locations
           unitHandler={this.unitHandler}
-          headers={[...Array(_.defaultTo(this.state.location.prices[0], []).length).keys()].map(
-            o => o + 1
-          )}
+          headers={[
+            ...Array(
+              _.defaultTo(this.state.location.prices[0], []).length,
+            ).keys(),
+          ].map((o) => o + 1)}
           floorsNames={this.state.floorsNames}
-          prices={this.getInputs("LCT")}
+          prices={this.getInputs('LCT')}
           unit={this.state.location.unit}
+          towerId={this.props.match.params.towerId}
+          reloadPrimes={this.getLocationPrimes}
+          alertHandler={this.props.spawnMessage}
+          lowestFloor={this.state.lowestFloor}
         />
         {this.state.showFloatingButton ? (
           <FloatingButton
@@ -207,4 +221,4 @@ class Prime extends Component {
   }
 }
 
-export default Prime;
+export default withDefaultLayout(Prime);

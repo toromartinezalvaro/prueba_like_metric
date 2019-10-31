@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './Modal.module.scss';
 import variables from '../../../assets/styles/variables.scss';
 import Button from '../Button/Button';
@@ -31,8 +32,6 @@ class Modal extends Component {
       this.props.onConfirm();
     } else if (action === 'cancel') {
       this.props.onCancel();
-    } else if (action === 'confirmLeft') {
-      this.props.onConfirmLeft();
     }
   };
 
@@ -41,12 +40,14 @@ class Modal extends Component {
       <Fragment>
         {this.props.hidden ? null : (
           <div className={styles.Container}>
-            <div
-              className={styles.Modal}
-              ref={this.divModal}
-              style={this.props.style}
-            >
-              <div className={styles.Title}>{this.props.title}</div>
+
+            <div className={styles.Modal} ref={this.divModal} style={this.props.style}>
+              <div className={styles.ContainerTitle}>
+                <div className={styles.Title}>{this.props.title}</div>
+                <div className={styles.SubtitleRight}>
+                  {this.props.subtitleRight}
+                </div>
+              </div>
               <div className={styles.Content}>{this.props.children}</div>
               <div className={styles.Actions} style={this.state.isCenter}>
                 <Button
@@ -57,23 +58,10 @@ class Modal extends Component {
                   }}
                   disabled={this.state.blocked}
                 >
-                  {this.props.rightButton
-                    ? this.props.rightButton
-                    : 'Confirmar'}
+                  {' '}
+                  {this.props.basic ? 'guardar y salir' : 'confirmar'}
                 </Button>
-                {this.props.leftButton ? (
-                  <Button
-                    className={styles.ConfirmButton}
-                    style={{ backgroundColor: this.props.leftColor }}
-                    onClick={() => {
-                      this.performAction('confirmLeft');
-                    }}
-                    disabled={this.state.blocked}
-                  >
-                    {this.props.leftButton}
-                  </Button>
-                ) : null}
-                {this.props.onlyConfirm ? null : (
+                {this.props.basic ? null : (
                   <Button
                     className={styles.CancelButton}
                     onClick={() => {

@@ -7,14 +7,19 @@
   color: $defaultWhite-color;
   height: 30px !important;
   margin-top: 15px;
-  position: sticky;
-  left: 15%;
+  position: absolute;
   text-align: center;
   width: 30px !important;
-  z-index: 5000;
+  z-index: 998;
+  top: 100%;
+  left: 0px;
   &:hover {
     cursor: pointer;
   }
+}
+.container {
+  position: relative;
+  left: -15px;
 }
 
 .arrowPosition {

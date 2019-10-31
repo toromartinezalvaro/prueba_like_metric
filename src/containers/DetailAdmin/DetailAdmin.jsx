@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import exportFromJSON from 'export-from-json';
-import _ from 'lodash'
 import NumberFormat from 'react-number-format';
 import Pie from '../../components/Detail/pie/Pie';
 import Property from '../../components/Detail/Property/Property';
@@ -8,7 +7,7 @@ import Additional from '../../components/Detail/Aditionals/Aditionals';
 import Totals from '../../components/Detail/Totals/Totals';
 import DetailServices from '../../services/detail/DetailServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
-import styles from "./DetailAdmin.module.scss";
+import styles from './DetailAdmin.module.scss';
 import variables from '../../assets/styles/variables.scss';
 import Table from '../../components/UI/Table/Table';
 import errorHandling from '../../services/commons/errorHelper';
@@ -86,35 +85,24 @@ export default class Detail extends Component {
       });
       this.assignTableData();
     }
-  this.setState({ isLoading: false });
+    this.setState({ isLoading: false });
   };
 
-  sortData = (data) => {
-    const s = _.sortBy(data, ['floor', 'location'], ['asc', 'asc']);
-
-    console.log("sss. ", s, data)
-    return  s
-  }
+  sortData = (data) =>
+    data.sort((a, b) => {
+      const aInt = parseInt(a.areaType.id, 10);
+      const bInt = parseInt(b.areaType.id, 10);
+      if (b.areaType.primary) return 1;
+      if (aInt > bInt) return 1;
+      if (aInt < bInt) return -1;
+      return 0;
+    });
 
   assignTableData = () => {
     if (this.state.areas) {
       const areas = this.sortData(this.state.areas);
       this.setState({
-        areasTable: areas.reduce(
-          (current, next) => {
-            current.nameAreas.push(next.areaType.name);
-            current.priceAreas.push(
-              <p style={{ alignContent: 'center' }}>
-                {this.formatPrice(next.price)}
-              </p>,
-            );
-            return current;
-          },
-          {
-            nameAreas: [],
-            priceAreas: [],
-          },
-        ),
+        areasTable: this.mapAreasForCells(areas),
       });
     }
   };
@@ -147,6 +135,25 @@ export default class Detail extends Component {
     });
   };
 
+  mapAreasForCells = (areas) =>
+    areas.reduce(
+      (current, next) => {
+        if (next.areaType.unit === 'MT2') {
+          current.nameAreas.push(next.areaType.name);
+          current.priceAreas.push(
+            <p style={{ alignContent: 'center' }}>
+              {this.formatPrice(next.price)}
+            </p>,
+          );
+        }
+        return current;
+      },
+      {
+        nameAreas: [],
+        priceAreas: [],
+      },
+    );
+
   cells = (properties) => {
     return properties.map((property) => {
       const handleOnClick = () => {
@@ -156,39 +163,19 @@ export default class Detail extends Component {
           this.state.id !== property.id &&
           this.state.id !== 0
         ) {
-          return (
-            this.setState({
-              id2: property.id,
-              active2: 1,
-              property2: property,
-              totals2: property.totals,
-              areas2: property.areas.filter(
-                ({ areaType }) => areaType.unit === 'MT2',
-              ),
-              additional2: property.areas.filter(
-                ({ areaType }) => areaType.unit === 'UNT',
-              ),
-            }),
-            this.setState({
-              areasTable2: areas.reduce(
-                (current, next) => {
-                  if (next.areaType.unit === 'MT2') {
-                    current.nameAreas.push(next.areaType.name);
-                    current.priceAreas.push(
-                      <p style={{ alignContent: 'center' }}>
-                        {this.formatPrice(next.price)}
-                      </p>,
-                    );
-                  }
-                  return current;
-                },
-                {
-                  nameAreas: [],
-                  priceAreas: [],
-                },
-              ),
-            })
-          );
+          return this.setState({
+            id2: property.id,
+            active2: 1,
+            property2: property,
+            totals2: property.totals,
+            areas2: property.areas.filter(
+              ({ areaType }) => areaType.unit === 'MT2',
+            ),
+            additional2: property.areas.filter(
+              ({ areaType }) => areaType.unit === 'UNT',
+            ),
+            areasTable2: this.mapAreasForCells(areas),
+          });
         }
         if (this.state.id2 === property.id && this.state.id !== Property.id) {
           return this.setState({ id2: 0, active2: 0 });
@@ -208,6 +195,7 @@ export default class Detail extends Component {
               ({ areaType }) => areaType.unit === 'UNT',
             ),
             id: property.id,
+            areasTable: this.mapAreasForCells(areas),
           });
         }
         return this.setState({ id: 0 });

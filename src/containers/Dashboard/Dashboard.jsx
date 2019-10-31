@@ -23,13 +23,13 @@ import Increments from '../Increments/Increments';
 import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
 import Strategy from '../Strategy/Strategy';
-import SalesRoom from '../SalesRoom/SalesRoom';
+import SalesRoomClient from '../SalesRoom/SalesRoomClient';
 import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
 import Contracts from '../Contract/Contracts';
-
+import CashFlow from '../CashFlow';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +42,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
-
+    console.log('towerId', towerId);
+    // TODO: Remove it for projects and towers
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)
@@ -161,13 +162,12 @@ class Dashboard extends Component {
           component={Increments}
         />
         <PrivateRoute
-          path={match.url + DashboardRoutes.salesRoom.withIndicator}
+          path={match.url + DashboardRoutes.salesRoomClient.withIndicator}
           exact
-          component={SalesRoom}
+          component={SalesRoomClient}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.clients.withIndicator}
-          roles={[Role.Admin, Role.Super]}
           exact
           component={Client}
         />
@@ -194,6 +194,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Contracts}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.cashFlow.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={CashFlow}
         />
       </DashboardLayout>
     );
