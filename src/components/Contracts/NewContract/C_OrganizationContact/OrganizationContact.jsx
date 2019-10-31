@@ -8,22 +8,6 @@ import styles from './OrganizationContact.module.scss';
 
 
 const OrganizationContact = () => {
-    const [open, setOpen] = useState(false);
-    const [scroll, setScroll] = useState('body');
-    const [fullWidth, setFullWidth] = useState(true);
-    const [maxWidth, setMaxWidth] = useState('md');
-    const [expanded, setExpanded] = useState('GeneralInfo');
-
-    const handleOpen = () => {
-        setOpen(true);
-    }
-
-    const handleClose = () => {
-        setOpen(false);
-    }
-
-
-
     return (
         <Grid container
             className={styles.gridContainer}

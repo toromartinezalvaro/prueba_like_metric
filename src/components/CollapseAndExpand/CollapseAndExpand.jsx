@@ -23,26 +23,13 @@ const CollapseAndExpand = ({
 
   if (isHidenArrow) {
     return (
-<<<<<<< HEAD
       <div
         onMouseEnter={handleEnterEvent}
         className={style.collapseAndExpandRow}
         onClick={handleClick}
       >
         <span className={`${style.arrowPosition} fas ${ArrowType} `}></span>
-=======
-      <div className={style.container}>
-        <div
-          onMouseEnter={handleEnterEvent}
-          className={style.collapseAndExpandRow}
-          onClick={handleClick}
-        >
-          <span
-            // eslint-disable-next-line no-useless-concat
-            className={`${style.arrowPosition}` + ' ' + `fas ${ArrowType} `}
-          ></span>
-        </div>
->>>>>>> 26050779b1a4142a793db3660dbaa82cd2148f50
+
       </div>
     );
   }

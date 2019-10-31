@@ -1,3 +1,9 @@
+/*
+ * Created on Thu Oct 31 2019
+ *
+ * Copyright (c) 2019 JCATMAN INSTABUILD
+ */
+
 import React, { useState, Fragment, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -60,7 +66,6 @@ const GeneralInfo = ({
 
   return (
     <Fragment>
-      {console.log('works', categoryProp, changeForSearchCategory)}
       <div className={styles.gridContainer}>
         <div className={styles.columnFullLeft}>
           <TextField

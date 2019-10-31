@@ -1,3 +1,9 @@
+/*
+ * Created on Thu Oct 31 2019
+ *
+ * Copyright (c) 2019 JCATMAN INSTABUILD
+ */
+
 import React, { useState, Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
@@ -35,7 +41,6 @@ const Category = ({
   };
 
   useEffect(() => {
-    console.log('WORKS!', informationToEdit);
     if (informationToEdit !== undefined) {
       setTextOfCategory(informationToEdit.categoryName);
     }

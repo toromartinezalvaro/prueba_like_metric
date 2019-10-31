@@ -14,7 +14,7 @@ const Navbar = ({ handleOpenContract }) => {
       <nav className={styles.navigationBar}>
         <ul className={styles.menuContainer}>
           <li className={styles.itemList} onClick={handleOpenContract}>
-            Contracts
+            Contratos
           </li>
         </ul>
       </nav>

@@ -1,3 +1,9 @@
+/*
+ * Created on Thu Oct 31 2019
+ *
+ * Copyright (c) 2019 JCATMAN INSTABUILD
+ */
+
 import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';

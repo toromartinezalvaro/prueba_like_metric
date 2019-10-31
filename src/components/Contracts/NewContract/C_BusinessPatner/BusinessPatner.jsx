@@ -1,3 +1,9 @@
+/*
+ * Created on Thu Oct 31 2019
+ *
+ * Copyright (c) 2019 JCATMAN INSTABUILD
+ */
+
 import React, { Fragment, useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -34,7 +40,6 @@ const BusinessPatner = ({
   });
 
   useEffect(() => {
-    console.log('Information is', informationToEdit);
     if (informationToEdit !== undefined) {
       setPartner(informationToEdit);
     }
@@ -86,7 +91,6 @@ const BusinessPatner = ({
 
   return (
     <Fragment>
-      {console.log('Data is:', informationToEdit)}
       <Typography className={styles.headingTitle} variant="h4">
         <div className={`${styles.circleIcon}  ${styles.circleColorForTitle}`}>
           <Icon className={`${styles.iconGeneral} fas fa-handshake`} />
