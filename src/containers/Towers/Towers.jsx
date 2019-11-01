@@ -29,6 +29,7 @@ export default class Towers extends Component {
     this.loadCurrentTowers();
   }
 
+
   openTowerHandler = (tower) => {
     tower = { ...tower, projectId: this.props.match.params.projectId };
     this.props.changeTower(tower);

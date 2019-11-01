@@ -24,11 +24,12 @@ export const DashboardRoutes = {
   },
   schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
   report: { value: '/report/', withIndicator: '/report/:towerId' },
+  contracts: '/contracts',
   cashFlow: { value: '/cash-flow/', withIndicator: '/cash-flow/:towerId' },
 };
 
 export const ContractRoutes = {
-  base: 'dashboard',
+  base: DashboardRoutes.contracts,
 };
 
 export const ProjectRoutes = {

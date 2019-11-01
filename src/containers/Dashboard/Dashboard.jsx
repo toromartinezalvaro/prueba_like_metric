@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import {
   DashboardRoutes,
+  ContractRoutes,
   ProjectRoutes,
   UserRoutes,
 } from '../../routes/local/routes';
@@ -27,8 +28,8 @@ import Client from '../Client/Client';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
+import Contracts from '../Contract/Contracts';
 import CashFlow from '../CashFlow';
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -187,6 +188,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Report}
+        />
+        <PrivateRoute
+          path={match.url + ContractRoutes.base}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Contracts}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.cashFlow.withIndicator}

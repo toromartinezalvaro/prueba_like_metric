@@ -1,0 +1,157 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
+@import '../../../../../assets/styles/variables.scss';
+
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+.gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center !important;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 125vh !important;
+}
+
+.gridSubContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 100vh !important;
+}
+.columnFullRigth {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 2%;
+  width: 50% !important;
+}
+
+.SelectSimple {
+  margin-top: 6%;
+  margin-bottom: 5%;
+}
+
+.columnFullLeft {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-right: 2%;
+  width: 50% !important;
+}
+
+.selectColumn {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  width: 75% !important;
+}
+
+.buttonColumn {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+}
+
+.multiline {
+  width: 100% !important;
+  z-index: 0 !important;
+}
+
+.actionContainer {
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.heading {
+  display: flex;
+  direction: row;
+  align-content: center !important;
+  justify-content: center !important;
+}
+
+.titleExpand {
+  margin-top: 4%;
+  margin-left: 8px;
+}
+
+.expansion-panel {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border: none;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+}
+
+.circleColorGeneral {
+  background-color: $softGreen-color;
+}
+
+.circleColorCicle {
+  background-color: $softRed-color;
+}
+
+.circleColorFinantials {
+  background-color: $softMain-color;
+}
+
+.circleColorPeople {
+  background-color: $yellow-color;
+}
+
+.circleColorAtachment {
+  background-color: $gray-color;
+}
+
+.circleColorPersonalized {
+  background-color: $softGreenColor;
+}
+
+.circleColorTitle {
+  background-color: $main-color;
+  margin-top: 15px;
+  margin-right: 5px;
+}
+
+.buttonMargin {
+  margin-left: 5px !important;
+}
+
+.dialogExpand {
+  height: 80vh !important;
+}
+
+.options {
+  background-color: $defaultWhite-color;
+  z-index: 999999 !important;
+}
+
+.textField,
+.leftInputs {
+  z-index: 0 !important;
+}

@@ -279,7 +279,6 @@ class Area extends Component {
         towerId: this.props.match.params.towerId,
       })
       .then((data) => {
-        console.log(data);
         this.toggleAreaTypeModal();
         this.updateTableInformation();
         this.setState({ modalIsLoading: false });
@@ -461,7 +460,6 @@ class Area extends Component {
             Primas
           </FloatingButton>
         ) : null}
-        
       </LoadableContainer>
     );
   }
