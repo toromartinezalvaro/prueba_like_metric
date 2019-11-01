@@ -86,7 +86,6 @@ const Prices = (props) => {
         {currentErrorMessage !== '' ? (
           <Error message={currentErrorMessage} />
         ) : null}
-        {console.log('Ooooh ', isLoading, props.isLoading)}
         {prices.length === 0 && !isLoading && !props.isLoading ? (
           <div>No se han ingresado areas</div>
         ) : isLoading || props.isLoading ? (
@@ -110,7 +109,6 @@ const Prices = (props) => {
           <div style={{ display: 'flex' }}>
             <div>Precio: </div>
             <div>
-              {console.log('prices', prices)}
               <Input
                 mask="currency"
                 onChange={(target) => {
