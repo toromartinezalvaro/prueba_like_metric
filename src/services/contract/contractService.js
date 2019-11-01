@@ -7,7 +7,6 @@ export default class ContractService extends Services {
   }
 
   postBusinessPatnerContract(data) {
-    console.log('Hello from the post', data);
     return this.post(ContractServiceDefinitions.businessContract(), data);
   }
 

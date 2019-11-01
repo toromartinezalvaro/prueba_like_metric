@@ -1,20 +1,20 @@
 import { API_PATH } from '../../config/config';
 
 const ContractServiceDefinitions = {
-  category: () => `${API_PATH}contract/contractCategory`,
-  getAllCategories: () => `${API_PATH}contract/contractCategory`,
-  businessContract: () => `${API_PATH}contract/businesspartner`,
+  category: () => `${API_PATH}contract/contract-category`,
+  getAllCategories: () => `${API_PATH}contract/contract-category`,
+  businessContract: () => `${API_PATH}contract/business-partner`,
   categoryToSearch: (categoryToSearch) =>
-    `${API_PATH}contract/contractcategory/${categoryToSearch}`,
+    `${API_PATH}contract/contract-category/${categoryToSearch}`,
   businessContractToSearch: (textToSearch) =>
     `${API_PATH}contract/${textToSearch}`,
-  getAllPatners: () => `${API_PATH}contract/businessPartner`,
+  getAllPatners: () => `${API_PATH}contract/business-partner`,
   getCategoryById: (categoryToSearch) =>
-    `${API_PATH}contract/contractCategory/find/${categoryToSearch}`,
+    `${API_PATH}contract/contract-category/find/${categoryToSearch}`,
   getPartnerById: (partnerToSearch) =>
-    `${API_PATH}contract/businessPartner/find/${partnerToSearch}`,
-  categoryUpdate: () => `${API_PATH}contract/contractCategory/edit`,
-  partnerUpdate: () => `${API_PATH}contract/businessPartner/edit`,
+    `${API_PATH}contract/business-partner/find/${partnerToSearch}`,
+  categoryUpdate: () => `${API_PATH}contract/contract-category/edit`,
+  partnerUpdate: () => `${API_PATH}contract/business-partner/edit`,
 };
 
 export default ContractServiceDefinitions;

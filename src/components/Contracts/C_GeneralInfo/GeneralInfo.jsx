@@ -15,6 +15,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
+import statusOfContractEnum from './statusOfContract.enum';
 
 import styles from './GeneralInfo.module.scss';
 import Category from '../NewContract/C_Category/Category';
@@ -39,14 +40,7 @@ const GeneralInfo = ({
   changeForSearchCategory,
   changeForSearchPartner,
 }) => {
-  const statusOfContract = [
-    { state: 'Activo' },
-    { state: 'En Negociación' },
-    { state: 'Pendiente' },
-    { state: 'Terminado' },
-    { state: 'Archivado' },
-    { state: 'Expirado' },
-  ].map((contract) => {
+  const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
       value: contract.state,
       label: contract.state,

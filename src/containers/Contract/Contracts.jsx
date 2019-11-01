@@ -157,7 +157,6 @@ class Contracts extends Component {
       .catch((error) => {
         console.log(error);
       });
-    console.log(this.state.categories);
   };
 
   updatePartner = (editable) => {
@@ -177,7 +176,6 @@ class Contracts extends Component {
       .catch((error) => {
         console.log(error);
       });
-    console.log(this.state.partners);
   };
 
   newBusinessPartner = (partner) => {
@@ -239,7 +237,6 @@ class Contracts extends Component {
   render() {
     return (
       <div className={styles.Contracts}>
-        {console.log('ANOTHER', this.state.categoryModal.currentCategory)}
         <Navbar handleOpenContract={this.handleOpenContract} />
         <NewContract
           expanded={this.state.expanded}
