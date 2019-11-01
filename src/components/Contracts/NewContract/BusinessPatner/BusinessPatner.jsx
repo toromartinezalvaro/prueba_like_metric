@@ -37,7 +37,7 @@ const BusinessPatner = ({
   });
 
   useEffect(() => {
-    if (informationToEdit !== undefined) {
+    if (informationToEdit) {
       setPartner(informationToEdit);
     }
   }, []);
@@ -51,7 +51,7 @@ const BusinessPatner = ({
   };
 
   const sendPartner = () => {
-    if (informationToEdit !== undefined) {
+    if (informationToEdit) {
       setPartner({ ...partner, id: informationToEdit.id });
       updatePartner(partner);
     }

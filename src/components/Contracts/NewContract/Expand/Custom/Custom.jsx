@@ -10,7 +10,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import Custom from '../../Content/C_Custom/Custom';
+import Custom from '../../Content/Custom/Custom';
 import styles from './Custom.module.scss';
 
 const ExpandCustom = () => {

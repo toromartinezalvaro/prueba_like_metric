@@ -9,12 +9,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import ExpandBillingFinancials from './Expand/E_BillingFinancials/BillingFinancials';
-import ExpandGeneralInfo from './Expand/E_GeneralInfo/GeneralInfo';
-import ExpandLifeCycle from './Expand/E_LifeCycle/LifeCycle';
-import ExpandOrganizationContact from './Expand/E_OrganizationContact/OrganizationContact';
-import ExpandCustom from './Expand/E_Custom/Custom';
-import ExpandAttachment from './Expand/E_Attachment/Attachment';
+import ExpandBillingFinancials from './Expand/BillingFinancials/BillingFinancials';
+import ExpandGeneralInfo from './Expand/GeneralInfo/GeneralInfo';
+import ExpandLifeCycle from './Expand/LifeCycle/LifeCycle';
+import ExpandOrganizationContact from './Expand/OrganizationContact/OrganizationContact';
+import ExpandCustom from './Expand/Custom/Custom';
+import ExpandAttachment from './Expand/Attachment/Attachment';
 import styles from './NewContract.module.scss';
 
 const NewContract = ({

@@ -9,8 +9,8 @@ import React, { Component } from 'react';
 import styles from './Contracts.module.scss';
 import Navbar from '../../components/Contracts/Navbar/Navbar';
 import NewContract from '../../components/Contracts/NewContract/NewContract';
-import Category from '../../components/Contracts/NewContract/Content/C_Category/Category';
-import BusinessPatner from '../../components/Contracts/NewContract/C_BusinessPatner/BusinessPatner';
+import Category from '../../components/Contracts/NewContract/Content/Category/Category';
+import BusinessPatner from '../../components/Contracts/NewContract/BusinessPatner/BusinessPatner';
 import ContractService from '../../services/contract/contractService';
 
 class Contracts extends Component {

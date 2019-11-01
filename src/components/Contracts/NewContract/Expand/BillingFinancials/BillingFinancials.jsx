@@ -1,7 +1,7 @@
 /*
- * Created on Thu Oct 31 2019
+ * Created by Jcatman on Fri Nov 01 2019
  *
- * Copyright (c) 2019 JCATMAN INSTABUILD
+ * Copyright (c) 2019 Instabuild
  */
 
 import React from 'react';
@@ -10,29 +10,29 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import OrganizationContact from '../../Content/C_OrganizationContact/OrganizationContact';
-import styles from './OrganizationContact.module.scss';
+import BillingFinancials from '../../Content/BillingFinancials/BillingFinancials';
+import styles from './BillingFinancials.module.scss';
 
-const ExpandOrganizationContact = () => {
+const ExpandBillingFinancials = () => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mt={4}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
         <Typography className={styles.heading}>
-          <div className={`${styles.circleIcon}  ${styles.circleColorPeople}`}>
-            <Icon className={`${styles.icon} fas fa-user-friends`} />
+          <div
+            className={`${styles.circleIcon}  ${styles.circleColorFinantials}`}
+          >
+            <Icon className={`${styles.icon} fas fa-tag`} />
           </div>
-          <div className={styles.titleExpand}>
-            Organización y personas de contacto
-          </div>
+          <div className={styles.titleExpand}>Facturación y Finanzas</div>
         </Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Typography>
-          <OrganizationContact />
+          <BillingFinancials />
         </Typography>
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );
 };
 
-export default ExpandOrganizationContact;
+export default ExpandBillingFinancials;
