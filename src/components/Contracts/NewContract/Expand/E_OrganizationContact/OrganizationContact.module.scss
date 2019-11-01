@@ -4,7 +4,7 @@
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
 
-@import '../../../../assets/styles/variables.scss';
+@import '../../../../../assets/styles/variables.scss';
 .heading {
   display: flex;
   direction: row;
@@ -35,6 +35,6 @@
   color: $defaultWhite-color;
 }
 
-.circleColorAtachment {
-  background-color: $gray-color;
+.circleColorPeople {
+  background-color: $yellow-color;
 }

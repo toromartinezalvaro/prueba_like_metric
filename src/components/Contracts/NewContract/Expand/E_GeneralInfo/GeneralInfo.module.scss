@@ -1,10 +1,10 @@
 /*
- * Created on Thu Oct 31 2019
+ * Created by Jcatman on Fri Nov 01 2019
  *
- * Copyright (c) 2019 JCATMAN INSTABUILD
+ * Copyright (c) 2019 Instabuild
  */
 
-@import '../../../../assets/styles/variables.scss';
+@import '../../../../../assets/styles/variables.scss';
 .heading {
   display: flex;
   direction: row;
@@ -35,6 +35,6 @@
   color: $defaultWhite-color;
 }
 
-.circleColorPeople {
-  background-color: $yellow-color;
+.circleColorGeneral {
+  background-color: $softGreen-color;
 }

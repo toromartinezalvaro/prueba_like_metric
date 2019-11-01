@@ -23,13 +23,14 @@ const CollapseAndExpand = ({
 
   if (isHidenArrow) {
     return (
-      <div
-        onMouseEnter={handleEnterEvent}
-        className={style.collapseAndExpandRow}
-        onClick={handleClick}
-      >
-        <span className={`${style.arrowPosition} fas ${ArrowType} `}></span>
-
+      <div className={style.container}>
+        <div
+          onMouseEnter={handleEnterEvent}
+          className={style.collapseAndExpandRow}
+          onClick={handleClick}
+        >
+          <span className={`${style.arrowPosition} fas ${ArrowType} `}></span>
+        </div>
       </div>
     );
   }

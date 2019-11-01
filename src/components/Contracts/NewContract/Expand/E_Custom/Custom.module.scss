@@ -1,4 +1,10 @@
-@import '../../../../assets/styles/variables.scss';
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
+@import '../../../../../assets/styles/variables.scss';
 .heading {
   display: flex;
   direction: row;
@@ -29,6 +35,6 @@
   color: $defaultWhite-color;
 }
 
-.circleColorGeneral {
-  background-color: $softGreen-color;
+.circleColorPersonalized {
+  background-color: $softGreenColor;
 }

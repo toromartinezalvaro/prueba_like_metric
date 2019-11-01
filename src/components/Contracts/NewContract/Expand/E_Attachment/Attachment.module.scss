@@ -1,15 +1,10 @@
-@import '../../../../assets/styles/variables.scss';
-.title {
-  display: flex;
-  justify-content: center;
-}
+/*
+ * Created on Thu Oct 31 2019
+ *
+ * Copyright (c) 2019 JCATMAN INSTABUILD
+ */
 
-.actionContainer {
-  display: flex !important;
-  direction: row !important;
-  justify-content: center !important;
-}
-
+@import '../../../../../assets/styles/variables.scss';
 .heading {
   display: flex;
   direction: row;
@@ -40,6 +35,6 @@
   color: $defaultWhite-color;
 }
 
-.circleColorCicle {
-  background-color: $softRed-color;
+.circleColorAtachment {
+  background-color: $gray-color;
 }

@@ -1,14 +1,20 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import ExpandBillingFinancials from './E_BillingFinancials/BillingFinancials';
-import ExpandGeneralInfo from './E_GeneralInfo/GeneralInfo';
-import ExpandLifeCycle from './E_LifeCycle/LifeCycle';
-import ExpandOrganizationContact from './E_OrganizationContact/OrganizationContact';
-import ExpandCustom from './E_Custom/Custom';
-import ExpandAttachment from './E_Attachment/Attachment';
+import ExpandBillingFinancials from './Expand/E_BillingFinancials/BillingFinancials';
+import ExpandGeneralInfo from './Expand/E_GeneralInfo/GeneralInfo';
+import ExpandLifeCycle from './Expand/E_LifeCycle/LifeCycle';
+import ExpandOrganizationContact from './Expand/E_OrganizationContact/OrganizationContact';
+import ExpandCustom from './Expand/E_Custom/Custom';
+import ExpandAttachment from './Expand/E_Attachment/Attachment';
 import styles from './NewContract.module.scss';
 
 const NewContract = ({

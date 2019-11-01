@@ -1,32 +1,38 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
 import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import BillingFinancials from '../../C_BillingFinancials/BillingFinancials';
-import styles from './BillingFinancials.module.scss';
+import Custom from '../../Content/C_Custom/Custom';
+import styles from './Custom.module.scss';
 
-const ExpandBillingFinancials = () => {
+const ExpandCustom = () => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mt={4}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
         <Typography className={styles.heading}>
           <div
-            className={`${styles.circleIcon}  ${styles.circleColorFinantials}`}
+            className={`${styles.circleIcon}  ${styles.circleColorPersonalized}`}
           >
-            <Icon className={`${styles.icon} fas fa-tag`} />
+            <Icon className={`${styles.icon} fas fa-paperclip`} />
           </div>
-          <div className={styles.titleExpand}>Facturación y Finanzas</div>
+          <div className={styles.titleExpand}>Propiedades Personalizadas</div>
         </Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Typography>
-          <BillingFinancials />
+          <Custom />
         </Typography>
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );
 };
 
-export default ExpandBillingFinancials;
+export default ExpandCustom;

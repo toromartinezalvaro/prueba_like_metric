@@ -6,12 +6,9 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
-import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import PropTypes from 'prop-types';
@@ -56,7 +53,7 @@ const BusinessPatner = ({
   const sendPartner = () => {
     if (informationToEdit !== undefined) {
       setPartner({ ...partner, id: informationToEdit.id });
-      updatePartner( partner );
+      updatePartner(partner);
     }
     newBusinessPartner(partner);
     handleCloseBusinessPatner();

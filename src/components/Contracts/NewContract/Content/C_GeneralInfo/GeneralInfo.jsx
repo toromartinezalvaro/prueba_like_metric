@@ -4,22 +4,16 @@
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
 
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
-import MenuItem from '@material-ui/core/MenuItem';
 import statusOfContractEnum from './statusOfContract.enum';
 
 import styles from './GeneralInfo.module.scss';
-import Category from '../NewContract/C_Category/Category';
-import BusinessPatner from '../NewContract/C_BusinessPatner/BusinessPatner';
 
 const Option = (props) => {
   return <components.Option {...props} className={styles.options} />;
