@@ -1,3 +1,9 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
 import ContractServiceDefinitions from './contractServiceDefinitions';
 import Services from '../services';
 

@@ -1,3 +1,9 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
 import { API_PATH } from '../../config/config';
 
 const ContractServiceDefinitions = {
