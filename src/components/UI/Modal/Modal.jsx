@@ -40,6 +40,7 @@ class Modal extends Component {
       <Fragment>
         {this.props.hidden ? null : (
           <div className={styles.Container}>
+
             <div className={styles.Modal} ref={this.divModal} style={this.props.style}>
               <div className={styles.ContainerTitle}>
                 <div className={styles.Title}>{this.props.title}</div>

@@ -4,16 +4,21 @@ import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
 import UserSideMenu from '../../../components/Sidebar/UserSideMenu';
 import styles from './Dashboard.module.scss';
-import { UserRoutes } from '../../../routes/local/routes';
+import { UserRoutes, ContractRoutes } from '../../../routes/local/routes';
 
 const Dashboard = (props) => {
   const [resizableWidth, setResizableWidth] = useState(200);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const [isMenuHidden, setHideMenu] = useState(false);
+  const [showContent, setShowContent] = useState(true);
 
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
-    setHideMenu(expandibleValue <= 0);
+    setHideMenu(expandibleValue <= 17);
+  };
+
+  const onChangeShowContent = (value) => {
+    setShowContent(value);
   };
 
   const onHideArrow = (arrowValue) => {
@@ -43,7 +48,8 @@ const Dashboard = (props) => {
           </Fragment>
         )}
         {props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
-        props.location.pathname.includes(UserRoutes.base) ? null : (
+        props.location.pathname.includes(UserRoutes.base) ||
+        props.location.pathname.includes(ContractRoutes.base) ? null : (
           <Fragment>
             <SideMenu
               onHideArrow={onHideArrow}
@@ -51,6 +57,8 @@ const Dashboard = (props) => {
               resizableWidth={resizableWidth}
               tower={props.tower}
               onChange={onChangeSize}
+              showContent={showContent}
+              onChangeShowContent={onChangeShowContent}
             />
           </Fragment>
         )}
@@ -60,6 +68,7 @@ const Dashboard = (props) => {
             isHidenArrow={isHidenArrow}
             onChange={onChangeSize}
             isMenuHidden={isMenuHidden}
+            onChangeShowContent={onChangeShowContent}
           />
         </div>
       </nav>

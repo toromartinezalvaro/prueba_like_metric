@@ -8,7 +8,7 @@ import Loader from 'react-loader-spinner';
 import commonStyles from '../../../assets/styles/variables.scss';
 import styles from './Prices.module.scss';
 
-const Prices = props => {
+const Prices = (props) => {
   const { areaTypeId, measurementUnit, services, towerId } = props;
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
@@ -20,10 +20,10 @@ const Prices = props => {
       .putAreaPrice(id, {
         price: price,
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -33,10 +33,10 @@ const Prices = props => {
       .putAreaTypePrice(id, {
         price: price,
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -45,20 +45,20 @@ const Prices = props => {
     setLoading(true);
     services
       .getPrices(towerId, areaTypeId)
-      .then(res => {
+      .then((res) => {
         setLoading(false);
         if (res.data.length > 0) {
-          res.data = _.sortBy(res.data, o => o.measure);
+          res.data = _.sortBy(res.data, (o) => o.measure);
           if (res.data[0].areaType.unit === 'UNT') {
             setPrices([res.data[0].price]);
           } else {
             const areas = [];
-            const prices = res.data.map(area => {
+            const prices = res.data.map((area) => {
               areas.push(area.measure);
               return [
                 <Input
                   mask="currency"
-                  onChange={target => {
+                  onChange={(target) => {
                     updateAreaPrice(area.id, target.value);
                   }}
                   validations={[]}
@@ -72,7 +72,7 @@ const Prices = props => {
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         setLoading(false);
         let errorHelper = errorHandling(error);
         setCurrentErrorMessage(errorHelper.message);
@@ -86,7 +86,6 @@ const Prices = props => {
         {currentErrorMessage !== '' ? (
           <Error message={currentErrorMessage} />
         ) : null}
-        {console.log('Ooooh ', isLoading, props.isLoading)}
         {prices.length === 0 && !isLoading && !props.isLoading ? (
           <div>No se han ingresado areas</div>
         ) : isLoading || props.isLoading ? (
@@ -110,10 +109,9 @@ const Prices = props => {
           <div style={{ display: 'flex' }}>
             <div>Precio: </div>
             <div>
-              {console.log('prices', prices)}
               <Input
                 mask="currency"
-                onChange={target => {
+                onChange={(target) => {
                   updateAreaTypePrice(areaTypeId, target.value);
                 }}
                 value={prices[0]}

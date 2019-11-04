@@ -27,7 +27,7 @@ const UserSideMenu = (props) => {
     setUser(agent.currentUser);
   });
 
-  var itemForSidebar = (styles, route, iconName, description) => {
+  const itemForSidebar = (styles, route, iconName, description) => {
     return (
       <div className={styles}>
         <Link to={route}>

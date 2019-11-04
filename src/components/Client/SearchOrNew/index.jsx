@@ -1,52 +1,71 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Card, { CardHeader, CardBody, CardFooter } from '../../UI/Card/Card';
+import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import Styles from './SearchOrNew.module.scss';
 import SearchForm from './SearchForm';
+
+const SAVE = 'save';
+const ADD = 'add';
 
 const SearchOrNewClient = ({
   open,
   handleClose,
   clientInfo,
   searchNumber,
-  pushToSalesRoom,
+  saveHandler,
+  updateHandler,
+  addHandler,
+  action,
 }) => {
   const [client, setClient] = React.useState(clientInfo);
   const [isEditing, setEdition] = React.useState(false);
+
+  useEffect(() => {
+    setClient(clientInfo);
+  }, [clientInfo]);
 
   const handleChange = (name) => (event) => {
     setClient({ ...client, [name]: event.target.value });
   };
 
   const searchCurrentNumber = () => {
-    if (isEditing) {
-      pushToSalesRoom('1');
-    } else searchNumber(client.documentNumber);
+    setEdition(true);
+    searchNumber(client.identityDocument);
+  };
 
-    setEdition(!isEditing);
+  const save = () => {
+    setEdition(false);
+    saveHandler(client);
+  };
+
+  const update = () => {
+    setEdition(false);
+    updateHandler(client);
+  };
+
+  const add = () => {
+    setEdition(false);
+    addHandler(client);
+  };
+
+  const close = () => {
+    setEdition(false);
+    handleClose();
   };
 
   return (
     <div>
-      <Dialog open={open} onClose={handleClose} scroll="body" maxWidth="lg">
-        <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
-        <DialogContent dividers={false}>
+      <Dialog open={open} scroll="body" maxWidth="lg">
+        <DialogTitle id="scroll-dialog-title">Buscar y editar</DialogTitle>
+        <DialogContent>
           <Card>
             <CardHeader></CardHeader>
             <CardBody>
-              {/* {[...new Array(50)]
-                .map(
-                  () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-                )
-                .join('\n')} */}
               <SearchForm
                 handleChange={handleChange}
                 isEditing={isEditing}
@@ -56,12 +75,29 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
           </Card>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+          <Button onClick={close} color="primary">
+            Cancelar
           </Button>
-          <Button onClick={searchCurrentNumber} color="primary">
-            {isEditing ? 'Ir a sala de ventas' : 'Buscar'}
-          </Button>
+          {!isEditing && (
+            <Button onClick={searchCurrentNumber} color="primary">
+              Buscar
+            </Button>
+          )}
+          {isEditing && action === ADD && (
+            <Button onClick={add} color="primary">
+              Agregar a mi compañía
+            </Button>
+          )}
+          {isEditing && action === SAVE && (
+            <Button onClick={save} color="primary">
+              Guardar
+            </Button>
+          )}
+          {isEditing && action === ADD && (
+            <Button onClick={update} color="primary">
+              Actualizar
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -71,10 +107,16 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
 SearchOrNewClient.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func,
-  //   name: PropTypes.string.isRequired,
-  //   percentage: PropTypes.number.isRequired,
-  //   updateHandler: PropTypes.func.isRequired,
-  //   deleteHandler: PropTypes.func.isRequired,
+  clientInfo: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+    phoneNumber: PropTypes.string,
+  }).isRequired,
+  searchNumber: PropTypes.func.isRequired,
+  saveHandler: PropTypes.func.isRequired,
+  updateHandler: PropTypes.func.isRequired,
+  addHandler: PropTypes.func.isRequired,
+  action: PropTypes.string.isRequired,
 };
 
 export default SearchOrNewClient;

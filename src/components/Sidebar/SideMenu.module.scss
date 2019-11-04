@@ -9,15 +9,17 @@
   height: 100%;
   flex: 0.8;
   justify-content: flex-start;
-  align-items: center;
   overflow: hidden;
   transition: all 0.2s ease;
+  -webkit-box-shadow: 6px 3px 11px -4.5px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 6px 3px 11px -4.5px rgba(0, 0, 0, 0.1);
+  box-shadow: 6px 3px 11px -4.5px rgba(0, 0, 0, 0.1);
+  border: red;
   &:hover,
   .collapseAndExpandRow {
-    -webkit-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
-    box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
-    border-left-color: $main-color;
+    -webkit-box-shadow: 6px 3px 11px -4.5px $main-color;
+    -moz-box-shadow: 6px 3px 11px -4.5px $main-color;
+    box-shadow: 6px 3px 11px -4.5px $main-color;
   }
   z-index: 5;
 }
