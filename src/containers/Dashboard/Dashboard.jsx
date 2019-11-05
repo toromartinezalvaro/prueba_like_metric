@@ -30,6 +30,8 @@ import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
 import Contracts from '../Contract/Contracts';
 import CashFlow from '../CashFlow';
+import SaleRequests from '../SaleRequests';
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +45,7 @@ class Dashboard extends Component {
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
     console.log('towerId', towerId);
-    // TODO: Remove it for projects and towers
+    //TODO: Remove it for projects and towers
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)
@@ -200,6 +202,18 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={CashFlow}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.saleRequests.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={SaleRequests}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.saleRequestsWithId.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={SaleRequests}
         />
       </DashboardLayout>
     );
