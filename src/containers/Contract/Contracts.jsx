@@ -254,6 +254,7 @@ class Contracts extends Component {
           changeForSearchCategory={this.changeForSearchCategory}
           changeForSearchPartner={this.changeForSearchPartner}
           partnerProp={this.state.businessPatnerModal.currentPatner}
+          services={this.services}
         />
         <Dialog
           className={styles.dialogExpand}

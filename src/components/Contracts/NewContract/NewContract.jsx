@@ -33,6 +33,7 @@ const NewContract = ({
   partnerProp,
   changeForSearchCategory,
   changeForSearchPartner,
+  services,
 }) => {
   return (
     <Dialog
@@ -68,7 +69,8 @@ const NewContract = ({
         <br />
         <ExpandLifeCycle />
         <br />
-        <ExpandBillingFinancials />
+        <ExpandBillingFinancials 
+          services={services}/>
         <br />
         <ExpandOrganizationContact />
         <br />
