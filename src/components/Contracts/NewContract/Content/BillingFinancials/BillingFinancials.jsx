@@ -12,7 +12,6 @@ import TextField from '@material-ui/core/TextField';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from 'react-select';
-import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -115,8 +114,6 @@ const BillingFinancials = (services) => {
                   margin="normal"
                   id="date-picker-inline"
                   label="Date picker inline"
-                  value={selectedDate}
-                  onChange={handleDateChange}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
