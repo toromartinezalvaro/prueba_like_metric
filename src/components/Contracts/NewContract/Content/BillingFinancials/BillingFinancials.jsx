@@ -12,6 +12,12 @@ import TextField from '@material-ui/core/TextField';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from 'react-select';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import styles from './BillingFinancials.module.scss';
 
 const BillingFinancials = (services) => {
@@ -65,6 +71,18 @@ const BillingFinancials = (services) => {
                       components={Option}
                       onChange={onChangeSelect('patnerCountry')}
                     /> */}
+                <KeyboardDatePicker
+                  disableToolbar
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Date picker inline"
+                  variant="outlined"
+                  placeholder="Primera fecha de cobro"
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
                 <TextField
                   required
                   fullWidth
@@ -90,16 +108,51 @@ const BillingFinancials = (services) => {
                       components={Option}
                       onChange={onChangeSelect('patnerCountry')}
                     /> */}
-                <div className={styles.options}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={styles.button}
-                    startIcon={<AddIcon />}
-                    onClick={removeBilling}
-                  >
-                    Remover
-                  </Button>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Date picker inline"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+                <div className={styles.column}>
+                  <TextField
+                    required
+                    fullWidth
+                    className={styles.textField}
+                    label="cuenta de cobro (pesos colombiano)"
+                    margin="normal"
+                    variant="outlined"
+                  />
+                  <KeyboardDatePicker
+                    disableToolbar
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Date picker inline"
+                    variant="outlined"
+                    placeholder="Primera fecha de cobro"
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                  <div className={styles.options}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={styles.button}
+                      startIcon={<AddIcon />}
+                      onClick={removeBilling}
+                    >
+                      Remover
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

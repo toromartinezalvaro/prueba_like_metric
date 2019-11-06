@@ -5,6 +5,61 @@
  */
 
 @import '../../../../../assets/styles/variables.scss';
+
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+.gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center !important;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 125vh !important;
+}
+
+.gridSubContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 100vh !important;
+}
+.columnFullRigth {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 2%;
+  width: 50% !important;
+}
+
+.SelectSimple {
+  margin-top: 6%;
+  margin-bottom: 5%;
+}
+
+.columnFullLeft {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-right: 2%;
+  width: 50% !important;
+}
+
+.selectColumn {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  width: 75% !important;
+}
 .textField {
   width: 50vw;
 }

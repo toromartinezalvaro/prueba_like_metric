@@ -6,7 +6,6 @@
 
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
@@ -14,15 +13,8 @@ import styles from './OrganizationContact.module.scss';
 
 const OrganizationContact = () => {
   return (
-    <Grid
-      container
-      className={styles.gridContainer}
-      direction="row"
-      justify="center"
-      alignItems="flex-start"
-      spacing={3}
-    >
-      <Grid item xs={6}>
+    <div className={styles.gridContainer}>
+      <div className={styles.columnFullLeft}>
         <TextField
           fullWidth
           required
@@ -41,9 +33,9 @@ const OrganizationContact = () => {
           margin="normal"
           variant="outlined"
         />
-      </Grid>
-      <Grid item xs={6} md={6}>
-        <Grid
+      </div>
+      <div className={styles.columnFullRigth} >
+        <div
           container
           direction="row"
           alignItems="center"
@@ -51,7 +43,7 @@ const OrganizationContact = () => {
           spacing={4}
           justify="center"
         >
-          <Grid item xs={6}>
+          <div className={styles.colmn}>
             <TextField
               fullWidth
               required
@@ -61,8 +53,8 @@ const OrganizationContact = () => {
               margin="normal"
               variant="outlined"
             />
-          </Grid>
-          <Grid item xs={6} className={styles.buttons}>
+          </div>
+          <div className={styles.colmn} className={styles.buttons}>
             <Fab
               color="primary"
               size="small"
@@ -80,16 +72,16 @@ const OrganizationContact = () => {
             >
               <EditIcon />
             </Fab>
-          </Grid>
+          </div>
           <TextField
             className={styles.leftInputs}
             label="Persona Adicional De Contacto"
             margin="normal"
             variant="outlined"
           />
-        </Grid>
-      </Grid>
-    </Grid>
+        </div>
+      </div>
+    </div>
   );
 };
 
