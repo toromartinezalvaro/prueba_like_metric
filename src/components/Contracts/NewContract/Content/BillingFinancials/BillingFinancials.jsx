@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
 import CardContent from '@material-ui/core/CardContent';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from 'react-select';
 import styles from './BillingFinancials.module.scss';
 
 const BillingFinancials = (services) => {
@@ -20,9 +22,26 @@ const BillingFinancials = (services) => {
     setCount(count + 1);
   };
 
-  const removeBilling  = () => {
-    setCount(count - 1)
-  }
+  const removeBilling = () => {
+    setCount(count - 1);
+  };
+
+  const Option = (props) => {
+    return (
+      <MenuItem
+        ref={props.innerRef}
+        selected={props.isFocused}
+        component="div"
+        style={{
+          fontWeight: props.isSelected ? 500 : 400,
+        }}
+        {...props.innerProps}
+      >
+        {props.children}
+      </MenuItem>
+    );
+  };
+
   const displayComponent = () => {
     const components = [];
     for (let i = 0; i < count; i++) {
@@ -31,23 +50,57 @@ const BillingFinancials = (services) => {
           <CardContent>
             <div className={styles.row}>
               <div className={styles.column}>
+                {/* <Select
+                      className={styles.Select}
+                      inputId="react-select-single"
+                      TextFieldProps={{
+                        label: 'País',
+                        InputLabelProps: {
+                          htmlFor: 'react-select-single',
+                          shrink: true,
+                        },
+                      }}
+                      placeholder="Seleccione un país"
+                      options={suggestions}
+                      components={Option}
+                      onChange={onChangeSelect('patnerCountry')}
+                    /> */}
                 <TextField
                   required
                   fullWidth
                   className={styles.textField}
-                  label="Titulo De Contrato"
+                  label="Descripción"
                   margin="normal"
                   variant="outlined"
                 />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={styles.button}
-                  startIcon={<AddIcon />}
-                  onClick={removeBilling}
-                >
-                  Remover
-                </Button>
+              </div>
+              <div className={styles.column}>
+                {/* <Select
+                      className={styles.Select}
+                      inputId="react-select-single"
+                      TextFieldProps={{
+                        label: 'País',
+                        InputLabelProps: {
+                          htmlFor: 'react-select-single',
+                          shrink: true,
+                        },
+                      }}
+                      placeholder="Seleccione un país"
+                      options={suggestions}
+                      components={Option}
+                      onChange={onChangeSelect('patnerCountry')}
+                    /> */}
+                <div className={styles.options}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={styles.button}
+                    startIcon={<AddIcon />}
+                    onClick={removeBilling}
+                  >
+                    Remover
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
