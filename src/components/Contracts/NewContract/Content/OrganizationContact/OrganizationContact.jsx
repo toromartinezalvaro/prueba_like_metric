@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import styles from './OrganizationContact.module.scss';
 
-const OrganizationContact = () => {
+const OrganizationContact = (services) => {
   return (
     <div className={styles.gridContainer}>
       <div className={styles.columnFullLeft}>

@@ -72,7 +72,8 @@ const NewContract = ({
         <ExpandBillingFinancials 
           services={services}/>
         <br />
-        <ExpandOrganizationContact />
+        <ExpandOrganizationContact 
+          services={services}/>
         <br />
         <ExpandCustom />
         <br />
