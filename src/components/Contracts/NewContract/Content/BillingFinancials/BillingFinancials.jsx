@@ -13,32 +13,52 @@ import CardContent from '@material-ui/core/CardContent';
 import styles from './BillingFinancials.module.scss';
 
 const BillingFinancials = (services) => {
-  const [id, setId] = useState(0);
-  const [components, setComponents] = useState([]);
-  const autoIncrementId = () => setId(id + 1);
+  const [value, setValue] = useState([]);
+  const [count, setCount] = useState(1);
+
   const addBilling = () => {
-    setComponents(...components, [
-      <Card key={autoIncrementId()}>
-        <CardContent>
-          <div className={styles.row}>
-            <div className={styles.column}>
-              <TextField
-                required
-                fullWidth
-                className={styles.textField}
-                label="Titulo De Contrato"
-                margin="normal"
-                variant="outlined"
-              />
+    setCount(count + 1);
+  };
+
+  const removeBilling  = () => {
+    setCount(count - 1)
+  }
+  const displayComponent = () => {
+    const components = [];
+    for (let i = 0; i < count; i++) {
+      components.push(
+        <Card key={i}>
+          <CardContent>
+            <div className={styles.row}>
+              <div className={styles.column}>
+                <TextField
+                  required
+                  fullWidth
+                  className={styles.textField}
+                  label="Titulo De Contrato"
+                  margin="normal"
+                  variant="outlined"
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={styles.button}
+                  startIcon={<AddIcon />}
+                  onClick={removeBilling}
+                >
+                  Remover
+                </Button>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>,
-    ]);
+          </CardContent>
+        </Card>,
+      );
+    }
+    return components || null;
   };
   return (
     <Fragment>
-      {components}
+      {displayComponent()}
       <Button
         variant="contained"
         color="primary"
