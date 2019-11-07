@@ -24,24 +24,28 @@ import styles from './BillingFinancials.module.scss';
 
 const BillingFinancials = (services) => {
   const [count, setCount] = useState(1);
-  const [firstBilling, setFirstBilling] = useState(new Date());
-  const [lastBilling, setLastBilling] = useState(new Date());
+  const [clickedOne, setClickedOne] = useState(true);
+  const [firstBillingDate, setFirstBillingDate] = useState(new Date());
+  const [lastBillingDate, setLastBillingDate] = useState(new Date());
   const [cardValue, setCardValue] = useState({
     billingCycle: '',
     firstBillingDate: '',
     description: '',
     billingAmount: '',
-    lastBillingCycle: '',
+    lastBillingDate: '',
   });
 
-  const changeFirstBilling = date => {
-    setFirstBilling(date);
-    setCardValue({ ...cardValue, [firstBilling]: date });
+  const changeToEdit = () => {
+    setClickedOne(!clickedOne);
   }
 
-  const changeLastBilling = date => {
-    setLastBilling(date);
-    setCardValue({ ...cardValue, [lastBilling]: date });
+  const changeToSave = () => {
+    setClickedOne(!clickedOne);
+  }
+
+  const changeDate = (name) => (date) => {
+    name === "firstBillingDate" ? setFirstBillingDate(date) : setLastBillingDate(date);
+    setCardValue({ ...cardValue, [name]: date });
   }
 
   const saveCardValue = (name) => (e) => {
@@ -120,8 +124,8 @@ const BillingFinancials = (services) => {
                     margin="normal"
                     id="date-picker-inline"
                     label="Primera Fecha de Cobro"
-                    value={firstBilling}
-                    onChange={changeFirstBilling}
+                    value={firstBillingDate}
+                    onChange={changeDate("firstBillingDate")}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
@@ -133,6 +137,7 @@ const BillingFinancials = (services) => {
                   label="Descripción"
                   margin="normal"
                   variant="outlined"
+                  onChange={saveCardValue('description')}
                 />
               </div>
               <div className={styles.columnFullRigth}>
@@ -144,7 +149,7 @@ const BillingFinancials = (services) => {
                     label="cuenta de cobro (pesos colombiano)"
                     margin="normal"
                     variant="outlined"
-                    onChange={saveCardValue('description')}
+                    onChange={saveCardValue('billingAmount')}
                   />
                 </div>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -155,8 +160,8 @@ const BillingFinancials = (services) => {
                     margin="normal"
                     id="date-picker-inline"
                     label="Última Fecha de Cobro"
-                    value={lastBilling}
-                    onChange={changeLastBilling}
+                    value={lastBillingDate}
+                    onChange={changeDate("lastBillingDate")}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
@@ -171,13 +176,24 @@ const BillingFinancials = (services) => {
                     onClick={removeBilling}>
                     Remover
                     </Button>
-                  <Button
+                  {clickedOne ? (<Button
                     variant="contained"
                     color="primary"
                     className={styles.button}
                     startIcon={<AddIcon />}
-                    onClick={saveValues}
-                  ></Button>
+                    onClick={changeToEdit}
+                  >
+                    Guardar
+                  </Button>) : (<Button
+                      variant="contained"
+                      color="primary"
+                      className={styles.button}
+                      startIcon={<Icon className="fas fa-pencil-alt" />}
+                      onClick={changeToSave}
+                    >
+                      Editar
+                  </Button>)}
+
                 </div>
               </div>
             </div>
