@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
+import Icon from '@material-ui/core/Icon';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from 'react-select';
@@ -17,11 +18,39 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+
 import styles from './BillingFinancials.module.scss';
 
 const BillingFinancials = (services) => {
-  const [value, setValue] = useState([]);
   const [count, setCount] = useState(1);
+  const [firstBilling, setFirstBilling] = useState(new Date());
+  const [lastBilling, setLastBilling] = useState(new Date());
+  const [cardValue, setCardValue] = useState({
+    billingCycle: '',
+    firstBillingDate: '',
+    description: '',
+    billingAmount: '',
+    lastBillingCycle: '',
+  });
+
+  const changeFirstBilling = date => {
+    setFirstBilling(date);
+    setCardValue({ ...cardValue, [firstBilling]: date });
+  }
+
+  const changeLastBilling = date => {
+    setLastBilling(date);
+    setCardValue({ ...cardValue, [lastBilling]: date });
+  }
+
+  const saveCardValue = (name) => (e) => {
+    setCardValue({ ...cardValue, [name]: e.target.value });
+  };
+
+  const saveCardValueSelect = (name) => (label) => {
+    setCardValue({ ...cardValue, [name]: label.value });
+  };
 
   const addBilling = () => {
     setCount(count + 1);
@@ -30,6 +59,20 @@ const BillingFinancials = (services) => {
   const removeBilling = () => {
     setCount(count - 1);
   };
+
+  const saveValues = () => {
+    console.log("LA DATA ES:", cardValue)
+  }
+
+  const suggestions = [
+    { label: 'Una vez' },
+    { label: 'Mensual' },
+    { label: 'Trimestral' },
+    { label: 'Anual' },
+  ].map((suggestion) => ({
+    value: suggestion.label,
+    label: suggestion.label,
+  }));
 
   const Option = (props) => {
     return (
@@ -51,39 +94,40 @@ const BillingFinancials = (services) => {
     const components = [];
     for (let i = 0; i < count; i++) {
       components.push(
-        <Card key={i}>
+        <Card key={i} className={styles.cardForm}>
           <CardContent>
-            <div className={styles.row}>
-              <div className={styles.column}>
-                {/* <Select
-                      className={styles.Select}
-                      inputId="react-select-single"
-                      TextFieldProps={{
-                        label: 'País',
-                        InputLabelProps: {
-                          htmlFor: 'react-select-single',
-                          shrink: true,
-                        },
-                      }}
-                      placeholder="Seleccione un país"
-                      options={suggestions}
-                      components={Option}
-                      onChange={onChangeSelect('patnerCountry')}
-                    /> */}
-                <KeyboardDatePicker
-                  disableToolbar
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="date-picker-inline"
-                  label="Date picker inline"
-                  variant="outlined"
-                  placeholder="Primera fecha de cobro"
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
+            <div className={styles.gridContainer}>
+              <div className={styles.columnFullLeft}>
+                <Select className={styles.Select}
+                  inputId="react-select-single"
+                  TextFieldProps={{
+                    label: 'Ciclo de facturación',
+                    InputLabelProps: {
+                      htmlFor: 'react-select-single',
+                      shrink: true,
+                    },
                   }}
+                  placeholder="Ciclo de facturación"
+                  options={suggestions}
+                  onChange={saveCardValueSelect('billingCycle')}
+                  components={Option}
                 />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Primera Fecha de Cobro"
+                    value={firstBilling}
+                    onChange={changeFirstBilling}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
                 <TextField
-                  required
                   fullWidth
                   className={styles.textField}
                   label="Descripción"
@@ -91,33 +135,7 @@ const BillingFinancials = (services) => {
                   variant="outlined"
                 />
               </div>
-              <div className={styles.column}>
-                {/* <Select
-                      className={styles.Select}
-                      inputId="react-select-single"
-                      TextFieldProps={{
-                        label: 'País',
-                        InputLabelProps: {
-                          htmlFor: 'react-select-single',
-                          shrink: true,
-                        },
-                      }}
-                      placeholder="Seleccione un país"
-                      options={suggestions}
-                      components={Option}
-                      onChange={onChangeSelect('patnerCountry')}
-                    /> */}
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="date-picker-inline"
-                  label="Date picker inline"
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
+              <div className={styles.columnFullRigth}>
                 <div className={styles.column}>
                   <TextField
                     required
@@ -126,30 +144,40 @@ const BillingFinancials = (services) => {
                     label="cuenta de cobro (pesos colombiano)"
                     margin="normal"
                     variant="outlined"
+                    onChange={saveCardValue('description')}
                   />
+                </div>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disableToolbar
+                    variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
                     id="date-picker-inline"
-                    label="Date picker inline"
-                    variant="outlined"
-                    placeholder="Primera fecha de cobro"
+                    label="Última Fecha de Cobro"
+                    value={lastBilling}
+                    onChange={changeLastBilling}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
                   />
-                  <div className={styles.options}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={styles.button}
-                      startIcon={<AddIcon />}
-                      onClick={removeBilling}
-                    >
-                      Remover
+                </MuiPickersUtilsProvider>
+                <div className={styles.options}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    className={styles.button}
+                    startIcon={<Icon className="fas fa-ban" />}
+                    onClick={removeBilling}>
+                    Remover
                     </Button>
-                  </div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={styles.button}
+                    startIcon={<AddIcon />}
+                    onClick={saveValues}
+                  ></Button>
                 </div>
               </div>
             </div>

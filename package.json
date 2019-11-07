@@ -16,6 +16,7 @@
     "big-integer": "^1.6.44",
     "chart.js": "^2.8.0",
     "chartjs-plugin-annotation": "^0.5.7",
+    "date-fns": "^2.0.0-beta.5",
     "export-from-json": "^1.1.4",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
