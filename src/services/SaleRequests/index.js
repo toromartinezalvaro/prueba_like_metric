@@ -9,6 +9,10 @@ class SaleRequestsServices extends Services {
   getSaleRequest(id) {
     return this.get(ServiceDefinitions.getSaleRequest(id));
   }
+
+  putSaleRequest(id, request) {
+    return this.put(ServiceDefinitions.putSaleRequest(id), request);
+  }
 }
 
 export default SaleRequestsServices;

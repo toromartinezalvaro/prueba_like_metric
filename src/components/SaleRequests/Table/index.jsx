@@ -16,7 +16,9 @@ const SaleRequestTable = ({ saleRequests, showSaleRequestHandler }) => {
         request.saleRequest.requestStatus,
         <Button
           key={`saleRequestAction-${index}`}
-          onClick={showSaleRequestHandler}
+          onClick={() => {
+            showSaleRequestHandler(request.saleRequest.id);
+          }}
         >
           Abrir
         </Button>,

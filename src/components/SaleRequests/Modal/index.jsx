@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,8 +15,18 @@ const SaleRequestModal = ({
   approveHandler,
   rejectHandler,
   cancelHandler,
-  saleRequest: { client, property, pricing },
+  saleRequest: { id, client, property, pricing },
 }) => {
+  const [l0, setL0] = useState(pricing.l0);
+  const [discount, setDiscount] = useState(pricing.financial);
+  const [tradeDiscount, setTradeDiscount] = useState(pricing.trade);
+
+  useEffect(() => {
+    setL0(pricing.l0);
+    setDiscount(pricing.financial);
+    setTradeDiscount(pricing.trade);
+  }, [pricing]);
+
   const getColumns = () => {
     return property.details.map((detail) => {
       return detail.name;
@@ -56,19 +66,40 @@ const SaleRequestModal = ({
           <div className={Styles.l0}>
             <span className={Styles.title}>Precio de lista:</span>
             <span className={Styles.value}>
-              <Input mask="currency" value={pricing.l0} />
+              <Input
+                mask="currency"
+                value={l0}
+                onChange={(target) => {
+                  setL0(target.value);
+                }}
+                validations={[]}
+              />
             </span>
           </div>
           <div className={Styles.trade}>
             <span className={Styles.title}>Descuento comercial:</span>
             <span className={Styles.value}>
-              <Input mask="currency" value={pricing.trade} />
+              <Input
+                mask="currency"
+                value={tradeDiscount}
+                validations={[]}
+                onChange={(target) => {
+                  setTradeDiscount(target.value);
+                }}
+              />
             </span>
           </div>
           <div className={Styles.financial}>
             <span className={Styles.title}>Descuento financiero:</span>
             <span className={Styles.value}>
-              <Input mask="currency" value={pricing.financial} />
+              <Input
+                mask="currency"
+                value={discount}
+                validations={[]}
+                onChange={(target) => {
+                  setDiscount(target.value);
+                }}
+              />
             </span>
           </div>
         </div>
@@ -76,7 +107,7 @@ const SaleRequestModal = ({
           <span className={Styles.title}>Total:</span>
           <span className={Styles.value}>
             <NumberFormat
-              value={pricing.l0 - pricing.trade - pricing.financial}
+              value={l0 - discount - tradeDiscount}
               displayType={'text'}
               thousandSeparator={true}
               prefix={'$'}
@@ -86,8 +117,30 @@ const SaleRequestModal = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={cancelHandler}>Cancelar</Button>
-        <Button onClick={rejectHandler}>Rechazar</Button>
-        <Button onClick={approveHandler}>Aprovar</Button>
+        <Button
+          onClick={() => {
+            rejectHandler(id, {
+              priceSold: pricing.priceSold,
+              discount: pricing.financial,
+              tradeDiscount: pricing.trade,
+              requestStatus: 'R',
+            });
+          }}
+        >
+          Rechazar
+        </Button>
+        <Button
+          onClick={() => {
+            approveHandler(id, {
+              priceSold: l0 - discount - tradeDiscount,
+              discount,
+              tradeDiscount,
+              requestStatus: 'A',
+            });
+          }}
+        >
+          Aprobar
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -99,6 +152,7 @@ SaleRequestModal.propTypes = {
   rejectHandler: PropTypes.func.isRequired,
   cancelHandler: PropTypes.func.isRequired,
   saleRequest: PropTypes.shape({
+    id: PropTypes.number,
     client: PropTypes.shape({
       name: PropTypes.string,
     }),
@@ -115,6 +169,7 @@ SaleRequestModal.propTypes = {
       ),
     }),
     pricing: PropTypes.shape({
+      priceSold: PropTypes.number,
       l0: PropTypes.number,
       trade: PropTypes.number,
       financial: PropTypes.number,

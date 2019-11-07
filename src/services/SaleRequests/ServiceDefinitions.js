@@ -7,6 +7,10 @@ const ServiceDefinitions = {
   getSaleRequest: (id) => {
     return `${API_PATH}sale-requests/${id}`;
   },
+
+  putSaleRequest: (id) => {
+    return `${API_PATH}sale-requests/${id}`;
+  },
 };
 
 export default ServiceDefinitions;
