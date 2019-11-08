@@ -1,0 +1,51 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.textField {
+  z-index: 0 !important;
+}
+
+.card {
+  display: flex;
+  align-self: center;
+  position: relative;
+  left: 30%;
+
+}
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: $white-color;
+  background-color: $black-color;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: $main-color;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.uploadedImage {
+  border-radius: 8px;
+  width: 500px;
+}
