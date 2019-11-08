@@ -57,8 +57,18 @@ const BillingFinancials = (services) => {
 
     billingsArray[billIndex] = bill;
     setBillings(billingsArray);
-    console.log('Las otras cuentas son', billings);
     console.log('Las cuentas son', billingsArray);
+  };
+
+  const removeElement = (id) => () => {
+    const billingsArray = [...billings];
+    const billIndex = billings.findIndex((element) => {
+      return element.id === id;
+    });
+    const removed = [billingsArray.splice(billIndex, 1)];
+    console.log('este wey se va', removed);
+    setBillings(billingsArray);
+    console.log('Te quité a', billIndex);
   };
 
   const addBilling = () => {
@@ -197,7 +207,7 @@ const BillingFinancials = (services) => {
                     disabled={billing.isLocked}
                     className={styles.buttonRemove}
                     startIcon={<Icon className="fas fa-ban" />}
-                    onClick={changeCardValue('remove', billing.id)}
+                    onClick={removeElement(billing.id)}
                   >
                     Remover
                   </Button>
