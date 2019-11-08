@@ -4,7 +4,7 @@
  * Copyright (c) 2019 Instabuild
  */
 
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -15,7 +15,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from 'react-select';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -23,51 +22,50 @@ import DateFnsUtils from '@date-io/date-fns';
 import styles from './BillingFinancials.module.scss';
 
 const BillingFinancials = (services) => {
-  const [count, setCount] = useState(1);
-  const [clickedOne, setClickedOne] = useState(true);
-  const [firstBillingDate, setFirstBillingDate] = useState(new Date());
-  const [lastBillingDate, setLastBillingDate] = useState(new Date());
-  const [cardValue, setCardValue] = useState({
-    id: '',
-    billingCycle: '',
-    firstBillingDate: '',
-    description: '',
+  const cardValue = {
+    id: 0,
+    billingCycle: 'Una vez',
     billingAmount: '',
-    lastBillingDate: '',
-  });
-
-  const changeToEdit = () => {
-    setClickedOne(!clickedOne);
-  }
-
-  const changeToSave = () => {
-    setClickedOne(!clickedOne);
-  }
-
-  const changeDate = (name) => (date) => {
-    name === "firstBillingDate" ? setFirstBillingDate(date) : setLastBillingDate(date);
-    setCardValue({ ...cardValue, [name]: date });
-  }
-
-  const saveCardValue = (name) => (e) => {
-    setCardValue({ ...cardValue, [name]: e.target.value });
+    description: '',
+    firstBillingDate: `${new Date()}`,
+    lastBillingDate: `${new Date()}`,
+    isLocked: false,
   };
+  const [billings, setBillings] = useState([]);
+  const [lastId, setLastId] = useState(0);
 
-  const saveCardValueSelect = (name) => (label) => {
-    setCardValue({ ...cardValue, [name]: label.value });
+  const changeCardValue = (name, id, isDate, isSelect) => (e) => {
+    let billingsArray = [...billings];
+    const billIndex = billings.findIndex((element) => {
+      return element.id === id;
+    });
+
+    let bill = {};
+
+    if (isDate) {
+      bill = { ...billingsArray[billIndex], [name]: e };
+    } else if (isSelect) {
+      console.log('Select es', e.value);
+      bill = { ...billingsArray[billIndex], [name]: e.value };
+    } else if (name === true) {
+      bill = { ...billingsArray[billIndex], isLocked: true };
+    } else if (name === false) {
+      bill = { ...billingsArray[billIndex], isLocked: false };
+    } else {
+      bill = { ...billingsArray[billIndex], [name]: e.target.value };
+    }
+
+    billingsArray[billIndex] = bill;
+    setBillings(billingsArray);
+    console.log('Las otras cuentas son', billings);
+    console.log('Las cuentas son', billingsArray);
   };
 
   const addBilling = () => {
-    setCount(count + 1);
+    const newBill = { ...cardValue, id: lastId + 1 };
+    setBillings([...billings, newBill]);
+    setLastId(lastId + 1);
   };
-
-  const removeBilling = () => {
-    setCount(count - 1);
-  };
-
-  const saveValues = () => {
-    console.log("LA DATA ES:", cardValue)
-  }
 
   const suggestions = [
     { label: 'Una vez' },
@@ -96,16 +94,16 @@ const BillingFinancials = (services) => {
   };
 
   const displayComponent = () => {
-    const components = [];
-    for (let i = 0; i < count; i++) {
-      components.push(
-        <Card key={i} className={styles.cardForm}>
+    return billings.map((billing, index) => {
+      return (
+        <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
             <div className={styles.gridContainer}>
               <div className={styles.columnFullLeft}>
-                <Select className={styles.Select}
+                <Select
+                  className={styles.Select}
                   inputId="react-select-single"
-                  isDisabled={!clickedOne}
+                  isDisabled={billing.isLocked}
                   TextFieldProps={{
                     label: 'Ciclo de facturación',
                     InputLabelProps: {
@@ -115,20 +113,33 @@ const BillingFinancials = (services) => {
                   }}
                   placeholder="Ciclo de facturación"
                   options={suggestions}
-                  onChange={saveCardValueSelect('billingCycle')}
+                  value={{
+                    label: billing.billingCycle,
+                    value: billing.billingCycle,
+                  }}
+                  onChange={changeCardValue(
+                    'billingCycle',
+                    billing.id,
+                    false,
+                    true,
+                  )}
                   components={Option}
                 />
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disableToolbar
                     variant="inline"
-                    disabled={!clickedOne}
+                    disabled={billing.isLocked}
                     format="MM/dd/yyyy"
                     margin="normal"
                     id="date-picker-inline"
                     label="Primera Fecha de Cobro"
-                    value={firstBillingDate}
-                    onChange={changeDate("firstBillingDate")}
+                    value={billing.firstBillingDate}
+                    onChange={changeCardValue(
+                      'firstBillingDate',
+                      billing.id,
+                      true,
+                    )}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
@@ -136,12 +147,13 @@ const BillingFinancials = (services) => {
                 </MuiPickersUtilsProvider>
                 <TextField
                   fullWidth
-                  disabled={!clickedOne}
+                  disabled={billing.isLocked}
                   className={styles.textField}
                   label="Descripción"
                   margin="normal"
                   variant="outlined"
-                  onChange={saveCardValue('description')}
+                  value={billing.description}
+                  onChange={changeCardValue('description', billing.id)}
                 />
               </div>
               <div className={styles.columnFullRigth}>
@@ -149,12 +161,13 @@ const BillingFinancials = (services) => {
                   <TextField
                     required
                     fullWidth
-                    disabled={!clickedOne}
+                    disabled={billing.isLocked}
                     className={styles.textField}
                     label="cuenta de cobro (pesos colombiano)"
                     margin="normal"
                     variant="outlined"
-                    onChange={saveCardValue('billingAmount')}
+                    value={billing.billingAmount}
+                    onChange={changeCardValue('billingAmount', billing.id)}
                   />
                 </div>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -163,11 +176,15 @@ const BillingFinancials = (services) => {
                     variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
-                    disabled={!clickedOne}
+                    disabled={billing.isLocked}
                     id="date-picker-inline"
                     label="Última Fecha de Cobro"
-                    value={lastBillingDate}
-                    onChange={changeDate("lastBillingDate")}
+                    value={billing.lastBillingDate}
+                    onChange={changeCardValue(
+                      'lastBillingDate',
+                      billing.id,
+                      true,
+                    )}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
@@ -177,39 +194,43 @@ const BillingFinancials = (services) => {
                   <Button
                     variant="contained"
                     color="secondary"
-                    disabled={!clickedOne}
+                    disabled={billing.isLocked}
                     className={styles.buttonRemove}
                     startIcon={<Icon className="fas fa-ban" />}
-                    onClick={removeBilling}>
-                    Remover
-                    </Button>
-                  {clickedOne ? (<Button
-                    variant="contained"
-                    color="primary"
-                    className={styles.button}
-                    startIcon={<AddIcon />}
-                    onClick={changeToSave}
+                    onClick={changeCardValue('remove', billing.id)}
                   >
-                    Guardar
-                  </Button>) : (<Button
+                    Remover
+                  </Button>
+                  {billing.isLocked ? (
+                    <Button
                       variant="contained"
                       color="primary"
                       className={styles.button}
                       startIcon={<Icon className="fas fa-pencil-alt" />}
-                      onClick={changeToEdit}
+                      onClick={changeCardValue(false, billing.id)}
                     >
                       Editar
-                  </Button>)}
-
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={styles.button}
+                      startIcon={<AddIcon />}
+                      onClick={changeCardValue(true, billing.id)}
+                    >
+                      Guardar
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
           </CardContent>
-        </Card>,
+        </Card>
       );
-    }
-    return components || null;
+    });
   };
+
   return (
     <Fragment>
       {displayComponent()}
