@@ -22,7 +22,6 @@ const Option = (props) => {
 };
 
 const OrganizationContact = () => {
-
   const [organizationModal, setOrganizationModal] = useState({
     isOpen: false,
     isEditable: false,
@@ -40,17 +39,18 @@ const OrganizationContact = () => {
   const [organizations, setOrganizations] = useState([]);
 
   const searchOrganization = (organizationToSearch) => {
-    ContractService
-      .getOrganizationUnitById(organizationToSearch)
+    ContractService.getOrganizationUnitById(organizationToSearch)
       .then((response) => {
         setOrganizationModal({
-          ...organizationModal, editableInfo: response.data, isOpen: true
-        })
+          ...organizationModal,
+          editableInfo: response.data,
+          isOpen: true,
+        });
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   const searchForOrganization = () => {
     if (organizationModal.currentOrganization.value !== '') {
@@ -60,19 +60,21 @@ const OrganizationContact = () => {
 
   const handleOpenOrClose = () => {
     setOrganizationModal({ isOpen: !organizationModal.isOpen });
-  }
+  };
 
   const isChanged = (name) => (label) => {
     setOrganizationContacts({ ...organizationContacts, [name]: label.value });
-  }
+  };
 
   const isChangedText = (name) => (e) => {
-    setOrganizationContacts({ ...organizationContacts, [name]: e.target.value });
-  }
+    setOrganizationContacts({
+      ...organizationContacts,
+      [name]: e.target.value,
+    });
+  };
 
   const newOrganization = (organizationName) => {
-    ContractService
-      .postOrganizationUnit({ organizationName })
+    ContractService.postOrganizationUnit({ organizationName })
       .then((response) => {
         const currentOrganization = {
           value: response.data.id,
@@ -84,11 +86,10 @@ const OrganizationContact = () => {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   const updateOrganization = (id, organizationName, contractId) => {
-    ContractService
-      .putOrganizationUnit(id, organizationName, contractId)
+    ContractService.putOrganizationUnit(id, organizationName, contractId)
       .then((response) => {
         const index = organizations.findIndex(
           (category) => category.value === response.data.id,
@@ -105,25 +106,17 @@ const OrganizationContact = () => {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
   return (
     <div className={styles.gridContainer}>
       <div className={styles.columnFullLeft}>
-        <div className={styles.selectColumnAlone}>
-          <Select
-            inputId="react-select-single"
-            TextFieldProps={{
-              label: 'Unidad De Negocio',
-              InputLabelProps: {
-                htmlFor: 'react-select-single',
-                shrink: true,
-              },
-            }}
-            onChange={isChanged('businessUnit')}
-            placeholder="Unidad De Negocio"
-            components={Option}
-          />
-        </div>
+        <TextField
+          className={styles.TextField}
+          label="Unidad De Negocio"
+          margin="normal"
+          onChange={isChangedText('businessUnit')}
+          variant="outlined"
+        />
         <div className={styles.selectColumnAlone}>
           <Select
             inputId="react-select-single"
@@ -140,7 +133,7 @@ const OrganizationContact = () => {
           />
         </div>
       </div>
-      <div className={styles.columnFullRigth} >
+      <div className={styles.columnFullRigth}>
         <div className={styles.colmn}>
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
@@ -203,7 +196,8 @@ const OrganizationContact = () => {
             newOrganization={newOrganization}
             updateCategory={updateOrganization}
             editable={organizationModal.isEditable}
-            informationToEdit={organizationModal.editableInfo} />
+            informationToEdit={organizationModal.editableInfo}
+          />
         </DialogContent>
       </Dialog>
     </div>
