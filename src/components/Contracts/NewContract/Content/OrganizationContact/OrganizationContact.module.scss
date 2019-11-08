@@ -39,11 +39,6 @@
   width: 50% !important;
 }
 
-.SelectSimple {
-  margin-top: 6%;
-  margin-bottom: 5%;
-}
-
 .columnFullLeft {
   display: flex;
   flex-direction: column;
@@ -58,17 +53,21 @@
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  width: 75% !important;
+  width: 25% !important;
+  margin-top: -3px;
 }
+
 .textField {
   width: 50vw;
 }
+
 .multiline {
   width: 100vw;
 }
 
 .leftInputs {
   width: 33vw;
+  margin-top: 4% !important;
 }
 
 .selects {
@@ -79,12 +78,30 @@
   width: 25vw !important;
 }
 
-.buttons {
-  position: relative;
-  left: 25% !important;
+.buttonColumn {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  margin-top: -4px;
 }
 
 .leftEntry {
   position: relative;
   top: -55% !important;
+}
+
+.options {
+  background-color: $defaultWhite-color;
+  z-index: 999999 !important;
+}
+
+.textField,
+.leftInputs {
+  z-index: 0 !important;
+}
+
+.selectColumnAlone {
+  width: 100%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }

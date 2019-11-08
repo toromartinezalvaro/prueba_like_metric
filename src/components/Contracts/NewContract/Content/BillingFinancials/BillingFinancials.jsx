@@ -28,6 +28,7 @@ const BillingFinancials = (services) => {
   const [firstBillingDate, setFirstBillingDate] = useState(new Date());
   const [lastBillingDate, setLastBillingDate] = useState(new Date());
   const [cardValue, setCardValue] = useState({
+    id: '',
     billingCycle: '',
     firstBillingDate: '',
     description: '',
@@ -104,6 +105,7 @@ const BillingFinancials = (services) => {
               <div className={styles.columnFullLeft}>
                 <Select className={styles.Select}
                   inputId="react-select-single"
+                  isDisabled={!clickedOne}
                   TextFieldProps={{
                     label: 'Ciclo de facturación',
                     InputLabelProps: {
@@ -120,6 +122,7 @@ const BillingFinancials = (services) => {
                   <KeyboardDatePicker
                     disableToolbar
                     variant="inline"
+                    disabled={!clickedOne}
                     format="MM/dd/yyyy"
                     margin="normal"
                     id="date-picker-inline"
@@ -133,6 +136,7 @@ const BillingFinancials = (services) => {
                 </MuiPickersUtilsProvider>
                 <TextField
                   fullWidth
+                  disabled={!clickedOne}
                   className={styles.textField}
                   label="Descripción"
                   margin="normal"
@@ -145,6 +149,7 @@ const BillingFinancials = (services) => {
                   <TextField
                     required
                     fullWidth
+                    disabled={!clickedOne}
                     className={styles.textField}
                     label="cuenta de cobro (pesos colombiano)"
                     margin="normal"
@@ -158,6 +163,7 @@ const BillingFinancials = (services) => {
                     variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
+                    disabled={!clickedOne}
                     id="date-picker-inline"
                     label="Última Fecha de Cobro"
                     value={lastBillingDate}
@@ -171,7 +177,8 @@ const BillingFinancials = (services) => {
                   <Button
                     variant="contained"
                     color="secondary"
-                    className={styles.button}
+                    disabled={!clickedOne}
+                    className={styles.buttonRemove}
                     startIcon={<Icon className="fas fa-ban" />}
                     onClick={removeBilling}>
                     Remover
@@ -181,7 +188,7 @@ const BillingFinancials = (services) => {
                     color="primary"
                     className={styles.button}
                     startIcon={<AddIcon />}
-                    onClick={changeToEdit}
+                    onClick={changeToSave}
                   >
                     Guardar
                   </Button>) : (<Button
@@ -189,7 +196,7 @@ const BillingFinancials = (services) => {
                       color="primary"
                       className={styles.button}
                       startIcon={<Icon className="fas fa-pencil-alt" />}
-                      onClick={changeToSave}
+                      onClick={changeToEdit}
                     >
                       Editar
                   </Button>)}

@@ -283,8 +283,6 @@ class Contracts extends Component {
           maxWidth="md"
         >
           <DialogContent>
-            {console.log(this.state.businessPatnerModal.isEditable)}
-
             <BusinessPatner
               handleCloseBusinessPatner={this.handleCloseBusinessPatner}
               newBusinessPartner={this.newBusinessPartner}

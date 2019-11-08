@@ -13,7 +13,7 @@ import Icon from '@material-ui/core/Icon';
 import OrganizationContact from '../../Content/OrganizationContact/OrganizationContact';
 import styles from './OrganizationContact.module.scss';
 
-const ExpandOrganizationContact = () => {
+const ExpandOrganizationContact = (services) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mt={4}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
@@ -28,7 +28,7 @@ const ExpandOrganizationContact = () => {
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Typography>
-          <OrganizationContact />
+          <OrganizationContact services={services}/>
         </Typography>
       </ExpansionPanelDetails>
     </ExpansionPanel>

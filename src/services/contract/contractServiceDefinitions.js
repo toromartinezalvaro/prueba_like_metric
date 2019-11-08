@@ -17,10 +17,15 @@ const ContractServiceDefinitions = {
   getAllPatners: () => `${API_PATH}contract/business-partner`,
   getCategoryById: (categoryToSearch) =>
     `${API_PATH}contract/contract-category/find/${categoryToSearch}`,
+  organizationUnit: () => `${API_PATH}contract/organization-unit`,
+  getAllOrganizationUnit: () => `${API_PATH}contract/organization-unit`,
+  getOrganizationUnitById: (organizationToSearch) =>
+    `${API_PATH}contract/organization-unit/find/${organizationToSearch}`,
   getPartnerById: (partnerToSearch) =>
     `${API_PATH}contract/business-partner/find/${partnerToSearch}`,
   categoryUpdate: () => `${API_PATH}contract/contract-category/edit`,
   partnerUpdate: () => `${API_PATH}contract/business-partner/edit`,
+  organizationUnitUpdate: () => `${API_PATH}contract/organization-unit/edit`
 };
 
 export default ContractServiceDefinitions;

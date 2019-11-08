@@ -12,6 +12,10 @@ export default class ContractService extends Services {
     return this.post(ContractServiceDefinitions.category(), data);
   }
 
+  postOrganizationUnit(data) {
+    return this.post(ContractServiceDefinitions.organizationUnit(), data);
+  }
+
   postBusinessPatnerContract(data) {
     return this.post(ContractServiceDefinitions.businessContract(), data);
   }
@@ -29,6 +33,12 @@ export default class ContractService extends Services {
   getCategoryById(categoryToSearch) {
     return this.get(
       ContractServiceDefinitions.getCategoryById(categoryToSearch),
+    );
+  }
+
+  getOrganizationUnitById(organizationToSearch) {
+    return this.get(
+      ContractServiceDefinitions.getOrganizationUnitById(organizationToSearch),
     );
   }
 
@@ -52,5 +62,9 @@ export default class ContractService extends Services {
 
   putCategoryContracts(data) {
     return this.put(ContractServiceDefinitions.categoryUpdate(), data);
+  }
+
+  putOrganizationUnit(data) {
+    return this.put(ContractServiceDefinitions.organizationUnitUpdate(), data);
   }
 }
