@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import ReactTooltip from 'react-tooltip';
+import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import {
   Dialog,
@@ -231,7 +232,6 @@ class SalesRoom extends Component {
     } else {
       this.props.activateBadgeIncrement(false);
     }
-
     this.setState({ isLoadingModal: true });
     this.services
       .putState(
@@ -258,7 +258,7 @@ class SalesRoom extends Component {
           collectedIncrement,
           groupId: this.state.groupId,
           isBadgeIncrement,
-          deadlineDate: Number(this.state.deadlineDate.getTime()),
+          deadlineDate: Number(moment(this.state.deadlineDate).format('x')),
         },
         this.props.match.params.towerId,
         this.props.match.params.clientId,
