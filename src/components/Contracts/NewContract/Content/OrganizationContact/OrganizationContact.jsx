@@ -40,16 +40,18 @@ class OrganizationContact extends Component {
         additionalContact: '',
       },
       organizations: [],
-    }
+      toEdit: '',
+    };
   }
 
   componentDidMount() {
     this.service
       .getAllOrganizationUnit()
       .then((response) => {
+        console.log('response', response);
         const organizations = response.data.map((organization) => {
           return {
-            value: organization.name,
+            value: organization.id,
             label: organization.name,
           };
         });
@@ -62,18 +64,25 @@ class OrganizationContact extends Component {
       });
   }
 
-  searchForOrganization = () => {
-    if (this.organizationModal.currentOrganization.value !== '') {
-      this.props.searchOrganization(this.organizationModal.currentOrganization.value);
-    }
-  };
-
   handleOpenOrClose = () => {
-    this.setState({ organizationModal: { isOpen: !this.state.organizationModal.isOpen } });
+    this.setState({
+      organizationModal: { isOpen: !this.state.organizationModal.isOpen },
+    });
   };
 
   isChanged = (name) => (label) => {
-    this.setState({ ...this.state.organizationContacts, [name]: label.value });
+    console.log('Soy el label', label.value);
+    this.setState({
+      organizationContacts: {
+        ...this.state.organizationContacts,
+        [name]: label.value,
+      },
+      organizationModal: {
+        ...this.state.organizationModal,
+        currentOrganization: label.name,
+      },
+      toEdit: label.value,
+    });
   };
 
   isChangedText = (name) => (e) => {
@@ -83,25 +92,56 @@ class OrganizationContact extends Component {
     });
   };
 
+  searchForOrganization = () => {
+    if (this.state.organizationModal.currentOrganization !== '') {
+      console.log('current', this.state.toEdit);
+      this.service
+        .getOrganizationUnitById(this.state.toEdit)
+        .then((response) => {
+          this.setState({
+            organizationModal: {
+              ...this.state.organizationModal,
+              editableInfo: response.data,
+              isOpen: true,
+            },
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   newOrganization = (name) => {
-    this.service.postOrganizationUnit({ name })
+    this.service
+      .postOrganizationUnit(name)
       .then((response) => {
         const currentOrganization = {
-          value: response.data.name,
+          value: response.data.id,
           label: response.data.name,
         };
+        console.log(currentOrganization);
         this.setState({
-          organizations:currentOrganization,
-          organizationModal: { ...this.state.organizationModal, currentOrganization }
+          organizations: [...this.state.organizations, currentOrganization],
+          organizationModal: {
+            ...this.state.organizationModal,
+            currentOrganization,
+          },
         });
+        console.log(
+          'Los datos son: ',
+          this.state.organizationModal.currentOrganization,
+          this.state.organizations,
+        );
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
-  updateOrganization = (id, name, contractId) => {
-    this.service.putOrganizationUnit(id, name, contractId)
+  updateOrganization = (data) => {
+    this.service
+      .putOrganizationUnit(data)
       .then((response) => {
         const index = this.state.organizations.findIndex(
           (category) => category.value === response.data.id,
@@ -113,7 +153,12 @@ class OrganizationContact extends Component {
         };
         temporal[index] = currentOrganization;
         this.setState({ organizations: temporal });
-        this.setState(...this.state.organizationModal, currentOrganization);
+        this.setState({
+          organizationModal: {
+            ...this.state.organizationModal,
+            currentOrganization,
+          },
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -163,8 +208,8 @@ class OrganizationContact extends Component {
                   placeholder="Unidad Organizacional"
                   onChange={this.isChanged('organizationUnit')}
                   components={Option}
-                  value={this.state.organizations}
-                  options={this.state.organizationModal.currentOrganization}
+                  value={this.state.organizationModal.currentOrganization}
+                  options={this.state.organizations}
                 />
               </div>
               <div className={styles.buttonColumn}>
@@ -210,7 +255,7 @@ class OrganizationContact extends Component {
             <OrganizationUnit
               handleOpenOrClose={this.handleOpenOrClose}
               newOrganization={this.newOrganization}
-              updateCategory={this.updateOrganization}
+              updateOrganization={this.updateOrganization}
               editable={this.state.organizationModal.isEditable}
               informationToEdit={this.state.organizationModal.editableInfo}
             />
@@ -218,8 +263,8 @@ class OrganizationContact extends Component {
         </Dialog>
       </div>
     );
-  };
-};
+  }
+}
 OrganizationContact.propTypes = {
   searchOrganization: PropTypes.func,
 };

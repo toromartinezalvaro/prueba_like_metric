@@ -2,14 +2,14 @@
 
 .textField {
   z-index: 0 !important;
-  width: 70% !important;
+  width: 85% !important;
 }
 
 .card {
   display: flex;
   align-self: center;
   position: relative;
-  left: 30%;
+  width: 35vw !important;
 }
 
 .inputfile {
@@ -56,11 +56,23 @@
 }
 
 .buttons {
-  margin-left: 7px;
+  margin-left: 2% !important;
 }
 
 .attachment {
   display: flex !important;
   flex: 1;
   flex-direction: row;
+  width: 65vw;
+}
+
+.CardAttach {
+  display: flex !important;
+  flex: 1;
+  flex-direction: row;
+}
+
+.inputs {
+  display: flex !important;
+  flex-direction: column !important;
 }

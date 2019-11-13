@@ -4,7 +4,7 @@
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
 
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
@@ -22,7 +22,7 @@ const OrganizationUnit = ({
   const [textOfOrganization, setTextOfOrganization] = useState('');
   const changeTextOfOrganization = (e) => {
     setTextOfOrganization(e.target.value);
-  }
+  };
   const sendTextOfCategory = () => {
     if (informationToEdit !== undefined) {
       updateOrganization({
@@ -32,10 +32,17 @@ const OrganizationUnit = ({
       });
       handleOpenOrClose();
     } else {
-      newOrganization(textOfOrganization);
+      newOrganization({ name: textOfOrganization });
       handleOpenOrClose();
     }
   };
+
+  useEffect(() => {
+    if (informationToEdit !== undefined) {
+      setTextOfOrganization(informationToEdit.name);
+    }
+  }, []);
+
   return (
     <Fragment>
       <Typography className={styles.heading} variant="h4">

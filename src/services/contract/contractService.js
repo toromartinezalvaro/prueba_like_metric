@@ -13,6 +13,7 @@ export default class ContractService extends Services {
   }
 
   postOrganizationUnit(data) {
+    console.log('Las datas fueron', data);
     return this.post(ContractServiceDefinitions.organizationUnit(), data);
   }
 
@@ -57,9 +58,7 @@ export default class ContractService extends Services {
   }
 
   getAllOrganizationUnit() {
-    return this.get(
-      ContractServiceDefinitions.getAllOrganizationUnit(),
-    );
+    return this.get(ContractServiceDefinitions.getAllOrganizationUnit());
   }
 
   putBusinessPartner(data) {
