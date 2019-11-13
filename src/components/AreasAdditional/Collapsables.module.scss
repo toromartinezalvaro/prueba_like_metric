@@ -1,0 +1,33 @@
+/*
+ * Created Date: Wednesday November 13th 2019
+ * Author: Caraham
+ * -----
+ * Last Modified: Wednesday, 13th November 2019 2:24:29 pm
+ * Modified By: the developer formerly known as Caraham
+ * -----
+ * Copyright (c) 2019 Instabuild
+ */
+
+.DeleteButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.TextFields {
+  width: 100%;
+  justify-content: space-evenly;
+  display: flex;
+  align-items: baseline;
+}
+
+.MuiFormControl {
+  width: 200px !important;
+}
