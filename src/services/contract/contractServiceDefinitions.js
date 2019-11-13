@@ -25,7 +25,8 @@ const ContractServiceDefinitions = {
     `${API_PATH}contract/business-partner/find/${partnerToSearch}`,
   categoryUpdate: () => `${API_PATH}contract/contract-category/edit`,
   partnerUpdate: () => `${API_PATH}contract/business-partner/edit`,
-  organizationUnitUpdate: () => `${API_PATH}contract/organization-unit/edit`
+  organizationUnitUpdate: () => `${API_PATH}contract/organization-unit/edit`,
+  uploadImage: () => `${API_PATH}contract/upload-image`,
 };
 
 export default ContractServiceDefinitions;

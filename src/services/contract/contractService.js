@@ -56,6 +56,12 @@ export default class ContractService extends Services {
     return this.get(ContractServiceDefinitions.getAllPatners());
   }
 
+  getAllOrganizationUnit() {
+    return this.get(
+      ContractServiceDefinitions.getAllOrganizationUnit(),
+    );
+  }
+
   putBusinessPartner(data) {
     return this.put(ContractServiceDefinitions.partnerUpdate(), data);
   }
@@ -66,5 +72,9 @@ export default class ContractService extends Services {
 
   putOrganizationUnit(data) {
     return this.put(ContractServiceDefinitions.organizationUnitUpdate(), data);
+  }
+
+  postImages(data) {
+    return this.post(ContractServiceDefinitions.uploadImage(), data);
   }
 }

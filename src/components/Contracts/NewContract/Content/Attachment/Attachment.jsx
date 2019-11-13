@@ -6,14 +6,16 @@ import Fab from '@material-ui/core/Fab';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-
+import ContractService from '../../../../../services/contract/contractService';
 import styles from './Attachment.module.scss';
 
 class Attachment extends Component {
   constructor(props) {
     super(props);
+    this.services = new ContractService();
     this.state = {
       multerImage: '',
+      imgObject: [],
     };
   }
 
@@ -22,9 +24,31 @@ class Attachment extends Component {
 
     imageFormObject.append('imageName', `insta-image-${Date.now()}`);
     imageFormObject.append('imageData', e.target.files[0]);
-
+    console.log("que pedo", e.target.files[0].name);
     this.setState({ multerImage: URL.createObjectURL(e.target.files[0]) });
+    const imgObject = e.target.files[0];
+    this.setState({ imgObject: { ...this.state.imgObject, ...imgObject } });
+    // this.services.postImages(imageFormObject);
   };
+
+  displayComponents = () => {
+    this.state.imgObject.map((image) => {
+      return (
+        <Card key={image.id}>
+          <CardContent>
+            <div className="attachment">
+              {image.name}
+              <Button
+                variant="contained"
+                color="secondary"
+                className={styles.buttons}
+              >X</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )
+    })
+  }
 
   render() {
     return (
@@ -32,6 +56,9 @@ class Attachment extends Component {
         <Card className={styles.card}>
           <CardContent>
             <div className={styles.container}>
+              {
+                this.displayComponents()
+              }
               <input
                 type="file"
                 id="upload"
@@ -39,11 +66,6 @@ class Attachment extends Component {
                 onChange={(e) => this.uploadImage(e)}
               />
               <label htmlFor="upload">Adjuntar archivo</label>
-              <img
-                src={this.state.multerImage}
-                className={styles.uploadedImage}
-                alt="uploaded-photo"
-              />
             </div>
 
             <div className={styles.row}>

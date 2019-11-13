@@ -18,7 +18,6 @@ const OrganizationUnit = ({
   newOrganization,
   updateOrganization,
   informationToEdit,
-  services
 }) => {
   const [textOfOrganization, setTextOfOrganization] = useState('');
   const changeTextOfOrganization = (e) => {
@@ -28,7 +27,7 @@ const OrganizationUnit = ({
     if (informationToEdit !== undefined) {
       updateOrganization({
         id: informationToEdit.id,
-        categoryName: textOfOrganization,
+        name: textOfOrganization,
         contractId: informationToEdit.contractId,
       });
       handleOpenOrClose();
@@ -50,7 +49,7 @@ const OrganizationUnit = ({
         </div>
       </Typography>
       <div container className={styles.gridContainer}>
-        <div className={styles.categoryCreator}>
+        <div className={styles.creator}>
           <TextField
             fullWidth
             required

@@ -58,3 +58,9 @@
 .buttons {
   margin-left: 7px;
 }
+
+.attachment {
+  display: flex !important;
+  flex: 1;
+  flex-direction: row;
+}
