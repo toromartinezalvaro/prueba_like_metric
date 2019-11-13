@@ -24,14 +24,12 @@ class Attachment extends Component {
   uploadImage = (e) => {
     const imageFormObject = new FormData();
 
-    imageFormObject.append('imageName', `insta-image-${Date.now()}`);
-    imageFormObject.append('imageData', e.target.files[0]);
-    console.log('que pedo', e.target.files[0].name);
+    imageFormObject.append('description', `insta-image-${Date.now()}`);
+    imageFormObject.append('type', 'IMAGE');
+    imageFormObject.append('attachmentPath', e.target.files[0]);
     this.setState({ multerImage: URL.createObjectURL(e.target.files[0]) });
     const imgObject = e.target.files[0];
     this.setState({ imgObject: [...this.state.imgObject, { imgObject }] });
-    console.log('que pedo', imageFormObject);
-    // this.services.postImages(imageFormObject);
   };
 
   imageRemove = (index) => () => {
@@ -58,13 +56,11 @@ class Attachment extends Component {
   printUrl = () => {
     this.setState({
       urlObject: [...this.state.urlObject, this.state.urlText.text],
-      urlText: '',
     });
   };
 
   displayComponents = () => {
     return this.state.imgObject.map((image, i) => {
-      console.log(image);
       return (
         <Card className={styles.CardAttach} key={i}>
           <CardContent>
@@ -91,7 +87,6 @@ class Attachment extends Component {
         <Card className={styles.CardAttach} key={i}>
           <CardContent>
             <div className={styles.attachment}>
-              {console.log('toma tu url', url)}
               <a href={url}>{url}</a>
               <Button
                 variant="contained"

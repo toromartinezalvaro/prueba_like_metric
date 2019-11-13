@@ -48,7 +48,6 @@ class OrganizationContact extends Component {
     this.service
       .getAllOrganizationUnit()
       .then((response) => {
-        console.log('response', response);
         const organizations = response.data.map((organization) => {
           return {
             value: organization.id,
@@ -71,7 +70,6 @@ class OrganizationContact extends Component {
   };
 
   isChanged = (name) => (label) => {
-    console.log('Soy el label', label.value);
     this.setState({
       organizationContacts: {
         ...this.state.organizationContacts,
@@ -94,7 +92,6 @@ class OrganizationContact extends Component {
 
   searchForOrganization = () => {
     if (this.state.organizationModal.currentOrganization !== '') {
-      console.log('current', this.state.toEdit);
       this.service
         .getOrganizationUnitById(this.state.toEdit)
         .then((response) => {
@@ -120,7 +117,6 @@ class OrganizationContact extends Component {
           value: response.data.id,
           label: response.data.name,
         };
-        console.log(currentOrganization);
         this.setState({
           organizations: [...this.state.organizations, currentOrganization],
           organizationModal: {
@@ -128,11 +124,6 @@ class OrganizationContact extends Component {
             currentOrganization,
           },
         });
-        console.log(
-          'Los datos son: ',
-          this.state.organizationModal.currentOrganization,
-          this.state.organizations,
-        );
       })
       .catch((error) => {
         console.log(error);

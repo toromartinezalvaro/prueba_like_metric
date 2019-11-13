@@ -13,7 +13,6 @@ export default class ContractService extends Services {
   }
 
   postOrganizationUnit(data) {
-    console.log('Las datas fueron', data);
     return this.post(ContractServiceDefinitions.organizationUnit(), data);
   }
 
@@ -73,7 +72,7 @@ export default class ContractService extends Services {
     return this.put(ContractServiceDefinitions.organizationUnitUpdate(), data);
   }
 
-  postImages(data) {
-    return this.post(ContractServiceDefinitions.uploadImage(), data);
+  postAttachment(data) {
+    return this.post(ContractServiceDefinitions.uploadAttachment(), data);
   }
 }
