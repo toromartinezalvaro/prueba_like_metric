@@ -27,17 +27,20 @@ class Attachment extends Component {
     console.log("que pedo", e.target.files[0].name);
     this.setState({ multerImage: URL.createObjectURL(e.target.files[0]) });
     const imgObject = e.target.files[0];
-    this.setState({ imgObject: { ...this.state.imgObject, ...imgObject } });
+    this.setState({ imgObject: [...this.state.imgObject, { imgObject }] });
+    console.log("que pedo", imgObject);
+    console.log("que pedo", this.state.imgObject);
     // this.services.postImages(imageFormObject);
   };
 
   displayComponents = () => {
-    this.state.imgObject.map((image) => {
+    return this.state.imgObject.map((image) => {
+      console.log(image);
       return (
-        <Card key={image.id}>
+        <Card key={image.imgObject.id}>
           <CardContent>
             <div className="attachment">
-              {image.name}
+              <p>{image.imgObject.name}</p>
               <Button
                 variant="contained"
                 color="secondary"
