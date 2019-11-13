@@ -119,6 +119,14 @@ const SideMenu = ({
                 {agent.isAuthorized([Role.Admin, Role.Super]) &&
                   itemForSlidebar(
                     style.MenuItem,
+                    DashboardRoutes.base +
+                      DashboardRoutes.areasAdditional.value,
+                    'fa-layer-group',
+                    'Areas Adicionales',
+                  )}
+                {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                  itemForSlidebar(
+                    style.MenuItem,
                     DashboardRoutes.base + DashboardRoutes.prime.value,
                     'fa-sort-amount-up',
                     'Primas',
