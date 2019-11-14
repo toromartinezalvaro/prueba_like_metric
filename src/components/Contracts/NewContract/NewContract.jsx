@@ -67,15 +67,11 @@ const NewContract = ({
           partnerProp={partnerProp}
         />
         <br />
-        <ExpandLifeCycle />
+        <ExpandBillingFinancials
+          services={services} />
         <br />
-        <ExpandBillingFinancials 
-          services={services}/>
-        <br />
-        <ExpandOrganizationContact 
-          services={services}/>
-        <br />
-        <ExpandCustom />
+        <ExpandOrganizationContact
+          services={services} />
         <br />
         <ExpandAttachment />
         <br />

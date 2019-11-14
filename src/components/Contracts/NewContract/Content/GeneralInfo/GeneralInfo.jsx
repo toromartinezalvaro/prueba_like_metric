@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import statusOfContractEnum from './statusOfContract.enum';
 
 import styles from './GeneralInfo.module.scss';
+import { isTSParameterProperty } from '@babel/types';
 
 const Option = (props) => {
   return <components.Option {...props} className={styles.options} />;
@@ -24,6 +25,7 @@ const GeneralInfo = ({
   handleOpenBusinessPatner,
   handleCloseCategory,
   searchCategory,
+  searchItem,
   searchBusinessPartner,
   categories,
   partners,
@@ -31,8 +33,10 @@ const GeneralInfo = ({
   disableEditable,
   categoryProp,
   partnerProp,
+  itemProp,
   changeForSearchCategory,
   changeForSearchPartner,
+  changeForSearchItem,
 }) => {
   const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
@@ -46,6 +50,7 @@ const GeneralInfo = ({
       searchCategory(categoryProp.value);
     }
   };
+
   const searchForPatner = () => {
     if (partnerProp.value !== '') {
       searchBusinessPartner(partnerProp.value);
@@ -172,14 +177,16 @@ const GeneralInfo = ({
             className={styles.SelectSimple}
             inputId="react-select-single"
             TextFieldProps={{
-              label: 'Contrato principal',
+              label: 'item',
               InputLabelProps: {
                 htmlFor: 'react-select-single',
                 shrink: true,
               },
             }}
-            placeholder="Contrato principal"
+            placeholder="Item"
             components={Option}
+            options={itemProp}
+            onChange={changeForSearchItem}
           />
         </div>
       </div>
@@ -201,6 +208,7 @@ GeneralInfo.propTypes = {
   categories: PropTypes.array,
   categoryProp: PropTypes.object,
   partnerProp: PropTypes.object,
+  itemProp: PropTypes.object,
 };
 
 export default GeneralInfo;
