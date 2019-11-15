@@ -115,13 +115,13 @@ const GeneralInfo = ({
                 className={styles.selectOption}
                 inputId="react-select-single"
                 TextFieldProps={{
-                  label: 'Selecciona Una categoría',
+                  label: 'Selecciona un grupó',
                   InputLabelProps: {
                     htmlFor: 'react-select-single',
                     shrink: true,
                   },
                 }}
-                placeholder="Selecciona una categoría"
+                placeholder="Selecciona un grupó"
                 options={categories}
                 components={Option}
                 value={categoryProp}

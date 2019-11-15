@@ -70,9 +70,6 @@ const NewContract = ({
         <ExpandBillingFinancials
           services={services} />
         <br />
-        <ExpandOrganizationContact
-          services={services} />
-        <br />
         <ExpandAttachment />
         <br />
         <div className={styles.actionContainer}>

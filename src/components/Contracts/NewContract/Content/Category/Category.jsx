@@ -50,8 +50,8 @@ const Category = ({
         </div>
         <div className={styles.titleExpand}>
           {informationToEdit !== undefined
-            ? 'Editar Categoría'
-            : 'Nueva Categoría'}
+            ? 'Editar Grupo'
+            : 'Nuevo Grupo'}
         </div>
       </Typography>
       <div container className={styles.gridContainer}>
@@ -60,7 +60,7 @@ const Category = ({
             fullWidth
             required
             className={styles.textField}
-            label="Nombre de Categoría"
+            label="Nombre del Grupo"
             margin="normal"
             variant="outlined"
             value={textOfCategory}
