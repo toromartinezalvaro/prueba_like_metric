@@ -2,7 +2,7 @@
  * Created Date: Tuesday November 12th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 13th November 2019 3:35:06 pm
+ * Last Modified: Friday, 15th November 2019 4:53:59 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -22,6 +22,15 @@ class AreasAdditional extends Component {
 
   state = {
     arrayAreaTypes: [],
+  };
+
+  arrayAreaTypesHandler = (areaTypeId, index, key, value) => {
+    const array = [...this.state.arrayAreaTypes];
+    const areaTypeFounded = array.find(
+      (areaType) => areaTypeId === areaType.id,
+    );
+    areaTypeFounded.hola[index][key] = value;
+    this.setState({ arrayAreaTypes: array });
   };
 
   addAreaHandler = (unit, quantity, name) => {
@@ -76,8 +85,10 @@ class AreasAdditional extends Component {
           <Collapsables
             data={this.state.arrayAreaTypes}
             deleteArea={this.deleteArea}
+            arrayAreaTypesHandler={this.arrayAreaTypesHandler}
             addAreaAdditionalHandler={this.addAreaAdditionalHandler}
           ></Collapsables>
+
           <AddArea addAreaHandler={this.addAreaHandler}></AddArea>
         </CardBody>
       </Card>

@@ -2,15 +2,14 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 13th November 2019 4:27:42 pm
+ * Last Modified: Friday, 15th November 2019 4:41:27 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
  */
 
 import React from 'react';
-import NumberFormat from 'react-number-format';
-import moment from 'moment';
+import _ from 'lodash';
 import {
   ExpansionPanel,
   ExpansionPanelDetails,
@@ -25,9 +24,10 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Table from '../UI/Table/Table';
+import Table2 from '../UI2/Table';
+
 import Styles from './Collapsables.module.scss';
 import Matrix from './Matrix/Matrix';
-import Numbers from '../../helpers/numbers';
 
 const Collapsables = (props) => {
   const [activePanel, setActivePanel] = React.useState(null);
@@ -40,7 +40,13 @@ const Collapsables = (props) => {
     }
   };
   return props.data.map((areaType) => {
-    let data = Matrix(areaType, props.addAreaAdditionalHandler);
+    const data = Matrix(areaType, props.arrayAreaTypesHandler);
+    const columns = [
+      { label: 'Nomenclatura', dataKey: 'nomenclature', width: 200 },
+      { label: 'Area', dataKey: 'measure', width: 200 },
+      { label: 'PrecioXMT2', dataKey: 'price', width: 200 },
+      { label: 'Precio', dataKey: 'total', width: 200 },
+    ];
     return (
       <ExpansionPanel
         key={areaType.id}
@@ -66,8 +72,6 @@ const Collapsables = (props) => {
           <div className={Styles.Container}>
             <div className={Styles.TextFields}>
               <TextField
-                /* onChange={onChangeQuantity}
-                 */
                 inputProps={{ min: '0' }}
                 type="number"
                 value={areaType.quantity}
@@ -83,14 +87,16 @@ const Collapsables = (props) => {
               </FormControl>
             </div>
 
-            <Table
+            {/* <Table
               intersect={''}
               headers={['Nomenclatura', 'Area', 'Precio x mts2', 'Precio']}
               columnsMinWidth={true}
-              columns={[]}
+              columns={columns}
               data={data}
               maxHeight={{ maxHeight: '36vh' }}
-            />
+            /> */}
+            {console.log(areaType)}
+            <Table2 columns={columns} data={data}></Table2>
           </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
