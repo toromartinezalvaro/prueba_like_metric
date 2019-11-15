@@ -27,6 +27,13 @@ const ExpandGeneralInfo = ({
   partnerProp,
   changeForSearchCategory,
   changeForSearchPartner,
+  sendGeneralInfo,
+  itemProp,
+  changeForSearchItem,
+  searchItem,
+  handleOpenItem,
+  handleCloseItem,
+  items,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
@@ -45,6 +52,7 @@ const ExpandGeneralInfo = ({
             handleCloseCategory={handleCloseCategory}
             handleOpenBusinessPatner={handleOpenBusinessPatner}
             categories={categories}
+            items={items}
             searchCategory={searchCategory}
             searchBusinessPartner={searchBusinessPartner}
             partners={partners}
@@ -52,8 +60,14 @@ const ExpandGeneralInfo = ({
             disableEditable={disableEditable}
             categoryProp={categoryProp}
             partnerProp={partnerProp}
+            itemProp={itemProp}
+            searchItem={searchItem}
+            changeForSearchItem={changeForSearchItem}
             changeForSearchCategory={changeForSearchCategory}
             changeForSearchPartner={changeForSearchPartner}
+            sendGeneralInfo={sendGeneralInfo}
+            handleOpenItem={handleOpenItem}
+            handleCloseItem={handleCloseItem}
           />
         </Typography>
       </ExpansionPanelDetails>

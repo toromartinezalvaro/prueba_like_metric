@@ -21,9 +21,12 @@ const NewContract = ({
   isOpen,
   handleCloseCategory,
   handleCloseContract,
+  handleCloseItem,
   handleOpenCategory,
   handleOpenBusinessPatner,
+  handleOpenItem,
   categories,
+  items,
   partners,
   editable,
   searchBusinessPartner,
@@ -31,9 +34,13 @@ const NewContract = ({
   searchCategory,
   categoryProp,
   partnerProp,
+  itemProp,
   changeForSearchCategory,
   changeForSearchPartner,
+  changeForSearchItem,
+  sendBillings,
   services,
+  sendGeneralInfo,
 }) => {
   return (
     <Dialog
@@ -55,9 +62,14 @@ const NewContract = ({
           handleOpenCategory={handleOpenCategory}
           handleCloseCategory={handleCloseCategory}
           handleOpenBusinessPatner={handleOpenBusinessPatner}
+          handleCloseItem={handleCloseItem}
+          itemProp={itemProp}
+          changeForSearchItem={changeForSearchItem}
+          handleOpenItem={handleOpenItem}
           searchCategory={searchCategory}
           searchBusinessPartner={searchBusinessPartner}
           categories={categories}
+          items={items}
           partners={partners}
           editable={editable}
           disableEditable={disableEditable}
@@ -65,10 +77,10 @@ const NewContract = ({
           changeForSearchCategory={changeForSearchCategory}
           changeForSearchPartner={changeForSearchPartner}
           partnerProp={partnerProp}
+          sendGeneralInfo={sendGeneralInfo}
         />
         <br />
-        <ExpandBillingFinancials
-          services={services} />
+        <ExpandBillingFinancials sendBillings={sendBillings} />
         <br />
         <ExpandAttachment />
         <br />

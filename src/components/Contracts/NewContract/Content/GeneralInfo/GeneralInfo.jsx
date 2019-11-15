@@ -4,7 +4,7 @@
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
@@ -23,27 +23,42 @@ const Option = (props) => {
 const GeneralInfo = ({
   handleOpenCategory,
   handleOpenBusinessPatner,
-  handleCloseCategory,
   searchCategory,
   searchItem,
   searchBusinessPartner,
+  items,
   categories,
   partners,
-  editable,
-  disableEditable,
   categoryProp,
   partnerProp,
   itemProp,
   changeForSearchCategory,
   changeForSearchPartner,
   changeForSearchItem,
+  sendGeneralInfo,
+  handleOpenItem,
+  handleCloseItem,
 }) => {
+  const [generalInformation, setGeneralInformation] = useState({
+    title: '',
+    bussinesPartner: '',
+    group: '',
+    state: '',
+    contractNumber: '',
+    item: '',
+    description: '',
+  });
+
   const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
       value: contract.state,
       label: contract.state,
     };
   });
+
+  const onChangeText = (name) => (e) => {
+    setGeneralInformation({ ...generalInformation, [name]: e.target.value });
+  };
 
   const searchForCategory = () => {
     if (categoryProp.value !== '') {
@@ -57,6 +72,37 @@ const GeneralInfo = ({
     }
   };
 
+  const searchForItem = () => {
+    if (itemProp.value !== '') {
+      searchItem(itemProp.value);
+    }
+  };
+
+  const changeAndSearchCategory = (currentGroup) => {
+    const currentGroupValue = currentGroup.value;
+    setGeneralInformation({ ...generalInformation, group: currentGroupValue });
+    changeForSearchCategory(currentGroup);
+  };
+
+  const changeAndSearchPartner = (currentPartner) => {
+    const currentPartnerValue = currentPartner.value;
+    setGeneralInformation({
+      ...generalInformation,
+      bussinesPartner: currentPartnerValue,
+    });
+    changeForSearchPartner(currentPartner);
+  };
+
+  const changeAndSearchItem = (currentItem) => {
+    const currentItemValue = currentItem.value;
+    setGeneralInformation({ ...generalInformation, item: currentItemValue });
+    changeForSearchItem(currentItem);
+  };
+
+  useEffect(() => {
+    sendGeneralInfo(generalInformation);
+  });
+
   return (
     <Fragment>
       <div className={styles.gridContainer}>
@@ -68,6 +114,7 @@ const GeneralInfo = ({
             label="Titulo De Contrato"
             margin="normal"
             variant="outlined"
+            onChange={onChangeText('title')}
           />
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
@@ -84,7 +131,7 @@ const GeneralInfo = ({
                 options={partners}
                 components={Option}
                 value={partnerProp}
-                onChange={changeForSearchPartner}
+                onChange={changeAndSearchPartner}
               />
             </div>
             <div className={styles.buttonColumn}>
@@ -115,17 +162,17 @@ const GeneralInfo = ({
                 className={styles.selectOption}
                 inputId="react-select-single"
                 TextFieldProps={{
-                  label: 'Selecciona un grupó',
+                  label: 'Selecciona un grupo',
                   InputLabelProps: {
                     htmlFor: 'react-select-single',
                     shrink: true,
                   },
                 }}
-                placeholder="Selecciona un grupó"
+                placeholder="Selecciona un grupo"
                 options={categories}
                 components={Option}
                 value={categoryProp}
-                onChange={changeForSearchCategory}
+                onChange={changeAndSearchCategory}
               />
             </div>
             <div className={styles.buttonColumn}>
@@ -172,22 +219,50 @@ const GeneralInfo = ({
             label="Numero de contrato"
             margin="normal"
             variant="outlined"
+            onChange={onChangeText('contractNumber')}
           />
-          <Select
-            className={styles.SelectSimple}
-            inputId="react-select-single"
-            TextFieldProps={{
-              label: 'item',
-              InputLabelProps: {
-                htmlFor: 'react-select-single',
-                shrink: true,
-              },
-            }}
-            placeholder="Item"
-            components={Option}
-            options={itemProp}
-            onChange={changeForSearchItem}
-          />
+
+          <div className={styles.gridSubContainerRigth}>
+            <div className={styles.selectColumn}>
+              <Select
+                className={styles.selectOption}
+                inputId="react-select-single"
+                TextFieldProps={{
+                  label: 'item',
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single',
+                    shrink: true,
+                  },
+                }}
+                placeholder="Item"
+                components={Option}
+                value={itemProp}
+                options={items}
+                onChange={changeAndSearchItem}
+              />
+            </div>
+            <div className={styles.buttonColumn}>
+              <Fab
+                color="primary"
+                size="small"
+                aria-label="add"
+                className={styles.fab}
+                onClick={handleOpenItem}
+              >
+                <AddIcon />
+              </Fab>
+              <Fab
+                color="secondary"
+                mx={2}
+                size="small"
+                aria-label="edit"
+                className={styles.fab}
+                onClick={searchForItem}
+              >
+                <EditIcon />
+              </Fab>
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.gridContainer}>
@@ -198,6 +273,7 @@ const GeneralInfo = ({
           className={styles.multiline}
           label="Descripción/Comentarios"
           variant="outlined"
+          onChange={onChangeText('description')}
         />
       </div>
     </Fragment>
@@ -209,6 +285,7 @@ GeneralInfo.propTypes = {
   categoryProp: PropTypes.object,
   partnerProp: PropTypes.object,
   itemProp: PropTypes.object,
+  sendGeneralInfo: PropTypes.func,
 };
 
 export default GeneralInfo;

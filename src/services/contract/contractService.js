@@ -75,4 +75,20 @@ export default class ContractService extends Services {
   postAttachment(data) {
     return this.post(ContractServiceDefinitions.uploadAttachment(), data);
   }
+
+  getAllItems() {
+    return this.get(ContractServiceDefinitions.items());
+  }
+
+  postItem(data) {
+    return this.post(ContractServiceDefinitions.items(), data);
+  }
+
+  getItemById(data) {
+    return this.get(ContractServiceDefinitions.getItemById(data));
+  }
+
+  updateItem(data) {
+    return this.put(ContractServiceDefinitions.itemUpdate(), data);
+  }
 }

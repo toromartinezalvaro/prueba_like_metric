@@ -4,7 +4,7 @@
  * Copyright (c) 2019 Instabuild
  */
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import {
   MuiPickersUtilsProvider,
@@ -21,7 +22,7 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import styles from './BillingFinancials.module.scss';
 
-const BillingFinancials = (services) => {
+const BillingFinancials = ({ sendBillings }) => {
   const cardValue = {
     id: 0,
     billingCycle: 'Una vez',
@@ -35,7 +36,7 @@ const BillingFinancials = (services) => {
   const [lastId, setLastId] = useState(0);
 
   const changeCardValue = (name, id, isDate, isSelect) => (e) => {
-    let billingsArray = [...billings];
+    const billingsArray = [...billings];
     const billIndex = billings.findIndex((element) => {
       return element.id === id;
     });
@@ -45,7 +46,6 @@ const BillingFinancials = (services) => {
     if (isDate) {
       bill = { ...billingsArray[billIndex], [name]: e };
     } else if (isSelect) {
-      console.log('Select es', e.value);
       bill = { ...billingsArray[billIndex], [name]: e.value };
     } else if (name === true) {
       bill = { ...billingsArray[billIndex], isLocked: true };
@@ -57,7 +57,6 @@ const BillingFinancials = (services) => {
 
     billingsArray[billIndex] = bill;
     setBillings(billingsArray);
-    console.log('Las cuentas son', billingsArray);
   };
 
   const removeElement = (id) => () => {
@@ -66,9 +65,7 @@ const BillingFinancials = (services) => {
       return element.id === id;
     });
     const removed = [billingsArray.splice(billIndex, 1)];
-    console.log('este wey se va', removed);
     setBillings(billingsArray);
-    console.log('Te quité a', billIndex);
   };
 
   const addBilling = () => {
@@ -76,6 +73,10 @@ const BillingFinancials = (services) => {
     setBillings([...billings, newBill]);
     setLastId(lastId + 1);
   };
+
+  useEffect(() => {
+    sendBillings(billings);
+  });
 
   const suggestions = [
     { label: 'Una vez' },
@@ -104,7 +105,7 @@ const BillingFinancials = (services) => {
   };
 
   const displayComponent = () => {
-    return billings.map((billing, index) => {
+    return billings.map((billing) => {
       return (
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
@@ -255,6 +256,10 @@ const BillingFinancials = (services) => {
       </Button>
     </Fragment>
   );
+};
+
+BillingFinancials.propTypes = {
+  sendBillings: PropTypes.func,
 };
 
 export default BillingFinancials;
