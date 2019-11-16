@@ -21,6 +21,13 @@ const SearchClientForm = ({ client, handleChange, isEditing }) => {
           onChange={handleChange('name')}
         />
         <TextField
+          error={
+            client.email
+              ? !/^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
+                  client.email,
+                )
+              : false
+          }
           className={Styles.TextField}
           label="Correo"
           type="email"

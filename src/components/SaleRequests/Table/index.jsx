@@ -13,7 +13,6 @@ const SaleRequestTable = ({ saleRequests, showSaleRequestHandler }) => {
     return saleRequests.pending.map((request, index) => {
       return [
         request.property.name,
-        request.saleRequest.requestStatus,
         <Button
           key={`saleRequestAction-${index}`}
           onClick={() => {
@@ -27,8 +26,19 @@ const SaleRequestTable = ({ saleRequests, showSaleRequestHandler }) => {
   };
 
   const getResolvedData = () => {
-    return saleRequests.resolved.map((request) => {
-      return [request.property.name, request.saleRequest.requestStatus];
+    return saleRequests.resolved.map((request, index) => {
+      return [
+        request.property.name,
+        request.saleRequest.requestStatus,
+        <Button
+          key={`solvedSaleRequestAction-${index}`}
+          onClick={() => {
+            showSaleRequestHandler(request.saleRequest.id);
+          }}
+        >
+          Abrir
+        </Button>,
+      ];
     });
   };
 
@@ -43,7 +53,7 @@ const SaleRequestTable = ({ saleRequests, showSaleRequestHandler }) => {
           <ExpansionPanelDetails>
             <Table
               intersect="Pendientes"
-              headers={['Propiedad', 'Estado', 'Abrir']}
+              headers={['Propiedad', '']}
               columns={[]}
               data={getPendingData()}
             />
@@ -53,8 +63,8 @@ const SaleRequestTable = ({ saleRequests, showSaleRequestHandler }) => {
           <ExpansionPanelSummary>Resueltos</ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Table
-              intersect="Pendientes"
-              headers={['Propiedad', 'Estado']}
+              intersect="Resueltos"
+              headers={['Propiedad', 'Estado', '']}
               columns={[]}
               data={getResolvedData()}
             />
