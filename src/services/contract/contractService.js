@@ -91,4 +91,8 @@ export default class ContractService extends Services {
   updateItem(data) {
     return this.put(ContractServiceDefinitions.itemUpdate(), data);
   }
+
+  findByForeignId(data) {
+    return this.get(ContractServiceDefinitions.findByForeignId(data));
+  }
 }

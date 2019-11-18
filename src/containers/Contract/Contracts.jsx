@@ -27,6 +27,7 @@ class Contracts extends Component {
       },
       contractModal: {
         isOpen: false,
+        data: {},
       },
       businessPatnerModal: {
         isOpen: false,
@@ -37,6 +38,7 @@ class Contracts extends Component {
       itemModal: {
         isOpen: false,
         isEditable: false,
+        isLocked: true,
         editableInfo: undefined,
         currentItem: undefined,
       },
@@ -44,6 +46,7 @@ class Contracts extends Component {
       categories: [],
       partners: [],
       items: [],
+      currentGroupId: '',
     };
   }
 
@@ -76,24 +79,6 @@ class Contracts extends Component {
         });
         this.setState({
           partners,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    this.services
-      .getAllItems()
-      .then((response) => {
-        console.log('Entrada', response);
-        const items = response.data.map((item) => {
-          return {
-            value: item.id,
-            label: item.name,
-          };
-        });
-        this.setState({
-          items,
         });
       })
       .catch((error) => {
@@ -169,6 +154,10 @@ class Contracts extends Component {
     });
   };
 
+  currentGroupId = (group) => {
+    this.setState({ currentGroupId: group });
+  };
+
   newCategory = (categoryName) => {
     console.log('Nombre grupo', categoryName, { categoryName });
     this.services
@@ -195,8 +184,9 @@ class Contracts extends Component {
   };
 
   newItem = (name) => {
+    console.log('dato de item', this.state.currentGroupId);
     this.services
-      .postItem({ name })
+      .postItem({ name, contractCategoryId: this.state.currentGroupId })
       .then((response) => {
         const currentItem = {
           value: response.data.id,
@@ -333,20 +323,55 @@ class Contracts extends Component {
 
   changeForSearchCategory = (currentCategory) => {
     this.setState({
+      contractModal: {
+        ...this.state.contractModal,
+        data: { group: currentCategory },
+      },
       categoryModal: { ...this.state.categoryModal, currentCategory },
     });
   };
 
   changeForSearchPartner = (currentPatner) => {
     this.setState({
+      contractModal: {
+        ...this.state.contractModal,
+        data: { patner: currentPatner },
+      },
       businessPatnerModal: { ...this.state.businessPatnerModal, currentPatner },
     });
   };
 
   changeForSearchItem = (currentItem) => {
     this.setState({
+      contractModal: {
+        ...this.state.contractModal,
+        data: { item: currentItem },
+      },
       itemModal: { ...this.state.itemModal, currentItem },
     });
+  };
+
+  changeItemIsLocked = (groupId) => {
+    this.services
+      .findByForeignId(groupId)
+      .then((response) => {
+        const items = response.data.map((item) => {
+          return {
+            value: item.id,
+            label: item.name,
+          };
+        });
+        this.setState({
+          items,
+          itemModal: {
+            ...this.state.itemModal,
+            currentItem: undefined,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   getAllPatners = () => {
@@ -388,7 +413,10 @@ class Contracts extends Component {
           changeForSearchItem={this.changeForSearchItem}
           partnerProp={this.state.businessPatnerModal.currentPatner}
           services={this.services}
+          itemIsLocked={this.state.itemModal.isLocked}
           sendBillings={this.sendBillings}
+          changeItemIsLocked={this.changeItemIsLocked}
+          currentGroupId={this.currentGroupId}
           sendGeneralInfo={this.sendGeneralInfo}
         />
         <Dialog

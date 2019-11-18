@@ -41,7 +41,10 @@ const NewContract = ({
   searchItem,
   sendBillings,
   services,
+  itemIsLocked,
   sendGeneralInfo,
+  changeItemIsLocked,
+  currentGroupId,
 }) => {
   return (
     <Dialog
@@ -65,6 +68,7 @@ const NewContract = ({
           handleOpenBusinessPatner={handleOpenBusinessPatner}
           handleCloseItem={handleCloseItem}
           itemProp={itemProp}
+          currentGroupId={currentGroupId}
           changeForSearchItem={changeForSearchItem}
           handleOpenItem={handleOpenItem}
           searchCategory={searchCategory}
@@ -72,7 +76,9 @@ const NewContract = ({
           searchBusinessPartner={searchBusinessPartner}
           categories={categories}
           items={items}
+          changeItemIsLocked={changeItemIsLocked}
           partners={partners}
+          itemIsLocked={itemIsLocked}
           editable={editable}
           disableEditable={disableEditable}
           categoryProp={categoryProp}

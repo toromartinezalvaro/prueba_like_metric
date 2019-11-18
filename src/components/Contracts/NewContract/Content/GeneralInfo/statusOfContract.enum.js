@@ -5,12 +5,12 @@
  */
 
 const statusOfContractEnum = [
-  { state: 'Activo' },
-  { state: 'En Negociación' },
-  { state: 'Pendiente' },
-  { state: 'Terminado' },
-  { state: 'Archivado' },
-  { state: 'Expirado' },
+  { id: 1, state: 'Activo' },
+  { id: 2, state: 'En Negociación' },
+  { id: 3, state: 'Pendiente' },
+  { id: 4, state: 'Terminado' },
+  { id: 5, state: 'Archivado' },
+  { id: 6, state: 'Expirado' },
 ];
 
 export default statusOfContractEnum;

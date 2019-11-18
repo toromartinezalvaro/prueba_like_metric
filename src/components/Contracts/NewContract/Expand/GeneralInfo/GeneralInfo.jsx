@@ -34,6 +34,9 @@ const ExpandGeneralInfo = ({
   handleOpenItem,
   handleCloseItem,
   items,
+  itemIsLocked,
+  changeItemIsLocked,
+  currentGroupId,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
@@ -57,6 +60,9 @@ const ExpandGeneralInfo = ({
             searchBusinessPartner={searchBusinessPartner}
             partners={partners}
             editable={editable}
+            currentGroupId={currentGroupId}
+            itemIsLocked={itemIsLocked}
+            changeItemIsLocked={changeItemIsLocked}
             disableEditable={disableEditable}
             categoryProp={categoryProp}
             partnerProp={partnerProp}

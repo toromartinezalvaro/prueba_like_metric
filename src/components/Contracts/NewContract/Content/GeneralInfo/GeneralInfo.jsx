@@ -37,6 +37,9 @@ const GeneralInfo = ({
   sendGeneralInfo,
   handleOpenItem,
   handleCloseItem,
+  itemIsLocked,
+  currentGroupId,
+  changeItemIsLocked,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
@@ -48,15 +51,22 @@ const GeneralInfo = ({
     description: '',
   });
 
+  const [isLocked, setIsLocked] = useState(true);
+  const [isLockedEdit, setIsLockedEdit] = useState(true);
+
   const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
-      value: contract.state,
+      value: contract.id,
       label: contract.state,
     };
   });
 
   const onChangeText = (name) => (e) => {
     setGeneralInformation({ ...generalInformation, [name]: e.target.value });
+  };
+
+  const onChangeSelect = (name) => (label) => {
+    setGeneralInformation({ ...generalInformation, [name]: label.value });
   };
 
   const searchForCategory = () => {
@@ -81,6 +91,13 @@ const GeneralInfo = ({
     const currentGroupValue = currentGroup.value;
     setGeneralInformation({ ...generalInformation, group: currentGroupValue });
     changeForSearchCategory(currentGroup);
+    changeItemIsLocked(currentGroupValue);
+    currentGroupId(currentGroupValue);
+    setIsLocked(false);
+    console.log('data', items);
+    if (items !== []) {
+      setIsLockedEdit(false);
+    }
   };
 
   const changeAndSearchPartner = (currentPartner) => {
@@ -212,6 +229,7 @@ const GeneralInfo = ({
             placeholder="Estado"
             options={statusOfContract}
             components={Option}
+            onChange={onChangeSelect('state')}
           />
           <TextField
             className={styles.leftInputs}
@@ -224,6 +242,7 @@ const GeneralInfo = ({
           <div className={styles.gridSubContainerRigth}>
             <div className={styles.selectColumn}>
               <Select
+                isDisabled={isLocked}
                 className={styles.selectOption}
                 inputId="react-select-single"
                 TextFieldProps={{
@@ -242,6 +261,7 @@ const GeneralInfo = ({
             </div>
             <div className={styles.buttonColumn}>
               <Fab
+                disabled={isLocked}
                 color="primary"
                 size="small"
                 aria-label="add"
@@ -251,6 +271,7 @@ const GeneralInfo = ({
                 <AddIcon />
               </Fab>
               <Fab
+                disabled={isLockedEdit}
                 color="secondary"
                 mx={2}
                 size="small"
