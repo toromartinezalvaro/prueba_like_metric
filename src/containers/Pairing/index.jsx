@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import PairingServices from '../../services/pairing';
+import Loading from '../../components/UI/Loader';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import SummaryTable from '../../components/Pairing/SummaryTable';
 import PairingTable from '../../components/Pairing/ParingTable';
@@ -15,9 +16,11 @@ class Pairing extends Component {
   state = {
     properties: [],
     areas: [],
+    loading: false,
   };
 
   componentDidMount() {
+    this.setState({ loading: true });
     this.services
       .getData(this.props.match.params.towerId)
       .then((response) => {
@@ -27,9 +30,11 @@ class Pairing extends Component {
             'location',
           ]),
           areas: response.data.additionalAreas,
+          loading: false,
         });
       })
       .catch((error) => {
+        this.setState({ loading: false });
         console.error(error);
       });
   }
@@ -38,21 +43,26 @@ class Pairing extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader>
-          <span>Apareamiento</span>
-        </CardHeader>
-        <CardBody>
-          <div className={Styles.container}>
-            <div className={Styles.summary}>
-              <SummaryTable properties={this.state.properties} />
+      <Loading isLoading={this.state.loading}>
+        <Card>
+          <CardHeader>
+            <span>Apareamiento</span>
+          </CardHeader>
+          <CardBody>
+            <div className={Styles.container}>
+              <div className={Styles.summary}>
+                <SummaryTable properties={this.state.properties} />
+              </div>
+              <div className={Styles.pairing}>
+                <PairingTable
+                  properties={this.state.properties}
+                  areas={this.state.areas}
+                />
+              </div>
             </div>
-            <div className={Styles.pairing}>
-              <PairingTable properties={this.state.properties} />
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+          </CardBody>
+        </Card>
+      </Loading>
     );
   }
 }
