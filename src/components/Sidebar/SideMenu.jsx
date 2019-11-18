@@ -215,6 +215,13 @@ const SideMenu = ({
                     'fas fa-clipboard-check',
                     'Solicitudes de venta',
                   )}
+                {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                  itemForSlidebar(
+                    style.MenuItem,
+                    DashboardRoutes.base + DashboardRoutes.pairing.value,
+                    'fas fa-star-half-alt',
+                    'Apareamiento',
+                  )}
               </div>
             </div>
           </Fragment>

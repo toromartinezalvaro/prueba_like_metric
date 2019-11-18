@@ -62,7 +62,7 @@ const SalesRoomModal = ({
   return (
     <div>
       <div className={Styles.status}>
-        {property.clientId === clientId && (
+        {(property.clientId === clientId || property.clientId === null) && (
           <RadioGroup
             value={currentState}
             onChange={(value) => {

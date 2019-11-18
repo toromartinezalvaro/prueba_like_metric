@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -22,14 +22,21 @@ const SearchOrNewClient = ({
   addHandler,
   action,
 }) => {
-  const [client, setClient] = React.useState(clientInfo);
-  const [isEditing, setEdition] = React.useState(false);
+  const [client, setClient] = useState(clientInfo);
+  const [isEditing, setEdition] = useState(false);
+  const [valid, setValid] = useState(true);
 
   useEffect(() => {
     setClient(clientInfo);
   }, [clientInfo]);
 
   const handleChange = (name) => (event) => {
+    setValid(
+      client.email === undefined ||
+        /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
+          client.email,
+        ),
+    );
     setClient({ ...client, [name]: event.target.value });
   };
 
@@ -83,20 +90,24 @@ const SearchOrNewClient = ({
               Buscar
             </Button>
           )}
-          {isEditing && action === ADD && (
-            <Button onClick={add} color="primary">
-              Agregar a mi compañía
-            </Button>
-          )}
-          {isEditing && action === SAVE && (
-            <Button onClick={save} color="primary">
-              Guardar
-            </Button>
-          )}
-          {isEditing && action === ADD && (
-            <Button onClick={update} color="primary">
-              Actualizar
-            </Button>
+          {valid && (
+            <Fragment>
+              {isEditing && action === ADD && (
+                <Button onClick={add} color="primary">
+                  Agregar a mi compañía
+                </Button>
+              )}
+              {isEditing && action === SAVE && (
+                <Button onClick={save} color="primary">
+                  Guardar
+                </Button>
+              )}
+              {isEditing && action === ADD && (
+                <Button onClick={update} color="primary">
+                  Actualizar
+                </Button>
+              )}
+            </Fragment>
           )}
         </DialogActions>
       </Dialog>
