@@ -2,7 +2,7 @@
  * Created Date: Tuesday November 12th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 15th November 2019 4:53:59 pm
+ * Last Modified: Monday, 18th November 2019 5:31:04 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -24,12 +24,22 @@ class AreasAdditional extends Component {
     arrayAreaTypes: [],
   };
 
-  arrayAreaTypesHandler = (areaTypeId, index, key, value) => {
+  arrayAreaTypesHandler = (
+    areaTypeId,
+    index,
+    key,
+    value,
+    isAreaType = false,
+  ) => {
     const array = [...this.state.arrayAreaTypes];
     const areaTypeFounded = array.find(
       (areaType) => areaTypeId === areaType.id,
     );
-    areaTypeFounded.hola[index][key] = value;
+    if (isAreaType) {
+      areaTypeFounded[key] = value;
+    } else {
+      areaTypeFounded.hola[index][key] = value;
+    }
     this.setState({ arrayAreaTypes: array });
   };
 
@@ -46,16 +56,27 @@ class AreasAdditional extends Component {
       .catch((error) => console.error(error));
   };
 
-  addAreaAdditionalHandler = (nomenclature, measure, price) => {
+  addAreaAdditionalHandler = (nomenclature, measure, price, areaTypeId) => {
     this.services
       .postAreaAdditional({
         nomenclature,
+        areaTypeId,
         towerId: this.props.match.params.towerId,
         measure,
         price,
       })
-      .then(() => this.services.getAreas(this.props.match.params.towerId))
-      .then((areas) => this.setState({ arrayAreaTypes: areas.data }))
+      .catch((error) => console.error(error));
+  };
+
+  updateAreaAdditionalHandler = (nomenclature, measure, price, areaId) => {
+    console.log(nomenclature, measure, price, areaId);
+    this.services
+      .putAreaAdditional({
+        nomenclature,
+        measure,
+        price,
+        areaId,
+      })
       .catch((error) => console.error(error));
   };
 
@@ -87,6 +108,7 @@ class AreasAdditional extends Component {
             deleteArea={this.deleteArea}
             arrayAreaTypesHandler={this.arrayAreaTypesHandler}
             addAreaAdditionalHandler={this.addAreaAdditionalHandler}
+            updateAreaAdditionalHandler={this.updateAreaAdditionalHandler}
           ></Collapsables>
 
           <AddArea addAreaHandler={this.addAreaHandler}></AddArea>

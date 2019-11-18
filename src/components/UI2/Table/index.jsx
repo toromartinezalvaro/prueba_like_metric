@@ -6,16 +6,7 @@ import Styles from './Table.module.scss';
 
 import 'react-virtualized/styles.css';
 
-const list = [
-  { nomenclature: 'Brian Vaughn', description: 'Software engineer' },
-  { nomenclature: 'Brian Vaughn', description: 'dsadas' },
-  { nomenclature: 'Brian Vaughn', description: 'Software engineer' },
-  { nomenclature: 'Brian Vaughn', description: 'Software engineer' },
-];
-
 const Table2 = ({ children, columns, data, ...rest }) => {
-  console.log(data);
-
   const cellRenderer = ({ cellData }) => {
     return <div className={Styles.Cell}>{cellData}</div>;
   };

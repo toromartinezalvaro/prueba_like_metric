@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 13th November 2019 3:33:40 pm
+ * Last Modified: Monday, 18th November 2019 5:25:05 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -23,12 +23,23 @@ export default class AreasAdditionalServices extends Services {
   }
 
   postAreaType(data) {
-    return this.post(AreasAdditionalServicesDefinition.postAreaType(), data);
+    return this.post(AreasAdditionalServicesDefinition.areaType(), data);
+  }
+
+  putAreaType(data) {
+    return this.put(AreasAdditionalServicesDefinition.areaType(), data);
   }
 
   postAreaAdditional(data) {
     return this.post(
       AreasAdditionalServicesDefinition.postAreaAdditional(),
+      data,
+    );
+  }
+
+  putAreaAdditional(data) {
+    return this.put(
+      AreasAdditionalServicesDefinition.putAreaAdditional(),
       data,
     );
   }

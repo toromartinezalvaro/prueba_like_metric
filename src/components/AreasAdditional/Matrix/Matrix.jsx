@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 15th November 2019 4:57:15 pm
+ * Last Modified: Monday, 18th November 2019 4:40:21 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -29,13 +29,18 @@ function NumberFormatCustom(props) {
         });
       }}
       thousandSeparator
-      isNumericString
-      prefix="$"
     />
   );
 }
 
-const Matrix = (areaType, arrayAreaTypesHandler) => {
+const Matrix = (
+  areaType,
+  actualValue,
+  arrayAreaTypesHandler,
+  addAreaAdditionalHandler,
+  updateAreaAdditionalHandler,
+  actualValueHandler,
+) => {
   let data = [];
   for (let i = 0; i < areaType.quantity; i += 1) {
     data = areaType.hola.map((area, j) => {
@@ -53,6 +58,23 @@ const Matrix = (areaType, arrayAreaTypesHandler) => {
                   e.target.value,
                 );
               }}
+              onFocus={(e) => {
+                actualValueHandler(e.target.value);
+              }}
+              onBlur={(e) => {
+                if (e.target.value && e.target.value !== actualValue) {
+                  if (area.id) {
+                    updateAreaAdditionalHandler(
+                      e.target.value,
+                      area.measure,
+                      area.price,
+                      area.id,
+                    );
+                  } else {
+                    addAreaAdditionalHandler(e.target.value, 0, 0, areaType.id);
+                  }
+                }
+              }}
             ></TextField>
           </div>
         ),
@@ -61,6 +83,7 @@ const Matrix = (areaType, arrayAreaTypesHandler) => {
             <TextField
               className={Styles.TextField}
               value={area.measure}
+              type={'number'}
               onChange={(e) => {
                 arrayAreaTypesHandler(
                   areaType.id,
@@ -68,6 +91,28 @@ const Matrix = (areaType, arrayAreaTypesHandler) => {
                   'measure',
                   e.target.value,
                 );
+              }}
+              onFocus={(e) => {
+                actualValueHandler(e.target.value);
+              }}
+              onBlur={(e) => {
+                if (e.target.value !== '0' && e.target.value !== actualValue) {
+                  if (area.id) {
+                    updateAreaAdditionalHandler(
+                      area.nomenclature,
+                      e.target.value,
+                      area.price,
+                      area.id,
+                    );
+                  } else {
+                    addAreaAdditionalHandler(
+                      '',
+                      e.target.value,
+                      0,
+                      areaType.id,
+                    );
+                  }
+                }
               }}
             ></TextField>
           </div>
@@ -78,10 +123,35 @@ const Matrix = (areaType, arrayAreaTypesHandler) => {
               className={Styles.TextField}
               InputProps={{
                 inputComponent: NumberFormatCustom,
+                startAdornment: (
+                  <InputAdornment position="start">$</InputAdornment>
+                ),
               }}
               value={area.price}
               onChange={(e) => {
                 arrayAreaTypesHandler(areaType.id, j, 'price', e.target.value);
+              }}
+              onFocus={(e) => {
+                actualValueHandler(e.target.value);
+              }}
+              onBlur={(e) => {
+                if (e.target.value !== '0' && e.target.value !== actualValue) {
+                  if (area.id) {
+                    updateAreaAdditionalHandler(
+                      area.nomenclature,
+                      area.measure,
+                      e.target.value,
+                      area.id,
+                    );
+                  } else {
+                    addAreaAdditionalHandler(
+                      '',
+                      0,
+                      e.target.value,
+                      areaType.id,
+                    );
+                  }
+                }
               }}
             ></TextField>
           </div>

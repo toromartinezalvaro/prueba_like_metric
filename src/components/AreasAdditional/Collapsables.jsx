@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 15th November 2019 4:41:27 pm
+ * Last Modified: Monday, 18th November 2019 5:36:34 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -31,6 +31,7 @@ import Matrix from './Matrix/Matrix';
 
 const Collapsables = (props) => {
   const [activePanel, setActivePanel] = React.useState(null);
+  const [actualValue, setActualValue] = React.useState(null);
 
   const handleChange = (id) => {
     if (id !== activePanel) {
@@ -39,14 +40,42 @@ const Collapsables = (props) => {
       setActivePanel(null);
     }
   };
+
+  const actualValueHandler = (value) => {
+    setActualValue(value);
+  };
+
   return props.data.map((areaType) => {
-    const data = Matrix(areaType, props.arrayAreaTypesHandler);
-    const columns = [
+    let data = Matrix(
+      areaType,
+      actualValue,
+      props.arrayAreaTypesHandler,
+      props.addAreaAdditionalHandler,
+      props.updateAreaAdditionalHandler,
+      actualValueHandler,
+    );
+
+    const columnsMT2 = [
       { label: 'Nomenclatura', dataKey: 'nomenclature', width: 200 },
       { label: 'Area', dataKey: 'measure', width: 200 },
       { label: 'PrecioXMT2', dataKey: 'price', width: 200 },
       { label: 'Precio', dataKey: 'total', width: 200 },
     ];
+
+    const columnsUnit = [
+      { label: 'Nomenclatura', dataKey: 'nomenclature', width: 200 },
+      { label: 'Precio', dataKey: 'price', width: 200 },
+    ];
+
+    let columns = columnsMT2;
+
+    if (areaType.unit === 'UNT') {
+      data = data.map((property) => {
+        return { nomenclature: property.nomenclature, price: property.price };
+      });
+      columns = columnsUnit;
+    }
+
     return (
       <ExpansionPanel
         key={areaType.id}
@@ -77,10 +106,30 @@ const Collapsables = (props) => {
                 value={areaType.quantity}
                 label="Cantidad"
                 margin="normal"
+                onChange={(e) => {
+                  props.arrayAreaTypesHandler(
+                    areaType.id,
+                    0,
+                    'quantity',
+                    e.target.value,
+                    true,
+                  );
+                }}
               />
               <FormControl className={Styles.MuiFormControl}>
                 <InputLabel>Tipo</InputLabel>
-                <Select value={areaType.unit}>
+                <Select
+                  value={areaType.unit}
+                  onChange={(e) => {
+                    props.arrayAreaTypesHandler(
+                      areaType.id,
+                      0,
+                      'unit',
+                      e.target.value,
+                      true,
+                    );
+                  }}
+                >
                   <MenuItem value={'MT2'}>Mts²</MenuItem>
                   <MenuItem value={'UNT'}>Unidad</MenuItem>
                 </Select>
@@ -95,7 +144,6 @@ const Collapsables = (props) => {
               data={data}
               maxHeight={{ maxHeight: '36vh' }}
             /> */}
-            {console.log(areaType)}
             <Table2 columns={columns} data={data}></Table2>
           </div>
         </ExpansionPanelDetails>
