@@ -68,9 +68,13 @@ class Client extends Component {
     this.services
       .addClient(this.props.match.params.towerId, client)
       .then((response) => {
-        const tempClients = [...this.state.clients];
-        tempClients.push(response.data);
-        this.setState({ clients: tempClients, isOpen: false });
+        if (!_.find(this.state.clients, (o) => o.id === response.data.id)) {
+          const tempClients = [...this.state.clients];
+          tempClients.push(response.data);
+          this.setState({ clients: tempClients, isOpen: false });
+        } else {
+          this.setState({ isOpen: false });
+        }
       });
   };
 

@@ -22,6 +22,7 @@ const INCREMENT = 'INCREMENT';
 const SalesRoomModal = ({
   property,
   onChange,
+  clientId,
   deadlineDate,
   onChangeDeadlineDate,
 }) => {
@@ -61,22 +62,24 @@ const SalesRoomModal = ({
   return (
     <div>
       <div className={Styles.status}>
-        <RadioGroup
-          value={currentState}
-          onChange={(value) => {
-            onChange('status', value);
-            setCurrentState(value);
-          }}
-          horizontal
-        >
-          <RadioButton value={SalesRoomEnum.status.AVAILABLE}>
-            Disponible
-          </RadioButton>
-          <RadioButton value={SalesRoomEnum.status.OPTIONAL}>
-            Opcionado
-          </RadioButton>
-          <RadioButton value={SalesRoomEnum.status.SOLD}>Vendido</RadioButton>
-        </RadioGroup>
+        {property.clientId === clientId && (
+          <RadioGroup
+            value={currentState}
+            onChange={(value) => {
+              onChange('status', value);
+              setCurrentState(value);
+            }}
+            horizontal
+          >
+            <RadioButton value={SalesRoomEnum.status.AVAILABLE}>
+              Disponible
+            </RadioButton>
+            <RadioButton value={SalesRoomEnum.status.OPTIONAL}>
+              Opcionado
+            </RadioButton>
+            <RadioButton value={SalesRoomEnum.status.SOLD}>Vendido</RadioButton>
+          </RadioGroup>
+        )}
       </div>
       {currentState === SalesRoomEnum.status.OPTIONAL && (
         <div>
@@ -260,6 +263,7 @@ SalesRoomModal.propTypes = {
     tradeDiscount: PropTypes.number,
   }).isRequired,
   onChange: PropTypes.func,
+  clientId: PropTypes.string,
 };
 
 SalesRoomModal.defaultProps = {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import ReactTooltip from 'react-tooltip';
+import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import {
   Dialog,
@@ -128,6 +129,7 @@ class SalesRoom extends Component {
         backgroundColor: buttons.backgroundColor,
         padding: '0.01em',
         textAlign: 'center',
+        position: 'relative',
       }}
       onClick={() => this.onClickSelector(property, buttons)}
     >
@@ -153,6 +155,9 @@ class SalesRoom extends Component {
           />
         )}
         {active === 'groups' && property.groupName}
+        {property.requestStatus === 'R' && (
+          <span className={Styles.rejectBadge}>R</span>
+        )}
       </p>
       <ReactTooltip />
     </div>
@@ -231,7 +236,6 @@ class SalesRoom extends Component {
     } else {
       this.props.activateBadgeIncrement(false);
     }
-
     this.setState({ isLoadingModal: true });
     this.services
       .putState(
@@ -258,7 +262,7 @@ class SalesRoom extends Component {
           collectedIncrement,
           groupId: this.state.groupId,
           isBadgeIncrement,
-          deadlineDate: Number(this.state.deadlineDate.getTime()),
+          deadlineDate: Number(moment(this.state.deadlineDate).format('x')),
         },
         this.props.match.params.towerId,
         this.props.match.params.clientId,
@@ -370,7 +374,14 @@ class SalesRoom extends Component {
             <CardFooter />
             <Dialog open={this.state.isOpen}>
               <DialogTitle>
-                {`Nuevo Estado - ${this.state.selectedProperty.name}`}
+                <div>
+                  <span>
+                    {`Nuevo Estado - ${this.state.selectedProperty.name}`}
+                  </span>
+                  {this.state.selectedProperty.requestStatus === 'R' && (
+                    <span className={Styles.rejectedLabel}>RECHAZADO</span>
+                  )}
+                </div>
               </DialogTitle>
               <DialogContent>
                 {isStrategyNull &&
@@ -391,6 +402,7 @@ class SalesRoom extends Component {
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}
                       onChangeDeadlineDate={this.deadlineDateHandler}
+                      clientId={this.props.match.params.clientId}
                     />
                   ))}
               </DialogContent>
@@ -398,9 +410,12 @@ class SalesRoom extends Component {
                 <Button onClick={this.cancel} className={Styles.CancelButton}>
                   Cancelar
                 </Button>
-                <Button onClick={this.save} className={Styles.ConfirmButton}>
-                  Aceptar
-                </Button>
+                {this.state.selectedProperty.clientId ===
+                  this.props.match.params.clientId && (
+                  <Button onClick={this.save} className={Styles.ConfirmButton}>
+                    Aceptar
+                  </Button>
+                )}
               </DialogActions>
             </Dialog>
           </Card>
