@@ -14,7 +14,6 @@ import PropTypes from 'prop-types';
 import statusOfContractEnum from './statusOfContract.enum';
 
 import styles from './GeneralInfo.module.scss';
-import { isTSParameterProperty } from '@babel/types';
 
 const Option = (props) => {
   return <components.Option {...props} className={styles.options} />;
@@ -234,7 +233,7 @@ const GeneralInfo = ({
                     shrink: true,
                   },
                 }}
-                placeholder="Item"
+                placeholder="Seleccione un Item"
                 components={Option}
                 value={itemProp}
                 options={items}
@@ -286,6 +285,7 @@ GeneralInfo.propTypes = {
   partnerProp: PropTypes.object,
   itemProp: PropTypes.object,
   sendGeneralInfo: PropTypes.func,
+  searchItem: PropTypes.func,
 };
 
 export default GeneralInfo;

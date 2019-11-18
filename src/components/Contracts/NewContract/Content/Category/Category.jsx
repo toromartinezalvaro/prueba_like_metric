@@ -24,15 +24,15 @@ const Category = ({
     setTextOfCategory(e.target.value);
   };
   const sendTextOfCategory = () => {
-    if (informationToEdit !== undefined) {
+    if (informationToEdit === undefined) {
+      newCategory(textOfCategory);
+      handleCloseCategory();
+    } else {
       updateCategory({
         id: informationToEdit.id,
         categoryName: textOfCategory,
         contractId: informationToEdit.contractId,
       });
-      handleCloseCategory();
-    } else {
-      newCategory(textOfCategory);
       handleCloseCategory();
     }
   };
@@ -49,9 +49,7 @@ const Category = ({
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
         <div className={styles.titleExpand}>
-          {informationToEdit !== undefined
-            ? 'Editar Grupo'
-            : 'Nuevo Grupo'}
+          {informationToEdit === undefined ? 'Nuevo Grupo' : 'Editar Grupo'}
         </div>
       </Typography>
       <div container className={styles.gridContainer}>
@@ -76,7 +74,7 @@ const Category = ({
           startIcon={<AddIcon />}
           onClick={sendTextOfCategory}
         >
-          {informationToEdit !== undefined ? 'Editar' : 'Crear'}
+          {informationToEdit === undefined ? 'Crear' : 'Editar'}
         </Button>
 
         <Button

@@ -22,7 +22,7 @@ class Contracts extends Component {
       categoryModal: {
         isOpen: false,
         isEditable: false,
-        editableInfo: {},
+        editableInfo: undefined,
         currentCategory: undefined,
       },
       contractModal: {
@@ -111,7 +111,7 @@ class Contracts extends Component {
     this.setState({
       categoryModal: {
         isEditable: false,
-        editableInfo: {},
+        editableInfo: undefined,
         currentCategory: 'Selecciona un Grupo',
       },
     });
@@ -170,6 +170,7 @@ class Contracts extends Component {
   };
 
   newCategory = (categoryName) => {
+    console.log('Nombre grupo', categoryName, { categoryName });
     this.services
       .postCategoryContracts({ categoryName })
       .then((response) => {
@@ -178,7 +179,7 @@ class Contracts extends Component {
           label: response.data.categoryName,
         };
         this.setState({
-          categories: currentCategory,
+          categories: [...this.state.categories, currentCategory],
           categoryModal: { ...this.state.categoryModal, currentCategory },
         });
       })
@@ -202,7 +203,7 @@ class Contracts extends Component {
           label: response.data.name,
         };
         this.setState({
-          items: currentItem,
+          items: [...this.state.items, currentItem],
           itemModal: { ...this.state.itemModal, currentItem },
         });
       })
@@ -266,7 +267,7 @@ class Contracts extends Component {
         const temporal = this.state.items;
         const currentItem = {
           value: response.data.id,
-          label: response.data.categoryName,
+          label: response.data.name,
         };
         temporal[index] = currentItem;
         this.setState({

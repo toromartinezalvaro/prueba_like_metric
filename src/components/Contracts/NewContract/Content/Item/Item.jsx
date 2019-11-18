@@ -19,22 +19,22 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
     setTextOfItem(e.target.value);
   };
   const sendTextOfItem = () => {
-    if (informationToEdit !== undefined) {
+    if (informationToEdit === undefined) {
+      newItem(textOfItem);
+      handleCloseItem();
+    } else {
       updateItem({
         id: informationToEdit.id,
         name: textOfItem,
         contractId: informationToEdit.contractId,
       });
       handleCloseItem();
-    } else {
-      newItem(textOfItem);
-      handleCloseItem();
     }
   };
 
   useEffect(() => {
     if (informationToEdit !== undefined) {
-      setTextOfItem(informationToEdit.itemName);
+      setTextOfItem(informationToEdit.name);
     }
   }, []);
   return (
@@ -44,7 +44,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
         <div className={styles.titleExpand}>
-          {informationToEdit !== undefined ? 'Editar Grupo' : 'Nuevo Grupo'}
+          {informationToEdit === undefined ? 'Nuevo Item' : 'Editar Item'}
         </div>
       </Typography>
       <div container className={styles.gridContainer}>
@@ -69,7 +69,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
           startIcon={<AddIcon />}
           onClick={sendTextOfItem}
         >
-          {informationToEdit !== undefined ? 'Editar' : 'Crear'}
+          {informationToEdit === undefined ? 'Crear' : 'Editar'}
         </Button>
 
         <Button

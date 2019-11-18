@@ -38,6 +38,7 @@ const NewContract = ({
   changeForSearchCategory,
   changeForSearchPartner,
   changeForSearchItem,
+  searchItem,
   sendBillings,
   services,
   sendGeneralInfo,
@@ -67,6 +68,7 @@ const NewContract = ({
           changeForSearchItem={changeForSearchItem}
           handleOpenItem={handleOpenItem}
           searchCategory={searchCategory}
+          searchItem={searchItem}
           searchBusinessPartner={searchBusinessPartner}
           categories={categories}
           items={items}
