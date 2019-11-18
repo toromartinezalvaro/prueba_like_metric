@@ -396,7 +396,9 @@ class SalesRoom extends Component {
                         width="100"
                       />
                     </div>
-                  ) : (
+                  ) : this.state.selectedProperty.clientId ===
+                      this.props.match.params.clientId ||
+                    this.state.selectedProperty.clientId === null ? (
                     <SalesRoomModal
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
@@ -404,14 +406,17 @@ class SalesRoom extends Component {
                       onChangeDeadlineDate={this.deadlineDateHandler}
                       clientId={this.props.match.params.clientId}
                     />
+                  ) : (
+                    'El apartamento seleccionado no le pertenece a este cliente'
                   ))}
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.cancel} className={Styles.CancelButton}>
                   Cancelar
                 </Button>
-                {this.state.selectedProperty.clientId ===
-                  this.props.match.params.clientId && (
+                {(this.state.selectedProperty.clientId ===
+                  this.props.match.params.clientId ||
+                  this.state.selectedProperty.clientId === null) && (
                   <Button onClick={this.save} className={Styles.ConfirmButton}>
                     Aceptar
                   </Button>

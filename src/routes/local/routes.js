@@ -37,6 +37,10 @@ export const DashboardRoutes = {
     value: '/sale-requests/',
     withIndicator: '/sale-requests/:towerId/:id',
   },
+  pairing: {
+    value: '/pairing/',
+    withIndicator: '/pairing/:towerId',
+  },
 };
 
 export const ContractRoutes = {

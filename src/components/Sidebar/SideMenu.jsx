@@ -202,6 +202,13 @@ const SideMenu = ({
                     'fas fa-cash-register',
                     'Flujo de caja',
                   )}
+                {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                  itemForSlidebar(
+                    style.MenuItem,
+                    DashboardRoutes.base + DashboardRoutes.pairing.value,
+                    'fas fa-star-half-alt',
+                    'Apareamiento',
+                  )}
               </div>
             </div>
 
