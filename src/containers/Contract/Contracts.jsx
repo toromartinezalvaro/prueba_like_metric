@@ -51,6 +51,7 @@ class Contracts extends Component {
   }
 
   componentDidMount() {
+    console.log('Toma tu componente');
     this.services
       .getAllCategories()
       .then((response) => {

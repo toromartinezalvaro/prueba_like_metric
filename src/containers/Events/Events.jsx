@@ -30,6 +30,7 @@ class Events extends Component {
           variant="contained"
           color="primary"
           size="small"
+          disabled={this.props.disabled}
           className={styles.fab}
         >
           <AddIcon />
@@ -52,7 +53,7 @@ class Events extends Component {
                 </div>
                 <h2 className={styles.title}>Agregar Evento</h2>
               </div>
-              <Event handleCloseEvent={this.handleEvent}/>
+              <Event handleCloseEvent={this.handleEvent} />
             </DialogContentText>
           </DialogContent>
         </Dialog>

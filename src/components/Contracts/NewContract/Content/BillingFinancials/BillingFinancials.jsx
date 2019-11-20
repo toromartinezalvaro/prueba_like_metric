@@ -14,11 +14,8 @@ import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import MonthEnum from './month.enum';
+import YearEnum from './year.enum';
 import Events from '../../../../../containers/Events/Events';
 
 import styles from './BillingFinancials.module.scss';
@@ -35,6 +32,7 @@ const BillingFinancials = ({ sendBillings }) => {
   };
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
+  let totalBills = 0;
 
   const changeCardValue = (name, id, isDate, isSelect) => (e) => {
     const billingsArray = [...billings];
@@ -97,6 +95,7 @@ const BillingFinancials = ({ sendBillings }) => {
         component="div"
         style={{
           fontWeight: props.isSelected ? 500 : 400,
+          zIndex: 1000,
         }}
         {...props.innerProps}
       >
@@ -107,6 +106,7 @@ const BillingFinancials = ({ sendBillings }) => {
 
   const displayComponent = () => {
     return billings.map((billing) => {
+      totalBills += parseInt(billing.billingAmount);
       return (
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
@@ -125,7 +125,23 @@ const BillingFinancials = ({ sendBillings }) => {
                   }}
                   placeholder="Evento a Facturar"
                   components={Option}
-                  /* options={suggestions}
+                />
+                <Events disabled={billing.isLocked} />
+
+                <Select
+                  className={styles.Select}
+                  inputId="react-select-single"
+                  isDisabled={billing.isLocked}
+                  TextFieldProps={{
+                    label: 'ciclo de cobro',
+                    InputLabelProps: {
+                      htmlFor: 'react-select-single',
+                      shrink: true,
+                    },
+                  }}
+                  placeholder="ciclo de cobro"
+                  components={Option}
+                  options={suggestions}
                   value={{
                     label: billing.billingCycle,
                     value: billing.billingCycle,
@@ -135,30 +151,9 @@ const BillingFinancials = ({ sendBillings }) => {
                     billing.id,
                     false,
                     true,
-                  )} */
-                  
+                  )}
                 />
-                <Events/>
-                {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    disabled={billing.isLocked}
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="Primera Fecha de Cobro"
-                    value={billing.firstBillingDate}
-                    onChange={changeCardValue(
-                      'firstBillingDate',
-                      billing.id,
-                      true,
-                    )}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </MuiPickersUtilsProvider> */}
+
                 <TextField
                   fullWidth
                   disabled={billing.isLocked}
@@ -183,8 +178,48 @@ const BillingFinancials = ({ sendBillings }) => {
                     value={billing.billingAmount}
                     onChange={changeCardValue('billingAmount', billing.id)}
                   />
+                  <div key={billing.id} className={styles.cardForm}>
+                    <div className={styles.column}>
+                      <div className={styles.container}>
+                        <h3 className={styles.lastBillingText}>Fecha final:</h3>
+                        <div className={styles.leftPick}>
+                          <Select
+                            className={styles.selectLeft}
+                            inputId="react-select-single"
+                            isDisabled={billing.isLocked}
+                            TextFieldProps={{
+                              label: 'Mes',
+                              InputLabelProps: {
+                                htmlFor: 'react-select-single',
+                                shrink: true,
+                              },
+                            }}
+                            options={MonthEnum}
+                            placeholder="Mes"
+                            components={Option}
+                          />
+                        </div>
+                        <div className={styles.rigthPick}>
+                          <Select
+                            className={styles.selectRight}
+                            inputId="react-select-single"
+                            isDisabled={billing.isLocked}
+                            TextFieldProps={{
+                              label: 'Año',
+                              InputLabelProps: {
+                                htmlFor: 'react-select-single',
+                                shrink: true,
+                              },
+                            }}
+                            placeholder="Año"
+                            components={Option}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              
+
                 <div className={styles.options}>
                   <Button
                     variant="contained"
@@ -217,6 +252,10 @@ const BillingFinancials = ({ sendBillings }) => {
                       Guardar
                     </Button>
                   )}
+                  <div className={styles.TotalSubbills}>
+                    <h4 sclassName={styles.textTotal}> Valor de cuenta:</h4>
+                    <p className={styles.amount}>{billing.billingAmount}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -229,6 +268,12 @@ const BillingFinancials = ({ sendBillings }) => {
   return (
     <Fragment>
       {displayComponent()}
+      <div className={styles.cardForm}>
+        <div className={styles.Totalbills}>
+          <h4 sclassName={styles.textTotal}> Valor Total:</h4>
+          <p className={styles.TotalAmount}>{totalBills} COP</p>
+        </div>
+      </div>
       <Button
         variant="contained"
         color="primary"

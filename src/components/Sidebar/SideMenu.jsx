@@ -1,7 +1,7 @@
 import React, { useState, useContext, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Resizable } from 're-resizable';
-import { DashboardRoutes } from '../../routes/local/routes';
+import { DashboardRoutes, ContractRoutes } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
@@ -214,6 +214,13 @@ const SideMenu = ({
                     DashboardRoutes.base + DashboardRoutes.saleRequests.value,
                     'fas fa-clipboard-check',
                     'Solicitudes de venta',
+                  )}
+                {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                  itemForSlidebar(
+                    style.MenuItem,
+                    DashboardRoutes.base + ContractRoutes.base.value,
+                    'fas fa-file-signature',
+                    'Contratos',
                   )}
               </div>
             </div>

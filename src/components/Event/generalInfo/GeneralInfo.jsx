@@ -20,7 +20,7 @@ import styles from './GeneralInfo.module.scss';
 const GeneralInfo = () => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
-    type: '',
+    displacement: '',
     date: '',
     description: '',
   });
@@ -91,13 +91,6 @@ const GeneralInfo = () => {
           variant="outlined"
           onChange={onChangeText('title')}
         />
-        <TextField
-          fullWidth
-          className={styles.item}
-          label="Tipo de evento"
-          variant="outlined"
-          onChange={onChangeText('type')}
-        />
         <div className={styles.itemSelect}>
           <Select
             required
@@ -115,47 +108,49 @@ const GeneralInfo = () => {
             components={Option}
           />
         </div>
-        {uniqueDate ? (
-          <Card className={styles.cardForm}>
-            <CardContent>
-              <TextField
-                required
-                fullWidth
-                className={styles.itemText}
-                label="Titulo"
-                variant="outlined"
-                onChange={changeDate('name')}
-              />
-              <div className={styles.gridSubContainer}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="Primera Fecha de Cobro"
-                    value={tag.date}
-                    onChange={changeDate('date')}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
-                <div className={styles.buttonSubColumn}>
-                  <Fab
-                    color="primary"
-                    size="small"
-                    aria-label="add"
-                    className={styles.fab}
-                  >
-                    <AddIcon />
-                  </Fab>
+        <div className={styles.subColumn}>
+          {uniqueDate ? (
+            <Card className={styles.cardForm}>
+              <CardContent>
+                <div className={styles.gridSubContainer}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      label="Primera Fecha de Cobro"
+                      value={tag.date}
+                      onChange={changeDate('date')}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                  <div className={styles.buttonSubColumn}>
+                    <Fab
+                      color="primary"
+                      size="small"
+                      aria-label="add"
+                      className={styles.fab}
+                    >
+                      <AddIcon />
+                    </Fab>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ) : null}
+              </CardContent>
+            </Card>
+          ) : null}
+          <TextField
+            required
+            fullWidth
+            className={styles.displacement}
+            label="Desplazamiento"
+            variant="outlined"
+            onChange={onChangeText('displacement')}
+          />
+        </div>
       </div>
       <div className={styles.rigthInformation}>
         <TextField
