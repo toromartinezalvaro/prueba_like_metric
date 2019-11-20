@@ -19,6 +19,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import Events from '../../../../../containers/Events/Events';
 
 import styles from './BillingFinancials.module.scss';
 
@@ -116,14 +117,15 @@ const BillingFinancials = ({ sendBillings }) => {
                   inputId="react-select-single"
                   isDisabled={billing.isLocked}
                   TextFieldProps={{
-                    label: 'Ciclo de facturación',
+                    label: 'Evento a Facturar',
                     InputLabelProps: {
                       htmlFor: 'react-select-single',
                       shrink: true,
                     },
                   }}
-                  placeholder="Ciclo de facturación"
-                  options={suggestions}
+                  placeholder="Evento a Facturar"
+                  components={Option}
+                  /* options={suggestions}
                   value={{
                     label: billing.billingCycle,
                     value: billing.billingCycle,
@@ -133,10 +135,11 @@ const BillingFinancials = ({ sendBillings }) => {
                     billing.id,
                     false,
                     true,
-                  )}
-                  components={Option}
+                  )} */
+                  
                 />
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Events/>
+                {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disableToolbar
                     variant="inline"
@@ -155,7 +158,7 @@ const BillingFinancials = ({ sendBillings }) => {
                       'aria-label': 'change date',
                     }}
                   />
-                </MuiPickersUtilsProvider>
+                </MuiPickersUtilsProvider> */}
                 <TextField
                   fullWidth
                   disabled={billing.isLocked}
@@ -181,26 +184,7 @@ const BillingFinancials = ({ sendBillings }) => {
                     onChange={changeCardValue('billingAmount', billing.id)}
                   />
                 </div>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    disabled={billing.isLocked}
-                    id="date-picker-inline"
-                    label="Última Fecha de Cobro"
-                    value={billing.lastBillingDate}
-                    onChange={changeCardValue(
-                      'lastBillingDate',
-                      billing.id,
-                      true,
-                    )}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
+              
                 <div className={styles.options}>
                   <Button
                     variant="contained"
