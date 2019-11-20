@@ -2,7 +2,7 @@
  * Created Date: Tuesday November 12th 2019
  * Author: Caraham
  * -----
- * Last Modified: Monday, 18th November 2019 5:31:04 pm
+ * Last Modified: Wednesday, 20th November 2019 1:48:47 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -50,6 +50,18 @@ class AreasAdditional extends Component {
         towerId: this.props.match.params.towerId,
         quantity,
         name,
+      })
+      .then(() => this.services.getAreas(this.props.match.params.towerId))
+      .then((areas) => this.setState({ arrayAreaTypes: areas.data }))
+      .catch((error) => console.error(error));
+  };
+
+  updateAreaTypeHandler = (unit, name, id) => {
+    this.services
+      .putAreaType({
+        unit,
+        name,
+        id,
       })
       .then(() => this.services.getAreas(this.props.match.params.towerId))
       .then((areas) => this.setState({ arrayAreaTypes: areas.data }))
@@ -109,6 +121,7 @@ class AreasAdditional extends Component {
             arrayAreaTypesHandler={this.arrayAreaTypesHandler}
             addAreaAdditionalHandler={this.addAreaAdditionalHandler}
             updateAreaAdditionalHandler={this.updateAreaAdditionalHandler}
+            updateAreaTypeHandler={this.updateAreaTypeHandler}
           ></Collapsables>
 
           <AddArea addAreaHandler={this.addAreaHandler}></AddArea>

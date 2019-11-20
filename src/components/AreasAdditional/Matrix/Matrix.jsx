@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Monday, 18th November 2019 4:40:21 pm
+ * Last Modified: Wednesday, 20th November 2019 2:07:35 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -27,6 +27,7 @@ function NumberFormatCustom(props) {
             value: values.value,
           },
         });
+        console.log(values);
       }}
       thousandSeparator
     />
@@ -96,7 +97,10 @@ const Matrix = (
                 actualValueHandler(e.target.value);
               }}
               onBlur={(e) => {
-                if (e.target.value !== '0' && e.target.value !== actualValue) {
+                if (
+                  Number(e.target.value) > 0 &&
+                  e.target.value !== actualValue
+                ) {
                   if (area.id) {
                     updateAreaAdditionalHandler(
                       area.nomenclature,
@@ -112,6 +116,8 @@ const Matrix = (
                       areaType.id,
                     );
                   }
+                } else {
+                  arrayAreaTypesHandler(areaType.id, j, 'measure', actualValue);
                 }
               }}
             ></TextField>

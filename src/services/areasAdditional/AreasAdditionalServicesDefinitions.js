@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Monday, 18th November 2019 5:24:59 pm
+ * Last Modified: Wednesday, 20th November 2019 1:50:12 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -21,6 +21,10 @@ const AreaAdditionalServiceDefinitions = {
 
   areaType: () => {
     return `${API_PATH}areasV2/area-types/additional`;
+  },
+
+  putAreaType: () => {
+    return `${API_PATH}areasV2/area-types/additional/update`;
   },
 
   postAreaAdditional: () => {

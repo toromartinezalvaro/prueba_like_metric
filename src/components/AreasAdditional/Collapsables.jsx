@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Monday, 18th November 2019 5:36:34 pm
+ * Last Modified: Wednesday, 20th November 2019 1:42:19 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -20,9 +20,17 @@ import {
   MenuItem,
   InputLabel,
   Select,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button2 from '../UI/Button/Button';
+
 import Table from '../UI/Table/Table';
 import Table2 from '../UI2/Table';
 
@@ -32,6 +40,9 @@ import Matrix from './Matrix/Matrix';
 const Collapsables = (props) => {
   const [activePanel, setActivePanel] = React.useState(null);
   const [actualValue, setActualValue] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [unit, setUnit] = React.useState(null);
+  const [name, setName] = React.useState(null);
 
   const handleChange = (id) => {
     if (id !== activePanel) {
@@ -43,6 +54,29 @@ const Collapsables = (props) => {
 
   const actualValueHandler = (value) => {
     setActualValue(value);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleUpdate = (id) => {
+    if (name && unit) {
+      props.updateAreaTypeHandler(unit, name, id);
+      setOpen(false);
+    }
+  };
+
+  const handleChangeModal = (event) => {
+    setUnit(event.target.value);
+  };
+
+  const onChangeName = (event) => {
+    setName(event.target.value);
   };
 
   return props.data.map((areaType) => {
@@ -83,67 +117,82 @@ const Collapsables = (props) => {
         onChange={() => handleChange(areaType.id)}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <span className={Styles.DeleteButton}>
+          <span className={Styles.Header}>
             {areaType.name}
             {areaType.id === activePanel && (
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={() => props.deleteArea(areaType.id)}
-              >
-                Eliminar
-              </Button>
+              <div className={Styles.ContainerButtons}>
+                <div className={Styles.Button}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<EditIcon />}
+                    onClick={handleClickOpen}
+                  >
+                    Editar
+                  </Button>
+                </div>
+                <div className={Styles.Button}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => props.deleteArea(areaType.id)}
+                  >
+                    Eliminar
+                  </Button>
+                </div>
+              </div>
             )}
           </span>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{'Editar area'}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                <div className={Styles.DialogContainer}>
+                  <TextField
+                    required
+                    onChange={onChangeName}
+                    id="standard-required"
+                    label="Nombre"
+                    margin="normal"
+                  />
+                  <FormControl required>
+                    <InputLabel id="demo-simple-select-required-label">
+                      Tipo
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-required-label"
+                      id="demo-simple-select-required"
+                      value={unit}
+                      onChange={handleChangeModal}
+                    >
+                      <MenuItem value={'MT2'}>mts²</MenuItem>
+                      <MenuItem value={'UNT'}>Unidad</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button2 onClick={handleClose} className={Styles.CancelButton}>
+                Cancelar
+              </Button2>
+              <Button2
+                onClick={() => handleUpdate(areaType.id)}
+                className={Styles.ConfirmButton}
+              >
+                Editar
+              </Button2>
+            </DialogActions>
+          </Dialog>
           <div className={Styles.Container}>
-            <div className={Styles.TextFields}>
-              <TextField
-                inputProps={{ min: '0' }}
-                type="number"
-                value={areaType.quantity}
-                label="Cantidad"
-                margin="normal"
-                onChange={(e) => {
-                  props.arrayAreaTypesHandler(
-                    areaType.id,
-                    0,
-                    'quantity',
-                    e.target.value,
-                    true,
-                  );
-                }}
-              />
-              <FormControl className={Styles.MuiFormControl}>
-                <InputLabel>Tipo</InputLabel>
-                <Select
-                  value={areaType.unit}
-                  onChange={(e) => {
-                    props.arrayAreaTypesHandler(
-                      areaType.id,
-                      0,
-                      'unit',
-                      e.target.value,
-                      true,
-                    );
-                  }}
-                >
-                  <MenuItem value={'MT2'}>Mts²</MenuItem>
-                  <MenuItem value={'UNT'}>Unidad</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-
-            {/* <Table
-              intersect={''}
-              headers={['Nomenclatura', 'Area', 'Precio x mts2', 'Precio']}
-              columnsMinWidth={true}
-              columns={columns}
-              data={data}
-              maxHeight={{ maxHeight: '36vh' }}
-            /> */}
             <Table2 columns={columns} data={data}></Table2>
           </div>
         </ExpansionPanelDetails>

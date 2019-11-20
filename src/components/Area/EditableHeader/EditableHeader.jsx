@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import Button from "../../UI/Button/Button";
+import React, { useState } from 'react';
+import Button from '../../UI/Button/Button';
 
-const EditableHeader = props => {
+const EditableHeader = (props) => {
   const [deleteMode, setDeleteMode] = useState(false);
-  const toggleDeleteMode = event => {
+  const toggleDeleteMode = (event) => {
     event.preventDefault();
     setDeleteMode(!deleteMode);
   };
