@@ -6,7 +6,7 @@ import GeneralInfo from './generalInfo/GeneralInfo';
 import ContractReference from './ContractReference/ContractReference';
 import styles from './Event.module.scss';
 
-const Event = ({ handleCloseEvent }) => {
+const Event = ({ handleCloseEvent, schedule }) => {
   return (
     <Fragment>
       <div className={styles.heading}>
@@ -15,7 +15,7 @@ const Event = ({ handleCloseEvent }) => {
         </div>
         <div className={styles.titleExpand}>Información General</div>
       </div>
-      <GeneralInfo />
+      <GeneralInfo schedule={schedule}/>
       <div className={styles.heading}>
         <div
           className={`${styles.circleIcon}  ${styles.circleColorGeneralBlue}`}
@@ -51,6 +51,7 @@ const Event = ({ handleCloseEvent }) => {
 
 Event.propTypes = {
   handleCloseEvent: PropTypes.func,
+  schedule: PropTypes.object,
 };
 
 export default Event;

@@ -24,7 +24,7 @@ const BillingFinancials = ({ sendBillings }) => {
   const cardValue = {
     id: 0,
     billingCycle: 'Una vez',
-    billingAmount: '',
+    billingAmount: 0,
     description: '',
     firstBillingDate: `${new Date()}`,
     lastBillingDate: `${new Date()}`,
@@ -78,10 +78,10 @@ const BillingFinancials = ({ sendBillings }) => {
   });
 
   const suggestions = [
-    { label: 'Una vez' },
-    { label: 'Mensual' },
-    { label: 'Trimestral' },
-    { label: 'Anual' },
+    { label: 'Una vez', value: 1 },
+    { label: 'Mensual', value: 2 },
+    { label: 'Trimestral', value: 3 },
+    { label: 'Anual', value: 4 },
   ].map((suggestion) => ({
     value: suggestion.label,
     label: suggestion.label,
@@ -213,6 +213,7 @@ const BillingFinancials = ({ sendBillings }) => {
                             }}
                             placeholder="Año"
                             components={Option}
+                            options={YearEnum}
                           />
                         </div>
                       </div>

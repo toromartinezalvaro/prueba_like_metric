@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
@@ -17,7 +17,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import styles from './GeneralInfo.module.scss';
 
-const GeneralInfo = () => {
+const GeneralInfo = ({ schedule }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
     displacement: '',
@@ -53,16 +53,32 @@ const GeneralInfo = () => {
   };
 
   const handleNewTag = (name) => (e) => {};
-  const temp = [
-    { value: 1, label: 'FECHA UNICA' },
-    { value: 2, label: 'FECHA INICIO PROYECTO' },
-    { value: 3, label: 'FECHA FIN PROYECTO' },
-    { value: 4, label: 'FECHA INICIO PREVENTAS' },
-    { value: 5, label: 'FECHA PUNTO DE EQUILIBRIO' },
-    { value: 6, label: 'FECHA INICIO DE CONSTRUCCIÓN' },
-    { value: 7, label: 'FECHA FIN DE CONSTRUCCIÓN' },
-    { value: 8, label: 'FECHA PROMEDIO DE ENTREGAS' },
-  ];
+  let temp = [];
+
+  useEffect(() => {
+    if (schedule) {
+      temp = [
+        { value: 1, label: 'FECHA UNICA' },
+        {
+          value: 2,
+          label: `FECHA INICIO PROYECTO (${schedule.salesStartDate})`,
+        },
+        { value: 3, label: `FECHA FIN PROYECTO (${schedule.endOfSalesDate})` },
+        {
+          value: 4,
+          label: `FECHA PUNTO DE EQUILIBRIO (${schedule.balancePointDate})`,
+        },
+        {
+          value: 5,
+          label: `FECHA INICIO DE CONSTRUCCIÓN (${schedule.constructionStartDate})`,
+        },
+        {
+          value: 6,
+          label: `FECHA PROMEDIO DE ENTREGAS (${schedule.averageDeliveryDate})`,
+        },
+      ];
+    }
+  });
 
   const Option = (props) => {
     return (
@@ -169,6 +185,7 @@ const GeneralInfo = () => {
 
 GeneralInfo.propTypes = {
   handleCloseEvent: PropTypes.func,
+  schedule: PropTypes.object,
 };
 
 export default GeneralInfo;

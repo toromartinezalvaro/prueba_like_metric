@@ -7,20 +7,66 @@ import AddIcon from '@material-ui/icons/Add';
 import React, { Component } from 'react';
 import styles from './Events.module.scss';
 import Event from '../../components/Event/Event';
+import ScheduleService from '../../services/schedule/ScheduleServices';
 
 class Events extends Component {
   constructor(props) {
     super(props);
+    this.services = new ScheduleService();
     this.state = {
       eventModal: {
         isOpen: false,
       },
+      schedule: {},
     };
   }
 
   handleEvent = () => {
     this.setState({ eventModal: { isOpen: !this.state.eventModal.isOpen } });
   };
+
+  /* componentDidMount() {
+    const { towerId } = this.props.match.params;
+    this.services
+      .getDates(towerId)
+      .then((response) => {
+        let {
+          salesStartDate,
+          endOfSalesDate,
+          averageDeliveryDate,
+          balancePointDate,
+          constructionStartDate,
+        } = response.data;
+
+        if (salesStartDate === null) {
+          salesStartDate = new Date().getTime();
+        }
+        if (endOfSalesDate === null) {
+          endOfSalesDate = new Date().getTime();
+        }
+        if (averageDeliveryDate === null) {
+          averageDeliveryDate = new Date().getTime();
+        }
+        if (balancePointDate === null) {
+          balancePointDate = new Date().getTime();
+        }
+        if (constructionStartDate === null) {
+          constructionStartDate = new Date().getTime();
+        }
+        this.setState({
+          schedule: {
+            salesStartDate,
+            endOfSalesDate,
+            averageDeliveryDate,
+            balancePointDate,
+            constructionStartDate,
+          },
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } */
 
   render() {
     return (
@@ -53,7 +99,10 @@ class Events extends Component {
                 </div>
                 <h2 className={styles.title}>Agregar Evento</h2>
               </div>
-              <Event handleCloseEvent={this.handleEvent} />
+              <Event
+                handleCloseEvent={this.handleEvent}
+                schedule={this.state.schedule}
+              />
             </DialogContentText>
           </DialogContent>
         </Dialog>
