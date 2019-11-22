@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import AddIcon from '@material-ui/icons/Save';
@@ -15,12 +15,13 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import moment from 'moment';
 import styles from './GeneralInfo.module.scss';
 
 const GeneralInfo = ({ schedule }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
-    displacement: '',
+    displacement: 0,
     date: '',
     description: '',
   });
@@ -30,17 +31,43 @@ const GeneralInfo = ({ schedule }) => {
     date: new Date(),
   });
 
+  const [canDisplace, setCanDisplace] = useState(false);
+
+  const [dateValue, setDateValue] = useState([]);
+
   const [uniqueDate, setuniqueDate] = useState(false);
 
   const onChangeText = (name) => (e) => {
-    setGeneralInformation({ ...generalInformation, [name]: e.target.label });
+    setGeneralInformation({ ...generalInformation, [name]: e.target.value });
+  };
+
+  const displacementForDate = (name) => (e) => {
+    console.log(generalInformation.date);
+    const updateDate = moment(generalInformation.date)
+      .add(Number(e.target.value), 'M')
+      .toDate()
+      .getTime();
+    setGeneralInformation({
+      ...generalInformation,
+      [name]: e.target.value,
+    });
+
+    console.log('La fecha', updateDate, Number(e.target.value));
   };
 
   const handleChangeUniqueDate = (e) => {
     if (e.value === 1) {
       setuniqueDate(true);
+      setCanDisplace(false);
     } else {
+      setGeneralInformation({
+        ...generalInformation,
+        title: e.label,
+        date: e.value,
+      });
       setuniqueDate(false);
+      setCanDisplace(true);
+      console.log(generalInformation);
     }
   };
 
@@ -53,31 +80,41 @@ const GeneralInfo = ({ schedule }) => {
   };
 
   const handleNewTag = (name) => (e) => {};
-  let temp = [];
 
   useEffect(() => {
-    if (schedule) {
-      temp = [
-        { value: 1, label: 'FECHA UNICA' },
-        {
-          value: 2,
-          label: `FECHA INICIO PROYECTO (${schedule.salesStartDate})`,
-        },
-        { value: 3, label: `FECHA FIN PROYECTO (${schedule.endOfSalesDate})` },
-        {
-          value: 4,
-          label: `FECHA PUNTO DE EQUILIBRIO (${schedule.balancePointDate})`,
-        },
-        {
-          value: 5,
-          label: `FECHA INICIO DE CONSTRUCCIÓN (${schedule.constructionStartDate})`,
-        },
-        {
-          value: 6,
-          label: `FECHA PROMEDIO DE ENTREGAS (${schedule.averageDeliveryDate})`,
-        },
-      ];
-    }
+    setDateValue([
+      { value: 1, label: 'FECHA UNICA' },
+      {
+        value: Number(schedule.salesStartDate),
+        label: `FECHA INICIO PROYECTO (${moment(
+          Number(schedule.salesStartDate),
+        ).format('DD/MM/YYYY')})`,
+      },
+      {
+        value: Number(schedule.endOfSalesDate),
+        label: `FECHA FIN PROYECTO (${moment(
+          Number(schedule.endOfSalesDate),
+        ).format('DD/MM/YYYY')})`,
+      },
+      {
+        value: Number(schedule.balancePointDate),
+        label: `FECHA PUNTO DE EQUILIBRIO (${moment(
+          Number(schedule.balancePointDate),
+        ).format('DD/MM/YYYY')})`,
+      },
+      {
+        value: Number(schedule.constructionStartDate),
+        label: `FECHA INICIO DE CONSTRUCCIÓN (${moment(
+          Number(schedule.constructionStartDate),
+        ).format('DD/MM/YYYY')})`,
+      },
+      {
+        value: Number(schedule.averageDeliveryDate),
+        label: `FECHA PROMEDIO DE ENTREGAS (${moment(
+          Number(schedule.averageDeliveryDate),
+        ).format('DD/MM/YYYY')})`,
+      },
+    ]);
   });
 
   const Option = (props) => {
@@ -112,14 +149,14 @@ const GeneralInfo = ({ schedule }) => {
             required
             inputId="react-select-single"
             TextFieldProps={{
-              label: 'Socio de negocios',
+              label: 'fecha',
               InputLabelProps: {
                 htmlFor: 'react-select-single',
                 shrink: true,
               },
             }}
             placeholder="Seleccione una Fecha"
-            options={temp}
+            options={dateValue}
             onChange={handleChangeUniqueDate}
             components={Option}
           />
@@ -158,14 +195,17 @@ const GeneralInfo = ({ schedule }) => {
               </CardContent>
             </Card>
           ) : null}
-          <TextField
-            required
-            fullWidth
-            className={styles.displacement}
-            label="Desplazamiento"
-            variant="outlined"
-            onChange={onChangeText('displacement')}
-          />
+          {canDisplace ? (
+            <TextField
+              required
+              fullWidth
+              className={styles.displacement}
+              label="Desplazamiento"
+              value={generalInformation.displacement}
+              variant="outlined"
+              onChange={displacementForDate('displacement')}
+            />
+          ) : null}
         </div>
       </div>
       <div className={styles.rigthInformation}>

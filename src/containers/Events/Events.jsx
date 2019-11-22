@@ -25,12 +25,12 @@ class Events extends Component {
     this.setState({ eventModal: { isOpen: !this.state.eventModal.isOpen } });
   };
 
-  /* componentDidMount() {
-    const { towerId } = this.props.match.params;
+  componentDidMount() {
     this.services
-      .getDates(towerId)
+      .getDates(this.props.towerId)
       .then((response) => {
         let {
+          id,
           salesStartDate,
           endOfSalesDate,
           averageDeliveryDate,
@@ -38,23 +38,27 @@ class Events extends Component {
           constructionStartDate,
         } = response.data;
 
-        if (salesStartDate === null) {
+        if (salesStartDate === null || salesStartDate === undefined) {
           salesStartDate = new Date().getTime();
         }
-        if (endOfSalesDate === null) {
+        if (endOfSalesDate === null || endOfSalesDate === undefined) {
           endOfSalesDate = new Date().getTime();
         }
-        if (averageDeliveryDate === null) {
+        if (averageDeliveryDate === null || averageDeliveryDate === undefined) {
           averageDeliveryDate = new Date().getTime();
         }
-        if (balancePointDate === null) {
+        if (balancePointDate === null || balancePointDate === undefined) {
           balancePointDate = new Date().getTime();
         }
-        if (constructionStartDate === null) {
+        if (
+          constructionStartDate === null ||
+          constructionStartDate === undefined
+        ) {
           constructionStartDate = new Date().getTime();
         }
         this.setState({
           schedule: {
+            id,
             salesStartDate,
             endOfSalesDate,
             averageDeliveryDate,
@@ -62,11 +66,12 @@ class Events extends Component {
             constructionStartDate,
           },
         });
+        console.log('Pues era error', this.state.schedule);
       })
       .catch((error) => {
         console.error(error);
       });
-  } */
+  }
 
   render() {
     return (

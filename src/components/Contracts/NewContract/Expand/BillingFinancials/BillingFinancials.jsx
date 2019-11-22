@@ -13,7 +13,7 @@ import Icon from '@material-ui/core/Icon';
 import BillingFinancials from '../../Content/BillingFinancials/BillingFinancials';
 import styles from './BillingFinancials.module.scss';
 
-const ExpandBillingFinancials = ({sendBillings}) => {
+const ExpandBillingFinancials = ({ sendBillings, towerId }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mt={4}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
@@ -28,8 +28,7 @@ const ExpandBillingFinancials = ({sendBillings}) => {
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Typography>
-          <BillingFinancials 
-            sendBillings={sendBillings}/>
+          <BillingFinancials towerId={towerId} sendBillings={sendBillings} />
         </Typography>
       </ExpansionPanelDetails>
     </ExpansionPanel>

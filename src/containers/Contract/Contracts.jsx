@@ -51,7 +51,7 @@ class Contracts extends Component {
   }
 
   componentDidMount() {
-    console.log('Toma tu componente');
+    console.log('tower id', this.props.match.params.towerId);
     this.services
       .getAllCategories()
       .then((response) => {
@@ -392,6 +392,7 @@ class Contracts extends Component {
       <div className={styles.Contracts}>
         <Navbar handleOpenContract={this.handleOpenContract} />
         <NewContract
+          towerId={this.props.match.params.towerId}
           expanded={this.state.expanded}
           isOpen={this.state.contractModal.isOpen}
           handleCloseContract={this.handleCloseContract}

@@ -70,6 +70,7 @@
 .item {
   margin-top: 1% !important;
   margin-bottom: 1% !important;
+  z-index: 0;
 }
 
 .itemText {
@@ -106,4 +107,19 @@
 .subColumn {
   display: flex;
   flex-direction: column;
+}
+
+.selectRight,
+.selectLeft {
+  width: 16vh !important;
+}
+
+.rigthPick {
+  margin-top: 12px;
+  margin-left: 12px;
+}
+
+.leftPick {
+  margin-left: 5px;
+  margin-top: 12px;
 }

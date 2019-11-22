@@ -20,7 +20,7 @@ import Events from '../../../../../containers/Events/Events';
 
 import styles from './BillingFinancials.module.scss';
 
-const BillingFinancials = ({ sendBillings }) => {
+const BillingFinancials = ({ sendBillings, towerId }) => {
   const cardValue = {
     id: 0,
     billingCycle: 'Una vez',
@@ -32,6 +32,9 @@ const BillingFinancials = ({ sendBillings }) => {
   };
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
+  const [month, setMonth] = useState(MonthEnum);
+  const [disabledLastBilling, setDisableLastBilling] = useState(false);
+
   let totalBills = 0;
 
   const changeCardValue = (name, id, isDate, isSelect) => (e) => {
@@ -45,7 +48,39 @@ const BillingFinancials = ({ sendBillings }) => {
     if (isDate) {
       bill = { ...billingsArray[billIndex], [name]: e };
     } else if (isSelect) {
-      bill = { ...billingsArray[billIndex], [name]: e.value };
+      let filterMonths = [];
+      if (e.value === 1) {
+        setDisableLastBilling(true);
+        bill = { ...billingsArray[billIndex], [name]: e.label };
+      }
+      if (e.value === 2) {
+        filterMonths = MonthEnum;
+        setDisableLastBilling(false);
+        setMonth(filterMonths);
+        bill = { ...billingsArray[billIndex], [name]: e.label };
+      }
+      if (e.value === 3) {
+        setDisableLastBilling(false);
+        const tempo = MonthEnum.map((months) => {
+          return (
+            months.value % 3 === 0 &&
+            filterMonths.push({
+              value: months.value,
+              label: months.label,
+            })
+          );
+        });
+        setMonth(filterMonths);
+        bill = { ...billingsArray[billIndex], [name]: e.label };
+      }
+      if (e.value === 4) {
+        setDisableLastBilling(false);
+        const tempo = MonthEnum.map(() => {
+          return [];
+        });
+        setMonth(filterMonths);
+        bill = { ...billingsArray[billIndex], [name]: e.label };
+      }
     } else if (name === true) {
       bill = { ...billingsArray[billIndex], isLocked: true };
     } else if (name === false) {
@@ -83,7 +118,7 @@ const BillingFinancials = ({ sendBillings }) => {
     { label: 'Trimestral', value: 3 },
     { label: 'Anual', value: 4 },
   ].map((suggestion) => ({
-    value: suggestion.label,
+    value: suggestion.value,
     label: suggestion.label,
   }));
 
@@ -126,7 +161,7 @@ const BillingFinancials = ({ sendBillings }) => {
                   placeholder="Evento a Facturar"
                   components={Option}
                 />
-                <Events disabled={billing.isLocked} />
+                <Events towerId={towerId} disabled={billing.isLocked} />
 
                 <Select
                   className={styles.Select}
@@ -178,44 +213,45 @@ const BillingFinancials = ({ sendBillings }) => {
                     value={billing.billingAmount}
                     onChange={changeCardValue('billingAmount', billing.id)}
                   />
-                  <div key={billing.id} className={styles.cardForm}>
-                    <div className={styles.column}>
-                      <div className={styles.container}>
-                        <h3 className={styles.lastBillingText}>Fecha final:</h3>
-                        <div className={styles.leftPick}>
-                          <Select
-                            className={styles.selectLeft}
-                            inputId="react-select-single"
-                            isDisabled={billing.isLocked}
-                            TextFieldProps={{
-                              label: 'Mes',
-                              InputLabelProps: {
-                                htmlFor: 'react-select-single',
-                                shrink: true,
-                              },
-                            }}
-                            options={MonthEnum}
-                            placeholder="Mes"
-                            components={Option}
-                          />
-                        </div>
-                        <div className={styles.rigthPick}>
-                          <Select
-                            className={styles.selectRight}
-                            inputId="react-select-single"
-                            isDisabled={billing.isLocked}
-                            TextFieldProps={{
-                              label: 'Año',
-                              InputLabelProps: {
-                                htmlFor: 'react-select-single',
-                                shrink: true,
-                              },
-                            }}
-                            placeholder="Año"
-                            components={Option}
-                            options={YearEnum}
-                          />
-                        </div>
+                </div>
+
+                <div className={styles.cardForm}>
+                  <div className={styles.column}>
+                    <div className={styles.container}>
+                      <h3 className={styles.lastBillingText}>Fecha final:</h3>
+                      <div className={styles.leftPick}>
+                        <Select
+                          className={styles.selectLeft}
+                          inputId="react-select-single"
+                          isDisabled={billing.isLocked || disabledLastBilling}
+                          TextFieldProps={{
+                            label: 'Mes',
+                            InputLabelProps: {
+                              htmlFor: 'react-select-single',
+                              shrink: true,
+                            },
+                          }}
+                          options={month}
+                          placeholder="Mes"
+                          components={Option}
+                        />
+                      </div>
+                      <div className={styles.rigthPick}>
+                        <Select
+                          className={styles.selectRight}
+                          inputId="react-select-single"
+                          isDisabled={billing.isLocked || disabledLastBilling}
+                          TextFieldProps={{
+                            label: 'Año',
+                            InputLabelProps: {
+                              htmlFor: 'react-select-single',
+                              shrink: true,
+                            },
+                          }}
+                          placeholder="Año"
+                          components={Option}
+                          options={YearEnum}
+                        />
                       </div>
                     </div>
                   </div>
