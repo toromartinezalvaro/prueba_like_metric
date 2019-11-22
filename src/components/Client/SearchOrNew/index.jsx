@@ -21,22 +21,25 @@ const SearchOrNewClient = ({
   updateHandler,
   addHandler,
   action,
+  goToSalesRoom,
 }) => {
   const [client, setClient] = useState(clientInfo);
   const [isEditing, setEdition] = useState(false);
   const [valid, setValid] = useState(true);
 
+  const validateEmail = (email) => {
+    return /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
+      email,
+    );
+  };
+
   useEffect(() => {
     setClient(clientInfo);
+    setValid(client.email === undefined || validateEmail(clientInfo.email));
   }, [clientInfo]);
 
   const handleChange = (name) => (event) => {
-    setValid(
-      client.email === undefined ||
-        /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
-          client.email,
-        ),
-    );
+    setValid(client.email === undefined || validateEmail(client.email));
     setClient({ ...client, [name]: event.target.value });
   };
 
@@ -45,14 +48,14 @@ const SearchOrNewClient = ({
     searchNumber(client.identityDocument);
   };
 
-  const save = () => {
-    setEdition(false);
-    saveHandler(client);
-  };
-
   const update = () => {
     setEdition(false);
     updateHandler(client);
+  };
+
+  const save = (isGoingToSalesRoom = false) => {
+    setEdition(false);
+    saveHandler(client, isGoingToSalesRoom);
   };
 
   const add = () => {
@@ -92,7 +95,7 @@ const SearchOrNewClient = ({
           )}
           {valid && (
             <Fragment>
-              {isEditing && action === ADD && (
+              {isEditing && action === ADD && !clientInfo.hasCompanyAssociated && (
                 <Button onClick={add} color="primary">
                   Agregar a mi compañía
                 </Button>
@@ -102,9 +105,22 @@ const SearchOrNewClient = ({
                   Guardar
                 </Button>
               )}
+              {isEditing && action === SAVE && (
+                <Button onClick={() => save(true)} color="primary">
+                  Guardar e ir a Sala de ventas
+                </Button>
+              )}
               {isEditing && action === ADD && (
                 <Button onClick={update} color="primary">
                   Actualizar
+                </Button>
+              )}
+              {isEditing && (
+                <Button
+                  onClick={() => goToSalesRoom(clientInfo)}
+                  color="primary"
+                >
+                  Ir a sala de ventas
                 </Button>
               )}
             </Fragment>
@@ -122,12 +138,14 @@ SearchOrNewClient.propTypes = {
     name: PropTypes.string,
     email: PropTypes.string,
     phoneNumber: PropTypes.string,
+    hasCompanyAssociated: PropTypes.bool,
   }).isRequired,
   searchNumber: PropTypes.func.isRequired,
   saveHandler: PropTypes.func.isRequired,
   updateHandler: PropTypes.func.isRequired,
   addHandler: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
+  goToSalesRoom: PropTypes.func.isRequired,
 };
 
 export default SearchOrNewClient;

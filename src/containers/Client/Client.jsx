@@ -5,6 +5,7 @@ import ClientList from '../../components/Client/List';
 import ClientsServices from '../../services/client/ClientsServices';
 import SearchOrNewClient from '../../components/Client/SearchOrNew';
 import { DashboardRoutes } from '../../routes/local/routes';
+import LoadableContainer from '../../components/UI/Loader';
 
 const SAVE = 'save';
 const ADD = 'add';
@@ -15,32 +16,38 @@ class Client extends Component {
   }
 
   state = {
+    isLoading: false,
     action: SAVE,
     currentClient: {
       identityDocument: '',
       name: '',
       email: '',
       phoneNumber: '',
+      hasCompanyAssociated: false,
     },
     isOpen: false,
     clients: [],
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
       .getClients(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ clients: response.data });
+        this.setState({ clients: response.data, isLoading: false });
       });
   }
 
-  handleSave = (client) => {
+  handleSave = (client, isGoingToSalesRoom) => {
     this.services
       .postClient(this.props.match.params.towerId, client)
       .then((response) => {
         const tempClients = [...this.state.clients];
         tempClients.push(response.data);
         this.setState({ clients: tempClients, isOpen: false });
+        if (isGoingToSalesRoom) {
+          this.goToSalesRoom(response.data.id);
+        }
       });
   };
 
@@ -106,8 +113,9 @@ class Client extends Component {
   };
 
   searchNumber = (idNumber) => {
+    const { towerId } = this.props.match.params;
     this.services
-      .getClient(idNumber)
+      .getClient(idNumber, towerId)
       .then((response) => {
         this.setState({ currentClient: response.data, action: ADD });
       })
@@ -120,9 +128,13 @@ class Client extends Component {
       });
   };
 
+  goToSalesRoomClient = (currentClient) => {
+    this.goToSalesRoom(currentClient.id);
+  };
+
   render() {
     return (
-      <div>
+      <LoadableContainer isLoading={this.state.isLoading}>
         <ClientList
           towerId={this.props.match.params.towerId}
           openSearchAndEdit={this.openSearchAndEdit}
@@ -138,8 +150,9 @@ class Client extends Component {
           updateHandler={this.handleUpdate}
           addHandler={this.handleAdd}
           action={this.state.action}
+          goToSalesRoom={this.goToSalesRoomClient}
         />
-      </div>
+      </LoadableContainer>
     );
   }
 }
