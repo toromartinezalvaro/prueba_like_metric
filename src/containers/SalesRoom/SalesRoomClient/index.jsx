@@ -334,7 +334,7 @@ class SalesRoom extends Component {
     ) {
       const isThereOneProperty = this.isThereOneAvailableProperty(
         this.state.selectedProperty,
-        this.state.response.data.properties,
+        this.state.response.properties,
       );
       isStrategyNull = !isThereOneProperty;
       showModalSelectedProperty = isThereOneProperty;
