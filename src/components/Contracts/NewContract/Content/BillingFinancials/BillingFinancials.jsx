@@ -26,14 +26,13 @@ const BillingFinancials = ({ sendBillings, towerId }) => {
     billingCycle: 'Una vez',
     billingAmount: 0,
     description: '',
-    firstBillingDate: `${new Date()}`,
     lastBillingDate: `${new Date()}`,
     isLocked: false,
   };
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
   const [month, setMonth] = useState(MonthEnum);
-  const [disabledLastBilling, setDisableLastBilling] = useState(false);
+  const [disabledLastBilling, setDisableLastBilling] = useState(true);
 
   let totalBills = 0;
 
@@ -111,6 +110,8 @@ const BillingFinancials = ({ sendBillings, towerId }) => {
   useEffect(() => {
     sendBillings(billings);
   });
+
+  const lastDate = (name) => (e) => {};
 
   const suggestions = [
     { label: 'Una vez', value: 1 },
@@ -234,6 +235,7 @@ const BillingFinancials = ({ sendBillings, towerId }) => {
                           options={month}
                           placeholder="Mes"
                           components={Option}
+                          onChange={lastDate('month')}
                         />
                       </div>
                       <div className={styles.rigthPick}>
@@ -251,6 +253,7 @@ const BillingFinancials = ({ sendBillings, towerId }) => {
                           placeholder="Año"
                           components={Option}
                           options={YearEnum}
+                          onChange={lastDate('year')}
                         />
                       </div>
                     </div>
@@ -291,7 +294,7 @@ const BillingFinancials = ({ sendBillings, towerId }) => {
                   )}
                   <div className={styles.TotalSubbills}>
                     <h4 sclassName={styles.textTotal}> Valor de cuenta:</h4>
-                    <p className={styles.amount}>{billing.billingAmount}</p>
+                    <p className={styles.amount}>{billing.billingAmount * 1}</p>
                   </div>
                 </div>
               </div>

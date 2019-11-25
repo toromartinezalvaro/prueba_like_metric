@@ -18,105 +18,19 @@ import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
 import styles from './GeneralInfo.module.scss';
 
-const GeneralInfo = ({ schedule }) => {
-  const [generalInformation, setGeneralInformation] = useState({
-    title: '',
-    displacement: 0,
-    date: '',
-    description: '',
-  });
-
-  const [tag, setTag] = useState({
-    name: '',
-    date: new Date(),
-  });
-
-  const [canDisplace, setCanDisplace] = useState(false);
-
-  const [dateValue, setDateValue] = useState([]);
-
-  const [uniqueDate, setuniqueDate] = useState(false);
-
-  const onChangeText = (name) => (e) => {
-    setGeneralInformation({ ...generalInformation, [name]: e.target.value });
-  };
-
-  const displacementForDate = (name) => (e) => {
-    console.log(generalInformation.date);
-    const updateDate = moment(generalInformation.date)
-      .add(Number(e.target.value), 'M')
-      .toDate()
-      .getTime();
-    setGeneralInformation({
-      ...generalInformation,
-      [name]: e.target.value,
-    });
-
-    console.log('La fecha', updateDate, Number(e.target.value));
-  };
-
-  const handleChangeUniqueDate = (e) => {
-    if (e.value === 1) {
-      setuniqueDate(true);
-      setCanDisplace(false);
-    } else {
-      setGeneralInformation({
-        ...generalInformation,
-        title: e.label,
-        date: e.value,
-      });
-      setuniqueDate(false);
-      setCanDisplace(true);
-      console.log(generalInformation);
-    }
-  };
-
-  const changeDate = (name) => (e) => {
-    if (name === 'date') {
-      setTag({ ...tag, [name]: e });
-    } else if (name === 'name') {
-      setTag({ ...tag, [name]: e.target.value });
-    }
-  };
-
-  const handleNewTag = (name) => (e) => {};
-
-  useEffect(() => {
-    setDateValue([
-      { value: 1, label: 'FECHA UNICA' },
-      {
-        value: Number(schedule.salesStartDate),
-        label: `FECHA INICIO PROYECTO (${moment(
-          Number(schedule.salesStartDate),
-        ).format('DD/MM/YYYY')})`,
-      },
-      {
-        value: Number(schedule.endOfSalesDate),
-        label: `FECHA FIN PROYECTO (${moment(
-          Number(schedule.endOfSalesDate),
-        ).format('DD/MM/YYYY')})`,
-      },
-      {
-        value: Number(schedule.balancePointDate),
-        label: `FECHA PUNTO DE EQUILIBRIO (${moment(
-          Number(schedule.balancePointDate),
-        ).format('DD/MM/YYYY')})`,
-      },
-      {
-        value: Number(schedule.constructionStartDate),
-        label: `FECHA INICIO DE CONSTRUCCIÓN (${moment(
-          Number(schedule.constructionStartDate),
-        ).format('DD/MM/YYYY')})`,
-      },
-      {
-        value: Number(schedule.averageDeliveryDate),
-        label: `FECHA PROMEDIO DE ENTREGAS (${moment(
-          Number(schedule.averageDeliveryDate),
-        ).format('DD/MM/YYYY')})`,
-      },
-    ]);
-  });
-
+const GeneralInfo = ({
+  schedule,
+  onChangeText,
+  changeDate,
+  tag,
+  event,
+  displacementForDate,
+  canDisplace,
+  dateValue,
+  uniqueDate,
+  handleChangeUniqueDate,
+  uniqueDateValue,
+}) => {
   const Option = (props) => {
     return (
       <MenuItem
@@ -133,17 +47,21 @@ const GeneralInfo = ({ schedule }) => {
     );
   };
 
+  const [initialDate, setInitialDate] = useState(new Date());
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const uniqueDateValueChange = (e) => {
+    setInitialDate(e);
+  };
+
+  const uniqueDateValueSend = () => {
+    uniqueDateValue(initialDate);
+    setIsDisabled(!isDisabled);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.leftInformation}>
-        <TextField
-          required
-          fullWidth
-          className={styles.item}
-          label="Titulo"
-          variant="outlined"
-          onChange={onChangeText('title')}
-        />
         <div className={styles.itemSelect}>
           <Select
             required
@@ -168,14 +86,15 @@ const GeneralInfo = ({ schedule }) => {
                 <div className={styles.gridSubContainer}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+                      disabled={isDisabled}
                       disableToolbar
                       variant="inline"
                       format="MM/dd/yyyy"
                       margin="normal"
                       id="date-picker-inline"
                       label="Primera Fecha de Cobro"
-                      value={tag.date}
-                      onChange={changeDate('date')}
+                      value={initialDate}
+                      onChange={uniqueDateValueChange}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -187,6 +106,7 @@ const GeneralInfo = ({ schedule }) => {
                       size="small"
                       aria-label="add"
                       className={styles.fab}
+                      onClick={uniqueDateValueSend}
                     >
                       <AddIcon />
                     </Fab>
@@ -201,7 +121,7 @@ const GeneralInfo = ({ schedule }) => {
               fullWidth
               className={styles.displacement}
               label="Desplazamiento"
-              value={generalInformation.displacement}
+              value={event.displacement}
               variant="outlined"
               onChange={displacementForDate('displacement')}
             />
@@ -216,7 +136,7 @@ const GeneralInfo = ({ schedule }) => {
           className={styles.item}
           label="Descripción/Comentarios"
           variant="outlined"
-          onChange={onChangeText('description')}
+          onChange={onChangeText}
         />
       </div>
     </div>
@@ -226,6 +146,8 @@ const GeneralInfo = ({ schedule }) => {
 GeneralInfo.propTypes = {
   handleCloseEvent: PropTypes.func,
   schedule: PropTypes.object,
+  onChangeText: PropTypes.object,
+  event: PropTypes.object,
 };
 
 export default GeneralInfo;

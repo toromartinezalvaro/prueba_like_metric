@@ -6,7 +6,21 @@ import GeneralInfo from './generalInfo/GeneralInfo';
 import ContractReference from './ContractReference/ContractReference';
 import styles from './Event.module.scss';
 
-const Event = ({ handleCloseEvent, schedule }) => {
+const Event = ({
+  sendEvent,
+  handleCloseEvent,
+  schedule,
+  onChangeText,
+  changeDate,
+  tag,
+  event,
+  displacementForDate,
+  canDisplace,
+  dateValue,
+  uniqueDate,
+  handleChangeUniqueDate,
+  uniqueDateValue,
+}) => {
   return (
     <Fragment>
       <div className={styles.heading}>
@@ -15,7 +29,19 @@ const Event = ({ handleCloseEvent, schedule }) => {
         </div>
         <div className={styles.titleExpand}>Información General</div>
       </div>
-      <GeneralInfo schedule={schedule}/>
+      <GeneralInfo
+        schedule={schedule}
+        onChangeText={onChangeText}
+        changeDate={changeDate}
+        tag={tag}
+        event={event}
+        displacementForDate={displacementForDate}
+        canDisplace={canDisplace}
+        dateValue={dateValue}
+        uniqueDate={uniqueDate}
+        uniqueDateValue={uniqueDateValue}
+        handleChangeUniqueDate={handleChangeUniqueDate}
+      />
       <div className={styles.heading}>
         <div
           className={`${styles.circleIcon}  ${styles.circleColorGeneralBlue}`}
@@ -24,13 +50,14 @@ const Event = ({ handleCloseEvent, schedule }) => {
         </div>
         <div className={styles.titleExpand}>Información de Contrato Ligado</div>
       </div>
-      <ContractReference/>
+      <ContractReference />
 
       <div className={styles.actionContainer}>
         <Button
           variant="contained"
           color="primary"
           className={styles.button}
+          onClick={sendEvent}
           startIcon={<Icon className="far fa-calendar-alt" />}
         >
           Agregar Evento
@@ -50,8 +77,10 @@ const Event = ({ handleCloseEvent, schedule }) => {
 };
 
 Event.propTypes = {
+  sendEvent: PropTypes.func,
   handleCloseEvent: PropTypes.func,
   schedule: PropTypes.object,
+  onChangeText: PropTypes.object,
 };
 
 export default Event;
