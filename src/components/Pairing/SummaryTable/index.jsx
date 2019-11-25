@@ -21,7 +21,7 @@ const SummaryTable = ({ properties }) => {
           <TableCell>
             {
               properties.filter((property) => {
-                return property.areas.length > 0;
+                return property.additionalAreas.length > 0;
               }).length
             }
           </TableCell>
@@ -31,7 +31,7 @@ const SummaryTable = ({ properties }) => {
           <TableCell>
             {
               properties.filter((property) => {
-                return property.areas.length === 0;
+                return property.additionalAreas.length === 0;
               }).length
             }
           </TableCell>
@@ -50,7 +50,7 @@ SummaryTable.propTypes = {
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
-      areas: PropTypes.arrayOf(
+      additionalAreas: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number,
           areaType: PropTypes.shape({
