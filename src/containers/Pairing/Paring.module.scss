@@ -1,14 +1,11 @@
 .container {
-  display: flex;
   overflow-x: auto;
-
   .summary {
-    margin-right: 25px;
+    margin-bottom: 25px;
   }
 
   .pairing {
-    max-height: 500px;
+    max-height: 400px;
     overflow-y: auto;
-    flex-grow: 1;
   }
 }
