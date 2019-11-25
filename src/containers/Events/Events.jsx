@@ -23,7 +23,7 @@ class Events extends Component {
       },
       event: {
         displacement: 0,
-        customDate: '',
+        customDate: null,
         description: '',
         scheduleId: null,
       },
@@ -168,6 +168,7 @@ class Events extends Component {
       this.setState({
         event: {
           ...this.state.event,
+          customDate: null,
           scheduleId: this.state.schedule.id,
         },
         uniqueDate: false,
@@ -177,10 +178,12 @@ class Events extends Component {
   };
 
   uniqueDateValue = (e) => {
+    let time = moment(e);
+    console.log(time.toDate().getTime());
     this.setState({
       event: {
         ...this.state.event,
-        customDate: e,
+        customDate: time.toDate().getTime(),
         scheduleId: null,
       },
     });
