@@ -128,6 +128,7 @@ class Events extends Component {
       .catch((error) => {
         console.log(error);
       });
+    this.setState({ eventModal: { isOpen: false } });
     console.log({ state: this.state.event });
   };
 
