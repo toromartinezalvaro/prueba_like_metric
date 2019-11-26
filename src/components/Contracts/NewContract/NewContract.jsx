@@ -46,6 +46,7 @@ const NewContract = ({
   changeItemIsLocked,
   currentGroupId,
   towerId,
+  events,
 }) => {
   return (
     <Dialog
@@ -92,6 +93,7 @@ const NewContract = ({
         <ExpandBillingFinancials
           towerId={towerId}
           sendBillings={sendBillings}
+          events={events}
         />
         <br />
         <ExpandAttachment />

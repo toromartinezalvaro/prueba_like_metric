@@ -13,10 +13,12 @@ import Category from '../../components/Contracts/NewContract/Content/Category/Ca
 import BusinessPatner from '../../components/Contracts/NewContract/BusinessPatner/BusinessPatner';
 import ContractService from '../../services/contract/contractService';
 import Item from '../../components/Contracts/NewContract/Content/Item/Item';
+import EventService from '../../services/event/EventServices';
 
 class Contracts extends Component {
   constructor(props) {
     super(props);
+    this.EventService = new EventService();
     this.services = new ContractService();
     this.state = {
       categoryModal: {
@@ -47,11 +49,11 @@ class Contracts extends Component {
       partners: [],
       items: [],
       currentGroupId: '',
+      events: [],
     };
   }
 
   componentDidMount() {
-    console.log('tower id', this.props.match.params.towerId);
     this.services
       .getAllCategories()
       .then((response) => {
@@ -81,6 +83,19 @@ class Contracts extends Component {
         this.setState({
           partners,
         });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    this.EventService.getAll(this.props.match.params.towerId)
+      .then((response) => {
+        const events = response.map((event) => {
+          return {
+            value: event.id,
+            label: event.description,
+          };
+        });
+        this.setState({ events });
       })
       .catch((error) => {
         console.log(error);
@@ -420,6 +435,7 @@ class Contracts extends Component {
           changeItemIsLocked={this.changeItemIsLocked}
           currentGroupId={this.currentGroupId}
           sendGeneralInfo={this.sendGeneralInfo}
+          events={this.events}
         />
         <Dialog
           className={styles.dialogExpand}

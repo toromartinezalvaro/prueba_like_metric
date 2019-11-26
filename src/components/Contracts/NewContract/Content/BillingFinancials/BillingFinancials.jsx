@@ -20,7 +20,7 @@ import Events from '../../../../../containers/Events/Events';
 
 import styles from './BillingFinancials.module.scss';
 
-const BillingFinancials = ({ sendBillings, towerId }) => {
+const BillingFinancials = ({ sendBillings, towerId, events }) => {
   const cardValue = {
     id: 0,
     billingCycle: 'Una vez',
@@ -161,6 +161,7 @@ const BillingFinancials = ({ sendBillings, towerId }) => {
                   }}
                   placeholder="Evento a Facturar"
                   components={Option}
+                  options={events}
                 />
                 <Events towerId={towerId} disabled={billing.isLocked} />
 
