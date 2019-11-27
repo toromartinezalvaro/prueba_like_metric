@@ -1,11 +1,7 @@
-.container {
-  overflow-x: auto;
-  .summary {
-    margin-bottom: 25px;
-  }
-
-  .pairing {
-    max-height: 400px;
-    overflow-y: auto;
-  }
+.loaderContainer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+  z-index: 99;
+  border-radius: 0.25rem;
 }

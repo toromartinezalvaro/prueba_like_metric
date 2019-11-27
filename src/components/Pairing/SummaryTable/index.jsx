@@ -1,47 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Styles from './SummaryTable.module.scss';
 
 const SummaryTable = ({ properties }) => {
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Description</TableCell>
-          <TableCell>Cantidad</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <TableRow>
-          <TableCell>Apareados</TableCell>
-          <TableCell>
-            {
-              properties.filter((property) => {
-                return property.additionalAreas.length > 0;
-              }).length
-            }
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Disponibles</TableCell>
-          <TableCell>
-            {
-              properties.filter((property) => {
-                return property.additionalAreas.length === 0;
-              }).length
-            }
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Total</TableCell>
-          <TableCell>{properties.length}</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+    <div className={Styles.container}>
+      <div className={Styles.some}>
+        <div className={Styles.title}>Apareados</div>
+        <div className={Styles.value}>
+          {
+            properties.filter((property) => {
+              return property.additionalAreas.length > 0;
+            }).length
+          }
+        </div>
+      </div>
+      <div className={Styles.some}>
+        <div className={Styles.title}>Libres</div>
+        <div className={Styles.value}>
+          {
+            properties.filter((property) => {
+              return property.additionalAreas.length === 0;
+            }).length
+          }
+        </div>
+      </div>
+      <div className={Styles.some}>
+        <div className={Styles.title}>Total</div>
+        <div className={Styles.value}>{properties.length}</div>
+      </div>
+    </div>
   );
 };
 

@@ -33,44 +33,49 @@ const PairingTable = ({
 
   return (
     <div className={Styles.container}>
-      <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            <TableCell>Nomenclatura</TableCell>
-            <TableCell>Estado</TableCell>
-            {Array(maxAreasLength)
-              .fill(null)
-              .map((_, headerIndex) => {
-                return (
-                  <TableCell key={`header-${headerIndex}`}>
-                    Adicional {headerIndex + 1}
-                  </TableCell>
-                );
-              })}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {properties.map((property) => {
-            return (
-              <PropertyRow
-                key={property.id}
-                property={property}
-                maxCols={maxAreasLength}
-                areas={areas}
-                addAreaHandler={addArea(property.id)}
-                removeAreaHandler={removeAreaHandler}
-              />
-            );
-          })}
-        </TableBody>
-      </Table>
-      <Button
-        onClick={() => {
-          setMaxAreasLength(maxAreasLength + 1);
-        }}
-      >
-        Agregar
-      </Button>
+      <div className={Styles.tableContainer}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nomenclatura</TableCell>
+              <TableCell>Estado</TableCell>
+              {Array(maxAreasLength)
+                .fill(null)
+                .map((_, headerIndex) => {
+                  return (
+                    <TableCell key={`header-${headerIndex}`}>
+                      Adicional {headerIndex + 1}
+                    </TableCell>
+                  );
+                })}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {properties.map((property) => {
+              return (
+                <PropertyRow
+                  key={property.id}
+                  property={property}
+                  maxCols={maxAreasLength}
+                  areas={areas}
+                  addAreaHandler={addArea(property.id)}
+                  removeAreaHandler={removeAreaHandler}
+                />
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
+      <div className={Styles.actionContainer}>
+        <Button
+          className={Styles.button}
+          onClick={() => {
+            setMaxAreasLength(maxAreasLength + 1);
+          }}
+        >
+          Agregar columna
+        </Button>
+      </div>
     </div>
   );
 };
