@@ -20,9 +20,10 @@ import Events from '../../../../../containers/Events/Events';
 
 import styles from './BillingFinancials.module.scss';
 
-const BillingFinancials = ({ sendBillings, towerId, events }) => {
+const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
   const cardValue = {
     id: 0,
+    event: null,
     billingCycle: 'Una vez',
     billingAmount: 0,
     description: '',
@@ -163,7 +164,7 @@ const BillingFinancials = ({ sendBillings, towerId, events }) => {
                   components={Option}
                   options={events}
                 />
-                <Events towerId={towerId} disabled={billing.isLocked} />
+                <Events currentEvent={currentEvent} towerId={towerId} disabled={billing.isLocked} />
 
                 <Select
                   className={styles.Select}

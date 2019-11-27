@@ -125,6 +125,13 @@ class Events extends Component {
   sendEvent = () => {
     this.services
       .postEvent(this.props.towerId, this.state.event)
+      .then((response) => {
+        const currentEvent = {
+          value: response.id,
+          label: response.description,
+        }
+        this.props.currentEvent(currentEvent);
+      })
       .catch((error) => {
         console.log(error);
       });

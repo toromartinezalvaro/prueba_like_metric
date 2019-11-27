@@ -18,7 +18,7 @@ import EventService from '../../services/event/EventServices';
 class Contracts extends Component {
   constructor(props) {
     super(props);
-    this.EventService = new EventService();
+    this.eventService = new EventService();
     this.services = new ContractService();
     this.state = {
       categoryModal: {
@@ -87,15 +87,17 @@ class Contracts extends Component {
       .catch((error) => {
         console.log(error);
       });
-    this.EventService.getAll(this.props.match.params.towerId)
+    this.eventService
+      .getAll(this.props.match.params.towerId)
       .then((response) => {
-        const events = response.map((event) => {
+        const events = response.data.map((event) => {
           return {
             value: event.id,
             label: event.description,
           };
         });
         this.setState({ events });
+        console.log('Events', events);
       })
       .catch((error) => {
         console.log(error);
@@ -402,6 +404,10 @@ class Contracts extends Component {
     console.log('from masterContrac', generalInformation);
   };
 
+  currentEvent = (currentEvent) => {
+    this.setState({ events: [...this.state.events, currentEvent] });
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -435,7 +441,8 @@ class Contracts extends Component {
           changeItemIsLocked={this.changeItemIsLocked}
           currentGroupId={this.currentGroupId}
           sendGeneralInfo={this.sendGeneralInfo}
-          events={this.events}
+          events={this.state.events}
+          currentEvent={this.currentEvent}
         />
         <Dialog
           className={styles.dialogExpand}

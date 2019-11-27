@@ -47,6 +47,7 @@ const NewContract = ({
   currentGroupId,
   towerId,
   events,
+  currentEvent,
 }) => {
   return (
     <Dialog
@@ -94,6 +95,7 @@ const NewContract = ({
           towerId={towerId}
           sendBillings={sendBillings}
           events={events}
+          currentEvent={currentEvent}
         />
         <br />
         <ExpandAttachment />
