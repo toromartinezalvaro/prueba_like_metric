@@ -4,7 +4,13 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import AreaCell from './AreaCell';
 
-const PropertyRow = ({ property, areas, maxCols }) => {
+const PropertyRow = ({
+  property,
+  areas,
+  maxCols,
+  addAreaHandler,
+  removeAreaHandler,
+}) => {
   return (
     <TableRow>
       <TableCell>{property.name}</TableCell>
@@ -14,7 +20,19 @@ const PropertyRow = ({ property, areas, maxCols }) => {
       {Array(maxCols)
         .fill(null)
         .map((_, index) => {
-          return <AreaCell key={`${property.id}-${index}`} areas={areas} />;
+          const area =
+            property.additionalAreas.length > index
+              ? property.additionalAreas[index]
+              : null;
+          return (
+            <AreaCell
+              key={`${property.id}-${index}`}
+              areas={areas}
+              area={area}
+              addAreaHandler={addAreaHandler}
+              removeAreaHandler={removeAreaHandler}
+            />
+          );
         })}
     </TableRow>
   );
@@ -49,6 +67,8 @@ PropertyRow.propTypes = {
     }),
   ).isRequired,
   maxCols: PropTypes.number.isRequired,
+  addAreaHandler: PropTypes.func.isRequired,
+  removeAreaHandler: PropTypes.func.isRequired,
 };
 
 export default PropertyRow;

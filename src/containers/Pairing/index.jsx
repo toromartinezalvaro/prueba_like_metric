@@ -22,11 +22,12 @@ class Pairing extends Component {
   state = {
     properties: [],
     areas: [],
-    loading: false,
+    loadingContainer: false,
+    loadingPropertiesData: false,
   };
 
   componentDidMount() {
-    this.setState({ loading: true });
+    this.setState({ loadingContainer: true });
     this.services
       .getData(this.props.match.params.towerId)
       .then((response) => {
@@ -36,7 +37,7 @@ class Pairing extends Component {
             'location',
           ]),
           areas: response.data.additionalAreas,
-          loading: false,
+          loadingContainer: false,
         });
       })
       .catch((error) => {
@@ -49,11 +50,45 @@ class Pairing extends Component {
       });
   }
 
-  static propTypes = {};
+  handleAddArea = (propertyId, areaId) => {
+    this.setState({ loadingPropertiesData: true });
+    this.services
+      .addArea(propertyId, areaId)
+      .then((response) => {
+        this.setState((prevState) => {
+          const tempProperties = [...prevState.properties];
+          const tempAreas = [...prevState.areas];
+          const filteredAreas = tempAreas.filter()
+          return { loadingPropertiesData: false };
+        });
+        this.props.spawnMessage('Se agrego el area correctamente', 'success');
+      })
+      .catch((error) => {
+        this.props.spawnMessage(error.response.data.message, 'error');
+        this.setState({ loadingPropertiesData: false });
+      });
+  };
+
+  handleRemoveArea = (areaId) => {
+    this.setState({ loadingPropertiesData: true });
+    this.services
+      .removeArea(areaId)
+      .then((response) => {
+        this.setState((prevState) => {
+          const tempProperties = [...prevState.properties];
+          return { loadingPropertiesData: false };
+        });
+        this.props.spawnMessage('Se elimino correctemente el area', 'success');
+      })
+      .catch((error) => {
+        this.props.spawnMessage(error.response.data.message, 'error');
+        this.setState({ loadingPropertiesData: false });
+      });
+  };
 
   render() {
     return (
-      <Loading isLoading={this.state.loading}>
+      <Loading isLoading={this.state.loadingContainer}>
         <Card>
           <CardHeader>
             <span>Apareamiento</span>
@@ -64,10 +99,14 @@ class Pairing extends Component {
                 <SummaryTable properties={this.state.properties} />
               </div>
               <div className={Styles.pairing}>
-                <PairingTable
-                  properties={this.state.properties}
-                  areas={this.state.areas}
-                />
+                <Loading isLoading={this.state.loadingPropertiesData}>
+                  <PairingTable
+                    properties={this.state.properties}
+                    areas={this.state.areas}
+                    addAreaHandler={this.handleAddArea}
+                    removeAreaHandler={this.handleRemoveArea}
+                  />
+                </Loading>
               </div>
             </div>
           </CardBody>

@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,7 +9,12 @@ import PropertyRow from './PropertyRow';
 import Button from '../../UI2/Button';
 import Styles from './PairingTable.module.scss';
 
-const PairingTable = ({ properties, areas }) => {
+const PairingTable = ({
+  properties,
+  areas,
+  addAreaHandler,
+  removeAreaHandler,
+}) => {
   const getMaxAreas = () => {
     return properties.reduce((current, next) => {
       return next.additionalAreas.length > current
@@ -19,6 +24,12 @@ const PairingTable = ({ properties, areas }) => {
   };
 
   const [maxAreasLength, setMaxAreasLength] = useState(getMaxAreas());
+
+  const addArea = (propertyId) => {
+    return (areaId) => {
+      addAreaHandler(propertyId, areaId);
+    };
+  };
 
   return (
     <div className={Styles.container}>
@@ -39,13 +50,15 @@ const PairingTable = ({ properties, areas }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {properties.map((property, propertyIndex) => {
+          {properties.map((property) => {
             return (
               <PropertyRow
-                key={propertyIndex}
+                key={property.id}
                 property={property}
                 maxCols={maxAreasLength}
                 areas={areas}
+                addAreaHandler={addArea(property.id)}
+                removeAreaHandler={removeAreaHandler}
               />
             );
           })}
@@ -85,6 +98,8 @@ PairingTable.propTypes = {
       quantity: PropTypes.number,
     }),
   ).isRequired,
+  addAreaHandler: PropTypes.func.isRequired,
+  removeAreaHandler: PropTypes.func.isRequired,
 };
 
 export default PairingTable;

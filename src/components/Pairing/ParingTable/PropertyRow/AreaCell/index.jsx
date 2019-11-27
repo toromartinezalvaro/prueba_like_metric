@@ -1,36 +1,39 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
-import Button from '../../../../UI2/Button';
-import EditableContainer from './EditableContainer';
-import AreasAutoComplete from './AreasAutocomplete';
+import HoverContainer, { options } from './HoverContainer';
+import AreaForm from './AreaForm';
 import Styles from './AreaCell.module.scss';
 
-const AreaCell = ({ areas }) => {
+const AreaCell = ({ areas, area, addAreaHandler, removeAreaHandler }) => {
   const [isEditing, setIsEditing] = useState(false);
+
   return (
     <TableCell>
       <div className={Styles.container}>
         {isEditing ? (
-          <div className={Styles.editingContainer}>
-            <div className={Styles.autocompleteContainer}>
-              <AreasAutoComplete areas={areas} />
-            </div>
-            <Button>
-              <i className="fas fa-check"></i>
-            </Button>
-            <Button>
-              <i className="fas fa-times"></i>
-            </Button>
-          </div>
+          <AreaForm
+            areas={areas}
+            isEditingHandler={setIsEditing}
+            addAreaHandler={addAreaHandler}
+          />
         ) : (
-          <EditableContainer
+          <HoverContainer
             updateHandler={() => {
               setIsEditing(true);
             }}
+            removeAreaHandler={() => {
+              setIsEditing(false);
+              removeAreaHandler(area.id);
+            }}
+            option={area ? options.DELETE : options.EDIT}
           >
-            <span>Texto base</span>
-          </EditableContainer>
+            <span>
+              {area
+                ? `${area.areaType.name} - ${area.nomenclature}`
+                : 'Sin area'}
+            </span>
+          </HoverContainer>
         )}
       </div>
     </TableCell>
@@ -50,6 +53,16 @@ AreaCell.propTypes = {
       ),
     }),
   ).isRequired,
+  area: PropTypes.shape({
+    id: PropTypes.number,
+    nomenclature: PropTypes.string,
+    areaType: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    }),
+  }),
+  addAreaHandler: PropTypes.func.isRequired,
+  removeAreaHandler: PropTypes.func.isRequired,
 };
 
 export default AreaCell;
