@@ -16,4 +16,8 @@ export default class ProjectServices extends Services  {
     return this.delete(ProjectServiceDefinitions.projects, data)
   }
 
+  update = (name, description) => {
+
+  }
+
 }
