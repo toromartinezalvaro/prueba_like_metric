@@ -145,8 +145,8 @@ export default class Projects extends Component {
   };
 
   onEditProject = () => {
-    this.services.
-  }
+    // this.services.
+  };
 
   onCreate = () => {
     if (this.state.newTitleProject === '') {
@@ -219,7 +219,9 @@ export default class Projects extends Component {
             : 'Crear proyecto'
         }
         hidden={this.state.modalIsHidden}
-        onConfirm={this.state.currentEditingProject ? this.onEditProject : this.onCreate}
+        onConfirm={
+          this.state.currentEditingProject ? this.onEditProject : this.onCreate
+        }
         onCancel={this.cancel}
       >
         <div>
@@ -280,7 +282,10 @@ export default class Projects extends Component {
     const currentEditingProject = projects.find(
       (project) => project.id === projectId,
     );
-    this.setState({ currentEditingProject, modalIsHidden: !currentEditingProject });
+    this.setState({
+      currentEditingProject,
+      modalIsHidden: !currentEditingProject,
+    });
   };
 
   render() {
