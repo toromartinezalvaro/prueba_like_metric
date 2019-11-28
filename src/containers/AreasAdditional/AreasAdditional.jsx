@@ -2,7 +2,7 @@
  * Created Date: Tuesday November 12th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 20th November 2019 1:48:47 am
+ * Last Modified: Thursday, 28th November 2019 5:14:32 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -68,7 +68,14 @@ class AreasAdditional extends Component {
       .catch((error) => console.error(error));
   };
 
-  addAreaAdditionalHandler = (nomenclature, measure, price, areaTypeId) => {
+  addAreaAdditionalHandler = (
+    nomenclature,
+    measure,
+    price,
+    areaTypeId,
+    indexAreaType,
+    indexArea,
+  ) => {
     this.services
       .postAreaAdditional({
         nomenclature,
@@ -76,6 +83,15 @@ class AreasAdditional extends Component {
         towerId: this.props.match.params.towerId,
         measure,
         price,
+      })
+      .then((area) => {
+        console.log(area);
+        const areas = this.state.arrayAreaTypes;
+        console.log(indexAreaType, indexArea);
+        areas[indexAreaType].hola[indexArea] = area.data;
+
+        this.setState({ arrayAreaTypes: areas });
+        console.log(this.state.arrayAreaTypes, areas);
       })
       .catch((error) => console.error(error));
   };

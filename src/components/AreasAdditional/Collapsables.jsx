@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 20th November 2019 1:42:19 am
+ * Last Modified: Thursday, 28th November 2019 5:13:56 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -79,7 +79,7 @@ const Collapsables = (props) => {
     setName(event.target.value);
   };
 
-  return props.data.map((areaType) => {
+  return props.data.map((areaType, i) => {
     let data = Matrix(
       areaType,
       actualValue,
@@ -87,6 +87,7 @@ const Collapsables = (props) => {
       props.addAreaAdditionalHandler,
       props.updateAreaAdditionalHandler,
       actualValueHandler,
+      i,
     );
 
     const columnsMT2 = [

@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 20th November 2019 2:07:35 am
+ * Last Modified: Thursday, 28th November 2019 9:34:00 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -27,7 +27,6 @@ function NumberFormatCustom(props) {
             value: values.value,
           },
         });
-        console.log(values);
       }}
       thousandSeparator
     />
@@ -41,10 +40,11 @@ const Matrix = (
   addAreaAdditionalHandler,
   updateAreaAdditionalHandler,
   actualValueHandler,
+  index,
 ) => {
   let data = [];
   for (let i = 0; i < areaType.quantity; i += 1) {
-    data = areaType.hola.map((area, j) => {
+    data = areaType.formatedAreas.map((area, j) => {
       return {
         nomenclature: (
           <div key={`nomenclature${j}`} className={Styles.ContainerTexField}>
@@ -72,7 +72,14 @@ const Matrix = (
                       area.id,
                     );
                   } else {
-                    addAreaAdditionalHandler(e.target.value, 0, 0, areaType.id);
+                    addAreaAdditionalHandler(
+                      e.target.value,
+                      0,
+                      0,
+                      areaType.id,
+                      index,
+                      j,
+                    );
                   }
                 }
               }}
@@ -114,6 +121,8 @@ const Matrix = (
                       e.target.value,
                       0,
                       areaType.id,
+                      index,
+                      j,
                     );
                   }
                 } else {
@@ -155,6 +164,8 @@ const Matrix = (
                       0,
                       e.target.value,
                       areaType.id,
+                      index,
+                      j,
                     );
                   }
                 }
