@@ -129,6 +129,7 @@ class SalesRoom extends Component {
         backgroundColor: buttons.backgroundColor,
         padding: '0.01em',
         textAlign: 'center',
+        position: 'relative',
       }}
       onClick={() => this.onClickSelector(property, buttons)}
     >
@@ -154,6 +155,9 @@ class SalesRoom extends Component {
           />
         )}
         {active === 'groups' && property.groupName}
+        {property.requestStatus === 'R' && (
+          <span className={Styles.rejectBadge}>R</span>
+        )}
       </p>
       <ReactTooltip />
     </div>
@@ -330,7 +334,7 @@ class SalesRoom extends Component {
     ) {
       const isThereOneProperty = this.isThereOneAvailableProperty(
         this.state.selectedProperty,
-        this.state.response.data.properties,
+        this.state.response.properties,
       );
       isStrategyNull = !isThereOneProperty;
       showModalSelectedProperty = isThereOneProperty;
@@ -370,7 +374,14 @@ class SalesRoom extends Component {
             <CardFooter />
             <Dialog open={this.state.isOpen}>
               <DialogTitle>
-                {`Nuevo Estado - ${this.state.selectedProperty.name}`}
+                <div>
+                  <span>
+                    {`Nuevo Estado - ${this.state.selectedProperty.name}`}
+                  </span>
+                  {this.state.selectedProperty.requestStatus === 'R' && (
+                    <span className={Styles.rejectedLabel}>RECHAZADO</span>
+                  )}
+                </div>
               </DialogTitle>
               <DialogContent>
                 {isStrategyNull &&
@@ -385,22 +396,31 @@ class SalesRoom extends Component {
                         width="100"
                       />
                     </div>
-                  ) : (
+                  ) : this.state.selectedProperty.clientId ===
+                      this.props.match.params.clientId ||
+                    this.state.selectedProperty.clientId === null ? (
                     <SalesRoomModal
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}
                       onChangeDeadlineDate={this.deadlineDateHandler}
+                      clientId={this.props.match.params.clientId}
                     />
+                  ) : (
+                    'El apartamento seleccionado no le pertenece a este cliente'
                   ))}
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.cancel} className={Styles.CancelButton}>
                   Cancelar
                 </Button>
-                <Button onClick={this.save} className={Styles.ConfirmButton}>
-                  Aceptar
-                </Button>
+                {(this.state.selectedProperty.clientId ===
+                  this.props.match.params.clientId ||
+                  this.state.selectedProperty.clientId === null) && (
+                  <Button onClick={this.save} className={Styles.ConfirmButton}>
+                    Aceptar
+                  </Button>
+                )}
               </DialogActions>
             </Dialog>
           </Card>

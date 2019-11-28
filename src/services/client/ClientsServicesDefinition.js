@@ -6,7 +6,8 @@ const ClientsServiceDefinitions = {
     `${API_PATH}clients/client/${identityDocument}/tower/${towerId}`,
   addClient: (towerId) => `${API_PATH}clients/tower/${towerId}`,
   getClients: (towerId) => `${API_PATH}clients/tower/${towerId}`,
-  getClient: (identityDocument) => `${API_PATH}clients/${identityDocument}`,
+  getClient: (identityDocument, towerId) =>
+    `${API_PATH}clients/${identityDocument}/${towerId}`,
 };
 
 export default ClientsServiceDefinitions;

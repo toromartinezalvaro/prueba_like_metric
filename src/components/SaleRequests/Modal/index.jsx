@@ -15,16 +15,18 @@ const SaleRequestModal = ({
   approveHandler,
   rejectHandler,
   cancelHandler,
-  saleRequest: { id, client, property, pricing },
+  saleRequest: { id, requestStatus, client, property, pricing },
 }) => {
   const [l0, setL0] = useState(pricing.l0);
   const [discount, setDiscount] = useState(pricing.financial);
   const [tradeDiscount, setTradeDiscount] = useState(pricing.trade);
+  const [readOnly, setReadOnly] = useState(requestStatus !== 'P');
 
   useEffect(() => {
     setL0(pricing.l0);
     setDiscount(pricing.financial);
     setTradeDiscount(pricing.trade);
+    setReadOnly(requestStatus !== 'P');
   }, [pricing]);
 
   const getColumns = () => {
@@ -51,7 +53,7 @@ const SaleRequestModal = ({
         </div>
         <div className={Styles.details}>
           <div className={Styles.header}>
-            <span>Detalle</span>
+            <span>Detalle Estado:{requestStatus}</span>
           </div>
           <div>
             <Table
@@ -67,8 +69,9 @@ const SaleRequestModal = ({
             <span className={Styles.title}>Precio de lista:</span>
             <span className={Styles.value}>
               <Input
+                disable={readOnly}
                 mask="currency"
-                value={l0}
+                value={l0 ? l0.toFixed(2) : 0}
                 onChange={(target) => {
                   setL0(target.value);
                 }}
@@ -80,8 +83,9 @@ const SaleRequestModal = ({
             <span className={Styles.title}>Descuento comercial:</span>
             <span className={Styles.value}>
               <Input
+                disable={readOnly}
                 mask="currency"
-                value={tradeDiscount}
+                value={tradeDiscount ? parseFloat(tradeDiscount).toFixed(2) : 0}
                 validations={[]}
                 onChange={(target) => {
                   setTradeDiscount(target.value);
@@ -93,8 +97,9 @@ const SaleRequestModal = ({
             <span className={Styles.title}>Descuento financiero:</span>
             <span className={Styles.value}>
               <Input
+                disable={readOnly}
                 mask="currency"
-                value={discount}
+                value={discount ? discount.toFixed(2) : 0}
                 validations={[]}
                 onChange={(target) => {
                   setDiscount(target.value);
@@ -107,7 +112,7 @@ const SaleRequestModal = ({
           <span className={Styles.title}>Total:</span>
           <span className={Styles.value}>
             <NumberFormat
-              value={l0 - discount - tradeDiscount}
+              value={(l0 - discount - tradeDiscount).toFixed(2)}
               displayType={'text'}
               thousandSeparator={true}
               prefix={'$'}
@@ -117,30 +122,50 @@ const SaleRequestModal = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={cancelHandler}>Cancelar</Button>
-        <Button
-          onClick={() => {
-            rejectHandler(id, {
-              priceSold: pricing.priceSold,
-              discount: pricing.financial,
-              tradeDiscount: pricing.trade,
-              requestStatus: 'R',
-            });
-          }}
-        >
-          Rechazar
-        </Button>
-        <Button
-          onClick={() => {
-            approveHandler(id, {
-              priceSold: l0 - discount - tradeDiscount,
-              discount,
-              tradeDiscount,
-              requestStatus: 'A',
-            });
-          }}
-        >
-          Aprobar
-        </Button>
+        {!readOnly && (
+          <React.Fragment>
+            {discount === pricing.financial &&
+            tradeDiscount === pricing.trade ? (
+              <Button
+                onClick={() => {
+                  approveHandler(id, {
+                    priceSold: l0 - discount - tradeDiscount,
+                    discount,
+                    tradeDiscount,
+                    requestStatus: 'A',
+                  });
+                }}
+              >
+                Aprobar
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  approveHandler(id, {
+                    priceSold: l0 - discount - tradeDiscount,
+                    discount,
+                    tradeDiscount,
+                    requestStatus: 'E',
+                  });
+                }}
+              >
+                Editar y aprobar
+              </Button>
+            )}
+            <Button
+              onClick={() => {
+                rejectHandler(id, {
+                  priceSold: pricing.priceSold,
+                  discount: pricing.financial,
+                  tradeDiscount: pricing.trade,
+                  requestStatus: 'R',
+                });
+              }}
+            >
+              Rechazar
+            </Button>
+          </React.Fragment>
+        )}
       </DialogActions>
     </Dialog>
   );
@@ -153,6 +178,7 @@ SaleRequestModal.propTypes = {
   cancelHandler: PropTypes.func.isRequired,
   saleRequest: PropTypes.shape({
     id: PropTypes.number,
+    requestStatus: PropTypes.string,
     client: PropTypes.shape({
       name: PropTypes.string,
     }),
