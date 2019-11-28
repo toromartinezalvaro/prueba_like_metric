@@ -405,6 +405,7 @@ class Contracts extends Component {
   };
 
   currentEvent = (currentEvent) => {
+    console.log('El evento', currentEvent);
     this.setState({ events: [...this.state.events, currentEvent] });
   };
 

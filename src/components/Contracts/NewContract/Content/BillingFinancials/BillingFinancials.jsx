@@ -37,7 +37,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
 
   let totalBills = 0;
 
-  const changeCardValue = (name, id, isDate, isSelect) => (e) => {
+  const changeCardValue = (name, id, isDate, isSelect, isEvent) => (e) => {
     const billingsArray = [...billings];
     const billIndex = billings.findIndex((element) => {
       return element.id === id;
@@ -81,6 +81,8 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
         setMonth(filterMonths);
         bill = { ...billingsArray[billIndex], [name]: e.label };
       }
+    } else if (isEvent) {
+      bill = { ...billingsArray[billIndex], [name]: e.value };
     } else if (name === true) {
       bill = { ...billingsArray[billIndex], isLocked: true };
     } else if (name === false) {
@@ -163,6 +165,13 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                   placeholder="Evento a Facturar"
                   components={Option}
                   options={events}
+                  onChange={changeCardValue(
+                    'event',
+                    billing.id,
+                    false,
+                    false,
+                    true,
+                  )}
                 />
                 <Events currentEvent={currentEvent} towerId={towerId} disabled={billing.isLocked} />
 

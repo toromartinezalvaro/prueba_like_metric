@@ -127,8 +127,8 @@ class Events extends Component {
       .postEvent(this.props.towerId, this.state.event)
       .then((response) => {
         const currentEvent = {
-          value: response.id,
-          label: response.description,
+          value: response.data.id,
+          label: response.data.description,
         }
         this.props.currentEvent(currentEvent);
       })
@@ -136,7 +136,6 @@ class Events extends Component {
         console.log(error);
       });
     this.setState({ eventModal: { isOpen: false } });
-    console.log({ state: this.state.event });
   };
 
   onChangeText = (e) => {
