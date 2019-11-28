@@ -95,4 +95,8 @@ export default class ContractService extends Services {
   findByForeignId(data) {
     return this.get(ContractServiceDefinitions.findByForeignId(data));
   }
+
+  postContract(data, towerId) {
+    return this.post(ContractServiceDefinitions.contract(towerId), data);
+  }
 }

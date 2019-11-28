@@ -43,11 +43,11 @@ const GeneralInfo = ({
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
-    bussinesPartner: '',
-    group: '',
+    businessPartnerId: '',
+    groupId: '',
     state: '',
     contractNumber: '',
-    item: '',
+    itemId: '',
     description: '',
   });
 
@@ -62,7 +62,9 @@ const GeneralInfo = ({
   });
 
   const onChangeText = (name) => (e) => {
-    setGeneralInformation({ ...generalInformation, [name]: e.target.value });
+    const information = { ...generalInformation, [name]: e.target.value }
+    setGeneralInformation(information);
+    sendGeneralInfo(information);
   };
 
   const onChangeSelect = (name) => (label) => {
@@ -115,9 +117,7 @@ const GeneralInfo = ({
     changeForSearchItem(currentItem);
   };
 
-  useEffect(() => {
-    sendGeneralInfo(generalInformation);
-  });
+  //sendGeneralInfo(generalInformation);
 
   return (
     <Fragment>

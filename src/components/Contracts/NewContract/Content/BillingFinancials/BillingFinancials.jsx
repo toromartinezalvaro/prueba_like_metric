@@ -14,6 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import moment from 'moment';
 import MonthEnum from './month.enum';
 import YearEnum from './year.enum';
 import Events from '../../../../../containers/Events/Events';
@@ -23,11 +24,11 @@ import styles from './BillingFinancials.module.scss';
 const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
   const cardValue = {
     id: 0,
-    event: null,
-    billingCycle: 'Una vez',
-    billingAmount: 0,
+    eventId: null,
+    cycle: 'Una vez',
+    amount: 0,
     description: '',
-    lastBillingDate: `${new Date()}`,
+    lastBillingDate: `${moment(new Date()).toDate().getTime()}`,
     isLocked: false,
   };
   const [billings, setBillings] = useState([]);
@@ -110,9 +111,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
     setLastId(lastId + 1);
   };
 
-  useEffect(() => {
-    sendBillings(billings);
-  });
+  //sendBillings(billings);
 
   const lastDate = (name) => (e) => {};
 
@@ -145,7 +144,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
 
   const displayComponent = () => {
     return billings.map((billing) => {
-      totalBills += parseInt(billing.billingAmount);
+      totalBills += parseInt(billing.amount);
       return (
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
@@ -166,7 +165,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                   components={Option}
                   options={events}
                   onChange={changeCardValue(
-                    'event',
+                    'eventId',
                     billing.id,
                     false,
                     false,
@@ -190,11 +189,11 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                   components={Option}
                   options={suggestions}
                   value={{
-                    label: billing.billingCycle,
-                    value: billing.billingCycle,
+                    label: billing.cycle,
+                    value: billing.cycle,
                   }}
                   onChange={changeCardValue(
-                    'billingCycle',
+                    'cycle',
                     billing.id,
                     false,
                     true,
@@ -223,7 +222,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                     margin="normal"
                     variant="outlined"
                     value={billing.billingAmount}
-                    onChange={changeCardValue('billingAmount', billing.id)}
+                    onChange={changeCardValue('amount', billing.id)}
                   />
                 </div>
 

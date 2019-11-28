@@ -48,6 +48,7 @@ const NewContract = ({
   towerId,
   events,
   currentEvent,
+  addContract,
 }) => {
   return (
     <Dialog
@@ -106,6 +107,7 @@ const NewContract = ({
             color="primary"
             className={styles.button}
             startIcon={<Icon className="fas fa-file-signature" />}
+            onClick={addContract}
           >
             Agregar Contrato
           </Button>

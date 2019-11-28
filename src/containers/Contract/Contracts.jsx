@@ -50,6 +50,8 @@ class Contracts extends Component {
       items: [],
       currentGroupId: '',
       events: [],
+      billings: [],
+      generalInformation: {},
     };
   }
 
@@ -398,15 +400,36 @@ class Contracts extends Component {
 
   sendBillings = (billings) => {
     console.log('from masterContract', billings);
+    this.setState({ billings });
   };
 
   sendGeneralInfo = (generalInformation) => {
     console.log('from masterContrac', generalInformation);
+    this.setState({ generalInformation });
   };
 
   currentEvent = (currentEvent) => {
     console.log('El evento', currentEvent);
     this.setState({ events: [...this.state.events, currentEvent] });
+  };
+
+  addContract = () => {
+    console.log('data', {
+      generalInformation: this.state.generalInformation,
+      billing: this.state.billings,
+    });
+    this.services
+      .postContract(
+        {
+          generalInformation: this.state.generalInformation,
+          billing: this.state.billings,
+        },
+        this.props.match.params.towerId,
+      )
+      .then((response) => {
+        console.log('sended');
+      })
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -444,6 +467,7 @@ class Contracts extends Component {
           sendGeneralInfo={this.sendGeneralInfo}
           events={this.state.events}
           currentEvent={this.currentEvent}
+          addContract={this.addContract}
         />
         <Dialog
           className={styles.dialogExpand}
