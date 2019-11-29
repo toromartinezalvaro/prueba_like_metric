@@ -183,13 +183,6 @@ const SideMenu = ({
                 {agent.isAuthorized([Role.Admin, Role.Super]) &&
                   itemForSlidebar(
                     style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.salesRoom.value,
-                    'fas fa-dollar-sign',
-                    'Sala de Ventas',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
                     DashboardRoutes.base + DashboardRoutes.clients.value,
                     'fas fa-users',
                     'Clientes',
@@ -214,6 +207,12 @@ const SideMenu = ({
                     DashboardRoutes.base + DashboardRoutes.saleRequests.value,
                     'fas fa-clipboard-check',
                     'Solicitudes de venta',
+                  )}
+                {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                  itemForSlidebar(
+                    DashboardRoutes.base + DashboardRoutes.pairing.value,
+                    'fas fa-star-half-alt',
+                    'Apareamiento',
                   )}
                 {agent.isAuthorized([Role.Admin, Role.Super]) &&
                   itemForSlidebar(

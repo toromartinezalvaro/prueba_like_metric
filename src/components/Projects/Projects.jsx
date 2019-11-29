@@ -16,15 +16,27 @@ const projectItems = (props) => {
         }}
       >
         <div className={styles.DescriptionItem}>
-          <div
-            className={styles.Remove}
-            onClick={(event) => {
-              event.stopPropagation();
-              props.removeProject(project.id);
-            }}
-          >
-            <Icon name="fa-trash-alt" />
+          <div className={styles.Buttons}>
+            <div
+              className={styles.Remove}
+              onClick={(event) => {
+                event.stopPropagation();
+                props.editHandler(project.id);
+              }}
+            >
+              <i className="fas fa-edit"></i>
+            </div>
+            <div
+              className={styles.Remove}
+              onClick={(event) => {
+                event.stopPropagation();
+                props.removeProject(project.id);
+              }}
+            >
+              <Icon name="fa-trash-alt" />
+            </div>
           </div>
+
           <div className={styles.Description}>
             <p>{project.description}</p>
           </div>

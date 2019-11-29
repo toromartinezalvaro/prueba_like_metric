@@ -28,6 +28,7 @@ export default class Projects extends Component {
     alertAccept: () => {},
     isLoading: false,
     companies: undefined,
+    currentEditingProject: null,
   };
 
   componentDidMount() {
@@ -143,6 +144,10 @@ export default class Projects extends Component {
       });
   };
 
+  onEditProject = () => {
+    // this.services.
+  };
+
   onCreate = () => {
     if (this.state.newTitleProject === '') {
       alert('Dale un lindo nombre a tu proyecto');
@@ -175,6 +180,7 @@ export default class Projects extends Component {
   cancel = () => {
     this.setState({
       alertIsHidden: true,
+      currentEditingProject: null,
     });
 
     if (this.state.projects.length > 0) {
@@ -194,32 +200,64 @@ export default class Projects extends Component {
     });
   };
 
+  onChangeProject = (name) => (target) => {
+    const currentEditingProject = {
+      ...this.state.currentEditingProject,
+      [name]: target.value,
+    };
+    this.setState({
+      currentEditingProject,
+    });
+  };
+
   createModal = () => {
     return (
       <Modal
-        title={'Crear proyecto'}
+        title={
+          this.state.currentEditingProject
+            ? `Editar proyecto`
+            : 'Crear proyecto'
+        }
         hidden={this.state.modalIsHidden}
-        onConfirm={this.onCreate}
+        onConfirm={
+          this.state.currentEditingProject ? this.onEditProject : this.onCreate
+        }
         onCancel={this.cancel}
       >
         <div>
           <label>Nombre</label>
           <Input
             name="newTitleProject"
-            onChange={this.onChange}
+            onChange={
+              this.state.currentEditingProject
+                ? this.onChangeProject('name')
+                : this.onChange
+            }
             validations={[]}
             style={{ width: '75px' }}
-            value={this.state.newTitleProject}
+            value={
+              this.state.currentEditingProject
+                ? this.state.currentEditingProject.name
+                : this.state.newTitleProject
+            }
           />
         </div>
         <div>
           <label>Descripción</label>
           <Input
             name="newDescriptionProject"
-            onChange={this.onChange}
+            onChange={
+              this.state.currentEditingProject
+                ? this.onChangeProject('description')
+                : this.onChange
+            }
             validations={[]}
             style={{ width: '75px' }}
-            value={this.state.newDescriptionProject}
+            value={
+              this.state.currentEditingProject
+                ? this.state.currentEditingProject.description
+                : this.state.newDescriptionProject
+            }
           />
         </div>
       </Modal>
@@ -238,6 +276,17 @@ export default class Projects extends Component {
       </Modal>
     );
   }
+
+  editHandler = (projectId) => {
+    const { projects } = this.state;
+    const currentEditingProject = projects.find(
+      (project) => project.id === projectId,
+    );
+    this.setState({
+      currentEditingProject,
+      modalIsHidden: !currentEditingProject,
+    });
+  };
 
   render() {
     const { projectIsMissingCompany, projects, companies } = this.state;
@@ -265,9 +314,12 @@ export default class Projects extends Component {
             openProject={this.openProjectHandler}
             createProject={this.createProjectHandler}
             removeProject={this.removeProjectHandler}
+            editHandler={this.editHandler}
           />
         )}
-        {!this.state.modalIsHidden && !showCompanyModal && this.createModal()}
+        {(!this.state.modalIsHidden || this.state.currentEditingProject) &&
+          !showCompanyModal &&
+          this.createModal()}
         {!this.state.alertIsHidden && this.createAlert()}
       </LoadableContainer>
     );

@@ -67,7 +67,11 @@ class Services {
         })
         .catch((error) => {
           if (error.response && error.response.status === 401) {
-            if (agent.currentUser && agent.currentUser.refreshToken && isAuthorizationEnabled) {
+            if (
+              agent.currentUser &&
+              agent.currentUser.refreshToken &&
+              isAuthorizationEnabled
+            ) {
               this.renewToken(
                 agent.currentUser.refreshToken,
                 promise,
@@ -79,7 +83,7 @@ class Services {
             agent.logout();
             window.location.reload();
             reject(error);
-          } else if (retry >= 1 && retry < 5) {
+          } else if (retry >= 1 && retry < 5 && error.response.status !== 404) {
             const newRetry = retry - 1;
             this.axiosPromise(promise, newRetry)
               .then(resolve)

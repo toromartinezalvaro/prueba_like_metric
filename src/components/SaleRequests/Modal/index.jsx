@@ -26,6 +26,7 @@ const SaleRequestModal = ({
     setL0(pricing.l0);
     setDiscount(pricing.financial);
     setTradeDiscount(pricing.trade);
+    setReadOnly(requestStatus !== 'P');
   }, [pricing]);
 
   const getColumns = () => {
@@ -52,7 +53,7 @@ const SaleRequestModal = ({
         </div>
         <div className={Styles.details}>
           <div className={Styles.header}>
-            <span>Detalle</span>
+            <span>Detalle Estado:{requestStatus}</span>
           </div>
           <div>
             <Table

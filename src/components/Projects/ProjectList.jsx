@@ -26,14 +26,6 @@ const ProjectList = (props) => {
   const towerItem = tower => (
     <div key={tower.id} className={styles.TowerContent}>
       <div className={styles.TowerItem}>
-        {/* <div
-            className={styles.RemoveButton}
-            onClick={event => {
-              handleTowerAction(event, tower.id);
-            }}
-          >
-            <Icon name="fa-trash-alt" />
-          </div> */}
         <p>{tower.name}</p>
       </div>
       <div className={styles.Line} />
