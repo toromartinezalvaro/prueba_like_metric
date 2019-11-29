@@ -14,7 +14,17 @@ import styles from './TableCashFlow.module.scss';
 
 const TableCashFlow = (props) => {
   const arrayCashFlowWhitFixed = props.data.map((group) => {
-    const header = ['Acumulado', 'Proyectado', 'Total'];
+    const header = [
+      <div key="Acumulado" className={styles.HeaderCell}>
+        Acumulado
+      </div>,
+      <div key="Proyectado" className={styles.HeaderCell}>
+        Proyectado
+      </div>,
+      <div key="Total" className={styles.HeaderCell}>
+        Total
+      </div>,
+    ];
     for (let i = 0; i < group.arrayCashFlow[0].length - 3; i += 1) {
       header.push(
         moment(Number(props.data[0].dates.salesStart))
@@ -25,7 +35,10 @@ const TableCashFlow = (props) => {
     return {
       cells: group.arrayCashFlow.map((row) =>
         row.map((value, i) => (
-          <div className={styles.Cell} key={styles.Cell + i}>
+          <div
+            className={`${styles.Cell} ${i === 2 && styles.CellRigth}`}
+            key={styles.Cell + i}
+          >
             {
               <NumberFormat
                 value={Numbers.toFixed(value)}
