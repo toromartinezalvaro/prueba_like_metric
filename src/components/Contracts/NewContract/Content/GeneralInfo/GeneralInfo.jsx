@@ -62,13 +62,15 @@ const GeneralInfo = ({
   });
 
   const onChangeText = (name) => (e) => {
-    const information = { ...generalInformation, [name]: e.target.value }
+    const information = { ...generalInformation, [name]: e.target.value };
     setGeneralInformation(information);
     sendGeneralInfo(information);
   };
 
   const onChangeSelect = (name) => (label) => {
-    setGeneralInformation({ ...generalInformation, [name]: label.value });
+    const information = { ...generalInformation, [name]: label.value };
+    setGeneralInformation(information);
+    sendGeneralInfo(information);
   };
 
   const searchForCategory = () => {
@@ -91,7 +93,10 @@ const GeneralInfo = ({
 
   const changeAndSearchCategory = (currentGroup) => {
     const currentGroupValue = currentGroup.value;
-    setGeneralInformation({ ...generalInformation, group: currentGroupValue });
+    setGeneralInformation({
+      ...generalInformation,
+      groupId: currentGroupValue,
+    });
     changeForSearchCategory(currentGroup);
     changeItemIsLocked(currentGroupValue);
     currentGroupId(currentGroupValue);
@@ -106,14 +111,14 @@ const GeneralInfo = ({
     const currentPartnerValue = currentPartner.value;
     setGeneralInformation({
       ...generalInformation,
-      bussinesPartner: currentPartnerValue,
+      businessPartnerId: currentPartnerValue,
     });
     changeForSearchPartner(currentPartner);
   };
 
   const changeAndSearchItem = (currentItem) => {
     const currentItemValue = currentItem.value;
-    setGeneralInformation({ ...generalInformation, item: currentItemValue });
+    setGeneralInformation({ ...generalInformation, itemId: currentItemValue });
     changeForSearchItem(currentItem);
   };
 

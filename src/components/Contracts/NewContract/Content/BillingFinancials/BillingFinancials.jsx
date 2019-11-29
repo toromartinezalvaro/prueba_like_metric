@@ -28,7 +28,9 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
     cycle: 'Una vez',
     amount: 0,
     description: '',
-    lastBillingDate: `${moment(new Date()).toDate().getTime()}`,
+    lastBillingDate: `${moment(new Date())
+      .toDate()
+      .getTime()}`,
     isLocked: false,
   };
   const [billings, setBillings] = useState([]);
@@ -94,6 +96,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
 
     billingsArray[billIndex] = bill;
     setBillings(billingsArray);
+    sendBillings(billingsArray);
   };
 
   const removeElement = (id) => () => {
@@ -172,7 +175,11 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                     true,
                   )}
                 />
-                <Events currentEvent={currentEvent} towerId={towerId} disabled={billing.isLocked} />
+                <Events
+                  currentEvent={currentEvent}
+                  towerId={towerId}
+                  disabled={billing.isLocked}
+                />
 
                 <Select
                   className={styles.Select}
@@ -192,12 +199,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                     label: billing.cycle,
                     value: billing.cycle,
                   }}
-                  onChange={changeCardValue(
-                    'cycle',
-                    billing.id,
-                    false,
-                    true,
-                  )}
+                  onChange={changeCardValue('cycle', billing.id, false, true)}
                 />
 
                 <TextField
