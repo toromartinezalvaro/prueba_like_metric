@@ -306,7 +306,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                   )}
                   <div className={styles.TotalSubbills}>
                     <h4 sclassName={styles.textTotal}> Valor de cuenta:</h4>
-                    <p className={styles.amount}>{billing.billingAmount * 1}</p>
+                    <p className={styles.amount}>{billing.amount * 1}</p>
                   </div>
                 </div>
               </div>

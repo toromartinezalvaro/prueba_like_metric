@@ -49,6 +49,7 @@ const NewContract = ({
   events,
   currentEvent,
   addContract,
+  sendAttachments,
 }) => {
   return (
     <Dialog
@@ -99,7 +100,7 @@ const NewContract = ({
           currentEvent={currentEvent}
         />
         <br />
-        <ExpandAttachment />
+        <ExpandAttachment sendAttachments={sendAttachments} />
         <br />
         <div className={styles.actionContainer}>
           <Button

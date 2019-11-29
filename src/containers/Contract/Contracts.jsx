@@ -52,6 +52,7 @@ class Contracts extends Component {
       events: [],
       billings: [],
       generalInformation: {},
+      attachments: null,
     };
   }
 
@@ -408,6 +409,14 @@ class Contracts extends Component {
     this.setState({ generalInformation });
   };
 
+  sendAttachments = (attachment) => {
+    console.log(
+      'attachment',
+      attachment.imgObject.map((response) => response.imgObject),
+    );
+    this.setState({ attachments: JSON.stringify(attachment.imgObject.name) });
+  };
+
   currentEvent = (currentEvent) => {
     console.log('El evento', currentEvent);
     this.setState({ events: [...this.state.events, currentEvent] });
@@ -417,12 +426,14 @@ class Contracts extends Component {
     console.log('data', {
       generalInformation: this.state.generalInformation,
       billing: this.state.billings,
+      attachment: this.state.attachments,
     });
     this.services
       .postContract(
         {
           generalInformation: this.state.generalInformation,
           billing: this.state.billings,
+          attachment: this.state.attachments,
         },
         this.props.match.params.towerId,
       )
@@ -465,6 +476,7 @@ class Contracts extends Component {
           changeItemIsLocked={this.changeItemIsLocked}
           currentGroupId={this.currentGroupId}
           sendGeneralInfo={this.sendGeneralInfo}
+          sendAttachments={this.sendAttachments}
           events={this.state.events}
           currentEvent={this.currentEvent}
           addContract={this.addContract}

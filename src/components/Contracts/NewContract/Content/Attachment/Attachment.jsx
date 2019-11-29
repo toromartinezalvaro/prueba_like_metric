@@ -27,9 +27,18 @@ class Attachment extends Component {
     imageFormObject.append('description', `insta-image-${Date.now()}`);
     imageFormObject.append('type', 'IMAGE');
     imageFormObject.append('attachmentPath', e.target.files[0]);
-    this.setState({ multerImage: URL.createObjectURL(e.target.files[0]) });
+    const objectUrl = URL.createObjectURL(e.target.files[0]);
+    this.setState({ multerImage: objectUrl });
     const imgObject = e.target.files[0];
-    this.setState({ imgObject: [...this.state.imgObject, { imgObject }] });
+    const dataObject = [...this.state.imgObject, { imgObject }];
+    this.setState({ imgObject: dataObject });
+    const temp = {
+      multerImage: objectUrl,
+      imgObject: dataObject,
+      urlText: this.state.urlText,
+      urlObject: this.state.urlObject,
+    };
+    this.props.sendAttachments(temp);
   };
 
   imageRemove = (index) => () => {
@@ -50,13 +59,27 @@ class Attachment extends Component {
 
   updloadUrl = (e) => {
     const urlText = { text: e.target.value };
-    this.setState({ urlText });
+    this.setState(urlText);
+    const tempo = {
+      multerImage: this.state.multerImage,
+      imgObject: this.state.imgObject,
+      urlText,
+      urlObject: this.state.urlObject,
+    };
+    this.props.sendAttachments(tempo);
   };
 
   printUrl = () => {
     this.setState({
       urlObject: [...this.state.urlObject, this.state.urlText.text],
     });
+    const tempo = {
+      multerImage: this.state.multerImage,
+      imgObject: this.state.imgObject,
+      urlText: this.state.urlText,
+      urlObject: this.state.urlText.text,
+    };
+    this.props.sendAttachments(tempo);
   };
 
   displayComponents = () => {
