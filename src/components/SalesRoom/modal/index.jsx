@@ -14,6 +14,7 @@ import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
 import StyleVariables from '../../../assets/styles/variables.scss';
 import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
+import AdditionalAreas from './AdditionalAreas';
 
 // Internal constants definitions
 const DISCOUNT = 'DISCOUNT';
@@ -25,6 +26,8 @@ const SalesRoomModal = ({
   clientId,
   deadlineDate,
   onChangeDeadlineDate,
+  additionalAreas,
+  addAdditionalAreaHandler,
 }) => {
   const {
     status,
@@ -111,6 +114,13 @@ const SalesRoomModal = ({
       )}
       {currentState === SalesRoomEnum.status.SOLD && (
         <div>
+          <div>
+            <AdditionalAreas
+              property={property}
+              additionalAreas={additionalAreas}
+              addAdditionalAreaHandler={addAdditionalAreaHandler}
+            />
+          </div>
           <div className={Styles.inputContainer}>
             <span className={Styles.label}>Valor de venta</span>
             <div>

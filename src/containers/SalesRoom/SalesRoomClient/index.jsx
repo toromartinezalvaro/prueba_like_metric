@@ -54,6 +54,7 @@ class SalesRoom extends Component {
     selectedProperty: { name: '' },
     clientName: null,
     deadlineDate: new Date(),
+    additionalAreas: [],
   };
 
   propertyHandler = (key, value) => {
@@ -78,6 +79,14 @@ class SalesRoom extends Component {
       .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false });
+      });
+    this.services
+      .getAdditionalAreas(towerId)
+      .then((response) => {
+        this.setState({ additionalAreas: response.data });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 
@@ -313,6 +322,15 @@ class SalesRoom extends Component {
     });
   };
 
+  addAdditionalArea(propertyId, areaId) {
+    this.services
+      .addAdditionalArea(propertyId, areaId)
+      .then((response) => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   render() {
     let isStrategyNull = false;
     if (this.state.selectedProperty)
@@ -405,6 +423,8 @@ class SalesRoom extends Component {
                       deadlineDate={this.state.deadlineDate}
                       onChangeDeadlineDate={this.deadlineDateHandler}
                       clientId={this.props.match.params.clientId}
+                      additionalAreas={this.state.additionalAreas}
+                      addAdditionalAreaHandler={this.addAdditionalArea}
                     />
                   ) : (
                     'El apartamento seleccionado no le pertenece a este cliente'
