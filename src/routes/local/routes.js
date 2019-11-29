@@ -4,8 +4,8 @@ export const DashboardRoutes = {
   building: { value: '/building/', withIndicator: '/building/:towerId' },
   areas: { value: '/areas/', withIndicator: '/areas/:towerId' },
   areasAdditional: {
-    value: '/areasAdditional/',
-    withIndicator: '/areasAdditional/:towerId',
+    value: '/areas-additional/',
+    withIndicator: '/areas-additional/:towerId',
   },
   prime: { value: '/prime/', withIndicator: '/prime/:towerId' },
   user: '/user',

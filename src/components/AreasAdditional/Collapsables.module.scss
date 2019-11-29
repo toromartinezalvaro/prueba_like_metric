@@ -2,52 +2,17 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 20th November 2019 1:32:01 am
+ * Last Modified: Friday, 29th November 2019 11:25:53 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
  */
 @import '../../assets/styles/variables.scss';
 
-.Header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.DialogContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.Button {
-  margin-right: 10px;
-}
-
-.ContainerButtons {
-  display: flex;
-}
-
-.ConfirmButton {
-  background: $softGreenColor !important;
-}
-
-.CancelButton {
-  background: $redButton-color !important;
-}
-
 .Container {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.TextFields {
-  width: 100%;
-  justify-content: space-evenly;
-  display: flex;
-  align-items: baseline;
 }
 
 .MuiFormControl {

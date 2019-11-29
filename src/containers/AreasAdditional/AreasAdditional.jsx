@@ -2,7 +2,7 @@
  * Created Date: Tuesday November 12th 2019
  * Author: Caraham
  * -----
- * Last Modified: Thursday, 28th November 2019 5:14:32 am
+ * Last Modified: Friday, 29th November 2019 3:29:04 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -13,6 +13,7 @@ import AreasAdditionalServices from '../../services/areasAdditional/AreasAdditio
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Collapsables from '../../components/AreasAdditional/Collapsables';
 import AddArea from '../../components/AreasAdditional/AddArea/AddArea';
+import LoadableContainer from '../../components/UI/Loader';
 
 class AreasAdditional extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class AreasAdditional extends Component {
 
   state = {
     arrayAreaTypes: [],
+    isLoading: false,
   };
 
   arrayAreaTypesHandler = (
@@ -38,7 +40,7 @@ class AreasAdditional extends Component {
     if (isAreaType) {
       areaTypeFounded[key] = value;
     } else {
-      areaTypeFounded.hola[index][key] = value;
+      areaTypeFounded.formatedAreas[index][key] = value;
     }
     this.setState({ arrayAreaTypes: array });
   };
@@ -82,27 +84,22 @@ class AreasAdditional extends Component {
         areaTypeId,
         towerId: this.props.match.params.towerId,
         measure,
-        price,
+        price: `${price}`,
       })
       .then((area) => {
-        console.log(area);
         const areas = this.state.arrayAreaTypes;
-        console.log(indexAreaType, indexArea);
-        areas[indexAreaType].hola[indexArea] = area.data;
-
+        areas[indexAreaType].formatedAreas[indexArea] = area.data;
         this.setState({ arrayAreaTypes: areas });
-        console.log(this.state.arrayAreaTypes, areas);
       })
       .catch((error) => console.error(error));
   };
 
   updateAreaAdditionalHandler = (nomenclature, measure, price, areaId) => {
-    console.log(nomenclature, measure, price, areaId);
     this.services
       .putAreaAdditional({
         nomenclature,
         measure,
-        price,
+        price: `${price}`,
         areaId,
       })
       .catch((error) => console.error(error));
@@ -117,34 +114,39 @@ class AreasAdditional extends Component {
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
       .getAreas(this.props.match.params.towerId)
-      .then((areas) => this.setState({ arrayAreaTypes: areas.data }))
-      .catch((error) => console.error(error));
+      .then((areas) =>
+        this.setState({ arrayAreaTypes: areas.data, isLoading: false }),
+      )
+      .catch((error) => {
+        this.setState({ isLoading: false });
+        console.error(error);
+      });
   }
 
   render() {
     return (
-      /*       <LoadableContainer isLoading={this.state.isLoading}>
-       */ <Card>
-        <CardHeader>
-          <span>Areas Adicionales</span>
-        </CardHeader>
-        <CardBody>
-          <Collapsables
-            data={this.state.arrayAreaTypes}
-            deleteArea={this.deleteArea}
-            arrayAreaTypesHandler={this.arrayAreaTypesHandler}
-            addAreaAdditionalHandler={this.addAreaAdditionalHandler}
-            updateAreaAdditionalHandler={this.updateAreaAdditionalHandler}
-            updateAreaTypeHandler={this.updateAreaTypeHandler}
-          ></Collapsables>
+      <LoadableContainer isLoading={this.state.isLoading}>
+        <Card>
+          <CardHeader>
+            <span>Areas Adicionales</span>
+          </CardHeader>
+          <CardBody>
+            <Collapsables
+              data={this.state.arrayAreaTypes}
+              deleteArea={this.deleteArea}
+              arrayAreaTypesHandler={this.arrayAreaTypesHandler}
+              addAreaAdditionalHandler={this.addAreaAdditionalHandler}
+              updateAreaAdditionalHandler={this.updateAreaAdditionalHandler}
+              updateAreaTypeHandler={this.updateAreaTypeHandler}
+            ></Collapsables>
 
-          <AddArea addAreaHandler={this.addAreaHandler}></AddArea>
-        </CardBody>
-      </Card>
-      /*       </LoadableContainer>
-       */
+            <AddArea addAreaHandler={this.addAreaHandler}></AddArea>
+          </CardBody>
+        </Card>
+      </LoadableContainer>
     );
   }
 }
