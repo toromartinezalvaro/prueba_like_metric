@@ -1,0 +1,15 @@
+@import '../../../assets/styles/variables.scss';
+
+.ReactVirtualizedTableheaderRow {
+  background-color: #e7e7f3;
+  color: #29339b;
+  margin-right: 0px !important;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+}
+
+.Cell {
+  justify-content: center;
+  display: flex;
+}

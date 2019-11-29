@@ -1,0 +1,20 @@
+/*
+ * Created Date: Wednesday November 13th 2019
+ * Author: Caraham
+ * -----
+ * Last Modified: Friday, 29th November 2019 11:25:53 am
+ * Modified By: the developer formerly known as Caraham
+ * -----
+ * Copyright (c) 2019 Instabuild
+ */
+@import '../../assets/styles/variables.scss';
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.MuiFormControl {
+  width: 200px !important;
+}

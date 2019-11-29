@@ -12,6 +12,7 @@ import Projects from '../Project/Projects';
 import Towers from '../Towers/Towers';
 import { CreateUser, UserSettings, AssignTowerToUsers } from '../User';
 import Areas from '../Area/Area';
+import AreasAdditional from '../AreasAdditional/AreasAdditional';
 import Prime from '../Prime/Prime';
 import DetailAdmin from '../DetailAdmin/DetailAdmin';
 import Detail from '../Detail/Detail';
@@ -46,7 +47,7 @@ class Dashboard extends Component {
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
     console.log('towerId', towerId);
-    //TODO: Remove it for projects and towers
+    // TODO: Remove it for projects and towers
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)
@@ -104,6 +105,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.areas.withIndicator}
           exact
           component={Areas}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.areasAdditional.withIndicator}
+          exact
+          component={AreasAdditional}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.user}
