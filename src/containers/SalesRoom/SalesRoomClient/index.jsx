@@ -322,14 +322,14 @@ class SalesRoom extends Component {
     });
   };
 
-  addAdditionalArea(propertyId, areaId) {
+  addAdditionalArea = (propertyId, areaId) => {
     this.services
       .addAdditionalArea(propertyId, areaId)
       .then((response) => {})
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
   render() {
     let isStrategyNull = false;
