@@ -97,6 +97,10 @@ export default class ContractService extends Services {
   }
 
   postContract(data, towerId) {
-    return this.post(ContractServiceDefinitions.contract(towerId), data);
+    return this.post(ContractServiceDefinitions.contract(towerId), data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
   }
 }

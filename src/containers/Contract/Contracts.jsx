@@ -54,6 +54,7 @@ class Contracts extends Component {
       generalInformation: {},
       attachments: [],
       attachmentPath: '',
+      info: null,
     };
   }
 
@@ -417,6 +418,7 @@ class Contracts extends Component {
     this.setState({
       attachments: attach,
       attachmentPath: attachment.path,
+      info: attachment,
     });
     console.log('arrayOfAttachment', attachment.path);
   };
@@ -433,14 +435,16 @@ class Contracts extends Component {
       attachment: this.state.attachments,
       attachmentPath: this.state.attachmentPath,
     });
+    console.log('info es', this.state.info);
     this.services
       .postContract(
-        {
+        this.state.info,
+        /*  {
           generalInformation: this.state.generalInformation,
           billing: this.state.billings,
           attachment: this.state.attachmentPath,
         },
-        this.props.match.params.towerId,
+        this.props.match.params.towerId, */
       )
       .then((response) => {
         console.log('sended');

@@ -20,29 +20,31 @@ class Attachment extends Component {
       urlObject: [],
       attach: [],
     };
+    this.inputFileRef = React.createRef();
   }
 
   uploadImage = (e) => {
     const imageFormObject = new FormData();
 
-    imageFormObject.append('description', `insta-image-${Date.now()}`);
+    /*     imageFormObject.append('description', `insta-image-${Date.now()}`);
     console.log('La funcs', imageFormObject.getAll('description'));
     imageFormObject.append('type', 'IMAGE');
-    console.log('La funcs', imageFormObject.getAll('type'));
-    imageFormObject.append('attachmentPath', e.target.files);
-    console.log('La funcs', imageFormObject.getAll('attachmentPath'));
+    console.log('La funcs', imageFormObject.getAll('type')); */
+    imageFormObject.append('attachmentPath', e.target.files[0], e.name);
+    console.log('FILES', e.target.files[0]);
+    /*     console.log('La funcs', imageFormObject.getAll('attachmentPath'));
     const objectUrl = URL.createObjectURL(e.target.files[0]);
     this.setState({ multerImage: objectUrl });
     const imgObject = e.target.files[0];
     const dataObject = [...this.state.imgObject, { imgObject }];
-    this.setState({ imgObject: dataObject });
+    this.setState({ imgObject: dataObject }); */
     const attach = {
       path: imageFormObject.getAll('attachmentPath'),
       description: imageFormObject.getAll('description'),
       type: imageFormObject.getAll('type'),
     };
     this.setState({ attach: [...this.state.attach, attach] });
-    this.props.sendAttachments(attach);
+    this.props.sendAttachments(imageFormObject);
   };
 
   imageRemove = (index) => () => {
@@ -142,6 +144,7 @@ class Attachment extends Component {
                 id="upload"
                 className={styles.inputfile}
                 onChange={(e) => this.uploadImage(e)}
+                ref={this.inputFileRef}
               />
               <label htmlFor="upload">Adjuntar archivo</label>
               <div className={styles.attachment}>{this.displayUrl()}</div>
