@@ -328,6 +328,7 @@ class SalesRoom extends Component {
       .then((response) => {
         this.setState((prevState) => {
           const tempProperty = { ...prevState.selectedProperty };
+          tempProperty.priceWithIncrement += response.data.price;
           tempProperty.addedAdditionalAreas =
             tempProperty.addedAdditionalAreas || [];
           tempProperty.addedAdditionalAreas.push(response.data);

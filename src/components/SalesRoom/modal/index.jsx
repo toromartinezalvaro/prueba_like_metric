@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   RadioGroup,
@@ -37,7 +37,7 @@ const SalesRoomModal = ({
     tradeDiscount,
   } = property;
 
-  const [fixedPrice, _] = useState(
+  const [fixedPrice, setFixed] = useState(
     priceSold !== null
       ? (parseFloat(priceSold) + parseFloat(discount || 0)).toFixed(2)
       : priceWithIncrement.toFixed(2),
@@ -61,6 +61,10 @@ const SalesRoomModal = ({
   const getFinalTradePrice = () => {
     return (fixedPrice - currentDiscount - currentTradeDiscount).toFixed(2);
   };
+
+  useEffect(() => {
+    setFixed(priceWithIncrement.toFixed(2));
+  }, [priceWithIncrement]);
 
   return (
     <div>
