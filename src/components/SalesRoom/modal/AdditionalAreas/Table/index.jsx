@@ -5,6 +5,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import HoverContainer from '../../../../UI2/HoverContainer';
+import Button from '../../../../UI2/Button';
 
 const Table = ({ property }) => {
   return (
@@ -30,6 +32,25 @@ const Table = ({ property }) => {
             </TableRow>
           );
         })}
+        {property.addedAdditionalAreas &&
+          property.addedAdditionalAreas.map((additionalArea) => {
+            return (
+              <TableRow key={additionalArea.id}>
+                <TableCell>
+                  <HoverContainer
+                    noHover={
+                      additionalArea.nomenclature ||
+                      additionalArea.areaType.name
+                    }
+                    hover={<Button>Eliminar area</Button>}
+                  />
+                </TableCell>
+                <TableCell>{additionalArea.measure}</TableCell>
+                <TableCell>{additionalArea.areaType.unit}</TableCell>
+                <TableCell>{additionalArea.price}</TableCell>
+              </TableRow>
+            );
+          })}
       </TableBody>
     </MUITable>
   );
@@ -49,6 +70,7 @@ Table.propTypes = {
         }),
       }),
     ),
+    addedAdditionalAreas: PropTypes.array,
   }).isRequired,
 };
 

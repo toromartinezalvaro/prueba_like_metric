@@ -322,13 +322,31 @@ class SalesRoom extends Component {
     });
   };
 
-  addAdditionalArea = (propertyId, areaId) => {
+  addAdditionalArea = (id) => {
     this.services
-      .addAdditionalArea(propertyId, areaId)
-      .then((response) => {})
+      .getAdditionalArea(id)
+      .then((response) => {
+        this.setState((prevState) => {
+          const tempProperty = { ...prevState.selectedProperty };
+          tempProperty.addedAdditionalAreas =
+            tempProperty.addedAdditionalAreas || [];
+          tempProperty.addedAdditionalAreas.push(response.data);
+          return { selectedProperty: tempProperty };
+        });
+      })
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  deleteAdditionalArea = (areaId) => {
+    this.setState((prevState) => {
+      const tempProperty = { ...prevState.selectedProperty };
+      tempProperty.additionalAreas = tempProperty.additionalAreas.filter(
+        (area) => area.id !== areaId,
+      );
+      return { selectedProperty: tempProperty };
+    });
   };
 
   render() {

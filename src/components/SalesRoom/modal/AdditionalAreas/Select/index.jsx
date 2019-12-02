@@ -36,7 +36,7 @@ const Select = ({ property, additionalAreas, addAdditionalAreaHandler }) => {
             onClick={() => {
               setSelectedArea('');
               setAddingArea(false);
-              addAdditionalAreaHandler(property.id, selectedArea);
+              addAdditionalAreaHandler(selectedArea);
             }}
           >
             <i className="fas fa-check"></i>
