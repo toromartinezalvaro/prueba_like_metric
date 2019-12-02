@@ -52,7 +52,8 @@ class Contracts extends Component {
       events: [],
       billings: [],
       generalInformation: {},
-      attachments: null,
+      attachments: [],
+      attachmentPath: '',
     };
   }
 
@@ -410,11 +411,14 @@ class Contracts extends Component {
   };
 
   sendAttachments = (attachment) => {
-    console.log(
-      'attachment',
-      attachment.imgObject.map((response) => response.imgObject),
-    );
-    this.setState({ attachments: JSON.stringify(attachment.imgObject.name) });
+    console.log('attachment', attachment);
+    const attach = [...this.state.attachments, attachment];
+    console.log('attach', attach);
+    this.setState({
+      attachments: attach,
+      attachmentPath: attachment.path,
+    });
+    console.log('arrayOfAttachment', attachment.path);
   };
 
   currentEvent = (currentEvent) => {
@@ -427,13 +431,14 @@ class Contracts extends Component {
       generalInformation: this.state.generalInformation,
       billing: this.state.billings,
       attachment: this.state.attachments,
+      attachmentPath: this.state.attachmentPath,
     });
     this.services
       .postContract(
         {
           generalInformation: this.state.generalInformation,
           billing: this.state.billings,
-          attachment: this.state.attachments,
+          attachment: this.state.attachmentPath,
         },
         this.props.match.params.towerId,
       )

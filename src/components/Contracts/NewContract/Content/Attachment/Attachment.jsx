@@ -18,6 +18,7 @@ class Attachment extends Component {
       imgObject: [],
       urlText: '',
       urlObject: [],
+      attach: [],
     };
   }
 
@@ -25,20 +26,23 @@ class Attachment extends Component {
     const imageFormObject = new FormData();
 
     imageFormObject.append('description', `insta-image-${Date.now()}`);
+    console.log('La funcs', imageFormObject.getAll('description'));
     imageFormObject.append('type', 'IMAGE');
-    imageFormObject.append('attachmentPath', e.target.files[0]);
+    console.log('La funcs', imageFormObject.getAll('type'));
+    imageFormObject.append('attachmentPath', e.target.files);
+    console.log('La funcs', imageFormObject.getAll('attachmentPath'));
     const objectUrl = URL.createObjectURL(e.target.files[0]);
     this.setState({ multerImage: objectUrl });
     const imgObject = e.target.files[0];
     const dataObject = [...this.state.imgObject, { imgObject }];
     this.setState({ imgObject: dataObject });
-    const temp = {
-      multerImage: objectUrl,
-      imgObject: dataObject,
-      urlText: this.state.urlText,
-      urlObject: this.state.urlObject,
+    const attach = {
+      path: imageFormObject.getAll('attachmentPath'),
+      description: imageFormObject.getAll('description'),
+      type: imageFormObject.getAll('type'),
     };
-    this.props.sendAttachments(temp);
+    this.setState({ attach: [...this.state.attach, attach] });
+    this.props.sendAttachments(attach);
   };
 
   imageRemove = (index) => () => {
