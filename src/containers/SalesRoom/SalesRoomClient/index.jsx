@@ -119,6 +119,10 @@ class SalesRoom extends Component {
 
   onClickSelector = (property, buttons) => {
     if (this.state.clientName) {
+      const tempProperty = { ...property };
+      tempProperty.addedAdditionalAreas = tempProperty.additionalAreas.filter(
+        (additionalArea) => additionalArea.addedFromSalesRoom,
+      );
       this.setState({
         id: property.id,
         groupId: property.groupId,
@@ -126,7 +130,7 @@ class SalesRoom extends Component {
         rightButton: buttons.rightButton,
         leftButton: buttons.leftButton,
         priceSold: property.priceWithIncrement,
-        selectedProperty: property,
+        selectedProperty: tempProperty,
         discountApplied: property.discount,
       });
     }
@@ -272,6 +276,8 @@ class SalesRoom extends Component {
           groupId: this.state.groupId,
           isBadgeIncrement,
           deadlineDate: Number(moment(this.state.deadlineDate).format('x')),
+          addedAdditionalAreas: this.state.selectedProperty
+            .addedAdditionalAreas,
         },
         this.props.match.params.towerId,
         this.props.match.params.clientId,
@@ -329,10 +335,14 @@ class SalesRoom extends Component {
         this.setState((prevState) => {
           const tempProperty = { ...prevState.selectedProperty };
           tempProperty.priceWithIncrement += response.data.price;
-          tempProperty.addedAdditionalAreas =
-            tempProperty.addedAdditionalAreas || [];
           tempProperty.addedAdditionalAreas.push(response.data);
-          return { selectedProperty: tempProperty };
+          const tempAdditionalAreas = prevState.additionalAreas.filter(
+            (additionalArea) => additionalArea.id !== id,
+          );
+          return {
+            selectedProperty: tempProperty,
+            additionalAreas: tempAdditionalAreas,
+          };
         });
       })
       .catch((error) => {
@@ -340,13 +350,17 @@ class SalesRoom extends Component {
       });
   };
 
-  deleteAdditionalArea = (areaId) => {
+  deleteAdditionalArea = (area) => {
     this.setState((prevState) => {
       const tempProperty = { ...prevState.selectedProperty };
-      tempProperty.additionalAreas = tempProperty.additionalAreas.filter(
-        (area) => area.id !== areaId,
+      const tempAdditionalAreas = [...prevState.additionalAreas, area];
+      tempProperty.addedAdditionalAreas = tempProperty.addedAdditionalAreas.filter(
+        (additionalArea) => additionalArea.id !== area.id,
       );
-      return { selectedProperty: tempProperty };
+      return {
+        selectedProperty: tempProperty,
+        additionalAreas: tempAdditionalAreas,
+      };
     });
   };
 
@@ -444,6 +458,7 @@ class SalesRoom extends Component {
                       clientId={this.props.match.params.clientId}
                       additionalAreas={this.state.additionalAreas}
                       addAdditionalAreaHandler={this.addAdditionalArea}
+                      deleteAdditionalAreaHandler={this.deleteAdditionalArea}
                     />
                   ) : (
                     'El apartamento seleccionado no le pertenece a este cliente'

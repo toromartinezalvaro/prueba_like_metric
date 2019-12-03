@@ -28,6 +28,7 @@ const SalesRoomModal = ({
   onChangeDeadlineDate,
   additionalAreas,
   addAdditionalAreaHandler,
+  deleteAdditionalAreaHandler,
 }) => {
   const {
     status,
@@ -123,6 +124,7 @@ const SalesRoomModal = ({
               property={property}
               additionalAreas={additionalAreas}
               addAdditionalAreaHandler={addAdditionalAreaHandler}
+              deleteAdditionalAreaHandler={deleteAdditionalAreaHandler}
             />
           </div>
           <div className={Styles.inputContainer}>
@@ -278,6 +280,9 @@ SalesRoomModal.propTypes = {
   }).isRequired,
   onChange: PropTypes.func,
   clientId: PropTypes.string,
+  additionalAreas: PropTypes.array.isRequired,
+  addAdditionalAreaHandler: PropTypes.func.isRequired,
+  deleteAdditionalAreaHandler: PropTypes.func.isRequired,
 };
 
 SalesRoomModal.defaultProps = {

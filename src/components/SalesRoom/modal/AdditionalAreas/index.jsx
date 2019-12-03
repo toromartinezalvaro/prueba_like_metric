@@ -8,11 +8,15 @@ const AdditionalAreas = ({
   property,
   additionalAreas,
   addAdditionalAreaHandler,
+  deleteAdditionalAreaHandler,
 }) => {
   return (
     <Fragment>
       <span className={Styles.title}>Areas Adicionales</span>
-      <Table property={property} />
+      <Table
+        property={property}
+        deleteAdditionalAreaHandler={deleteAdditionalAreaHandler}
+      />
       <Select
         property={property}
         additionalAreas={additionalAreas}
@@ -48,6 +52,7 @@ AdditionalAreas.propTypes = {
     }),
   ).isRequired,
   addAdditionalAreaHandler: PropTypes.func.isRequired,
+  deleteAdditionalAreaHandler: PropTypes.func.isRequired,
 };
 
 export default AdditionalAreas;

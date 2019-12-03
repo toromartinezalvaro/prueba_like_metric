@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import HoverContainer from '../../../../UI2/HoverContainer';
 import Button from '../../../../UI2/Button';
 
-const Table = ({ property }) => {
+const Table = ({ property, deleteAdditionalAreaHandler }) => {
   return (
     <MUITable>
       <TableHead>
@@ -20,11 +20,24 @@ const Table = ({ property }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {property.additionalAreas.map((additionalArea) => {
+        {property.addedAdditionalAreas.map((additionalArea) => {
           return (
             <TableRow key={additionalArea.id}>
               <TableCell>
-                {additionalArea.nomenclature || additionalArea.areaType.name}
+                <HoverContainer
+                  noHover={
+                    additionalArea.nomenclature || additionalArea.areaType.name
+                  }
+                  hover={
+                    <Button
+                      onClick={() => {
+                        deleteAdditionalAreaHandler(additionalArea);
+                      }}
+                    >
+                      Eliminar area
+                    </Button>
+                  }
+                />
               </TableCell>
               <TableCell>{additionalArea.measure}</TableCell>
               <TableCell>{additionalArea.areaType.unit}</TableCell>
@@ -32,25 +45,6 @@ const Table = ({ property }) => {
             </TableRow>
           );
         })}
-        {property.addedAdditionalAreas &&
-          property.addedAdditionalAreas.map((additionalArea) => {
-            return (
-              <TableRow key={additionalArea.id}>
-                <TableCell>
-                  <HoverContainer
-                    noHover={
-                      additionalArea.nomenclature ||
-                      additionalArea.areaType.name
-                    }
-                    hover={<Button>Eliminar area</Button>}
-                  />
-                </TableCell>
-                <TableCell>{additionalArea.measure}</TableCell>
-                <TableCell>{additionalArea.areaType.unit}</TableCell>
-                <TableCell>{additionalArea.price}</TableCell>
-              </TableRow>
-            );
-          })}
       </TableBody>
     </MUITable>
   );
@@ -72,6 +66,7 @@ Table.propTypes = {
     ),
     addedAdditionalAreas: PropTypes.array,
   }).isRequired,
+  deleteAdditionalAreaHandler: PropTypes.func.isRequired,
 };
 
 export default Table;
