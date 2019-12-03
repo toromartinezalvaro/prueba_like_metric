@@ -26,18 +26,15 @@ class Attachment extends Component {
   uploadImage = (e) => {
     const imageFormObject = new FormData();
 
-    /*     imageFormObject.append('description', `insta-image-${Date.now()}`);
-    console.log('La funcs', imageFormObject.getAll('description'));
+    imageFormObject.append('description', `insta-image-${Date.now()}`);
     imageFormObject.append('type', 'IMAGE');
-    console.log('La funcs', imageFormObject.getAll('type')); */
     imageFormObject.append('attachmentPath', e.target.files[0], e.name);
-    console.log('FILES', e.target.files[0]);
-    /*     console.log('La funcs', imageFormObject.getAll('attachmentPath'));
+
     const objectUrl = URL.createObjectURL(e.target.files[0]);
     this.setState({ multerImage: objectUrl });
     const imgObject = e.target.files[0];
     const dataObject = [...this.state.imgObject, { imgObject }];
-    this.setState({ imgObject: dataObject }); */
+    this.setState({ imgObject: dataObject });
     const attach = {
       path: imageFormObject.getAll('attachmentPath'),
       description: imageFormObject.getAll('description'),

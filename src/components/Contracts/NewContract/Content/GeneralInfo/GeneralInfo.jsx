@@ -101,7 +101,6 @@ const GeneralInfo = ({
     changeItemIsLocked(currentGroupValue);
     currentGroupId(currentGroupValue);
     setIsLocked(false);
-    console.log('data', items);
     if (items !== []) {
       setIsLockedEdit(false);
     }

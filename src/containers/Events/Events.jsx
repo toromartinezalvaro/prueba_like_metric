@@ -115,7 +115,6 @@ class Events extends Component {
             },
           ],
         });
-        console.log('Pues era error', this.state.schedule);
       })
       .catch((error) => {
         console.error(error);
@@ -186,7 +185,6 @@ class Events extends Component {
 
   uniqueDateValue = (e) => {
     let time = moment(e);
-    console.log(time.toDate().getTime());
     this.setState({
       event: {
         ...this.state.event,

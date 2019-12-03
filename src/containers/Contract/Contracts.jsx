@@ -54,7 +54,7 @@ class Contracts extends Component {
       generalInformation: {},
       attachments: [],
       attachmentPath: '',
-      info: null,
+      contract: null,
     };
   }
 
@@ -182,7 +182,6 @@ class Contracts extends Component {
   };
 
   newCategory = (categoryName) => {
-    console.log('Nombre grupo', categoryName, { categoryName });
     this.services
       .postCategoryContracts({ categoryName })
       .then((response) => {
@@ -207,7 +206,6 @@ class Contracts extends Component {
   };
 
   newItem = (name) => {
-    console.log('dato de item', this.state.currentGroupId);
     this.services
       .postItem({ name, contractCategoryId: this.state.currentGroupId })
       .then((response) => {
@@ -402,54 +400,37 @@ class Contracts extends Component {
   };
 
   sendBillings = (billings) => {
-    console.log('from masterContract', billings);
     this.setState({ billings });
   };
 
   sendGeneralInfo = (generalInformation) => {
-    console.log('from masterContrac', generalInformation);
     this.setState({ generalInformation });
   };
 
   sendAttachments = (attachment) => {
-    console.log('attachment', attachment);
+    attachment.append(
+      'generalInformation',
+      JSON.stringify(this.state.generalInformation),
+    );
+    attachment.append('billing', JSON.stringify(this.state.billings));
     const attach = [...this.state.attachments, attachment];
-    console.log('attach', attach);
     this.setState({
-      attachments: attach,
-      attachmentPath: attachment.path,
-      info: attachment,
+      contract: attachment,
     });
-    console.log('arrayOfAttachment', attachment.path);
   };
 
   currentEvent = (currentEvent) => {
-    console.log('El evento', currentEvent);
     this.setState({ events: [...this.state.events, currentEvent] });
   };
 
   addContract = () => {
-    console.log('data', {
-      generalInformation: this.state.generalInformation,
-      billing: this.state.billings,
-      attachment: this.state.attachments,
-      attachmentPath: this.state.attachmentPath,
-    });
-    console.log('info es', this.state.info);
     this.services
-      .postContract(
-        this.state.info,
-        /*  {
-          generalInformation: this.state.generalInformation,
-          billing: this.state.billings,
-          attachment: this.state.attachmentPath,
-        },
-        this.props.match.params.towerId, */
-      )
+      .postContract(this.state.contract, this.props.match.params.towerId)
       .then((response) => {
-        console.log('sended');
+        console.log(response);
       })
       .catch((error) => console.log(error));
+    this.setState({ contractModal: { isOpen: false } });
   };
 
   render() {
