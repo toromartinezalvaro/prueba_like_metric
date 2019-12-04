@@ -1,15 +1,17 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import PropTypes, { number } from 'prop-types';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
+import {
+  Button,
+  Icon,
+  Fab,
+  TextField,
+  Card,
+  MenuItem,
+  CardContent,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Save';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
 import Select, { components } from 'react-select';
-import Card from '@material-ui/core/Card';
-import MenuItem from '@material-ui/core/MenuItem';
-import CardContent from '@material-ui/core/CardContent';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -80,7 +82,7 @@ const GeneralInfo = ({
           />
         </div>
         <div className={styles.subColumn}>
-          {uniqueDate ? (
+          {uniqueDate && (
             <Card className={styles.cardForm}>
               <CardContent>
                 <div className={styles.gridSubContainer}>
@@ -114,8 +116,8 @@ const GeneralInfo = ({
                 </div>
               </CardContent>
             </Card>
-          ) : null}
-          {canDisplace ? (
+          )}
+          {canDisplace && (
             <TextField
               required
               fullWidth
@@ -125,7 +127,7 @@ const GeneralInfo = ({
               variant="outlined"
               onChange={displacementForDate('displacement')}
             />
-          ) : null}
+          )}
         </div>
       </div>
       <div className={styles.rigthInformation}>

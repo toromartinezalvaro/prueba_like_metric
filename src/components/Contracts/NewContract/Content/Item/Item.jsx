@@ -6,11 +6,8 @@
 
 import React, { useState, Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
+import { TextField, Button, Typography, Icon } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
 import styles from './Item.module.scss';
 
 const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
@@ -22,18 +19,17 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
     if (informationToEdit === undefined) {
       newItem(textOfItem);
       handleCloseItem();
-    } else {
-      updateItem({
-        id: informationToEdit.id,
-        name: textOfItem,
-        contractId: informationToEdit.contractId,
-      });
-      handleCloseItem();
     }
+    updateItem({
+      id: informationToEdit.id,
+      name: textOfItem,
+      contractId: informationToEdit.contractId,
+    });
+    handleCloseItem();
   };
 
   useEffect(() => {
-    if (informationToEdit !== undefined) {
+    if (informationToEdit) {
       setTextOfItem(informationToEdit.name);
     }
   }, []);
@@ -44,7 +40,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
         <div className={styles.titleExpand}>
-          {informationToEdit === undefined ? 'Nuevo Item' : 'Editar Item'}
+          {informationToEdit ? 'Nuevo Item' : 'Editar Item'}
         </div>
       </Typography>
       <div container className={styles.gridContainer}>
@@ -69,7 +65,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
           startIcon={<AddIcon />}
           onClick={sendTextOfItem}
         >
-          {informationToEdit === undefined ? 'Crear' : 'Editar'}
+          {informationToEdit ? 'Crear' : 'Editar'}
         </Button>
 
         <Button

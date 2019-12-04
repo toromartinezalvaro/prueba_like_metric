@@ -5,12 +5,9 @@
  */
 
 import React, { useState, Fragment, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
+import { TextField, Button, Typography, Icon } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import Icon from '@material-ui/core/Icon';
 import styles from './organizationUnit.module.scss';
 
 const OrganizationUnit = ({
@@ -24,7 +21,7 @@ const OrganizationUnit = ({
     setTextOfOrganization(e.target.value);
   };
   const sendTextOfCategory = () => {
-    if (informationToEdit !== undefined) {
+    if (informationToEdit) {
       updateOrganization({
         id: informationToEdit.id,
         name: textOfOrganization,
@@ -38,7 +35,7 @@ const OrganizationUnit = ({
   };
 
   useEffect(() => {
-    if (informationToEdit !== undefined) {
+    if (informationToEdit) {
       setTextOfOrganization(informationToEdit.name);
     }
   }, []);
@@ -50,7 +47,7 @@ const OrganizationUnit = ({
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
         <div className={styles.titleExpand}>
-          {informationToEdit !== undefined
+          {informationToEdit
             ? 'Editar Unidad Organizacional'
             : 'Nueva Unidad Organizacional'}
         </div>
@@ -77,7 +74,7 @@ const OrganizationUnit = ({
           startIcon={<AddIcon />}
           onClick={sendTextOfCategory}
         >
-          {informationToEdit !== undefined ? 'Editar' : 'Crear'}
+          {informationToEdit ? 'Editar' : 'Crear'}
         </Button>
 
         <Button

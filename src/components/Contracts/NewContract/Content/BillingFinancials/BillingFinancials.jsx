@@ -6,12 +6,14 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import Icon from '@material-ui/core/Icon';
-import CardContent from '@material-ui/core/CardContent';
-import MenuItem from '@material-ui/core/MenuItem';
+import {
+  Button,
+  Card,
+  TextField,
+  Icon,
+  CardContent,
+  MenuItem,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import moment from 'moment';
@@ -20,6 +22,7 @@ import YearEnum from './year.enum';
 import Events from '../../../../../containers/Events/Events';
 
 import styles from './BillingFinancials.module.scss';
+import SuggestionEnum from './suggestion.enum';
 
 const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
   const cardValue = {
@@ -114,16 +117,9 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
     setLastId(lastId + 1);
   };
 
-  //sendBillings(billings);
-
   const lastDate = (name) => (e) => {};
 
-  const suggestions = [
-    { label: 'Una vez', value: 1 },
-    { label: 'Mensual', value: 2 },
-    { label: 'Trimestral', value: 3 },
-    { label: 'Anual', value: 4 },
-  ].map((suggestion) => ({
+  const suggestions = SuggestionEnum.map((suggestion) => ({
     value: suggestion.value,
     label: suggestion.label,
   }));
@@ -306,7 +302,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                   )}
                   <div className={styles.TotalSubbills}>
                     <h4 sclassName={styles.textTotal}> Valor de cuenta:</h4>
-                    <p className={styles.amount}>{billing.amount * 1}</p>
+                    <p className={styles.amount}>{billing.amount}</p>
                   </div>
                 </div>
               </div>

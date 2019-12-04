@@ -53,22 +53,19 @@ class Events extends Component {
           constructionStartDate,
         } = response.data;
 
-        if (salesStartDate === null || salesStartDate === undefined) {
+        if (!salesStartDate) {
           salesStartDate = new Date().getTime();
         }
-        if (endOfSalesDate === null || endOfSalesDate === undefined) {
+        if (!endOfSalesDate) {
           endOfSalesDate = new Date().getTime();
         }
-        if (averageDeliveryDate === null || averageDeliveryDate === undefined) {
+        if (!averageDeliveryDate) {
           averageDeliveryDate = new Date().getTime();
         }
-        if (balancePointDate === null || balancePointDate === undefined) {
+        if (!balancePointDate) {
           balancePointDate = new Date().getTime();
         }
-        if (
-          constructionStartDate === null ||
-          constructionStartDate === undefined
-        ) {
+        if (!constructionStartDate) {
           constructionStartDate = new Date().getTime();
         }
         this.setState({
@@ -128,7 +125,7 @@ class Events extends Component {
         const currentEvent = {
           value: response.data.id,
           label: response.data.description,
-        }
+        };
         this.props.currentEvent(currentEvent);
       })
       .catch((error) => {

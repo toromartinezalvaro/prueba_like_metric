@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
+import { Button, Icon } from '@material-ui/core';
 import GeneralInfo from './generalInfo/GeneralInfo';
 import ContractReference from './ContractReference/ContractReference';
 import styles from './Event.module.scss';

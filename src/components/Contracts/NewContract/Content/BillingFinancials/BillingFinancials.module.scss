@@ -6,6 +6,8 @@
 
 @import '../../../../../assets/styles/variables.scss';
 
+$blue-billing: #d9e9ff;
+
 .gridContainer {
   display: flex;
   flex-direction: row;
@@ -98,7 +100,7 @@
 .Totalbills {
   display: flex;
   flex-direction: row;
-  background-color: #d9e9ff;
+  background-color: $blue-billing;
 }
 
 .TotalSubbills {
