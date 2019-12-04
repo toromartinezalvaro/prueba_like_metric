@@ -16,7 +16,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
     setTextOfItem(e.target.value);
   };
   const sendTextOfItem = () => {
-    if (informationToEdit === undefined) {
+    if (informationToEdit) {
       newItem(textOfItem);
       handleCloseItem();
     }
