@@ -18,6 +18,8 @@ const Navbar = ({ handleOpenContract }) => {
           </li>
         </ul>
       </nav>
+
+      
     </div>
   );
 };
