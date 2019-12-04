@@ -436,7 +436,10 @@ class Contracts extends Component {
   render() {
     return (
       <div className={styles.Contracts}>
-        <Navbar handleOpenContract={this.handleOpenContract} />
+        <Navbar
+          handleOpenContract={this.handleOpenContract}
+          towerId={this.props.match.params.towerId}
+        />
         <NewContract
           towerId={this.props.match.params.towerId}
           expanded={this.state.expanded}

@@ -5,10 +5,10 @@
  */
 
 import React from 'react';
-
+import ContractList from '../ContractList/ContractList';
 import styles from './Navbar.module.scss';
 
-const Navbar = ({ handleOpenContract }) => {
+const Navbar = ({ towerId, handleOpenContract }) => {
   return (
     <div>
       <nav className={styles.navigationBar}>
@@ -18,8 +18,7 @@ const Navbar = ({ handleOpenContract }) => {
           </li>
         </ul>
       </nav>
-
-      
+      <ContractList towerId={towerId} />
     </div>
   );
 };
