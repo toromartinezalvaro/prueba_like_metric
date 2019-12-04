@@ -1,0 +1,18 @@
+/*
+ * Created Date: Friday November 29th 2019
+ * Author: Caraham
+ * -----
+ * Last Modified: Friday, 29th November 2019 10:04:43 am
+ * Modified By: the developer formerly known as Caraham
+ * -----
+ * Copyright (c) 2019 Instabuild
+ */
+@import '../../../assets/styles/variables.scss';
+
+.ConfirmButton {
+  background: $softGreenColor !important;
+}
+
+.CancelButton {
+  background: $redButton-color !important;
+}

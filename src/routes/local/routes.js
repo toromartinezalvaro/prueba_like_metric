@@ -3,6 +3,10 @@ export const DashboardRoutes = {
   towers: { value: '/towers/', withIndicator: '/towers/:projectId' },
   building: { value: '/building/', withIndicator: '/building/:towerId' },
   areas: { value: '/areas/', withIndicator: '/areas/:towerId' },
+  areasAdditional: {
+    value: '/areas-additional/',
+    withIndicator: '/areas-additional/:towerId',
+  },
   prime: { value: '/prime/', withIndicator: '/prime/:towerId' },
   user: '/user',
   summary: { value: '/summary/', withIndicator: '/summary/:towerId' },
