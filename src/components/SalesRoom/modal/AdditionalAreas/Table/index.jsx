@@ -20,6 +20,18 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
         </TableRow>
       </TableHead>
       <TableBody>
+        {property.adminAdditionalAreas.map((additionalArea) => {
+          return (
+            <TableRow key={additionalArea.id}>
+              <TableCell>
+                {additionalArea.nomenclature || additionalArea.areaType.name}
+              </TableCell>
+              <TableCell>{additionalArea.measure}</TableCell>
+              <TableCell>{additionalArea.areaType.unit}</TableCell>
+              <TableCell>{additionalArea.price}</TableCell>
+            </TableRow>
+          );
+        })}
         {property.addedAdditionalAreas.map((additionalArea) => {
           return (
             <TableRow key={additionalArea.id}>

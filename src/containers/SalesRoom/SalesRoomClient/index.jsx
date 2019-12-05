@@ -123,6 +123,9 @@ class SalesRoom extends Component {
       tempProperty.addedAdditionalAreas = tempProperty.additionalAreas.filter(
         (additionalArea) => additionalArea.addedFromSalesRoom,
       );
+      tempProperty.adminAdditionalAreas = tempProperty.additionalAreas.filter(
+        (additionalArea) => !additionalArea.addedFromSalesRoom,
+      );
       this.setState({
         id: property.id,
         groupId: property.groupId,
@@ -353,6 +356,7 @@ class SalesRoom extends Component {
   deleteAdditionalArea = (area) => {
     this.setState((prevState) => {
       const tempProperty = { ...prevState.selectedProperty };
+      tempProperty.priceWithIncrement -= area.price;
       const tempAdditionalAreas = [...prevState.additionalAreas, area];
       tempProperty.addedAdditionalAreas = tempProperty.addedAdditionalAreas.filter(
         (additionalArea) => additionalArea.id !== area.id,
