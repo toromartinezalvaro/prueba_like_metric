@@ -107,6 +107,8 @@ function IncrementTable({
                             'Los meses de retencion superan la fecha final de ventas',
                         },
                       ]}
+                      inventoryUnits={group.inventory.units}
+                      salesIncrement={group.sales.increment}
                     />
                     <Sales className={styles.sold} groupSummary={group.sales} />
                     <Inventory

@@ -13,6 +13,8 @@ function Totals({
   putSalesSpeed,
   validations,
   blockIncrements,
+  inventoryUnits,
+  salesIncrement,
 }) {
   const {
     date,
@@ -85,10 +87,15 @@ function Totals({
                 message: 'Debe ingresar un numero',
               },
             ]}
-            value={increment && increment.toFixed(2)}
+            value={
+              inventoryUnits !== 0
+                ? increment && increment.toFixed(2)
+                : salesIncrement.toFixed(2)
+            }
             onChange={(target) => {
               putIncrement(target.value);
             }}
+            disable={inventoryUnits === 0}
             updateWithProp
           />
         )}
