@@ -6,7 +6,8 @@ class ContractList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contracts: '',
+      contracts: [],
+      contratos: [],
     };
     this.services = new ContractService();
   }
@@ -15,7 +16,11 @@ class ContractList extends Component {
     this.services
       .getAllContracts(this.props.towerId)
       .then((contracts) => {
-        this.setState({ contracts });
+        let data = [];
+        contracts.data.map((contract) => {
+          data.push(contract);
+        });
+        this.setState({ contracts: data });
       })
       .catch((error) => {
         console.log(error);
@@ -23,10 +28,24 @@ class ContractList extends Component {
   }
 
   displayData = () => {
-    console.log(this.state.contracts.data);
-    /*     return this.state.contracts.map((contract) => {
-      return <div className={style.dataContainer} key={contract.id}></div>;
-    }); */
+    console.log('esta es', this.state.contracts);
+    return this.state.contracts.map((contract) => {
+      return (
+        <div className={style.wrapper} 
+        key={contract.id}
+        value={contract.id}
+        onClick={(e) => {console.log('clicked bro!', e.target.value)}}>
+          <div className={style.dataContainer} >
+            <div className={style.content}>{contract.title}</div>
+            <div className={style.content}>{contract.businessPartnerId}</div>
+            <div className={style.content}>{contract.itemId}</div>
+            <div className={style.content}>Fecha de Inicio</div>
+            <div className={style.content}>Archivos</div>
+            <div className={style.content}>{contract.state}</div>
+          </div>
+        </div>
+      );
+    });
   };
 
   render() {
