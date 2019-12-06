@@ -78,10 +78,8 @@ export default class Detail extends Component {
         properties: data,
         property: data[0],
         totals: data[0].totals,
-        areas: data[0].areas.filter(({ areaType }) => areaType.unit === 'MT2'),
-        additional: data[0].areas.filter(
-          ({ areaType }) => areaType.unit === 'UNT',
-        ),
+        areas: data[0].areas,
+        additional: data[0].additionalAreas,
       });
       this.assignTableData();
     }
@@ -120,6 +118,7 @@ export default class Detail extends Component {
 
   printAdditional = (data) => {
     return data.map((aditional) => {
+      console.log(aditional);
       return (
         <Additional
           Title={aditional.areaType.name}
@@ -171,9 +170,7 @@ export default class Detail extends Component {
             areas2: property.areas.filter(
               ({ areaType }) => areaType.unit === 'MT2',
             ),
-            additional2: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'UNT',
-            ),
+            additional2: property.property.additionalAreas,
             areasTable2: this.mapAreasForCells(areas),
           });
         }
@@ -191,9 +188,7 @@ export default class Detail extends Component {
             areas: property.areas.filter(
               ({ areaType }) => areaType.unit === 'MT2',
             ),
-            additional: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'UNT',
-            ),
+            additional: property.additionalAreas,
             id: property.id,
             areasTable: this.mapAreasForCells(areas),
           });
