@@ -6,8 +6,8 @@ export default class SalesRoomService extends Services {
     return this.get(SalesRoomDefinitions.salesRoom(towerId, clientId));
   }
 
-  getAdditionalArea(id) {
-  return this.get(SalesRoomDefinitions.getAdditionalArea(id));
+  getAdditionalArea(id, towerId) {
+  return this.get(SalesRoomDefinitions.getAdditionalArea(id, towerId));
   }
 
   getAdditionalAreas(towerId) {

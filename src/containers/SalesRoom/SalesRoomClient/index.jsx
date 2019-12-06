@@ -333,7 +333,7 @@ class SalesRoom extends Component {
 
   addAdditionalArea = (id) => {
     this.services
-      .getAdditionalArea(id)
+      .getAdditionalArea(id, this.props.match.params.towerId)
       .then((response) => {
         this.setState((prevState) => {
           const tempProperty = { ...prevState.selectedProperty };
