@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   RadioGroup,
@@ -14,6 +14,7 @@ import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
 import StyleVariables from '../../../assets/styles/variables.scss';
 import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
+import AdditionalAreas from './AdditionalAreas';
 
 // Internal constants definitions
 const DISCOUNT = 'DISCOUNT';
@@ -25,6 +26,9 @@ const SalesRoomModal = ({
   clientId,
   deadlineDate,
   onChangeDeadlineDate,
+  additionalAreas,
+  addAdditionalAreaHandler,
+  deleteAdditionalAreaHandler,
 }) => {
   const {
     status,
@@ -34,7 +38,7 @@ const SalesRoomModal = ({
     tradeDiscount,
   } = property;
 
-  const [fixedPrice, _] = useState(
+  const [fixedPrice, setFixed] = useState(
     priceSold !== null
       ? (parseFloat(priceSold) + parseFloat(discount || 0)).toFixed(2)
       : priceWithIncrement.toFixed(2),
@@ -58,6 +62,10 @@ const SalesRoomModal = ({
   const getFinalTradePrice = () => {
     return (fixedPrice - currentDiscount - currentTradeDiscount).toFixed(2);
   };
+
+  useEffect(() => {
+    setFixed(priceWithIncrement.toFixed(2));
+  }, [priceWithIncrement]);
 
   return (
     <div>
@@ -111,6 +119,14 @@ const SalesRoomModal = ({
       )}
       {currentState === SalesRoomEnum.status.SOLD && (
         <div>
+          <div>
+            <AdditionalAreas
+              property={property}
+              additionalAreas={additionalAreas}
+              addAdditionalAreaHandler={addAdditionalAreaHandler}
+              deleteAdditionalAreaHandler={deleteAdditionalAreaHandler}
+            />
+          </div>
           <div className={Styles.inputContainer}>
             <span className={Styles.label}>Valor de venta</span>
             <div>
@@ -264,6 +280,9 @@ SalesRoomModal.propTypes = {
   }).isRequired,
   onChange: PropTypes.func,
   clientId: PropTypes.string,
+  additionalAreas: PropTypes.array.isRequired,
+  addAdditionalAreaHandler: PropTypes.func.isRequired,
+  deleteAdditionalAreaHandler: PropTypes.func.isRequired,
 };
 
 SalesRoomModal.defaultProps = {

@@ -54,6 +54,7 @@ class SalesRoom extends Component {
     selectedProperty: { name: '' },
     clientName: null,
     deadlineDate: new Date(),
+    additionalAreas: [],
   };
 
   propertyHandler = (key, value) => {
@@ -78,6 +79,14 @@ class SalesRoom extends Component {
       .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false });
+      });
+    this.services
+      .getAdditionalAreas(towerId)
+      .then((response) => {
+        this.setState({ additionalAreas: response.data });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 
@@ -110,6 +119,13 @@ class SalesRoom extends Component {
 
   onClickSelector = (property, buttons) => {
     if (this.state.clientName) {
+      const tempProperty = { ...property };
+      tempProperty.addedAdditionalAreas = tempProperty.additionalAreas.filter(
+        (additionalArea) => additionalArea.addedFromSalesRoom,
+      );
+      tempProperty.adminAdditionalAreas = tempProperty.additionalAreas.filter(
+        (additionalArea) => !additionalArea.addedFromSalesRoom,
+      );
       this.setState({
         id: property.id,
         groupId: property.groupId,
@@ -117,7 +133,7 @@ class SalesRoom extends Component {
         rightButton: buttons.rightButton,
         leftButton: buttons.leftButton,
         priceSold: property.priceWithIncrement,
-        selectedProperty: property,
+        selectedProperty: tempProperty,
         discountApplied: property.discount,
       });
     }
@@ -263,6 +279,8 @@ class SalesRoom extends Component {
           groupId: this.state.groupId,
           isBadgeIncrement,
           deadlineDate: Number(moment(this.state.deadlineDate).format('x')),
+          addedAdditionalAreas: this.state.selectedProperty
+            .addedAdditionalAreas,
         },
         this.props.match.params.towerId,
         this.props.match.params.clientId,
@@ -310,6 +328,43 @@ class SalesRoom extends Component {
   deadlineDateHandler = (value) => {
     this.setState({
       deadlineDate: value,
+    });
+  };
+
+  addAdditionalArea = (id) => {
+    this.services
+      .getAdditionalArea(id)
+      .then((response) => {
+        this.setState((prevState) => {
+          const tempProperty = { ...prevState.selectedProperty };
+          tempProperty.priceWithIncrement += response.data.price;
+          tempProperty.addedAdditionalAreas.push(response.data);
+          const tempAdditionalAreas = prevState.additionalAreas.filter(
+            (additionalArea) => additionalArea.id !== id,
+          );
+          return {
+            selectedProperty: tempProperty,
+            additionalAreas: tempAdditionalAreas,
+          };
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  deleteAdditionalArea = (area) => {
+    this.setState((prevState) => {
+      const tempProperty = { ...prevState.selectedProperty };
+      tempProperty.priceWithIncrement -= area.price;
+      const tempAdditionalAreas = [...prevState.additionalAreas, area];
+      tempProperty.addedAdditionalAreas = tempProperty.addedAdditionalAreas.filter(
+        (additionalArea) => additionalArea.id !== area.id,
+      );
+      return {
+        selectedProperty: tempProperty,
+        additionalAreas: tempAdditionalAreas,
+      };
     });
   };
 
@@ -405,6 +460,9 @@ class SalesRoom extends Component {
                       deadlineDate={this.state.deadlineDate}
                       onChangeDeadlineDate={this.deadlineDateHandler}
                       clientId={this.props.match.params.clientId}
+                      additionalAreas={this.state.additionalAreas}
+                      addAdditionalAreaHandler={this.addAdditionalArea}
+                      deleteAdditionalAreaHandler={this.deleteAdditionalArea}
                     />
                   ) : (
                     'El apartamento seleccionado no le pertenece a este cliente'
