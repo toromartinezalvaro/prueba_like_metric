@@ -39,7 +39,6 @@ function Inventory({
   if (increment < 0) {
     incrementTextColor = Styles['inv-increment-goal-text-red'];
   }
-  console.log(units);
   return (
     <div className={`${Styles.inventory} ${className}`}>
       <div className={Styles['inv-header']}>Inventario</div>
