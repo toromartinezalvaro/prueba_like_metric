@@ -131,7 +131,7 @@ const SideMenu = ({
                     DashboardRoutes.base + DashboardRoutes.pairing.value,
                     DashboardRoutes.base + DashboardRoutes.prime.value,
                     DashboardRoutes.base + DashboardRoutes.clustering.value,
-                  ].includes(active + tower ? tower.id : '')}
+                  ].includes(active)}
                 >
                   <ExpansionPanelSummary
                     classes={{ root: style.expansionPanelSummary }}
