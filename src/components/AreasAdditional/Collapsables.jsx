@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 29th November 2019 10:28:15 am
+ * Last Modified: Friday, 6th December 2019 9:14:08 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -22,8 +22,8 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
-import Header from './Header/Header';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Header from './Header/Header';
 import Actions from './Actions/Actions';
 import Table2 from '../UI2/Table';
 import EditForm from './EditForm/EditForm';
@@ -61,7 +61,8 @@ const Collapsables = (props) => {
     setActualValue(value);
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (e) => {
+    e.stopPropagation();
     setOpen(true);
   };
 
