@@ -2,7 +2,7 @@
  * Created Date: Friday November 29th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 29th November 2019 10:28:39 am
+ * Last Modified: Friday, 6th December 2019 9:13:31 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -25,7 +25,7 @@ const Header = (props) => {
               variant="contained"
               color="primary"
               startIcon={<EditIcon />}
-              onClick={props.handleClickOpen}
+              onClick={(e) => props.handleClickOpen(e)}
             >
               Editar
             </Button>

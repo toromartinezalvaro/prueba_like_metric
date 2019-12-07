@@ -118,17 +118,27 @@ export default class Detail extends Component {
 
   printAdditional = (data) => {
     return data.map((aditional) => {
-      console.log(aditional);
-      return (
+      return aditional.areaType.unit === 'MT2' ? (
         <Additional
-          Title={aditional.areaType.name}
-          Title1="Cantidad"
-          Title2="Precio"
-          Title3="Adicionales"
+          Title={`${aditional.areaType.name} - ${aditional.areaType.unit}`}
+          Title1="Nomenclatura"
+          Title2="Area"
+          Title3="Precio"
+          Title4="Total"
           key={aditional.id}
-          Value1={aditional.measure}
+          Value1={aditional.nomenclature}
+          Value2={aditional.measure}
+          Value3={this.formatPrice(aditional.price)}
+          Value4={this.formatPrice(aditional.price * aditional.measure)}
+        />
+      ) : (
+        <Additional
+          Title={`${aditional.areaType.name} - ${aditional.areaType.unit}`}
+          Title1="Nomenclatura"
+          Title2="Precio"
+          key={aditional.id}
+          Value1={aditional.nomenclature}
           Value2={this.formatPrice(aditional.price)}
-          Value3={this.formatPrice(aditional.unitPrice)}
         />
       );
     });
