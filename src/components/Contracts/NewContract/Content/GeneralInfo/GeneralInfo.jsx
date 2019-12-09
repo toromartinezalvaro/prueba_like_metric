@@ -132,6 +132,7 @@ const GeneralInfo = ({
             label="Titulo De Contrato"
             margin="normal"
             variant="outlined"
+            value={generalInformation.title}
             onChange={onChangeText('title')}
           />
           <div className={styles.gridSubContainer}>

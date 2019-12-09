@@ -1,5 +1,12 @@
+/*
+ * Created by Jcatman on Mon Dec 09 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
 import React, { Component } from 'react';
 import ContractService from '../../../services/contract/contractService';
+import newContract from '../NewContract/NewContract';
 import style from './ContractList.module.scss';
 
 class ContractList extends Component {
@@ -27,15 +34,21 @@ class ContractList extends Component {
       });
   }
 
+  editContractOpened = (id) => () => {
+    console.log(id);
+    this.props.editContractOpen(true, id);
+  };
+
   displayData = () => {
-    console.log('esta es', this.state.contracts);
     return this.state.contracts.map((contract) => {
       return (
-        <div className={style.wrapper} 
-        key={contract.id}
-        value={contract.id}
-        onClick={(e) => {console.log('clicked bro!', e.target.value)}}>
-          <div className={style.dataContainer} >
+        <div
+          className={style.wrapper}
+          key={contract.id}
+          value={contract.id}
+          onClick={this.editContractOpened(contract.id)}
+        >
+          <div className={style.dataContainer}>
             <div className={style.content}>{contract.title}</div>
             <div className={style.content}>{contract.businessPartnerId}</div>
             <div className={style.content}>{contract.itemId}</div>

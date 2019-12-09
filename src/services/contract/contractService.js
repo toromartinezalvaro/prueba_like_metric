@@ -104,6 +104,10 @@ export default class ContractService extends Services {
     });
   }
 
+  getContractById(towerId, id) {
+    return this.get(ContractServiceDefinitions.contractById(towerId, id));
+  }
+
   getAllContracts(towerId) {
     return this.get(ContractServiceDefinitions.contract(towerId));
   }

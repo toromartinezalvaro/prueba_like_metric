@@ -8,7 +8,7 @@ import React from 'react';
 import ContractList from '../ContractList/ContractList';
 import styles from './Navbar.module.scss';
 
-const Navbar = ({ towerId, handleOpenContract }) => {
+const Navbar = ({ towerId, handleOpenContract, editContractOpen }) => {
   return (
     <div>
       <nav className={styles.navigationBar}>
@@ -18,7 +18,7 @@ const Navbar = ({ towerId, handleOpenContract }) => {
           </li>
         </ul>
       </nav>
-      <ContractList towerId={towerId} />
+      <ContractList towerId={towerId} editContractOpen={editContractOpen}/>
     </div>
   );
 };

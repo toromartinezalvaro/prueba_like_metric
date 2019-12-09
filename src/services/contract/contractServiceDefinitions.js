@@ -32,6 +32,7 @@ const ContractServiceDefinitions = {
   getItemById: (data) => `${API_PATH}contract/item/find/${data}`,
   itemUpdate: () => `${API_PATH}contract/item/edit`,
   findByForeignId: (data) => `${API_PATH}contract/item-group/${data}`,
+  contractById: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
 };
 
 export default ContractServiceDefinitions;

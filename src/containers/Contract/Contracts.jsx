@@ -433,12 +433,27 @@ class Contracts extends Component {
     this.setState({ contractModal: { isOpen: false } });
   };
 
+  editContractOpen = (editable, id) => {
+    if (editable) {
+      console.log('Está siendo editado');
+      let contractInformation;
+      this.services
+        .getContractById(this.props.match.params.towerId, id)
+        .then((response) => {
+          console.log(response.data);
+          contractInformation = response.data;
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
         <Navbar
           handleOpenContract={this.handleOpenContract}
           towerId={this.props.match.params.towerId}
+          editContractOpen={this.editContractOpen}
         />
         <NewContract
           towerId={this.props.match.params.towerId}
