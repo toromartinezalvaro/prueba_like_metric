@@ -100,9 +100,9 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
       }
     } else if (elementIsAnEvent) {
       bill = { ...billingsArray[billIndex], [name]: element.value };
-    } else if (name) {
+    } else if (name === true) {
       bill = { ...billingsArray[billIndex], isLocked: true };
-    } else if (!name) {
+    } else if (name === false) {
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
       bill = { ...billingsArray[billIndex], [name]: element.target.value };
