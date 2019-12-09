@@ -1,4 +1,7 @@
 import React, { useState, useContext, Fragment } from 'react';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Link } from 'react-router-dom';
 import { Resizable } from 're-resizable';
 import { DashboardRoutes, ContractRoutes } from '../../routes/local/routes';
@@ -46,7 +49,11 @@ const SideMenu = ({
     let badgeStyle = '';
     if (isBadge) badgeStyle = style.Badge;
     return (
-      <div onClick={() => setActive(route)}>
+      <div
+        onClick={() => {
+          setActive(route);
+        }}
+      >
         {active === route ? (
           <div className={style.Active}>
             <Link to={route}>
@@ -87,148 +94,267 @@ const SideMenu = ({
                 <label>{tower ? tower.name : ''}</label>
               </div>
               <div className={style.IconsContainer}>
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
+                <span className={style.header}>Datos generales</span>
+                <ExpansionPanel
+                  classes={{ root: style.expansionPanel }}
+                  defaultExpanded={[
                     DashboardRoutes.base + DashboardRoutes.schedule.value,
-                    'fas fa-users',
-                    'Calendario',
-                  )}
-                {agent.isAuthorized([Role.User]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.clients.value,
-                    'fas fa-users',
-                    'Clientes',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
+                  ].includes(active)}
+                >
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Datos iniciales
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    <div className={style.linkContainer}>
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.schedule.value,
+                          'fas fa-users',
+                          'Calendario',
+                        )}
+                    </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <span className={style.header}>Ventas</span>
+                <ExpansionPanel
+                  classes={{ root: style.expansionPanel }}
+                  defaultExpanded={[
                     DashboardRoutes.base + DashboardRoutes.building.value,
-                    'fa-building',
-                    'Esquema',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
                     DashboardRoutes.base + DashboardRoutes.areas.value,
-                    'fa-layer-group',
-                    'Areas',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
                     DashboardRoutes.base +
                       DashboardRoutes.areasAdditional.value,
-                    'fa-layer-group',
-                    'Areas Adicionales',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.prime.value,
-                    'fa-sort-amount-up',
-                    'Primas',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.summary.value,
-                    'fa-list-ol',
-                    'Resumen',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.rackAreas.value,
-                    'fas fa-ruler',
-                    'Resumen Areas',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
-                    'fas fa-book-open',
-                    'Detalle admin',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.detail.value,
-                    'fas fa-book-open',
-                    'Detalle',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.clustering.value,
-                    'fas fa-object-group',
-                    'Agrupamiento',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base +
-                      DashboardRoutes.futureSalesSpeed.value,
-                    'fas fa-calendar-alt',
-                    'Velocidad ventas futuras',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.increments.value,
-                    'fas fa-angle-double-up',
-                    'Incrementos',
-                    isBadgeIncrement,
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.strategy.value,
-                    'fas fa-chart-line',
-                    'Estrategia',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.clients.value,
-                    'fas fa-users',
-                    'Clientes',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.report.value,
-                    'fas fa-file-alt',
-                    'Reporte',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.cashFlow.value,
-                    'fas fa-cash-register',
-                    'Flujo de caja',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + DashboardRoutes.saleRequests.value,
-                    'fas fa-clipboard-check',
-                    'Solicitudes de venta',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
                     DashboardRoutes.base + DashboardRoutes.pairing.value,
-                    'fas fa-star-half-alt',
-                    'Apareamiento',
-                  )}
-                {agent.isAuthorized([Role.Admin, Role.Super]) &&
-                  itemForSlidebar(
-                    style.MenuItem,
-                    DashboardRoutes.base + ContractRoutes.base.value,
-                    'fas fa-file-signature',
-                    'Contratos',
-                  )}
+                    DashboardRoutes.base + DashboardRoutes.prime.value,
+                    DashboardRoutes.base + DashboardRoutes.clustering.value,
+                  ].includes(active)}
+                >
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Cuadro de Áreas y Precios
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    <div className={style.linkContainer}>
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.building.value,
+                          'fa-building',
+                          'Esquema',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.areas.value,
+                          'fa-layer-group',
+                          'Areas',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base +
+                            DashboardRoutes.areasAdditional.value,
+                          'fa-layer-group',
+                          'Areas Adicionales',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.pairing.value,
+                          'fas fa-star-half-alt',
+                          'Apareamiento',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.prime.value,
+                          'fa-sort-amount-up',
+                          'Primas',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base +
+                            DashboardRoutes.clustering.value,
+                          'fas fa-object-group',
+                          'Agrupamiento',
+                        )}
+                    </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel classes={{ root: style.expansionPanel }}>
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Estrategias de incrementos
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    <div className={style.linkContainer}>
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base +
+                            DashboardRoutes.increments.value,
+                          'fas fa-angle-double-up',
+                          'Incrementos',
+                          isBadgeIncrement,
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.strategy.value,
+                          'fas fa-chart-line',
+                          'Estrategia',
+                        )}
+                    </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel classes={{ root: style.expansionPanel }}>
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Velocidad de ventas
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    <div className={style.linkContainer}>
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base +
+                            DashboardRoutes.futureSalesSpeed.value,
+                          'fas fa-calendar-alt',
+                          'Velocidad ventas futuras',
+                        )}
+                    </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel classes={{ root: style.expansionPanel }}>
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Sala de ventas
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    <div className={style.linkContainer}>
+                      {agent.isAuthorized([Role.User]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.clients.value,
+                          'fas fa-users',
+                          'Clientes',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.clients.value,
+                          'fas fa-users',
+                          'Clientes',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base +
+                            DashboardRoutes.saleRequests.value,
+                          'fas fa-clipboard-check',
+                          'Solicitudes de venta',
+                        )}
+                    </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel classes={{ root: style.expansionPanel }}>
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Informes
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    <div className={style.linkContainer}>
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.summary.value,
+                          'fa-list-ol',
+                          'Resumen',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base +
+                            DashboardRoutes.rackAreas.value,
+                          'fas fa-ruler',
+                          'Resumen Areas',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base +
+                            DashboardRoutes.detailAdmin.value,
+                          'fas fa-book-open',
+                          'Detalle admin',
+                        )}
+                      {agent.isAuthorized([
+                        Role.Admin,
+                        Role.Super,
+                        Role.User,
+                      ]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.detail.value,
+                          'fas fa-book-open',
+                          'Detalle',
+                        )}
+
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.report.value,
+                          'fas fa-file-alt',
+                          'Reporte',
+                        )}
+                      {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                        itemForSlidebar(
+                          style.MenuItem,
+                          DashboardRoutes.base + DashboardRoutes.cashFlow.value,
+                          'fas fa-cash-register',
+                          'Flujo de caja',
+                        )}
+                    </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <span className={style.header}>Contratos</span>
+                <ExpansionPanel classes={{ root: style.expansionPanel }}>
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Contratos
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                      itemForSlidebar(
+                        style.MenuItem,
+                        DashboardRoutes.base + ContractRoutes.base.value,
+                        'fas fa-file-signature',
+                        'Contratos',
+                      )}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
               </div>
             </div>
           </Fragment>

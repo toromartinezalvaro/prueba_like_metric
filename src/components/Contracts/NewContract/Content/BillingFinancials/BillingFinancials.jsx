@@ -43,7 +43,13 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
 
   let totalBills = 0;
 
-  const changeCardValue = (name, id, isDate, isSelect, isEvent) => (e) => {
+  const changeCardValue = (
+    name,
+    id,
+    elementIsADate,
+    elementIsASelect,
+    elementIsAnEvent,
+  ) => (element) => {
     const billingsArray = [...billings];
     const billIndex = billings.findIndex((element) => {
       return element.id === id;
@@ -51,50 +57,55 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
 
     let bill = {};
 
-    if (isDate) {
-      bill = { ...billingsArray[billIndex], [name]: e };
-    } else if (isSelect) {
+    if (elementIsADate) {
+      bill = { ...billingsArray[billIndex], [name]: element };
+    } else if (elementIsASelect) {
       let filterMonths = [];
-      if (e.value === 1) {
-        setDisableLastBilling(true);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
+      let tempo;
+      switch (element.value) {
+        case 1:
+          setDisableLastBilling(true);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        case 2:
+          filterMonths = MonthEnum;
+          setDisableLastBilling(false);
+          setMonth(filterMonths);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        case 3:
+          setDisableLastBilling(false);
+          tempo = MonthEnum.map((months) => {
+            return (
+              months.value % 3 === 0 &&
+              filterMonths.push({
+                value: months.value,
+                label: months.label,
+              })
+            );
+          });
+          setMonth(filterMonths);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        case 4:
+          setDisableLastBilling(false);
+          tempo = MonthEnum.map(() => {
+            return [];
+          });
+          setMonth(filterMonths);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        default:
+          break;
       }
-      if (e.value === 2) {
-        filterMonths = MonthEnum;
-        setDisableLastBilling(false);
-        setMonth(filterMonths);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
-      }
-      if (e.value === 3) {
-        setDisableLastBilling(false);
-        const tempo = MonthEnum.map((months) => {
-          return (
-            months.value % 3 === 0 &&
-            filterMonths.push({
-              value: months.value,
-              label: months.label,
-            })
-          );
-        });
-        setMonth(filterMonths);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
-      }
-      if (e.value === 4) {
-        setDisableLastBilling(false);
-        const tempo = MonthEnum.map(() => {
-          return [];
-        });
-        setMonth(filterMonths);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
-      }
-    } else if (isEvent) {
-      bill = { ...billingsArray[billIndex], [name]: e.value };
-    } else if (name === true) {
+    } else if (elementIsAnEvent) {
+      bill = { ...billingsArray[billIndex], [name]: element.value };
+    } else if (name) {
       bill = { ...billingsArray[billIndex], isLocked: true };
-    } else if (name === false) {
+    } else if (!name) {
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
-      bill = { ...billingsArray[billIndex], [name]: e.target.value };
+      bill = { ...billingsArray[billIndex], [name]: element.target.value };
     }
 
     billingsArray[billIndex] = bill;

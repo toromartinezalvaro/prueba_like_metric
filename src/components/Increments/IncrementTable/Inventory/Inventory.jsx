@@ -80,7 +80,7 @@ function Inventory({
       </div>
       <div className={incrementTextColor}>
         <NumberFormat
-          value={increment && increment.toFixed(2)}
+          value={units !== 0 ? increment && increment.toFixed(2) : 0}
           displayType="text"
           thousandSeparator={true}
           prefix="$"
