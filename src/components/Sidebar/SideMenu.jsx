@@ -2,6 +2,7 @@ import React, { useState, useContext, Fragment } from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link } from 'react-router-dom';
 import { Resizable } from 're-resizable';
 import { DashboardRoutes } from '../../routes/local/routes';
@@ -77,6 +78,9 @@ const SideMenu = ({
   return (
     <div className="container">
       <Resizable
+        enable={{
+          right: true,
+        }}
         className={
           `${style.SideMenu} ` +
           `${tower !== null ? style.OriginalWidth : style.ZeroWidth}`
@@ -102,6 +106,7 @@ const SideMenu = ({
                   ].includes(active)}
                 >
                   <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
                     classes={{ root: style.expansionPanelSummary }}
                   >
                     Datos iniciales
@@ -134,6 +139,7 @@ const SideMenu = ({
                   ].includes(active)}
                 >
                   <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
                     classes={{ root: style.expansionPanelSummary }}
                   >
                     Cuadro de Áreas y Precios
@@ -191,6 +197,7 @@ const SideMenu = ({
                 </ExpansionPanel>
                 <ExpansionPanel classes={{ root: style.expansionPanel }}>
                   <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
                     classes={{ root: style.expansionPanelSummary }}
                   >
                     Estrategias de incrementos
@@ -220,6 +227,7 @@ const SideMenu = ({
                 </ExpansionPanel>
                 <ExpansionPanel classes={{ root: style.expansionPanel }}>
                   <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
                     classes={{ root: style.expansionPanelSummary }}
                   >
                     Velocidad de ventas
@@ -241,6 +249,7 @@ const SideMenu = ({
                 </ExpansionPanel>
                 <ExpansionPanel classes={{ root: style.expansionPanel }}>
                   <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
                     classes={{ root: style.expansionPanelSummary }}
                   >
                     Sala de ventas
@@ -276,6 +285,7 @@ const SideMenu = ({
                 </ExpansionPanel>
                 <ExpansionPanel classes={{ root: style.expansionPanel }}>
                   <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
                     classes={{ root: style.expansionPanelSummary }}
                   >
                     Informes
