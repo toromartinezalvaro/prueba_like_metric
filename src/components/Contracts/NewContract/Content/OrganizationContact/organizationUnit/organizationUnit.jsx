@@ -1,44 +1,45 @@
 /*
- * Created on Thu Oct 31 2019
+ * Created on Tue Nov 07 2019
  *
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
 
 import React, { useState, Fragment, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { TextField, Button, Typography, Icon } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import styles from './Category.module.scss';
+import PropTypes from 'prop-types';
+import styles from './organizationUnit.module.scss';
 
-const Category = ({
-  handleCloseCategory,
-  newCategory,
-  updateCategory,
+const OrganizationUnit = ({
+  handleOpenOrClose,
+  newOrganization,
+  updateOrganization,
   informationToEdit,
 }) => {
-  const [textOfCategory, setTextOfCategory] = useState('');
-  const changeTextOfCategory = (e) => {
-    setTextOfCategory(e.target.value);
+  const [textOfOrganization, setTextOfOrganization] = useState('');
+  const changeTextOfOrganization = (e) => {
+    setTextOfOrganization(e.target.value);
   };
   const sendTextOfCategory = () => {
-    if (informationToEdit === undefined) {
-      newCategory(textOfCategory);
-      handleCloseCategory();
-    } else {
-      updateCategory({
+    if (informationToEdit) {
+      updateOrganization({
         id: informationToEdit.id,
-        categoryName: textOfCategory,
+        name: textOfOrganization,
         contractId: informationToEdit.contractId,
       });
-      handleCloseCategory();
+      handleOpenOrClose();
+    } else {
+      newOrganization({ name: textOfOrganization });
+      handleOpenOrClose();
     }
   };
 
   useEffect(() => {
-    if (informationToEdit !== undefined) {
-      setTextOfCategory(informationToEdit.categoryName);
+    if (informationToEdit) {
+      setTextOfOrganization(informationToEdit.name);
     }
   }, []);
+
   return (
     <Fragment>
       <Typography className={styles.heading} variant="h4">
@@ -46,20 +47,22 @@ const Category = ({
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
         <div className={styles.titleExpand}>
-          {informationToEdit === undefined ? 'Nuevo Grupo' : 'Editar Grupo'}
+          {informationToEdit
+            ? 'Editar Unidad Organizacional'
+            : 'Nueva Unidad Organizacional'}
         </div>
       </Typography>
       <div container className={styles.gridContainer}>
-        <div className={styles.categoryCreator}>
+        <div className={styles.creator}>
           <TextField
             fullWidth
             required
             className={styles.textField}
-            label="Nombre del Grupo"
+            label="Nombre de la Unidad Organizacional"
             margin="normal"
             variant="outlined"
-            value={textOfCategory}
-            onChange={changeTextOfCategory}
+            value={textOfOrganization}
+            onChange={changeTextOfOrganization}
           />
         </div>
       </div>
@@ -71,7 +74,7 @@ const Category = ({
           startIcon={<AddIcon />}
           onClick={sendTextOfCategory}
         >
-          {informationToEdit === undefined ? 'Crear' : 'Editar'}
+          {informationToEdit ? 'Editar' : 'Crear'}
         </Button>
 
         <Button
@@ -79,7 +82,7 @@ const Category = ({
           color="secondary"
           className={`${styles.button} ${styles.buttonMargin}`}
           startIcon={<Icon className="fas fa-ban" />}
-          onClick={handleCloseCategory}
+          onClick={handleOpenOrClose}
         >
           Cancelar
         </Button>
@@ -88,9 +91,9 @@ const Category = ({
   );
 };
 
-Category.propTypes = {
+OrganizationUnit.propTypes = {
   informationToEdit: PropTypes.object,
   editable: PropTypes.bool,
 };
 
-export default Category;
+export default OrganizationUnit;

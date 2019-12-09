@@ -1,0 +1,38 @@
+@import '../../assets/styles/variables.scss';
+.Events {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    .Navigation {
+        display: flex;
+        flex-flow: column;
+    }
+    .Content {
+        padding: 50px;
+        flex-grow: 1;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+}
+
+.circleIcon {
+    display: flex;
+    justify-content: center;
+    direction: row;
+    align-items: center;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: $defaultWhite-color;
+}
+
+.circleColorTitle {
+    background-color: $softRed-color;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    margin-top: 1%;
+    ;
+}

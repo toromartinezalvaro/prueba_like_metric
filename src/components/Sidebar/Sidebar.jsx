@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  ProjectRoutes,
-  DashboardRoutes,
-  ContractRoutes,
-} from '../../routes/local/routes';
+import { ProjectRoutes, DashboardRoutes } from '../../routes/local/routes';
 import style from './Sidebar.module.scss';
 import Icon from '../../assets/icons/Icon';
 
@@ -30,11 +26,6 @@ const sidebar = () => {
         `${style.MenuItem}`,
         DashboardRoutes.base + DashboardRoutes.user,
         'fa-user-tie',
-      )}
-      {itemForSlidebar(
-        `${style.MenuItem}`,
-        DashboardRoutes.base + ContractRoutes.base,
-        'fas fa-file-signature',
       )}
     </div>
   );

@@ -4,7 +4,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Link } from 'react-router-dom';
 import { Resizable } from 're-resizable';
-import { DashboardRoutes } from '../../routes/local/routes';
+import { DashboardRoutes, ContractRoutes } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
@@ -334,6 +334,25 @@ const SideMenu = ({
                           'Flujo de caja',
                         )}
                     </div>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <span className={style.header}>Contratos</span>
+                <ExpansionPanel classes={{ root: style.expansionPanel }}>
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Contratos
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                      itemForSlidebar(
+                        style.MenuItem,
+                        DashboardRoutes.base + ContractRoutes.base.value,
+                        'fas fa-file-signature',
+                        'Contratos',
+                      )}
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </div>

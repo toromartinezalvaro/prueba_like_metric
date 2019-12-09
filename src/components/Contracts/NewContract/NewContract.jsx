@@ -21,9 +21,12 @@ const NewContract = ({
   isOpen,
   handleCloseCategory,
   handleCloseContract,
+  handleCloseItem,
   handleOpenCategory,
   handleOpenBusinessPatner,
+  handleOpenItem,
   categories,
+  items,
   partners,
   editable,
   searchBusinessPartner,
@@ -31,8 +34,22 @@ const NewContract = ({
   searchCategory,
   categoryProp,
   partnerProp,
+  itemProp,
   changeForSearchCategory,
   changeForSearchPartner,
+  changeForSearchItem,
+  searchItem,
+  sendBillings,
+  services,
+  itemIsLocked,
+  sendGeneralInfo,
+  changeItemIsLocked,
+  currentGroupId,
+  towerId,
+  events,
+  currentEvent,
+  addContract,
+  sendAttachments,
 }) => {
   return (
     <Dialog
@@ -54,27 +71,36 @@ const NewContract = ({
           handleOpenCategory={handleOpenCategory}
           handleCloseCategory={handleCloseCategory}
           handleOpenBusinessPatner={handleOpenBusinessPatner}
+          handleCloseItem={handleCloseItem}
+          itemProp={itemProp}
+          currentGroupId={currentGroupId}
+          changeForSearchItem={changeForSearchItem}
+          handleOpenItem={handleOpenItem}
           searchCategory={searchCategory}
+          searchItem={searchItem}
           searchBusinessPartner={searchBusinessPartner}
           categories={categories}
+          items={items}
+          changeItemIsLocked={changeItemIsLocked}
           partners={partners}
+          itemIsLocked={itemIsLocked}
           editable={editable}
           disableEditable={disableEditable}
           categoryProp={categoryProp}
           changeForSearchCategory={changeForSearchCategory}
           changeForSearchPartner={changeForSearchPartner}
           partnerProp={partnerProp}
+          sendGeneralInfo={sendGeneralInfo}
         />
         <br />
-        <ExpandLifeCycle />
+        <ExpandBillingFinancials
+          towerId={towerId}
+          sendBillings={sendBillings}
+          events={events}
+          currentEvent={currentEvent}
+        />
         <br />
-        <ExpandBillingFinancials />
-        <br />
-        <ExpandOrganizationContact />
-        <br />
-        <ExpandCustom />
-        <br />
-        <ExpandAttachment />
+        <ExpandAttachment sendAttachments={sendAttachments} />
         <br />
         <div className={styles.actionContainer}>
           <Button
@@ -82,6 +108,7 @@ const NewContract = ({
             color="primary"
             className={styles.button}
             startIcon={<Icon className="fas fa-file-signature" />}
+            onClick={addContract}
           >
             Agregar Contrato
           </Button>

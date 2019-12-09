@@ -199,7 +199,7 @@ class Dashboard extends Component {
           component={Report}
         />
         <PrivateRoute
-          path={match.url + ContractRoutes.base}
+          path={match.url + ContractRoutes.base.withIndicator}
           roles={[Role.Admin, Role.Super]}
           exact
           component={Contracts}
