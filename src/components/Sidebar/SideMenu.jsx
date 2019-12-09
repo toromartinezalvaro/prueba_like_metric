@@ -336,6 +336,25 @@ const SideMenu = ({
                     </div>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
+                <span className={style.header}>Contratos</span>
+                <ExpansionPanel classes={{ root: style.expansionPanel }}>
+                  <ExpansionPanelSummary
+                    classes={{ root: style.expansionPanelSummary }}
+                  >
+                    Contratos
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails
+                    classes={{ root: style.expansionPanelDetails }}
+                  >
+                    {agent.isAuthorized([Role.Admin, Role.Super]) &&
+                      itemForSlidebar(
+                        style.MenuItem,
+                        DashboardRoutes.base + ContractRoutes.base.value,
+                        'fas fa-file-signature',
+                        'Contratos',
+                      )}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
               </div>
             </div>
           </Fragment>

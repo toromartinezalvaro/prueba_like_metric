@@ -52,7 +52,7 @@ const GeneralInfo = ({
   });
 
   const [isLocked, setIsLocked] = useState(true);
-  const [isLockedEdit, setIsLockedEdit] = useState(true);
+  const [isLockedEdit, setsLockedEdit] = useState(true);
 
   const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
@@ -101,8 +101,8 @@ const GeneralInfo = ({
     changeItemIsLocked(currentGroupValue);
     currentGroupId(currentGroupValue);
     setIsLocked(false);
-    if (items !== []) {
-      setIsLockedEdit(false);
+    if (items) {
+      setsLockedEdit(false);
     }
   };
 
@@ -120,8 +120,6 @@ const GeneralInfo = ({
     setGeneralInformation({ ...generalInformation, itemId: currentItemValue });
     changeForSearchItem(currentItem);
   };
-
-  //sendGeneralInfo(generalInformation);
 
   return (
     <Fragment>

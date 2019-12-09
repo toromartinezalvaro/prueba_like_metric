@@ -5,13 +5,10 @@
  */
 
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
+import { TextField, Fab, Dialog, DialogContent } from '@material-ui/core';
+import { AddIcon } from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
 import Select, { components } from 'react-select';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
 import PropTypes from 'prop-types';
 import OrganizationUnit from './organizationUnit/organizationUnit';
 import ContractService from '../../../../../services/contract/contractService';

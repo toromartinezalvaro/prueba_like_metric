@@ -1,8 +1,10 @@
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Icon from '@material-ui/core/Icon';
-import Fab from '@material-ui/core/Fab';
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  Icon,
+  Fab,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { Component } from 'react';
 import moment from 'moment';
@@ -53,22 +55,19 @@ class Events extends Component {
           constructionStartDate,
         } = response.data;
 
-        if (salesStartDate === null || salesStartDate === undefined) {
+        if (!salesStartDate) {
           salesStartDate = new Date().getTime();
         }
-        if (endOfSalesDate === null || endOfSalesDate === undefined) {
+        if (!endOfSalesDate) {
           endOfSalesDate = new Date().getTime();
         }
-        if (averageDeliveryDate === null || averageDeliveryDate === undefined) {
+        if (!averageDeliveryDate) {
           averageDeliveryDate = new Date().getTime();
         }
-        if (balancePointDate === null || balancePointDate === undefined) {
+        if (!balancePointDate) {
           balancePointDate = new Date().getTime();
         }
-        if (
-          constructionStartDate === null ||
-          constructionStartDate === undefined
-        ) {
+        if (!constructionStartDate) {
           constructionStartDate = new Date().getTime();
         }
         this.setState({
@@ -128,7 +127,7 @@ class Events extends Component {
         const currentEvent = {
           value: response.data.id,
           label: response.data.description,
-        }
+        };
         this.props.currentEvent(currentEvent);
       })
       .catch((error) => {

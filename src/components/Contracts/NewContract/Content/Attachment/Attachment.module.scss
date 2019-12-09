@@ -1,3 +1,9 @@
+/*
+ * Created by Jcatman on Wed Dec 04 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
 @import '../../../../../assets/styles/variables.scss';
 
 .textField {
@@ -37,7 +43,7 @@
 }
 
 .inputfile + label {
-  cursor: pointer; /* "hand" cursor */
+  cursor: pointer;
 }
 
 .container {

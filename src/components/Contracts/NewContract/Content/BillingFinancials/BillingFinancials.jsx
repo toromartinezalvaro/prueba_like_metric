@@ -6,12 +6,14 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import Icon from '@material-ui/core/Icon';
-import CardContent from '@material-ui/core/CardContent';
-import MenuItem from '@material-ui/core/MenuItem';
+import {
+  Button,
+  Card,
+  TextField,
+  Icon,
+  CardContent,
+  MenuItem,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import moment from 'moment';
@@ -20,6 +22,7 @@ import YearEnum from './year.enum';
 import Events from '../../../../../containers/Events/Events';
 
 import styles from './BillingFinancials.module.scss';
+import SuggestionEnum from './suggestion.enum';
 
 const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
   const cardValue = {
@@ -40,7 +43,13 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
 
   let totalBills = 0;
 
-  const changeCardValue = (name, id, isDate, isSelect, isEvent) => (e) => {
+  const changeCardValue = (
+    name,
+    id,
+    elementIsADate,
+    elementIsASelect,
+    elementIsAnEvent,
+  ) => (element) => {
     const billingsArray = [...billings];
     const billIndex = billings.findIndex((element) => {
       return element.id === id;
@@ -48,50 +57,55 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
 
     let bill = {};
 
-    if (isDate) {
-      bill = { ...billingsArray[billIndex], [name]: e };
-    } else if (isSelect) {
+    if (elementIsADate) {
+      bill = { ...billingsArray[billIndex], [name]: element };
+    } else if (elementIsASelect) {
       let filterMonths = [];
-      if (e.value === 1) {
-        setDisableLastBilling(true);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
+      let tempo;
+      switch (element.value) {
+        case 1:
+          setDisableLastBilling(true);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        case 2:
+          filterMonths = MonthEnum;
+          setDisableLastBilling(false);
+          setMonth(filterMonths);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        case 3:
+          setDisableLastBilling(false);
+          tempo = MonthEnum.map((months) => {
+            return (
+              months.value % 3 === 0 &&
+              filterMonths.push({
+                value: months.value,
+                label: months.label,
+              })
+            );
+          });
+          setMonth(filterMonths);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        case 4:
+          setDisableLastBilling(false);
+          tempo = MonthEnum.map(() => {
+            return [];
+          });
+          setMonth(filterMonths);
+          bill = { ...billingsArray[billIndex], [name]: element.label };
+          break;
+        default:
+          break;
       }
-      if (e.value === 2) {
-        filterMonths = MonthEnum;
-        setDisableLastBilling(false);
-        setMonth(filterMonths);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
-      }
-      if (e.value === 3) {
-        setDisableLastBilling(false);
-        const tempo = MonthEnum.map((months) => {
-          return (
-            months.value % 3 === 0 &&
-            filterMonths.push({
-              value: months.value,
-              label: months.label,
-            })
-          );
-        });
-        setMonth(filterMonths);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
-      }
-      if (e.value === 4) {
-        setDisableLastBilling(false);
-        const tempo = MonthEnum.map(() => {
-          return [];
-        });
-        setMonth(filterMonths);
-        bill = { ...billingsArray[billIndex], [name]: e.label };
-      }
-    } else if (isEvent) {
-      bill = { ...billingsArray[billIndex], [name]: e.value };
-    } else if (name === true) {
+    } else if (elementIsAnEvent) {
+      bill = { ...billingsArray[billIndex], [name]: element.value };
+    } else if (name) {
       bill = { ...billingsArray[billIndex], isLocked: true };
-    } else if (name === false) {
+    } else if (!name) {
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
-      bill = { ...billingsArray[billIndex], [name]: e.target.value };
+      bill = { ...billingsArray[billIndex], [name]: element.target.value };
     }
 
     billingsArray[billIndex] = bill;
@@ -114,16 +128,9 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
     setLastId(lastId + 1);
   };
 
-  //sendBillings(billings);
-
   const lastDate = (name) => (e) => {};
 
-  const suggestions = [
-    { label: 'Una vez', value: 1 },
-    { label: 'Mensual', value: 2 },
-    { label: 'Trimestral', value: 3 },
-    { label: 'Anual', value: 4 },
-  ].map((suggestion) => ({
+  const suggestions = SuggestionEnum.map((suggestion) => ({
     value: suggestion.value,
     label: suggestion.label,
   }));
@@ -306,7 +313,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                   )}
                   <div className={styles.TotalSubbills}>
                     <h4 sclassName={styles.textTotal}> Valor de cuenta:</h4>
-                    <p className={styles.amount}>{billing.amount * 1}</p>
+                    <p className={styles.amount}>{billing.amount}</p>
                   </div>
                 </div>
               </div>

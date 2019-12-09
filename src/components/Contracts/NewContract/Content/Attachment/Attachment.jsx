@@ -1,11 +1,12 @@
+/*
+ * Created by Jcatman on Wed Dec 04 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
 import React, { Fragment, Component } from 'react';
-import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import { TextField, Fab, Card, CardContent, Button } from '@material-ui/core';
+import { AddIcon, EditIcon } from '@material-ui/icons';
 import ContractService from '../../../../../services/contract/contractService';
 import styles from './Attachment.module.scss';
 
