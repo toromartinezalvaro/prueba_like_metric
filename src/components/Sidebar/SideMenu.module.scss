@@ -31,6 +31,7 @@
 
 .OriginalWidth {
   width: 240px;
+  overflow-y: auto;
 }
 
 .IconsContainer {
@@ -39,7 +40,7 @@
   width: 80%;
   margin-top: 3vh;
   margin-left: 16%;
-  z-index: 3;
+  z-index: 3;  
 }
 
 .Description {
@@ -132,4 +133,29 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   background: $red-color;
   top: -10px;
+}
+
+.header {
+  font-weight: 700;
+}
+
+.expansionPanel {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.expansionPanelSummary {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.expansionPanelDetails {
+  padding: 0 !important;
+  padding-left: 10px !important;
+}
+
+.linkContainer {
+  display: flex;
+  flex-direction: column;
 }
