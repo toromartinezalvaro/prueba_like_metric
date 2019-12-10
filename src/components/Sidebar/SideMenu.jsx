@@ -75,6 +75,12 @@ const SideMenu = ({
     );
   };
 
+  const evaluate = () => {
+    return [DashboardRoutes.base + DashboardRoutes.schedule.value].includes(
+      active.slice(0, active.indexOf(tower ? tower.id : '')),
+    );
+  };
+
   return (
     <div className="container">
       <Resizable
@@ -94,16 +100,14 @@ const SideMenu = ({
         {showContent && (
           <Fragment>
             <div className={style.fixedWidth + style.NoVisible}>
-              <div className={style.IconsContainer}>
+              <div className={style.title}>
                 <label>{tower ? tower.name : ''}</label>
               </div>
               <div className={style.IconsContainer}>
-                <span className={style.header}>Datos generales</span>
+                <div className={style.header}>Datos generales</div>
                 <ExpansionPanel
                   classes={{ root: style.expansionPanel }}
-                  defaultExpanded={[
-                    DashboardRoutes.base + DashboardRoutes.schedule.value,
-                  ].includes(active)}
+                  defaultExpanded={evaluate()}
                 >
                   <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -125,7 +129,7 @@ const SideMenu = ({
                     </div>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
-                <span className={style.header}>Ventas</span>
+                <div className={style.header}>Ventas</div>
                 <ExpansionPanel
                   classes={{ root: style.expansionPanel }}
                   defaultExpanded={[
