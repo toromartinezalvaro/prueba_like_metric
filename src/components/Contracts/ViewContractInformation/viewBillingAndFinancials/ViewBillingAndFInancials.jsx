@@ -6,12 +6,18 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardContent } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
 import style from '../ViewContractInformation.module.scss';
 
 const ViewBillingAndFinancials = ({ contractDataView }) => {
   return (
     <Fragment>
       <div className={style.generalTitle}>
+        <div
+          className={`${style.circleIcon}  ${style.circleColorFinantials}`}
+        >
+          <Icon className={`${style.icon} fas fa-tag`} />
+        </div>
         <h2>Facturación y Finanzas</h2>
       </div>
       <Card className={style.card}>
