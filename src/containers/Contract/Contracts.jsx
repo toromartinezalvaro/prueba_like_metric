@@ -30,6 +30,15 @@ class Contracts extends Component {
       contractModal: {
         isOpen: false,
         data: {},
+        generalInformationData: {
+          title: '',
+          businessPartnerId: '',
+          groupId: '',
+          state: '',
+          contractNumber: '',
+          itemId: '',
+          description: '',
+        },
       },
       businessPatnerModal: {
         isOpen: false,
@@ -436,14 +445,28 @@ class Contracts extends Component {
   editContractOpen = (editable, id) => {
     if (editable) {
       console.log('Está siendo editado');
-      let contractInformation;
       this.services
         .getContractById(this.props.match.params.towerId, id)
         .then((response) => {
           console.log(response.data);
-          contractInformation = response.data;
+          const metaData = response.data;
+          this.setState({
+            contractModal: {
+              isOpen: true,
+              generalInformationData: {
+                title: metaData.title,
+                businessPartnerId: metaData.businessPartnerId,
+                groupId: metaData.groupId,
+                state: metaData.state,
+                contractNumber: metaData.contractNumber,
+                itemId: metaData.itemId,
+                description: metaData.description,
+              },
+            },
+          });
         })
         .catch((error) => console.log(error));
+      console.log(this.state.contractModal.generalInformationData);
     }
   };
 
@@ -488,6 +511,7 @@ class Contracts extends Component {
           events={this.state.events}
           currentEvent={this.currentEvent}
           addContract={this.addContract}
+          dataIfEdit={this.state.contractModal.generalInformationData}
         />
         <Dialog
           className={styles.dialogExpand}

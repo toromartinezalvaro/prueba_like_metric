@@ -40,6 +40,7 @@ const GeneralInfo = ({
   itemIsLocked,
   currentGroupId,
   changeItemIsLocked,
+  dataIfEdit,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
@@ -125,6 +126,7 @@ const GeneralInfo = ({
     <Fragment>
       <div className={styles.gridContainer}>
         <div className={styles.columnFullLeft}>
+        {console.log("Este es el dato alv", dataIfEdit)}
           <TextField
             required
             fullWidth
@@ -132,7 +134,7 @@ const GeneralInfo = ({
             label="Titulo De Contrato"
             margin="normal"
             variant="outlined"
-            value={generalInformation.title}
+            defaultValue={dataIfEdit && dataIfEdit.title}
             onChange={onChangeText('title')}
           />
           <div className={styles.gridSubContainer}>
@@ -239,6 +241,7 @@ const GeneralInfo = ({
             label="Numero de contrato"
             margin="normal"
             variant="outlined"
+            defaultValue={dataIfEdit && dataIfEdit.contractNumber}
             onChange={onChangeText('contractNumber')}
           />
 
@@ -296,6 +299,7 @@ const GeneralInfo = ({
           className={styles.multiline}
           label="Descripción/Comentarios"
           variant="outlined"
+          defaultValue={dataIfEdit && dataIfEdit.description}
           onChange={onChangeText('description')}
         />
       </div>
@@ -306,6 +310,7 @@ const GeneralInfo = ({
 GeneralInfo.propTypes = {
   categories: PropTypes.array,
   categoryProp: PropTypes.object,
+  dataIfEdit: PropTypes.object,
   partnerProp: PropTypes.object,
   itemProp: PropTypes.object,
   sendGeneralInfo: PropTypes.func,
