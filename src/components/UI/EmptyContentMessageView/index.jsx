@@ -35,7 +35,7 @@ EmptyContentMessageView.propTypes = {
 };
 
 EmptyContentMessageView.defaultProps = {
-  buttonsContent: [{ title: '', url: '' }],
+  buttonsContent: [],
 };
 
 export default EmptyContentMessageView;

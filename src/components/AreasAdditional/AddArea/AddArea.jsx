@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 13th November 2019 12:04:21 pm
+ * Last Modified: Wednesday, 11th December 2019 11:14:29 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -29,7 +29,11 @@ import Button from '../../UI/Button/Button';
 const AddArea = (props) => {
   const [open, setOpen] = React.useState(false);
   const [unit, setUnit] = React.useState(null);
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState({
+    name: false,
+    quantity: false,
+    unit: false,
+  });
   const [errorMessage, setErrorMessage] = React.useState('');
   const [quantity, setQuantity] = React.useState(null);
   const [name, setName] = React.useState(null);
@@ -46,6 +50,8 @@ const AddArea = (props) => {
     if (name && quantity && unit) {
       props.addAreaHandler(unit, quantity, name);
       setOpen(false);
+    } else {
+      setError({ name: !name, unit: !unit, quantity: !quantity });
     }
   };
 
@@ -94,6 +100,7 @@ const AddArea = (props) => {
               <TextField
                 required
                 onChange={onChangeName}
+                error={error.name}
                 id="standard-required"
                 label="Nombre"
                 margin="normal"
@@ -103,6 +110,7 @@ const AddArea = (props) => {
                   Tipo
                 </InputLabel>
                 <Select
+                  error={error.unit}
                   labelId="demo-simple-select-required-label"
                   id="demo-simple-select-required"
                   value={unit}
@@ -113,7 +121,7 @@ const AddArea = (props) => {
                 </Select>
               </FormControl>
               <TextField
-                error={error}
+                error={error.quantity}
                 helperText={errorMessage}
                 required
                 onChange={onChangeQuantity.bind(this)}
