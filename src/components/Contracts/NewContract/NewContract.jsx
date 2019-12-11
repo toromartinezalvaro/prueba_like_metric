@@ -112,7 +112,7 @@ const NewContract = ({
             startIcon={<Icon className="fas fa-file-signature" />}
             onClick={addContract}
           >
-            Agregar Contrato
+            Crear Contrato
           </Button>
           <Button
             variant="contained"
@@ -121,7 +121,7 @@ const NewContract = ({
             startIcon={<Icon className="fas fa-ban" />}
             onClick={handleCloseContract}
           >
-            Cancelar
+            Cerrar
           </Button>
         </div>
       </DialogContentText>

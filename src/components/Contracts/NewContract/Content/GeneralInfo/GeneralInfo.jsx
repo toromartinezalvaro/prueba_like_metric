@@ -126,7 +126,7 @@ const GeneralInfo = ({
     <Fragment>
       <div className={styles.gridContainer}>
         <div className={styles.columnFullLeft}>
-        {console.log("Este es el dato alv", dataIfEdit)}
+          {console.log('Este es el dato alv', dataIfEdit)}
           <TextField
             required
             fullWidth
@@ -151,7 +151,7 @@ const GeneralInfo = ({
                 placeholder="Seleccione socio"
                 options={partners}
                 components={Option}
-                value={partnerProp}
+                value={dataIfEdit ? dataIfEdit.businessPartnerId : partnerProp}
                 onChange={changeAndSearchPartner}
               />
             </div>
@@ -192,7 +192,7 @@ const GeneralInfo = ({
                 placeholder="Selecciona un grupo"
                 options={categories}
                 components={Option}
-                value={categoryProp}
+                value={dataIfEdit ? dataIfEdit.groupId : categoryProp}
                 onChange={changeAndSearchCategory}
               />
             </div>
@@ -260,7 +260,7 @@ const GeneralInfo = ({
                 }}
                 placeholder="Seleccione un Item"
                 components={Option}
-                value={itemProp}
+                value={dataIfEdit ? dataIfEdit.itemId : itemProp}
                 options={items}
                 onChange={changeAndSearchItem}
               />

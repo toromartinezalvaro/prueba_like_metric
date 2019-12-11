@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import ContractService from '../../../services/contract/contractService';
 import newContract from '../NewContract/NewContract';
+import ViewContractInformation from '../ViewContractInformation/ViewContractInformation';
 import style from './ContractList.module.scss';
 
 class ContractList extends Component {
@@ -14,7 +15,9 @@ class ContractList extends Component {
     super(props);
     this.state = {
       contracts: [],
-      contratos: [],
+      openDataView: false,
+      contractId: 0,
+      contractData: {},
     };
     this.services = new ContractService();
   }
@@ -35,8 +38,51 @@ class ContractList extends Component {
   }
 
   editContractOpened = (id) => () => {
-    console.log(id);
-    this.props.editContractOpen(true, id);
+    // this.props.editContractOpen(true, id);
+    this.services
+      .getContractById(this.props.towerId, id)
+      .then((response) => {
+        const contractDataView = response.data;
+        this.services
+          .getPartnerById(contractDataView.businessPartnerId)
+          .then((partner) => {
+            const partnerName = partner.data.patnerName;
+            this.services
+              .getCategoryById(contractDataView.groupId)
+              .then((group) => {
+                const groupName = group.data.categoryName;
+                this.services
+                  .getBillingsById(this.props.towerId, contractDataView.id)
+                  .then((billings) => {
+                    console.log('Las cuentas', billings.data);
+                    this.setState({
+                      contractId: contractDataView.id,
+                      openDataView: true,
+                      contractDataView: {
+                        title: contractDataView.title,
+                        businessPartner: partnerName,
+                        group: groupName,
+                        state: contractDataView.state,
+                        contractNumber: contractDataView.contractNumber,
+                        item: contractDataView.item,
+                        description: contractDataView.description,
+                        billings: billings.data,
+                      },
+                    });
+                  })
+                  .catch((err) => console.log(err));
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  closeViewModal = () => {
+    this.setState({
+      openDataView: false,
+    });
   };
 
   displayData = () => {
@@ -73,6 +119,15 @@ class ContractList extends Component {
           <div className={style.header}>Estado</div>
         </div>
         <div>{this.displayData()}</div>
+        {this.state.openDataView && (
+          <ViewContractInformation
+            editContractOpen={this.props.editContractOpen}
+            contractId={this.state.contractId}
+            openView={this.state.openDataView}
+            closeViewModal={this.closeViewModal}
+            contractDataView={this.state.contractDataView}
+          />
+        )}
       </div>
     );
   }

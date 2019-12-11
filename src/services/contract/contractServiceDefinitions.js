@@ -5,6 +5,7 @@
  */
 
 import { API_PATH } from '../../config/config';
+import BillingFinancials from '../../components/Contracts/NewContract/Content/BillingFinancials/BillingFinancials';
 
 const ContractServiceDefinitions = {
   contract: (towerId) => `${API_PATH}contract/${towerId}`,
@@ -33,6 +34,9 @@ const ContractServiceDefinitions = {
   itemUpdate: () => `${API_PATH}contract/item/edit`,
   findByForeignId: (data) => `${API_PATH}contract/item-group/${data}`,
   contractById: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
+  getBillingsById: (towerId, id) =>
+    `${API_PATH}contract/${towerId}/billing-and-financial/find/${id}`,
 };
 
 export default ContractServiceDefinitions;
+  

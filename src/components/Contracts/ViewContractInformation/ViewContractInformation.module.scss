@@ -1,0 +1,57 @@
+.container {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+}
+
+.subContainer {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+  width: 100%;
+}
+
+.generalTitle {
+  margin-left: 7% !important ;
+  margin-bottom: -3%;
+}
+
+.card {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  padding-bottom: -2% !important;
+}
+
+.leftInformation {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 45% !important;
+}
+
+.rightInformation {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 50% !important;
+}
+
+.leftTitle,
+.rightTitle {
+  margin-bottom: 7%;
+}
+
+.actionContainer {
+  margin-top: 5%;
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.labelForTitle {
+  font-weight: bold;
+  margin-bottom: -5% !important;
+}
+
+.information {
+  margin-top: -3%;
+}

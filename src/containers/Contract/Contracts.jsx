@@ -448,22 +448,50 @@ class Contracts extends Component {
       this.services
         .getContractById(this.props.match.params.towerId, id)
         .then((response) => {
-          console.log(response.data);
           const metaData = response.data;
-          this.setState({
-            contractModal: {
-              isOpen: true,
-              generalInformationData: {
-                title: metaData.title,
-                businessPartnerId: metaData.businessPartnerId,
-                groupId: metaData.groupId,
-                state: metaData.state,
-                contractNumber: metaData.contractNumber,
-                itemId: metaData.itemId,
-                description: metaData.description,
-              },
-            },
-          });
+          console.log(metaData.businessPartnerId);
+          this.services
+            .getPartnerById(metaData.businessPartnerId)
+            .then((partners) => {
+              const partner = {
+                value: partners.data.id,
+                label: partners.data.patnerName,
+              };
+              this.services
+                .getCategoryById(metaData.groupId)
+                .then((groups) => {
+                  const group = {
+                    value: groups.data.id,
+                    label: groups.data.categoryName,
+                  };
+                  this.services
+                    .getItemById(metaData.itemId)
+                    .then((items) => {
+                      const item = {
+                        value: items.data.id,
+                        label: items.data.name,
+                      };
+                      console.log('Ese data value', item);
+                      this.setState({
+                        contractModal: {
+                          isOpen: true,
+                          generalInformationData: {
+                            title: metaData.title,
+                            businessPartnerId: partner,
+                            groupId: group,
+                            state: metaData.state,
+                            contractNumber: metaData.contractNumber,
+                            itemId: item,
+                            description: metaData.description,
+                          },
+                        },
+                      });
+                    })
+                    .catch((err) => console.log(err));
+                })
+                .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err));
         })
         .catch((error) => console.log(error));
       console.log(this.state.contractModal.generalInformationData);
