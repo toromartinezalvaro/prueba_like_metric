@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 29th November 2019 3:24:14 pm
+ * Last Modified: Monday, 9th December 2019 3:55:58 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -53,7 +53,18 @@ const Matrix = (
           area.id,
         );
       } else {
-        addAreaAdditionalHandler(e.target.value, 0, '0', areaType.id, index, j);
+        let measure = 0;
+        if (areaType.unit === 'UNT') {
+          measure = 1;
+        }
+        addAreaAdditionalHandler(
+          e.target.value,
+          measure,
+          '0',
+          areaType.id,
+          index,
+          j,
+        );
       }
     }
   };
@@ -92,7 +103,18 @@ const Matrix = (
           area.id,
         );
       } else {
-        addAreaAdditionalHandler('', 0, e.target.value, areaType.id, index, j);
+        let measure = 0;
+        if (areaType.unit === 'UNT') {
+          measure = 1;
+        }
+        addAreaAdditionalHandler(
+          '',
+          measure,
+          e.target.value,
+          areaType.id,
+          index,
+          j,
+        );
       }
     }
   };
