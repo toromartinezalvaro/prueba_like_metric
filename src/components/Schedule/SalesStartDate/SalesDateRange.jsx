@@ -109,7 +109,7 @@ function SalesDateRange({
             </div>
           </div>
           <div className={Styles.container}>
-            <div className={Styles.label}>Fecha maxima de reacaudo:</div>
+            <div className={Styles.label}>Fecha máxima de reacaudo:</div>
             <DayPickerInput
               clearIcon={null}
               format="dd/MM/yyyy"
