@@ -131,7 +131,7 @@ const Collapsables = (props) => {
               <DialogContentText id="alert-dialog-description">
                 <EditForm
                   onChangeName={onChangeName}
-                  unit={unit}
+                  areaType={areaType}
                   handleChangeModal={handleChangeModal}
                 />
               </DialogContentText>
