@@ -17,6 +17,7 @@ class Schedule extends Component {
     averageDeliveryDate: new Date().getTime(),
     balancePointDate: new Date().getTime(),
     constructionStartDate: new Date().getTime(),
+    maximumCollectionDate: new Date().getTime(),
     firstSale: 0,
   };
 
@@ -30,6 +31,7 @@ class Schedule extends Component {
           averageDeliveryDate,
           balancePointDate,
           constructionStartDate,
+          maximumCollectionDate,
         } = response.data;
         const { firstSale } = response.data;
         if (salesStartDate === null) {
@@ -47,6 +49,9 @@ class Schedule extends Component {
         if (constructionStartDate === null) {
           constructionStartDate = new Date().getTime();
         }
+        if (maximumCollectionDate === null) {
+          maximumCollectionDate = new Date().getTime();
+        }
         this.setState({
           salesStartDate,
           endOfSalesDate,
@@ -54,6 +59,7 @@ class Schedule extends Component {
           averageDeliveryDate,
           balancePointDate,
           constructionStartDate,
+          maximumCollectionDate,
         });
       })
       .catch((error) => {
@@ -104,12 +110,11 @@ class Schedule extends Component {
   };
 
   putAverageDeliveryDate = (displacement) => {
-    const { balancePointDate } = this.state;
-    const averageDeliveryDate = moment(Number(balancePointDate))
+    const { endOfSalesDate } = this.state;
+    const averageDeliveryDate = moment(Number(endOfSalesDate))
       .add(displacement, 'M')
       .toDate()
       .getTime();
-    console.log(balancePointDate, averageDeliveryDate);
     this.services
       .putAverageDeliveryDate(this.props.match.params.towerId, {
         averageDeliveryDate,
@@ -127,6 +132,24 @@ class Schedule extends Component {
       .putEndOfSalesDate(this.props.match.params.towerId, { endOfSalesDate })
       .then((_) => {
         this.setState({ endOfSalesDate });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  putMaximumCollectionDate = (displacement) => {
+    const { endOfSalesDate } = this.state;
+    const maximumCollectionDate = moment(Number(endOfSalesDate))
+      .add(displacement, 'M')
+      .toDate()
+      .getTime();
+    this.services
+      .putMaximumCollectionDate(this.props.match.params.towerId, {
+        maximumCollectionDate,
+      })
+      .then((_) => {
+        this.setState({ maximumCollectionDate });
       })
       .catch((error) => {
         console.error(error);
@@ -153,9 +176,11 @@ class Schedule extends Component {
           averageDeliveryDate={this.state.averageDeliveryDate}
           balancePointDate={this.state.balancePointDate}
           constructionStartDate={this.state.constructionStartDate}
+          maximumCollectionDate={this.state.maximumCollectionDate}
           constructionStartDateHandler={this.putConstructionStartDate}
           salesStartDateHandler={this.putSalesStartDate}
           endOfSalesDateHandler={this.putEndOfSalesDate}
+          maximumCollectionDateHandler={this.putMaximumCollectionDate}
           averageDeliveryDateHandler={this.putAverageDeliveryDate}
           balancePointDateHandler={this.putBalancePointDate}
         />

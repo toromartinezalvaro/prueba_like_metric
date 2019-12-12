@@ -41,6 +41,13 @@ export default class ScheduleServices extends Services {
     );
   }
 
+  putMaximumCollectionDate(towerId, body) {
+    return this.put(
+      ScheduleServicesDefinition.putMaximumCollectionDate(towerId),
+      body,
+    );
+  }
+
   putFirstSaleHandler(towerId, body) {
     return this.put(
       ScheduleServicesDefinition.putFirstSaleHandler(towerId),

@@ -31,7 +31,7 @@ export const DashboardRoutes = {
   },
   schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
   report: { value: '/report/', withIndicator: '/report/:towerId' },
-  contracts: '/contracts',
+  contracts: { value: '/contract/', withIndicator: '/contract/:towerId' },
   cashFlow: { value: '/cash-flow/', withIndicator: '/cash-flow/:towerId' },
   saleRequests: {
     value: '/sale-requests/',

@@ -22,6 +22,7 @@
     box-shadow: 6px 3px 11px -4.5px $main-color;
   }
   z-index: 5;
+  overflow-y: scroll;
 }
 
 .ZeroWidth {
@@ -33,17 +34,19 @@
   overflow-y: auto;
 }
 
+.title {
+  margin: 16% 0;
+  padding: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .IconsContainer {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  margin-top: 3vh;
-  margin-left: 16%;
-  z-index: 3;  
+  z-index: 3;
 }
 
 .Description {
-  color: inherit;
+  color: #fff;
 }
 
 .Start {
@@ -56,16 +59,17 @@
 }
 
 .MenuItem {
+  color: #fff;
   display: flex;
   justify-content: center !important;
   width: 100% !important;
-  z-index: 3;
+  z-index: 3;  
   a:link,
   a:visited {
+    padding: 15px 16px;
+    color: #fff;
     flex: 1;
     border: none;
-    color: $black-color;
-    padding: 10px 2px;
     transition-duration: 0.4s;
     text-decoration: none;
     font-size: 16px;
@@ -73,12 +77,10 @@
   }
   a:focus {
     color: $main-color;
-    background-color: $softGrayBackground-color;
   }
   a:hover,
   a:active {
-    background-color: $softGrayBackground-color;
-    border-radius: 2px;
+    border-left: 5px solid $softGray-color;
   }
 }
 
@@ -91,8 +93,8 @@
   a:visited {
     flex: 1;
     border: none;
-    background-color: $softGrayBackground-color;
-    color: $main-color;
+    color: #fff;
+    border-left: 5px solid $softGray-color;
     padding: 10px 2px;
     transition-duration: 0.4s;
     text-decoration: none;
@@ -102,8 +104,7 @@
 
   a:hover,
   a:active {
-    background-color: $softGrayBackground-color;
-    border-radius: 2px;
+    border-left: 5px solid $softGray-color;
   }
 }
 
@@ -135,7 +136,9 @@
 }
 
 .header {
+  text-align: center;
   font-weight: 700;
+  margin: 15px 0;
 }
 
 .expansionPanel {
@@ -144,14 +147,25 @@
   margin: 0 !important;
 }
 
+.expansionPanel:before {
+  background-color: transparent !important;
+}
+
 .expansionPanelSummary {
   margin: 0 !important;
-  padding: 0 !important;
+  padding: 0 10px !important;
+  box-sizing: content-box;
+
+  &:hover {
+    background-color: #00000021;
+  }
 }
 
 .expansionPanelDetails {
   padding: 0 !important;
-  padding-left: 10px !important;
+
+  margin-bottom: 15px;
+  background-color: #00000096;
 }
 
 .linkContainer {

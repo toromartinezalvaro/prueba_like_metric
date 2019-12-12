@@ -30,6 +30,16 @@
   margin-bottom: 5%;
   width: 100vh !important;
 }
+.gridSubContainerRigth {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 160% !important;
+}
 .columnFullRigth {
   display: flex;
   flex-direction: column;
