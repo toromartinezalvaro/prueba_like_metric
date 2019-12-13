@@ -2,13 +2,13 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 6th December 2019 9:14:08 pm
+ * Last Modified: Wednesday, 11th December 2019 3:12:33 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import {
   ExpansionPanel,
@@ -43,11 +43,11 @@ const COLUMNS_UNIT = [
 ];
 
 const Collapsables = (props) => {
-  const [activePanel, setActivePanel] = React.useState(null);
-  const [actualValue, setActualValue] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [unit, setUnit] = React.useState(null);
-  const [name, setName] = React.useState(null);
+  const [activePanel, setActivePanel] = useState(null);
+  const [actualValue, setActualValue] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [unit, setUnit] = useState(null);
+  const [name, setName] = useState(null);
 
   const handleChange = (id) => {
     if (id !== activePanel) {
@@ -131,7 +131,7 @@ const Collapsables = (props) => {
               <DialogContentText id="alert-dialog-description">
                 <EditForm
                   onChangeName={onChangeName}
-                  unit={unit}
+                  areaType={areaType}
                   handleChangeModal={handleChangeModal}
                 />
               </DialogContentText>

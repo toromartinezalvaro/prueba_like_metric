@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
 import Styles from './styles.module.scss';
 import Alert from '../../../components/UI/Alert';
+import LoaderFixed from '../../../components/UI/LoaderFixed';
 
 function withDefaultLayout(WrappedComponent) {
   class WithDefaultLayout extends Component {
     state = {
       messages: [],
+      isLoading: false,
+    };
+
+    offLoading = () => {
+      this.setState({
+        isLoading: false,
+      });
+    };
+
+    onLoading = () => {
+      this.setState({
+        isLoading: true,
+      });
     };
 
     addMessage = (message, type, title) => {
@@ -51,9 +65,12 @@ function withDefaultLayout(WrappedComponent) {
               </Alert>
             ))}
           </div>
+          {this.state.isLoading && <LoaderFixed />}
           <WrappedComponent
             {...this.props}
             spawnMessage={this.addMessage}
+            onLoading={this.onLoading}
+            offLoading={this.offLoading}
           ></WrappedComponent>
         </div>
       );

@@ -82,14 +82,7 @@ class Area extends Component {
           onChange={this.areaTypeHandler}
           value={this.state.areaType}
         />
-        <select
-          onChange={this.measurementUnitHandler}
-          placeholder={'Tipo de medida'}
-          value={this.state.areaMeasurementUnit}
-        >
-          <option value={'MT2'}>MT2</option>
-          <option value={'UNT'}>Unidad</option>
-        </select>
+        <span>MT2</span>
       </div>
     );
   };
@@ -428,7 +421,11 @@ class Area extends Component {
           </Card>
           {this.state.hidden ? null : (
             <Modal
-              title={'Agregar nuevo tipo de area'}
+              title={
+                this.state.editingAreaType
+                  ? 'Editar tipo de area'
+                  : 'Agregar nuevo tipo de area'
+              }
               hidden={this.state.hidden}
               onConfirm={
                 this.state.editingAreaType

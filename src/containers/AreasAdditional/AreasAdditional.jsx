@@ -2,7 +2,7 @@
  * Created Date: Tuesday November 12th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 6th December 2019 6:44:31 pm
+ * Last Modified: Friday, 13th December 2019 4:18:23 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -14,6 +14,8 @@ import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Collapsables from '../../components/AreasAdditional/Collapsables';
 import AddArea from '../../components/AreasAdditional/AddArea/AddArea';
 import LoadableContainer from '../../components/UI/Loader';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
+import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
 
 class AreasAdditional extends Component {
   constructor(props) {
@@ -45,20 +47,31 @@ class AreasAdditional extends Component {
     this.setState({ arrayAreaTypes: array });
   };
 
-  addAreaHandler = (unit, quantity, name) => {
+  addAreaHandler = (unit, quantity, name, isChecked, price) => {
+    this.props.onLoading();
     this.services
       .postAreaType({
         unit,
         towerId: this.props.match.params.towerId,
         quantity,
         name,
+        isChecked,
+        price,
       })
       .then(() => this.services.getAreas(this.props.match.params.towerId))
-      .then((areas) => this.setState({ arrayAreaTypes: areas.data }))
-      .catch((error) => console.error(error));
+      .then((areas) => {
+        this.setState({ arrayAreaTypes: areas.data });
+        this.props.offLoading();
+      })
+      .catch((error) => {
+        this.props.offLoading();
+        this.props.spawnMessage('No se pudo crear el tipo de area', 'error');
+        console.error(error);
+      });
   };
 
   updateAreaTypeHandler = (unit, name, id) => {
+    this.props.onLoading();
     this.services
       .putAreaType({
         unit,
@@ -66,8 +79,15 @@ class AreasAdditional extends Component {
         id,
       })
       .then(() => this.services.getAreas(this.props.match.params.towerId))
-      .then((areas) => this.setState({ arrayAreaTypes: areas.data }))
-      .catch((error) => console.error(error));
+      .then((areas) => {
+        this.setState({ arrayAreaTypes: areas.data });
+        this.props.offLoading();
+      })
+      .catch((error) => {
+        this.props.offLoading();
+        this.props.spawnMessage('No se pudo editar el tipo de area', 'error');
+        console.error(error);
+      });
   };
 
   addAreaAdditionalHandler = (
@@ -106,11 +126,20 @@ class AreasAdditional extends Component {
   };
 
   deleteArea = (id) => {
+    this.props.onLoading();
+
     this.services
       .deleteArea(id)
       .then(() => this.services.getAreas(this.props.match.params.towerId))
-      .then((areas) => this.setState({ arrayAreaTypes: areas.data }))
-      .catch((error) => console.error(error));
+      .then((areas) => {
+        this.props.offLoading();
+        this.setState({ arrayAreaTypes: areas.data });
+      })
+      .catch((error) => {
+        this.props.offLoading();
+        this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
+        console.error(error);
+      });
   };
 
   componentDidMount() {
@@ -134,6 +163,12 @@ class AreasAdditional extends Component {
             <span>Areas Adicionales</span>
           </CardHeader>
           <CardBody>
+            {this.state.arrayAreaTypes.length === 0 && (
+              <EmptyContentMessageView
+                title="Vamos a crear areas adicionales 📏!"
+                message="Es fácil, debes hacer click en el botón inferior y llenar el formulario"
+              />
+            )}
             <Collapsables
               data={this.state.arrayAreaTypes}
               deleteArea={this.deleteArea}
@@ -142,7 +177,6 @@ class AreasAdditional extends Component {
               updateAreaAdditionalHandler={this.updateAreaAdditionalHandler}
               updateAreaTypeHandler={this.updateAreaTypeHandler}
             ></Collapsables>
-
             <AddArea addAreaHandler={this.addAreaHandler}></AddArea>
           </CardBody>
         </Card>
@@ -151,4 +185,4 @@ class AreasAdditional extends Component {
   }
 }
 
-export default AreasAdditional;
+export default withDefaultLayout(AreasAdditional);
