@@ -5,6 +5,12 @@
   justify-content: space-around !important;
 }
 
+.containerForBillings {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-around !important;
+}
+
 .subContainer {
   display: flex !important;
   flex-direction: row !important;
@@ -24,6 +30,14 @@
   height: 85%;
   margin-left: 7%;
   padding-bottom: -2% !important;
+  background-color: $white-background !important;
+}
+
+.cardContainer {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  margin-bottom: 5% !important;
 }
 
 .leftInformation {
@@ -41,6 +55,14 @@
 .leftTitle,
 .rightTitle {
   margin-bottom: 7%;
+  padding: 5% !important;
+  width: 100%;
+  text-align: center !important;
+  &:hover {
+    -webkit-box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+    -moz-box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+    box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+  }
 }
 
 .actionContainer {
@@ -52,11 +74,11 @@
 
 .labelForTitle {
   font-weight: bold;
-  margin-bottom: -5% !important;
+  margin-bottom: 2% !important;
 }
 
 .information {
-  margin-top: -3%;
+  margin-top: 2%;
 }
 
 .circleIcon {
@@ -77,5 +99,15 @@
 }
 
 .circleColorFinantials {
-  background-color: $softMain-color;
+  background-color: $softRed-color;
+}
+
+.prefixForTitle {
+  font-size: 14px !important;
+  margin-right: 3%;
+}
+
+.labelForTitle {
+  color: $main-color;
+  font-weight: bold;
 }

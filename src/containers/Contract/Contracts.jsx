@@ -10,6 +10,7 @@ import styles from './Contracts.module.scss';
 import Navbar from '../../components/Contracts/Navbar/Navbar';
 import NewContract from '../../components/Contracts/NewContract/NewContract';
 import Category from '../../components/Contracts/NewContract/Content/Category/Category';
+import statusOfContractEnum from '../../components/Contracts/NewContract/Content/GeneralInfo/statusOfContract.enum';
 import BusinessPatner from '../../components/Contracts/NewContract/BusinessPatner/BusinessPatner';
 import ContractService from '../../services/contract/contractService';
 import Item from '../../components/Contracts/NewContract/Content/Item/Item';
@@ -38,6 +39,8 @@ class Contracts extends Component {
           contractNumber: '',
           itemId: '',
           description: '',
+          billings: [],
+          attachments: [],
         },
       },
       businessPatnerModal: {
@@ -449,49 +452,34 @@ class Contracts extends Component {
         .getContractById(this.props.match.params.towerId, id)
         .then((response) => {
           const metaData = response.data;
-          console.log(metaData.businessPartnerId);
-          this.services
-            .getPartnerById(metaData.businessPartnerId)
-            .then((partners) => {
-              const partner = {
-                value: partners.data.id,
-                label: partners.data.patnerName,
-              };
-              this.services
-                .getCategoryById(metaData.groupId)
-                .then((groups) => {
-                  const group = {
-                    value: groups.data.id,
-                    label: groups.data.categoryName,
-                  };
-                  this.services
-                    .getItemById(metaData.itemId)
-                    .then((items) => {
-                      const item = {
-                        value: items.data.id,
-                        label: items.data.name,
-                      };
-                      console.log('Ese data value', item);
-                      this.setState({
-                        contractModal: {
-                          isOpen: true,
-                          generalInformationData: {
-                            title: metaData.title,
-                            businessPartnerId: partner,
-                            groupId: group,
-                            state: metaData.state,
-                            contractNumber: metaData.contractNumber,
-                            itemId: item,
-                            description: metaData.description,
-                          },
-                        },
-                      });
-                    })
-                    .catch((err) => console.log(err));
-                })
-                .catch((err) => console.log(err));
-            })
-            .catch((err) => console.log(err));
+          const stateOfContract = statusOfContractEnum.find((option) => {
+            return (
+              option.id === metaData.generalInformation.state && {
+                id: option.id,
+                value: option.value,
+              }
+            );
+          });
+          console.log('estado', stateOfContract);
+          this.setState({
+            contractModal: {
+              isOpen: true,
+              generalInformationData: {
+                title: metaData.generalInformation.title,
+                businessPartnerId: metaData.partner.id,
+                businessPartner: metaData.partner.patnerName,
+                groupId: metaData.groupId.id,
+                group: metaData.groupId.name,
+                state: stateOfContract,
+                contractNumber: metaData.generalInformation.contractNumber,
+                itemId: metaData.item.id,
+                item: metaData.item.name,
+                description: metaData.generalInformation.description,
+                billings: metaData.billings,
+                attachments: metaData.attachments,
+              },
+            },
+          });
         })
         .catch((error) => console.log(error));
       console.log(this.state.contractModal.generalInformationData);

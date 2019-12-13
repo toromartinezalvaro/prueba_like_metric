@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 import ContractService from '../../../services/contract/contractService';
 import newContract from '../NewContract/NewContract';
 import ViewContractInformation from '../ViewContractInformation/ViewContractInformation';
+import statusOfContractEnum from '../NewContract/Content/GeneralInfo/statusOfContract.enum';
+import moment from 'moment';
 import style from './ContractList.module.scss';
 
 class ContractList extends Component {
@@ -40,43 +42,31 @@ class ContractList extends Component {
   editContractOpened = (id) => () => {
     // this.props.editContractOpen(true, id);
     this.services
-      .getContractById(this.props.towerId, id)
+      .getContractById(this.props.towerId, 40)
       .then((response) => {
         const contractDataView = response.data;
-        this.services
-          .getPartnerById(contractDataView.businessPartnerId)
-          .then((partner) => {
-            const partnerName = partner.data.patnerName;
-            this.services
-              .getCategoryById(contractDataView.groupId)
-              .then((group) => {
-                const groupName = group.data.categoryName;
-                this.services
-                  .getBillingsById(this.props.towerId, contractDataView.id)
-                  .then((billings) => {
-                    console.log('Las cuentas', billings.data);
-                    this.setState({
-                      contractId: contractDataView.id,
-                      openDataView: true,
-                      contractDataView: {
-                        title: contractDataView.title,
-                        businessPartner: partnerName,
-                        group: groupName,
-                        state: contractDataView.state,
-                        contractNumber: contractDataView.contractNumber,
-                        item: contractDataView.item,
-                        description: contractDataView.description,
-                        billings: billings.data,
-                      },
-                    });
-                  })
-                  .catch((err) => console.log(err));
-              })
-              .catch((err) => console.log(err));
-          })
-          .catch((err) => console.log(err));
+        const stateOfContract = statusOfContractEnum.find((option) => {
+          return (
+            option.id === contractDataView.generalInformation.state &&
+            option.state
+          );
+        });
+        this.setState({
+          contractId: contractDataView.generalInformation.id,
+          openDataView: true,
+          contractDataView: {
+            title: contractDataView.generalInformation.title,
+            businessPartner: contractDataView.partner.patnerName,
+            group: contractDataView.groupId.categoryName,
+            state: stateOfContract.state,
+            contractNumber: contractDataView.generalInformation.contractNumber,
+            item: contractDataView.item.name,
+            description: contractDataView.generalInformation.description,
+            billings: contractDataView.billings,
+          },
+        });
       })
-      .catch((err) => console.log(err));
+      .catch((error) => console.log(error));
   };
 
   closeViewModal = () => {

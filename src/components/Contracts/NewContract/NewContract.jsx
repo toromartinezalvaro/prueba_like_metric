@@ -100,9 +100,10 @@ const NewContract = ({
           sendBillings={sendBillings}
           events={events}
           currentEvent={currentEvent}
+          dataIfEdit={dataIfEdit}
         />
         <br />
-        <ExpandAttachment sendAttachments={sendAttachments} />
+        <ExpandAttachment sendAttachments={sendAttachments} dataIfEdit={dataIfEdit}/>
         <br />
         <div className={styles.actionContainer}>
           <Button

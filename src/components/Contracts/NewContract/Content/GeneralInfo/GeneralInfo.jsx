@@ -151,7 +151,18 @@ const GeneralInfo = ({
                 placeholder="Seleccione socio"
                 options={partners}
                 components={Option}
-                value={dataIfEdit ? dataIfEdit.businessPartnerId : partnerProp}
+                value={
+                  dataIfEdit
+                    ? partners.find((option) => {
+                        return (
+                          option.value === dataIfEdit.businessPartnerId && {
+                            value: dataIfEdit.businessPartnerId,
+                            label: dataIfEdit.businessPartner,
+                          }
+                        );
+                      })
+                    : partnerProp
+                }
                 onChange={changeAndSearchPartner}
               />
             </div>
@@ -192,7 +203,18 @@ const GeneralInfo = ({
                 placeholder="Selecciona un grupo"
                 options={categories}
                 components={Option}
-                value={dataIfEdit ? dataIfEdit.groupId : categoryProp}
+                value={
+                  dataIfEdit
+                    ? categories.find((option) => {
+                        return (
+                          option.value === dataIfEdit.groupId && {
+                            value: dataIfEdit.groupId,
+                            label: dataIfEdit.group,
+                          }
+                        );
+                      })
+                    : categoryProp
+                }
                 onChange={changeAndSearchCategory}
               />
             </div>
@@ -234,6 +256,12 @@ const GeneralInfo = ({
             placeholder="Estado"
             options={statusOfContract}
             components={Option}
+            value={
+              dataIfEdit &&
+              statusOfContract.find((option) => {
+                return option.value === dataIfEdit.state.id && dataIfEdit.state;
+              })
+            }
             onChange={onChangeSelect('state')}
           />
           <TextField
@@ -260,8 +288,19 @@ const GeneralInfo = ({
                 }}
                 placeholder="Seleccione un Item"
                 components={Option}
-                value={dataIfEdit ? dataIfEdit.itemId : itemProp}
                 options={items}
+                value={
+                  dataIfEdit
+                    ? items.find((option) => {
+                        return (
+                          option.value === dataIfEdit.itemId && {
+                            value: dataIfEdit.itemId,
+                            label: dataIfEdit.item,
+                          }
+                        );
+                      })
+                    : itemProp
+                }
                 onChange={changeAndSearchItem}
               />
             </div>

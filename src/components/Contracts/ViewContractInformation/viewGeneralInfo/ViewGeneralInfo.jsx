@@ -23,33 +23,44 @@ const viewGeneralInfo = ({ contractDataView }) => {
           <div className={style.container}>
             <div className="leftInformation">
               <Card className={style.leftTitle}>
-                <span className={style.labelForTitle}>Titulo de contrato</span>
+                <span className={style.labelForTitle}>
+                  <Icon className={`${style.prefixForTitle} fas fa-star`} />
+                  TITULO DE CONTRATO
+                </span>
                 <p className={style.information}>{contractDataView.title}</p>
               </Card>
               <Card className={style.leftTitle}>
-                <span className={style.labelForTitle}>Socio de Negocios</span>
+                <span className={style.labelForTitle}>SOCIO DE NEGOCIOS</span>
                 <p className={style.information}>
                   {contractDataView.businessPartner}
                 </p>
               </Card>
               <Card className={style.leftTitle}>
-                <span className={style.labelForTitle}>
-                  Descripción o Comentario
-                </span>
-                <p className={style.information}>
-                  {contractDataView.description}
-                </p>
+                <span className={style.labelForTitle}>GRUPO</span>
+                <p className={style.information}>{contractDataView.group}</p>
+              </Card>
+              <Card className={style.leftTitle}>
+                <span className={style.labelForTitle}>ITEM</span>
+                <p className={style.information}>{contractDataView.item}</p>
               </Card>
             </div>
             <div className="rightInformation">
               <Card className={style.rightTitle}>
-                <span className={style.labelForTitle}>Estado del contrato</span>
+                <span className={style.labelForTitle}>ESTADO DEL CONTRATO</span>
                 <p className={style.information}>{contractDataView.state}</p>
               </Card>
               <Card className={style.rightTitle}>
-                <span className={style.labelForTitle}>Numero de contrato</span>
+                <span className={style.labelForTitle}>NUMERO DE CONTRATO</span>
                 <p className={style.information}>
                   {contractDataView.contractNumber}
+                </p>
+              </Card>
+              <Card className={style.rightTitle}>
+                <span className={style.labelForTitle}>
+                  DECRIPCIÓN O COMENTARIO
+                </span>
+                <p className={style.information}>
+                  {contractDataView.description}
                 </p>
               </Card>
             </div>

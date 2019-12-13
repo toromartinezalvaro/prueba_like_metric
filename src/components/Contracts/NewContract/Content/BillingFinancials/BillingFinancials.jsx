@@ -24,7 +24,13 @@ import Events from '../../../../../containers/Events/Events';
 import styles from './BillingFinancials.module.scss';
 import SuggestionEnum from './suggestion.enum';
 
-const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
+const BillingFinancials = ({
+  sendBillings,
+  towerId,
+  events,
+  currentEvent,
+  dataIfEdit,
+}) => {
   const cardValue = {
     id: 0,
     eventId: null,
@@ -42,6 +48,13 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
   const [disabledLastBilling, setDisableLastBilling] = useState(true);
 
   let totalBills = 0;
+
+  useEffect(() => {
+    if (dataIfEdit) {
+      setBillings(dataIfEdit.billings);
+      console.log('Editado', dataIfEdit);
+    }
+  });
 
   const changeCardValue = (
     name,
@@ -174,6 +187,16 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                   placeholder="Evento a Facturar"
                   components={Option}
                   options={events}
+                  value={
+                    dataIfEdit &&
+                    events.find((option) => {
+                      return (
+                        option.value === billing.eventId && {
+                          value: billing.eventId,
+                        }
+                      );
+                    })
+                  }
                   onChange={changeCardValue(
                     'eventId',
                     billing.id,
@@ -230,6 +253,7 @@ const BillingFinancials = ({ sendBillings, towerId, events, currentEvent }) => {
                     label="cuenta de cobro (pesos colombiano)"
                     margin="normal"
                     variant="outlined"
+                    defaultValue={dataIfEdit && billing.amount}
                     value={billing.billingAmount}
                     onChange={changeCardValue('amount', billing.id)}
                   />
