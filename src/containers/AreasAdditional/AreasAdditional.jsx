@@ -2,7 +2,7 @@
  * Created Date: Tuesday November 12th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 11th December 2019 3:42:49 pm
+ * Last Modified: Friday, 13th December 2019 4:18:23 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -47,7 +47,7 @@ class AreasAdditional extends Component {
     this.setState({ arrayAreaTypes: array });
   };
 
-  addAreaHandler = (unit, quantity, name) => {
+  addAreaHandler = (unit, quantity, name, isChecked, price) => {
     this.props.onLoading();
     this.services
       .postAreaType({
@@ -55,6 +55,8 @@ class AreasAdditional extends Component {
         towerId: this.props.match.params.towerId,
         quantity,
         name,
+        isChecked,
+        price,
       })
       .then(() => this.services.getAreas(this.props.match.params.towerId))
       .then((areas) => {
