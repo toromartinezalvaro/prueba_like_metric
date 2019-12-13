@@ -98,11 +98,7 @@ class Attachment extends Component {
         <Card className={styles.CardAttach} key={i}>
           <CardContent>
             <div className={styles.attachment}>
-              <p>
-                {this.props.dataIfEdit
-                  ? image.description
-                  : image.imgObject.description}
-              </p>
+              <p>{this.props.dataIfEdit && image.description}</p>
               <Button
                 variant="contained"
                 color="secondary"
