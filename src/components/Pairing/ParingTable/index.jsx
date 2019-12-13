@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -33,6 +35,17 @@ const PairingTable = ({
 
   return (
     <div className={Styles.container}>
+      <div className={Styles.fabContainer}>
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => {
+            setMaxAreasLength(maxAreasLength + 1);
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      </div>
       <div className={Styles.tableContainer}>
         <Table stickyHeader>
           <TableHead>
@@ -73,7 +86,7 @@ const PairingTable = ({
             setMaxAreasLength(maxAreasLength + 1);
           }}
         >
-          Agregar columna
+          Agregar area adicional
         </Button>
       </div>
     </div>

@@ -1,4 +1,9 @@
 .container {
+  .fabContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 10px;
+  }
   .actionContainer {
     margin-top: 15px;
     .button {
