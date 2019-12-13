@@ -2,7 +2,7 @@
  * Created Date: Friday November 29th 2019
  * Author: Caraham
  * -----
- * Last Modified: Thursday, 12th December 2019 4:29:01 pm
+ * Last Modified: Friday, 13th December 2019 10:55:11 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -31,9 +31,9 @@ const TextField = (props) => {
   return (
     <div key={key} className={Styles.ContainerTexField}>
       <TextFieldMaterial
+        size="small"
         error={error}
         helperText={error ? 'Tiene que ser un nombre unico' : ''}
-        className={Styles.TextField}
         value={value}
         type={typeTextField}
         InputProps={InputProps}
