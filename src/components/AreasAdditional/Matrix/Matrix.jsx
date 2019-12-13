@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Thursday, 12th December 2019 4:18:11 pm
+ * Last Modified: Friday, 13th December 2019 10:46:50 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -126,7 +126,7 @@ const Matrix = (
       nomenclature: (
         <TextField
           key={`nomenclature${j}`}
-          id= {area.id}
+          id={area.id}
           value={area.nomenclature}
           typeOfTextField={'number'}
           onBlur={(e, validation) => {
@@ -137,6 +137,11 @@ const Matrix = (
           }
           actualValueHandler={(value) => actualValueHandler(value)}
           areaType={areaType}
+          InputProps={{
+            classes: {
+              input: Styles.ContainerTexField,
+            },
+          }}
         />
       ),
       measure: (
@@ -150,24 +155,35 @@ const Matrix = (
           }
           actualValueHandler={(value) => actualValueHandler(value)}
           areaType={areaType}
+          InputProps={{
+            classes: {
+              input: Styles.ContainerTexField,
+            },
+          }}
         />
       ),
       price: (
-        <TextField
-          key={`price${j}`}
-          value={area.price}
-          typeOfTextField={'number'}
-          InputProps={{
-            inputComponent: NumberFormatCustom,
-            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-          }}
-          onBlur={(e) => onBlurPrice(e, area, j)}
-          arrayAreaTypesHandler={(id, value) =>
-            arrayAreaTypesHandler(id, j, 'price', value)
-          }
-          actualValueHandler={(value) => actualValueHandler(value)}
-          areaType={areaType}
-        />
+        <div key={`price${j}`} /* className={Styles.ContainerTexField} */>
+          <TextField
+            value={area.price}
+            typeOfTextField={'number'}
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+              classes: {
+                input: Styles.ContainerTexField,
+              },
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
+            }}
+            onBlur={(e) => onBlurPrice(e, area, j)}
+            arrayAreaTypesHandler={(id, value) =>
+              arrayAreaTypesHandler(id, j, 'price', value)
+            }
+            actualValueHandler={(value) => actualValueHandler(value)}
+            areaType={areaType}
+          />
+        </div>
       ),
       total: (
         <span key={`total${j}`} className={Styles.Price}>

@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 13th December 2019 4:16:26 am
+ * Last Modified: Friday, 13th December 2019 10:53:45 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -94,18 +94,24 @@ const AddArea = (props) => {
   };
 
   const onChangePrice = (event) => {
-    /*     const priceFloat = parseFloat(event.value.replace(/,/g, ''));
-     */ const errorTemp = error;
-    if (event.target.value >= 0) {
+    const errorTemp = error;
+    if (event.floatValue >= 0) {
       setErrorMessagePrice('');
       errorTemp.price = false;
       setError(errorTemp);
-      setPrice(event.target.value);
     } else {
       setErrorMessagePrice('Debe ser mayor a 0');
-      setPrice(null);
       errorTemp.price = true;
       setError(errorTemp);
+    }
+  };
+
+  const onBlurPrice = (event) => {
+    const priceFloat = parseFloat(event.target.value.replace(/,/g, ''));
+    if (priceFloat >= 0) {
+      setPrice(priceFloat);
+    } else {
+      setPrice(null);
     }
   };
 
@@ -204,21 +210,19 @@ const AddArea = (props) => {
               />
               {isChecked.price && (
                 <TextField
+                  key={`price-add`}
                   value={price}
                   error={error.price}
                   helperText={errorMessagePrice}
-                  required
-                  /* InputProps={{
+                  typeOfTextField={'number'}
+                  InputProps={{
                     inputComponent: NumberFormatCustom,
                     startAdornment: (
                       <InputAdornment position="start">$</InputAdornment>
                     ),
-                  }} */
-                  onChange={onChangePrice.bind(this)}
-                  id="standard-number-price"
-                  label="Ingrese el valor"
-                  type="number"
-                  inputProps={{ min: '0' }}
+                  }}
+                  onChange={onChangePrice}
+                  onBlur={(e) => onBlurPrice(e)}
                 />
               )}
             </div>

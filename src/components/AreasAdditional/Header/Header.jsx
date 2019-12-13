@@ -2,7 +2,7 @@
  * Created Date: Friday November 29th 2019
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 11th December 2019 3:40:06 pm
+ * Last Modified: Friday, 13th December 2019 9:47:31 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -61,7 +61,7 @@ const Header = (props) => {
             </div>
           ) : (
             <div>
-              <div className={Styles.Button}>
+              <div className={Styles.DeleteButton}>
                 <Button
                   variant="contained"
                   color="secondary"
