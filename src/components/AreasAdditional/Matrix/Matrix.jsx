@@ -2,18 +2,18 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Monday, 9th December 2019 3:55:58 pm
+ * Last Modified: Friday, 13th December 2019 10:46:50 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import NumberFormat from 'react-number-format';
+import { InputAdornment } from '@material-ui/core';
 import Styles from './Matrix.module.scss';
 import Numbers from '../../../helpers/numbers';
 import TextField from './TextField/TextField';
-import { InputAdornment } from '@material-ui/core';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -43,28 +43,30 @@ const Matrix = (
   actualValueHandler,
   index,
 ) => {
-  const onBlurNomenclature = (e, area, j) => {
+  const onBlurNomenclature = (e, area, j, validation) => {
     if (e.target.value && e.target.value !== actualValue) {
-      if (area.id) {
-        updateAreaAdditionalHandler(
-          e.target.value,
-          area.measure,
-          area.price,
-          area.id,
-        );
-      } else {
-        let measure = 0;
-        if (areaType.unit === 'UNT') {
-          measure = 1;
+      if (!validation) {
+        if (area.id) {
+          updateAreaAdditionalHandler(
+            e.target.value,
+            area.measure,
+            area.price,
+            area.id,
+          );
+        } else {
+          let measure = 0;
+          if (areaType.unit === 'UNT') {
+            measure = 1;
+          }
+          addAreaAdditionalHandler(
+            e.target.value,
+            measure,
+            '0',
+            areaType.id,
+            index,
+            j,
+          );
         }
-        addAreaAdditionalHandler(
-          e.target.value,
-          measure,
-          '0',
-          areaType.id,
-          index,
-          j,
-        );
       }
     }
   };
@@ -124,14 +126,22 @@ const Matrix = (
       nomenclature: (
         <TextField
           key={`nomenclature${j}`}
+          id={area.id}
           value={area.nomenclature}
           typeOfTextField={'number'}
-          onBlur={(e) => onBlurNomenclature(e, area, j)}
+          onBlur={(e, validation) => {
+            onBlurNomenclature(e, area, j, validation);
+          }}
           arrayAreaTypesHandler={(id, value) =>
             arrayAreaTypesHandler(id, j, 'nomenclature', value)
           }
           actualValueHandler={(value) => actualValueHandler(value)}
           areaType={areaType}
+          InputProps={{
+            classes: {
+              input: Styles.ContainerTexField,
+            },
+          }}
         />
       ),
       measure: (
@@ -145,24 +155,35 @@ const Matrix = (
           }
           actualValueHandler={(value) => actualValueHandler(value)}
           areaType={areaType}
+          InputProps={{
+            classes: {
+              input: Styles.ContainerTexField,
+            },
+          }}
         />
       ),
       price: (
-        <TextField
-          key={`price${j}`}
-          value={area.price}
-          typeOfTextField={'number'}
-          InputProps={{
-            inputComponent: NumberFormatCustom,
-            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-          }}
-          onBlur={(e) => onBlurPrice(e, area, j)}
-          arrayAreaTypesHandler={(id, value) =>
-            arrayAreaTypesHandler(id, j, 'price', value)
-          }
-          actualValueHandler={(value) => actualValueHandler(value)}
-          areaType={areaType}
-        />
+        <div key={`price${j}`}>
+          <TextField
+            value={area.price}
+            typeOfTextField={'number'}
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+              classes: {
+                input: Styles.ContainerTexField,
+              },
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
+            }}
+            onBlur={(e) => onBlurPrice(e, area, j)}
+            arrayAreaTypesHandler={(id, value) =>
+              arrayAreaTypesHandler(id, j, 'price', value)
+            }
+            actualValueHandler={(value) => actualValueHandler(value)}
+            areaType={areaType}
+          />
+        </div>
       ),
       total: (
         <span key={`total${j}`} className={Styles.Price}>

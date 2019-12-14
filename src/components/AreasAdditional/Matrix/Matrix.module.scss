@@ -2,7 +2,7 @@
  * Created Date: Wednesday November 13th 2019
  * Author: Caraham
  * -----
- * Last Modified: Monday, 18th November 2019 2:41:57 pm
+ * Last Modified: Friday, 13th December 2019 10:50:08 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
@@ -10,14 +10,11 @@
 
 .TextField {
   width: 80%;
+  height: 80%;
 }
 
 .ContainerTexField {
-  width: 100%;
-  height: 100%;
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
+  height: 1em !important;
 }
 
 .Price {

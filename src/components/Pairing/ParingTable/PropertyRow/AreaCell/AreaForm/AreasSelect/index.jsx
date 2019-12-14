@@ -21,7 +21,7 @@ const AreasSelect = ({ areas, selectedArea, selectedAreaHandler }) => {
             const { id, nomenclature } = additionalArea;
             return (
               <MenuItem key={`option-${id}`} value={id}>
-                {nomenclature || `${area.name} (Sin nomenclatura)`}
+                {`${area.name}`} {nomenclature || '(Sin nomenclatura)'}
               </MenuItem>
             );
           });

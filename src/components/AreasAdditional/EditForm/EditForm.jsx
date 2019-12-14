@@ -2,13 +2,13 @@
  * Created Date: Friday November 29th 2019
  * Author: Caraham
  * -----
- * Last Modified: Friday, 29th November 2019 10:13:27 am
+ * Last Modified: Thursday, 12th December 2019 3:25:06 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2019 Instabuild
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   TextField,
   FormControl,
@@ -19,11 +19,18 @@ import {
 import Styles from './EditForm.module.scss';
 
 const EditForm = (props) => {
+  const [name, setName] = useState(props.areaType.name);
+  const [unit, setUnit] = useState(props.areaType.unit);
+
   return (
     <div className={Styles.DialogContainer}>
       <TextField
         required
-        onChange={props.onChangeName}
+        onChange={(e) => {
+          setName(e.target.value);
+          props.onChangeName(e);
+        }}
+        value={name}
         id="standard-required"
         label="Nombre"
         margin="normal"
@@ -33,8 +40,11 @@ const EditForm = (props) => {
         <Select
           labelId="demo-simple-select-required-label"
           id="demo-simple-select-required"
-          value={props.unit}
-          onChange={props.handleChangeModal}
+          value={unit}
+          onChange={(e) => {
+            setUnit(e.target.value);
+            props.handleChangeModal(e);
+          }}
         >
           <MenuItem value={'MT2'}>mts²</MenuItem>
           <MenuItem value={'UNT'}>Unidad</MenuItem>
