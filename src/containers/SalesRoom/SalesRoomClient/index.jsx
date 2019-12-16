@@ -80,14 +80,7 @@ class SalesRoom extends Component {
         console.log(err);
         this.setState({ isLoading: false });
       });
-    this.services
-      .getAdditionalAreas(towerId)
-      .then((response) => {
-        this.setState({ additionalAreas: response.data });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    this.updateAdditionalAreas();
   }
 
   buttonsStyles = (status) => {
@@ -294,16 +287,20 @@ class SalesRoom extends Component {
           isOpen: false,
           isLoadingModal: false,
         });
+        this.updateAdditionalAreas();
       })
       .catch((err) => {
         console.log(err);
+        this.updateAdditionalAreas();
         this.setState({ isLoadingModal: false });
       });
+
     return true;
   };
 
   cancel = () => {
     this.setState({ isOpen: false });
+    this.updateAdditionalAreas();
   };
 
   createNullMatrix = (m, n) => {
@@ -366,6 +363,17 @@ class SalesRoom extends Component {
         additionalAreas: tempAdditionalAreas,
       };
     });
+  };
+
+  updateAdditionalAreas = () => {
+    this.services
+      .getAdditionalAreas(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ additionalAreas: response.data });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   render() {
