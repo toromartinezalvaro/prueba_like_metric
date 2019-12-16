@@ -51,6 +51,7 @@ const NewContract = ({
   addContract,
   sendAttachments,
   dataIfEdit,
+  editContract,
 }) => {
   return (
     <Dialog
@@ -103,7 +104,10 @@ const NewContract = ({
           dataIfEdit={dataIfEdit}
         />
         <br />
-        <ExpandAttachment sendAttachments={sendAttachments} dataIfEdit={dataIfEdit}/>
+        <ExpandAttachment
+          sendAttachments={sendAttachments}
+          dataIfEdit={dataIfEdit}
+        />
         <br />
         <div className={styles.actionContainer}>
           <Button
@@ -111,9 +115,9 @@ const NewContract = ({
             color="primary"
             className={styles.button}
             startIcon={<Icon className="fas fa-file-signature" />}
-            onClick={addContract}
+            onClick={dataIfEdit ? editContract : addContract}
           >
-            Crear Contrato
+            {dataIfEdit ? 'Editar Contrato' : 'Crear Contrato'}
           </Button>
           <Button
             variant="contained"

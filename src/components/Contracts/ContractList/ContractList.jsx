@@ -39,10 +39,14 @@ class ContractList extends Component {
       });
   }
 
+  closeInformationView = () => {
+    this.setState({ openDataView: false });
+  };
+
   editContractOpened = (id) => () => {
     // this.props.editContractOpen(true, id);
     this.services
-      .getContractById(this.props.towerId, 40)
+      .getContractById(this.props.towerId, id)
       .then((response) => {
         const contractDataView = response.data;
         const stateOfContract = statusOfContractEnum.find((option) => {
@@ -51,6 +55,8 @@ class ContractList extends Component {
             option.state
           );
         });
+        this.props.sendId(id);
+
         this.setState({
           contractId: contractDataView.generalInformation.id,
           openDataView: true,
@@ -112,6 +118,7 @@ class ContractList extends Component {
         {this.state.openDataView && (
           <ViewContractInformation
             editContractOpen={this.props.editContractOpen}
+            closeInformationView={this.closeInformationView}
             contractId={this.state.contractId}
             openView={this.state.openDataView}
             closeViewModal={this.closeViewModal}

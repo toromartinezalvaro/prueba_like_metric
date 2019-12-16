@@ -31,6 +31,7 @@ class Contracts extends Component {
       contractModal: {
         isOpen: false,
         data: {},
+        contractId: null,
         generalInformationData: {
           title: '',
           businessPartnerId: '',
@@ -46,7 +47,7 @@ class Contracts extends Component {
       businessPatnerModal: {
         isOpen: false,
         isEditable: false,
-        editableInfo: {},
+        editableInfo: undefined,
         currentPatner: undefined,
       },
       itemModal: {
@@ -445,9 +446,18 @@ class Contracts extends Component {
     this.setState({ contractModal: { isOpen: false } });
   };
 
+  sendId = (id) => {
+    console.log('id es', id);
+    this.setState({
+      contractModal: {
+        ...this.state.contractModal,
+        contractId: id,
+      },
+    });
+  };
+
   editContractOpen = (editable, id) => {
     if (editable) {
-      console.log('Está siendo editado');
       this.services
         .getContractById(this.props.match.params.towerId, id)
         .then((response) => {
@@ -460,10 +470,10 @@ class Contracts extends Component {
               }
             );
           });
-          console.log('estado', stateOfContract);
           this.setState({
             contractModal: {
               isOpen: true,
+              contractId: metaData.generalInformation.id,
               generalInformationData: {
                 title: metaData.generalInformation.title,
                 businessPartnerId: metaData.partner.id,
@@ -482,8 +492,35 @@ class Contracts extends Component {
           });
         })
         .catch((error) => console.log(error));
-      console.log(this.state.contractModal.generalInformationData);
     }
+  };
+
+  editContract = () => {
+    const dataEditated = new FormData();
+    dataEditated.append(
+      'generalInformation',
+      JSON.stringify(this.state.generalInformation),
+    );
+    dataEditated.append('billing', JSON.stringify(this.state.billings));
+    const attach = [...this.state.attachments, dataEditated];
+    this.setState({
+      contract: dataEditated,
+    });
+    console.log('Objeto ', this.state.contractModal.contractId);
+
+    this.services
+      .putContract(
+        dataEditated,
+        this.props.match.params.towerId,
+        this.state.contractModal.contractId,
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => console.log(error));
+    /* this.setState({
+      contractModal: { ...this.state.contractModal, isOpen: false },
+    }); */
   };
 
   render() {
@@ -493,6 +530,7 @@ class Contracts extends Component {
           handleOpenContract={this.handleOpenContract}
           towerId={this.props.match.params.towerId}
           editContractOpen={this.editContractOpen}
+          sendId={this.sendId}
         />
         <NewContract
           towerId={this.props.match.params.towerId}
@@ -528,6 +566,7 @@ class Contracts extends Component {
           currentEvent={this.currentEvent}
           addContract={this.addContract}
           dataIfEdit={this.state.contractModal.generalInformationData}
+          editContract={this.editContract}
         />
         <Dialog
           className={styles.dialogExpand}

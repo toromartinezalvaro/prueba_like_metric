@@ -115,4 +115,12 @@ export default class ContractService extends Services {
   getBillingsById(towerId, id) {
     return this.get(ContractServiceDefinitions.getBillingsById(towerId, id));
   }
+
+  putContract(data, towerId, id) {
+    return this.put(ContractServiceDefinitions.contractForEdition(towerId, id), data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+  }
 }

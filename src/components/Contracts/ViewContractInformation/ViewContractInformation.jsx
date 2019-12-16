@@ -35,6 +35,7 @@ class ViewContractInformation extends Component {
 
   openEditable = () => {
     this.props.editContractOpen(true, this.props.contractId);
+    this.props.closeInformationView(true);
   };
 
   render() {

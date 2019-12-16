@@ -52,7 +52,6 @@ const BillingFinancials = ({
   useEffect(() => {
     if (dataIfEdit) {
       setBillings(dataIfEdit.billings);
-      console.log('Editado', dataIfEdit);
     }
   });
 
@@ -187,7 +186,7 @@ const BillingFinancials = ({
                   placeholder="Evento a Facturar"
                   components={Option}
                   options={events}
-                  value={
+                  defaultValue={
                     dataIfEdit &&
                     events.find((option) => {
                       return (
@@ -225,7 +224,7 @@ const BillingFinancials = ({
                   placeholder="ciclo de cobro"
                   components={Option}
                   options={suggestions}
-                  value={{
+                  defaultValue={{
                     label: billing.cycle,
                     value: billing.cycle,
                   }}
@@ -239,7 +238,7 @@ const BillingFinancials = ({
                   label="Descripción"
                   margin="normal"
                   variant="outlined"
-                  value={billing.description}
+                  defaultValue={billing.description}
                   onChange={changeCardValue('description', billing.id)}
                 />
               </div>

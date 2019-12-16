@@ -9,6 +9,7 @@ import BillingFinancials from '../../components/Contracts/NewContract/Content/Bi
 
 const ContractServiceDefinitions = {
   contract: (towerId) => `${API_PATH}contract/${towerId}`,
+  contractForEdition: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
   category: () => `${API_PATH}contract/contract-category`,
   getAllCategories: () => `${API_PATH}contract/contract-category`,
   businessContract: () => `${API_PATH}contract/business-partner`,
@@ -39,4 +40,3 @@ const ContractServiceDefinitions = {
 };
 
 export default ContractServiceDefinitions;
-  

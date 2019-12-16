@@ -43,13 +43,13 @@ const GeneralInfo = ({
   dataIfEdit,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
-    title: '',
-    businessPartnerId: '',
-    groupId: '',
-    state: '',
-    contractNumber: '',
-    itemId: '',
-    description: '',
+    title: dataIfEdit ? dataIfEdit.title : '',
+    businessPartnerId: dataIfEdit ? dataIfEdit.businessPartnerId : '',
+    groupId: dataIfEdit ? dataIfEdit.groupId : '',
+    state: dataIfEdit ? dataIfEdit.state : '',
+    contractNumber: dataIfEdit ? dataIfEdit.contractNumber : '',
+    itemId: dataIfEdit ? dataIfEdit.itemId : '',
+    description: dataIfEdit ? dataIfEdit.description : '',
   });
 
   const [isLocked, setIsLocked] = useState(true);
@@ -126,7 +126,6 @@ const GeneralInfo = ({
     <Fragment>
       <div className={styles.gridContainer}>
         <div className={styles.columnFullLeft}>
-          {console.log('Este es el dato alv', dataIfEdit)}
           <TextField
             required
             fullWidth
@@ -151,7 +150,7 @@ const GeneralInfo = ({
                 placeholder="Seleccione socio"
                 options={partners}
                 components={Option}
-                value={
+                defaultValue={
                   dataIfEdit
                     ? partners.find((option) => {
                         return (
@@ -203,7 +202,7 @@ const GeneralInfo = ({
                 placeholder="Selecciona un grupo"
                 options={categories}
                 components={Option}
-                value={
+                defaultValue={
                   dataIfEdit
                     ? categories.find((option) => {
                         return (
@@ -256,7 +255,7 @@ const GeneralInfo = ({
             placeholder="Estado"
             options={statusOfContract}
             components={Option}
-            value={
+            defaultValue={
               dataIfEdit &&
               statusOfContract.find((option) => {
                 return option.value === dataIfEdit.state.id && dataIfEdit.state;
@@ -289,7 +288,7 @@ const GeneralInfo = ({
                 placeholder="Seleccione un Item"
                 components={Option}
                 options={items}
-                value={
+                defaultValue={
                   dataIfEdit
                     ? items.find((option) => {
                         return (
