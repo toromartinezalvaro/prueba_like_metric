@@ -11,17 +11,13 @@ function Definitions({ className }) {
       <div className={Styles['def-date']}>Fecha</div>
       <div className={Styles['def-units']}>Unidades</div>
       <div className={Styles['def-area']}>Área Promedio</div>
-      <div className={Styles['def-price']}>
-        Precio Promedio (Sin Adicionales)
-      </div>
-      <div className={Styles['def-price-m2']}>
-        Precio m2 (Sin Adicionales)
-      </div>
+      <div className={Styles['def-price']}>Precio Promedio L0</div>
+      <div className={Styles['def-price-m2']}>Precio m2</div>
       <div className={Styles['def-increment-goal']}>
         Incremento Pesos (Meta)
       </div>
-      <div className={Styles['def-sales-l0']}>Ventas L0 con adicionales</div>
-      <div className={Styles['def-sales-future']}>Ventas Proyectadas</div>
+      <div className={Styles['def-sales-l0']}>Ventas L0 </div>
+      <div className={Styles['def-sales-future']}>Ventas</div>
       <div className={Styles['def-increment-base']}>Incremento / Base</div>
       <div className={Styles['def-analysis-inverse']}>Análisis Inverso</div>
       <div className={Styles['def-retention-months']}>
