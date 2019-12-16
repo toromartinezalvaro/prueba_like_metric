@@ -13,7 +13,6 @@ import { DashboardRoutes, ContractRoutes } from '../../../routes/local/routes';
 
 const Section = (props) => {
   const { items, title, validation } = props;
-  console.log(validation);
   const [expanded, setExpanded] = useState(validation);
 
   return (
