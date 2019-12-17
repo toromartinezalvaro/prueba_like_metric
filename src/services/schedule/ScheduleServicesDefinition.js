@@ -25,6 +25,10 @@ const IncrementsServiceDefinition = {
     return `${API_PATH}schedules/end-of-sales-date/${towerId}`;
   },
 
+  putMaximumCollectionDate: (towerId) => {
+    return `${API_PATH}schedules/maximum-collection-date/${towerId}`;
+  },
+
   putFirstSaleHandler: (towerId) => {
     return `${API_PATH}schedules/first-sales/${towerId}`;
   },

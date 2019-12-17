@@ -14,14 +14,23 @@ const displacementValidation = () => [
   },
 ];
 
+const displacementValidationMaximumCollectionDate = () => [
+  {
+    fn: (value) => value <= 0,
+    message: 'Debe ser menor 0',
+  },
+];
+
 function SalesDateRange({
   endOfSalesDate,
   salesStartDate,
   averageDeliveryDate,
   balancePointDate,
   constructionStartDate,
+  maximumCollectionDate,
   salesStartDateHandler,
   endOfSalesDateHandler,
+  maximumCollectionDateHandler,
   constructionStartDateHandler,
   averageDeliveryDateHandler,
   balancePointDateHandler,
@@ -99,7 +108,34 @@ function SalesDateRange({
               </Tooltip>
             </div>
           </div>
-
+          <div className={Styles.container}>
+            <div className={Styles.label}>Fecha máxima de reacaudo:</div>
+            <DayPickerInput
+              clearIcon={null}
+              format="dd/MM/yyyy"
+              locale={'es'}
+              value={moment(Number(maximumCollectionDate)).toDate()}
+              disabled
+              disableCalendar
+            />
+            <Input
+              validations={displacementValidationMaximumCollectionDate()}
+              value={moment(Number(maximumCollectionDate)).diff(
+                moment(Number(endOfSalesDate)),
+                'month',
+              )}
+              style={{ width: '75px' }}
+              onChange={(target) => {
+                maximumCollectionDateHandler(target.value);
+              }}
+            />
+            <div className={Styles.label}>
+              Desplazamiento
+              <Tooltip title="Desplazamiento en meses respecto a la fecha de fin de la construcción">
+                <span className={Styles.Badge}>?</span>
+              </Tooltip>
+            </div>
+          </div>
           <div className={Styles.container}>
             <div className={Styles.label}>Fin de la Construcción:</div>
             <DayPickerInput
@@ -126,7 +162,7 @@ function SalesDateRange({
             <Input
               validations={displacementValidation()}
               value={moment(Number(averageDeliveryDate)).diff(
-                moment(Number(balancePointDate)),
+                moment(Number(endOfSalesDate)),
                 'month',
               )}
               style={{ width: '75px' }}
@@ -136,7 +172,7 @@ function SalesDateRange({
             />
             <div className={Styles.label}>
               Desplazamiento
-              <Tooltip title="Desplazamiento en meses respecto a la fecha de punto de equilibrio">
+              <Tooltip title="Desplazamiento en meses respecto a la fecha de fin de la construcción">
                 <span className={Styles.Badge}>?</span>
               </Tooltip>
             </div>
@@ -153,7 +189,9 @@ SalesDateRange.propTypes = {
   averageDeliveryDate: PropTypes.number,
   balancePointDate: PropTypes.number,
   constructionStartDate: PropTypes.number,
+  maximumCollectionDate: PropTypes.number,
   salesStartDateHandler: PropTypes.func,
+  maximumCollectionDateHandler: PropTypes.func,
   endOfSalesDateHandler: PropTypes.func,
   constructionStartDateHandler: PropTypes.func,
   averageDeliveryDateHandler: PropTypes.func,
