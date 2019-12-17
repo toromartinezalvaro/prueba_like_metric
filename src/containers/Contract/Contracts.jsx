@@ -115,7 +115,6 @@ class Contracts extends Component {
           };
         });
         this.setState({ events });
-        console.log('Events', events);
       })
       .catch((error) => {
         console.log(error);
@@ -447,7 +446,6 @@ class Contracts extends Component {
   };
 
   sendId = (id) => {
-    console.log('id es', id);
     this.setState({
       contractModal: {
         ...this.state.contractModal,
@@ -506,7 +504,6 @@ class Contracts extends Component {
     this.setState({
       contract: dataEditated,
     });
-    console.log('Objeto ', this.state.contractModal.contractId);
 
     this.services
       .putContract(
