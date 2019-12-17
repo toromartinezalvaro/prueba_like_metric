@@ -4,8 +4,8 @@
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas: 'sold-header' 'sold-date' 'sold-units' 'sold-area' 'sold-price' 'sold-price-m2' 'sold-sales-l0' 'sold-increment-goal' 'sold-sales-future' 'sold-increment-base' 'sold-analysis-inverse' 'sold-retention-months' 'sold-ear' 'sold-sales-wizard' 'sold-inventory-retention' 'sold-ear-suggestion' 'sold-increment-goal-suggestion';
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'sold-header' 'sold-date' 'sold-units' 'sold-area' 'sold-price' 'sold-price-m2' 'sold-sales-l0' 'sold-increment-goal' 'sold-sales-future' 'sold-sales-average' 'sold-increment-base' 'sold-analysis-inverse' 'sold-inventory-base-price-mt2' 'sold-inventory-base-price' 'sold-retention-months' 'sold-ear' 'sold-sales-wizard' 'sold-inventory-retention' 'sold-ear-suggestion' 'sold-increment-goal-suggestion';
   & * {
     display: flex;
     align-items: center;
@@ -52,6 +52,10 @@
   grid-area: sold-sales-future;
 }
 
+.sold-sales-average {
+  grid-area: sold-sales-average;
+}
+
 .sold-increment-base {
   grid-area: sold-increment-base;
   color: $gray-color;
@@ -63,6 +67,13 @@
   grid-area: sold-analysis-inverse;
 }
 
+.sold-inventory-base-price-mt2 {
+  grid-area: sold-inventory-base-price-mt2;
+}
+
+.sold-inventory-base-price {
+  grid-area: sold-inventory-base-price;
+}
 .sold-retention-months {
   grid-area: sold-retention-months;
 }

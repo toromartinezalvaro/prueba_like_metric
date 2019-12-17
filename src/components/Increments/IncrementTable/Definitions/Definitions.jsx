@@ -18,8 +18,15 @@ function Definitions({ className }) {
       </div>
       <div className={Styles['def-sales-l0']}>Ventas L0 </div>
       <div className={Styles['def-sales-future']}>Ventas</div>
+      <div className={Styles['def-sales-average']}>Promedio de ventas m2</div>
       <div className={Styles['def-increment-base']}>Incremento / Base</div>
       <div className={Styles['def-analysis-inverse']}>Análisis Inverso</div>
+      <div className={Styles['def-inventory-base-price-mt2']}>
+        Precio base de inventario m2
+      </div>
+      <div className={Styles['def-inventory-base-price']}>
+        Precio base de inventario
+      </div>
       <div className={Styles['def-retention-months']}>
         Meses Retención de Inventario
       </div>
