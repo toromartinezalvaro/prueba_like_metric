@@ -518,9 +518,9 @@ class Contracts extends Component {
         console.log(response);
       })
       .catch((error) => console.log(error));
-    /* this.setState({
+    this.setState({
       contractModal: { ...this.state.contractModal, isOpen: false },
-    }); */
+    }); 
   };
 
   render() {

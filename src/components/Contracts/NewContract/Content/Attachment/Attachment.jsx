@@ -93,12 +93,8 @@ class Attachment extends Component {
   };
 
   displayComponents = () => {
+    let attachs = 'Archivo';
     return this.state.imgObject.map((image, i) => {
-      let attachs = {
-        imgObject: {
-          name: 'ARCHIVO',
-        },
-      };
       if (this.props.dataIfEdit) {
         attachs = image.description;
       }
@@ -109,7 +105,7 @@ class Attachment extends Component {
         <Card className={styles.CardAttach} key={i}>
           <CardContent>
             <div className={styles.attachment}>
-              <p>{attachs}</p>
+              <p>{attachs || ''}</p>
               <Button
                 variant="contained"
                 color="secondary"
