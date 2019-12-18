@@ -40,15 +40,16 @@ const GeneralInfo = ({
   itemIsLocked,
   currentGroupId,
   changeItemIsLocked,
+  dataIfEdit,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
-    title: '',
-    businessPartnerId: '',
-    groupId: '',
-    state: '',
-    contractNumber: '',
-    itemId: '',
-    description: '',
+    title: dataIfEdit ? dataIfEdit.title : '',
+    businessPartnerId: dataIfEdit ? dataIfEdit.businessPartnerId : '',
+    groupId: dataIfEdit ? dataIfEdit.groupId : '',
+    state: dataIfEdit ? dataIfEdit.state : '',
+    contractNumber: dataIfEdit ? dataIfEdit.contractNumber : '',
+    itemId: dataIfEdit ? dataIfEdit.itemId : '',
+    description: dataIfEdit ? dataIfEdit.description : '',
   });
 
   const [isLocked, setIsLocked] = useState(true);
@@ -132,6 +133,7 @@ const GeneralInfo = ({
             label="Titulo De Contrato"
             margin="normal"
             variant="outlined"
+            defaultValue={dataIfEdit && dataIfEdit.title}
             onChange={onChangeText('title')}
           />
           <div className={styles.gridSubContainer}>
@@ -148,7 +150,18 @@ const GeneralInfo = ({
                 placeholder="Seleccione socio"
                 options={partners}
                 components={Option}
-                value={partnerProp}
+                defaultValue={
+                  dataIfEdit
+                    ? partners.find((option) => {
+                        return (
+                          option.value === dataIfEdit.businessPartnerId && {
+                            value: dataIfEdit.businessPartnerId,
+                            label: dataIfEdit.businessPartner,
+                          }
+                        );
+                      })
+                    : partnerProp
+                }
                 onChange={changeAndSearchPartner}
               />
             </div>
@@ -189,7 +202,18 @@ const GeneralInfo = ({
                 placeholder="Selecciona un grupo"
                 options={categories}
                 components={Option}
-                value={categoryProp}
+                defaultValue={
+                  dataIfEdit
+                    ? categories.find((option) => {
+                        return (
+                          option.value === dataIfEdit.groupId && {
+                            value: dataIfEdit.groupId,
+                            label: dataIfEdit.group,
+                          }
+                        );
+                      })
+                    : categoryProp
+                }
                 onChange={changeAndSearchCategory}
               />
             </div>
@@ -231,6 +255,12 @@ const GeneralInfo = ({
             placeholder="Estado"
             options={statusOfContract}
             components={Option}
+            defaultValue={
+              dataIfEdit &&
+              statusOfContract.find((option) => {
+                return option.value === dataIfEdit.state.id && dataIfEdit.state;
+              })
+            }
             onChange={onChangeSelect('state')}
           />
           <TextField
@@ -238,6 +268,7 @@ const GeneralInfo = ({
             label="Numero de contrato"
             margin="normal"
             variant="outlined"
+            defaultValue={dataIfEdit && dataIfEdit.contractNumber}
             onChange={onChangeText('contractNumber')}
           />
 
@@ -256,8 +287,19 @@ const GeneralInfo = ({
                 }}
                 placeholder="Seleccione un Item"
                 components={Option}
-                value={itemProp}
                 options={items}
+                defaultValue={
+                  dataIfEdit
+                    ? items.find((option) => {
+                        return (
+                          option.value === dataIfEdit.itemId && {
+                            value: dataIfEdit.itemId,
+                            label: dataIfEdit.item,
+                          }
+                        );
+                      })
+                    : itemProp
+                }
                 onChange={changeAndSearchItem}
               />
             </div>
@@ -295,6 +337,7 @@ const GeneralInfo = ({
           className={styles.multiline}
           label="Descripción/Comentarios"
           variant="outlined"
+          defaultValue={dataIfEdit && dataIfEdit.description}
           onChange={onChangeText('description')}
         />
       </div>
@@ -305,6 +348,7 @@ const GeneralInfo = ({
 GeneralInfo.propTypes = {
   categories: PropTypes.array,
   categoryProp: PropTypes.object,
+  dataIfEdit: PropTypes.object,
   partnerProp: PropTypes.object,
   itemProp: PropTypes.object,
   sendGeneralInfo: PropTypes.func,

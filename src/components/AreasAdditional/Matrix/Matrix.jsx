@@ -163,7 +163,7 @@ const Matrix = (
         />
       ),
       price: (
-        <div key={`price${j}`} /* className={Styles.ContainerTexField} */>
+        <div key={`price${j}`}>
           <TextField
             value={area.price}
             typeOfTextField={'number'}

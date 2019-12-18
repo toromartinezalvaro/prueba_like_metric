@@ -10,6 +10,7 @@ import styles from './Contracts.module.scss';
 import Navbar from '../../components/Contracts/Navbar/Navbar';
 import NewContract from '../../components/Contracts/NewContract/NewContract';
 import Category from '../../components/Contracts/NewContract/Content/Category/Category';
+import statusOfContractEnum from '../../components/Contracts/NewContract/Content/GeneralInfo/statusOfContract.enum';
 import BusinessPatner from '../../components/Contracts/NewContract/BusinessPatner/BusinessPatner';
 import ContractService from '../../services/contract/contractService';
 import Item from '../../components/Contracts/NewContract/Content/Item/Item';
@@ -30,11 +31,23 @@ class Contracts extends Component {
       contractModal: {
         isOpen: false,
         data: {},
+        contractId: null,
+        generalInformationData: {
+          title: '',
+          businessPartnerId: '',
+          groupId: '',
+          state: '',
+          contractNumber: '',
+          itemId: '',
+          description: '',
+          billings: [],
+          attachments: [],
+        },
       },
       businessPatnerModal: {
         isOpen: false,
         isEditable: false,
-        editableInfo: {},
+        editableInfo: undefined,
         currentPatner: undefined,
       },
       itemModal: {
@@ -102,7 +115,6 @@ class Contracts extends Component {
           };
         });
         this.setState({ events });
-        console.log('Events', events);
       })
       .catch((error) => {
         console.log(error);
@@ -433,10 +445,90 @@ class Contracts extends Component {
     this.setState({ contractModal: { isOpen: false } });
   };
 
+  sendId = (id) => {
+    this.setState({
+      contractModal: {
+        ...this.state.contractModal,
+        contractId: id,
+      },
+    });
+  };
+
+  editContractOpen = (editable, id) => {
+    if (editable) {
+      this.services
+        .getContractById(this.props.match.params.towerId, id)
+        .then((response) => {
+          const metaData = response.data;
+          const stateOfContract = statusOfContractEnum.find((option) => {
+            return (
+              option.id === metaData.generalInformation.state && {
+                id: option.id,
+                value: option.value,
+              }
+            );
+          });
+          this.setState({
+            contractModal: {
+              isOpen: true,
+              contractId: metaData.generalInformation.id,
+              generalInformationData: {
+                title: metaData.generalInformation.title,
+                businessPartnerId: metaData.partner.id,
+                businessPartner: metaData.partner.patnerName,
+                groupId: metaData.groupId.id,
+                group: metaData.groupId.name,
+                state: stateOfContract,
+                contractNumber: metaData.generalInformation.contractNumber,
+                itemId: metaData.item.id,
+                item: metaData.item.name,
+                description: metaData.generalInformation.description,
+                billings: metaData.billings,
+                attachments: metaData.attachments,
+              },
+            },
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+
+  editContract = () => {
+    const dataEditated = new FormData();
+    dataEditated.append(
+      'generalInformation',
+      JSON.stringify(this.state.generalInformation),
+    );
+    dataEditated.append('billing', JSON.stringify(this.state.billings));
+    const attach = [...this.state.attachments, dataEditated];
+    this.setState({
+      contract: dataEditated,
+    });
+
+    this.services
+      .putContract(
+        dataEditated,
+        this.props.match.params.towerId,
+        this.state.contractModal.contractId,
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => console.log(error));
+    this.setState({
+      contractModal: { ...this.state.contractModal, isOpen: false },
+    }); 
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
-        <Navbar handleOpenContract={this.handleOpenContract} />
+        <Navbar
+          handleOpenContract={this.handleOpenContract}
+          towerId={this.props.match.params.towerId}
+          editContractOpen={this.editContractOpen}
+          sendId={this.sendId}
+        />
         <NewContract
           towerId={this.props.match.params.towerId}
           expanded={this.state.expanded}
@@ -470,6 +562,8 @@ class Contracts extends Component {
           events={this.state.events}
           currentEvent={this.currentEvent}
           addContract={this.addContract}
+          dataIfEdit={this.state.contractModal.generalInformationData}
+          editContract={this.editContract}
         />
         <Dialog
           className={styles.dialogExpand}
