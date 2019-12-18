@@ -55,6 +55,54 @@ export const ProjectRoutes = {
   base: '/projects',
 };
 
+export const AreasAndPrices = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.building.value,
+    DashboardRoutes.base + DashboardRoutes.areas.value,
+    DashboardRoutes.base + DashboardRoutes.areasAdditional.value,
+    DashboardRoutes.base + DashboardRoutes.pairing.value,
+    DashboardRoutes.base + DashboardRoutes.prime.value,
+    DashboardRoutes.base + DashboardRoutes.clustering.value,
+  ],
+};
+
+export const InitialData = {
+  array: [DashboardRoutes.base + DashboardRoutes.schedule.value],
+};
+
+export const Increments = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.increments.value,
+    DashboardRoutes.base + DashboardRoutes.strategy.value,
+  ],
+};
+
+export const SalesSpeed = {
+  array: [DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value],
+};
+
+export const SalesRoom = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.clients.value,
+    DashboardRoutes.base + DashboardRoutes.saleRequests.value,
+  ],
+};
+
+export const Reports = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.summary.value,
+    DashboardRoutes.base + DashboardRoutes.rackAreas.value,
+    DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
+    DashboardRoutes.base + DashboardRoutes.detail.value,
+    DashboardRoutes.base + DashboardRoutes.report.value,
+    DashboardRoutes.base + DashboardRoutes.cashFlow.value,
+  ],
+};
+
+export const Contracts = {
+  array: [DashboardRoutes.base + ContractRoutes.base.value],
+};
+
 export const UserRoutes = {
   base: DashboardRoutes.base + DashboardRoutes.user,
   slideProjectsOnly: DashboardRoutes.base + ProjectRoutes.base,

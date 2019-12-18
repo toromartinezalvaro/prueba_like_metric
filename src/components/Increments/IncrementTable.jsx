@@ -15,7 +15,7 @@ import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
 import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
 import SalesWizard from './IncrementTable/SalesWizard';
-
+import { Typography } from '@material-ui/core';
 function IncrementTable({
   data,
   putIncrement,
@@ -43,7 +43,11 @@ function IncrementTable({
       <CardHeader>
         <span>Incrementos</span>
       </CardHeader>
-      <CardBody>
+
+      <CardBody additionalClassName={styles.CardBody}>
+        <Typography variant="body2" gutterBottom>
+          Todos los valores se muestran sin <b>Areas Adicionales</b>.
+        </Typography>
         <div>
           <span>Incremento total: </span>
           <NumberFormat
