@@ -4,15 +4,20 @@ import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
+import Numbers from '../../../../helpers/numbers';
 
 function Inventory({
   className,
   groupSummary,
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
+  futureSalesSpeedHandler,
   validations,
   blockIncrements,
   salesStartDate,
+  salesSpeed,
+  totalUnits,
+  groupId,
 }) {
   const {
     units,
@@ -32,6 +37,7 @@ function Inventory({
     basePrice,
   } = groupSummary;
 
+  console.log(totalUnits);
   const limitTodayDate =
     retentionMonths -
     moment()
@@ -42,6 +48,21 @@ function Inventory({
   if (increment < 0) {
     incrementTextColor = Styles['inv-increment-goal-text-red'];
   }
+
+  const futureSpeedValidation = () => [
+    {
+      fn: (value) => value >= 0,
+      message: 'Debe ser mayor 0',
+    },
+    {
+      fn: (value) => totalUnits / value <= 98,
+      message: 'El numero de periodos no puede ser mayor a 98',
+    },
+    {
+      fn: (value) => value < totalUnits,
+      message: 'Debe ser menor a las unidades',
+    },
+  ];
   return (
     <div className={`${Styles.inventory} ${className}`}>
       <div className={Styles['inv-header']}>Inventario</div>
@@ -128,6 +149,19 @@ function Inventory({
           displayType="text"
           thousandSeparator={true}
           prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-speed-sales']}>
+        <Input
+          validations={futureSpeedValidation()}
+          value={salesSpeed}
+          style={{ width: '75px' }}
+          onChange={(target) => {
+            futureSalesSpeedHandler(
+              groupId,
+              Numbers.toFixed(Number(target.value)),
+            );
+          }}
         />
       </div>
       <div className={Styles['inv-retention-months']}>

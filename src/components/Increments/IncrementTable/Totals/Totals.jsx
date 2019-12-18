@@ -128,6 +128,7 @@ function Totals({
       <div className={Styles['total-analysis-inverse']} />
       <div className={Styles['total-inventory-base-price-mt2']} />
       <div className={Styles['total-inventory-base-price']} />
+      <div className={Styles['total-sales-speed']} />
       <div className={Styles['total-retention-months']}>
         <Input
           validations={validations}

@@ -4,6 +4,9 @@ const IncrementsServiceDefinition = {
   putIncrements: (towerId) => {
     return `${API_PATH}pricingv2/${towerId}`;
   },
+  putFutureSalesSpeeds: (id) => {
+    return `${API_PATH}pricing/definitions/futureSalesSpeeds/${id}`;
+  },
   getIncrements: (towerId) => {
     return `${API_PATH}pricingv2/increments/${towerId}`;
   },

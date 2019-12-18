@@ -36,6 +36,15 @@ class Increments extends Component {
     this.updateIncrements();
   }
 
+  futureSalesSpeedHandler = (id, value) => {
+    this.services
+      .putFutureSalesSpeeds(id, value)
+      .then((results) => console.log(results))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   updateIncrements = () => {
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
@@ -201,6 +210,7 @@ class Increments extends Component {
           putSuggestedEffectiveAnnualInterestRate={
             this.putSuggestedEffectiveAnnualInterestRate
           }
+          futureSalesSpeedHandler={this.futureSalesSpeedHandler}
           towerId={this.props.match.params.towerId}
           {...this.props}
         />

@@ -4,8 +4,8 @@
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas: 'total-header' 'total-date' 'total-units' 'total-area' 'total-price' 'total-price-m2' 'total-sales-l0' 'total-increment-goal' 'total-sales-future' 'total-sales-average' 'total-increment-base' 'total-analysis-inverse' 'total-inventory-base-price-mt2' 'total-inventory-base-price' 'total-retention-months' 'total-ear' 'total-sales-wizard' 'total-inventory-retention' 'total-ear-suggestion' 'total-increment-goal-suggestion';
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'total-header' 'total-date' 'total-units' 'total-area' 'total-price' 'total-price-m2' 'total-sales-l0' 'total-increment-goal' 'total-sales-future' 'total-sales-average' 'total-increment-base' 'total-analysis-inverse' 'total-inventory-base-price-mt2' 'total-inventory-base-price' 'total-sales-speed' 'total-retention-months' 'total-ear' 'total-sales-wizard' 'total-inventory-retention' 'total-ear-suggestion' 'total-increment-goal-suggestion';
   & * {
     display: flex;
     align-items: center;
@@ -73,6 +73,10 @@
 
 .total-inventory-base-price {
   grid-area: total-inventory-base-price;
+}
+
+.total-sales-speed {
+  grid-area: total-sales-speed;
 }
 
 .total-retention-months {

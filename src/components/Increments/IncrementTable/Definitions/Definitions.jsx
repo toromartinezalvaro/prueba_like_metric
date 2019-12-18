@@ -27,6 +27,7 @@ function Definitions({ className }) {
       <div className={Styles['def-inventory-base-price']}>
         Precio base de inventario
       </div>
+      <div className={Styles['def-sales-speed']}>Velocidad de ventas</div>
       <div className={Styles['def-retention-months']}>
         Meses Retención de Inventario
       </div>
