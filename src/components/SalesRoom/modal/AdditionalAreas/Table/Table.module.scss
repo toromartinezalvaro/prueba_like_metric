@@ -2,3 +2,15 @@
   text-align: center;
   margin: 15px 0;
 }
+
+.subTotal {
+  display: flex;
+  margin: 10px 0;
+  .label {
+    font-weight: 700;
+  }
+  .value {
+    margin-right: 0;
+    margin-left: auto;
+  }
+}

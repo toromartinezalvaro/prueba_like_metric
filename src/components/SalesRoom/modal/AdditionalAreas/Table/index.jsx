@@ -103,9 +103,9 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
             No hay areas adicionales
           </div>
         )}
-      <div>
-        <div>Subtotal</div>
-        <div>
+      <div className={Styles.subTotal}>
+        <div className={Styles.label}>Subtotal</div>
+        <div className={Styles.value}>
           <NumberFormat
             displayType="text"
             thousandSeparator
