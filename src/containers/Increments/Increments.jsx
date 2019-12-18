@@ -36,6 +36,21 @@ class Increments extends Component {
     this.updateIncrements();
   }
 
+  futureSalesSpeedHandler = (id, value) => {
+    this.setState({ loadingAPI: true });
+
+    this.services
+      .putFutureSalesSpeeds(id, value)
+      .then((results) => {
+        console.log(results);
+        this.setState({ loadingAPI: false });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ loadingAPI: false });
+      });
+  };
+
   updateIncrements = () => {
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
@@ -201,6 +216,7 @@ class Increments extends Component {
           putSuggestedEffectiveAnnualInterestRate={
             this.putSuggestedEffectiveAnnualInterestRate
           }
+          futureSalesSpeedHandler={this.futureSalesSpeedHandler}
           towerId={this.props.match.params.towerId}
           {...this.props}
         />

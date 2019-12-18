@@ -202,7 +202,7 @@ const SideMenu = ({
                 />
 
                 <Section
-                  title={'Velocidad de ventas'}
+                  title={'Forma de pago'}
                   validation={SalesSpeed.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
@@ -213,7 +213,7 @@ const SideMenu = ({
                         DashboardRoutes.base +
                           DashboardRoutes.futureSalesSpeed.value,
                         'fas fa-calendar-alt',
-                        'Velocidad ventas futuras',
+                        'Forma de pago',
                       ),
                   ]}
                 />

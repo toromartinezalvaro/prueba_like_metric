@@ -1,30 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import NumberFormat from 'react-number-format';
-import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Input from '../../UI/Input/Input';
 import styles from '../FutureSalesSpeed.module.scss';
 import Numbers from '../../../helpers/numbers';
-
-const getTotal = (salesSpeeds) =>
-  salesSpeeds.reduce((current, next) => {
-    current += next;
-    return current;
-  }, 0);
-
-const futureSpeedValidation = (units) => [
-  {
-    fn: (value) => value >= 0,
-    message: 'Debe ser mayor 0',
-  },
-  {
-    fn: (value) => units / value <= 98,
-    message: 'El numero de periodos no puede ser mayor a 98',
-  },
-  {
-    fn: (value) => value < units,
-    message: 'Debe ser menor a las unidades',
-  },
-];
 
 const separateAndFirstFeeValidation = (finalFee, lastValue) => [
   {
@@ -66,21 +44,7 @@ const DinamicCells = ({
         />
       </div>
       <div className={styles.gridItem}>{group.averageArea.toFixed(2)}</div>
-      <div className={styles.gridItem}>
-        <Input
-          validations={futureSpeedValidation(group.units)}
-          value={group.futureSalesSpeed}
-          style={{ width: '75px' }}
-          onChange={(target) => {
-            setPropsArraySalesSpeeds(i, target.value);
-            setTotal(getTotal(arraySalesSpeeds).toFixed(2));
-            futureSalesSpeedHandler(
-              group.id,
-              Numbers.toFixed(Number(target.value)),
-            );
-          }}
-        />
-      </div>
+      <div className={styles.gridItem}>{group.futureSalesSpeed.toFixed(2)}</div>
       <div className={styles.gridItem}>
         <Input
           validations={separateAndFirstFeeValidation(finalFee, separate)}

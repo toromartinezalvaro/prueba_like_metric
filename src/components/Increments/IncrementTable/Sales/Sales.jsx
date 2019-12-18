@@ -100,6 +100,7 @@ function Sales({ className, groupSummary }) {
       <div className={Styles['sold-analysis-inverse']} />
       <div className={Styles['sold-inventory-base-price-mt2']} />
       <div className={Styles['sold-inventory-base-price']} />
+      <div className={Styles['sold-speed-sales']} />
       <div className={Styles['sold-retention-months']} />
       <div className={Styles['sold-ear']} />
     </div>
