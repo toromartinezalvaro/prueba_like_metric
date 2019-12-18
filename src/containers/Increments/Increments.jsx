@@ -37,11 +37,17 @@ class Increments extends Component {
   }
 
   futureSalesSpeedHandler = (id, value) => {
+    this.setState({ loadingAPI: true });
+
     this.services
       .putFutureSalesSpeeds(id, value)
-      .then((results) => console.log(results))
+      .then((results) => {
+        console.log(results);
+        this.setState({ loadingAPI: false });
+      })
       .catch((error) => {
         console.log(error);
+        this.setState({ loadingAPI: false });
       });
   };
 

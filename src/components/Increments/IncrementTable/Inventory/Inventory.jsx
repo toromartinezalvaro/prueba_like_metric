@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
@@ -15,7 +15,6 @@ function Inventory({
   validations,
   blockIncrements,
   salesStartDate,
-  salesSpeed,
   totalUnits,
   groupId,
 }) {
@@ -35,9 +34,10 @@ function Inventory({
     averageSalesPerMT2,
     basePricePerMT2,
     basePrice,
+    salesSpeed,
   } = groupSummary;
 
-  console.log(totalUnits);
+  const [salesSpeedState, setSalesSpeedState] = useState(salesSpeed);
   const limitTodayDate =
     retentionMonths -
     moment()
@@ -154,9 +154,10 @@ function Inventory({
       <div className={Styles['inv-speed-sales']}>
         <Input
           validations={futureSpeedValidation()}
-          value={salesSpeed}
+          value={salesSpeedState}
           style={{ width: '75px' }}
           onChange={(target) => {
+            setSalesSpeedState(target.value);
             futureSalesSpeedHandler(
               groupId,
               Numbers.toFixed(Number(target.value)),
