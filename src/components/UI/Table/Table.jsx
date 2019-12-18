@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Table.module.scss';
 
-class table extends Component {
+class  table extends Component {
   constructor(props) {
     super(props);
     this.wrapperTop = React.createRef();

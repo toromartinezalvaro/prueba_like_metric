@@ -4,6 +4,7 @@ import {
   ContractRoutes,
   ProjectRoutes,
   UserRoutes,
+  ContractFlowRoutes,
 } from '../../routes/local/routes';
 import DashboardLayout from '../../HOC/Layouts/Dashboard/Dashboard';
 import Building from '../Building/Building';
@@ -29,6 +30,7 @@ import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
 import Contracts from '../Contract/Contracts';
+import ContractFlow from '../ContractFlow/ContractFlow';
 import CashFlow from '../CashFlow';
 import SaleRequests from '../SaleRequests';
 import Pairing from '../Pairing';
@@ -202,6 +204,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Contracts}
+        />
+        <PrivateRoute
+          path={match.url + ContractFlowRoutes.base.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={ContractFlow}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.cashFlow.withIndicator}
