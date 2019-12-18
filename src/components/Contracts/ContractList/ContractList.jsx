@@ -44,7 +44,6 @@ class ContractList extends Component {
   };
 
   editContractOpened = (id) => () => {
-    // this.props.editContractOpen(true, id);
     this.services
       .getContractById(this.props.towerId, id)
       .then((response) => {
