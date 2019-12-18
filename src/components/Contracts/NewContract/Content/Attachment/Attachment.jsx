@@ -24,6 +24,12 @@ class Attachment extends Component {
     this.inputFileRef = React.createRef();
   }
 
+  componentDidMount() {
+    if (this.props.dataIfEdit) {
+      this.setState({ imgObject: this.props.dataIfEdit.attachments });
+    }
+  }
+
   uploadImage = (e) => {
     const imageFormObject = new FormData();
 
@@ -87,12 +93,19 @@ class Attachment extends Component {
   };
 
   displayComponents = () => {
+    let attachs = 'Archivo';
     return this.state.imgObject.map((image, i) => {
+      if (this.props.dataIfEdit) {
+        attachs = image.description;
+      }
+      if (image.imgObject) {
+        attachs = image.imgObject.name;
+      }
       return (
         <Card className={styles.CardAttach} key={i}>
           <CardContent>
             <div className={styles.attachment}>
-              <p>{image.imgObject.name}</p>
+              <p>{attachs || ''}</p>
               <Button
                 variant="contained"
                 color="secondary"

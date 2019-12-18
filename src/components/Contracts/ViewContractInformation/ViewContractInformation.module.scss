@@ -1,0 +1,113 @@
+@import '../../../assets/styles/variables.scss';
+.container {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+}
+
+.containerForBillings {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-around !important;
+}
+
+.subContainer {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+  width: 100%;
+}
+
+.generalTitle {
+  display: flex;
+  flex-direction: row;
+  margin-left: 7% !important ;
+  margin-bottom: -3%;
+}
+
+.card {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  padding-bottom: -2% !important;
+  background-color: $white-background !important;
+}
+
+.cardContainer {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  margin-bottom: 5% !important;
+}
+
+.leftInformation {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 45% !important;
+}
+
+.rightInformation {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 50% !important;
+}
+
+.leftTitle,
+.rightTitle {
+  margin-bottom: 7%;
+  padding: 5% !important;
+  width: 100%;
+  text-align: center !important;
+  &:hover {
+    -webkit-box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+    -moz-box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+    box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+  }
+}
+
+.actionContainer {
+  margin-top: 5%;
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.labelForTitle {
+  font-weight: bold;
+  margin-bottom: 2% !important;
+}
+
+.information {
+  margin-top: 2%;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+  margin-top: 2%;
+  margin-right: 1%;
+}
+
+.circleColorGeneral {
+  background-color: $softGreen-color;
+}
+
+.circleColorFinantials {
+  background-color: $softRed-color;
+}
+
+.prefixForTitle {
+  font-size: 14px !important;
+  margin-right: 3%;
+}
+
+.labelForTitle {
+  color: $main-color;
+  font-weight: bold;
+}

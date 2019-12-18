@@ -1,0 +1,41 @@
+/*
+ * Created by Jcatman on Wed Dec 04 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
+@import '../../../assets/styles/variables.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-between;
+}
+
+.container {
+  background-color: $main-color;
+  color: $defaultWhite-color;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-between;
+  border-radius: 5px;
+}
+
+.header, 
+.content {
+  margin: 10px;
+}
+
+
+.dataContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-between;
+  border-radius: 5px;
+}
