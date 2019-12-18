@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Table from '../../UI/Table/Table';
+import Style from './ContractFlow.module.scss';
 
 class ContractFlow extends Component {
   constructor(props) {
@@ -13,7 +15,15 @@ class ContractFlow extends Component {
   }
 
   render() {
-    return <h1>{this.state.Contratos}</h1>;
+    return (
+      <Table
+        intersect={'Areas'}
+        headers={['Precio']}
+        columns={this.state.Contratos}
+        data={[0, 1, 2, 3, 4]}
+        maxHeight={{ maxHeight: '36vh' }}
+      />
+    );
   }
 }
 
