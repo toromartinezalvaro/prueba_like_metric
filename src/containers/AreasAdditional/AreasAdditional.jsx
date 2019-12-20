@@ -148,7 +148,6 @@ class AreasAdditional extends Component {
     this.services
       .getAreas(this.props.match.params.towerId)
       .then((areas) => {
-        console.log('INCOMING AREAS (ADDITIONAL AREAS)', areas.data);
         this.setState({ arrayAreaTypes: _.sortBy(areas.data, ['name']), isLoading: false });
       })
       .catch((error) => {
