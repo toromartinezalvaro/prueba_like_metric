@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+import moment, { relativeTimeThreshold } from 'moment';
 import SalesStartDate from '../../components/Schedule/SalesStartDate/SalesDateRange';
 // import StageDates from '../../components/Schedule/StageDates/StageDates';
 import InitialFees from '../../components/Schedule/InitialFees/InitialFees';
@@ -86,6 +86,28 @@ class Schedule extends Component {
       .then((_) => {
         this.setState({ balancePointDate });
       })
+      .then((_) => {
+        this.services.getDates(this.props.match.params.towerId);
+      })
+      .then((res) => {
+        console.log(res);
+        const {
+          salesStartDate,
+          endOfSalesDate,
+          averageDeliveryDate,
+          balancePointDate,
+          constructionStartDate,
+          maximumCollectionDate,
+        } = res.data;
+        this.setState({
+          salesStartDate,
+          endOfSalesDate,
+          averageDeliveryDate,
+          balancePointDate,
+          constructionStartDate,
+          maximumCollectionDate,
+        });
+      })
       .catch((error) => {
         console.error(error);
       });
@@ -127,7 +149,12 @@ class Schedule extends Component {
       });
   };
 
-  putEndOfSalesDate = (endOfSalesDate) => {
+  putEndOfSalesDate = (displacement) => {
+    const { salesStartDate } = this.state;
+    const endOfSalesDate = moment(Number(salesStartDate))
+      .add(displacement, 'M')
+      .toDate()
+      .getTime();
     this.services
       .putEndOfSalesDate(this.props.match.params.towerId, { endOfSalesDate })
       .then((_) => {

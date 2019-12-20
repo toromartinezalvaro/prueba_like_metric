@@ -109,7 +109,7 @@ function SalesDateRange({
             </div>
           </div>
           <div className={Styles.container}>
-            <div className={Styles.label}>Fecha máxima de reacaudo:</div>
+            <div className={Styles.label}>Fecha máxima de recaudo:</div>
             <DayPickerInput
               clearIcon={null}
               format="dd/MM/yyyy"
@@ -139,15 +139,30 @@ function SalesDateRange({
           <div className={Styles.container}>
             <div className={Styles.label}>Fin de la Construcción:</div>
             <DayPickerInput
-              minDate={moment(Number(salesStartDate)).toDate()}
               clearIcon={null}
               format="dd/MM/yyyy"
               locale={'es'}
               value={moment(Number(endOfSalesDate)).toDate()}
-              onChange={(date) => {
-                endOfSalesDateHandler(date.getTime());
+              disabled
+              disableCalendar
+            />
+            <Input
+              validations={displacementValidation()}
+              value={moment(Number(endOfSalesDate)).diff(
+                moment(Number(constructionStartDate)),
+                'month',
+              )}
+              style={{ width: '75px' }}
+              onChange={(target) => {
+                endOfSalesDateHandler(target.value);
               }}
             />
+            <div className={Styles.label}>
+              Desplazamiento
+              <Tooltip title="Desplazamiento en meses respecto a la fecha de inicio de la construcción">
+                <span className={Styles.Badge}>?</span>
+              </Tooltip>
+            </div>
           </div>
           <div className={Styles.container}>
             <div className={Styles.label}>Promedio de entrega:</div>
