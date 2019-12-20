@@ -84,30 +84,10 @@ class Schedule extends Component {
         balancePointDate,
       })
       .then((_) => {
-        this.setState({ balancePointDate });
+        console.log(moment(Number(_.data.balancePointDate)).toDate());
+        this.setState(_.data);
       })
-      .then((_) => {
-        this.services.getDates(this.props.match.params.towerId);
-      })
-      .then((res) => {
-        console.log(res);
-        const {
-          salesStartDate,
-          endOfSalesDate,
-          averageDeliveryDate,
-          balancePointDate,
-          constructionStartDate,
-          maximumCollectionDate,
-        } = res.data;
-        this.setState({
-          salesStartDate,
-          endOfSalesDate,
-          averageDeliveryDate,
-          balancePointDate,
-          constructionStartDate,
-          maximumCollectionDate,
-        });
-      })
+
       .catch((error) => {
         console.error(error);
       });
@@ -124,8 +104,9 @@ class Schedule extends Component {
         constructionStartDate,
       })
       .then((_) => {
-        this.setState({ constructionStartDate });
+        this.setState(_.data);
       })
+      .then(() => this.setState({ state: this.state }))
       .catch((error) => {
         console.error(error);
       });
@@ -150,16 +131,17 @@ class Schedule extends Component {
   };
 
   putEndOfSalesDate = (displacement) => {
-    const { salesStartDate } = this.state;
-    const endOfSalesDate = moment(Number(salesStartDate))
+    const { constructionStartDate } = this.state;
+    const endOfSalesDate = moment(Number(constructionStartDate))
       .add(displacement, 'M')
       .toDate()
       .getTime();
     this.services
       .putEndOfSalesDate(this.props.match.params.towerId, { endOfSalesDate })
       .then((_) => {
-        this.setState({ endOfSalesDate });
+        this.setState(_.data);
       })
+      .then(() => this.setState({ state: this.state }))
       .catch((error) => {
         console.error(error);
       });
