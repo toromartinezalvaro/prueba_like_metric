@@ -84,7 +84,6 @@ class Schedule extends Component {
         balancePointDate,
       })
       .then((_) => {
-        console.log(moment(Number(_.data.balancePointDate)).toDate());
         this.setState(_.data);
       })
 
