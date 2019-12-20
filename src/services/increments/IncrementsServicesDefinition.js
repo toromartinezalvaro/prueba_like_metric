@@ -1,6 +1,9 @@
 import { API_PATH } from '../../config/config';
 
 const IncrementsServiceDefinition = {
+  getMarket: (towerId) => {
+    return `${API_PATH}pricingv2/markets/${towerId}`;
+  },
   putIncrements: (towerId) => {
     return `${API_PATH}pricingv2/${towerId}`;
   },

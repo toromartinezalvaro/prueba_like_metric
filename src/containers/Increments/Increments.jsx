@@ -3,7 +3,6 @@ import Loader from 'react-loader-spinner';
 import commonStyles from '../../assets/styles/variables.scss';
 import Modal from '../../components/UI/Modal/Modal';
 import IncrementsTable from '../../components/Increments/IncrementTable';
-import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
 import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
@@ -220,13 +219,7 @@ class Increments extends Component {
           towerId={this.props.match.params.towerId}
           {...this.props}
         />
-        <IncrementsMarket
-          putMarketAveragePrice={this.putMarketAveragePrice}
-          putMarketAnnualEffectiveIncrement={
-            this.putMarketAnnualEffectiveIncrement
-          }
-          marketData={this.state.market}
-        />
+
         <IncrementsChart
           salesStartDate={new Date().getTime()}
           data={this.state.graphData}
