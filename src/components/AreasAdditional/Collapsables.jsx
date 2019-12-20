@@ -23,6 +23,7 @@ import {
 } from '@material-ui/core';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import NumberFormat from 'react-number-format';
 import Header from './Header/Header';
 import Actions from './Actions/Actions';
 import Table2 from '../UI2/Table';
@@ -145,6 +146,43 @@ const Collapsables = (props) => {
             </DialogActions>
           </Dialog>
           <div className={Styles.Container}>
+            <div className={Styles.stats}>
+              <div className={Styles.stat}>
+                <span className={Styles.label}>Unidades:</span>
+                <span>{areaType.formatedAreas.length}</span>
+              </div>
+              <div className={Styles.stat}>
+                <span className={Styles.label}>Total:</span>
+                <NumberFormat
+                  displayType="text"
+                  thousandSeparator
+                  prefix="$"
+                  value={areaType.formatedAreas
+                    .reduce(
+                      (current, next) => current + parseFloat(next.price),
+                      0,
+                    )
+                    .toFixed(2)}
+                />
+              </div>
+              <div className={Styles.stat}>
+                <span className={Styles.label}>Precio promedio:</span>
+                <NumberFormat
+                  displayType="text"
+                  thousandSeparator
+                  prefix="$"
+                  value={areaType.formatedAreas
+                    .reduce(
+                      (current, next) =>
+                        current +
+                        parseFloat(next.price) / areaType.formatedAreas.length,
+                      0,
+                    )
+                    .toFixed(2)}
+                />
+              </div>
+            </div>
+
             <Table2 columns={columns} data={data}></Table2>
           </div>
         </ExpansionPanelDetails>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import AreaCell from './AreaCell';
@@ -11,6 +12,11 @@ const PropertyRow = ({
   addAreaHandler,
   removeAreaHandler,
 }) => {
+  const sortedAreas = _.sortBy(property.additionalAreas, [
+    'areaType.name',
+    'nomenclature',
+  ]);
+
   return (
     <TableRow>
       <TableCell>{property.name}</TableCell>
@@ -21,9 +27,7 @@ const PropertyRow = ({
         .fill(null)
         .map((_, index) => {
           const area =
-            property.additionalAreas.length > index
-              ? property.additionalAreas[index]
-              : null;
+            property.additionalAreas.length > index ? sortedAreas[index] : null;
           return (
             <AreaCell
               key={`${property.id}-${index}`}

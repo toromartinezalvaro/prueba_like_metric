@@ -9,6 +9,7 @@
  */
 
 import React, { Component } from 'react';
+import _ from 'lodash';
 import AreasAdditionalServices from '../../services/areasAdditional/AreasAdditionalServices';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
 import Collapsables from '../../components/AreasAdditional/Collapsables';
@@ -146,9 +147,9 @@ class AreasAdditional extends Component {
     this.setState({ isLoading: true });
     this.services
       .getAreas(this.props.match.params.towerId)
-      .then((areas) =>
-        this.setState({ arrayAreaTypes: areas.data, isLoading: false }),
-      )
+      .then((areas) => {
+        this.setState({ arrayAreaTypes: _.sortBy(areas.data, ['name']), isLoading: false });
+      })
       .catch((error) => {
         this.setState({ isLoading: false });
         console.error(error);

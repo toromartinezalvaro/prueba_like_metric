@@ -5,11 +5,24 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import NumberFormat from 'react-number-format';
 import HoverContainer from '../../../../UI2/HoverContainer';
 import Button from '../../../../UI2/Button';
 import Styles from './Table.module.scss';
 
 const Table = ({ property, deleteAdditionalAreaHandler }) => {
+  const getSubtotal = () => {
+    const adminSubtotal = property.adminAdditionalAreas.reduce(
+      (current, next) => current + next.price,
+      0,
+    );
+    const addedSubtotal = property.addedAdditionalAreas.reduce(
+      (current, next) => current + next.price,
+      0,
+    );
+    return adminSubtotal + addedSubtotal;
+  };
+
   return (
     <Fragment>
       <MUITable>
@@ -34,7 +47,14 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
                     : '-'}
                 </TableCell>
                 <TableCell>{additionalArea.areaType.unit}</TableCell>
-                <TableCell>{additionalArea.price}</TableCell>
+                <TableCell>
+                  <NumberFormat
+                    displayType="text"
+                    thousandSeparator
+                    prefix="$"
+                    value={additionalArea.price}
+                  />
+                </TableCell>
               </TableRow>
             );
           })}
@@ -64,7 +84,14 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
                     : '-'}
                 </TableCell>
                 <TableCell>{additionalArea.areaType.unit}</TableCell>
-                <TableCell>{additionalArea.price}</TableCell>
+                <TableCell>
+                  <NumberFormat
+                    displayType="text"
+                    thousandSeparator
+                    prefix="$"
+                    value={additionalArea.price}
+                  />
+                </TableCell>
               </TableRow>
             );
           })}
@@ -76,6 +103,17 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
             No hay areas adicionales
           </div>
         )}
+      <div className={Styles.subTotal}>
+        <div className={Styles.label}>Subtotal</div>
+        <div className={Styles.value}>
+          <NumberFormat
+            displayType="text"
+            thousandSeparator
+            prefix="$"
+            value={getSubtotal()}
+          />
+        </div>
+      </div>
     </Fragment>
   );
 };
