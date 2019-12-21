@@ -82,7 +82,7 @@ function Sales({ className, groupSummary }) {
       </div>
       <div className={Styles['sold-sales-average']}>
         <NumberFormat
-          value={averageSalesPerMT2.toFixed(2)}
+          value={averageSalesPerMT2 ? averageSalesPerMT2.toFixed(2) : 0}
           displayType="text"
           thousandSeparator={true}
           prefix="$"
