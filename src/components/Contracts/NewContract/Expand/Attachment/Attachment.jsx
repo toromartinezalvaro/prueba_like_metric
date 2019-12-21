@@ -13,7 +13,7 @@ import Icon from '@material-ui/core/Icon';
 import Attachment from '../../Content/Attachment/Attachment';
 import styles from './Attachment.module.scss';
 
-const ExpandAttachment = ({ sendAttachments }) => {
+const ExpandAttachment = ({ sendAttachments, dataIfEdit }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mt={4}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
@@ -28,7 +28,10 @@ const ExpandAttachment = ({ sendAttachments }) => {
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Typography>
-          <Attachment sendAttachments={sendAttachments} />
+          <Attachment
+            sendAttachments={sendAttachments}
+            dataIfEdit={dataIfEdit}
+          />
         </Typography>
       </ExpansionPanelDetails>
     </ExpansionPanel>

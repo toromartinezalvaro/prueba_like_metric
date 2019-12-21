@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
+import Numbers from '../../../../helpers/numbers';
 
 function Inventory({
   className,
   groupSummary,
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
+  futureSalesSpeedHandler,
   validations,
   blockIncrements,
   salesStartDate,
+  totalUnits,
+  groupId,
 }) {
   const {
     units,
@@ -27,8 +31,13 @@ function Inventory({
     ear,
     suggestedEffectiveAnnualInterestRate,
     suggestedIncrement,
+    averageSalesPerMT2,
+    basePricePerMT2,
+    basePrice,
+    salesSpeed,
   } = groupSummary;
 
+  const [salesSpeedState, setSalesSpeedState] = useState(salesSpeed);
   const limitTodayDate =
     retentionMonths -
     moment()
@@ -39,6 +48,21 @@ function Inventory({
   if (increment < 0) {
     incrementTextColor = Styles['inv-increment-goal-text-red'];
   }
+
+  const futureSpeedValidation = () => [
+    {
+      fn: (value) => value >= 0,
+      message: 'Debe ser mayor 0',
+    },
+    {
+      fn: (value) => totalUnits / value <= 98,
+      message: 'El numero de periodos no puede ser mayor a 98',
+    },
+    {
+      fn: (value) => value < totalUnits,
+      message: 'Debe ser menor a las unidades',
+    },
+  ];
   return (
     <div className={`${Styles.inventory} ${className}`}>
       <div className={Styles['inv-header']}>Inventario</div>
@@ -94,6 +118,14 @@ function Inventory({
           prefix="$"
         />
       </div>
+      <div className={Styles['inv-sales-average']}>
+        <NumberFormat
+          value={averageSalesPerMT2 && averageSalesPerMT2.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
       <div className={Styles['inv-increment-base']}>
         <NumberFormat
           value={(incrementRate * 100).toFixed(2)}
@@ -103,6 +135,36 @@ function Inventory({
         />
       </div>
       <div className={Styles['inv-analysis-inverse']} />
+      <div className={Styles['inv-inventory-base-price-mt2']}>
+        <NumberFormat
+          value={basePricePerMT2 && basePricePerMT2.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-inventory-base-price']}>
+        <NumberFormat
+          value={basePrice && basePrice.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
+      </div>
+      <div className={Styles['inv-speed-sales']}>
+        <Input
+          validations={futureSpeedValidation()}
+          value={salesSpeedState}
+          style={{ width: '75px' }}
+          onChange={(target) => {
+            setSalesSpeedState(target.value);
+            futureSalesSpeedHandler(
+              groupId,
+              Numbers.toFixed(Number(target.value)),
+            );
+          }}
+        />
+      </div>
       <div className={Styles['inv-retention-months']}>
         <Input
           validations={validations}

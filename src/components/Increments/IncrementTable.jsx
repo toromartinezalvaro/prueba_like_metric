@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { Link } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 import { DashboardRoutes } from '../../routes/local/routes';
 import Card, { CardHeader, CardBody, CardFooter } from '../UI/Card/Card';
 import Accordion from '../UI/Accordion/Accordion';
@@ -22,6 +23,7 @@ function IncrementTable({
   putSalesSpeed,
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
+  futureSalesSpeedHandler,
   towerId,
   ...props
 }) {
@@ -43,7 +45,11 @@ function IncrementTable({
       <CardHeader>
         <span>Incrementos</span>
       </CardHeader>
-      <CardBody>
+
+      <CardBody additionalClassName={styles.CardBody}>
+        <Typography variant="body2" gutterBottom>
+          Todos los valores se muestran sin <b>Areas Adicionales</b>.
+        </Typography>
         <div>
           <span>Incremento total: </span>
           <NumberFormat
@@ -128,6 +134,9 @@ function IncrementTable({
                           i,
                         );
                       }}
+                      futureSalesSpeedHandler={futureSalesSpeedHandler}
+                      totalUnits={group.total.units}
+                      groupId={group.id}
                       validations={[
                         ...inputValidations,
                         {
@@ -186,6 +195,7 @@ IncrementTable.propTypes = {
   putSalesSpeed: PropTypes.func.isRequired,
   putSuggestedSalesSpeed: PropTypes.func.isRequired,
   putSuggestedEffectiveAnnualInterestRate: PropTypes.func.isRequired,
+  futureSalesSpeedHandler: PropTypes.func.isRequired,
   towerId: PropTypes.string,
   isBadgeIncrement: PropTypes.bool,
 };

@@ -195,7 +195,7 @@ const AddArea = (props) => {
                     color="primary"
                   />
                 }
-                label="Rellenar automaticamente las nomenclaturas"
+                label="Completar automaticamente las nomenclaturas"
               />
               <FormControlLabel
                 control={
@@ -206,7 +206,7 @@ const AddArea = (props) => {
                     color="primary"
                   />
                 }
-                label="Rellenar automaticamente los precios"
+                label="Completar automaticamente los precios"
               />
               {isChecked.price && (
                 <TextField

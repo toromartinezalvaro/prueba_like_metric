@@ -6,6 +6,12 @@ export default class IncrementsServices extends Services {
     return this.put(IncrementsServicesDefinition.putIncrements(towerId));
   }
 
+  putFutureSalesSpeeds(id, futureSalesSpeed) {
+    return this.put(IncrementsServicesDefinition.putFutureSalesSpeeds(id), {
+      futureSalesSpeed,
+    });
+  }
+
   getIncrements(towerId) {
     return this.put(IncrementsServicesDefinition.putIncrements(towerId));
   }

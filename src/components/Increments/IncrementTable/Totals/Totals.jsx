@@ -25,6 +25,7 @@ function Totals({
     l0,
     increment,
     estimatedSales,
+    averageSalesPerMT2,
     incrementRate,
     retentionMonths,
     ear,
@@ -108,6 +109,14 @@ function Totals({
           prefix={'$'}
         />
       </div>
+      <div className={Styles['total-sales-average']}>
+        <NumberFormat
+          value={averageSalesPerMT2 && averageSalesPerMT2.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
+      </div>
       <div className={Styles['total-increment-base']}>
         <NumberFormat
           value={(incrementRate * 100).toFixed(2)}
@@ -117,6 +126,9 @@ function Totals({
         />
       </div>
       <div className={Styles['total-analysis-inverse']} />
+      <div className={Styles['total-inventory-base-price-mt2']} />
+      <div className={Styles['total-inventory-base-price']} />
+      <div className={Styles['total-sales-speed']} />
       <div className={Styles['total-retention-months']}>
         <Input
           validations={validations}

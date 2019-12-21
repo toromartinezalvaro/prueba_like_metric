@@ -4,8 +4,8 @@
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas: 'inv-header' 'inv-date' 'inv-units' 'inv-area' 'inv-price' 'inv-price-m2' 'inv-sales-l0' 'inv-increment-goal' 'inv-sales-future' 'inv-increment-base' 'inv-analysis-inverse' 'inv-retention-months' 'inv-ear' 'inv-sales-wizard' 'inv-inventory-retention' 'inv-ear-suggestion' 'inv-increment-goal-suggestion';
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'inv-header' 'inv-date' 'inv-units' 'inv-area' 'inv-price' 'inv-price-m2' 'inv-sales-l0' 'inv-increment-goal' 'inv-sales-future' 'inv-sales-average' 'inv-increment-base' 'inv-analysis-inverse' 'inv-inventory-base-price-mt2' 'inv-inventory-base-price' 'inv-speed-sales' 'inv-retention-months' 'inv-ear' 'inv-sales-wizard' 'inv-inventory-retention' 'inv-ear-suggestion' 'inv-increment-goal-suggestion';
   grid-area: inventory;
 
   & * {
@@ -59,6 +59,10 @@
   grid-area: inv-sales-future;
 }
 
+.inv-sales-average {
+  grid-area: inv-sales-average;
+}
+
 .inv-increment-base {
   grid-area: inv-increment-base;
   color: $gray-color;
@@ -68,6 +72,18 @@
   background-color: #f3f3f3;
   color: #777;
   grid-area: inv-analysis-inverse;
+}
+
+.inv-inventory-base-price-mt2 {
+  grid-area: inv-inventory-base-price-mt2;
+}
+
+.inv-inventory-base-price {
+  grid-area: inv-inventory-base-price;
+}
+
+.inv-speed-sales {
+  grid-area: inv-speed-sales;
 }
 
 .inv-retention-months {

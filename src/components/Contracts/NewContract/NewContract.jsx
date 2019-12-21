@@ -50,6 +50,8 @@ const NewContract = ({
   currentEvent,
   addContract,
   sendAttachments,
+  dataIfEdit,
+  editContract,
 }) => {
   return (
     <Dialog
@@ -91,6 +93,7 @@ const NewContract = ({
           changeForSearchPartner={changeForSearchPartner}
           partnerProp={partnerProp}
           sendGeneralInfo={sendGeneralInfo}
+          dataIfEdit={dataIfEdit}
         />
         <br />
         <ExpandBillingFinancials
@@ -98,9 +101,13 @@ const NewContract = ({
           sendBillings={sendBillings}
           events={events}
           currentEvent={currentEvent}
+          dataIfEdit={dataIfEdit}
         />
         <br />
-        <ExpandAttachment sendAttachments={sendAttachments} />
+        <ExpandAttachment
+          sendAttachments={sendAttachments}
+          dataIfEdit={dataIfEdit}
+        />
         <br />
         <div className={styles.actionContainer}>
           <Button
@@ -108,9 +115,9 @@ const NewContract = ({
             color="primary"
             className={styles.button}
             startIcon={<Icon className="fas fa-file-signature" />}
-            onClick={addContract}
+            onClick={dataIfEdit ? editContract : addContract}
           >
-            Agregar Contrato
+            {dataIfEdit ? 'Editar Contrato' : 'Crear Contrato'}
           </Button>
           <Button
             variant="contained"
@@ -119,7 +126,7 @@ const NewContract = ({
             startIcon={<Icon className="fas fa-ban" />}
             onClick={handleCloseContract}
           >
-            Cancelar
+            Cerrar
           </Button>
         </div>
       </DialogContentText>
