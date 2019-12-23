@@ -29,7 +29,6 @@ class ContractFlow extends Component {
       .getContractsInformation(this.props.match.params.towerId)
       .then((response) => {
         const information = response.data;
-        console.log(information);
         this.setState({ information });
       })
       .catch((error) => console.log(error));
