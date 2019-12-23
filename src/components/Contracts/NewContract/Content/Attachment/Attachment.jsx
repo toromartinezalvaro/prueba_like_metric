@@ -146,7 +146,7 @@ class Attachment extends Component {
   render() {
     return (
       <Fragment>
-        <Card>
+        <Card className={styles.cardAttachment}>
           <CardContent>
             <div className={styles.attachment}>{this.displayComponents()}</div>
             <div className={styles.inputs}>
@@ -161,7 +161,6 @@ class Attachment extends Component {
               <div className={styles.attachment}>{this.displayUrl()}</div>
               <div className={styles.row}>
                 <TextField
-                  fullWidth
                   className={styles.textField}
                   label="Ingrese Una URL"
                   margin="normal"

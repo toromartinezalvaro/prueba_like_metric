@@ -123,12 +123,11 @@ const GeneralInfo = ({
   };
 
   return (
-    <Fragment>
+    <Fragment className={styles.test}>
       <div className={styles.gridContainer}>
         <div className={styles.columnFullLeft}>
           <TextField
             required
-            fullWidth
             className={styles.textField}
             label="Titulo De Contrato"
             margin="normal"
@@ -332,7 +331,6 @@ const GeneralInfo = ({
       <div className={styles.gridContainer}>
         <TextField
           multiline
-          fullWidth
           rows="6"
           className={styles.multiline}
           label="Descripción/Comentarios"

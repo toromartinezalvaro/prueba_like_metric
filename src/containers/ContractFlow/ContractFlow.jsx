@@ -41,11 +41,7 @@ class ContractFlow extends Component {
         <CardHeader>
           <span>Flujo de caja de contratos</span>
         </CardHeader>
-        <CardBody>
-          {this.state.information && (
-            <TableContractFlow data={this.state.information} />
-          )}
-        </CardBody>
+        <CardBody></CardBody>
       </Card>
     );
   }
