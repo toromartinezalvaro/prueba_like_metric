@@ -20,8 +20,11 @@
 
 .itemList {
   display: inline;
-  color: $defaultWhite-color;
-  background-color: $main-color;
   text-align: center;
   padding: 15px;
+}
+
+.buttonForNewContract {
+  color: $defaultWhite-color !important;
+  background-color: $main-color !important;
 }

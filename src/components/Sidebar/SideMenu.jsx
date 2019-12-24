@@ -4,6 +4,7 @@ import { Resizable } from 're-resizable';
 import {
   DashboardRoutes,
   ContractRoutes,
+  ContractFlowRoutes,
   AreasAndPrices,
   InitialData,
   Increments,
@@ -315,6 +316,13 @@ const SideMenu = ({
                         DashboardRoutes.base + ContractRoutes.base.value,
                         'fas fa-file-signature',
                         'Contratos',
+                      ),
+                    agent.isAuthorized([Role.Admin, Role.Super]) &&
+                      itemForSlidebar(
+                        style.MenuItem,
+                        DashboardRoutes.base + ContractFlowRoutes.base.value,
+                        'fas fa-file-contract',
+                        'Flujo de Contratos',
                       ),
                   ]}
                 />

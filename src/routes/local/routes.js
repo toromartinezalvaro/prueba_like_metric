@@ -32,6 +32,10 @@ export const DashboardRoutes = {
   schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
   report: { value: '/report/', withIndicator: '/report/:towerId' },
   contracts: { value: '/contract/', withIndicator: '/contract/:towerId' },
+  contractsFlow: {
+    value: '/contract-flow/',
+    withIndicator: '/contract-flow/:towerId',
+  },
   cashFlow: { value: '/cash-flow/', withIndicator: '/cash-flow/:towerId' },
   saleRequests: {
     value: '/sale-requests/',
@@ -49,6 +53,10 @@ export const DashboardRoutes = {
 
 export const ContractRoutes = {
   base: DashboardRoutes.contracts,
+};
+
+export const ContractFlowRoutes = {
+  base: DashboardRoutes.contractsFlow,
 };
 
 export const ProjectRoutes = {
@@ -101,6 +109,10 @@ export const Reports = {
 
 export const Contracts = {
   array: [DashboardRoutes.base + ContractRoutes.base.value],
+};
+
+export const ContractFlow = {
+  array: [DashboardRoutes.base + ContractFlowRoutes.base.value],
 };
 
 export const UserRoutes = {

@@ -59,7 +59,7 @@ const NewContract = ({
       open={isOpen}
       scroll="body"
       fullWidth={true}
-      maxWidth="md"
+      maxWidth="lg"
     >
       <DialogContentText>
         <div className={styles.title}>
