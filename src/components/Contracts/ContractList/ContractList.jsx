@@ -84,7 +84,7 @@ class ContractList extends Component {
     return this.state.contracts.map((contract) => {
       return (
         <div
-          className={style.wrapper}
+          className={style.wrapperInternal}
           key={contract.id}
           value={contract.id}
           onClick={this.editContractOpened(contract.id)}

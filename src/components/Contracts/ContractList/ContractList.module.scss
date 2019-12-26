@@ -7,35 +7,41 @@
 @import '../../../assets/styles/variables.scss';
 
 .wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: space-between;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-content: space-between !important;
+  position: relative;
+  left: 35%;
 }
 
 .container {
-  background-color: $main-color;
-  color: $defaultWhite-color;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: space-between;
-  border-radius: 5px;
+  background-color: $main-color !important;
+  color: $defaultWhite-color !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-content: space-between !important;
+  border-radius: 5px !important;
 }
 
-.header, 
+.header,
 .content {
-  margin: 10px;
+  margin: 10px !important;
 }
-
 
 .dataContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: space-between;
-  border-radius: 5px;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-content: space-between !important;
+  border-radius: 5px !important;
+}
+
+.wrapperInternal:hover {
+  background-color: $softGrayBackground-color;
+  cursor: pointer;
 }

@@ -16,8 +16,11 @@
   flex-direction: row;
   justify-content: center !important;
   align-items: flex-start;
+  align-content: center !important;
   flex-wrap: wrap;
-  width: 125vh !important;
+  align-self: center !important;
+  width: 135vh !important;
+  margin-left: 6%;
 }
 
 .gridSubContainer {
@@ -38,7 +41,7 @@
   flex-wrap: wrap;
   margin-top: 5%;
   margin-bottom: 5%;
-  width: 160% !important;
+  width: 100% !important;
 }
 .columnFullRigth {
   display: flex;
@@ -46,7 +49,7 @@
   flex-basis: 100%;
   flex: 1;
   margin-left: 2%;
-  width: 50% !important;
+  width: 25% !important;
 }
 
 .SelectSimple {
@@ -60,7 +63,7 @@
   flex-basis: 100%;
   flex: 1;
   margin-right: 2%;
-  width: 50% !important;
+  width: 5% !important;
 }
 
 .selectColumn {
