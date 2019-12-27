@@ -257,13 +257,15 @@ export default class Strategy extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        <IncrementsMarket
-          putMarketAveragePrice={this.putMarketAveragePrice}
-          putMarketAnnualEffectiveIncrement={
-            this.putMarketAnnualEffectiveIncrement
-          }
-          marketData={this.state.market}
-        />
+        <div style={{ marginBottom: '35px' }}>
+          <IncrementsMarket
+            putMarketAveragePrice={this.putMarketAveragePrice}
+            putMarketAnnualEffectiveIncrement={
+              this.putMarketAnnualEffectiveIncrement
+            }
+            marketData={this.state.market}
+          />
+        </div>
         <Card style={{ marginTop: '-30px' }}>
           <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             {this.state.groups.map((group) =>
@@ -284,11 +286,11 @@ export default class Strategy extends Component {
           {this.state.groups.length > 0 ? (
             this.state.groupActive.strategies.length !== 0 ? (
               <div>
-                {/* <Line
+                <Line
                   ref={this.chart}
                   currentGroup={[...this.state.currentGroup]}
                   labels={this.state.labels}
-                /> */}
+                />
 
                 <div style={{ textAlign: 'center', marginTop: '20px' }}>
                   <h4>

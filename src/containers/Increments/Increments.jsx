@@ -220,11 +220,6 @@ class Increments extends Component {
           {...this.props}
         />
 
-        <IncrementsChart
-          salesStartDate={new Date().getTime()}
-          data={this.state.graphData}
-          getData={this.getPeriodsIncrements}
-        />
         {this.state.hidden ? null : (
           <Modal
             title="Error de incremento"
