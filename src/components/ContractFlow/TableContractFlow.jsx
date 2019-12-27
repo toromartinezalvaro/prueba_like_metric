@@ -23,9 +23,9 @@ const TableContractFlow = ({ data }) => {
       </div>,
     ];
     return {
-      cells: ['dato prueba'],
+      cells: [{dato: 'dato prueba'}],
       header,
-      name: ['dato prueba'],
+      name: [{dato: 'dato prueba'}],
     };
   });
 
