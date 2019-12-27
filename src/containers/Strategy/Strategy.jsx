@@ -147,20 +147,16 @@ export default class Strategy extends Component {
           });
         }
       })
-      .then(() => {
-        this.incrementServices
-          .getMarket(this.props.match.params.towerId)
-          .then((response) => {
-            this.setState({ market: response.data });
-          });
-      })
       .catch((err) =>
         this.setState({
           isLoading: false,
         }),
       );
-
-    console.log('this.state.groups', this.state.groups);
+    this.incrementServices
+      .getMarket(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ market: response.data });
+      });
   }
 
   handleClick(type) {
