@@ -120,7 +120,13 @@ class Clustering extends Component {
                   <div>
                     <Input
                       mask="number"
-                      validations={[]}
+                      validations={[
+                        {
+                          fn: (value) => value <= this.state.clusters.length,
+                          message:
+                            'El numero de grupos no puede ser superior al de apartamentos',
+                        },
+                      ]}
                       style={{ width: '75px' }}
                       onChange={this.clusterGroupsHandler}
                       value={this.state.groupsSize}
@@ -135,7 +141,10 @@ class Clustering extends Component {
                         onClick={() => {
                           this.postClusters(true);
                         }}
-                        disabled={this.state.waitingForResponse}
+                        disabled={
+                          this.state.waitingForResponse ||
+                          this.state.groupsSize > this.state.clusters.length
+                        }
                       >
                         Agrupar por area
                       </Button>
@@ -145,7 +154,8 @@ class Clustering extends Component {
                         }}
                         disabled={
                           this.state.waitingForResponse ||
-                          this.state.message === 2
+                          this.state.message === 2 ||
+                          this.state.groupsSize > this.state.clusters.length
                         }
                       >
                         Agrupar por precio
