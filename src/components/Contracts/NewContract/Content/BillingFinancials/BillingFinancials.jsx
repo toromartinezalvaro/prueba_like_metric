@@ -232,7 +232,6 @@ const BillingFinancials = ({
                 />
 
                 <TextField
-                  fullWidth
                   disabled={billing.isLocked}
                   className={styles.textField}
                   label="Descripción"
@@ -246,7 +245,6 @@ const BillingFinancials = ({
                 <div className={styles.column}>
                   <TextField
                     required
-                    fullWidth
                     disabled={billing.isLocked}
                     className={styles.textField}
                     label="cuenta de cobro (pesos colombiano)"

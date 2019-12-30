@@ -13,6 +13,16 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  .stats {
+    display: flex;
+    .stat {
+      margin-right: 15px;
+      .label {
+        font-weight: 700;
+        margin-right: 5px;
+      }
+    }
+  }
 }
 
 .MuiFormControl {

@@ -29,6 +29,7 @@ class Clustering extends Component {
     isEmpty: false,
     isEmptyAreasAndPrices: false,
     message: 0,
+    locked: false,
   };
 
   componentDidMount() {
@@ -50,6 +51,9 @@ class Clustering extends Component {
           towerClusterConfig: response.data.towerClustersConfig,
           clusters: response.data.clusters,
           isLoading: false,
+          locked: response.data.clusters.some(
+            (property) => property.status !== 'AVAILABLE',
+          ),
           message: response.data.message ? response.data.message.message : 0,
         });
       })
@@ -116,35 +120,48 @@ class Clustering extends Component {
                   <div>
                     <Input
                       mask="number"
-                      validations={[]}
+                      validations={[
+                        {
+                          fn: (value) => value <= this.state.clusters.length,
+                          message:
+                            'El numero de grupos no puede ser superior al de apartamentos',
+                        },
+                      ]}
                       style={{ width: '75px' }}
                       onChange={this.clusterGroupsHandler}
                       value={this.state.groupsSize}
                       placeholder="Grupos"
                       forceUpdate={true}
+                      disable={this.state.locked}
                     />
                   </div>
-                  <div>
-                    <Button
-                      onClick={() => {
-                        this.postClusters(true);
-                      }}
-                      disabled={this.state.waitingForResponse}
-                    >
-                      Agrupar por area
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        this.postClusters(false);
-                      }}
-                      disabled={
-                        this.state.waitingForResponse ||
-                        this.state.message === 2
-                      }
-                    >
-                      Agrupar por precio
-                    </Button>
-                  </div>
+                  {!this.state.locked && (
+                    <div>
+                      <Button
+                        onClick={() => {
+                          this.postClusters(true);
+                        }}
+                        disabled={
+                          this.state.waitingForResponse ||
+                          this.state.groupsSize > this.state.clusters.length
+                        }
+                      >
+                        Agrupar por area
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          this.postClusters(false);
+                        }}
+                        disabled={
+                          this.state.waitingForResponse ||
+                          this.state.message === 2 ||
+                          this.state.groupsSize > this.state.clusters.length
+                        }
+                      >
+                        Agrupar por precio
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 {this.state.message === 2 ? (
                   <EmptyPrices

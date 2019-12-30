@@ -82,7 +82,7 @@ function Sales({ className, groupSummary }) {
       </div>
       <div className={Styles['sold-sales-average']}>
         <NumberFormat
-          value={averageSalesPerMT2.toFixed(2)}
+          value={averageSalesPerMT2 ? averageSalesPerMT2.toFixed(2) : 0}
           displayType="text"
           thousandSeparator={true}
           prefix="$"
@@ -100,6 +100,7 @@ function Sales({ className, groupSummary }) {
       <div className={Styles['sold-analysis-inverse']} />
       <div className={Styles['sold-inventory-base-price-mt2']} />
       <div className={Styles['sold-inventory-base-price']} />
+      <div className={Styles['sold-speed-sales']} />
       <div className={Styles['sold-retention-months']} />
       <div className={Styles['sold-ear']} />
     </div>

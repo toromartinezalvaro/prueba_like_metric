@@ -3,7 +3,6 @@ import Loader from 'react-loader-spinner';
 import commonStyles from '../../assets/styles/variables.scss';
 import Modal from '../../components/UI/Modal/Modal';
 import IncrementsTable from '../../components/Increments/IncrementTable';
-import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
 import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
@@ -35,6 +34,21 @@ class Increments extends Component {
     });
     this.updateIncrements();
   }
+
+  futureSalesSpeedHandler = (id, value) => {
+    this.setState({ loadingAPI: true });
+
+    this.services
+      .putFutureSalesSpeeds(id, value)
+      .then((results) => {
+        console.log(results);
+        this.setState({ loadingAPI: false });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ loadingAPI: false });
+      });
+  };
 
   updateIncrements = () => {
     this.services
@@ -201,21 +215,11 @@ class Increments extends Component {
           putSuggestedEffectiveAnnualInterestRate={
             this.putSuggestedEffectiveAnnualInterestRate
           }
+          futureSalesSpeedHandler={this.futureSalesSpeedHandler}
           towerId={this.props.match.params.towerId}
           {...this.props}
         />
-        <IncrementsMarket
-          putMarketAveragePrice={this.putMarketAveragePrice}
-          putMarketAnnualEffectiveIncrement={
-            this.putMarketAnnualEffectiveIncrement
-          }
-          marketData={this.state.market}
-        />
-        <IncrementsChart
-          salesStartDate={new Date().getTime()}
-          data={this.state.graphData}
-          getData={this.getPeriodsIncrements}
-        />
+
         {this.state.hidden ? null : (
           <Modal
             title="Error de incremento"

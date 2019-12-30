@@ -72,7 +72,7 @@ const FutureSalesSpeed = ({
   return (
     <Card>
       <CardHeader>
-        <span>Velocidad de ventas futuras</span>
+        <span>Forma de pago</span>
       </CardHeader>
       <CardBody>
         {arraySalesSpeeds.length !== 0 ? (

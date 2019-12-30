@@ -26,8 +26,8 @@ const Select = ({ property, additionalAreas, addAdditionalAreaHandler }) => {
             {additionalAreas.map((additionalArea) => {
               return (
                 <MenuItem value={additionalArea.id} key={additionalArea.id}>
-                  {additionalArea.nomenclature ||
-                    `${additionalArea.areaType.name} (Sin nomenclatura)`}
+                  {additionalArea.areaType.name}-
+                  {additionalArea.nomenclature || '(Sin nomenclatura)'}
                 </MenuItem>
               );
             })}
