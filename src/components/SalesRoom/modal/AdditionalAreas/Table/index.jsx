@@ -29,6 +29,7 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
         <TableHead>
           <TableRow>
             <TableCell>Nomenclatura</TableCell>
+            <TableCell>Tipo</TableCell>
             <TableCell>Cantidad</TableCell>
             <TableCell>Unidad</TableCell>
             <TableCell>Precio</TableCell>
@@ -41,6 +42,7 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
                 <TableCell>
                   {additionalArea.nomenclature || additionalArea.areaType.name}
                 </TableCell>
+                <TableCell>{additionalArea.areaType.name}</TableCell>
                 <TableCell>
                   {additionalArea.areaType.unit === 'MT2'
                     ? additionalArea.measure
@@ -78,6 +80,7 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
                     }
                   />
                 </TableCell>
+                <TableCell>{additionalArea.areaType.name}</TableCell>
                 <TableCell>
                   {additionalArea.areaType.unit === 'MT2'
                     ? additionalArea.measure
