@@ -112,7 +112,10 @@ class AreasAdditional extends Component {
         areas[indexAreaType].formatedAreas[indexArea] = area.data;
         this.setState({ arrayAreaTypes: areas });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
+        console.error(error);
+      });
   };
 
   updateAreaAdditionalHandler = (nomenclature, measure, price, areaId) => {
@@ -123,7 +126,10 @@ class AreasAdditional extends Component {
         price: `${price}`,
         areaId,
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
+        console.error(error);
+      });
   };
 
   deleteArea = (id) => {
@@ -151,6 +157,7 @@ class AreasAdditional extends Component {
         this.setState({ arrayAreaTypes: _.sortBy(areas.data, ['name']), isLoading: false });
       })
       .catch((error) => {
+        this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
         this.setState({ isLoading: false });
         console.error(error);
       });
