@@ -19,7 +19,7 @@ class ContractFlow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      information: null,
+      data: [],
     };
     this.service = new ContractFlowService();
   }
@@ -29,7 +29,11 @@ class ContractFlow extends Component {
       .getContractsInformation(this.props.match.params.towerId)
       .then((response) => {
         const information = response.data;
-        this.setState({ information });
+        information.map((contract) => {
+          console.log(contract);
+        });
+
+        this.setState({ data: response.data });
       })
       .catch((error) => console.log(error));
   }
@@ -40,7 +44,9 @@ class ContractFlow extends Component {
         <CardHeader>
           <span>Flujo de caja de contratos</span>
         </CardHeader>
-        <CardBody></CardBody>
+        <CardBody>
+          <TableContractFlow data={this.state.data} />
+        </CardBody>
       </Card>
     );
   }
