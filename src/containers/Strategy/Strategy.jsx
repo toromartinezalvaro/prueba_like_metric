@@ -137,7 +137,7 @@ export default class Strategy extends Component {
           );
           const labels = this.makeArrayLabels(groupFilter);
           const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
-          this.setState({
+          return this.setState({
             isLoading: false,
             groupActive: strategies.data.increments[0],
             currentGroup: arrayDataSets,
@@ -157,7 +157,6 @@ export default class Strategy extends Component {
       .then((response) => {
         this.setState({ market: response.data });
       });
-    console.log('this.state.groups', this.state.groups);
   }
 
   handleClick(type) {
