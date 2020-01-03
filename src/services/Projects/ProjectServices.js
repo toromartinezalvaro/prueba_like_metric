@@ -1,23 +1,20 @@
 import ProjectServiceDefinitions from './ProjectServiceDefinitions';
-import Services from '../services'
+import Services from '../services';
 
-
-export default class ProjectServices extends Services  {
-
+export default class ProjectServices extends Services {
   getProjects() {
-    return this.get(ProjectServiceDefinitions.projects)
+    return this.get(ProjectServiceDefinitions.projects);
   }
 
   createProject(data) {
-    return this.post(ProjectServiceDefinitions.projects, data)
+    return this.post(ProjectServiceDefinitions.projects, data);
   }
 
   removeProject(data) {
-    return this.delete(ProjectServiceDefinitions.projects, data)
+    return this.delete(ProjectServiceDefinitions.projects, data);
   }
 
-  update = (name, description) => {
-
-  }
-
+  updateProject = (id, data) => {
+    return this.put(ProjectServiceDefinitions.updateProject(id), data);
+  };
 }
