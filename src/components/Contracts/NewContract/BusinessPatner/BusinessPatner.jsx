@@ -37,7 +37,7 @@ const BusinessPatner = ({
   });
 
   useEffect(() => {
-    if (informationToEdit) {
+    if (informationToEdit && informationToEdit !== '') {
       setPartner(informationToEdit);
     }
   }, []);
@@ -65,6 +65,7 @@ const BusinessPatner = ({
         ref={props.innerRef}
         selected={props.isFocused}
         component="div"
+        className = {styles.itemMenu}
         style={{
           fontWeight: props.isSelected ? 500 : 400,
         }}
@@ -141,7 +142,7 @@ const BusinessPatner = ({
           <TextField
             fullWidth
             className={styles.textField}
-            label="City"
+            label="Municipio"
             margin="normal"
             variant="outlined"
             value={partner.patnerCity}

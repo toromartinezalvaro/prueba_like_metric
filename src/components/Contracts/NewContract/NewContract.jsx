@@ -52,6 +52,7 @@ const NewContract = ({
   sendAttachments,
   dataIfEdit,
   editContract,
+  sendContractNumber,
 }) => {
   return (
     <Dialog
@@ -94,6 +95,7 @@ const NewContract = ({
           partnerProp={partnerProp}
           sendGeneralInfo={sendGeneralInfo}
           dataIfEdit={dataIfEdit}
+          sendContractNumber={sendContractNumber}
         />
         <br />
         <ExpandBillingFinancials

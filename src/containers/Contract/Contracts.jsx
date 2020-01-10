@@ -68,6 +68,12 @@ class Contracts extends Component {
       attachments: [],
       attachmentPath: '',
       contract: null,
+      contractNumber: null,
+      alert: {
+        opened: false,
+        severity: 'success',
+        message: '',
+      },
     };
   }
 
@@ -212,9 +218,27 @@ class Contracts extends Component {
   };
 
   newBusinessPartner = (partner) => {
-    this.services.postBusinessPatnerContract(partner).catch((error) => {
-      console.log(error);
-    });
+    this.services
+      .postBusinessPatnerContract(partner)
+      .then((response) => {
+        const currentPatner = {
+          value: response.data.id,
+          label: response.data.patnerName,
+        };
+        this.setState({
+          contractModal: {
+            ...this.state.contractModal,
+            data: { patner: currentPatner },
+          },
+          businessPatnerModal: {
+            ...this.state.businessPatnerModal,
+            currentPatner,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   newItem = (name) => {
@@ -435,14 +459,39 @@ class Contracts extends Component {
     this.setState({ events: [...this.state.events, currentEvent] });
   };
 
+  sendContractNumber = (contractNumber) => {
+    this.setState({ contractNumber });
+  };
+
   addContract = () => {
     this.services
-      .postContract(this.state.contract, this.props.match.params.towerId)
-      .then((response) => {
-        console.log(response);
+      .getAllContracts(this.props.match.params.towerId)
+      .then((contracts) => {
+        if (
+          contracts.data.find(
+            (contract) => contract.contractNumber === this.state.contractNumber,
+          )
+        ) {
+          this.setState({
+            alert: {
+              opened: true,
+              message: 'Error, ya existe un contrato con ese nombre',
+              severity: 'error',
+            },
+          });
+        } else {
+          this.services
+            .postContract(this.state.contract, this.props.match.params.towerId)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => console.log(error));
+          this.setState({ contractModal: { isOpen: false } });
+        }
       })
-      .catch((error) => console.log(error));
-    this.setState({ contractModal: { isOpen: false } });
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   sendId = (id) => {
@@ -517,7 +566,7 @@ class Contracts extends Component {
       .catch((error) => console.log(error));
     this.setState({
       contractModal: { ...this.state.contractModal, isOpen: false },
-    }); 
+    });
   };
 
   render() {
@@ -564,6 +613,7 @@ class Contracts extends Component {
           addContract={this.addContract}
           dataIfEdit={this.state.contractModal.generalInformationData}
           editContract={this.editContract}
+          sendContractNumber={this.sendContractNumber}
         />
         <Dialog
           className={styles.dialogExpand}

@@ -41,6 +41,7 @@ const GeneralInfo = ({
   currentGroupId,
   changeItemIsLocked,
   dataIfEdit,
+  sendContractNumber,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: dataIfEdit ? dataIfEdit.title : '',
@@ -66,6 +67,9 @@ const GeneralInfo = ({
     const information = { ...generalInformation, [name]: e.target.value };
     setGeneralInformation(information);
     sendGeneralInfo(information);
+    if (name === 'contractNumber') {
+      sendContractNumber(e.target.value);
+    }
   };
 
   const onChangeSelect = (name) => (label) => {
@@ -87,8 +91,10 @@ const GeneralInfo = ({
   };
 
   const searchForItem = () => {
-    if (itemProp.value !== '') {
-      searchItem(itemProp.value);
+    if (itemProp) {
+      if (itemProp.value !== '') {
+        searchItem(itemProp.value);
+      }
     }
   };
 
