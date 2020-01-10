@@ -64,7 +64,7 @@ const SalesRoomModal = ({
   };
 
   useEffect(() => {
-    setFixed(priceWithIncrement.toFixed(2));
+    setFixed((priceWithIncrement + parseFloat(discount || 0)).toFixed(2));
   }, [priceWithIncrement]);
 
   return (

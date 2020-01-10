@@ -1,15 +1,17 @@
 @import "../../assets/styles/variables.scss";
 
+@import '../../assets/styles/variables.scss';
+
 .ItemContainer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border-radius: 3px;
+  border-radius: 4px;
   border-width: 1px;
   border-style: solid;
-  border-color: $blackBorder-color;
+  border-color: $softGray-color;
   background: $main-color;
-  height: 140px;
+  flex-basis: 140px;
   max-width: 260px;
   min-width: 188px;
   width: 25%;
@@ -33,17 +35,27 @@
     padding: 3px 5px;
   }
 
+  .Buttons {
+    display: flex;
+    flex-direction: row;
+    color: inherit;
+    align-items: center;
+    justify-content: flex-end;
+    height: 30%;
+  }
+
   &:focus {
     outline: auto 5px;
   }
 
-  &:hover{
-    box-shadow: rgb(179, 186, 197) 0px 4px 8px 0px, rgb(179, 186, 197) 0px 0px 1px 0px;
+  &:hover {
+    box-shadow: rgb(179, 186, 197) 0px 4px 8px 0px,
+      rgb(179, 186, 197) 0px 0px 1px 0px;
     text-decoration: none;
   }
 }
 
-.Towers {
+.Projects {
   width: 100%;
   display: flex;
   flex-flow: row wrap;

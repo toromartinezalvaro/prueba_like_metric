@@ -145,7 +145,27 @@ export default class Projects extends Component {
   };
 
   onEditProject = () => {
-    // this.services.
+    const { id, name, description } = this.state.currentEditingProject;
+    this.services
+      .updateProject(id, { name, description })
+      .then((response) => {
+        const project = { ...response.data[1] };
+        project.id = id;
+        this.setState((prevState) => {
+          const { projects } = prevState;
+          const index = projects.findIndex((o) => o.id === id);
+          projects[index] = project;
+          return {
+            projects,
+            currentEditingProject: null,
+            modalIsHidden: true,
+          };
+        });
+      })
+      .catch((error) => {
+        this.setState({ currentEditingProject: null, modalIsHidden: true });
+        console.error(error);
+      });
   };
 
   onCreate = () => {
