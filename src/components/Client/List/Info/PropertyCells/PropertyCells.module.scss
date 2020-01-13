@@ -1,3 +1,7 @@
 .container {
   display: flex;
+  margin: 10px 0;
+  & div {
+    margin-right: 15px;
+  }
 }

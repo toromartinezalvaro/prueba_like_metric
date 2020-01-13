@@ -6,8 +6,8 @@ import Styles from './PropertyCells.module.scss';
 const PropertyCells = ({ properties, selectProperty }) => {
   return (
     <Fragment>
-      <span>Propiedades</span>
       <div className={Styles.container}>
+        <div>Propiedades: </div>
         {properties.map((property, index) => {
           return (
             <Chip

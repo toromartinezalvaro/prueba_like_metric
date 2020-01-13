@@ -1,4 +1,3 @@
-import axios from 'axios'; // TODO: Remove
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,26 +6,35 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '../../../UI/Button/Button';
 import PropertyCells from './PropertyCells';
+import PropertyDetails from './PropertyDetails';
+import ClientsServices from '../../../../services/client/ClientsServices';
 
 const Info = ({ client, handleClose }) => {
-  // useEffect(() => {
-  //   return null;
-  // }, [client]);
+  const services = new ClientsServices();
+
+  const [property, setProperty] = useState(null);
+
+  useEffect(() => {
+    setProperty(null);
+  }, [client]);
 
   const selectProperty = (id) => {
-    axios.get('')
+    services.getPropertyInfo(id).then((response) => {
+      setProperty(response.data);
+    });
   };
 
   return (
-    <Dialog open={client !== null}>
+    <Dialog open={client !== null} fullWidth maxWidth="lg">
       {client && (
         <Fragment>
-          <DialogTitle id="form-dialog-title">{client.name}</DialogTitle>
+          <DialogTitle>{client.name}</DialogTitle>
           <DialogContent>
             <PropertyCells
               properties={client.properties}
               selectProperty={selectProperty}
             />
+            <PropertyDetails property={property} />
           </DialogContent>
           <DialogActions>
             <Button
