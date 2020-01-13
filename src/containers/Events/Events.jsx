@@ -127,19 +127,6 @@ class Events extends Component {
   }
 
   sendEvent = () => {
-    /* this.services
-      .postEvent(this.props.towerId, this.state.event)
-      .then((response) => {
-        const currentEvent = {
-          value: response.data.id,
-          label: response.data.description,
-        };
-        this.props.currentEvent(currentEvent);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    this.setState({ eventModal: { isOpen: false } }); */
     this.services
       .getAll(this.props.towerId)
       .then((events) => {

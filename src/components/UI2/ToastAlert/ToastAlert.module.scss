@@ -1,0 +1,6 @@
+@import "../../../assets/styles/variables.scss";
+.root {
+  width: "100%", "& > * + *" {
+    margintop: theme.spacing(2);
+  }
+}
