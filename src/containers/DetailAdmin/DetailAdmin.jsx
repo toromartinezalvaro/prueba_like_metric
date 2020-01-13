@@ -180,7 +180,7 @@ export default class Detail extends Component {
             areas2: property.areas.filter(
               ({ areaType }) => areaType.unit === 'MT2',
             ),
-            additional2: property.property.additionalAreas,
+            additional2: property.additionalAreas,
             areasTable2: this.mapAreasForCells(areas),
           });
         }
