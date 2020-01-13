@@ -91,10 +91,8 @@ const GeneralInfo = ({
   };
 
   const searchForItem = () => {
-    if (itemProp) {
-      if (itemProp.value !== '') {
-        searchItem(itemProp.value);
-      }
+    if (itemProp && itemProp.value !== '') {
+      searchItem(itemProp.value);
     }
   };
 

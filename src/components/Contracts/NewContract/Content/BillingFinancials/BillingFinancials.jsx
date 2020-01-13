@@ -36,7 +36,7 @@ const BillingFinancials = ({
   const cardValue = {
     id: 0,
     eventId: null,
-    cycle: 'Pago Unico',
+    cycle: 'Pago Único',
     amount: 0,
     description: '',
     lastBillingDate: `${moment(new Date())
@@ -265,13 +265,15 @@ const BillingFinancials = ({
                     label="Valor IVA %"
                     margin="normal"
                     variant="outlined"
-                    defaultValue={dataIfEdit ? billing.iva : billing.iva}
+                    defaultValue={billing.iva}
                     value={billing.billingAmount}
                     onChange={changeCardValue('iva', billing.id)}
                   />
 
                   <NumberFormat
-                    value={Numbers.toFixed(billing.amount * (billing.iva / 100))}
+                    value={Numbers.toFixed(
+                      billing.amount * (billing.iva / 100),
+                    )}
                     displayType={'text'}
                     className={styles.TotalAmount}
                     thousandSeparator={true}
@@ -356,10 +358,15 @@ const BillingFinancials = ({
                     </Button>
                   )}
                   <div className={styles.TotalSubbills}>
-                    <h4 sclassName={styles.textTotal}> Valor de cuenta con IVA:</h4>
+                    <h4 sclassName={styles.textTotal}>
+                      {' '}
+                      Valor de cuenta con IVA:
+                    </h4>
                     <NumberFormat
                       className={styles.amount}
-                      value={Numbers.toFixed(billing.amount - (billing.amount * (billing.iva / 100)))}
+                      value={Numbers.toFixed(
+                        billing.amount - billing.amount * (billing.iva / 100),
+                      )}
                       displayType={'text'}
                       thousandSeparator={true}
                       prefix={'$'}
