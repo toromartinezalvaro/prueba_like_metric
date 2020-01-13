@@ -33,9 +33,15 @@ class Events extends Component {
         name: '',
         date: new Date(),
       },
+      description: null,
       canDisplace: false,
       dateValue: [],
       uniqueDate: false,
+      alert: {
+        opened: false,
+        severity: 'success',
+        message: '',
+      },
     };
   }
 
@@ -81,7 +87,7 @@ class Events extends Component {
           },
           event: { scheduleId: id },
           dateValue: [
-            { value: 1, label: 'FECHA UNICA' },
+            { value: 1, label: 'FECHA MANUAL' },
             {
               value: Number(salesStartDate),
               label: `FECHA INICIO PROYECTO (${moment(
@@ -122,23 +128,45 @@ class Events extends Component {
 
   sendEvent = () => {
     this.services
-      .postEvent(this.props.towerId, this.state.event)
-      .then((response) => {
-        const currentEvent = {
-          value: response.data.id,
-          label: response.data.description,
-        };
-        this.props.currentEvent(currentEvent);
+      .getAll(this.props.towerId)
+      .then((events) => {
+        if (
+          events.data.find(
+            (event) => event.description === this.state.description,
+          )
+        ) {
+          this.setState({
+            alert: {
+              opened: true,
+              message: 'Error, ya existe un evento con ese nombre',
+              severity: 'error',
+            },
+          });
+        } else {
+          this.services
+            .postEvent(this.props.towerId, this.state.event)
+            .then((response) => {
+              const currentEvent = {
+                value: response.data.id,
+                label: response.data.description,
+              };
+              this.props.currentEvent(currentEvent);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          this.setState({ eventModal: { isOpen: false } });
+        }
       })
       .catch((error) => {
         console.log(error);
       });
-    this.setState({ eventModal: { isOpen: false } });
   };
 
   onChangeText = (e) => {
     this.setState({
       event: { ...this.state.event, description: e.target.value },
+      description: e.target.value,
     });
   };
 

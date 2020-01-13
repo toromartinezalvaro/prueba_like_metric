@@ -32,7 +32,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
     if (informationToEdit) {
       setTextOfItem(informationToEdit.name);
     }
-  }, []);
+  }, null);
   return (
     <Fragment>
       <Typography className={styles.heading} variant="h4">

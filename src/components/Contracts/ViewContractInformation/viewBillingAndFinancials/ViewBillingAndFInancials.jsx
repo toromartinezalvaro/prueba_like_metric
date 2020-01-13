@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 import { Card, CardContent } from '@material-ui/core';
 import moment from 'moment';
 import Icon from '@material-ui/core/Icon';
+import NumberFormat from 'react-number-format';
+import Numbers from '../../../../helpers/numbers';
 import style from '../ViewContractInformation.module.scss';
 
 const ViewBillingAndFinancials = ({ contractDataView }) => {
@@ -27,9 +29,10 @@ const ViewBillingAndFinancials = ({ contractDataView }) => {
       <Card className={style.card}>
         <CardContent>
           <div className={style.containerForBillings}>
-            {contractDataView.billings.map((billing) => {
+            {contractDataView.billings.map((billing, i) => {
               return (
                 <Card className={style.cardContainer} key={billing.id}>
+                  <h3>Forma de pago N°{i}</h3>
                   <div className={style.subContainer}>
                     <div className="leftInformation">
                       <Card className={style.leftTitle}>
@@ -43,12 +46,18 @@ const ViewBillingAndFinancials = ({ contractDataView }) => {
                         <p className={style.information}>{billing.eventId}</p>
                       </Card>
                       <Card className={style.leftTitle}>
-                        <span className={style.labelForTitle}>
-                          VALOR DE CUENTA
+                        <span className={style.cont}>
+                          <span className={style.labelForTitle}>
+                            VALOR DE CUENTA
+                          </span>
+                          <NumberFormat
+                            value={Numbers.toFixed(billing.amount)}
+                            displayType={'text'}
+                            className={style.informationAmount}
+                            thousandSeparator={true}
+                            prefix={'$'}
+                          />
                         </span>
-                        <p className={style.information}>
-                          {billing.amount} COP
-                        </p>
                       </Card>
                     </div>
                     <div className="rightInformation">
@@ -76,7 +85,13 @@ const ViewBillingAndFinancials = ({ contractDataView }) => {
             <div className={style.cardForm}>
               <div className={style.Totalbills}>
                 <h4 sclassName={style.textTotal}> Valor Total:</h4>
-                <p className={style.TotalAmount}>{totalBills} COP</p>
+                <NumberFormat
+                  value={Numbers.toFixed(totalBills)}
+                  displayType={'text'}
+                  className={style.TotalAmount}
+                  thousandSeparator={true}
+                  prefix={'$'}
+                />
               </div>
             </div>
           </div>

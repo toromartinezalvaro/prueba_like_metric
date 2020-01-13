@@ -114,3 +114,23 @@
 .circleColorFinantials {
   background-color: $softMain-color;
 }
+
+.textField {
+  z-index: 0 !important;
+}
+
+.itemMenu {
+  background-color: $defaultWhite-color !important;
+  z-index: 9999999 !important;
+}
+
+@media(max-width: 1440px) {
+  .gridContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100vh !important;
+  }
+}

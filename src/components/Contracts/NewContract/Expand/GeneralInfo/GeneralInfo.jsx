@@ -38,6 +38,7 @@ const ExpandGeneralInfo = ({
   changeItemIsLocked,
   currentGroupId,
   dataIfEdit,
+  sendContractNumber,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4}>
@@ -76,6 +77,7 @@ const ExpandGeneralInfo = ({
             handleOpenItem={handleOpenItem}
             handleCloseItem={handleCloseItem}
             dataIfEdit={dataIfEdit}
+            sendContractNumber={sendContractNumber}
           />
         </Typography>
       </ExpansionPanelDetails>
