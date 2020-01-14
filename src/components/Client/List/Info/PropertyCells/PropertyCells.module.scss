@@ -1,0 +1,15 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.container {
+  display: flex;
+  margin: 10px 0;
+  & div {
+    margin-right: 15px;
+  }
+
+  .selected {
+    background-color: #fff;
+    border: 2px solid $main-color;
+    color: $main-color;
+  }
+}

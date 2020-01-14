@@ -30,4 +30,8 @@ export default class ClientsServices extends Services {
       ClientsServicesDefinition.getClient(identityDocument, towerId),
     );
   }
+
+  getPropertyInfo(propertyId) {
+    return this.get(ClientsServicesDefinition.getPropertyInfo(propertyId));
+  }
 }
