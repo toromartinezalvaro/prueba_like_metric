@@ -83,6 +83,7 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
       </Card>
       <InfoDialog
         client={shownClient}
+        towerId={towerId}
         handleClose={() => {
           setShownClient(null);
         }}

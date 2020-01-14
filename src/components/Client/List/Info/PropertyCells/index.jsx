@@ -1,22 +1,24 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Chip from '@material-ui/core/Chip';
+import Button from '../../../../UI/Button/Button';
 import Styles from './PropertyCells.module.scss';
 
-const PropertyCells = ({ properties, selectProperty }) => {
+const PropertyCells = ({ properties, selectProperty, selectedId }) => {
   return (
     <Fragment>
       <div className={Styles.container}>
         <div>Propiedades: </div>
         {properties.map((property, index) => {
           return (
-            <Chip
-              label={property.name}
+            <Button
+              className={selectedId === property.id && Styles.selected}
               key={`propertyCell-${index}`}
               onClick={() => {
                 selectProperty(property.id);
               }}
-            />
+            >
+              {property.name}
+            </Button>
           );
         })}
       </div>
