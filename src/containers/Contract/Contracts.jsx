@@ -147,7 +147,7 @@ class Contracts extends Component {
     this.setState({
       businessPatnerModal: {
         isEditable: false,
-        editableInfo: {},
+        editableInfo: undefined,
         currentPatner: 'Seleccione un Socio',
       },
     });
@@ -234,6 +234,7 @@ class Contracts extends Component {
             ...this.state.businessPatnerModal,
             currentPatner,
           },
+          patners: [...this.state.patners, currentPatner],
         });
       })
       .catch((error) => {
@@ -621,7 +622,7 @@ class Contracts extends Component {
           open={this.state.categoryModal.isOpen}
           handleCloseCategory={this.handleCloseCategory}
           fullWidth={true}
-          maxWidth="md"
+          maxWidth="lg"
         >
           <DialogContent>
             <Category
@@ -639,7 +640,7 @@ class Contracts extends Component {
           open={this.state.businessPatnerModal.isOpen}
           handleCloseBusinessPatner={this.handleCloseBusinessPatner}
           fullWidth={true}
-          maxWidth="md"
+          maxWidth="lg"
         >
           <DialogContent>
             <BusinessPatner
@@ -657,7 +658,7 @@ class Contracts extends Component {
           open={this.state.itemModal.isOpen}
           handleCloseItem={this.handleCloseItem}
           fullWidth={true}
-          maxWidth="md"
+          maxWidth="lg"
         >
           <DialogContent>
             <Item

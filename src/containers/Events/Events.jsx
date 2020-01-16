@@ -239,7 +239,7 @@ class Events extends Component {
           className={styles.dialogExpand}
           scroll="body"
           fullWidth={true}
-          maxWidth="md"
+          maxWidth="lg"
           open={this.state.eventModal.isOpen}
         >
           <DialogContent>

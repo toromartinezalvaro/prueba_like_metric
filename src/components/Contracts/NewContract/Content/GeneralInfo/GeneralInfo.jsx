@@ -79,13 +79,13 @@ const GeneralInfo = ({
   };
 
   const searchForCategory = () => {
-    if (categoryProp.value !== '') {
+    if (categoryProp !== undefined && categoryProp.value !== '') {
       searchCategory(categoryProp.value);
     }
   };
 
   const searchForPatner = () => {
-    if (partnerProp.value !== '') {
+    if (partnerProp !== undefined && partnerProp.value !== '') {
       searchBusinessPartner(partnerProp.value);
     }
   };
