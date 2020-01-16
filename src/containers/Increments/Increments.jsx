@@ -40,9 +40,8 @@ class Increments extends Component {
 
     this.services
       .putFutureSalesSpeeds(id, value)
-      .then((results) => {
-        console.log(results);
-        this.setState({ loadingAPI: false });
+      .then(() => {
+        this.updateIncrements();
       })
       .catch((error) => {
         console.log(error);

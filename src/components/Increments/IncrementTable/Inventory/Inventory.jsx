@@ -167,6 +167,11 @@ function Inventory({
       </div>
       <div className={Styles['inv-retention-months']}>
         <div>
+          <span>Meses de retencion: </span>
+          <span>{retentionMonths}</span>
+        </div>
+        -
+        <div>
           <span>Meses a hoy: </span>
           {limitTodayDate > 0 ? limitTodayDate : 0}
         </div>
