@@ -42,7 +42,7 @@ const BillingFinancials = ({
     lastBillingDate: `${moment(new Date())
       .toDate()
       .getTime()}`,
-    iva: 19,
+    iva: 0,
     isLocked: false,
   };
   const [billings, setBillings] = useState([]);

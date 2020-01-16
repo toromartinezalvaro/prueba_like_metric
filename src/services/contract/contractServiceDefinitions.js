@@ -10,14 +10,14 @@ import BillingFinancials from '../../components/Contracts/NewContract/Content/Bi
 const ContractServiceDefinitions = {
   contract: (towerId) => `${API_PATH}contract/${towerId}`,
   contractForEdition: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
-  category: () => `${API_PATH}contract/contract-category`,
-  getAllCategories: () => `${API_PATH}contract/contract-category`,
-  businessContract: () => `${API_PATH}contract/business-partner`,
+  category: (towerId) => `${API_PATH}contract/contract-category/${towerId}`,
+  getAllCategories: (towerId) => `${API_PATH}contract/contract-category/${towerId}`,
+  businessContract: (towerId) => `${API_PATH}contract/business-partner/${towerId}`,
   categoryToSearch: (categoryToSearch) =>
     `${API_PATH}contract/contract-category/${categoryToSearch}`,
   businessContractToSearch: (textToSearch) =>
     `${API_PATH}contract/${textToSearch}`,
-  getAllPatners: () => `${API_PATH}contract/business-partner`,
+  getAllPatners: (towerId) => `${API_PATH}contract/business-partner/${towerId}`,
   getCategoryById: (categoryToSearch) =>
     `${API_PATH}contract/contract-category/find/${categoryToSearch}`,
   organizationUnit: () => `${API_PATH}contract/organization-unit`,

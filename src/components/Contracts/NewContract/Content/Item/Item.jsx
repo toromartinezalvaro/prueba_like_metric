@@ -17,14 +17,14 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
   };
   const sendTextOfItem = () => {
     if (informationToEdit) {
-      newItem(textOfItem);
+      updateItem({
+        id: informationToEdit.id,
+        name: textOfItem,
+        contractId: informationToEdit.contractId,
+      });
       handleCloseItem();
     }
-    updateItem({
-      id: informationToEdit.id,
-      name: textOfItem,
-      contractId: informationToEdit.contractId,
-    });
+    newItem(textOfItem);
     handleCloseItem();
   };
 
@@ -40,7 +40,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
           <Icon className={`${styles.iconGeneral} fas fa-paste`} />
         </div>
         <div className={styles.titleExpand}>
-          {informationToEdit ? 'Nuevo Item' : 'Editar Item'}
+          {informationToEdit ? 'Editar Item' : 'Nuevo Item'}
         </div>
       </Typography>
       <div container className={styles.gridContainer}>
@@ -65,7 +65,7 @@ const Item = ({ handleCloseItem, newItem, updateItem, informationToEdit }) => {
           startIcon={<AddIcon />}
           onClick={sendTextOfItem}
         >
-          {informationToEdit ? 'Crear' : 'Editar'}
+          {informationToEdit ? 'Editar' : 'Crear'}
         </Button>
 
         <Button
