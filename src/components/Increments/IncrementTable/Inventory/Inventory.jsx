@@ -166,13 +166,13 @@ function Inventory({
         />
       </div>
       <div className={Styles['inv-retention-months']}>
-        <Input
+        {/* <Input
           validations={validations}
           value={retentionMonths}
           onChange={(target) => {
             putSuggestedSalesSpeed(target.value);
           }}
-        />
+        /> */}
 
         <div>
           <span>Meses a hoy: </span>
