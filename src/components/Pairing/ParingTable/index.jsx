@@ -47,7 +47,12 @@ const PairingTable = ({
         </Fab>
       </div>
       <div className={Styles.tableContainer}>
-        <Table stickyHeader>
+        <Table
+          stickyHeader
+          classes={{
+            root: Styles.tableRoot,
+          }}
+        >
           <TableHead>
             <TableRow>
               <TableCell>Nomenclatura</TableCell>

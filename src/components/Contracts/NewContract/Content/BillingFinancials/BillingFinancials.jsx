@@ -6,6 +6,7 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import NumberFormat from 'react-number-format';
 import {
   Button,
   Card,
@@ -17,6 +18,7 @@ import {
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import moment from 'moment';
+import Numbers from '../../../../../helpers/numbers';
 import MonthEnum from './month.enum';
 import YearEnum from './year.enum';
 import Events from '../../../../../containers/Events/Events';
@@ -34,12 +36,13 @@ const BillingFinancials = ({
   const cardValue = {
     id: 0,
     eventId: null,
-    cycle: 'Una vez',
+    cycle: 'Pago Único',
     amount: 0,
     description: '',
     lastBillingDate: `${moment(new Date())
       .toDate()
       .getTime()}`,
+    iva: 0,
     isLocked: false,
   };
   const [billings, setBillings] = useState([]);
@@ -155,7 +158,8 @@ const BillingFinancials = ({
         component="div"
         style={{
           fontWeight: props.isSelected ? 500 : 400,
-          zIndex: 1000,
+          zIndex: '999999999',
+          overflowY: 'scroll',
         }}
         {...props.innerProps}
       >
@@ -165,13 +169,35 @@ const BillingFinancials = ({
   };
 
   const displayComponent = () => {
-    return billings.map((billing) => {
+    return billings.map((billing, i) => {
       totalBills += parseInt(billing.amount);
       return (
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
             <div className={styles.gridContainer}>
               <div className={styles.columnFullLeft}>
+                <h3>Forma de pago N°{i}</h3>
+                <h4>Proyección de pago</h4>
+                <Select
+                  className={styles.Select}
+                  inputId="react-select-single"
+                  isDisabled={billing.isLocked}
+                  TextFieldProps={{
+                    label: 'ciclo de cobro',
+                    InputLabelProps: {
+                      htmlFor: 'react-select-single',
+                      shrink: true,
+                    },
+                  }}
+                  placeholder="ciclo de cobro"
+                  components={Option}
+                  options={suggestions}
+                  defaultValue={{
+                    label: billing.cycle,
+                    value: billing.cycle,
+                  }}
+                  onChange={changeCardValue('cycle', billing.id, false, true)}
+                />
                 <Select
                   className={styles.Select}
                   inputId="react-select-single"
@@ -209,28 +235,6 @@ const BillingFinancials = ({
                   towerId={towerId}
                   disabled={billing.isLocked}
                 />
-
-                <Select
-                  className={styles.Select}
-                  inputId="react-select-single"
-                  isDisabled={billing.isLocked}
-                  TextFieldProps={{
-                    label: 'ciclo de cobro',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single',
-                      shrink: true,
-                    },
-                  }}
-                  placeholder="ciclo de cobro"
-                  components={Option}
-                  options={suggestions}
-                  defaultValue={{
-                    label: billing.cycle,
-                    value: billing.cycle,
-                  }}
-                  onChange={changeCardValue('cycle', billing.id, false, true)}
-                />
-
                 <TextField
                   disabled={billing.isLocked}
                   className={styles.textField}
@@ -247,12 +251,33 @@ const BillingFinancials = ({
                     required
                     disabled={billing.isLocked}
                     className={styles.textField}
-                    label="cuenta de cobro (pesos colombiano)"
+                    label="Valor antes de IVA"
                     margin="normal"
                     variant="outlined"
                     defaultValue={dataIfEdit && billing.amount}
                     value={billing.billingAmount}
                     onChange={changeCardValue('amount', billing.id)}
+                  />
+                  <TextField
+                    required
+                    disabled={billing.isLocked}
+                    className={styles.textField}
+                    label="Valor IVA %"
+                    margin="normal"
+                    variant="outlined"
+                    defaultValue={billing.iva}
+                    value={billing.billingAmount}
+                    onChange={changeCardValue('iva', billing.id)}
+                  />
+
+                  <NumberFormat
+                    value={Numbers.toFixed(
+                      billing.amount * (billing.iva / 100),
+                    )}
+                    displayType={'text'}
+                    className={styles.TotalAmount}
+                    thousandSeparator={true}
+                    prefix={'$'}
                   />
                 </div>
 
@@ -333,8 +358,19 @@ const BillingFinancials = ({
                     </Button>
                   )}
                   <div className={styles.TotalSubbills}>
-                    <h4 sclassName={styles.textTotal}> Valor de cuenta:</h4>
-                    <p className={styles.amount}>{billing.amount}</p>
+                    <h4 sclassName={styles.textTotal}>
+                      {' '}
+                      Valor de cuenta con IVA:
+                    </h4>
+                    <NumberFormat
+                      className={styles.amount}
+                      value={Numbers.toFixed(
+                        billing.amount - billing.amount * (billing.iva / 100),
+                      )}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={'$'}
+                    />
                   </div>
                 </div>
               </div>
@@ -351,7 +387,13 @@ const BillingFinancials = ({
       <div className={styles.cardForm}>
         <div className={styles.Totalbills}>
           <h4 sclassName={styles.textTotal}> Valor Total:</h4>
-          <p className={styles.TotalAmount}>{totalBills} COP</p>
+          <NumberFormat
+            value={Numbers.toFixed(totalBills)}
+            displayType={'text'}
+            className={styles.TotalAmount}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
         </div>
       </div>
       <Button

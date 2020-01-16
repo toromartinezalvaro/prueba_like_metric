@@ -23,12 +23,12 @@ export default class Towers extends Component {
     alertIsHidden: true,
     isLoading: false,
     alertAccept: () => {},
+    currentEditingTower: null,
   };
 
   componentDidMount() {
     this.loadCurrentTowers();
   }
-
 
   openTowerHandler = (tower) => {
     tower = { ...tower, projectId: this.props.match.params.projectId };
@@ -153,32 +153,84 @@ export default class Towers extends Component {
     });
   };
 
+  onChangeTower = (name) => (target) => {
+    this.setState((prevState) => {
+      const currentEditingTower = {
+        ...prevState.currentEditingTower,
+        [name]: target.value,
+      };
+      return { currentEditingTower };
+    });
+  };
+
+  onEditTower = () => {
+    const { id, name, description } = this.state.currentEditingTower;
+    this.services
+      .updateTower(id, { name, description })
+      .then((response) => {
+        const tower = { ...response.data[1] };
+        tower.id = id;
+        this.setState((prevState) => {
+          const { towers } = prevState;
+          const index = towers.findIndex((o) => o.id === id);
+          towers[index] = tower;
+          return {
+            towers,
+            currentEditingProject: null,
+            modalIsHidden: true,
+          };
+        });
+      })
+      .catch((error) => {
+        this.setState({ currentEditingTower: null, modalIsHidden: true });
+        console.error(error);
+      });
+  };
+
   createModal = () => {
     return (
       <Modal
-        title={'Crear Torre'}
+        title={this.state.currentEditingTower ? 'Editar torre' : 'Crear torre'}
         hidden={this.state.modalIsHidden}
-        onConfirm={this.onCreate}
+        onConfirm={
+          this.state.currentEditingTower ? this.onEditTower : this.onCreate
+        }
         onCancel={this.cancel}
       >
         <div>
           <label>Nombre</label>
           <Input
             name="newTitleTower"
-            onChange={this.onChange}
+            onChange={
+              this.state.currentEditingTower
+                ? this.onChangeTower('name')
+                : this.onChange
+            }
             validations={[]}
             style={{ width: '75px' }}
-            value={this.state.newTitleTower}
+            value={
+              this.state.currentEditingTower
+                ? this.state.currentEditingTower.name
+                : this.state.newTitleTower
+            }
           />
         </div>
         <div>
           <label>Descripción</label>
           <Input
             name="newDescriptionTower"
-            onChange={this.onChange}
+            onChange={
+              this.state.currentEditingTower
+                ? this.onChangeTower('description')
+                : this.onChange
+            }
             validations={[]}
             style={{ width: '75px' }}
-            value={this.state.newDescriptionTower}
+            value={
+              this.state.currentEditingTower
+                ? this.state.currentEditingTower.description
+                : this.state.newDescriptionTower
+            }
           />
         </div>
       </Modal>
@@ -198,6 +250,15 @@ export default class Towers extends Component {
     );
   }
 
+  editTower = (id) => {
+    const { towers } = this.state;
+    const currentEditingTower = towers.find((tower) => tower.id === id);
+    this.setState({
+      currentEditingTower,
+      modalIsHidden: !currentEditingTower,
+    });
+  };
+
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
@@ -206,10 +267,12 @@ export default class Towers extends Component {
             towers={this.state.towers}
             openTower={this.openTowerHandler}
             createTower={this.createTowerHandler}
+            editTower={this.editTower}
             removeTower={this.removetowerHandler}
           />
         )}
-        {!this.state.modalIsHidden && this.createModal()}
+        {(!this.state.modalIsHidden || this.state.currentEditingTower) &&
+          this.createModal()}
         {!this.state.alertIsHidden && this.createAlert()}
       </LoadableContainer>
     );

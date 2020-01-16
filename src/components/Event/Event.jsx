@@ -41,16 +41,7 @@ const Event = ({
         uniqueDateValue={uniqueDateValue}
         handleChangeUniqueDate={handleChangeUniqueDate}
       />
-      <div className={styles.heading}>
-        <div
-          className={`${styles.circleIcon}  ${styles.circleColorGeneralBlue}`}
-        >
-          <Icon className={`${styles.iconGeneral} fas fa-file-signature`} />
-        </div>
-        <div className={styles.titleExpand}>Información de Contrato Ligado</div>
-      </div>
-      <ContractReference />
-
+      
       <div className={styles.actionContainer}>
         <Button
           variant="contained"

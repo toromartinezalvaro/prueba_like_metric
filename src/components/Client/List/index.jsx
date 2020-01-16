@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { DashboardRoutes } from '../../../routes/local/routes';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Card, { CardHeader, CardBody, CardFooter } from '../../UI/Card/Card';
+import { DashboardRoutes } from '../../../routes/local/routes';
+import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import Button2 from '../../UI2/Button';
 import Styles from './ClientList.module.scss';
+import InfoDialog from './Info';
 
 const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
+  const [shownClient, setShownClient] = useState(null);
+
   const getData = () => {
     return clients.map((client, index) => {
       return [
@@ -21,6 +24,15 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
           <TableCell>{client.name}</TableCell>
           <TableCell>{client.email}</TableCell>
           <TableCell>{client.phoneNumber}</TableCell>
+          <TableCell>
+            <Button2
+              onClick={() => {
+                setShownClient(client);
+              }}
+            >
+              Detalles
+            </Button2>
+          </TableCell>
           <TableCell>
             <Link
               key={`link-${index}`}
@@ -34,7 +46,7 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
     });
   };
 
-  const columns = ['Cedula', 'Nombre', 'Correo', 'Celular', ''];
+  const columns = ['Cedula', 'Nombre', 'Correo', 'Celular', '', ''];
 
   return (
     <div>
@@ -69,6 +81,13 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
           </Table>
         </CardBody>
       </Card>
+      <InfoDialog
+        client={shownClient}
+        towerId={towerId}
+        handleClose={() => {
+          setShownClient(null);
+        }}
+      />
     </div>
   );
 };

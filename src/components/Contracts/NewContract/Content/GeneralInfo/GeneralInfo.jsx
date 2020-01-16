@@ -41,6 +41,7 @@ const GeneralInfo = ({
   currentGroupId,
   changeItemIsLocked,
   dataIfEdit,
+  sendContractNumber,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: dataIfEdit ? dataIfEdit.title : '',
@@ -66,6 +67,9 @@ const GeneralInfo = ({
     const information = { ...generalInformation, [name]: e.target.value };
     setGeneralInformation(information);
     sendGeneralInfo(information);
+    if (name === 'contractNumber') {
+      sendContractNumber(e.target.value);
+    }
   };
 
   const onChangeSelect = (name) => (label) => {
@@ -75,19 +79,19 @@ const GeneralInfo = ({
   };
 
   const searchForCategory = () => {
-    if (categoryProp.value !== '') {
+    if (categoryProp !== undefined && categoryProp.value !== '') {
       searchCategory(categoryProp.value);
     }
   };
 
   const searchForPatner = () => {
-    if (partnerProp.value !== '') {
+    if (partnerProp !== undefined && partnerProp.value !== '') {
       searchBusinessPartner(partnerProp.value);
     }
   };
 
   const searchForItem = () => {
-    if (itemProp.value !== '') {
+    if (itemProp && itemProp.value !== '') {
       searchItem(itemProp.value);
     }
   };

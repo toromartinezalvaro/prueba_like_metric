@@ -15,7 +15,7 @@ import styles from './Attachment.module.scss';
 
 const ExpandAttachment = ({ sendAttachments, dataIfEdit }) => {
   return (
-    <ExpansionPanel className={styles.expansionPanel} mt={4}>
+    <ExpansionPanel className={styles.expansionPanel} mt={4} expanded={true}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
         <Typography className={styles.heading}>
           <div

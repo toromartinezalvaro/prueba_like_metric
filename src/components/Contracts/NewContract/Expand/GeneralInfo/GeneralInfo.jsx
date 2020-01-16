@@ -38,9 +38,10 @@ const ExpandGeneralInfo = ({
   changeItemIsLocked,
   currentGroupId,
   dataIfEdit,
+  sendContractNumber,
 }) => {
   return (
-    <ExpansionPanel className={styles.expansionPanel} mb={4}>
+    <ExpansionPanel className={styles.expansionPanel} mb={4} expanded={true}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
         <Typography className={styles.heading}>
           <div className={`${styles.circleIcon}  ${styles.circleColorGeneral}`}>
@@ -76,6 +77,7 @@ const ExpandGeneralInfo = ({
             handleOpenItem={handleOpenItem}
             handleCloseItem={handleCloseItem}
             dataIfEdit={dataIfEdit}
+            sendContractNumber={sendContractNumber}
           />
         </Typography>
       </ExpansionPanelDetails>

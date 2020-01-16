@@ -168,3 +168,17 @@
 .leftInputs {
   z-index: 0 !important;
 }
+
+@media(max-width: 1440px) {
+  .gridContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: flex-start;
+    align-content: center !important;
+    flex-wrap: wrap;
+    align-self: center !important;
+    width: 125vh !important;
+    margin-left: 6%;
+  }
+}

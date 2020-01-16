@@ -166,14 +166,11 @@ function Inventory({
         />
       </div>
       <div className={Styles['inv-retention-months']}>
-        <Input
-          validations={validations}
-          value={retentionMonths}
-          onChange={(target) => {
-            putSuggestedSalesSpeed(target.value);
-          }}
-        />
-
+        <div>
+          <span>Meses de retencion: </span>
+          <span>{retentionMonths}</span>
+        </div>
+        -
         <div>
           <span>Meses a hoy: </span>
           {limitTodayDate > 0 ? limitTodayDate : 0}

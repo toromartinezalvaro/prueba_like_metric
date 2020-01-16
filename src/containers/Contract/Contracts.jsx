@@ -68,12 +68,18 @@ class Contracts extends Component {
       attachments: [],
       attachmentPath: '',
       contract: null,
+      contractNumber: null,
+      alert: {
+        opened: false,
+        severity: 'success',
+        message: '',
+      },
     };
   }
 
   componentDidMount() {
     this.services
-      .getAllCategories()
+      .getAllCategories(this.props.match.params.towerId)
       .then((response) => {
         const categories = response.data.map((category) => {
           return {
@@ -90,7 +96,7 @@ class Contracts extends Component {
       });
 
     this.services
-      .getAllPatners()
+      .getAllPatners(this.props.match.params.towerId)
       .then((response) => {
         const partners = response.data.map((partner) => {
           return {
@@ -141,7 +147,7 @@ class Contracts extends Component {
     this.setState({
       businessPatnerModal: {
         isEditable: false,
-        editableInfo: {},
+        editableInfo: undefined,
         currentPatner: 'Seleccione un Socio',
       },
     });
@@ -195,7 +201,7 @@ class Contracts extends Component {
 
   newCategory = (categoryName) => {
     this.services
-      .postCategoryContracts({ categoryName })
+      .postCategoryContracts({ categoryName }, this.props.match.params.towerId)
       .then((response) => {
         const currentCategory = {
           value: response.data.id,
@@ -212,9 +218,28 @@ class Contracts extends Component {
   };
 
   newBusinessPartner = (partner) => {
-    this.services.postBusinessPatnerContract(partner).catch((error) => {
-      console.log(error);
-    });
+    this.services
+      .postBusinessPatnerContract(partner, this.props.match.params.towerId)
+      .then((response) => {
+        const currentPatner = {
+          value: response.data.id,
+          label: response.data.patnerName,
+        };
+        this.setState({
+          contractModal: {
+            ...this.state.contractModal,
+            data: { patner: currentPatner },
+          },
+          businessPatnerModal: {
+            ...this.state.businessPatnerModal,
+            currentPatner,
+          },
+          patners: [...this.state.patners, currentPatner],
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   newItem = (name) => {
@@ -408,7 +433,7 @@ class Contracts extends Component {
   };
 
   getAllPatners = () => {
-    this.services.getAllPatners();
+    this.services.getAllPatners(this.props.match.params.towerId);
   };
 
   sendBillings = (billings) => {
@@ -435,14 +460,39 @@ class Contracts extends Component {
     this.setState({ events: [...this.state.events, currentEvent] });
   };
 
+  sendContractNumber = (contractNumber) => {
+    this.setState({ contractNumber });
+  };
+
   addContract = () => {
     this.services
-      .postContract(this.state.contract, this.props.match.params.towerId)
-      .then((response) => {
-        console.log(response);
+      .getAllContracts(this.props.match.params.towerId)
+      .then((contracts) => {
+        if (
+          contracts.data.find(
+            (contract) => contract.contractNumber === this.state.contractNumber,
+          )
+        ) {
+          this.setState({
+            alert: {
+              opened: true,
+              message: 'Error, ya existe un contrato con ese nombre',
+              severity: 'error',
+            },
+          });
+        } else {
+          this.services
+            .postContract(this.state.contract, this.props.match.params.towerId)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => console.log(error));
+          this.setState({ contractModal: { isOpen: false } });
+        }
       })
-      .catch((error) => console.log(error));
-    this.setState({ contractModal: { isOpen: false } });
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   sendId = (id) => {
@@ -517,7 +567,7 @@ class Contracts extends Component {
       .catch((error) => console.log(error));
     this.setState({
       contractModal: { ...this.state.contractModal, isOpen: false },
-    }); 
+    });
   };
 
   render() {
@@ -564,6 +614,7 @@ class Contracts extends Component {
           addContract={this.addContract}
           dataIfEdit={this.state.contractModal.generalInformationData}
           editContract={this.editContract}
+          sendContractNumber={this.sendContractNumber}
         />
         <Dialog
           className={styles.dialogExpand}
@@ -571,7 +622,7 @@ class Contracts extends Component {
           open={this.state.categoryModal.isOpen}
           handleCloseCategory={this.handleCloseCategory}
           fullWidth={true}
-          maxWidth="md"
+          maxWidth="lg"
         >
           <DialogContent>
             <Category
@@ -589,7 +640,7 @@ class Contracts extends Component {
           open={this.state.businessPatnerModal.isOpen}
           handleCloseBusinessPatner={this.handleCloseBusinessPatner}
           fullWidth={true}
-          maxWidth="md"
+          maxWidth="lg"
         >
           <DialogContent>
             <BusinessPatner
@@ -607,7 +658,7 @@ class Contracts extends Component {
           open={this.state.itemModal.isOpen}
           handleCloseItem={this.handleCloseItem}
           fullWidth={true}
-          maxWidth="md"
+          maxWidth="lg"
         >
           <DialogContent>
             <Item

@@ -8,16 +8,16 @@ import ContractServiceDefinitions from './contractServiceDefinitions';
 import Services from '../services';
 
 export default class ContractService extends Services {
-  postCategoryContracts(data) {
-    return this.post(ContractServiceDefinitions.category(), data);
+  postCategoryContracts(data, towerId) {
+    return this.post(ContractServiceDefinitions.category(towerId), data);
   }
 
   postOrganizationUnit(data) {
     return this.post(ContractServiceDefinitions.organizationUnit(), data);
   }
 
-  postBusinessPatnerContract(data) {
-    return this.post(ContractServiceDefinitions.businessContract(), data);
+  postBusinessPatnerContract(data, towerId) {
+    return this.post(ContractServiceDefinitions.businessContract(towerId), data);
   }
 
   getCategoryToSearch(categoryToSearch) {
@@ -26,8 +26,8 @@ export default class ContractService extends Services {
     );
   }
 
-  getAllCategories() {
-    return this.get(ContractServiceDefinitions.getAllCategories());
+  getAllCategories(towerId) {
+    return this.get(ContractServiceDefinitions.getAllCategories(towerId));
   }
 
   getCategoryById(categoryToSearch) {
@@ -52,8 +52,8 @@ export default class ContractService extends Services {
     );
   }
 
-  getAllPatners() {
-    return this.get(ContractServiceDefinitions.getAllPatners());
+  getAllPatners(towerId) {
+    return this.get(ContractServiceDefinitions.getAllPatners(towerId));
   }
 
   getAllOrganizationUnit() {

@@ -77,8 +77,17 @@
   margin-bottom: 2% !important;
 }
 
+.cont {
+  display: flex;
+  flex-direction: column;
+}
+
 .information {
-  margin-top: 2%;
+  margin-top: 2% !important;
+}
+
+.informationAmount {
+  margin-top: 2% !important;
 }
 
 .circleIcon {
