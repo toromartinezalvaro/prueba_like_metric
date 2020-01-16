@@ -79,7 +79,7 @@ class Contracts extends Component {
 
   componentDidMount() {
     this.services
-      .getAllCategories()
+      .getAllCategories(this.props.match.params.towerId)
       .then((response) => {
         const categories = response.data.map((category) => {
           return {
@@ -96,7 +96,7 @@ class Contracts extends Component {
       });
 
     this.services
-      .getAllPatners()
+      .getAllPatners(this.props.match.params.towerId)
       .then((response) => {
         const partners = response.data.map((partner) => {
           return {
@@ -201,7 +201,7 @@ class Contracts extends Component {
 
   newCategory = (categoryName) => {
     this.services
-      .postCategoryContracts({ categoryName })
+      .postCategoryContracts({ categoryName }, this.props.match.params.towerId)
       .then((response) => {
         const currentCategory = {
           value: response.data.id,
@@ -219,7 +219,7 @@ class Contracts extends Component {
 
   newBusinessPartner = (partner) => {
     this.services
-      .postBusinessPatnerContract(partner)
+      .postBusinessPatnerContract(partner, this.props.match.params.towerId)
       .then((response) => {
         const currentPatner = {
           value: response.data.id,
@@ -432,7 +432,7 @@ class Contracts extends Component {
   };
 
   getAllPatners = () => {
-    this.services.getAllPatners();
+    this.services.getAllPatners(this.props.match.params.towerId);
   };
 
   sendBillings = (billings) => {
