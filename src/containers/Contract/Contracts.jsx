@@ -157,7 +157,7 @@ class Contracts extends Component {
     this.setState({
       itemModal: {
         isEditable: false,
-        editableInfo: {},
+        editableInfo: undefined,
         currentItem: 'Selecciona un Item',
       },
     });
@@ -234,7 +234,7 @@ class Contracts extends Component {
             ...this.state.businessPatnerModal,
             currentPatner,
           },
-          patners: [...this.state.patners, currentPatner],
+          partners: [...this.state.partners, currentPatner],
         });
       })
       .catch((error) => {
@@ -411,7 +411,7 @@ class Contracts extends Component {
 
   changeItemIsLocked = (groupId) => {
     this.services
-      .findByForeignId(groupId)
+      .findByForeignId(this.props.match.params.towerId, groupId)
       .then((response) => {
         const items = response.data.map((item) => {
           return {
