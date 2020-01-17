@@ -18,6 +18,11 @@ import {
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import moment from 'moment';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import Numbers from '../../../../../helpers/numbers';
 import MonthEnum from './month.enum';
 import YearEnum from './year.enum';
@@ -33,16 +38,18 @@ const BillingFinancials = ({
   currentEvent,
   dataIfEdit,
 }) => {
+  const [todayDate, setTodayDate] = useState(new Date().getTime());
   const cardValue = {
     id: 0,
     eventId: null,
     cycle: 'Pago Único',
     amount: 0,
     description: '',
-    lastBillingDate: `${moment(new Date())
-      .toDate()
-      .getTime()}`,
+    displacement: 0,
+    lastBillingDate: todayDate,
+    initalBillingDate: todayDate,
     iva: 0,
+    paymentNumber: 1,
     isLocked: false,
   };
   const [billings, setBillings] = useState([]);
@@ -73,7 +80,10 @@ const BillingFinancials = ({
     let bill = {};
 
     if (elementIsADate) {
-      bill = { ...billingsArray[billIndex], [name]: element };
+      bill = {
+        ...billingsArray[billIndex],
+        [name]: Number(moment(element).format('x')),
+      };
     } else if (elementIsASelect) {
       let filterMonths = [];
       let tempo;
@@ -122,7 +132,7 @@ const BillingFinancials = ({
     } else {
       bill = { ...billingsArray[billIndex], [name]: element.target.value };
     }
-
+    console.log('DATE', billingsArray);
     billingsArray[billIndex] = bill;
     setBillings(billingsArray);
     sendBillings(billingsArray);
@@ -198,51 +208,67 @@ const BillingFinancials = ({
                   }}
                   onChange={changeCardValue('cycle', billing.id, false, true)}
                 />
-                <Select
-                  className={styles.Select}
-                  inputId="react-select-single"
-                  isDisabled={billing.isLocked}
-                  TextFieldProps={{
-                    label: 'Evento a Facturar',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single',
-                      shrink: true,
-                    },
-                  }}
-                  placeholder="Evento a Facturar"
-                  components={Option}
-                  options={events}
-                  defaultValue={
-                    dataIfEdit &&
-                    events.find((option) => {
-                      return (
-                        option.value === billing.eventId && {
-                          value: billing.eventId,
-                        }
-                      );
-                    })
-                  }
-                  onChange={changeCardValue(
-                    'eventId',
-                    billing.id,
-                    false,
-                    false,
-                    true,
-                  )}
-                />
-                <Events
-                  currentEvent={currentEvent}
-                  towerId={towerId}
-                  disabled={billing.isLocked}
-                />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disabled={billing.isLocked}
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Fecha Inicial"
+                    value={billing.initalBillingDate}
+                    onChange={changeCardValue(
+                      'initalBillingDate',
+                      billing.id,
+                      true,
+                    )}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
                 <TextField
+                  required
                   disabled={billing.isLocked}
                   className={styles.textField}
-                  label="Descripción"
+                  label="Desplazamiento en meses"
                   margin="normal"
                   variant="outlined"
-                  defaultValue={billing.description}
-                  onChange={changeCardValue('description', billing.id)}
+                  defaultValue={billing.displacement}
+                  value={billing.displacement}
+                  onChange={changeCardValue('displacement', billing.id)}
+                />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disabled={billing.isLocked}
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Fecha Inicial"
+                    value={billing.lastBillingDate}
+                    onChange={changeCardValue(
+                      'lastBillingDate',
+                      billing.id,
+                      true,
+                    )}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+                <TextField
+                  required
+                  disabled={billing.isLocked}
+                  className={styles.textField}
+                  label="Numero de pagos"
+                  margin="normal"
+                  variant="outlined"
+                  defaultValue={billing.paymentNumber}
+                  value={billing.paymentNumber}
+                  onChange={changeCardValue('paymentNumber', billing.id)}
                 />
               </div>
               <div className={styles.columnFullRigth}>
@@ -269,13 +295,13 @@ const BillingFinancials = ({
                     value={billing.billingAmount}
                     onChange={changeCardValue('iva', billing.id)}
                   />
-
+                  <h3>Valor en pesos del IVA</h3>
                   <NumberFormat
                     value={Numbers.toFixed(
                       billing.amount * (billing.iva / 100),
                     )}
                     displayType={'text'}
-                    className={styles.TotalAmount}
+                    className={styles.TotalAmountIva}
                     thousandSeparator={true}
                     prefix={'$'}
                   />
@@ -283,44 +309,18 @@ const BillingFinancials = ({
 
                 <div className={styles.cardForm}>
                   <div className={styles.column}>
-                    <div className={styles.container}>
-                      <h3 className={styles.lastBillingText}>Fecha final:</h3>
-                      <div className={styles.leftPick}>
-                        <Select
-                          className={styles.selectLeft}
-                          inputId="react-select-single"
-                          isDisabled={billing.isLocked || disabledLastBilling}
-                          TextFieldProps={{
-                            label: 'Mes',
-                            InputLabelProps: {
-                              htmlFor: 'react-select-single',
-                              shrink: true,
-                            },
-                          }}
-                          options={month}
-                          placeholder="Mes"
-                          components={Option}
-                          onChange={lastDate('month')}
-                        />
-                      </div>
-                      <div className={styles.rigthPick}>
-                        <Select
-                          className={styles.selectRight}
-                          inputId="react-select-single"
-                          isDisabled={billing.isLocked || disabledLastBilling}
-                          TextFieldProps={{
-                            label: 'Año',
-                            InputLabelProps: {
-                              htmlFor: 'react-select-single',
-                              shrink: true,
-                            },
-                          }}
-                          placeholder="Año"
-                          components={Option}
-                          options={YearEnum}
-                          onChange={lastDate('year')}
-                        />
-                      </div>
+                    <div className={styles.leftPick}>
+                      <TextField
+                        disabled={billing.isLocked}
+                        multiline
+                        rows={6}
+                        className={styles.textField}
+                        label="Descripción"
+                        margin="normal"
+                        variant="outlined"
+                        defaultValue={billing.description}
+                        onChange={changeCardValue('description', billing.id)}
+                      />
                     </div>
                   </div>
                 </div>
@@ -365,7 +365,8 @@ const BillingFinancials = ({
                     <NumberFormat
                       className={styles.amount}
                       value={Numbers.toFixed(
-                        billing.amount - billing.amount * (billing.iva / 100),
+                        Number(billing.amount) +
+                          Number(billing.amount * (billing.iva / 100)),
                       )}
                       displayType={'text'}
                       thousandSeparator={true}

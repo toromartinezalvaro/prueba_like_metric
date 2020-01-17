@@ -63,6 +63,15 @@ const GeneralInfo = ({
 
   return (
     <div className={styles.container}>
+      <div className={styles.rigthInformation}>
+        <TextField
+          fullWidth
+          className={styles.item}
+          label="Nombre de evento"
+          variant="outlined"
+          onChange={onChangeText}
+        />
+      </div>
       <div className={styles.leftInformation}>
         <div className={styles.itemSelect}>
           <Select
@@ -117,29 +126,7 @@ const GeneralInfo = ({
               </CardContent>
             </Card>
           )}
-          {canDisplace && (
-            <TextField
-              required
-              fullWidth
-              className={styles.displacement}
-              label="Desplazamiento"
-              value={event.displacement}
-              variant="outlined"
-              onChange={displacementForDate('displacement')}
-            />
-          )}
         </div>
-      </div>
-      <div className={styles.rigthInformation}>
-        <TextField
-          multiline
-          fullWidth
-          rows="6"
-          className={styles.item}
-          label="Descripción/Comentarios"
-          variant="outlined"
-          onChange={onChangeText}
-        />
       </div>
     </div>
   );
