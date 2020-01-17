@@ -88,7 +88,7 @@ const BillingFinancials = ({
     } else if (elementIsASelect) {
       if (name === 'cycle') {
         bill = { ...billingsArray[billIndex], [name]: element.label };
-      } else if (name === 'eventId' && element === 0) {
+      } else if (name === 'eventId' && element.value === 0) {
         setEventIsUnique(true);
       }
       /* let filterMonths = [];
@@ -231,7 +231,8 @@ const BillingFinancials = ({
                   options={events}
                   onChange={changeCardValue('eventId', billing.id, false, true)}
                 />
-                {eventIsUnique && <Events />}
+                {eventIsUnique && <Events towerId={towerId} />}
+                {console.log(towerId)}
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disabled={true}
