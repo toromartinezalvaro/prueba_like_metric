@@ -55,6 +55,7 @@ const BillingFinancials = ({
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
   const [month, setMonth] = useState(MonthEnum);
+  const [eventIsUnique, setEventIsUnique] = useState(false);
   const [disabledLastBilling, setDisableLastBilling] = useState(true);
 
   let totalBills = 0;
@@ -85,7 +86,12 @@ const BillingFinancials = ({
         [name]: Number(moment(element).format('x')),
       };
     } else if (elementIsASelect) {
-      let filterMonths = [];
+      if (name === 'cycle') {
+        bill = { ...billingsArray[billIndex], [name]: element.label };
+      } else if (name === 'eventId' && element === 0) {
+        setEventIsUnique(true);
+      }
+      /* let filterMonths = [];
       let tempo;
       switch (element.value) {
         case 1:
@@ -121,8 +127,8 @@ const BillingFinancials = ({
           bill = { ...billingsArray[billIndex], [name]: element.label };
           break;
         default:
-          break;
-      }
+          break; 
+      } */
     } else if (elementIsAnEvent) {
       bill = { ...billingsArray[billIndex], [name]: element.value };
     } else if (name === true) {
@@ -208,9 +214,27 @@ const BillingFinancials = ({
                   }}
                   onChange={changeCardValue('cycle', billing.id, false, true)}
                 />
+                <h4>Fecha inicial</h4>
+                <Select
+                  className={styles.Select}
+                  inputId="react-select-single"
+                  isDisabled={billing.isLocked}
+                  TextFieldProps={{
+                    label: 'Fecha inicial',
+                    InputLabelProps: {
+                      htmlFor: 'react-select-single',
+                      shrink: true,
+                    },
+                  }}
+                  placeholder="Fecha inicial"
+                  components={Option}
+                  options={events}
+                  onChange={changeCardValue('eventId', billing.id, false, true)}
+                />
+                {eventIsUnique && <Events />}
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
-                    disabled={billing.isLocked}
+                    disabled={true}
                     disableToolbar
                     variant="inline"
                     format="MM/dd/yyyy"
@@ -241,7 +265,7 @@ const BillingFinancials = ({
                 />
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
-                    disabled={billing.isLocked}
+                    disabled={true}
                     disableToolbar
                     variant="inline"
                     format="MM/dd/yyyy"

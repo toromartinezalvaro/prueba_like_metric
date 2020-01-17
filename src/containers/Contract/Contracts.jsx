@@ -120,6 +120,10 @@ class Contracts extends Component {
             label: event.description,
           };
         });
+        events.unshift({
+          value: 0,
+          label: 'Manual',
+        });
         this.setState({ events });
       })
       .catch((error) => {

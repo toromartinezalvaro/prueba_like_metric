@@ -21,7 +21,7 @@ class Events extends Component {
     this.state = {
       schedule: {},
       eventModal: {
-        isOpen: false,
+        isOpen: true,
       },
       event: {
         displacement: 0,
