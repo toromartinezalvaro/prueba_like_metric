@@ -247,7 +247,7 @@ const BillingFinancials = ({
                     format="MM/dd/yyyy"
                     margin="normal"
                     id="date-picker-inline"
-                    label="Fecha Inicial"
+                    label="Fecha Final"
                     value={billing.lastBillingDate}
                     onChange={changeCardValue(
                       'lastBillingDate',
