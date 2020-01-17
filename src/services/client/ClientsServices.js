@@ -34,4 +34,10 @@ export default class ClientsServices extends Services {
   getPropertyInfo(propertyId) {
     return this.get(ClientsServicesDefinition.getPropertyInfo(propertyId));
   }
+
+  addClientToTower(identityDocument, towerId) {
+    return this.post(
+      ClientsServicesDefinition.addClientToTower(identityDocument, towerId),
+    );
+  }
 }

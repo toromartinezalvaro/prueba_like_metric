@@ -22,6 +22,8 @@ const SearchOrNewClient = ({
   addHandler,
   action,
   goToSalesRoom,
+  addClientToTower,
+  clientAdded,
 }) => {
   const [client, setClient] = useState(clientInfo);
   const [isEditing, setEdition] = useState(false);
@@ -76,6 +78,28 @@ const SearchOrNewClient = ({
           <Card>
             <CardHeader></CardHeader>
             <CardBody>
+              {isEditing &&
+                action === ADD &&
+                client.towers &&
+                client.towers.length === 0 && (
+                  <div className={Styles.addToTowerContainer}>
+                    {clientAdded ? (
+                      <span>El cliente fue agregado a la torre</span>
+                    ) : (
+                      <span>El cliente no esta asociando a la torre</span>
+                    )}
+                    <Button
+                      onClick={() => {
+                        addClientToTower(client.identityDocument);
+                      }}
+                      color="primary"
+                      disabled={clientAdded}
+                    >
+                      Agregar a la torre
+                    </Button>
+                  </div>
+                )}
+
               <SearchForm
                 handleChange={handleChange}
                 isEditing={isEditing}
@@ -146,6 +170,8 @@ SearchOrNewClient.propTypes = {
   addHandler: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
   goToSalesRoom: PropTypes.func.isRequired,
+  addClientToTower: PropTypes.func.isRequired,
+  clientAdded: PropTypes.bool.isRequired,
 };
 
 export default SearchOrNewClient;

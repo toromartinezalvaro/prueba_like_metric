@@ -23,10 +23,12 @@ class Client extends Component {
       name: '',
       email: '',
       phoneNumber: '',
+      towers: null,
       hasCompanyAssociated: false,
     },
     isOpen: false,
     clients: [],
+    clientAdded: false,
   };
 
   componentDidMount() {
@@ -92,8 +94,10 @@ class Client extends Component {
         identityDocument: '',
         name: '',
         email: '',
+        towers: null,
         phoneNumber: '',
       },
+      addClient: false,
     });
   };
 
@@ -132,6 +136,21 @@ class Client extends Component {
     this.goToSalesRoom(currentClient.id);
   };
 
+  addClientToTower = (identityDocument) => {
+    this.services
+      .addClientToTower(identityDocument, this.props.match.params.towerId)
+      .then((response) => {
+        this.setState((prevState) => {
+          const tempClients = [...prevState.clients];
+          tempClients.push(response.data);
+          return { clients: tempClients, clientAdded: true };
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
@@ -151,6 +170,8 @@ class Client extends Component {
           addHandler={this.handleAdd}
           action={this.state.action}
           goToSalesRoom={this.goToSalesRoomClient}
+          addClientToTower={this.addClientToTower}
+          clientAdded={this.state.clientAdded}
         />
       </LoadableContainer>
     );
