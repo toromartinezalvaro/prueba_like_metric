@@ -69,6 +69,7 @@ class Contracts extends Component {
       attachmentPath: '',
       contract: null,
       contractNumber: null,
+      currentContract: null,
       alert: {
         opened: false,
         severity: 'success',
@@ -116,13 +117,15 @@ class Contracts extends Component {
       .then((response) => {
         const events = response.data.map((event) => {
           return {
-            value: event.id,
+            eventId: event.id,
+            value: event.customDate,
             label: event.description,
           };
         });
         events.unshift({
+          eventId: 0,
           value: 0,
-          label: 'Manual',
+          label: 'FECHA MANUAL',
         });
         this.setState({ events });
       })
@@ -489,6 +492,7 @@ class Contracts extends Component {
             .postContract(this.state.contract, this.props.match.params.towerId)
             .then((response) => {
               console.log(response);
+              this.setState({ currentContract: response });
             })
             .catch((error) => console.log(error));
           this.setState({ contractModal: { isOpen: false } });
@@ -582,6 +586,7 @@ class Contracts extends Component {
           towerId={this.props.match.params.towerId}
           editContractOpen={this.editContractOpen}
           sendId={this.sendId}
+          currentContract={this.state.currentContract}
         />
         <NewContract
           towerId={this.props.match.params.towerId}

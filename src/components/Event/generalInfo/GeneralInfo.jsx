@@ -58,7 +58,7 @@ const GeneralInfo = ({
 
   const uniqueDateValueChange = (e) => {
     setInitialDate(e);
-    uniqueDateValueSend(initialDate);
+    uniqueDateValueSend(e);
   };
 
   return (

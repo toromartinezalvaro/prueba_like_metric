@@ -21,7 +21,7 @@ class Events extends Component {
     this.state = {
       schedule: {},
       eventModal: {
-        isOpen: true,
+        isOpen: false,
       },
       event: {
         displacement: 0,
@@ -87,7 +87,6 @@ class Events extends Component {
           },
           event: { scheduleId: id },
           dateValue: [
-            { value: 1, label: 'FECHA MANUAL' },
             {
               value: Number(salesStartDate),
               label: `FECHA INICIO PROYECTO (${moment(
@@ -95,24 +94,28 @@ class Events extends Component {
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(endOfSalesDate),
               label: `FECHA FIN PROYECTO (${moment(
                 Number(endOfSalesDate),
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(balancePointDate),
               label: `FECHA PUNTO DE EQUILIBRIO (${moment(
                 Number(balancePointDate),
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(constructionStartDate),
               label: `FECHA INICIO DE CONSTRUCCIÓN (${moment(
                 Number(constructionStartDate),
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(averageDeliveryDate),
               label: `FECHA PROMEDIO DE ENTREGAS (${moment(
                 Number(averageDeliveryDate),
@@ -120,6 +123,7 @@ class Events extends Component {
             },
           ],
         });
+        this.props.defaultDate(this.state.dateValue);
       })
       .catch((error) => {
         console.error(error);
@@ -147,7 +151,8 @@ class Events extends Component {
             .postEvent(this.props.towerId, this.state.event)
             .then((response) => {
               const currentEvent = {
-                value: response.data.id,
+                eventId: response.data.eventId,
+                value: response.data.customDate,
                 label: response.data.description,
               };
               this.props.currentEvent(currentEvent);
@@ -211,11 +216,11 @@ class Events extends Component {
   };
 
   uniqueDateValue = (e) => {
-    let time = moment(e);
+    const time = Number(moment(e.getTime()).format('x'));
     this.setState({
       event: {
         ...this.state.event,
-        customDate: time.toDate().getTime(),
+        customDate: time,
         scheduleId: null,
       },
     });
@@ -229,7 +234,7 @@ class Events extends Component {
           variant="contained"
           color="primary"
           size="small"
-          disabled={this.props.disabled}
+          disabled={this.props.eventIsUnique}
           className={styles.fab}
         >
           <AddIcon />

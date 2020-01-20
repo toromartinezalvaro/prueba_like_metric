@@ -4,12 +4,18 @@
  * Copyright (c) 2019 Instabuild
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import ContractList from '../ContractList/ContractList';
 import styles from './Navbar.module.scss';
 
-const Navbar = ({ towerId, handleOpenContract, editContractOpen, sendId }) => {
+const Navbar = ({
+  towerId,
+  handleOpenContract,
+  editContractOpen,
+  sendId,
+  currentContract,
+}) => {
   return (
     <div>
       <nav className={styles.navigationBar}>
@@ -25,6 +31,7 @@ const Navbar = ({ towerId, handleOpenContract, editContractOpen, sendId }) => {
         towerId={towerId}
         editContractOpen={editContractOpen}
         sendId={sendId}
+        currentContract={currentContract}
       />
     </div>
   );
