@@ -52,6 +52,7 @@ const BillingFinancials = ({
     iva: 0,
     paymentNumber: 1,
     isLocked: false,
+    type: 'unique',
   };
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
@@ -88,7 +89,11 @@ const BillingFinancials = ({
       };
     } else if (elementIsASelect) {
       if (name === 'cycle') {
-        bill = { ...billingsArray[billIndex], [name]: element.label };
+        bill = {
+          ...billingsArray[billIndex],
+          [name]: element.label,
+          type: element.type,
+        };
       } else if (name === 'eventId' && element.eventId === 0) {
         setEventIsUnique(true);
         bill = {
@@ -116,7 +121,15 @@ const BillingFinancials = ({
     } else {
       if (name === 'displacement') {
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .add(Number(element.target.value), 'months')
+          .add(Number(element.target.value), billingsArray[billIndex].type)
+          .format('x');
+        bill = {
+          ...billingsArray[billIndex],
+        };
+        billingsArray[billIndex].initalBillingDate = Number(newDate);
+      } else if (name === 'paymentNumber') {
+        const newDate = moment(billingsArray[billIndex].initalBillingDate)
+          .add(Number(element.target.value), billingsArray[billIndex].type)
           .format('x');
         bill = {
           ...billingsArray[billIndex],
@@ -125,6 +138,7 @@ const BillingFinancials = ({
       }
       bill = { ...billingsArray[billIndex], [name]: element.target.value };
     }
+    console.log('DATES', bill);
     billingsArray[billIndex] = bill;
     setBillings(billingsArray);
     sendBillings(billingsArray);
@@ -165,6 +179,7 @@ const BillingFinancials = ({
   const suggestions = SuggestionEnum.map((suggestion) => ({
     value: suggestion.value,
     label: suggestion.label,
+    type: suggestion.type,
   }));
 
   const Option = (props) => {
@@ -241,6 +256,17 @@ const BillingFinancials = ({
                   currentEvent={createdEvent}
                   eventIsUnique={eventIsUnique}
                 />
+                <TextField
+                  required
+                  disabled={eventIsUnique}
+                  className={styles.textField}
+                  label={`Desplazamiento ${billing.cycle}`}
+                  margin="normal"
+                  variant="outlined"
+                  defaultValue={billing.displacement}
+                  value={billing.displacement}
+                  onChange={changeCardValue('displacement', billing.id)}
+                />
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disabled={!eventIsUnique}
@@ -263,14 +289,14 @@ const BillingFinancials = ({
                 </MuiPickersUtilsProvider>
                 <TextField
                   required
-                  disabled={eventIsUnique}
+                  disabled={billing.cycle === 'Pago Único'}
                   className={styles.textField}
-                  label="Desplazamiento en meses"
+                  label="Numero de pagos"
                   margin="normal"
                   variant="outlined"
-                  defaultValue={billing.displacement}
-                  value={billing.displacement}
-                  onChange={changeCardValue('displacement', billing.id)}
+                  defaultValue={billing.paymentNumber}
+                  value={billing.paymentNumber}
+                  onChange={changeCardValue('paymentNumber', billing.id)}
                 />
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
@@ -292,17 +318,6 @@ const BillingFinancials = ({
                     }}
                   />
                 </MuiPickersUtilsProvider>
-                <TextField
-                  required
-                  disabled={eventIsUnique || billing.cycle === 'Pago Único'}
-                  className={styles.textField}
-                  label="Numero de pagos"
-                  margin="normal"
-                  variant="outlined"
-                  defaultValue={billing.paymentNumber}
-                  value={billing.paymentNumber}
-                  onChange={changeCardValue('paymentNumber', billing.id)}
-                />
               </div>
               <div className={styles.columnFullRigth}>
                 <div className={styles.column}>

@@ -7,6 +7,7 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import ContractList from '../ContractList/ContractList';
+import SimpleSnackbar from '../../UI2/ToastAlert/ToastAlert';
 import styles from './Navbar.module.scss';
 
 const Navbar = ({
@@ -16,6 +17,9 @@ const Navbar = ({
   sendId,
   currentContract,
 }) => {
+  const [opened, setOpened] = React.useState(false);
+  const [message, setMessage] = React.useState('false');
+
   return (
     <div>
       <nav className={styles.navigationBar}>
