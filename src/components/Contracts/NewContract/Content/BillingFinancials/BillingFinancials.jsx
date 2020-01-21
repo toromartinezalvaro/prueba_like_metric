@@ -128,8 +128,17 @@ const BillingFinancials = ({
         };
         billingsArray[billIndex].initalBillingDate = Number(newDate);
       } else if (name === 'paymentNumber') {
+        if (billingsArray[billIndex].type !== 'quarter') {
+          const newDate = moment(billingsArray[billIndex].initalBillingDate)
+            .add(Number(element.target.value), billingsArray[billIndex].type)
+            .format('x');
+          bill = {
+            ...billingsArray[billIndex],
+          };
+          billingsArray[billIndex].lastBillingDate = Number(newDate);
+        }
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .add(Number(element.target.value), billingsArray[billIndex].type)
+          .quarter(Number(element.target.value))
           .format('x');
         bill = {
           ...billingsArray[billIndex],
@@ -138,7 +147,6 @@ const BillingFinancials = ({
       }
       bill = { ...billingsArray[billIndex], [name]: element.target.value };
     }
-    console.log('DATES', bill);
     billingsArray[billIndex] = bill;
     setBillings(billingsArray);
     sendBillings(billingsArray);
