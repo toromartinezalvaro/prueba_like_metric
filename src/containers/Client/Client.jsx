@@ -25,6 +25,8 @@ class Client extends Component {
       phoneNumber: '',
       towers: null,
       hasCompanyAssociated: false,
+      searchText: '',
+      searchType: '',
     },
     isOpen: false,
     clients: [],
@@ -116,10 +118,10 @@ class Client extends Component {
     );
   };
 
-  searchNumber = (idNumber) => {
+  search = (text, type) => {
     const { towerId } = this.props.match.params;
     this.services
-      .getClient(idNumber, towerId)
+      .getClient(text, type, towerId)
       .then((response) => {
         this.setState({ currentClient: response.data, action: ADD });
       })
@@ -164,7 +166,7 @@ class Client extends Component {
           clientInfo={this.state.currentClient}
           handleClose={this.handleCloseDialog}
           pushToSalesRoom={this.goToSalesRoom}
-          searchNumber={this.searchNumber}
+          search={this.search}
           saveHandler={this.handleSave}
           updateHandler={this.handleUpdate}
           addHandler={this.handleAdd}

@@ -16,7 +16,7 @@ const SearchOrNewClient = ({
   open,
   handleClose,
   clientInfo,
-  searchNumber,
+  search,
   saveHandler,
   updateHandler,
   addHandler,
@@ -28,6 +28,10 @@ const SearchOrNewClient = ({
   const [client, setClient] = useState(clientInfo);
   const [isEditing, setEdition] = useState(false);
   const [valid, setValid] = useState(true);
+  const [searchCriteria, setSearchCriteria] = useState({
+    text: '',
+    type: 'document',
+  });
 
   const validateEmail = (email) => {
     return /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
@@ -37,6 +41,10 @@ const SearchOrNewClient = ({
 
   useEffect(() => {
     setClient(clientInfo);
+    setSearchCriteria({
+      text: '',
+      type: 'document',
+    });
     setValid(client.email === undefined || validateEmail(clientInfo.email));
   }, [clientInfo]);
 
@@ -45,9 +53,14 @@ const SearchOrNewClient = ({
     setClient({ ...client, [name]: event.target.value });
   };
 
+  const handleSearchCriteriaChange = (name) => (event) => {
+    setSearchCriteria({ ...searchCriteria, [name]: event.target.value });
+  };
+
   const searchCurrentNumber = () => {
     setEdition(true);
-    searchNumber(client.identityDocument);
+    const { text, type } = searchCriteria;
+    search(text, type);
   };
 
   const update = () => {
@@ -99,11 +112,13 @@ const SearchOrNewClient = ({
                     </Button>
                   </div>
                 )}
-
               <SearchForm
+                searchCriteria={searchCriteria}
+                searchCriteriaHandler={handleSearchCriteriaChange}
                 handleChange={handleChange}
                 isEditing={isEditing}
                 client={client}
+                action={action}
               />
             </CardBody>
           </Card>
@@ -164,7 +179,7 @@ SearchOrNewClient.propTypes = {
     phoneNumber: PropTypes.string,
     hasCompanyAssociated: PropTypes.bool,
   }).isRequired,
-  searchNumber: PropTypes.func.isRequired,
+  search: PropTypes.func.isRequired,
   saveHandler: PropTypes.func.isRequired,
   updateHandler: PropTypes.func.isRequired,
   addHandler: PropTypes.func.isRequired,

@@ -25,10 +25,8 @@ export default class ClientsServices extends Services {
     return this.get(ClientsServicesDefinition.getClients(towerId));
   }
 
-  getClient(identityDocument, towerId) {
-    return this.get(
-      ClientsServicesDefinition.getClient(identityDocument, towerId),
-    );
+  getClient(text, type, towerId) {
+    return this.get(ClientsServicesDefinition.getClient(text, type, towerId));
   }
 
   getPropertyInfo(propertyId) {
