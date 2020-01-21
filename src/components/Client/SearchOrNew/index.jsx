@@ -9,6 +9,7 @@ import Button from '../../UI/Button/Button';
 import Styles from './SearchOrNew.module.scss';
 import SearchForm from './SearchForm';
 import InfoDialog from '../Info';
+import LoadingContainer from '../../UI/Loader';
 
 const SAVE = 'save';
 const ADD = 'add';
@@ -35,6 +36,7 @@ const SearchOrNewClient = ({
     text: '',
     type: 'document',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email) => {
     return /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(
@@ -49,6 +51,7 @@ const SearchOrNewClient = ({
       type: 'document',
     });
     setValid(client.email === undefined || validateEmail(clientInfo.email));
+    setIsLoading(false);
   }, [clientInfo]);
 
   const handleChange = (name) => (event) => {
@@ -61,6 +64,7 @@ const SearchOrNewClient = ({
   };
 
   const searchCurrentNumber = () => {
+    setIsLoading(true);
     setEdition(true);
     const { text, type } = searchCriteria;
     search(text, type);
@@ -91,6 +95,7 @@ const SearchOrNewClient = ({
       <Dialog open={open} scroll="body" maxWidth="lg">
         <DialogTitle id="scroll-dialog-title">Buscar y editar</DialogTitle>
         <DialogContent>
+          <LoadingContainer isLoading={isLoading} />
           <Card>
             <CardHeader></CardHeader>
             <CardBody>
@@ -140,7 +145,7 @@ const SearchOrNewClient = ({
               {isEditing && action === ADD && (
                 <Button
                   onClick={() => {
-                    setShownClient(clientInfo );
+                    setShownClient(clientInfo);
                   }}
                   color="primary"
                 >

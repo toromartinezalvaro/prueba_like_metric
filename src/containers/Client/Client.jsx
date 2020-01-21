@@ -25,8 +25,6 @@ class Client extends Component {
       phoneNumber: '',
       towers: null,
       hasCompanyAssociated: false,
-      searchText: '',
-      searchType: '',
     },
     isOpen: false,
     clients: [],
@@ -127,7 +125,17 @@ class Client extends Component {
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          this.setState({ action: SAVE });
+          this.setState({
+            currentClient: {
+              identityDocument: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+              towers: null,
+              hasCompanyAssociated: false,
+            },
+            action: SAVE,
+          });
         } else {
           console.error(error);
         }
