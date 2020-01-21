@@ -14,6 +14,7 @@ import statusOfContractEnum from '../../components/Contracts/NewContract/Content
 import BusinessPatner from '../../components/Contracts/NewContract/BusinessPatner/BusinessPatner';
 import ContractService from '../../services/contract/contractService';
 import Item from '../../components/Contracts/NewContract/Content/Item/Item';
+import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
 import EventService from '../../services/event/EventServices';
 
 class Contracts extends Component {
@@ -72,11 +73,17 @@ class Contracts extends Component {
       currentContract: null,
       alert: {
         opened: false,
-        severity: 'success',
         message: '',
       },
     };
   }
+
+  toastAlert = (message) => {
+    this.setState({ alert: { opened: true, message } });
+    setTimeout(() => {
+      this.setState({ alert: { opened: false, message } });
+    }, 500);
+  };
 
   componentDidMount() {
     this.services
@@ -207,64 +214,79 @@ class Contracts extends Component {
   };
 
   newCategory = (categoryName) => {
-    this.services
-      .postCategoryContracts({ categoryName }, this.props.match.params.towerId)
-      .then((response) => {
-        const currentCategory = {
-          value: response.data.id,
-          label: response.data.categoryName,
-        };
-        this.setState({
-          categories: [...this.state.categories, currentCategory],
-          categoryModal: { ...this.state.categoryModal, currentCategory },
+    if (categoryName !== '') {
+      this.services
+        .postCategoryContracts(
+          { categoryName },
+          this.props.match.params.towerId,
+        )
+        .then((response) => {
+          const currentCategory = {
+            value: response.data.id,
+            label: response.data.categoryName,
+          };
+          this.setState({
+            categories: [...this.state.categories, currentCategory],
+            categoryModal: { ...this.state.categoryModal, currentCategory },
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.toastAlert('Error al crear un grupo');
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
+    this.toastAlert('ERROR: Debes agregar un nombre para crear un grupo');
   };
 
   newBusinessPartner = (partner) => {
-    this.services
-      .postBusinessPatnerContract(partner, this.props.match.params.towerId)
-      .then((response) => {
-        const currentPatner = {
-          value: response.data.id,
-          label: response.data.patnerName,
-        };
-        this.setState({
-          contractModal: {
-            ...this.state.contractModal,
-            data: { patner: currentPatner },
-          },
-          businessPatnerModal: {
-            ...this.state.businessPatnerModal,
-            currentPatner,
-          },
-          partners: [...this.state.partners, currentPatner],
+    if (partner.patnerName !== '') {
+      this.services
+        .postBusinessPatnerContract(partner, this.props.match.params.towerId)
+        .then((response) => {
+          const currentPatner = {
+            value: response.data.id,
+            label: response.data.patnerName,
+          };
+          this.setState({
+            contractModal: {
+              ...this.state.contractModal,
+              data: { patner: currentPatner },
+            },
+            businessPatnerModal: {
+              ...this.state.businessPatnerModal,
+              currentPatner,
+            },
+            partners: [...this.state.partners, currentPatner],
+          });
+        })
+        .catch((error) => {
+          this.toastAlert('Error al crear un socio');
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
+    this.toastAlert('ERROR: Debes agregar un nombre para crear un socio');
   };
 
   newItem = (name) => {
-    this.services
-      .postItem({ name, contractCategoryId: this.state.currentGroupId })
-      .then((response) => {
-        const currentItem = {
-          value: response.data.id,
-          label: response.data.name,
-        };
-        this.setState({
-          items: [...this.state.items, currentItem],
-          itemModal: { ...this.state.itemModal, currentItem },
+    if (name !== '') {
+      this.services
+        .postItem({ name, contractCategoryId: this.state.currentGroupId })
+        .then((response) => {
+          const currentItem = {
+            value: response.data.id,
+            label: response.data.name,
+          };
+          this.setState({
+            items: [...this.state.items, currentItem],
+            itemModal: { ...this.state.itemModal, currentItem },
+          });
+        })
+        .catch((error) => {
+          this.toastAlert('Error al crear un item');
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
+    this.toastAlert('ERROR: Debes agregar un nombre para crear un item');
   };
 
   updateCategory = (id, categoryName, contractId) => {
@@ -286,6 +308,7 @@ class Contracts extends Component {
         });
       })
       .catch((error) => {
+        this.toastAlert('ERROR: No se puede actualizar el grupo');
         console.log(error);
       });
   };
@@ -308,6 +331,7 @@ class Contracts extends Component {
         });
       })
       .catch((error) => {
+        this.toastAlert('ERROR: No se puede actualizar el socio');
         console.log(error);
       });
   };
@@ -331,6 +355,7 @@ class Contracts extends Component {
         });
       })
       .catch((error) => {
+        this.toastAlert('ERROR: No se puede actualizar el item');
         console.log(error);
       });
   };
@@ -480,13 +505,7 @@ class Contracts extends Component {
             (contract) => contract.contractNumber === this.state.contractNumber,
           )
         ) {
-          this.setState({
-            alert: {
-              opened: true,
-              message: 'Error, ya existe un contrato con ese nombre',
-              severity: 'error',
-            },
-          });
+          this.toastAlert('ERROR: Ya existe un contrato con ese nombre');
         } else {
           this.services
             .postContract(this.state.contract, this.props.match.params.towerId)
@@ -494,11 +513,15 @@ class Contracts extends Component {
               console.log(response);
               this.setState({ currentContract: response });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+              this.toastAlert('Error al crear');
+              console.log(error);
+            });
           this.setState({ contractModal: { isOpen: false } });
         }
       })
       .catch((error) => {
+        this.toastAlert('ERROR: No se puede crear el contrato');
         console.log(error);
       });
   };
@@ -547,7 +570,10 @@ class Contracts extends Component {
             },
           });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          this.toastAlert('ERROR: No se puede editar el contrato');
+          console.log(error);
+        });
     }
   };
 
@@ -572,7 +598,10 @@ class Contracts extends Component {
       .then((response) => {
         console.log(response);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        this.toastAlert('ERROR: No se puede editar el contrato');
+        console.log(error);
+      });
     this.setState({
       contractModal: { ...this.state.contractModal, isOpen: false },
     });
@@ -679,6 +708,10 @@ class Contracts extends Component {
             />
           </DialogContent>
         </Dialog>
+        <SimpleSnackbar
+          message={this.state.alert.message}
+          opened={this.state.alert.opened}
+        />
       </div>
     );
   }

@@ -308,7 +308,7 @@ const BillingFinancials = ({
                 />
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
-                    disabled={!eventIsUnique}
+                    disabled={true}
                     disableToolbar
                     variant="inline"
                     format="dd/MM/yyyy"
