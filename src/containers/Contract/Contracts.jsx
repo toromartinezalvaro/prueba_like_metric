@@ -517,7 +517,9 @@ class Contracts extends Component {
               this.toastAlert('Error al crear');
               console.log(error);
             });
-          this.setState({ contractModal: { isOpen: false } });
+            if(this.state.currentContract){
+              this.setState({ contractModal: { isOpen: false } });
+            }
         }
       })
       .catch((error) => {
