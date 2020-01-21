@@ -20,6 +20,15 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
     return clients.map((client, index) => {
       return [
         <TableRow hover key={`row-${index}`}>
+          <TableCell>
+            <div className={Styles.buyerContainer}>
+              {client.properties.length > 0 ? (
+                <i className={`fas fa-check-circle ${Styles.bought}`}></i>
+              ) : (
+                <i className="fas fa-times-circle"></i>
+              )}
+            </div>
+          </TableCell>
           <TableCell>{client.identityDocument}</TableCell>
           <TableCell>{client.name}</TableCell>
           <TableCell>{client.email}</TableCell>
@@ -46,7 +55,17 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
     });
   };
 
-  const columns = ['Cedula', 'Nombre', 'Correo', 'Celular', '', ''];
+  const columns = [
+    <div key="customColumn" style={{ width: '14px' }}>
+      Comprador
+    </div>,
+    'Cedula',
+    'Nombre',
+    'Correo',
+    'Celular',
+    '',
+    '',
+  ];
 
   return (
     <div>
@@ -69,16 +88,24 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
       </Card>
       <Card>
         <CardBody>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column, index) => (
-                  <TableCell key={`headerCell-${index}`}>{column}</TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>{getData()}</TableBody>
-          </Table>
+          <div className={Styles.tableContainer}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column, index) => (
+                    <TableCell key={`headerCell-${index}`}>{column}</TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Array(55)
+                  .fill(null)
+                  .map(() => {
+                    return getData();
+                  })}
+              </TableBody>
+            </Table>
+          </div>
         </CardBody>
       </Card>
       <InfoDialog
