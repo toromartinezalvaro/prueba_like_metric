@@ -5,11 +5,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '../../../UI/Button/Button';
+import Button from '../../UI/Button/Button';
 import PropertyCells from './PropertyCells';
 import PropertyDetails from './PropertyDetails';
-import ClientsServices from '../../../../services/client/ClientsServices';
-import { DashboardRoutes } from '../../../../routes/local/routes';
+import ClientsServices from '../../../services/client/ClientsServices';
+import { DashboardRoutes } from '../../../routes/local/routes';
 
 const Info = ({ client, towerId, handleClose }) => {
   const services = new ClientsServices();

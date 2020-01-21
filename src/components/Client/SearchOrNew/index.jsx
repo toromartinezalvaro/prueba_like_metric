@@ -8,6 +8,7 @@ import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import Styles from './SearchOrNew.module.scss';
 import SearchForm from './SearchForm';
+import InfoDialog from '../Info';
 
 const SAVE = 'save';
 const ADD = 'add';
@@ -24,7 +25,9 @@ const SearchOrNewClient = ({
   goToSalesRoom,
   addClientToTower,
   clientAdded,
+  towerId,
 }) => {
+  const [shownClient, setShownClient] = useState(null);
   const [client, setClient] = useState(clientInfo);
   const [isEditing, setEdition] = useState(false);
   const [valid, setValid] = useState(true);
@@ -134,6 +137,16 @@ const SearchOrNewClient = ({
           )}
           {valid && (
             <Fragment>
+              {isEditing && action === ADD && (
+                <Button
+                  onClick={() => {
+                    setShownClient(clientInfo );
+                  }}
+                  color="primary"
+                >
+                  Ver detalles
+                </Button>
+              )}
               {isEditing && action === ADD && !clientInfo.hasCompanyAssociated && (
                 <Button onClick={add} color="primary">
                   Agregar a mi compañía
@@ -166,6 +179,13 @@ const SearchOrNewClient = ({
           )}
         </DialogActions>
       </Dialog>
+      <InfoDialog
+        client={shownClient}
+        towerId={towerId}
+        handleClose={() => {
+          setShownClient(null);
+        }}
+      />
     </div>
   );
 };
@@ -187,6 +207,7 @@ SearchOrNewClient.propTypes = {
   goToSalesRoom: PropTypes.func.isRequired,
   addClientToTower: PropTypes.func.isRequired,
   clientAdded: PropTypes.bool.isRequired,
+  towerId: PropTypes.string.isRequired,
 };
 
 export default SearchOrNewClient;

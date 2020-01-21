@@ -162,6 +162,7 @@ class Client extends Component {
           clients={this.state.clients}
         />
         <SearchOrNewClient
+          towerId={this.props.match.params.towerId}
           open={this.state.isOpen}
           clientInfo={this.state.currentClient}
           handleClose={this.handleCloseDialog}

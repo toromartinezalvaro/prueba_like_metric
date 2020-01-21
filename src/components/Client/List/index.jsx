@@ -11,7 +11,7 @@ import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import Button2 from '../../UI2/Button';
 import Styles from './ClientList.module.scss';
-import InfoDialog from './Info';
+import InfoDialog from '../Info';
 
 const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
   const [shownClient, setShownClient] = useState(null);
