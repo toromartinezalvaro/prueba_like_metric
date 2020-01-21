@@ -97,13 +97,7 @@ const ClientList = ({ towerId, openSearchAndEdit, clients }) => {
                   ))}
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {Array(55)
-                  .fill(null)
-                  .map(() => {
-                    return getData();
-                  })}
-              </TableBody>
+              <TableBody>{getData()}</TableBody>
             </Table>
           </div>
         </CardBody>
