@@ -21,7 +21,7 @@ import Styles from './EditForm.module.scss';
 const EditForm = (props) => {
   const [name, setName] = useState(props.areaType.name);
   const [unit, setUnit] = useState(props.areaType.unit);
-
+  console.log('ESTE PROPS', props.areaType);
   return (
     <div className={Styles.DialogContainer}>
       <TextField
