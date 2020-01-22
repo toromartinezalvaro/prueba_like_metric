@@ -17,6 +17,10 @@
   margin-left: 8px;
 }
 
+.expansionPanel {
+  overflow-x: hidden !important;
+  width: 90vw;
+}
 .expansion-panel {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -37,4 +41,18 @@
 
 .circleColorFinantials {
   background-color: $softMain-color;
+}
+
+@media (min-width: 1340px) {
+  .expansionPanel {
+    overflow-x: hidden !important;
+    width: 100%;
+  }
+}
+
+@media (max-width: 1340px) {
+  .expansionPanel {
+    overflow-x: hidden !important;
+    width: 80vw;
+  }
 }
