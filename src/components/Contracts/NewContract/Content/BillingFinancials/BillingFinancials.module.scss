@@ -10,7 +10,7 @@ $blue-billing: #d9e9ff;
 
 .gridContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center !important;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -36,15 +36,21 @@ $blue-billing: #d9e9ff;
   margin-left: 2%;
   position: relative;
   top: -15px;
-  width: 25% !important;
+  width: 15% !important;
 }
 
 .textField {
-  width: 100% !important;
+  width: 20vw !important;
   z-index: 0 !important;
+  margin-right: 3% !important;
+}
+.textFieldIva {
+  width: 10vw !important;
+  z-index: 0 !important;
+  margin-right: 3% !important;
 }
 .multiline {
-  width: 100vw;
+  width: 74vw !important;
   z-index: 0 !important;
 }
 
@@ -59,11 +65,19 @@ $blue-billing: #d9e9ff;
 .Select {
   margin-top: -1%;
   margin-bottom: 2%;
+  width: 30vw;
 }
 
 .cardForm {
   margin-top: 10px;
   margin-bottom: 10px;
+  width: 85vw;
+}
+
+.cardFormMulti {
+  margin-top: -4px;
+  margin-bottom: 10px;
+  width: 25vw !important;
 }
 
 .cardFormDate {
@@ -85,7 +99,7 @@ $blue-billing: #d9e9ff;
 }
 
 .amount {
-  margin-top: 5%;
+  margin-top: -1%;
   margin-left: 1%;
   justify-self: center;
 }
@@ -144,4 +158,76 @@ $blue-billing: #d9e9ff;
 
 .lastBillingText {
   margin-right: 15%;
+}
+
+.tittlePayment {
+  margin-right: 5%;
+}
+
+.tittleForProjection {
+  margin-top: 0% !important;
+  margin-left: -2%;
+  margin-right: 2%;
+}
+
+.paymentProjection {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1%;
+}
+
+.amountSection {
+  display: flex;
+  flex-direction: row;
+}
+.amountIva {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  margin-left: 0px;
+}
+.amountIvaTotal {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  margin-left: -8%;
+  margin-top: -2.3%;
+}
+.ivaTitle {
+  margin-top: -2%;
+}
+.datesSection {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1%;
+}
+
+.event {
+  margin-right: 4%;
+  width: 45%;
+  margin-left: -1%;
+}
+
+.textFieldDisplace {
+  width: 18vw !important;
+  z-index: 0 !important;
+  margin-right: 5% !important;
+  margin-left: -7% !important;
+  margin-top: -3% !important;
+  margin-bottom: 6% !important;
+}
+
+.dateInitial {
+  margin-left: 5% !important;
+}
+
+.SelectDate {
+  margin-top: -1%;
+  margin-bottom: 2%;
+  width: 25vw;
+}
+
+.picker {
+  margin-top: -2% !important;
+  margin-left: -7% !important;
 }
