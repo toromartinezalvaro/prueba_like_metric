@@ -138,7 +138,7 @@ const BillingFinancials = ({
           billingsArray[billIndex].lastBillingDate = Number(newDate);
         }
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .quarter(Number(element.target.value))
+          .add(Number(element.target.value), billingsArray[billIndex].type)
           .format('x');
         bill = {
           ...billingsArray[billIndex],
@@ -370,7 +370,7 @@ const BillingFinancials = ({
                         disabled={billing.isLocked}
                         multiline
                         rows={6}
-                        className={styles.textField}
+                        className={styles.multiline}
                         label="Descripción"
                         margin="normal"
                         variant="outlined"

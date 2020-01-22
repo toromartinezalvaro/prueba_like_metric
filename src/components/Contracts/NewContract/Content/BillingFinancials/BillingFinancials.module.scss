@@ -36,7 +36,7 @@ $blue-billing: #d9e9ff;
   margin-left: 2%;
   position: relative;
   top: -15px;
-  width: 25% !important;
+  width: 15% !important;
 }
 
 .textField {
@@ -44,7 +44,7 @@ $blue-billing: #d9e9ff;
   z-index: 0 !important;
 }
 .multiline {
-  width: 100vw;
+  width: 32vw !important;
   z-index: 0 !important;
 }
 
@@ -64,6 +64,7 @@ $blue-billing: #d9e9ff;
 .cardForm {
   margin-top: 10px;
   margin-bottom: 10px;
+  width: 85vw;
 }
 
 .cardFormDate {

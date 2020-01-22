@@ -86,3 +86,10 @@
 .cardAttachment {
   width: 60vw !important;
 }
+
+
+@media(max-width: 1440px) { 
+  .cardAttachment {
+    margin-left: 15vw !important;
+  }
+}
