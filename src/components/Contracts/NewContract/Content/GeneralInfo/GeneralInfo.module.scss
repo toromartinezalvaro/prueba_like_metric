@@ -29,8 +29,18 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin-top: 8%;
+  margin-bottom: -5%;
+  width: 100vh !important;
+}
+.gridSubContainerlabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 2%;
+  margin-bottom: 4%;
   width: 100vh !important;
 }
 .gridSubContainerRigth {
@@ -41,7 +51,7 @@
   flex-wrap: wrap;
   margin-top: 5%;
   margin-bottom: 5%;
-  width: 100% !important;
+  width: 165% !important;
 }
 .columnFullRigth {
   display: flex;
@@ -49,12 +59,18 @@
   flex-basis: 100%;
   flex: 1;
   margin-left: 2%;
-  width: 25% !important;
+  width: 50% !important;
 }
 
 .SelectSimple {
   margin-top: 6%;
   margin-bottom: 5%;
+  width: 30vw !important;
+}
+
+.SelectSimpleForLabel {
+  margin-bottom: 5%;
+  width: 30vw !important;
 }
 
 .columnFullLeft {
@@ -78,6 +94,7 @@
   display: flex;
   flex-direction: row;
   width: 50%;
+  margin-left: -3% !important;
 }
 
 .multiline {
@@ -167,6 +184,7 @@
 .textField,
 .leftInputs {
   z-index: 0 !important;
+  width: 30vw !important;
 }
 
 @media (max-width: 1440px) {

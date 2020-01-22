@@ -259,7 +259,7 @@ const BillingFinancials = ({
                 <TextField
                   required
                   disabled={billing.isLocked}
-                  className={styles.textField}
+                  className={styles.textFieldIva}
                   label="Valor IVA %"
                   margin="normal"
                   variant="outlined"
@@ -394,13 +394,13 @@ const BillingFinancials = ({
                   </MuiPickersUtilsProvider>
                 </div>
               </div>
-              <div className={styles.cardForm}>
+              <div className={styles.cardFormMulti}>
                 <div className={styles.column}>
                   <div className={styles.leftPick}>
                     <TextField
                       disabled={billing.isLocked}
                       multiline
-                      rows={6}
+                      rows={5}
                       className={styles.multiline}
                       label="Descripción"
                       margin="normal"

@@ -44,8 +44,13 @@ $blue-billing: #d9e9ff;
   z-index: 0 !important;
   margin-right: 3% !important;
 }
+.textFieldIva {
+  width: 10vw !important;
+  z-index: 0 !important;
+  margin-right: 3% !important;
+}
 .multiline {
-  width: 79vw !important;
+  width: 74vw !important;
   z-index: 0 !important;
 }
 
@@ -67,6 +72,12 @@ $blue-billing: #d9e9ff;
   margin-top: 10px;
   margin-bottom: 10px;
   width: 85vw;
+}
+
+.cardFormMulti {
+  margin-top: -4px;
+  margin-bottom: 10px;
+  width: 25vw !important;
 }
 
 .cardFormDate {
@@ -194,15 +205,20 @@ $blue-billing: #d9e9ff;
 .event {
   margin-right: 4%;
   width: 45%;
+  margin-left: -1%;
 }
 
 .textFieldDisplace {
-  width: 25vw !important;
+  width: 18vw !important;
   z-index: 0 !important;
   margin-right: 5% !important;
   margin-left: -7% !important;
   margin-top: -3% !important;
   margin-bottom: 6% !important;
+}
+
+.dateInitial {
+  margin-left: 5% !important;
 }
 
 .SelectDate {
