@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import styles from './ToastAlert.module.scss';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
-const Alert = (props) => {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-};
-
-export default function CustomizedSnackbars({ severity, message, opened }) {
+export default function ToastAlert({ message, opened }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -19,23 +15,39 @@ export default function CustomizedSnackbars({ severity, message, opened }) {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (opened) {
-      handleClick();
+      setOpen(true);
     }
-  }, []);
+  });
 
   return (
-    <div className={styles.root}>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={severity}>
-          {message}
-        </Alert>
-      </Snackbar>
+    <div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={message}
+        action={
+          <React.Fragment>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
     </div>
   );
 }

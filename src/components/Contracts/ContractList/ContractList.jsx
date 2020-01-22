@@ -24,6 +24,12 @@ class ContractList extends Component {
     this.services = new ContractService();
   }
 
+  reloadTable() {
+    this.setState({
+      contracts: [...this.state.contracts, this.props.currentContract],
+    });
+  }
+
   componentDidMount() {
     this.services
       .getAllContracts(this.props.towerId)

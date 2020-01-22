@@ -17,7 +17,10 @@ export default class ContractService extends Services {
   }
 
   postBusinessPatnerContract(data, towerId) {
-    return this.post(ContractServiceDefinitions.businessContract(towerId), data);
+    return this.post(
+      ContractServiceDefinitions.businessContract(towerId),
+      data,
+    );
   }
 
   getCategoryToSearch(categoryToSearch) {
@@ -92,8 +95,8 @@ export default class ContractService extends Services {
     return this.put(ContractServiceDefinitions.itemUpdate(), data);
   }
 
-  findByForeignId(data) {
-    return this.get(ContractServiceDefinitions.findByForeignId(data));
+  findByForeignId(towerId, data) {
+    return this.get(ContractServiceDefinitions.findByForeignId(towerId, data));
   }
 
   postContract(data, towerId) {

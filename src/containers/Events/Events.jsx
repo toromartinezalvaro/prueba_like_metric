@@ -11,6 +11,7 @@ import moment from 'moment';
 import styles from './Events.module.scss';
 import Event from '../../components/Event/Event';
 import ScheduleService from '../../services/schedule/ScheduleServices';
+import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
 import EventServices from '../../services/event/EventServices';
 
 class Events extends Component {
@@ -39,7 +40,6 @@ class Events extends Component {
       uniqueDate: false,
       alert: {
         opened: false,
-        severity: 'success',
         message: '',
       },
     };
@@ -47,6 +47,13 @@ class Events extends Component {
 
   handleEvent = () => {
     this.setState({ eventModal: { isOpen: !this.state.eventModal.isOpen } });
+  };
+
+  toastAlert = (message) => {
+    this.setState({ alert: { opened: true, message } });
+    setTimeout(() => {
+      this.setState({ alert: { opened: false, message } });
+    }, 500);
   };
 
   componentDidMount() {
@@ -87,7 +94,6 @@ class Events extends Component {
           },
           event: { scheduleId: id },
           dateValue: [
-            { value: 1, label: 'FECHA MANUAL' },
             {
               value: Number(salesStartDate),
               label: `FECHA INICIO PROYECTO (${moment(
@@ -95,24 +101,28 @@ class Events extends Component {
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(endOfSalesDate),
               label: `FECHA FIN PROYECTO (${moment(
                 Number(endOfSalesDate),
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(balancePointDate),
               label: `FECHA PUNTO DE EQUILIBRIO (${moment(
                 Number(balancePointDate),
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(constructionStartDate),
               label: `FECHA INICIO DE CONSTRUCCIÓN (${moment(
                 Number(constructionStartDate),
               ).format('DD/MM/YYYY')})`,
             },
             {
+              eventId: id,
               value: Number(averageDeliveryDate),
               label: `FECHA PROMEDIO DE ENTREGAS (${moment(
                 Number(averageDeliveryDate),
@@ -120,6 +130,7 @@ class Events extends Component {
             },
           ],
         });
+        this.props.defaultDate(this.state.dateValue);
       })
       .catch((error) => {
         console.error(error);
@@ -135,19 +146,14 @@ class Events extends Component {
             (event) => event.description === this.state.description,
           )
         ) {
-          this.setState({
-            alert: {
-              opened: true,
-              message: 'Error, ya existe un evento con ese nombre',
-              severity: 'error',
-            },
-          });
+          this.toastAlert('ERROR: Ya existe un evento con ese nombre');
         } else {
           this.services
             .postEvent(this.props.towerId, this.state.event)
             .then((response) => {
               const currentEvent = {
-                value: response.data.id,
+                eventId: response.data.eventId,
+                value: response.data.customDate,
                 label: response.data.description,
               };
               this.props.currentEvent(currentEvent);
@@ -159,6 +165,7 @@ class Events extends Component {
         }
       })
       .catch((error) => {
+        this.toastAlert('ERROR: No se puede crear el evento');
         console.log(error);
       });
   };
@@ -211,11 +218,11 @@ class Events extends Component {
   };
 
   uniqueDateValue = (e) => {
-    let time = moment(e);
+    const time = Number(moment(e.getTime()).format('x'));
     this.setState({
       event: {
         ...this.state.event,
-        customDate: time.toDate().getTime(),
+        customDate: time,
         scheduleId: null,
       },
     });
@@ -229,7 +236,7 @@ class Events extends Component {
           variant="contained"
           color="primary"
           size="small"
-          disabled={this.props.disabled}
+          disabled={this.props.eventIsUnique}
           className={styles.fab}
         >
           <AddIcon />
@@ -270,6 +277,10 @@ class Events extends Component {
             </DialogContentText>
           </DialogContent>
         </Dialog>
+        <SimpleSnackbar
+          message={this.state.alert.message}
+          opened={this.state.alert.opened}
+        />
       </div>
     );
   }

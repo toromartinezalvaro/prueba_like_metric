@@ -52,94 +52,44 @@ const GeneralInfo = ({
   const [initialDate, setInitialDate] = useState(new Date());
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const uniqueDateValueChange = (e) => {
-    setInitialDate(e);
+  const uniqueDateValueSend = (e) => {
+    uniqueDateValue(e);
   };
 
-  const uniqueDateValueSend = () => {
-    uniqueDateValue(initialDate);
-    setIsDisabled(!isDisabled);
+  const uniqueDateValueChange = (e) => {
+    setInitialDate(e);
+    uniqueDateValueSend(e);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.leftInformation}>
-        <div className={styles.itemSelect}>
-          <Select
-            required
-            inputId="react-select-single"
-            TextFieldProps={{
-              label: 'fecha',
-              InputLabelProps: {
-                htmlFor: 'react-select-single',
-                shrink: true,
-              },
-            }}
-            placeholder="Seleccione una Fecha"
-            options={dateValue}
-            onChange={handleChangeUniqueDate}
-            components={Option}
-          />
-        </div>
-        <div className={styles.subColumn}>
-          {uniqueDate && (
-            <Card className={styles.cardForm}>
-              <CardContent>
-                <div className={styles.gridSubContainer}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      disabled={isDisabled}
-                      disableToolbar
-                      variant="inline"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="date-picker-inline"
-                      label="Fecha de Cobro"
-                      value={initialDate}
-                      onChange={uniqueDateValueChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                  <div className={styles.buttonSubColumn}>
-                    <Fab
-                      color="primary"
-                      size="small"
-                      aria-label="add"
-                      className={styles.fab}
-                      onClick={uniqueDateValueSend}
-                    >
-                      <AddIcon />
-                    </Fab>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-          {canDisplace && (
-            <TextField
-              required
-              fullWidth
-              className={styles.displacement}
-              label="Desplazamiento"
-              value={event.displacement}
-              variant="outlined"
-              onChange={displacementForDate('displacement')}
-            />
-          )}
-        </div>
-      </div>
       <div className={styles.rigthInformation}>
         <TextField
-          multiline
           fullWidth
-          rows="6"
           className={styles.item}
-          label="Descripción/Comentarios"
+          label="Nombre de evento"
           variant="outlined"
           onChange={onChangeText}
         />
+      </div>
+      <div className={styles.leftInformation}>
+        <div className={styles.itemSelect}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Fecha De Evento"
+              value={initialDate}
+              onChange={uniqueDateValueChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </div>
       </div>
     </div>
   );
