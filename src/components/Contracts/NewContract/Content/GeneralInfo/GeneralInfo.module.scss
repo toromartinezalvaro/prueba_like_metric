@@ -20,7 +20,7 @@
   flex-wrap: wrap;
   align-self: center !important;
   width: 135vh !important;
-  margin-left: 6%;
+  margin-left: 18% !important;
 }
 
 .gridSubContainer {
@@ -169,7 +169,7 @@
   z-index: 0 !important;
 }
 
-@media(max-width: 1440px) {
+@media (max-width: 1440px) {
   .gridContainer {
     display: flex;
     flex-direction: row;
@@ -179,6 +179,6 @@
     flex-wrap: wrap;
     align-self: center !important;
     width: 125vh !important;
-    margin-left: 6%;
+    margin-left: 6% !important;
   }
 }
