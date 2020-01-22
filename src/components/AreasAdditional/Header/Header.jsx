@@ -37,7 +37,9 @@ const Header = (props) => {
               variant="contained"
               color="primary"
               startIcon={<EditIcon />}
-              onClick={(e) => props.handleClickOpen(e)}
+              onClick={(e) =>
+                props.handleClickOpen(e, props.currentAreaPosition)
+              }
             >
               Editar
             </Button>
