@@ -19,8 +19,9 @@
   align-content: center !important;
   flex-wrap: wrap;
   align-self: center !important;
-  width: 135vh !important;
-  margin-left: 18% !important;
+  width: 120vh !important;
+  position: relative;
+  left: 12%;
 }
 
 .gridSubContainer {
@@ -60,17 +61,26 @@
   flex: 1;
   margin-left: 2%;
   width: 50% !important;
+  position: relative;
+  left: 3%;
+}
+
+.columnLeft {
+  display: flex;
+  flex-direction: column;
+  width: 50% !important;
+  margin-right: 5%;
 }
 
 .SelectSimple {
   margin-top: 6%;
   margin-bottom: 5%;
-  width: 30vw !important;
+  width: 25vw !important;
 }
 
 .SelectSimpleForLabel {
   margin-bottom: 5%;
-  width: 30vw !important;
+  width: 25vw !important;
 }
 
 .columnFullLeft {
@@ -78,23 +88,21 @@
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  margin-right: 2%;
+  margin-right: 7% !important;
   width: 5% !important;
 }
 
 .selectColumn {
   display: flex;
   flex-direction: column;
-  flex-basis: 100%;
-  flex: 1;
-  width: 75% !important;
+  width: 25% !important;
 }
 
 .buttonColumn {
   display: flex;
   flex-direction: row;
-  width: 50%;
-  margin-left: -3% !important;
+  width: 15% !important;
+  margin-left: 26%;
 }
 
 .multiline {
@@ -187,7 +195,7 @@
   width: 30vw !important;
 }
 
-@media (max-width: 1440px) {
+@media (min-width: 1340px) {
   .gridContainer {
     display: flex;
     flex-direction: row;
@@ -198,5 +206,35 @@
     align-self: center !important;
     width: 125vh !important;
     margin-left: 6% !important;
+    position: relative;
+    left: -4% !important;
+  }
+  .buttonColumn {
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    margin-left: 26%;
+  }
+}
+
+@media (max-width: 1340px) {
+  .gridContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: flex-start;
+    align-content: center !important;
+    flex-wrap: wrap;
+    align-self: center !important;
+    width: 125vh !important;
+    margin-left: 6% !important;
+    position: relative;
+    left: 2% !important;
+  }
+  .buttonColumn {
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    margin-left: 17%;
   }
 }

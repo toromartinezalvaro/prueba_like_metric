@@ -10,6 +10,11 @@
   justify-content: center;
 }
 
+.dialogExpand {
+  overflow-x: hidden !important;
+  overflow: hidden;
+}
+
 .actionContainer {
   display: flex !important;
   direction: row !important;
