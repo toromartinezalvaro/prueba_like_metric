@@ -178,6 +178,7 @@ class Clustering extends Component {
             onTypeChange={this.putType}
             towerClusterConfig={this.state.towerClusterConfig}
             loading={this.state.loadingTable}
+            locked={this.state.locked}
           />
         ) : null}
       </LoadableContainer>

@@ -11,6 +11,10 @@
   align-content: center !important;
   justify-content: center !important;
 }
+.expansionPanel {
+  overflow-x: hidden !important;
+  width: 90vw;
+}
 
 .titleExpand {
   margin-top: 4%;
@@ -38,4 +42,18 @@
 
 .circleColorGeneral {
   background-color: $softGreen-color;
+}
+
+@media (min-width: 1340px) {
+  .expansionPanel {
+    overflow-x: hidden !important;
+    width: 100%;
+  }
+}
+
+@media (max-width: 1340px) {
+  .expansionPanel {
+    overflow-x: hidden !important;
+    width: 80vw;
+  }
 }
