@@ -49,6 +49,7 @@ const Collapsables = (props) => {
   const [open, setOpen] = useState(false);
   const [unit, setUnit] = useState(null);
   const [name, setName] = useState(null);
+  const [currentArea, setCurrentArea] = useState(null);
 
   const handleChange = (id) => {
     if (id !== activePanel) {
@@ -62,8 +63,9 @@ const Collapsables = (props) => {
     setActualValue(value);
   };
 
-  const handleClickOpen = (e) => {
+  const handleClickOpen = (e, currentAreaPosition) => {
     e.stopPropagation();
+    setCurrentArea(currentAreaPosition);
     setOpen(true);
   };
 
@@ -116,6 +118,7 @@ const Collapsables = (props) => {
           <Header
             areaType={areaType}
             activePanel={activePanel}
+            currentAreaPosition={i}
             handleClickOpen={handleClickOpen}
             deleteArea={props.deleteArea}
           />
@@ -132,7 +135,7 @@ const Collapsables = (props) => {
               <DialogContentText id="alert-dialog-description">
                 <EditForm
                   onChangeName={onChangeName}
-                  areaType={areaType}
+                  areaType={props.data[currentArea]}
                   handleChangeModal={handleChangeModal}
                 />
               </DialogContentText>
@@ -141,7 +144,7 @@ const Collapsables = (props) => {
               <Actions
                 handleClose={handleClose}
                 handleUpdate={handleUpdate}
-                areaType={areaType}
+                areaType={props.data[currentArea]}
               />
             </DialogActions>
           </Dialog>

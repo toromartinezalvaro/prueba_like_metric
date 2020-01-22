@@ -142,6 +142,7 @@ const GeneralInfo = ({
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
               <Select
+                className={styles.SelectSimpleForLabel}
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'Socio de negocios',
@@ -193,7 +194,7 @@ const GeneralInfo = ({
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
               <Select
-                className={styles.selectOption}
+                className={styles.SelectSimpleForLabel}
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'Selecciona un grupo',
@@ -279,7 +280,7 @@ const GeneralInfo = ({
             <div className={styles.selectColumn}>
               <Select
                 isDisabled={isLocked}
-                className={styles.selectOption}
+                className={styles.SelectSimpleForLabel}
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'item',
@@ -335,7 +336,7 @@ const GeneralInfo = ({
       <div className={styles.gridContainer}>
         <TextField
           multiline
-          rows="6"
+          rows="5"
           className={styles.multiline}
           label="Descripción/Comentarios"
           variant="outlined"
