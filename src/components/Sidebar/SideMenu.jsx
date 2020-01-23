@@ -18,6 +18,7 @@ import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
 import { Role } from '../../helpers';
 import Section from './Section';
+import Header from './Header/Header';
 
 const SideMenu = ({
   resizableWidth,
@@ -108,12 +109,16 @@ const SideMenu = ({
                 <label>{tower ? tower.name : ''}</label>
               </div>
               <div className={style.IconsContainer}>
-                <div className={style.header}>Datos generales</div>
+                <Header
+                  title="Datos generales"
+                  validation={!!agent.isAuthorized([Role.Admin, Role.Super])}
+                />
                 <Section
                   title={'Datos iniciales'}
                   validation={InitialData.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
@@ -125,12 +130,19 @@ const SideMenu = ({
                   ]}
                 />
 
-                <div className={style.header}>Ventas</div>
+                <Header
+                  title="Ventas"
+                  validation={
+                    !!agent.isAuthorized([Role.Admin, Role.Super]) ||
+                    !!agent.isAuthorized([Role.User])
+                  }
+                />
                 <Section
                   title={'Cuadro de Áreas y Precios'}
                   validation={AreasAndPrices.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
@@ -183,6 +195,7 @@ const SideMenu = ({
                   validation={Increments.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
@@ -207,6 +220,7 @@ const SideMenu = ({
                   validation={SalesSpeed.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
@@ -224,6 +238,10 @@ const SideMenu = ({
                   validation={SalesRoom.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  display={
+                    !!agent.isAuthorized([Role.Admin, Role.Super]) ||
+                    !!agent.isAuthorized([Role.User])
+                  }
                   items={[
                     agent.isAuthorized([Role.User]) &&
                       itemForSlidebar(
@@ -255,6 +273,7 @@ const SideMenu = ({
                   validation={Reports.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
@@ -303,12 +322,16 @@ const SideMenu = ({
                   ]}
                 />
 
-                <div className={style.header}>Contratos</div>
+                <Header
+                  title="Contratos"
+                  validation={!!agent.isAuthorized([Role.Admin, Role.Super])}
+                />
                 <Section
                   title={'Contratos'}
                   validation={Contracts.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
