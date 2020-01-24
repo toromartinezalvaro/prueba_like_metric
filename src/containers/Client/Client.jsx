@@ -23,10 +23,12 @@ class Client extends Component {
       name: '',
       email: '',
       phoneNumber: '',
+      towers: null,
       hasCompanyAssociated: false,
     },
     isOpen: false,
     clients: [],
+    clientAdded: false,
   };
 
   componentDidMount() {
@@ -92,8 +94,10 @@ class Client extends Component {
         identityDocument: '',
         name: '',
         email: '',
+        towers: null,
         phoneNumber: '',
       },
+      addClient: false,
     });
   };
 
@@ -112,16 +116,26 @@ class Client extends Component {
     );
   };
 
-  searchNumber = (idNumber) => {
+  search = (text, type) => {
     const { towerId } = this.props.match.params;
     this.services
-      .getClient(idNumber, towerId)
+      .getClient(text, type, towerId)
       .then((response) => {
         this.setState({ currentClient: response.data, action: ADD });
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          this.setState({ action: SAVE });
+          this.setState({
+            currentClient: {
+              identityDocument: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+              towers: null,
+              hasCompanyAssociated: false,
+            },
+            action: SAVE,
+          });
         } else {
           console.error(error);
         }
@@ -130,6 +144,21 @@ class Client extends Component {
 
   goToSalesRoomClient = (currentClient) => {
     this.goToSalesRoom(currentClient.id);
+  };
+
+  addClientToTower = (identityDocument) => {
+    this.services
+      .addClientToTower(identityDocument, this.props.match.params.towerId)
+      .then((response) => {
+        this.setState((prevState) => {
+          const tempClients = [...prevState.clients];
+          tempClients.push(response.data);
+          return { clients: tempClients, clientAdded: true };
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   render() {
@@ -141,16 +170,19 @@ class Client extends Component {
           clients={this.state.clients}
         />
         <SearchOrNewClient
+          towerId={this.props.match.params.towerId}
           open={this.state.isOpen}
           clientInfo={this.state.currentClient}
           handleClose={this.handleCloseDialog}
           pushToSalesRoom={this.goToSalesRoom}
-          searchNumber={this.searchNumber}
+          search={this.search}
           saveHandler={this.handleSave}
           updateHandler={this.handleUpdate}
           addHandler={this.handleAdd}
           action={this.state.action}
           goToSalesRoom={this.goToSalesRoomClient}
+          addClientToTower={this.addClientToTower}
+          clientAdded={this.state.clientAdded}
         />
       </LoadableContainer>
     );

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../../../../UI/Button/Button';
+import Button from '../../../UI/Button/Button';
 import Styles from './PropertyCells.module.scss';
 
 const PropertyCells = ({ properties, selectProperty, selectedId }) => {
