@@ -8,6 +8,7 @@ import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
 import Styles from './Increments.module.scss';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
+import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
 
 class Increments extends Component {
   constructor(props) {
@@ -25,6 +26,17 @@ class Increments extends Component {
     hidden: true,
     loadingAPI: false,
     isShowBadgeAlert: false,
+    alert: {
+      opened: false,
+      message: '',
+    },
+  };
+
+  toastAlert = (message) => {
+    this.setState({ alert: { opened: true, message } });
+    setTimeout(() => {
+      this.setState({ alert: { opened: false, message } });
+    }, 500);
   };
 
   componentDidMount() {
@@ -46,6 +58,7 @@ class Increments extends Component {
       .catch((error) => {
         console.log(error);
         this.setState({ loadingAPI: false });
+        this.toastAlert(error);
       });
   };
 
@@ -63,7 +76,7 @@ class Increments extends Component {
       })
       .catch((error) => {
         this.setState({ isLoading: false, loadingAPI: false });
-        console.error(error);
+        this.toastAlert(error);
       });
   };
 
@@ -76,7 +89,7 @@ class Increments extends Component {
       })
       .catch((error) => {
         this.setState({ loadingAPI: false });
-        console.error(error);
+        this.toastAlert(error);
       });
   };
 
@@ -95,7 +108,7 @@ class Increments extends Component {
       })
       .catch((error) => {
         this.setState({ loadingAPI: false });
-        console.error(error);
+        this.toastAlert(error);
       });
   };
 
@@ -114,7 +127,7 @@ class Increments extends Component {
         })
         .catch((error) => {
           this.setState({ loadingAPI: false });
-          console.error(error);
+          this.toastAlert(error);
         });
     }
   };
@@ -142,7 +155,7 @@ class Increments extends Component {
         this.setState({ graphData: response.data, loadingAPI: false });
       })
       .catch((error) => {
-        console.error(error);
+        this.toastAlert(error);
         this.setState({ loadingAPI: false });
       });
   };
@@ -157,6 +170,7 @@ class Increments extends Component {
         this.setState({ loadingAPI: false });
       })
       .catch((error) => {
+        this.toastAlert(error);
         this.setState({ loadingAPI: false });
       });
   };
@@ -171,6 +185,7 @@ class Increments extends Component {
         this.setState({ loadingAPI: false });
       })
       .catch((error) => {
+        this.toastAlert(error);
         this.setState({ loadingAPI: false });
       });
   };
@@ -184,7 +199,7 @@ class Increments extends Component {
       })
       .catch((error) => {
         this.setState({ loadingAPI: false });
-        console.error(error);
+        this.toastAlert(error);
       });
   };
 
@@ -230,6 +245,11 @@ class Increments extends Component {
             el que esta actualmente o el recaudado
           </Modal>
         )}
+
+        <SimpleSnackbar
+          message={this.state.alert.message}
+          opened={this.state.alert.opened}
+        />
       </LoadableContainer>
     );
   }
