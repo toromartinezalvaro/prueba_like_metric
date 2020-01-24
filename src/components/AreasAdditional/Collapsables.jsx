@@ -152,7 +152,7 @@ const Collapsables = (props) => {
             <div className={Styles.stats}>
               <div className={Styles.stat}>
                 <span className={Styles.label}>Unidades:</span>
-                <span>{areaType.formatedAreas.length}</span>
+                <span>{areaType.additionalAreas.length}</span>
               </div>
               <div className={Styles.stat}>
                 <span className={Styles.label}>Total:</span>
@@ -160,7 +160,7 @@ const Collapsables = (props) => {
                   displayType="text"
                   thousandSeparator
                   prefix="$"
-                  value={areaType.formatedAreas
+                  value={areaType.additionalAreas
                     .reduce(
                       (current, next) => current + parseFloat(next.price),
                       0,
@@ -174,11 +174,11 @@ const Collapsables = (props) => {
                   displayType="text"
                   thousandSeparator
                   prefix="$"
-                  value={areaType.formatedAreas
+                  value={areaType.additionalAreas
                     .reduce(
                       (current, next) =>
                         current +
-                        parseFloat(next.price) / areaType.formatedAreas.length,
+                        parseFloat(next.price) / areaType.additionalAreas.length,
                       0,
                     )
                     .toFixed(2)}
