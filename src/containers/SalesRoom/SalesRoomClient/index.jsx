@@ -323,6 +323,7 @@ class SalesRoom extends Component {
         ).length === 1
       );
     }
+    return false;
   };
 
   deadlineDateHandler = (value) => {
