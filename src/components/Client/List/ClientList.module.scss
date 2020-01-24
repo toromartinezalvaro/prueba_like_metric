@@ -26,6 +26,18 @@
 }
 
 .ButtonGo {
-    justify-self: end;
-    align-self: flex-start;
+  justify-self: end;
+  align-self: flex-start;
+}
+
+.buyerContainer {
+  text-align: center;
+  .bought {
+    color: $green-color;
+  }
+}
+
+.tableContainer {
+  max-height: 700px;
+  overflow: auto;
 }

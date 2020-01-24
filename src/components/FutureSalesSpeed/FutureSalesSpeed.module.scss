@@ -8,12 +8,13 @@
 
 .ContainerFlex {
   display: grid;
-  grid-template-columns: 6% 10% 15% 15% 15% 15% 15% 15%;
-  align-items: center;
+  grid-template-columns: 12% 12% 12% 12% 12% 12% 12% 12% !important; 
+  align-items: center !important;
   overflow: auto;
 }
 
 .gridItem {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
+  margin: 0% 12% !important;
 }
