@@ -121,7 +121,7 @@ const Matrix = (
     }
   };
 
-  const data = areaType.formatedAreas.map((area, j) => {
+  const data = areaType.additionalAreas.map((area, j) => {
     return {
       nomenclature: (
         <TextField
