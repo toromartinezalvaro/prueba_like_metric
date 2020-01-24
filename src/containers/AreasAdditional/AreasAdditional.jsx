@@ -43,7 +43,7 @@ class AreasAdditional extends Component {
     if (isAreaType) {
       areaTypeFounded[key] = value;
     } else {
-      areaTypeFounded.formatedAreas[index][key] = value;
+      areaTypeFounded.additionalAreas[index][key] = value;
     }
     this.setState({ arrayAreaTypes: array });
   };
@@ -109,7 +109,7 @@ class AreasAdditional extends Component {
       })
       .then((area) => {
         const areas = this.state.arrayAreaTypes;
-        areas[indexAreaType].formatedAreas[indexArea] = area.data;
+        areas[indexAreaType].additionalAreas[indexArea] = area.data;
         this.setState({ arrayAreaTypes: areas });
       })
       .catch((error) => {
