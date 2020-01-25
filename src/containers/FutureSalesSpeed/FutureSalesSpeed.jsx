@@ -5,6 +5,7 @@ import errorHandling from '../../services/commons/errorHelper';
 import FutureSalesSpeedCard from '../../components/FutureSalesSpeed/FutureSalesSpeed';
 import FutureSalesSpeedsServices from '../../services/futureSalesSpeeds/FutureSalesSpeedsServices';
 import LoadableContainer from '../../components/UI/Loader';
+import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
 
 class FutureSalesSpeed extends Component {
   constructor(props) {
@@ -16,6 +17,17 @@ class FutureSalesSpeed extends Component {
     salesSpeeds: [],
     currentErrorMessage: '',
     isLoading: false,
+    alert: {
+      opened: false,
+      message: '',
+    },
+  };
+
+  toastAlert = (message) => {
+    this.setState({ alert: { opened: true, message } });
+    setTimeout(() => {
+      this.setState({ alert: { opened: false, message } });
+    }, 500);
   };
 
   componentDidMount() {
@@ -31,6 +43,7 @@ class FutureSalesSpeed extends Component {
           currentErrorMessage: errorHelper.message,
           isLoading: false,
         });
+        this.toastAlert(errorHelper);
       });
   }
 
@@ -43,6 +56,7 @@ class FutureSalesSpeed extends Component {
         this.setState({
           currentErrorMessage: errorHelper.message,
         });
+        this.toastAlert(errorHelper);
       });
   };
 
@@ -61,6 +75,7 @@ class FutureSalesSpeed extends Component {
         this.setState({
           currentErrorMessage: errorHelper.message,
         });
+        this.toastAlert(errorHelper);
       });
   };
 
@@ -80,6 +95,7 @@ class FutureSalesSpeed extends Component {
           currentErrorMessage: errorHelper.message,
         });
         rollback(true);
+        this.toastAlert(errorHelper);
       });
   };
 
@@ -94,6 +110,10 @@ class FutureSalesSpeed extends Component {
           futureSalesSpeedHandler={this.futureSalesSpeedHandler}
           separationHandler={this.separationHandler}
           initialFeeHandler={this.initialFeeHandler}
+        />
+        <SimpleSnackbar
+          message={this.state.alert.message}
+          opened={this.state.alert.opened}
         />
       </LoadableContainer>
     );
