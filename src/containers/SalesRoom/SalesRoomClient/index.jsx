@@ -316,10 +316,14 @@ class SalesRoom extends Component {
         propertiesByGroup[0].groupId === selectedProperty.groupId,
     );
 
-    return (
-      propertiesArray.filter((property) => property.status === Status.Available)
-        .length === 1
-    );
+    if (propertiesArray) {
+      return (
+        propertiesArray.filter(
+          (property) => property.status === Status.Available,
+        ).length === 1
+      );
+    }
+    return false;
   };
 
   deadlineDateHandler = (value) => {

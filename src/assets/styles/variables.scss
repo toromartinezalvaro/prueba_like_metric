@@ -19,6 +19,7 @@ $blackBorder-color: rgb(23, 43, 77);
 $alert-color: #faf2a1;
 $box-shadow-color: rgba(82, 63, 105, 0.1);
 $softVariantGrayBackground-color: #f4f9ff;
+$itemNoActive: #ecf0f1;
 
 $softGreenColor: #00c781;
 $redButton-color: #ff4040;
@@ -38,4 +39,5 @@ $secondaryText-size: 14px;
   yellowColor: $yellow-color;
   softYellowColor: $softYellow-color;
   grayColor: $gray-color;
+  itemNoActive: $itemNoActive;
 }

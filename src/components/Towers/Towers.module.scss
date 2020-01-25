@@ -1,4 +1,4 @@
-@import "../../assets/styles/variables.scss";
+@import '../../assets/styles/variables.scss';
 
 @import '../../assets/styles/variables.scss';
 
@@ -87,4 +87,9 @@
   display: flex;
   align-content: center;
   justify-content: flex-start;
+}
+
+.Towers {
+  display: flex;
+  direction: row !important;
 }
