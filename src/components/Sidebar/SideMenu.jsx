@@ -70,7 +70,7 @@ const SideMenu = ({
           <div className={style.Active}>
             <Link to={route}>
               <Icon name={iconName} fixWidth={true} />
-              <span className={style.Description}> {description} </span>
+              <span className={style.DescriptionActive}> {description} </span>
             </Link>
           </div>
         ) : (
