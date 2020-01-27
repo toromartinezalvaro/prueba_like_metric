@@ -14,6 +14,7 @@ import {
   Icon,
   CardContent,
   MenuItem,
+  InputAdornment,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
@@ -75,6 +76,7 @@ const BillingFinancials = ({
     elementIsASelect,
     elementIsAnEvent,
   ) => (element) => {
+    console.log('Dentro de changeCard');
     const billingsArray = [...billings];
     const billIndex = billings.findIndex((element) => {
       return element.id === id;
@@ -121,7 +123,12 @@ const BillingFinancials = ({
     } else {
       if (name === 'displacement') {
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .add(Number(element.target.value), billingsArray[billIndex].type)
+          .add(
+            Number(element.target.value),
+            billingsArray[billIndex].type === 'unique'
+              ? 'months'
+              : billingsArray[billIndex].type,
+          )
           .format('x');
         bill = {
           ...billingsArray[billIndex],
@@ -145,7 +152,11 @@ const BillingFinancials = ({
         };
         billingsArray[billIndex].lastBillingDate = Number(newDate);
       }
-      bill = { ...billingsArray[billIndex], [name]: element.target.value };
+      const value = element.target.value.replace(',', '');
+      bill = {
+        ...billingsArray[billIndex],
+        [name]: value,
+      };
     }
     billingsArray[billIndex] = bill;
     setBillings(billingsArray);
@@ -210,10 +221,28 @@ const BillingFinancials = ({
 
   const displayComponent = () => {
     return billings.map((billing, i) => {
+      function NumberFormatCustom(props) {
+        const { inputRef, onChange, ...other } = props;
+        return (
+          <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={(values) => {
+              onChange({
+                target: {
+                  value: values.value,
+                },
+              });
+            }}
+            thousandSeparator
+          />
+        );
+      }
       totalBills +=
         (Number(billing.amount) +
           Number(billing.amount) * (billing.iva / 100)) *
         Number(billing.paymentNumber);
+
       return (
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
@@ -253,8 +282,15 @@ const BillingFinancials = ({
                   margin="normal"
                   variant="outlined"
                   defaultValue={dataIfEdit && billing.amount}
-                  value={billing.billingAmount}
-                  onChange={changeCardValue('amount', billing.id)}
+                  value={billing.amount}
+                  onBlur={changeCardValue('amount', billing.id)}
+                  id={billing.id}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
                 />
                 <TextField
                   required
