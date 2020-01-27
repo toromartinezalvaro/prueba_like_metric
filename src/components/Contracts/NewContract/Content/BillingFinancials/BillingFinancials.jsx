@@ -76,7 +76,6 @@ const BillingFinancials = ({
     elementIsASelect,
     elementIsAnEvent,
   ) => (element) => {
-    console.log('Dentro de changeCard');
     const billingsArray = [...billings];
     const billIndex = billings.findIndex((element) => {
       return element.id === id;
