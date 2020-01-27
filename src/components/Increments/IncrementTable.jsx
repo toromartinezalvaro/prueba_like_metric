@@ -24,6 +24,7 @@ function IncrementTable({
   putSuggestedSalesSpeed,
   putSuggestedEffectiveAnnualInterestRate,
   futureSalesSpeedHandler,
+  resetStrategy,
   towerId,
   ...props
 }) {
@@ -69,7 +70,9 @@ function IncrementTable({
             open={
               group.sales.increment > group.total.increment && isBadgeIncrement
             }
-            trigger={<AccordionTrigger group={group} />}
+            trigger={
+              <AccordionTrigger group={group} resetStrategy={resetStrategy} />
+            }
           >
             <div className={styles.AccordionContainer}>
               {group.total.date === null || group.inventory.date === null ? (

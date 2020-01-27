@@ -234,8 +234,9 @@ class Contracts extends Component {
           console.log(error);
           this.toastAlert('Error al crear un grupo');
         });
+    } else {
+      this.toastAlert('ERROR: Debes agregar un nombre para crear un grupo');
     }
-    this.toastAlert('ERROR: Debes agregar un nombre para crear un grupo');
   };
 
   newBusinessPartner = (partner) => {
@@ -263,8 +264,9 @@ class Contracts extends Component {
           this.toastAlert('Error al crear un socio');
           console.log(error);
         });
+    } else {
+      this.toastAlert('ERROR: Debes agregar un nombre para crear un socio');
     }
-    this.toastAlert('ERROR: Debes agregar un nombre para crear un socio');
   };
 
   newItem = (name) => {
@@ -285,8 +287,9 @@ class Contracts extends Component {
           this.toastAlert('Error al crear un item');
           console.log(error);
         });
+    } else {
+      this.toastAlert('ERROR: Debes agregar un nombre para crear un item');
     }
-    this.toastAlert('ERROR: Debes agregar un nombre para crear un item');
   };
 
   updateCategory = (id, categoryName, contractId) => {
@@ -496,6 +499,10 @@ class Contracts extends Component {
     this.setState({ contractNumber });
   };
 
+  currentPut = (event) => {
+    this.setState({ currentContract: event });
+  };
+
   addContract = () => {
     this.services
       .getAllContracts(this.props.match.params.towerId)
@@ -511,15 +518,15 @@ class Contracts extends Component {
             .postContract(this.state.contract, this.props.match.params.towerId)
             .then((response) => {
               console.log(response);
-              this.setState({ currentContract: response });
+              this.setState({ currentContract: true });
+              if (this.state.currentContract) {
+                this.setState({ contractModal: { isOpen: false } });
+              }
             })
             .catch((error) => {
               this.toastAlert('Error al crear');
               console.log(error);
             });
-            if(this.state.currentContract){
-              this.setState({ contractModal: { isOpen: false } });
-            }
         }
       })
       .catch((error) => {
@@ -618,6 +625,7 @@ class Contracts extends Component {
           editContractOpen={this.editContractOpen}
           sendId={this.sendId}
           currentContract={this.state.currentContract}
+          currentPut={this.currentPut}
         />
         <NewContract
           towerId={this.props.match.params.towerId}
