@@ -24,10 +24,22 @@ class ContractList extends Component {
     this.services = new ContractService();
   }
 
-  reloadTable() {
-    this.setState({
-      contracts: [...this.state.contracts, this.props.currentContract],
-    });
+  componentDidUpdate() {
+    if (this.props.currentContract) {
+      this.services
+        .getAllContracts(this.props.towerId)
+        .then((contracts) => {
+          let data = [];
+          contracts.data.map((contract) => {
+            data.push(contract);
+          });
+          this.setState({ contracts: data });
+          this.props.currentPut(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   componentDidMount() {

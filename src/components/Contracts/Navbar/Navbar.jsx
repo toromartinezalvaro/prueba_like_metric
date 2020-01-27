@@ -15,6 +15,7 @@ const Navbar = ({
   editContractOpen,
   sendId,
   currentContract,
+  currentPut,
 }) => {
   return (
     <div>
@@ -32,6 +33,7 @@ const Navbar = ({
         editContractOpen={editContractOpen}
         sendId={sendId}
         currentContract={currentContract}
+        currentPut={currentPut}
       />
     </div>
   );

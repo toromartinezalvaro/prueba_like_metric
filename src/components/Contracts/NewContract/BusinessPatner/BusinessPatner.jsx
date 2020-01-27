@@ -42,6 +42,8 @@ const BusinessPatner = ({
     }
   }, []);
 
+  const [noShow, setNoShow] = useState(false);
+
   const onChangeInformation = (name) => (e) => {
     setPartner({ ...partner, [name]: e.target.value });
   };
@@ -65,7 +67,7 @@ const BusinessPatner = ({
         ref={props.innerRef}
         selected={props.isFocused}
         component="div"
-        className = {styles.itemMenu}
+        className={styles.itemMenu}
         style={{
           fontWeight: props.isSelected ? 500 : 400,
         }}
@@ -128,15 +130,17 @@ const BusinessPatner = ({
             value={partner.patnerAdress}
             onChange={onChangeInformation('patnerAdress')}
           />
-          <TextField
-            fullWidth
-            className={styles.textField}
-            label="Codigo postal"
-            margin="normal"
-            variant="outlined"
-            value={partner.patnerPostalCode}
-            onChange={onChangeInformation('patnerPostalCode')}
-          />
+          {noShow && (
+            <TextField
+              fullWidth
+              className={styles.textField}
+              label="Codigo postal"
+              margin="normal"
+              variant="outlined"
+              value={partner.patnerPostalCode}
+              onChange={onChangeInformation('patnerPostalCode')}
+            />
+          )}
         </div>
         <div className={styles.columnFullRigth}>
           <TextField
