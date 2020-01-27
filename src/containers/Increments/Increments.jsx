@@ -32,6 +32,10 @@ class Increments extends Component {
     },
   };
 
+  resetStrategy = (groupId) => {
+    this.services.resetStrategy(groupId);
+  };
+
   toastAlert = (message) => {
     this.setState({ alert: { opened: true, message } });
     setTimeout(() => {
@@ -230,6 +234,7 @@ class Increments extends Component {
             this.putSuggestedEffectiveAnnualInterestRate
           }
           futureSalesSpeedHandler={this.futureSalesSpeedHandler}
+          resetStrategy={this.resetStrategy}
           towerId={this.props.match.params.towerId}
           {...this.props}
         />

@@ -83,7 +83,12 @@ class Services {
             agent.logout();
             window.location.reload();
             reject(error);
-          } else if (retry >= 1 && retry < 5 && ((error.response && error.response.status !== 404) || !error.response)) {
+          } else if (
+            retry >= 1 &&
+            retry < 5 &&
+            ((error.response && error.response.status !== 404) ||
+              !error.response)
+          ) {
             const newRetry = retry - 1;
             this.axiosPromise(promise, newRetry)
               .then(resolve)

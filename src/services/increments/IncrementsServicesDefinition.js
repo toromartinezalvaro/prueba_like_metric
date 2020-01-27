@@ -1,6 +1,9 @@
 import { API_PATH } from '../../config/config';
 
 const IncrementsServiceDefinition = {
+  resetStrategy: (groupId) => {
+    return `${API_PATH}strategy/reset-strategy/${groupId}`;
+  },
   getMarket: (towerId) => {
     return `${API_PATH}pricingv2/markets/${towerId}`;
   },
