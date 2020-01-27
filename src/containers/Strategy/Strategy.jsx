@@ -312,6 +312,7 @@ export default class Strategy extends Component {
                       }
                       return (
                         <Button
+                          disabled={this.state.strategyActive}
                           onClick={() => {
                             this.setState({
                               hidden: false,

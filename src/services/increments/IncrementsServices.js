@@ -2,6 +2,10 @@ import IncrementsServicesDefinition from './IncrementsServicesDefinition';
 import Services from '../services';
 
 export default class IncrementsServices extends Services {
+  resetStrategy(groupId) {
+    return this.put(IncrementsServicesDefinition.resetStrategy(groupId));
+  }
+
   getMarket(towerId) {
     return this.get(IncrementsServicesDefinition.getMarket(towerId));
   }
