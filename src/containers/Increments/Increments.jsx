@@ -105,14 +105,18 @@ class Increments extends Component {
     this.setState({ loadingAPI: true });
     this.services
       .putSuggestedEffectiveAnnualInterestRate(id, {
-        effectiveAnnualInterestRate,
+        effectiveAnnualInterestRate: parseFloat(effectiveAnnualInterestRate),
       })
       .then((response) => {
         this.updateIncrements();
       })
       .catch((error) => {
         this.setState({ loadingAPI: false });
-        this.toastAlert(error);
+        if (error.response === undefined) {
+          this.props.spawnMessage('Error de conexión', 'error');
+        } else {
+          this.props.spawnMessage(error.response.data.message, 'error');
+        }
       });
   };
 
@@ -124,14 +128,18 @@ class Increments extends Component {
       this.services
         .putIncrement(this.props.match.params.towerId, {
           groupId: id,
-          increment,
+          increment: parseFloat(increment),
         })
         .then((response) => {
           this.updateIncrements();
         })
         .catch((error) => {
           this.setState({ loadingAPI: false });
-          this.toastAlert(error);
+          if (error.response === undefined) {
+            this.props.spawnMessage('Error de conexión', 'error');
+          } else {
+            this.props.spawnMessage(error.response.data.message, 'error');
+          }
         });
     }
   };
