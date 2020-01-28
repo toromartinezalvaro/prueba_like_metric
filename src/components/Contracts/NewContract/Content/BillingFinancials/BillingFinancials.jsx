@@ -41,6 +41,7 @@ const BillingFinancials = ({
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
+  const [lastDate, setLastDate] = useState('');
   const cardValue = {
     id: 0,
     eventId: null,
@@ -111,6 +112,7 @@ const BillingFinancials = ({
           lastBillingDate: Number(element.value),
           eventId: element.eventId,
         };
+        setLastDate(Number(element.value));
         billingsArray[billIndex].eventId = element.eventId;
       }
     } else if (elementIsAnEvent) {
@@ -121,6 +123,7 @@ const BillingFinancials = ({
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
       if (name === 'displacement') {
+        billingsArray[billIndex].initalBillingDate = Number(lastDate);
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
           .add(
             Number(element.target.value),
@@ -134,7 +137,9 @@ const BillingFinancials = ({
         };
         billingsArray[billIndex].initalBillingDate = Number(newDate);
       } else if (name === 'paymentNumber') {
+        billingsArray[billIndex].lastBillingDate = Number(lastDate);
         if (billingsArray[billIndex].type !== 'quarter') {
+          billingsArray[billIndex].lastBillingDate = Number(lastDate);
           const newDate = moment(billingsArray[billIndex].initalBillingDate)
             .add(Number(element.target.value), billingsArray[billIndex].type)
             .format('x');
