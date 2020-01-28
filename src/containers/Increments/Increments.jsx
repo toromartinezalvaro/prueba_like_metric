@@ -33,7 +33,10 @@ class Increments extends Component {
   };
 
   resetStrategy = (groupId) => {
-    this.services.resetStrategy(groupId);
+    this.setState({ loadingAPI: true });
+    this.services
+      .resetStrategy(groupId)
+      .then(() => this.setState({ loadingAPI: false }));
   };
 
   toastAlert = (message) => {
