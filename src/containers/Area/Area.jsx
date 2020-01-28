@@ -38,6 +38,7 @@ class Area extends Component {
     calculateTotals: true,
     modalIsLoading: false,
     isLoading: false,
+    anySold: false,
   };
 
   modalContent = () => {
@@ -61,6 +62,7 @@ class Area extends Component {
             services={this.services}
             towerId={this.props.match.params.towerId}
             isLoading={this.state.modalIsLoading}
+            anySold={this.state.anySold}
           />
         </Fragment>
       );
@@ -200,6 +202,7 @@ class Area extends Component {
           properties: response.data.properties,
           isLoading: false,
           data: response.data.propertiesAreas,
+          anySold: response.data.anySold,
         });
       })
       .catch((error) => {
@@ -370,6 +373,7 @@ class Area extends Component {
                 message: 'No puede estar vacío',
               },
             ]}
+            disable={this.state.anySold}
             zeroDefault={true}
             onChange={(target) => {
               this.areaChangeHandler(
