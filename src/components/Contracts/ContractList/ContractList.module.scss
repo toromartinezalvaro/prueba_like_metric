@@ -49,3 +49,10 @@
 .Loader {
   align-self: center !important;
 }
+
+.noContractBody {
+  align-self: center;
+  position: relative;
+  left: 10%;
+  color: $black-color;
+}

@@ -310,7 +310,7 @@ const GeneralInfo = ({
                 onChange={changeAndSearchItem}
               />
             </div>
-            <div className={styles.buttonColumn}>
+            <div className={styles.buttonColumnForItem}>
               <Fab
                 disabled={isLocked}
                 color="primary"

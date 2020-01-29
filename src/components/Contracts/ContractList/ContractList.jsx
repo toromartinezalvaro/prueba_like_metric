@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 import ContractService from '../../../services/contract/contractService';
 import newContract from '../NewContract/NewContract';
 import ViewContractInformation from '../ViewContractInformation/ViewContractInformation';
@@ -23,6 +24,7 @@ class ContractList extends Component {
       contractId: 0,
       contractData: {},
       isLoading: true,
+      contractAvailable: true,
     };
     this.services = new ContractService();
   }
@@ -51,7 +53,10 @@ class ContractList extends Component {
       .then((contracts) => {
         const data = [];
         contracts.data.map((contract) => {
-          data.push(contract);
+          if (contract) {
+            data.push(contract);
+          }
+          this.setState({ contractAvailable: false });
         });
         this.setState({ contracts: data, isLoading: false });
       })
@@ -145,6 +150,16 @@ class ContractList extends Component {
           </div>
         ) : (
           <div>{this.displayData()}</div>
+        )}
+        {this.state.contractAvailable && (
+          <Card>
+            <CardContent>
+              <span className={style.noContractBody}>
+                <strong>No hay contratos creados:</strong> Hay que crear algunos
+                contratos!
+              </span>
+            </CardContent>
+          </Card>
         )}
         {this.state.openDataView && (
           <ViewContractInformation
