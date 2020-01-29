@@ -5,6 +5,8 @@
  */
 
 import React, { Component } from 'react';
+import Loader from 'react-loader-spinner';
+import { CardContent } from '@material-ui/core';
 import Card, {
   CardHeader,
   CardBody,
@@ -12,6 +14,7 @@ import Card, {
 } from '../../components/UI/Card/Card';
 import ContractFlowService from '../../services/contractFlow/contractFlowService';
 import TableContractFlow from '../../components/ContractFlow/TableContractFlow';
+import commonStyles from '../../assets/styles/variables.scss';
 import Table from '../../components/UI/Table/Table';
 import Style from './ContractFlow.module.scss';
 
@@ -20,6 +23,8 @@ class ContractFlow extends Component {
     super(props);
     this.state = {
       data: [],
+      isLoading: true,
+      contractsAvailable: true,
     };
     this.service = new ContractFlowService();
   }
@@ -28,14 +33,22 @@ class ContractFlow extends Component {
     this.service
       .getContractsInformation(this.props.match.params.towerId)
       .then((response) => {
+        this.setState({ isLoading: true });
         const information = response.data;
         information.map((contract) => {
-          console.log(contract);
+          if (contract) {
+            console.log(contract);
+          } else {
+            this.setState({ contractsAvailable: false });
+          }
         });
 
-        this.setState({ data: response.data });
+        this.setState({ data: response.data, isLoading: false });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.setState({ isLoading: false });
+      });
   }
 
   render() {
@@ -45,7 +58,23 @@ class ContractFlow extends Component {
           <span>Flujo de caja de contratos</span>
         </CardHeader>
         <CardBody>
-          <TableContractFlow data={this.state.data} />
+          {this.state.isLoading ? (
+            <div className={Style.Loader}>
+              <Loader color={commonStyles.mainColor} height="100" width="100" />
+            </div>
+          ) : (
+            <TableContractFlow data={this.state.data} />
+          )}
+          {this.state.contractsAvailable && (
+            <Card>
+              <CardContent>
+                <span className={Style.noContractBody}>
+                  <strong>No hay contratos creados:</strong> Hay que crear
+                  algunos contratos!
+                </span>
+              </CardContent>
+            </Card>
+          )}
         </CardBody>
       </Card>
     );

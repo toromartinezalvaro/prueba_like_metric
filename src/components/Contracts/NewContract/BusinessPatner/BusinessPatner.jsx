@@ -42,7 +42,7 @@ const BusinessPatner = ({
     }
   }, []);
 
-  const [noShow, setNoShow] = useState(false);
+  const [isShow, setShow] = useState(false);
 
   const onChangeInformation = (name) => (e) => {
     setPartner({ ...partner, [name]: e.target.value });
@@ -130,7 +130,7 @@ const BusinessPatner = ({
             value={partner.patnerAdress}
             onChange={onChangeInformation('patnerAdress')}
           />
-          {noShow && (
+          {isShow && (
             <TextField
               fullWidth
               className={styles.textField}

@@ -107,6 +107,18 @@ export default class ContractService extends Services {
     });
   }
 
+  putContract(data, towerId, contractId) {
+    return this.put(
+      ContractServiceDefinitions.contractForEdition(towerId, contractId),
+      data,
+      {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      },
+    );
+  }
+
   getContractById(towerId, id) {
     return this.get(ContractServiceDefinitions.contractById(towerId, id));
   }

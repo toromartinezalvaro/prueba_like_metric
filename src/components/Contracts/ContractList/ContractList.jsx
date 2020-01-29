@@ -5,11 +5,14 @@
  */
 
 import React, { Component } from 'react';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 import ContractService from '../../../services/contract/contractService';
 import newContract from '../NewContract/NewContract';
 import ViewContractInformation from '../ViewContractInformation/ViewContractInformation';
 import statusOfContractEnum from '../NewContract/Content/GeneralInfo/statusOfContract.enum';
 import moment from 'moment';
+import Loader from 'react-loader-spinner';
+import commonStyles from '../../../assets/styles/variables.scss';
 import style from './ContractList.module.scss';
 
 class ContractList extends Component {
@@ -20,6 +23,8 @@ class ContractList extends Component {
       openDataView: false,
       contractId: 0,
       contractData: {},
+      isLoading: true,
+      contractAvailable: true,
     };
     this.services = new ContractService();
   }
@@ -29,11 +34,11 @@ class ContractList extends Component {
       this.services
         .getAllContracts(this.props.towerId)
         .then((contracts) => {
-          let data = [];
+          const data = [];
           contracts.data.map((contract) => {
             data.push(contract);
           });
-          this.setState({ contracts: data });
+          this.setState({ contracts: data, isLoading: false });
           this.props.currentPut(false);
         })
         .catch((error) => {
@@ -46,11 +51,14 @@ class ContractList extends Component {
     this.services
       .getAllContracts(this.props.towerId)
       .then((contracts) => {
-        let data = [];
+        const data = [];
         contracts.data.map((contract) => {
-          data.push(contract);
+          if (contract) {
+            data.push(contract);
+          }
+          this.setState({ contractAvailable: false });
         });
-        this.setState({ contracts: data });
+        this.setState({ contracts: data, isLoading: false });
       })
       .catch((error) => {
         console.log(error);
@@ -131,7 +139,28 @@ class ContractList extends Component {
           <div className={style.header}>Archivos</div>
           <div className={style.header}>Estado</div>
         </div>
-        <div>{this.displayData()}</div>
+        {this.state.isLoading ? (
+          <div className={style.Loader} key="loader">
+            <Loader
+              type="ThreeDots"
+              color={commonStyles.mainColor}
+              height="100"
+              width="100"
+            />
+          </div>
+        ) : (
+          <div>{this.displayData()}</div>
+        )}
+        {this.state.contractAvailable && (
+          <Card>
+            <CardContent>
+              <span className={style.noContractBody}>
+                <strong>No hay contratos creados:</strong> Hay que crear algunos
+                contratos!
+              </span>
+            </CardContent>
+          </Card>
+        )}
         {this.state.openDataView && (
           <ViewContractInformation
             editContractOpen={this.props.editContractOpen}
