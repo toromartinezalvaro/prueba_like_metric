@@ -42,7 +42,7 @@ const BusinessPatner = ({
     }
   }, []);
 
-  const [isShow, setIsShow] = useState(false);
+  const [isShow, setShow] = useState(false);
 
   const onChangeInformation = (name) => (e) => {
     setPartner({ ...partner, [name]: e.target.value });

@@ -476,7 +476,6 @@ class Contracts extends Component {
   };
 
   sendGeneralInfo = (generalInformation) => {
-    console.log('INFORMATION FROM GENERAL', generalInformation);
     this.setState({ generalInformation });
   };
 
@@ -487,7 +486,6 @@ class Contracts extends Component {
     );
     attachment.append('billing', JSON.stringify(this.state.billings));
     const attach = [...this.state.attachments, attachment];
-    console.log('ATTACHMENTS', attachment.get('generalInformation'));
     this.setState({
       contract: attachment,
     });
@@ -519,7 +517,6 @@ class Contracts extends Component {
           this.services
             .postContract(this.state.contract, this.props.match.params.towerId)
             .then((response) => {
-              console.log(response);
               this.setState({ currentContract: true });
               if (this.state.currentContract) {
                 this.setState({ contractModal: { isOpen: false } });
@@ -607,7 +604,6 @@ class Contracts extends Component {
         this.state.contractModal.contractId,
       )
       .then((response) => {
-        console.log(response);
         this.setState({ currentContract: true });
         if (this.state.currentContract) {
           this.setState({ contractModal: { isOpen: false } });

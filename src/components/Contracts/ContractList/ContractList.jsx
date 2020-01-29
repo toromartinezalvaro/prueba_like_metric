@@ -32,7 +32,6 @@ class ContractList extends Component {
       this.services
         .getAllContracts(this.props.towerId)
         .then((contracts) => {
-          this.setState({ isLoading: true });
           const data = [];
           contracts.data.map((contract) => {
             data.push(contract);
@@ -50,7 +49,6 @@ class ContractList extends Component {
     this.services
       .getAllContracts(this.props.towerId)
       .then((contracts) => {
-        this.setState({ isLoading: true });
         const data = [];
         contracts.data.map((contract) => {
           data.push(contract);
