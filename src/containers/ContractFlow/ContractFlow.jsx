@@ -45,7 +45,10 @@ class ContractFlow extends Component {
 
         this.setState({ data: response.data, isLoading: false });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.setState({ isLoading: false });
+      });
   }
 
   render() {
