@@ -504,6 +504,16 @@ class Contracts extends Component {
   };
 
   addContract = () => {
+    let data = new FormData();
+    if (this.state.contract) {
+      data = this.state.contract;
+    } else {
+      data.append(
+        'generalInformation',
+        JSON.stringify(this.state.generalInformation),
+      );
+      data.append('billing', JSON.stringify(this.state.billings));
+    }
     this.services
       .getAllContracts(this.props.match.params.towerId)
       .then((contracts) => {
@@ -515,7 +525,7 @@ class Contracts extends Component {
           this.toastAlert('ERROR: Ya existe un contrato con ese nombre');
         } else {
           this.services
-            .postContract(this.state.contract, this.props.match.params.towerId)
+            .postContract(data, this.props.match.params.towerId)
             .then((response) => {
               this.setState({ currentContract: true });
               if (this.state.currentContract) {

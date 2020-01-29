@@ -102,6 +102,7 @@ const GeneralInfo = ({
       ...generalInformation,
       groupId: currentGroupValue,
     });
+    sendGeneralInfo(generalInformation);
     changeForSearchCategory(currentGroup);
     changeItemIsLocked(currentGroupValue);
     currentGroupId(currentGroupValue);
@@ -117,12 +118,14 @@ const GeneralInfo = ({
       ...generalInformation,
       businessPartnerId: currentPartnerValue,
     });
+    sendGeneralInfo(generalInformation);
     changeForSearchPartner(currentPartner);
   };
 
   const changeAndSearchItem = (currentItem) => {
     const currentItemValue = currentItem.value;
     setGeneralInformation({ ...generalInformation, itemId: currentItemValue });
+    sendGeneralInfo(generalInformation);
     changeForSearchItem(currentItem);
   };
 
