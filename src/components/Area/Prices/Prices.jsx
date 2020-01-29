@@ -1,15 +1,15 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import _ from 'lodash';
+import Loader from 'react-loader-spinner';
 import Table from '../../UI/Table/Table';
 import Input from '../../UI/Input/Input';
 import errorHandling from '../../../services/commons/errorHelper';
-import Error from '../../../components/UI/Error/Error';
-import Loader from 'react-loader-spinner';
+import Error from '../../UI/Error/Error';
 import commonStyles from '../../../assets/styles/variables.scss';
 import styles from './Prices.module.scss';
 
 const Prices = (props) => {
-  const { areaTypeId, measurementUnit, services, towerId } = props;
+  const { areaTypeId, measurementUnit, services, towerId, anySold } = props;
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
   const [currentErrorMessage, setCurrentErrorMessage] = useState();
@@ -18,7 +18,7 @@ const Prices = (props) => {
   const updateAreaPrice = (id, price) => {
     services
       .putAreaPrice(id, {
-        price: price,
+        price,
       })
       .then((data) => {
         console.log(data);
@@ -31,7 +31,7 @@ const Prices = (props) => {
   const updateAreaTypePrice = (id, price) => {
     services
       .putAreaTypePrice(id, {
-        price: price,
+        price,
       })
       .then((data) => {
         console.log(data);
@@ -64,6 +64,7 @@ const Prices = (props) => {
                   validations={[]}
                   style={{ width: '75px' }}
                   value={area.price}
+                  disable={anySold}
                 />,
               ];
             });
@@ -74,7 +75,7 @@ const Prices = (props) => {
       })
       .catch((error) => {
         setLoading(false);
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         setCurrentErrorMessage(errorHelper.message);
       });
     setCurrentErrorMessage('');
