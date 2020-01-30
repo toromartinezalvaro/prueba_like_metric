@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
+import { CardContent } from '@material-ui/core';
 import Card, {
   CardHeader,
   CardBody,
@@ -23,6 +24,7 @@ class ContractFlow extends Component {
     this.state = {
       data: [],
       isLoading: true,
+      contractsAvailable: true,
     };
     this.service = new ContractFlowService();
   }
@@ -31,15 +33,22 @@ class ContractFlow extends Component {
     this.service
       .getContractsInformation(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ isLoading: true});
+        this.setState({ isLoading: true });
         const information = response.data;
         information.map((contract) => {
-          console.log(contract);
+          if (contract) {
+            console.log(contract);
+          } else {
+            this.setState({ contractsAvailable: false });
+          }
         });
 
         this.setState({ data: response.data, isLoading: false });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.setState({ isLoading: false });
+      });
   }
 
   render() {
@@ -51,14 +60,20 @@ class ContractFlow extends Component {
         <CardBody>
           {this.state.isLoading ? (
             <div className={Style.Loader}>
-              <Loader
-                color={commonStyles.mainColor}
-                height="100"
-                width="100"
-              />
+              <Loader color={commonStyles.mainColor} height="100" width="100" />
             </div>
           ) : (
             <TableContractFlow data={this.state.data} />
+          )}
+          {this.state.contractsAvailable && (
+            <Card>
+              <CardContent>
+                <span className={Style.noContractBody}>
+                  <strong>No hay contratos creados:</strong> Hay que crear
+                  algunos contratos!
+                </span>
+              </CardContent>
+            </Card>
           )}
         </CardBody>
       </Card>
