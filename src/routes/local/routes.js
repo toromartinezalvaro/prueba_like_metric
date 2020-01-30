@@ -25,6 +25,7 @@ export const DashboardRoutes = {
     withIndicator: '/salesRoom/:towerId/:clientId',
   },
   clients: { value: '/clients/', withIndicator: '/clients/:towerId' },
+  clients2: { value: '/clients2/', withIndicator: '/clients2/:towerId' },
   futureSalesSpeed: {
     value: '/futureSalesSpeed/',
     withIndicator: '/futureSalesSpeed/:towerId',

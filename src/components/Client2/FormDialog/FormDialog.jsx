@@ -8,9 +8,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const Modal = ({ client }) => {
+const FormDialog = ({ client }) => {
   return (
-    <Dialog open>
+    <Dialog open={client !== null}>
       <DialogTitle>Cliente</DialogTitle>
       <DialogContent>
         <DialogContentText>Informacion del cliente</DialogContentText>
@@ -28,7 +28,7 @@ const Modal = ({ client }) => {
   );
 };
 
-Modal.propTypes = {
+FormDialog.propTypes = {
   client: PropTypes.shape({
     id: PropTypes.string,
     identityDocument: PropTypes.string,
@@ -38,4 +38,4 @@ Modal.propTypes = {
   }),
 };
 
-export default Modal;
+export default FormDialog;
