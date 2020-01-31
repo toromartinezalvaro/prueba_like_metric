@@ -86,11 +86,11 @@ export default class Strategy extends Component {
           } else {
             lengths = [dataGraph[0].increments.length];
           }
-          console.log(lengths);
+          const initialMonth = groupFilter.initialMonth || Date.now();
           return Array(_.max(lengths))
             .fill(null)
             .map((_, index) => {
-              return moment(Number(this.state.salesStartDate))
+              return moment(Number(initialMonth))
                 .add(index, 'months')
                 .format('MM/YY');
             });
