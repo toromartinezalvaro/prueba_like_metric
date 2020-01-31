@@ -8,6 +8,7 @@ import Card from '../../components/UI/Card/Card';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
 import SummaryStrategy from '../../components/Strategy/SummaryStrategy';
+import MarketAndSelectStrategy from '../../components/Strategy/MarketAndSelectStrategy';
 import styles from '../../assets/styles/variables.scss';
 import { DashboardRoutes } from '../../routes/local/routes';
 import LoadableContainer from '../../components/UI/Loader';
@@ -77,7 +78,7 @@ export default class Strategy extends Component {
     if (groupFilter !== undefined) {
       if (groupFilter.strategies.length > 0) {
         this.setState({ dataGraph: groupFilter.strategies });
-        let dataGraph = groupFilter.strategies;
+        const dataGraph = groupFilter.strategies;
         console.log('dataGraph', dataGraph);
         if (dataGraph[0] !== undefined) {
           let lengths;
@@ -99,6 +100,14 @@ export default class Strategy extends Component {
         return null;
       }
     }
+  };
+
+  selectStrategy = (index, strategySelected) => {
+    this.setState({
+      hidden: false,
+      strategySelected,
+      index,
+    });
   };
 
   makeArrayDataSets = (dataGraph) => {
@@ -141,7 +150,7 @@ export default class Strategy extends Component {
             isLoading: false,
             groupActive: strategies.data.increments[0],
             currentGroup: arrayDataSets,
-            labels: labels,
+            labels,
             groups: strategies.data.increments,
             strategyActive: strategies.data.increments[0].strategy,
           });
@@ -170,13 +179,13 @@ export default class Strategy extends Component {
     if (arrayDataSets.length !== 0) {
       this.setState({
         currentGroup: arrayDataSets,
-        labels: labels,
-        groupActive: groupActive,
+        labels,
+        groupActive,
         strategyActive: groupActive.strategy,
       });
     } else {
       this.setState({
-        groupActive: groupActive,
+        groupActive,
       });
     }
   }
@@ -290,48 +299,16 @@ export default class Strategy extends Component {
                   currentGroup={[...this.state.currentGroup]}
                   labels={this.state.labels}
                 />
-
-                <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                  <h4>
-                    Selecciona la estrategia para el{' '}
-                    {this.state.groupActive.type}
-                  </h4>
-                  {this.state.groupActive.strategies.map((group, index) => {
-                    if (index !== 0) {
-                      let styleButton = {
-                        backgroundColor: styles.grayColor,
-                      };
-                      if (
-                        this.state.strategyActive ===
-                        this.state.dataHelper[index].id
-                      ) {
-                        styleButton = {
-                          backgroundColor: this.state.dataHelper[index]
-                            .borderColor,
-                        };
-                      }
-                      return (
-                        <Button
-                          disabled={this.state.strategyActive}
-                          onClick={() => {
-                            this.setState({
-                              hidden: false,
-                              strategySelected: this.state.dataHelper[index].id,
-                              index: index,
-                            });
-                          }}
-                          style={styleButton}
-                        >
-                          {this.state.dataHelper[index].label}
-                        </Button>
-                      );
-                    }
-                  })}
-                  <SummaryStrategy
-                    groups={this.state.groups}
-                    helper={this.state.dataHelper}
-                  />
-                </div>
+                <MarketAndSelectStrategy
+                  dataHelper={this.state.dataHelper}
+                  groupActive={this.state.groupActive}
+                  strategyActive={this.state.strategyActive}
+                  selectStrategy={this.selectStrategy}
+                />
+                <SummaryStrategy
+                  groups={this.state.groups}
+                  helper={this.state.dataHelper}
+                />
               </div>
             ) : null
           ) : (
@@ -342,10 +319,8 @@ export default class Strategy extends Component {
               </h4>
               <Link
                 to={
-                  DashboardRoutes.base +
-                  '/clustering' +
-                  '/' +
-                  this.props.match.params.towerId
+                  `${DashboardRoutes.base}/clustering` +
+                  `/${this.props.match.params.towerId}`
                 }
               >
                 <Button>
@@ -354,10 +329,8 @@ export default class Strategy extends Component {
               </Link>
               <Link
                 to={
-                  DashboardRoutes.base +
-                  '/increments' +
-                  '/' +
-                  this.props.match.params.towerId
+                  `${DashboardRoutes.base}/increments` +
+                  `/${this.props.match.params.towerId}`
                 }
               >
                 <Button>
