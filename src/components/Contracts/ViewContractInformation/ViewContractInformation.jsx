@@ -48,6 +48,10 @@ class ViewContractInformation extends Component {
     this.setState({ deleteAction: false });
   };
 
+  deletedContract = () => {
+    this.setState({ deleteAction: false, viewerModal: { isOpen: false } });
+  };
+
   render() {
     return (
       <Dialog
@@ -71,6 +75,7 @@ class ViewContractInformation extends Component {
                 isOpen={this.state.deleteAction}
                 setClose={this.setCloseDeleteAction}
                 deleteContract={this.props.deleteContract}
+                deletedContract={this.deletedContract}
               />
             )}
             <div className={style.actionContainer}>

@@ -10,9 +10,11 @@ const DeleteAction = ({
   title,
   deleteContract,
   id,
+  deletedContract,
 }) => {
   const contractToDelete = () => {
     deleteContract(id);
+    deletedContract();
   };
   return (
     <Dialog open={isOpen} scroll="body" fullWidth={true} maxWidth="md">

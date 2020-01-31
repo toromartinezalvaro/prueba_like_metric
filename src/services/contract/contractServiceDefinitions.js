@@ -10,9 +10,12 @@ import BillingFinancials from '../../components/Contracts/NewContract/Content/Bi
 const ContractServiceDefinitions = {
   contract: (towerId) => `${API_PATH}contract/${towerId}`,
   contractForEdition: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
+  contractForDelete: (towerId) => `${API_PATH}contract/${towerId}`,
   category: (towerId) => `${API_PATH}contract/contract-category/${towerId}`,
-  getAllCategories: (towerId) => `${API_PATH}contract/contract-category/${towerId}`,
-  businessContract: (towerId) => `${API_PATH}contract/business-partner/${towerId}`,
+  getAllCategories: (towerId) =>
+    `${API_PATH}contract/contract-category/${towerId}`,
+  businessContract: (towerId) =>
+    `${API_PATH}contract/business-partner/${towerId}`,
   categoryToSearch: (categoryToSearch) =>
     `${API_PATH}contract/contract-category/${categoryToSearch}`,
   businessContractToSearch: (textToSearch) =>
@@ -33,7 +36,8 @@ const ContractServiceDefinitions = {
   items: () => `${API_PATH}contract/item`,
   getItemById: (data) => `${API_PATH}contract/item/find/${data}`,
   itemUpdate: () => `${API_PATH}contract/item/edit`,
-  findByForeignId: (towerId, data) => `${API_PATH}contract/item-group/${towerId}/${data}`,
+  findByForeignId: (towerId, data) =>
+    `${API_PATH}contract/item-group/${towerId}/${data}`,
   contractById: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
 };
 
