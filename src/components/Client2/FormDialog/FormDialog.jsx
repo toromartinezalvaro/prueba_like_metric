@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -8,18 +8,59 @@ import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const FormDialog = ({ client }) => {
+const defaultClient = {
+  id: null,
+  identityDocument: '',
+  name: '',
+  email: '',
+  phoneNumber: '',
+};
+
+const FormDialog = ({ client, onCloseHandler }) => {
+  const [innerClient, setInnerClient] = useState(defaultClient);
+
+  useEffect(() => {
+    if (client) {
+      if (client.id) {
+        setInnerClient(client);
+      } else {
+        const attribute = Number.isNaN(Number(client.identityDocument))
+          ? 'name'
+          : 'identityDocument';
+        setInnerClient({
+          ...defaultClient,
+          [attribute]: client.identityDocument,
+        });
+      }
+    } else {
+      setInnerClient(defaultClient);
+    }
+  }, [client]);
+
   return (
     <Dialog open={client !== null}>
       <DialogTitle>Cliente</DialogTitle>
       <DialogContent>
         <DialogContentText>Informacion del cliente</DialogContentText>
-        <form>
-          <TextField label="Nombre" />
-        </form>
+        <TextField
+          label="Documento de identidad"
+          value={innerClient.identityDocument}
+          disabled={innerClient.id !== null}
+        />
+        <TextField label="Nombre" value={innerClient.name} />
+        <TextField label="Correo" value={innerClient.email} />
+        <TextField label="Numero de telefono" value={innerClient.phoneNumber} />
+
+        {innerClient.id !== null && (
+          <Button variant="contained" color="primary" fullWidth>
+            Agregar a la torre
+          </Button>
+        )}
       </DialogContent>
       <DialogActions>
-        <Button color="primary">Cerrar</Button>
+        <Button color="primary" onClick={onCloseHandler}>
+          Cerrar
+        </Button>
         <Button color="primary" autoFocus>
           Guardar
         </Button>
@@ -36,6 +77,7 @@ FormDialog.propTypes = {
     email: PropTypes.string,
     phoneNumber: PropTypes.string,
   }),
+  onCloseHandler: PropTypes.func.isRequired,
 };
 
 export default FormDialog;

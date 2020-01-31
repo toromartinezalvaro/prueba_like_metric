@@ -45,7 +45,12 @@ const Client = (props) => {
           </ContainerContext.Provider>
         </div>
       </div>
-      <ClientFormDialog client={selectedClient} />
+      <ClientFormDialog
+        client={selectedClient}
+        onCloseHandler={() => {
+          setSelectedClient(null);
+        }}
+      />
     </Fragment>
   );
 };
