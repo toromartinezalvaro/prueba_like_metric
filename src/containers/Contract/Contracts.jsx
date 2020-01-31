@@ -628,6 +628,10 @@ class Contracts extends Component {
     });
   };
 
+  deleteContract = (id) => {
+    console.log('Contrato eliminado', id);
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -638,6 +642,7 @@ class Contracts extends Component {
           sendId={this.sendId}
           currentContract={this.state.currentContract}
           currentPut={this.currentPut}
+          deleteContract={this.deleteContract}
         />
         <NewContract
           towerId={this.props.match.params.towerId}

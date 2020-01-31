@@ -14,6 +14,7 @@ const Navbar = ({
   handleOpenContract,
   editContractOpen,
   sendId,
+  deleteContract,
   currentContract,
   currentPut,
 }) => {
@@ -35,6 +36,7 @@ const Navbar = ({
           sendId={sendId}
           currentContract={currentContract}
           currentPut={currentPut}
+          deleteContract={deleteContract}
         />
       </div>
     </div>

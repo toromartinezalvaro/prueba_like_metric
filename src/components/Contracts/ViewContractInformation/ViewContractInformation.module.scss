@@ -120,3 +120,14 @@
   color: $main-color;
   font-weight: bold;
 }
+
+.button {
+  margin-left: 2% !important;
+  margin-right: 2% !important;
+}
+
+.deleteButton,
+.ViewContractInformation_deleteButton__FcTkr {
+  background-color: #d50000 !important;
+  color: $defaultWhite-color !important;
+}

@@ -161,6 +161,8 @@ class ContractList extends Component {
         </div>
         {this.state.openDataView && (
           <ViewContractInformation
+            id={this.state.contractId}
+            deleteContract={this.props.deleteContract}
             editContractOpen={this.props.editContractOpen}
             closeInformationView={this.closeInformationView}
             contractId={this.state.contractId}
