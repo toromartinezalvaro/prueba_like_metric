@@ -149,14 +149,13 @@ class ContractList extends Component {
               width="100"
             />
           </div>
-        ) : (
-          <div>{this.displayData()}</div>
-        )}
-        {this.state.contractAvailable && (
+        ) : this.state.contractAvailable ? (
           <EmptyContentMessageView
             title="Vamos a crear contratos 📏!"
             message="Es fácil, debes hacer click en el botón superior y llenar el formulario"
           />
+        ) : (
+          <div>{this.displayData()}</div>
         )}
         {this.state.openDataView && (
           <ViewContractInformation
