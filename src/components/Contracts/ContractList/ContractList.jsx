@@ -39,7 +39,12 @@ class ContractList extends Component {
           contracts.data.map((contract) => {
             data.push(contract);
           });
-          this.setState({ contracts: data, isLoading: false });
+          this.setState({
+            contracts: data,
+            isLoading: false,
+            contractAvailable: false,
+            openDataView: false,
+          });
           this.props.currentPut(false);
         })
         .catch((error) => {

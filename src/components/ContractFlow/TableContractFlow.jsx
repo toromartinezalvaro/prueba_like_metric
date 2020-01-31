@@ -16,13 +16,40 @@ const TableContractFlow = ({ data }) => {
     const initialDate = [];
     const finalDate = [];
 
+    const cells = response.contract.billings.map((row) =>
+      row.map((value, i) => (
+        <div
+          className={`${styles.Cell} ${i === 2 && styles.CellRigth}`}
+          key={styles.Cell + i}
+        >
+          {
+            <NumberFormat
+              value={value[i]}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'$'}
+            />
+          }
+        </div>
+      )),
+    );
+
     const header = [
       <div key="Total" className={styles.HeaderCell}>
         Total
       </div>,
     ];
 
-    for (let i = 0; i < data.length; i += 1) {
+    for (
+      let i = 0;
+      i <
+      moment(Number(response.schedulesDate.endOfSalesDate)).diff(
+        Number(response.schedulesDate.salesStartDate),
+        'months',
+        true,
+      );
+      i += 1
+    ) {
       header.push(
         moment(Number(response.schedulesDate.salesStartDate))
           .add(i, 'M')
@@ -42,25 +69,15 @@ const TableContractFlow = ({ data }) => {
     );
 
     return {
-      cells: response.contract.billings.map((row) =>
-        row.map((value, i) => (
-          <div
-            className={`${styles.Cell} ${i === 2 && styles.CellRigth}`}
-            key={styles.Cell + i}
-          >
-            {
-              <NumberFormat
-                value={Numbers.toFixed(value)}
-                displayType={'text'}
-                thousandSeparator={true}
-                prefix={'$'}
-              />
-            }
-          </div>
-        )),
-      ),
+      cells,
       header,
-      name: response.contract.title,
+      name: response.contract.billing.map((bill) => {
+        const descriptions = [];
+        descriptions.push(
+          bill.description !== '' ? bill.description : 'Sin descripción',
+        );
+        return descriptions;
+      }),
       columns: [response.contract.title],
       initialDate,
       finalDate,
@@ -80,10 +97,10 @@ const TableContractFlow = ({ data }) => {
         </div>
       </div>
       <Table
-        intersect={''}
+        intersect={dataTable.columns}
         headers={dataTable.header}
         columnsMinWidth={true}
-        columns={dataTable.columns}
+        columns={dataTable.name}
         data={dataTable.cells}
         maxHeight={{ maxHeight: '36vh' }}
       />

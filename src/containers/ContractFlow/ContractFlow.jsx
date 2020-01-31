@@ -63,13 +63,13 @@ class ContractFlow extends Component {
             <div className={Style.Loader}>
               <Loader color={commonStyles.mainColor} height="100" width="100" />
             </div>
-          ) : this.state.data === [] ? (
+          ) : this.state.data ? (
+            <TableContractFlow data={this.state.data} />
+          ) : (
             <EmptyContentMessageView
               title="Vamos a crear contratos 📏!"
               message="Es fácil, debes hacer click en la sección de contratos y hacer click en el botón crear contratos"
             />
-          ) : (
-            <TableContractFlow data={this.state.data} />
           )}
         </CardBody>
       </Card>
