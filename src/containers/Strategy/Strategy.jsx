@@ -12,7 +12,6 @@ import MarketAndSelectStrategy from '../../components/Strategy/MarketAndSelectSt
 import styles from '../../assets/styles/variables.scss';
 import { DashboardRoutes } from '../../routes/local/routes';
 import LoadableContainer from '../../components/UI/Loader';
-import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsServices from '../../services/increments/IncrementsServices';
 
 export default class Strategy extends Component {
@@ -226,17 +225,24 @@ export default class Strategy extends Component {
     return true;
   };
 
-  putMarketAveragePrice = (averagePrice) => {
+  putMarketAveragePrice = (groupId, averagePrice) => {
+    console.log(groupId, averagePrice);
     this.setState({ isLoading: true });
+    console.log(this.state.currentGroup);
     this.incrementServices
-      .putMarketAveragePrice(this.props.match.params.towerId, {
+      .putMarketAveragePrice(groupId, {
         averagePrice,
+        length: this.state.labels.length - 1,
       })
-      .then(() => {
+      .then((res) => {
         this.setState((prevState) => {
-          const tempMarket = { ...prevState.market };
-          tempMarket.averagePrice = averagePrice;
-          return { isLoading: false, market: tempMarket };
+          const tempGroupActive = { ...prevState.groupActive };
+          const market = res.data[0];
+          tempGroupActive.strategies[0] = market;
+          const arrayDataSets = this.makeArrayDataSets(
+            tempGroupActive.strategies,
+          );
+          return { isLoading: false, currentGroup: arrayDataSets };
         });
       })
       .catch((error) => {
@@ -244,17 +250,38 @@ export default class Strategy extends Component {
       });
   };
 
-  putMarketAnnualEffectiveIncrement = (anualEffectiveIncrement) => {
+  changeMarketAveragePrice = (averagePrice) => {
+    this.setState((prevState) => {
+      const tempGroupActive = { ...prevState.groupActive };
+      tempGroupActive.marketDefinitions.averagePrice = averagePrice;
+      return { groupActive: tempGroupActive };
+    });
+  };
+
+  changeMarketAnnualEffectiveIncrement = (anualEffectiveIncrement) => {
+    this.setState((prevState) => {
+      const tempGroupActive = { ...prevState.groupActive };
+      tempGroupActive.marketDefinitions.anualEffectiveIncrement = anualEffectiveIncrement;
+      return { groupActive: tempGroupActive };
+    });
+  };
+
+  putMarketAnnualEffectiveIncrement = (groupId, anualEffectiveIncrement) => {
     this.setState({ isLoading: true });
     this.incrementServices
-      .putMarketAnualEffectiveIncrement(this.props.match.params.towerId, {
+      .putMarketAnualEffectiveIncrement(groupId, {
         anualEffectiveIncrement,
+        length: this.state.labels.length - 1,
       })
-      .then(() => {
+      .then((res) => {
         this.setState((prevState) => {
-          const tempMarket = { ...prevState.market };
-          tempMarket.anualEffectiveIncrement = anualEffectiveIncrement;
-          return { isLoading: false, market: tempMarket };
+          const tempGroupActive = { ...prevState.groupActive };
+          const market = res.data[0];
+          tempGroupActive.strategies[0] = market;
+          const arrayDataSets = this.makeArrayDataSets(
+            tempGroupActive.strategies,
+          );
+          return { isLoading: false, currentGroup: arrayDataSets };
         });
       })
       .catch((error) => {
@@ -265,15 +292,6 @@ export default class Strategy extends Component {
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
-        <div style={{ marginBottom: '35px' }}>
-          <IncrementsMarket
-            putMarketAveragePrice={this.putMarketAveragePrice}
-            putMarketAnnualEffectiveIncrement={
-              this.putMarketAnnualEffectiveIncrement
-            }
-            marketData={this.state.market}
-          />
-        </div>
         <Card style={{ marginTop: '-30px' }}>
           <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             {this.state.groups.map((group) =>
@@ -304,6 +322,14 @@ export default class Strategy extends Component {
                   groupActive={this.state.groupActive}
                   strategyActive={this.state.strategyActive}
                   selectStrategy={this.selectStrategy}
+                  putMarketAveragePrice={this.putMarketAveragePrice}
+                  putMarketAnnualEffectiveIncrement={
+                    this.putMarketAnnualEffectiveIncrement
+                  }
+                  changeMarketAnnualEffectiveIncrement={
+                    this.changeMarketAnnualEffectiveIncrement
+                  }
+                  changeMarketAveragePrice={this.changeMarketAveragePrice}
                 />
                 <SummaryStrategy
                   groups={this.state.groups}
