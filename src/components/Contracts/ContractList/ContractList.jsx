@@ -13,6 +13,7 @@ import statusOfContractEnum from '../NewContract/Content/GeneralInfo/statusOfCon
 import moment from 'moment';
 import Loader from 'react-loader-spinner';
 import commonStyles from '../../../assets/styles/variables.scss';
+import EmptyContentMessageView from '../../UI/EmptyContentMessageView';
 import style from './ContractList.module.scss';
 
 class ContractList extends Component {
@@ -152,14 +153,10 @@ class ContractList extends Component {
           <div>{this.displayData()}</div>
         )}
         {this.state.contractAvailable && (
-          <Card>
-            <CardContent>
-              <span className={style.noContractBody}>
-                <strong>No hay contratos creados:</strong> Hay que crear algunos
-                contratos!
-              </span>
-            </CardContent>
-          </Card>
+          <EmptyContentMessageView
+            title="Vamos a crear contratos 📏!"
+            message="Es fácil, debes hacer click en el botón superior y llenar el formulario"
+          />
         )}
         {this.state.openDataView && (
           <ViewContractInformation

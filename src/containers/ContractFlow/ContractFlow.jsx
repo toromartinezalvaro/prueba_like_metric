@@ -16,6 +16,7 @@ import ContractFlowService from '../../services/contractFlow/contractFlowService
 import TableContractFlow from '../../components/ContractFlow/TableContractFlow';
 import commonStyles from '../../assets/styles/variables.scss';
 import Table from '../../components/UI/Table/Table';
+import EmptyContentMessageView from '../../components/UI/EmptyContentMessageView';
 import Style from './ContractFlow.module.scss';
 
 class ContractFlow extends Component {
@@ -66,14 +67,10 @@ class ContractFlow extends Component {
             <TableContractFlow data={this.state.data} />
           )}
           {this.state.contractsAvailable && (
-            <Card>
-              <CardContent>
-                <span className={Style.noContractBody}>
-                  <strong>No hay contratos creados:</strong> Hay que crear
-                  algunos contratos!
-                </span>
-              </CardContent>
-            </Card>
+            <EmptyContentMessageView
+              title="Vamos a crear contratos 📏!"
+              message="Es fácil, debes hacer click en la sección de contratos y hacer click en el botón crear contratos"
+            />
           )}
         </CardBody>
       </Card>
