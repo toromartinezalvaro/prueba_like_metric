@@ -10,7 +10,7 @@ const SummaryStrategy = (props) => {
   let incrementPercentage = 0;
   return (
     <div className={styles.Container}>
-      <h2>Resumen</h2>
+      <h2 className={styles.h2}>Resumen</h2>
       <div>
         <div className={styles.ContainerFlex}>
           <h4 className={styles.gridItem}>Tipo</h4>
