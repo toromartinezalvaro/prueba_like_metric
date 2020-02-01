@@ -42,7 +42,7 @@ const Search = ({ onSelectHandler }) => {
     <Card>
       <CardContent>
         <Autocomplete
-          noOptionsText=""
+          noOptionsText="No hay clientes"
           loading={options.isLoading}
           loadingText="Obteniendo clientes..."
           filterOptions={(x) => x}

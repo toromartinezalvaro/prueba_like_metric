@@ -10,7 +10,9 @@ import { DashboardRoutes } from '../../../../routes/local/routes';
 import ContainerContext from '../../../../containers/Client/context';
 
 const Row = ({ client }) => {
-  const { towerId } = useContext(ContainerContext);
+  const { towerId, isOpen, setIsOpen, setSelectedClient } = useContext(
+    ContainerContext,
+  );
   const { identityDocument, name, email, phoneNumber } = client;
 
   return (
@@ -31,7 +33,15 @@ const Row = ({ client }) => {
       <TableCell>{email}</TableCell>
       <TableCell align="right">{phoneNumber}</TableCell>
       <TableCell align="center">
-        <Button color="primary">Detalles</Button>
+        <Button
+          onClick={() => {
+            setSelectedClient(client);
+            setIsOpen({ ...isOpen, dialog: true });
+          }}
+          color="primary"
+        >
+          Detalles
+        </Button>
       </TableCell>
       <TableCell align="center">
         <Link
