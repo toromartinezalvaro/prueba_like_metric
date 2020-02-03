@@ -15,24 +15,19 @@ const TableContractFlow = ({ data }) => {
   const arrayWithTheInformation = data.map((response) => {
     const initialDate = [];
     const finalDate = [];
-
-    const cells = response.contract.billings.map((row) =>
-      row.map((value, i) => (
-        <div
-          className={`${styles.Cell} ${i === 2 && styles.CellRigth}`}
-          key={styles.Cell + i}
-        >
-          {
-            <NumberFormat
-              value={value[i]}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={'$'}
-            />
-          }
-        </div>
-      )),
-    );
+    const cells = response.contract.billings.map((row, rowIndex) => {
+      return row.map((value, cellIndex) => {
+        return (
+          <NumberFormat
+            key={`value-${rowIndex}-${cellIndex}`}
+            value={value}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+        );
+      });
+    });
 
     const header = [
       <div key="Total" className={styles.HeaderCell}>
@@ -53,7 +48,7 @@ const TableContractFlow = ({ data }) => {
       header.push(
         moment(Number(response.schedulesDate.salesStartDate))
           .add(i, 'M')
-          .format('MMM YY'),
+          .format('MMM YYYY'),
       );
     }
 
