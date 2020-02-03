@@ -39,6 +39,7 @@ class ContractFlow extends Component {
         information.map((contract) => {
           if (contract) {
             console.log(contract);
+            this.setState({ contractsAvailable: false });
           } else {
             this.setState({ contractsAvailable: false });
           }
