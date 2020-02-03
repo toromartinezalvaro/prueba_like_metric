@@ -167,6 +167,7 @@ class SalesRoom extends Component {
         {property.requestStatus === 'R' && (
           <span className={Styles.rejectBadge}>R</span>
         )}
+        {active === 'name' && property.name}
       </p>
       <ReactTooltip />
     </div>

@@ -6,6 +6,7 @@ const PRICE_WITH_INCREMENTS = 'priceWithIncrements';
 const PRICE = 'price';
 const M2 = 'mts2';
 const GROUPS = 'groups';
+const NAME = 'name';
 
 const Selectors = (props) => {
   const [selectedButton, setSelectedButton] = useState(PRICE_WITH_INCREMENTS);
@@ -50,6 +51,15 @@ const Selectors = (props) => {
         }}
       >
         Tipos
+      </Button>
+      <Button
+        className={selectedButton !== GROUPS && Styles.outlineButton}
+        onClick={() => {
+          setSelectedButton(NAME);
+          props.makeArrayOfProperties(props.response, 'name');
+        }}
+      >
+        Nomenclatura
       </Button>
     </div>
   );
