@@ -12,7 +12,7 @@ import ClientsServices from '../../../services/client/ClientsServices';
 import { DashboardRoutes } from '../../../routes/local/routes';
 
 const services = new ClientsServices();
-const Info = ({ client, towerId, handleClose }) => {
+const Info = ({ open, client, towerId, handleClose }) => {
   const [property, setProperty] = useState(null);
 
   const selectProperty = (id) => {
@@ -24,7 +24,7 @@ const Info = ({ client, towerId, handleClose }) => {
   };
 
   useEffect(() => {
-    if (client && client.properties.length > 0) {
+    if (open && client && client.properties.length > 0) {
       selectProperty(client.properties[0].id);
     } else {
       selectProperty(null);
@@ -32,7 +32,7 @@ const Info = ({ client, towerId, handleClose }) => {
   }, [client]);
 
   return (
-    <Dialog open={client !== null} fullWidth maxWidth="lg">
+    <Dialog open={open} fullWidth maxWidth="lg">
       {client && (
         <Fragment>
           <DialogTitle>{client.name}</DialogTitle>

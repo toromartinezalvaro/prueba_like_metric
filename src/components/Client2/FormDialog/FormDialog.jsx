@@ -57,7 +57,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
   const [innerClient, setInnerClient] = useState(defaultClient);
 
   useEffect(() => {
-    if (client) {
+    if (client && open) {
       if (client.id) {
         setInnerClient(client);
       } else {
@@ -159,7 +159,12 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                   label="Numero de telefono"
                   component={Input}
                 />
-                <Button type="submit" variant="contained" disableElevation>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                >
                   {innerClient.id === null ? 'Crear' : 'Actualizar'}
                 </Button>
               </Form>
