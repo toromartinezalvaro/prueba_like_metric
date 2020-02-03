@@ -34,11 +34,11 @@ const IncrementsServiceDefinition = {
   putSuggestedEffectiveAnnualInterestRate: (id) => {
     return `${API_PATH}pricingv2/definitions/suggestedEffectiveAnnualInterestRate/${id}`;
   },
-  putMarketAnualEffectiveIncrement: (towerId) => {
-    return `${API_PATH}pricingv2/definitions/markets/anualEffectiveIncrements/${towerId}`;
+  putMarketAnualEffectiveIncrement: (groupId) => {
+    return `${API_PATH}pricingv2/definitions/markets/anualEffectiveIncrements/${groupId}`;
   },
-  putMarketAveragePrice: (towerId) => {
-    return `${API_PATH}pricingv2/definitions/markets/averagePrices/${towerId}`;
+  putMarketAveragePrice: (groupId) => {
+    return `${API_PATH}pricingv2/definitions/markets/averagePrices/${groupId}`;
   },
   putSalesStartDate: (towerId) => {
     return `${API_PATH}pricingv2/definitions/salesStartDates/${towerId}`;

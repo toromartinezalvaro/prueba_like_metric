@@ -1,0 +1,25 @@
+/*
+ * Created Date: Thursday January 30th 2020
+ * Author: Caraham
+ * -----
+ * Last Modified: Friday, 31st January 2020 10:25:40 am
+ * Modified By: the developer formerly known as Caraham
+ * -----
+ * Copyright (c) 2020 Instabuild
+ */
+
+@import '../../../assets/styles/variables.scss';
+
+.Container {
+  display: flex;
+  width: 20%;
+}
+
+.Content {
+  background-color: $softGray-color;
+}
+
+.h4 {
+  text-align: center;
+  margin: 2px;
+}

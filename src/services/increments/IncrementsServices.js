@@ -58,16 +58,16 @@ export default class IncrementsServices extends Services {
     );
   }
 
-  putMarketAveragePrice(towerId, body) {
+  putMarketAveragePrice(groupId, body) {
     return this.put(
-      IncrementsServicesDefinition.putMarketAveragePrice(towerId),
+      IncrementsServicesDefinition.putMarketAveragePrice(groupId),
       body,
     );
   }
 
-  putMarketAnualEffectiveIncrement(towerId, body) {
+  putMarketAnualEffectiveIncrement(groupId, body) {
     return this.put(
-      IncrementsServicesDefinition.putMarketAnualEffectiveIncrement(towerId),
+      IncrementsServicesDefinition.putMarketAnualEffectiveIncrement(groupId),
       body,
     );
   }
