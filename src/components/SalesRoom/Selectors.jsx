@@ -53,7 +53,7 @@ const Selectors = (props) => {
         Tipos
       </Button>
       <Button
-        className={selectedButton !== GROUPS && Styles.outlineButton}
+        className={selectedButton !== NAME && Styles.outlineButton}
         onClick={() => {
           setSelectedButton(NAME);
           props.makeArrayOfProperties(props.response, 'name');

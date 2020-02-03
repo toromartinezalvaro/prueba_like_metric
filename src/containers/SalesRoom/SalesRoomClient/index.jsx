@@ -142,33 +142,63 @@ class SalesRoom extends Component {
       }}
       onClick={() => this.onClickSelector(property, buttons)}
     >
-      <p
-        style={{ fontWeight: 'bold', color: 'White' }}
-        data-tip={property.name}
-      >
-        {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
-        {active === 'priceWithIncrements' && (
-          <NumberFormat
-            value={parseFloat(property.priceWithIncrement).toFixed(2)}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
-        )}
-        {active === 'price' && (
-          <NumberFormat
-            value={parseFloat(property.price).toFixed(2)}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
-        )}
-        {active === 'groups' && property.groupName}
-        {property.requestStatus === 'R' && (
-          <span className={Styles.rejectBadge}>R</span>
-        )}
-        {active === 'name' && property.name}
-      </p>
+      {active === 'name' ? (
+        <p
+          style={{ fontWeight: 'bold', color: 'White' }}
+          data-tip={property.price}
+        >
+          {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
+          {active === 'priceWithIncrements' && (
+            <NumberFormat
+              value={parseFloat(property.priceWithIncrement).toFixed(2)}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'$'}
+            />
+          )}
+          {active === 'price' && (
+            <NumberFormat
+              value={parseFloat(property.price).toFixed(2)}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'$'}
+            />
+          )}
+          {active === 'groups' && property.groupName}
+          {property.requestStatus === 'R' && (
+            <span className={Styles.rejectBadge}>R</span>
+          )}
+          {active === 'name' && property.name}
+        </p>
+      ) : (
+        <p
+          style={{ fontWeight: 'bold', color: 'White' }}
+          data-tip={property.name}
+        >
+          {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
+          {active === 'priceWithIncrements' && (
+            <NumberFormat
+              value={parseFloat(property.priceWithIncrement).toFixed(2)}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'$'}
+            />
+          )}
+          {active === 'price' && (
+            <NumberFormat
+              value={parseFloat(property.price).toFixed(2)}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'$'}
+            />
+          )}
+          {active === 'groups' && property.groupName}
+          {property.requestStatus === 'R' && (
+            <span className={Styles.rejectBadge}>R</span>
+          )}
+          {active === 'name' && property.name}
+        </p>
+      )}
       <ReactTooltip />
     </div>
   );
