@@ -23,7 +23,7 @@ class ContractFlow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: null,
       isLoading: true,
       contractsAvailable: true,
     };
@@ -39,6 +39,7 @@ class ContractFlow extends Component {
         information.map((contract) => {
           if (contract) {
             console.log(contract);
+            this.setState({ contractsAvailable: false });
           } else {
             this.setState({ contractsAvailable: false });
           }
@@ -63,13 +64,13 @@ class ContractFlow extends Component {
             <div className={Style.Loader}>
               <Loader color={commonStyles.mainColor} height="100" width="100" />
             </div>
-          ) : this.state.data ? (
-            <TableContractFlow data={this.state.data} />
-          ) : (
+          ) : this.state.contractsAvailable ? (
             <EmptyContentMessageView
               title="Vamos a crear contratos 📏!"
               message="Es fácil, debes hacer click en la sección de contratos y hacer click en el botón crear contratos"
             />
+          ) : (
+            <TableContractFlow data={this.state.data} />
           )}
         </CardBody>
       </Card>
