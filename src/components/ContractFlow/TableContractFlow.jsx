@@ -13,9 +13,21 @@ import styles from './TableContractFlow.module.scss';
 
 const TableContractFlow = ({ data }) => {
   const arrayWithTheInformation = data.map((response) => {
-    console.log('SCHEDULE DATE', response);
     const initialDate = [];
     const finalDate = [];
+
+    const billingArray = [];
+    const dataGrid = () => {
+      if (response.contract.billing) {
+        response.contract.billing.map((value) => {
+          billingArray.push(Number(value.lastBillingDate));
+        });
+      }
+    };
+
+    dataGrid();
+
+    const maximumDate = Math.max(...billingArray);
     const cells = response.contract.billings.map((row, rowIndex) => {
       return row.map((value, cellIndex) => {
         return (
@@ -30,26 +42,16 @@ const TableContractFlow = ({ data }) => {
       });
     });
 
-    let longestDate = 0;
-
     const header = [
       <div key="Total" className={styles.HeaderCell}>
         Total
       </div>,
     ];
 
-    const lastdates = response.contract.billing.map((date) => {
-      if (Number(date.lastBillingDate) >= Number(longestDate)) {
-        longestDate = date.lastBillingDate;
-      }
-    });
-
-    console.log('All the numbers', lastdates, longestDate);
-
     for (
       let i = 0;
       i <
-      moment(Number(longestDate)).diff(
+      moment(Number(maximumDate)).diff(
         Number(response.schedulesDate.salesStartDate),
         'months',
         true,
@@ -68,7 +70,7 @@ const TableContractFlow = ({ data }) => {
         'DD/MM/YYYY',
       ),
     );
-    finalDate.push(moment(Number(longestDate)).format('DD/MM/YYYY'));
+    finalDate.push(moment(Number(maximumDate)).format('DD/MM/YYYY'));
 
     return {
       cells,
