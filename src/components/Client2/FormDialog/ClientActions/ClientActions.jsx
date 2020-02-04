@@ -8,14 +8,23 @@ import { DashboardRoutes } from '../../../../routes/local/routes';
 import ContainerContext from '../../../../containers/Client/context';
 
 const ClientActions = ({ client }) => {
-  const { towerId } = useContext(ContainerContext);
+  const { towerId, isOpen, setIsOpen, setSelectedClient } = useContext(
+    ContainerContext,
+  );
 
   return (
     <Grid container direction="column" spacing={1}>
       {client.id !== null && (
         <Fragment>
           <Grid item>
-            <Button color="primary" fullWidth>
+            <Button
+              color="primary"
+              onClick={() => {
+                setIsOpen({ ...isOpen, detail: true });
+                setSelectedClient(client);
+              }}
+              fullWidth
+            >
               Ver detalles
             </Button>
           </Grid>

@@ -41,6 +41,7 @@ const Client = (props) => {
     <ContainerContext.Provider
       value={{
         towerId: props.match.params.towerId,
+        history: props.history,
         dispatch,
         createClient,
         updateClient,
@@ -80,9 +81,8 @@ const Client = (props) => {
         towerId={props.match.params.towerId}
         handleClose={() => {
           setIsOpen({ ...isOpen, detail: false });
-          setSelectedClient(null);
         }}
-      /> 
+      />
     </ContainerContext.Provider>
   );
 };

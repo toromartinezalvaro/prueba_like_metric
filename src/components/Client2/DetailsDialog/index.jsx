@@ -29,11 +29,11 @@ const Info = ({ open, client, towerId, handleClose }) => {
     } else {
       selectProperty(null);
     }
-  }, [client]);
+  }, [client, open]);
 
   return (
     <Dialog open={open} fullWidth maxWidth="lg">
-      {client && (
+      {client && open && (
         <Fragment>
           <DialogTitle>{client.name}</DialogTitle>
           <DialogContent>
