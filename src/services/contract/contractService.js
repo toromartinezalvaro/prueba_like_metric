@@ -119,6 +119,12 @@ export default class ContractService extends Services {
     );
   }
 
+  deleteContract(id, towerId) {
+    return this.delete(ContractServiceDefinitions.contractForDelete(towerId), {
+      id,
+    });
+  }
+
   getContractById(towerId, id) {
     return this.get(ContractServiceDefinitions.contractById(towerId, id));
   }
