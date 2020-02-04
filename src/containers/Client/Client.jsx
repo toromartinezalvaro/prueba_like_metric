@@ -41,6 +41,7 @@ const Client = (props) => {
     <ContainerContext.Provider
       value={{
         towerId: props.match.params.towerId,
+        history: props.history,
         dispatch,
         createClient,
         updateClient,
@@ -55,8 +56,10 @@ const Client = (props) => {
         <div>
           <ClientSearch
             onSelectHandler={(client) => {
-              setIsOpen({ ...isOpen, form: true });
-              setSelectedClient(client);
+              if (client !== null) {
+                setIsOpen({ ...isOpen, form: true });
+                setSelectedClient(client);
+              }
             }}
           />
         </div>
@@ -72,14 +75,14 @@ const Client = (props) => {
           setSelectedClient(null);
         }}
       />
-      {/* <ClientDetailsDialog
+      <ClientDetailsDialog
         client={selectedClient}
+        open={isOpen.detail}
         towerId={props.match.params.towerId}
         handleClose={() => {
           setIsOpen({ ...isOpen, detail: false });
-          setSelectedClient(null);
         }}
-      /> */}
+      />
     </ContainerContext.Provider>
   );
 };

@@ -2,8 +2,8 @@ import ClientsServicesDefinition from './ClientsServicesDefinition';
 import Services from '../services';
 
 export default class ClientsServices extends Services {
-  searchClients(query) {
-    return this.get(ClientsServicesDefinition.searchClients(query));
+  searchClients(towerId, query) {
+    return this.get(ClientsServicesDefinition.searchClients(towerId, query));
   }
 
   getEnums(towerId) {

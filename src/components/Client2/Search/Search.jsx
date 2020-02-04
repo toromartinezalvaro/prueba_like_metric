@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useReducer, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,10 +12,12 @@ import reducer, { initialState } from './reducer';
 import Input from './Input';
 import Option from './Option/Option';
 import Services from '../../../services/client/ClientsServices';
+import ContainerContext from '../../../containers/Client/context';
 
 const services = new Services();
 
 const Search = ({ onSelectHandler }) => {
+  const { towerId } = useContext(ContainerContext);
   const [inputValue, setInputValue] = useState('');
   const [options, dispatch] = useReducer(reducer, initialState);
 
@@ -24,7 +26,7 @@ const Search = ({ onSelectHandler }) => {
     async function fetchClients() {
       dispatch(fetchOptionsStart());
       try {
-        const res = await services.searchClients(inputValue);
+        const res = await services.searchClients(towerId, inputValue);
         if (active) {
           dispatch(fetchOptionsSuccess(res.data, inputValue));
         }

@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import reducer, { initialState } from './reducer';
 import {
   fetchAddToTowerStart,
@@ -22,6 +23,7 @@ import ClientActions from './ClientActions';
 import Services from '../../../services/client/ClientsServices';
 import ContainerContext from '../../../containers/Client/context';
 import Context from './context';
+import { DashboardRoutes } from '../../../routes/local/routes';
 
 const services = new Services();
 
@@ -31,6 +33,7 @@ const defaultClient = {
   name: '',
   email: '',
   phoneNumber: '',
+  properties: [],
 };
 
 const validationSchema = yup.object().shape({
@@ -48,6 +51,7 @@ const validationSchema = yup.object().shape({
 const FormDialog = ({ client, open, onCloseHandler }) => {
   const {
     towerId,
+    history,
     dispatch: containerDispatcher,
     makeAlert,
     createClient,
@@ -57,7 +61,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
   const [innerClient, setInnerClient] = useState(defaultClient);
 
   useEffect(() => {
-    if (client) {
+    if (client && open) {
       if (client.id) {
         setInnerClient(client);
       } else {
@@ -87,6 +91,9 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
       } else {
         const res = await services.postClient(towerId, values);
         containerDispatcher(createClient(res.data));
+        history.push(
+          `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${res.data.id}`,
+        );
       }
       onCloseHandler();
       makeAlert(
@@ -159,9 +166,29 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                   label="Numero de telefono"
                   component={Input}
                 />
-                <Button type="submit" variant="contained" disableElevation>
-                  {innerClient.id === null ? 'Crear' : 'Actualizar'}
-                </Button>
+                <Grid container spacing={1} direction="row-reverse">
+                  <Grid item>
+                    {!innerClient.id && (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        disableElevation
+                      >
+                        Crear e ir a sala de ventas
+                      </Button>
+                    )}
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      disableElevation
+                    >
+                      {innerClient.id ? 'Actualizar' : 'Crear'}
+                    </Button>
+                  </Grid>
+                </Grid>
               </Form>
             )}
           </Formik>

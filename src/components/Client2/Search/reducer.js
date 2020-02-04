@@ -25,6 +25,7 @@ const reducer = (state = initialState, action) => {
             id: null,
             name: 'Crear cliente',
             identityDocument: payload.inputValue,
+            properties: [],
           },
         ],
         isLoading: false,

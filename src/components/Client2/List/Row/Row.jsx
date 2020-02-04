@@ -36,7 +36,7 @@ const Row = ({ client }) => {
         <Button
           onClick={() => {
             setSelectedClient(client);
-            setIsOpen({ ...isOpen, dialog: true });
+            setIsOpen({ ...isOpen, detail: true });
           }}
           color="primary"
         >
