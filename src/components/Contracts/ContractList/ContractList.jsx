@@ -13,6 +13,7 @@ import statusOfContractEnum from '../NewContract/Content/GeneralInfo/statusOfCon
 import moment from 'moment';
 import Loader from 'react-loader-spinner';
 import commonStyles from '../../../assets/styles/variables.scss';
+import EmptyContentMessageView from '../../UI/EmptyContentMessageView';
 import style from './ContractList.module.scss';
 
 class ContractList extends Component {
@@ -38,7 +39,12 @@ class ContractList extends Component {
           contracts.data.map((contract) => {
             data.push(contract);
           });
-          this.setState({ contracts: data, isLoading: false });
+          this.setState({
+            contracts: data,
+            isLoading: false,
+            contractAvailable: false,
+            openDataView: false,
+          });
           this.props.currentPut(false);
         })
         .catch((error) => {
@@ -116,7 +122,7 @@ class ContractList extends Component {
           onClick={this.editContractOpened(contract.id)}
         >
           <div className={style.dataContainer}>
-            <div className={style.content}>{contract.title}</div>
+            <div className={style.title}>{contract.title}</div>
             <div className={style.content}>{contract.businessPartnerId}</div>
             <div className={style.content}>{contract.itemId}</div>
             <div className={style.content}>Fecha de Inicio</div>
@@ -131,38 +137,37 @@ class ContractList extends Component {
   render() {
     return (
       <div className={style.wrapper}>
-        <div className={style.container}>
-          <div className={style.header}>Titulo</div>
-          <div className={style.header}>Socio de Negocios</div>
-          <div className={style.header}>Item</div>
-          <div className={style.header}>Fecha de Inicio</div>
-          <div className={style.header}>Archivos</div>
-          <div className={style.header}>Estado</div>
-        </div>
-        {this.state.isLoading ? (
-          <div className={style.Loader} key="loader">
-            <Loader
-              type="ThreeDots"
-              color={commonStyles.mainColor}
-              height="100"
-              width="100"
-            />
+        <div className={style.grid}>
+          <div className={style.container}>
+            <div className={style.title}>Titulo</div>
+            <div className={style.header}>Socio de Negocios</div>
+            <div className={style.header}>Item</div>
+            <div className={style.header}>Fecha de Inicio</div>
+            <div className={style.header}>Archivos</div>
+            <div className={style.header}>Estado</div>
           </div>
-        ) : (
-          <div>{this.displayData()}</div>
-        )}
-        {this.state.contractAvailable && (
-          <Card>
-            <CardContent>
-              <span className={style.noContractBody}>
-                <strong>No hay contratos creados:</strong> Hay que crear algunos
-                contratos!
-              </span>
-            </CardContent>
-          </Card>
-        )}
+          {this.state.isLoading ? (
+            <div className={style.Loader} key="loader">
+              <Loader
+                type="ThreeDots"
+                color={commonStyles.mainColor}
+                height="100"
+                width="100"
+              />
+            </div>
+          ) : this.state.contractAvailable ? (
+            <EmptyContentMessageView
+              title="Vamos a crear contratos 📏!"
+              message="Es fácil, debes hacer click en el botón superior y llenar el formulario"
+            />
+          ) : (
+            <div>{this.displayData()}</div>
+          )}
+        </div>
         {this.state.openDataView && (
           <ViewContractInformation
+            id={this.state.contractId}
+            deleteContract={this.props.deleteContract}
             editContractOpen={this.props.editContractOpen}
             closeInformationView={this.closeInformationView}
             contractId={this.state.contractId}

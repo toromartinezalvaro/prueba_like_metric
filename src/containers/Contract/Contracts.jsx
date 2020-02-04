@@ -628,6 +628,19 @@ class Contracts extends Component {
     });
   };
 
+  deleteContract = (id) => {
+    this.services
+      .deleteContract(id, this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ currentContract: true });
+      })
+      .catch((error) => {
+        this.toastAlert('ERROR: No se puede eliminar el contrato');
+        console.log(error);
+      });
+    console.log('Contrato eliminado', id);
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -638,6 +651,7 @@ class Contracts extends Component {
           sendId={this.sendId}
           currentContract={this.state.currentContract}
           currentPut={this.currentPut}
+          deleteContract={this.deleteContract}
         />
         <NewContract
           towerId={this.props.match.params.towerId}

@@ -1,6 +1,8 @@
 import { API_PATH } from '../../config/config';
 
 const ClientsServiceDefinitions = {
+  searchClients: (towerId, query) =>
+    `${API_PATH}clients/tower/${towerId}/suggestions/?query=${query}`,
   postClient: (towerId) => `${API_PATH}clients/tower/${towerId}`,
   putClient: (identityDocument, towerId) =>
     `${API_PATH}clients/client/${identityDocument}/tower/${towerId}`,

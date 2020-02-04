@@ -14,6 +14,7 @@ const Navbar = ({
   handleOpenContract,
   editContractOpen,
   sendId,
+  deleteContract,
   currentContract,
   currentPut,
 }) => {
@@ -28,13 +29,16 @@ const Navbar = ({
           </li>
         </ul>
       </nav>
-      <ContractList
-        towerId={towerId}
-        editContractOpen={editContractOpen}
-        sendId={sendId}
-        currentContract={currentContract}
-        currentPut={currentPut}
-      />
+      <div className={styles.container}>
+        <ContractList
+          towerId={towerId}
+          editContractOpen={editContractOpen}
+          sendId={sendId}
+          currentContract={currentContract}
+          currentPut={currentPut}
+          deleteContract={deleteContract}
+        />
+      </div>
     </div>
   );
 };
