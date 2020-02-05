@@ -15,6 +15,19 @@ const TableContractFlow = ({ data }) => {
   const arrayWithTheInformation = data.map((response) => {
     const initialDate = [];
     const finalDate = [];
+
+    const billingArray = [];
+    const dataGrid = () => {
+      if (response.contract.billing) {
+        response.contract.billing.map((value) => {
+          billingArray.push(Number(value.lastBillingDate));
+        });
+      }
+    };
+
+    dataGrid();
+
+    const maximumDate = Math.max(...billingArray);
     const cells = response.contract.billings.map((row, rowIndex) => {
       return row.map((value, cellIndex) => {
         return (
@@ -38,7 +51,7 @@ const TableContractFlow = ({ data }) => {
     for (
       let i = 0;
       i <
-      moment(Number(response.schedulesDate.endOfSalesDate)).diff(
+      moment(Number(maximumDate)).diff(
         Number(response.schedulesDate.salesStartDate),
         'months',
         true,
@@ -57,11 +70,7 @@ const TableContractFlow = ({ data }) => {
         'DD/MM/YYYY',
       ),
     );
-    finalDate.push(
-      moment(Number(response.schedulesDate.endOfSalesDate)).format(
-        'DD/MM/YYYY',
-      ),
-    );
+    finalDate.push(moment(Number(maximumDate)).format('DD/MM/YYYY'));
 
     return {
       cells,
