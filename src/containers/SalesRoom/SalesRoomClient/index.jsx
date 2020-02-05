@@ -377,7 +377,10 @@ class SalesRoom extends Component {
           );
           return {
             selectedProperty: tempProperty,
-            additionalAreas: tempAdditionalAreas,
+            additionalAreas: _.sortBy(tempAdditionalAreas, [
+              { areaType: 'name' },
+              'id',
+            ]),
           };
         });
       })
@@ -396,7 +399,10 @@ class SalesRoom extends Component {
       );
       return {
         selectedProperty: tempProperty,
-        additionalAreas: _.sortBy(tempAdditionalAreas, [{'areaType': 'name'}, 'id']),
+        additionalAreas: _.sortBy(tempAdditionalAreas, [
+          { areaType: 'name' },
+          'id',
+        ]),
       };
     });
   };
