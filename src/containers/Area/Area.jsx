@@ -14,6 +14,7 @@ import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import commonStyles from '../../assets/styles/variables.scss';
 import LoadableContainer from '../../components/UI/Loader';
+import Prices2 from '../../components/Area/Prices2';
 
 class Area extends Component {
   constructor(props) {
@@ -461,6 +462,7 @@ class Area extends Component {
             Primas
           </FloatingButton>
         ) : null}
+        <Prices2 />
       </LoadableContainer>
     );
   }
