@@ -118,6 +118,7 @@ const SalesRoomModal = ({
       )}
       {currentState === SalesRoomEnum.status.SOLD && (
         <div>
+          {console.log('AREAS', additionalAreas)}
           <div className={Styles.inputContainer}>
             <span className={Styles.title}>Valor Apartamento</span>
             <div>
