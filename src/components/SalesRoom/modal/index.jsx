@@ -36,6 +36,7 @@ const SalesRoomModal = ({
     priceSold,
     discount,
     tradeDiscount,
+    price,
   } = property;
 
   const [fixedPrice, setFixed] = useState(
@@ -121,7 +122,7 @@ const SalesRoomModal = ({
             <span className={Styles.title}>Valor Apartamento</span>
             <div>
               <NumberFormat
-                value={priceSold}
+                value={property.price}
                 displayType="text"
                 thousandSeparator
                 prefix="$"
