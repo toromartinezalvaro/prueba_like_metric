@@ -44,17 +44,21 @@ const SummaryStrategy = (props) => {
                 </p>
                 <p className={styles.gridItem}>{group.futureSalesSpeed}</p>
                 <p className={styles.gridItem}>
-                  {group.strategy !== null ? group.strategy : 0}
+                  {group.strategy !== null && !group.isReset
+                    ? group.strategy
+                    : 0}
                 </p>
                 <p className={styles.gridItem}>
-                  {(group.percentage * 100).toFixed(2)}%
+                  {!group.isReset
+                    ? `${(group.percentage * 100).toFixed(2)}%`
+                    : '0%'}
                 </p>
                 <p className={styles.gridItem}>
                   {group.strategy !== null
                     ? props.helper.find(
                         (strategy) => strategy.id === group.strategy,
                       ).label
-                    : 'Sin estrategia'}{' '}
+                    : 'Sin estrategia'}
                 </p>
               </Fragment>
             );
