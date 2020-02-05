@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@material-ui/core';
+import _ from 'lodash';
 import Button from '../../../components/UI/Button/Button';
 
 import SalesRoomService from '../../../services/salesRoom/salesRoomService';
@@ -395,7 +396,7 @@ class SalesRoom extends Component {
       );
       return {
         selectedProperty: tempProperty,
-        additionalAreas: tempAdditionalAreas,
+        additionalAreas: _.sortBy(tempAdditionalAreas, [{'areaType': 'name'}, 'id']),
       };
     });
   };
