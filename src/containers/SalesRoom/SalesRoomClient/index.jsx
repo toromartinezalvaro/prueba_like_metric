@@ -146,7 +146,18 @@ class SalesRoom extends Component {
       {active === 'name' ? (
         <p
           style={{ fontWeight: 'bold', color: 'White' }}
-          data-tip={property.price}
+          data-tip={{
+            fn: () => {
+              return (
+                <NumberFormat
+                  value={Number(property.price)}
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  prefix={'$'}
+                />
+              );
+            },
+          }}
         >
           {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
           {active === 'priceWithIncrements' && (
