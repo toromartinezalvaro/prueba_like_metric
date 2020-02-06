@@ -40,6 +40,7 @@ class Area extends Component {
     modalIsLoading: false,
     isLoading: false,
     anySold: false,
+    isAreaTypeDialogOpen: false,
   };
 
   modalContent = () => {
@@ -224,30 +225,34 @@ class Area extends Component {
   };
 
   toggleAreaTypeModal = (areaType) => {
-    console.log(
-      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`,
-    );
-    if (areaType === undefined) {
-      console.log(
-        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`,
-      );
-      this.setState((prevState) => ({
-        hidden: !prevState.hidden,
-        areaType: '',
-        areaMeasurementUnit: 'MT2',
-        editingAreaType: false,
-      }));
-    } else {
-      this.setState((prevState) => ({
-        hidden: !prevState.hidden,
-        areaTypeId: areaType.id,
-        areaType: areaType.name,
-        areaMeasurementUnit: areaType.measurementUnit,
-        editingAreaType: true,
-      }));
+    this.setState({
+      isAreaTypeDialogOpen: true,
+      areaTypeId: areaType.id,
+    });
+    // console.log(
+    //   `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`,
+    // );
+    // if (areaType === undefined) {
+    //   console.log(
+    //     `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`,
+    //   );
+    //   this.setState((prevState) => ({
+    //     hidden: !prevState.hidden,
+    //     areaType: '',
+    //     areaMeasurementUnit: 'MT2',
+    //     editingAreaType: false,
+    //   }));
+    // } else {
+    //   this.setState((prevState) => ({
+    //     hidden: !prevState.hidden,
+    //     areaTypeId: areaType.id,
+    //     areaType: areaType.name,
+    //     areaMeasurementUnit: areaType.measurementUnit,
+    //     editingAreaType: true,
+    //   }));
 
-      console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
-    }
+    //   console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
+    // }
   };
 
   deleteAreaType = () => {
@@ -462,7 +467,14 @@ class Area extends Component {
             Primas
           </FloatingButton>
         ) : null}
-        <Prices2 />
+        <Prices2
+          open={this.state.isAreaTypeDialogOpen}
+          handleClose={() => {
+            this.setState({ isAreaTypeDialogOpen: false });
+          }}
+          towerId={this.props.match.params.towerId}
+          areaTypeId={this.state.areaTypeId}
+        />
       </LoadableContainer>
     );
   }

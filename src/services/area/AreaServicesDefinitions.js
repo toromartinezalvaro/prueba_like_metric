@@ -16,6 +16,9 @@ const AreaServiceDefinitions = {
   areasPrices: (towerId, areaTypeId) => {
     return `${API_PATH}areas/${towerId}/area-types/${areaTypeId}/prices`;
   },
+  updateAreaType: (id) => {
+    return `${API_PATH}areas/prices-managements/area-types/${id}`;
+  },
 };
 
 export default AreaServiceDefinitions;
