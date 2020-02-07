@@ -229,30 +229,6 @@ class Area extends Component {
       isAreaTypeDialogOpen: true,
       areaTypeId: areaType.id,
     });
-    // console.log(
-    //   `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`,
-    // );
-    // if (areaType === undefined) {
-    //   console.log(
-    //     `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`,
-    //   );
-    //   this.setState((prevState) => ({
-    //     hidden: !prevState.hidden,
-    //     areaType: '',
-    //     areaMeasurementUnit: 'MT2',
-    //     editingAreaType: false,
-    //   }));
-    // } else {
-    //   this.setState((prevState) => ({
-    //     hidden: !prevState.hidden,
-    //     areaTypeId: areaType.id,
-    //     areaType: areaType.name,
-    //     areaMeasurementUnit: areaType.measurementUnit,
-    //     editingAreaType: true,
-    //   }));
-
-    //   console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
-    // }
   };
 
   deleteAreaType = () => {
