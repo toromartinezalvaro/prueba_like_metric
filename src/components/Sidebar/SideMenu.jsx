@@ -253,13 +253,6 @@ const SideMenu = ({
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
-                        DashboardRoutes.base + DashboardRoutes.clients2.value,
-                        'fas fa-users',
-                        'Clientes 2',
-                      ),
-                    agent.isAuthorized([Role.Admin, Role.Super]) &&
-                      itemForSlidebar(
-                        style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.clients.value,
                         'fas fa-users',
                         'Clientes',

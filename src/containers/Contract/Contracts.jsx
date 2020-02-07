@@ -522,7 +522,7 @@ class Contracts extends Component {
             (contract) => contract.contractNumber === this.state.contractNumber,
           )
         ) {
-          this.toastAlert('ERROR: Ya existe un contrato con ese nombre');
+          this.toastAlert('ERROR: Ya existe ese numero de contrato');
         } else {
           this.services
             .postContract(data, this.props.match.params.towerId)

@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import _ from 'lodash';
+import { Formik, Form, Field } from 'formik';
 import Loader from 'react-loader-spinner';
 import Table from '../../UI/Table/Table';
 import Input from '../../UI/Input/Input';
@@ -55,18 +56,7 @@ const Prices = (props) => {
             const areas = [];
             const prices = res.data.map((area) => {
               areas.push(area.measure);
-              return [
-                <Input
-                  mask="currency"
-                  onChange={(target) => {
-                    updateAreaPrice(area.id, target.value);
-                  }}
-                  validations={[]}
-                  style={{ width: '75px' }}
-                  value={area.price}
-                  disable={anySold}
-                />,
-              ];
+              return [<Field name="price" />];
             });
             setAreas(areas);
             setPrices(prices);
@@ -99,13 +89,18 @@ const Prices = (props) => {
             />
           </div>
         ) : measurementUnit === 'MT2' ? (
-          <Table
-            intersect={'Areas'}
-            headers={['Precio']}
-            columns={areas}
-            data={prices}
-            maxHeight={{ maxHeight: '36vh' }}
-          />
+          <Formik>
+            <Form>
+              <Table
+                intersect={'Areas'}
+                headers={['Precio']}
+                columns={areas}
+                data={prices}
+                maxHeight={{ maxHeight: '36vh' }}
+              />
+              <button type="submit">Enviar</button>
+            </Form>
+          </Formik>
         ) : (
           <div style={{ display: 'flex' }}>
             <div>Precio: </div>
