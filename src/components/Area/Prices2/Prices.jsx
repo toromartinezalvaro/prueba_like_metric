@@ -34,7 +34,7 @@ const schema = Yup.object().shape({
   name: Yup.string().required('Debe tener un nombre'),
   areas: Yup.array().of(
     Yup.object().shape({
-      price: Yup.number('El precio debe ser un numero').required(
+      price: Yup.number('El precio debe ser un número').required(
         'Debe tener un precio.',
       ),
     }),
