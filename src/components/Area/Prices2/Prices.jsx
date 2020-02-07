@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -144,6 +145,18 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
       </DialogActions>
     </Dialog>
   );
+};
+
+Prices.propTypes = {
+  open: PropTypes.bool,
+  areaTypeId: PropTypes.number,
+  towerId: PropTypes.string.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
+
+Prices.defaultProps = {
+  open: false,
+  areaTypeId: null,
 };
 
 export default Prices;
