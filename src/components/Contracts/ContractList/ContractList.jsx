@@ -14,6 +14,7 @@ import moment from 'moment';
 import Loader from 'react-loader-spinner';
 import commonStyles from '../../../assets/styles/variables.scss';
 import EmptyContentMessageView from '../../UI/EmptyContentMessageView';
+import ContractFlowService from '../../../services/contractFlow/contractFlowService';
 import style from './ContractList.module.scss';
 
 class ContractList extends Component {
@@ -21,6 +22,7 @@ class ContractList extends Component {
     super(props);
     this.state = {
       contracts: [],
+      datesAndEvent: [],
       openDataView: false,
       contractId: 0,
       contractData: {},
@@ -28,6 +30,7 @@ class ContractList extends Component {
       contractAvailable: true,
     };
     this.services = new ContractService();
+    this.service = new ContractFlowService();
   }
 
   componentDidUpdate() {
@@ -50,10 +53,42 @@ class ContractList extends Component {
         .catch((error) => {
           console.log(error);
         });
+      this.service
+        .getContractsInformation(this.props.towerId)
+        .then((response) => {
+          this.setState({ isLoading: true });
+          const information = response.data;
+          const data = [];
+          console.log(information);
+          information.map((contract) => {
+            data.push(contract.salesStartDate);
+            this.setState({ datesAndEvent: data });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({ isLoading: false });
+        });
     }
   }
 
   componentDidMount() {
+    this.service
+      .getContractsInformation(this.props.towerId)
+      .then((response) => {
+        this.setState({ isLoading: true });
+        const information = response.data;
+        const data = [];
+        console.log(information);
+        information.map((contract) => {
+          data.push(contract.schedulesDate.salesStartDate);
+          this.setState({ datesAndEvent: data, isLoading: false });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ isLoading: false });
+      });
     this.services
       .getAllContracts(this.props.towerId)
       .then((contracts) => {
@@ -113,7 +148,7 @@ class ContractList extends Component {
   };
 
   displayData = () => {
-    return this.state.contracts.map((contract) => {
+    return this.state.contracts.map((contract, i) => {
       return (
         <div
           className={style.wrapperInternal}
@@ -125,7 +160,9 @@ class ContractList extends Component {
             <div className={style.title}>{contract.title}</div>
             <div className={style.content}>{contract.businessPartnerId}</div>
             <div className={style.content}>{contract.itemId}</div>
-            <div className={style.content}>Fecha de Inicio</div>
+            <div className={style.content}>
+              {moment(Number(this.state.datesAndEvent[i])).format('DD-MM-YYYY')}
+            </div>
             <div className={style.content}>Archivos</div>
             <div className={style.content}>{contract.state}</div>
           </div>

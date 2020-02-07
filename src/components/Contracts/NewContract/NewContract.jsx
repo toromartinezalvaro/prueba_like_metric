@@ -4,7 +4,7 @@
  * Copyright (c) 2019 Instabuild
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
@@ -53,7 +53,14 @@ const NewContract = ({
   dataIfEdit,
   editContract,
   sendContractNumber,
+  watchingContract,
 }) => {
+  const [isEditable, setEditable] = useState(false);
+  useEffect(() => {
+    if (dataIfEdit) {
+      setEditable(true);
+    }
+  }, []);
   return (
     <Dialog
       className={styles.dialogExpand}
@@ -103,6 +110,7 @@ const NewContract = ({
           sendBillings={sendBillings}
           events={events}
           currentEvent={currentEvent}
+          watchingContract={watchingContract}
           dataIfEdit={dataIfEdit}
         />
         <br />
@@ -117,9 +125,9 @@ const NewContract = ({
             color="primary"
             className={styles.button}
             startIcon={<Icon className="fas fa-file-signature" />}
-            onClick={dataIfEdit ? editContract : addContract}
+            onClick={isEditable ? editContract : addContract}
           >
-            {dataIfEdit ? 'Editar Contrato' : 'Crear Contrato'}
+            {isEditable ? 'Editar Contrato' : 'Crear Contrato'}
           </Button>
           <Button
             variant="contained"

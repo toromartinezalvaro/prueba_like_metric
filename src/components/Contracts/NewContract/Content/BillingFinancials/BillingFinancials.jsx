@@ -38,6 +38,7 @@ const BillingFinancials = ({
   events,
   currentEvent,
   dataIfEdit,
+  watchingContract,
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
@@ -66,7 +67,12 @@ const BillingFinancials = ({
 
   useEffect(() => {
     if (dataIfEdit) {
-      setBillings(dataIfEdit.billings);
+      const data = dataIfEdit.billings;
+      setBillings(data);
+      setLastId(1);
+      setTimeout(() => {
+        watchingContract();
+      }, 1000);
     }
   });
 
@@ -285,7 +291,7 @@ const BillingFinancials = ({
                   label={`Valor antes de IVA ${billing.cycle}`}
                   margin="normal"
                   variant="outlined"
-                  defaultValue={dataIfEdit && billing.amount}
+                  defaultValue={billing.amount}
                   value={billing.amount}
                   onBlur={changeCardValue('amount', billing.id)}
                   id={billing.id}
@@ -296,6 +302,7 @@ const BillingFinancials = ({
                     ),
                   }}
                 />
+                {console.log('ESTO ES', billings)}
                 <TextField
                   required
                   disabled={billing.isLocked}
@@ -354,7 +361,8 @@ const BillingFinancials = ({
                       dataIfEdit
                         ? events.find((option) => {
                             return (
-                              option.value === billings.eventId && {
+                              option.value === billings.eventId &&
+                              billings.event && {
                                 value: option.value,
                                 label: option.label,
                               }

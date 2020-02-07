@@ -44,13 +44,13 @@ const GeneralInfo = ({
   sendContractNumber,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
-    title: dataIfEdit ? dataIfEdit.title : '',
-    businessPartnerId: dataIfEdit ? dataIfEdit.businessPartnerId : '',
-    groupId: dataIfEdit ? dataIfEdit.groupId : '',
-    state: dataIfEdit ? dataIfEdit.state : '',
-    contractNumber: dataIfEdit ? dataIfEdit.contractNumber : '',
-    itemId: dataIfEdit ? dataIfEdit.itemId : '',
-    description: dataIfEdit ? dataIfEdit.description : '',
+    title:'',
+    businessPartnerId: '',
+    groupId: '',
+    state: '',
+    contractNumber: '',
+    itemId:'',
+    description: '',
   });
 
   const [isLocked, setIsLocked] = useState(true);
@@ -62,6 +62,13 @@ const GeneralInfo = ({
       label: contract.state,
     };
   });
+
+
+  useEffect(() => {
+    if(dataIfEdit){
+      setGeneralInformation(dataIfEdit);
+    };
+  }, []);
 
   const onChangeText = (name) => (e) => {
     const information = { ...generalInformation, [name]: e.target.value };
@@ -142,6 +149,7 @@ const GeneralInfo = ({
             defaultValue={dataIfEdit && dataIfEdit.title}
             onChange={onChangeText('title')}
           />
+          {console.log('AQUÍ HAY DATOS', dataIfEdit)}
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
               <Select
@@ -263,8 +271,8 @@ const GeneralInfo = ({
             options={statusOfContract}
             components={Option}
             defaultValue={
-              dataIfEdit &&
-              statusOfContract.find((option) => {
+              dataIfEdit
+                    && statusOfContract.find((option) => {
                 return option.value === dataIfEdit.state.id && dataIfEdit.state;
               })
             }
@@ -282,7 +290,7 @@ const GeneralInfo = ({
           <div className={styles.gridSubContainerRigth}>
             <div className={styles.selectColumn}>
               <Select
-                isDisabled={isLocked}
+                isDisabled={dataIfEdit ? false : isLocked}
                 className={styles.SelectSimpleForLabel}
                 inputId="react-select-single"
                 TextFieldProps={{
@@ -297,7 +305,7 @@ const GeneralInfo = ({
                 options={items}
                 defaultValue={
                   dataIfEdit
-                    ? items.find((option) => {
+                    && items.find((option) => {
                         return (
                           option.value === dataIfEdit.itemId && {
                             value: dataIfEdit.itemId,
@@ -305,7 +313,6 @@ const GeneralInfo = ({
                           }
                         );
                       })
-                    : itemProp
                 }
                 onChange={changeAndSearchItem}
               />

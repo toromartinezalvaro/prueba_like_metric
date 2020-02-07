@@ -143,7 +143,23 @@ class Contracts extends Component {
 
   handleCloseContract = () => {
     this.setState({
-      contractModal: { ...this.state.categoryModal, isOpen: false },
+      businessPatnerModal: {
+        ...this.state.businessPatnerModal,
+        currentPatner: { value: 0, label: 'Seleccione un socio' },
+      },
+      itemModal: {
+        ...this.state.itemModal,
+        currentItem: { value: 0, label: 'Seleccione un item' },
+      },
+      categoryModal: {
+        ...this.state.categoryModal,
+        currentCategory: { value: 0, label: 'Seleccione un grupo' },
+      },
+      contractModal: {
+        ...this.state.categoryModal,
+        isOpen: false,
+        contract: { generalInformationData: {} },
+      },
     });
   };
 
@@ -641,6 +657,15 @@ class Contracts extends Component {
     console.log('Contrato eliminado', id);
   };
 
+  watchingContract = () => {
+    this.setState({
+      contractModal: {
+        isOpen: true,
+        generalInformationData: undefined,
+      },
+    });
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -688,6 +713,7 @@ class Contracts extends Component {
           addContract={this.addContract}
           dataIfEdit={this.state.contractModal.generalInformationData}
           editContract={this.editContract}
+          watchingContract={this.watchingContract}
           sendContractNumber={this.sendContractNumber}
         />
         <Dialog
