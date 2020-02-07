@@ -76,6 +76,7 @@ class Contracts extends Component {
         opened: false,
         message: '',
       },
+      isEditable: false,
     };
   }
 
@@ -159,7 +160,7 @@ class Contracts extends Component {
       contractModal: {
         ...this.state.categoryModal,
         isOpen: false,
-        contract: { generalInformationData: {} },
+        contract: { generalInformationData: undefined },
       },
     });
   };
@@ -195,7 +196,9 @@ class Contracts extends Component {
   };
 
   handleOpenContract = () => {
-    this.setState({ contractModal: { isOpen: true } });
+    this.setState({
+      contractModal: { isOpen: true, generalInformationData: null },
+    });
   };
 
   handleOpenCategory = () => {
@@ -617,6 +620,7 @@ class Contracts extends Component {
                 attachments: metaData.attachments,
               },
             },
+            isEditable: true,
           });
         })
         .catch((error) => {
@@ -647,7 +651,10 @@ class Contracts extends Component {
       .then((response) => {
         this.setState({ currentContract: true });
         if (this.state.currentContract) {
-          this.setState({ contractModal: { isOpen: false } });
+          this.setState({
+            contractModal: { isOpen: false, generalInformationData: false },
+            isEditable: false,
+          });
         }
       })
       .catch((error) => {
@@ -678,6 +685,10 @@ class Contracts extends Component {
     });
   };
 
+  setEditable = (param) => {
+    this.setState({ isEditable: param });
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -693,6 +704,8 @@ class Contracts extends Component {
         <NewContract
           towerId={this.props.match.params.towerId}
           expanded={this.state.expanded}
+          setEditable={this.setEditable}
+          isEditable={this.state.isEditable}
           sendId={this.sendId}
           isOpen={this.state.contractModal.isOpen}
           handleCloseContract={this.handleCloseContract}

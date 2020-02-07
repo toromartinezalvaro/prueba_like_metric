@@ -38,7 +38,7 @@ class ContractList extends Component {
       this.service
         .getContractsInformation(this.props.towerId)
         .then((response) => {
-          this.setState({ isLoading: true });
+          this.setState({ isLoading: false });
           const information = response.data;
           const data = [];
           information.map((contract) => {
