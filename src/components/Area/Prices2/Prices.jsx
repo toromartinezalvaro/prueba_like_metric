@@ -98,7 +98,7 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
                       </Grid>
                     </Box>
                     <TableContainer component={Paper}>
-                      <Table stickyHeader>
+                      <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell align="right">Medida</TableCell>
@@ -137,8 +137,10 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
         </Loader>
       </DialogContent>
       <DialogActions>
+        <Button variant="contained" color="primary" onClick={submit}>
+          Guardar
+        </Button>
         <Button onClick={handleClose}>Cancelar</Button>
-        <Button onClick={submit}>Guardar</Button>
       </DialogActions>
     </Dialog>
   );

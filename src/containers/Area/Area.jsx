@@ -104,8 +104,8 @@ class Area extends Component {
       }
       return (
         <div
-          onDoubleClick={() => {
-            this.toggleAreaTypeModal(areaType);
+          onClick={() => {
+            this.handleOpenAreaTypeModal(areaType);
           }}
         >
           <EditableHeader
@@ -224,11 +224,38 @@ class Area extends Component {
     this.setState({ areaMeasurementUnit: event.target.value });
   };
 
-  toggleAreaTypeModal = (areaType) => {
+  handleOpenAreaTypeModal = (areaType) => {
     this.setState({
       isAreaTypeDialogOpen: true,
       areaTypeId: areaType.id,
     });
+  };
+
+  toggleAreaTypeModal = (areaType) => {
+    console.log(
+      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`,
+    );
+    if (areaType === undefined) {
+      console.log(
+        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`,
+      );
+      this.setState((prevState) => ({
+        hidden: !prevState.hidden,
+        areaType: '',
+        areaMeasurementUnit: 'MT2',
+        editingAreaType: false,
+      }));
+    } else {
+      this.setState((prevState) => ({
+        hidden: !prevState.hidden,
+        areaTypeId: areaType.id,
+        areaType: areaType.name,
+        areaMeasurementUnit: areaType.measurementUnit,
+        editingAreaType: true,
+      }));
+
+      console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
+    }
   };
 
   deleteAreaType = () => {
