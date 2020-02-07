@@ -36,6 +36,7 @@ const SalesRoomModal = ({
     priceSold,
     discount,
     tradeDiscount,
+    price,
   } = property;
 
   const [fixedPrice, setFixed] = useState(
@@ -95,8 +96,6 @@ const SalesRoomModal = ({
             Seleccione la fecha de vencimiento:
           </div>
           <div className={Styles.DateTimePicker}>
-            {console.log('moment', moment.locale('es'))}
-
             <MuiPickersUtilsProvider
               libInstance={moment}
               utils={MomentUtils}
@@ -119,6 +118,18 @@ const SalesRoomModal = ({
       )}
       {currentState === SalesRoomEnum.status.SOLD && (
         <div>
+          {console.log('AREAS', additionalAreas)}
+          <div className={Styles.inputContainer}>
+            <span className={Styles.title}>Valor Apartamento</span>
+            <div>
+              <NumberFormat
+                value={property.price}
+                displayType="text"
+                thousandSeparator
+                prefix="$"
+              />
+            </div>
+          </div>
           <div>
             <AdditionalAreas
               property={property}
@@ -128,7 +139,9 @@ const SalesRoomModal = ({
             />
           </div>
           <div className={Styles.inputContainer}>
-            <span className={Styles.label}>Valor de venta</span>
+            <span className={Styles.title}>
+              Valor Apartamento + Areas Adicionales
+            </span>
             <div>
               <NumberFormat
                 value={
@@ -145,7 +158,7 @@ const SalesRoomModal = ({
           <div className={Styles.dividedInputContainer}>
             <div className={Styles.row}>
               <div className={Styles.label}>
-                <span>Comercial</span>
+                <span>Valor Comercial</span>
               </div>
               <div>
                 <RadioGroup
@@ -204,7 +217,7 @@ const SalesRoomModal = ({
           <div className={Styles.dividedInputContainer}>
             <div className={Styles.row}>
               <div className={Styles.label}>
-                <span>Financiero</span>
+                <span>Valor Financiero</span>
               </div>
               <div>
                 <RadioGroup

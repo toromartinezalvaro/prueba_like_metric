@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@material-ui/core';
+import _ from 'lodash';
 import Button from '../../../components/UI/Button/Button';
 
 import SalesRoomService from '../../../services/salesRoom/salesRoomService';
@@ -145,7 +146,18 @@ class SalesRoom extends Component {
       {active === 'name' ? (
         <p
           style={{ fontWeight: 'bold', color: 'White' }}
-          data-tip={property.price}
+          data-tip={{
+            fn: () => {
+              return (
+                <NumberFormat
+                  value={Number(property.price)}
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  prefix={'$'}
+                />
+              );
+            },
+          }}
         >
           {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
           {active === 'priceWithIncrements' && (
@@ -376,7 +388,10 @@ class SalesRoom extends Component {
           );
           return {
             selectedProperty: tempProperty,
-            additionalAreas: tempAdditionalAreas,
+            additionalAreas: _.sortBy(tempAdditionalAreas, [
+              { areaType: 'name' },
+              'id',
+            ]),
           };
         });
       })
@@ -395,7 +410,10 @@ class SalesRoom extends Component {
       );
       return {
         selectedProperty: tempProperty,
-        additionalAreas: tempAdditionalAreas,
+        additionalAreas: _.sortBy(tempAdditionalAreas, [
+          { areaType: 'name' },
+          'id',
+        ]),
       };
     });
   };
