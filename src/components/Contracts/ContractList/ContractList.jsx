@@ -35,6 +35,21 @@ class ContractList extends Component {
 
   componentDidUpdate() {
     if (this.props.currentContract) {
+      this.service
+        .getContractsInformation(this.props.towerId)
+        .then((response) => {
+          this.setState({ isLoading: true });
+          const information = response.data;
+          const data = [];
+          information.map((contract) => {
+            data.push(contract.salesStartDate);
+            this.setState({ datesAndEvent: data });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({ isLoading: false });
+        });
       this.services
         .getAllContracts(this.props.towerId)
         .then((contracts) => {
@@ -52,22 +67,6 @@ class ContractList extends Component {
         })
         .catch((error) => {
           console.log(error);
-        });
-      this.service
-        .getContractsInformation(this.props.towerId)
-        .then((response) => {
-          this.setState({ isLoading: true });
-          const information = response.data;
-          const data = [];
-          console.log(information);
-          information.map((contract) => {
-            data.push(contract.salesStartDate);
-            this.setState({ datesAndEvent: data });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          this.setState({ isLoading: false });
         });
     }
   }

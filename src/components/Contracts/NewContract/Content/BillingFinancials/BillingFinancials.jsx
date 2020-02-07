@@ -380,6 +380,7 @@ const BillingFinancials = ({
                   />
                   <Events
                     towerId={towerId}
+                    isLocked={billing.isLocked}
                     defaultDate={defaultDate}
                     currentEvent={createdEvent}
                     eventIsUnique={eventIsUnique}

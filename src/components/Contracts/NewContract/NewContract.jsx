@@ -54,10 +54,12 @@ const NewContract = ({
   editContract,
   sendContractNumber,
   watchingContract,
+  sendId,
 }) => {
   const [isEditable, setEditable] = useState(false);
   useEffect(() => {
     if (dataIfEdit) {
+      sendId(dataIfEdit.id);
       setEditable(true);
     }
   }, []);

@@ -69,6 +69,7 @@ class Contracts extends Component {
       attachments: [],
       attachmentPath: '',
       contract: null,
+      contractId: null,
       contractNumber: null,
       currentContract: null,
       alert: {
@@ -566,6 +567,7 @@ class Contracts extends Component {
         ...this.state.contractModal,
         contractId: id,
       },
+      contractId: id,
     });
   };
 
@@ -627,7 +629,7 @@ class Contracts extends Component {
       .putContract(
         dataEditated,
         this.props.match.params.towerId,
-        this.state.contractModal.contractId,
+        this.state.contractId,
       )
       .then((response) => {
         this.setState({ currentContract: true });
@@ -639,9 +641,6 @@ class Contracts extends Component {
         this.toastAlert('ERROR: No se puede editar el contrato');
         console.log(error);
       });
-    this.setState({
-      contractModal: { ...this.state.contractModal, isOpen: false },
-    });
   };
 
   deleteContract = (id) => {
@@ -681,6 +680,7 @@ class Contracts extends Component {
         <NewContract
           towerId={this.props.match.params.towerId}
           expanded={this.state.expanded}
+          sendId={this.sendId}
           isOpen={this.state.contractModal.isOpen}
           handleCloseContract={this.handleCloseContract}
           handleCloseItem={this.handleCloseItem}
