@@ -104,8 +104,8 @@ class Area extends Component {
       }
       return (
         <div
-          onDoubleClick={() => {
-            this.toggleAreaTypeModal(areaType);
+          onClick={() => {
+            this.handleOpenAreaTypeModal(areaType);
           }}
         >
           <EditableHeader
@@ -224,11 +224,30 @@ class Area extends Component {
     this.setState({ areaMeasurementUnit: event.target.value });
   };
 
-  toggleAreaTypeModal = (areaType) => {
+  handleOpenAreaTypeModal = (areaType) => {
     this.setState({
       isAreaTypeDialogOpen: true,
       areaTypeId: areaType.id,
     });
+  };
+
+  toggleAreaTypeModal = (areaType) => {
+    if (areaType === undefined) {
+      this.setState((prevState) => ({
+        hidden: !prevState.hidden,
+        areaType: '',
+        areaMeasurementUnit: 'MT2',
+        editingAreaType: false,
+      }));
+    } else {
+      this.setState((prevState) => ({
+        hidden: !prevState.hidden,
+        areaTypeId: areaType.id,
+        areaType: areaType.name,
+        areaMeasurementUnit: areaType.measurementUnit,
+        editingAreaType: true,
+      }));
+    }
   };
 
   deleteAreaType = () => {
@@ -352,7 +371,7 @@ class Area extends Component {
                   console.log(value);
                   return value !== null;
                 },
-                message: 'No puede estar vacÃ­o',
+                message: 'No puede estar vacío',
               },
             ]}
             disable={this.state.anySold}
