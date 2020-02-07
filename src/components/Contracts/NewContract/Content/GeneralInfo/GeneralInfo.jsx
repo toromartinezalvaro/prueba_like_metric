@@ -44,12 +44,12 @@ const GeneralInfo = ({
   sendContractNumber,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
-    title:'',
+    title: '',
     businessPartnerId: '',
     groupId: '',
     state: '',
     contractNumber: '',
-    itemId:'',
+    itemId: '',
     description: '',
   });
 
@@ -63,11 +63,10 @@ const GeneralInfo = ({
     };
   });
 
-
   useEffect(() => {
-    if(dataIfEdit){
+    if (dataIfEdit) {
       setGeneralInformation(dataIfEdit);
-    };
+    }
   }, []);
 
   const onChangeText = (name) => (e) => {
@@ -149,11 +148,11 @@ const GeneralInfo = ({
             defaultValue={dataIfEdit && dataIfEdit.title}
             onChange={onChangeText('title')}
           />
-          {console.log('AQUÍ HAY DATOS', dataIfEdit)}
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
               <Select
                 className={styles.SelectSimpleForLabel}
+                required
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'Socio de negocios',
@@ -207,6 +206,7 @@ const GeneralInfo = ({
               <Select
                 className={styles.SelectSimpleForLabel}
                 inputId="react-select-single"
+                required
                 TextFieldProps={{
                   label: 'Selecciona un grupo',
                   InputLabelProps: {
@@ -260,6 +260,7 @@ const GeneralInfo = ({
           <Select
             className={styles.SelectSimple}
             inputId="react-select-single"
+            required
             TextFieldProps={{
               label: 'Estado',
               InputLabelProps: {
@@ -271,8 +272,8 @@ const GeneralInfo = ({
             options={statusOfContract}
             components={Option}
             defaultValue={
-              dataIfEdit
-                    && statusOfContract.find((option) => {
+              dataIfEdit &&
+              statusOfContract.find((option) => {
                 return option.value === dataIfEdit.state.id && dataIfEdit.state;
               })
             }
@@ -281,6 +282,7 @@ const GeneralInfo = ({
           <TextField
             className={styles.leftInputs}
             label="Numero de contrato"
+            required
             margin="normal"
             variant="outlined"
             defaultValue={dataIfEdit && dataIfEdit.contractNumber}
@@ -293,6 +295,7 @@ const GeneralInfo = ({
                 isDisabled={dataIfEdit ? false : isLocked}
                 className={styles.SelectSimpleForLabel}
                 inputId="react-select-single"
+                required
                 TextFieldProps={{
                   label: 'item',
                   InputLabelProps: {
@@ -304,15 +307,15 @@ const GeneralInfo = ({
                 components={Option}
                 options={items}
                 defaultValue={
-                  dataIfEdit
-                    && items.find((option) => {
-                        return (
-                          option.value === dataIfEdit.itemId && {
-                            value: dataIfEdit.itemId,
-                            label: dataIfEdit.item,
-                          }
-                        );
-                      })
+                  dataIfEdit &&
+                  items.find((option) => {
+                    return (
+                      option.value === dataIfEdit.itemId && {
+                        value: dataIfEdit.itemId,
+                        label: dataIfEdit.item,
+                      }
+                    );
+                  })
                 }
                 onChange={changeAndSearchItem}
               />
@@ -346,6 +349,7 @@ const GeneralInfo = ({
       <div className={styles.gridContainer}>
         <TextField
           multiline
+          required
           rows="5"
           className={styles.multiline}
           label="Descripción/Comentarios"
