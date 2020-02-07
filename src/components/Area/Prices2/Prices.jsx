@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -28,6 +29,17 @@ import Services from '../../../services/area/AreaServices';
 import Loader from '../../UI2/Loader/Loader';
 
 const services = new Services();
+
+const schema = Yup.object().shape({
+  name: Yup.string().required('Debe tener un nombre'),
+  areas: Yup.array().of(
+    Yup.object().shape({
+      price: Yup.number('El precio debe ser un numero').required(
+        'Debe tener un precio.',
+      ),
+    }),
+  ),
+});
 
 const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
   const formRef = useRef();
@@ -74,6 +86,7 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
               initialValues={state.areaType}
               onSubmit={handleSubmit}
               innerRef={formRef}
+              validationSchema={schema}
             >
               {({ values }) => {
                 return (
