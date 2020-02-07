@@ -189,7 +189,7 @@ class Contracts extends Component {
       itemModal: {
         isEditable: false,
         editableInfo: undefined,
-        currentItem: 'Selecciona un Item',
+        currentItem: { value: 0, label: 'Selecciona un Item' },
       },
     });
   };
@@ -438,6 +438,13 @@ class Contracts extends Component {
         data: { group: currentCategory },
       },
       categoryModal: { ...this.state.categoryModal, currentCategory },
+      itemModal: {
+        ...this.state.itemModal,
+        currentItem: {
+          value: 0,
+          label: 'Seleccione un item',
+        },
+      },
     });
   };
 
@@ -457,7 +464,10 @@ class Contracts extends Component {
         ...this.state.contractModal,
         data: { item: currentItem },
       },
-      itemModal: { ...this.state.itemModal, currentItem },
+      itemModal: {
+        ...this.state.itemModal,
+        currentItem: { label: 'Seleccione un item', value: 0 },
+      },
     });
   };
 
@@ -475,7 +485,10 @@ class Contracts extends Component {
           items,
           itemModal: {
             ...this.state.itemModal,
-            currentItem: undefined,
+            currentItem: {
+              label: 'Seleccione un item',
+              value: 0,
+            },
           },
         });
       })
