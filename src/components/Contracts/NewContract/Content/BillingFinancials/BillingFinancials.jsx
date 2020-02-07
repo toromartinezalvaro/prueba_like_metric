@@ -350,6 +350,18 @@ const BillingFinancials = ({
                     }}
                     placeholder="Fecha inicial"
                     components={Option}
+                    defaultValue={
+                      dataIfEdit
+                        ? events.find((option) => {
+                            return (
+                              option.value === billings.eventId && {
+                                value: option.value,
+                                label: option.label,
+                              }
+                            );
+                          })
+                        : billing.eventId
+                    }
                     options={events}
                     onChange={changeCardValue(
                       'eventId',
@@ -421,7 +433,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Final"
-                      value={billing.lastBillingDate}
+                      value={Number(billing.lastBillingDate)}
                       onChange={changeCardValue(
                         'lastBillingDate',
                         billing.id,
