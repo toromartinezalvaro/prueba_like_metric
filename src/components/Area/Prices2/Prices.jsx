@@ -98,38 +98,45 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
                         </Grid>
                       </Grid>
                     </Box>
-                    <TableContainer component={Paper}>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell align="right">Medida</TableCell>
-                            <TableCell>Precio</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {values.areas.map((area, index) => {
-                            return (
-                              <TableRow key={area.id}>
-                                <TableCell
-                                  component="th"
-                                  scope="row"
-                                  align="right"
-                                >
-                                  {area.measure}
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    name={`areas.${index}.price`}
-                                    component={CurrencyInput}
-                                    label="Precio"
-                                  />
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                    {values.areas.length === 0 && (
+                      <DialogContentText>
+                        Este tipo de area no tiene medidas distintas a 0.
+                      </DialogContentText>
+                    )}
+                    {values.areas.length > 0 && (
+                      <TableContainer component={Paper}>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell align="right">Medida</TableCell>
+                              <TableCell>Precio</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {values.areas.map((area, index) => {
+                              return (
+                                <TableRow key={area.id}>
+                                  <TableCell
+                                    component="th"
+                                    scope="row"
+                                    align="right"
+                                  >
+                                    {area.measure}
+                                  </TableCell>
+                                  <TableCell>
+                                    <Field
+                                      name={`areas.${index}.price`}
+                                      component={CurrencyInput}
+                                      label="Precio"
+                                    />
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    )}
                   </Form>
                 );
               }}
@@ -138,9 +145,11 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
         </Loader>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="primary" onClick={submit}>
-          Guardar
-        </Button>
+        {!state.loading && !state.error && (
+          <Button variant="contained" color="primary" onClick={submit}>
+            Guardar
+          </Button>
+        )}
         <Button onClick={handleClose}>Cancelar</Button>
       </DialogActions>
     </Dialog>
