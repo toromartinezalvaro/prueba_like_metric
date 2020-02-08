@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -27,6 +29,17 @@ import Services from '../../../services/area/AreaServices';
 import Loader from '../../UI2/Loader/Loader';
 
 const services = new Services();
+
+const schema = Yup.object().shape({
+  name: Yup.string().required('Debe tener un nombre'),
+  areas: Yup.array().of(
+    Yup.object().shape({
+      price: Yup.number('El precio debe ser un número').required(
+        'Debe tener un precio.',
+      ),
+    }),
+  ),
+});
 
 const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
   const formRef = useRef();
@@ -73,6 +86,7 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
               initialValues={state.areaType}
               onSubmit={handleSubmit}
               innerRef={formRef}
+              validationSchema={schema}
             >
               {({ values }) => {
                 return (
@@ -97,38 +111,45 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
                         </Grid>
                       </Grid>
                     </Box>
-                    <TableContainer component={Paper}>
-                      <Table stickyHeader>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell align="right">Medida</TableCell>
-                            <TableCell>Precio</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {values.areas.map((area, index) => {
-                            return (
-                              <TableRow key={area.id}>
-                                <TableCell
-                                  component="th"
-                                  scope="row"
-                                  align="right"
-                                >
-                                  {area.measure}
-                                </TableCell>
-                                <TableCell>
-                                  <Field
-                                    name={`areas.${index}.price`}
-                                    component={CurrencyInput}
-                                    label="Precio"
-                                  />
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                    {values.areas.length === 0 && (
+                      <DialogContentText>
+                        Este tipo de area no tiene medidas distintas a 0.
+                      </DialogContentText>
+                    )}
+                    {values.areas.length > 0 && (
+                      <TableContainer component={Paper}>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell align="right">Medida</TableCell>
+                              <TableCell>Precio</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {values.areas.map((area, index) => {
+                              return (
+                                <TableRow key={area.id}>
+                                  <TableCell
+                                    component="th"
+                                    scope="row"
+                                    align="right"
+                                  >
+                                    {area.measure}
+                                  </TableCell>
+                                  <TableCell>
+                                    <Field
+                                      name={`areas.${index}.price`}
+                                      component={CurrencyInput}
+                                      label="Precio"
+                                    />
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    )}
                   </Form>
                 );
               }}
@@ -137,11 +158,27 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
         </Loader>
       </DialogContent>
       <DialogActions>
+        {!state.loading && !state.error && (
+          <Button variant="contained" color="primary" onClick={submit}>
+            Guardar
+          </Button>
+        )}
         <Button onClick={handleClose}>Cancelar</Button>
-        <Button onClick={submit}>Guardar</Button>
       </DialogActions>
     </Dialog>
   );
+};
+
+Prices.propTypes = {
+  open: PropTypes.bool,
+  areaTypeId: PropTypes.number,
+  towerId: PropTypes.string.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
+
+Prices.defaultProps = {
+  open: false,
+  areaTypeId: null,
 };
 
 export default Prices;

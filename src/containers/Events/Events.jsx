@@ -236,7 +236,7 @@ class Events extends Component {
           variant="contained"
           color="primary"
           size="small"
-          disabled={this.props.eventIsUnique}
+          disabled={this.props.eventIsUnique || this.props.isLocked}
           className={styles.fab}
         >
           <AddIcon />
