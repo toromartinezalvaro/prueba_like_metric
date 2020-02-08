@@ -69,12 +69,14 @@ class Contracts extends Component {
       attachments: [],
       attachmentPath: '',
       contract: null,
+      contractId: null,
       contractNumber: null,
       currentContract: null,
       alert: {
         opened: false,
         message: '',
       },
+      isEditable: false,
     };
   }
 
@@ -143,7 +145,23 @@ class Contracts extends Component {
 
   handleCloseContract = () => {
     this.setState({
-      contractModal: { ...this.state.categoryModal, isOpen: false },
+      businessPatnerModal: {
+        ...this.state.businessPatnerModal,
+        currentPatner: { value: 0, label: 'Seleccione un socio' },
+      },
+      itemModal: {
+        ...this.state.itemModal,
+        currentItem: { value: 0, label: 'Seleccione un item' },
+      },
+      categoryModal: {
+        ...this.state.categoryModal,
+        currentCategory: { value: 0, label: 'Seleccione un grupo' },
+      },
+      contractModal: {
+        ...this.state.categoryModal,
+        isOpen: false,
+        contract: { generalInformationData: undefined },
+      },
     });
   };
 
@@ -172,13 +190,15 @@ class Contracts extends Component {
       itemModal: {
         isEditable: false,
         editableInfo: undefined,
-        currentItem: 'Selecciona un Item',
+        currentItem: { value: 0, label: 'Selecciona un Item' },
       },
     });
   };
 
   handleOpenContract = () => {
-    this.setState({ contractModal: { isOpen: true } });
+    this.setState({
+      contractModal: { isOpen: true, generalInformationData: null },
+    });
   };
 
   handleOpenCategory = () => {
@@ -421,6 +441,13 @@ class Contracts extends Component {
         data: { group: currentCategory },
       },
       categoryModal: { ...this.state.categoryModal, currentCategory },
+      itemModal: {
+        ...this.state.itemModal,
+        currentItem: {
+          value: 0,
+          label: 'Seleccione un item',
+        },
+      },
     });
   };
 
@@ -440,7 +467,10 @@ class Contracts extends Component {
         ...this.state.contractModal,
         data: { item: currentItem },
       },
-      itemModal: { ...this.state.itemModal, currentItem },
+      itemModal: {
+        ...this.state.itemModal,
+        currentItem: { label: 'Seleccione un item', value: 0 },
+      },
     });
   };
 
@@ -458,7 +488,10 @@ class Contracts extends Component {
           items,
           itemModal: {
             ...this.state.itemModal,
-            currentItem: undefined,
+            currentItem: {
+              label: 'Seleccione un item',
+              value: 0,
+            },
           },
         });
       })
@@ -550,6 +583,7 @@ class Contracts extends Component {
         ...this.state.contractModal,
         contractId: id,
       },
+      contractId: id,
     });
   };
 
@@ -586,6 +620,7 @@ class Contracts extends Component {
                 attachments: metaData.attachments,
               },
             },
+            isEditable: true,
           });
         })
         .catch((error) => {
@@ -611,21 +646,21 @@ class Contracts extends Component {
       .putContract(
         dataEditated,
         this.props.match.params.towerId,
-        this.state.contractModal.contractId,
+        this.state.contractId,
       )
       .then((response) => {
         this.setState({ currentContract: true });
         if (this.state.currentContract) {
-          this.setState({ contractModal: { isOpen: false } });
+          this.setState({
+            contractModal: { isOpen: false, generalInformationData: false },
+            isEditable: false,
+          });
         }
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede editar el contrato');
         console.log(error);
       });
-    this.setState({
-      contractModal: { ...this.state.contractModal, isOpen: false },
-    });
   };
 
   deleteContract = (id) => {
@@ -639,6 +674,19 @@ class Contracts extends Component {
         console.log(error);
       });
     console.log('Contrato eliminado', id);
+  };
+
+  watchingContract = () => {
+    this.setState({
+      contractModal: {
+        isOpen: true,
+        generalInformationData: undefined,
+      },
+    });
+  };
+
+  setEditable = (param) => {
+    this.setState({ isEditable: param });
   };
 
   render() {
@@ -656,6 +704,9 @@ class Contracts extends Component {
         <NewContract
           towerId={this.props.match.params.towerId}
           expanded={this.state.expanded}
+          setEditable={this.setEditable}
+          isEditable={this.state.isEditable}
+          sendId={this.sendId}
           isOpen={this.state.contractModal.isOpen}
           handleCloseContract={this.handleCloseContract}
           handleCloseItem={this.handleCloseItem}
@@ -688,6 +739,7 @@ class Contracts extends Component {
           addContract={this.addContract}
           dataIfEdit={this.state.contractModal.generalInformationData}
           editContract={this.editContract}
+          watchingContract={this.watchingContract}
           sendContractNumber={this.sendContractNumber}
         />
         <Dialog
