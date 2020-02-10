@@ -1,5 +1,6 @@
 import React, { useState, useReducer, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,6 +17,10 @@ import {
   fetchAddToTowerSuccess,
   fetchAddToTowerFailure,
   restartState,
+  clientRequestStart,
+  clientRequestSuccess,
+  clientRequestFailure,
+  createdClient,
 } from './actions';
 import { addClient } from '../../../containers/Client/actions';
 import Input from './Input';
@@ -24,6 +29,8 @@ import Services from '../../../services/client/ClientsServices';
 import ContainerContext from '../../../containers/Client/context';
 import Context from './context';
 import { DashboardRoutes } from '../../../routes/local/routes';
+import LoadingButton from '../../UI2/LoadingButton';
+import Styles from './FormDialog.module.scss';
 
 const services = new Services();
 
@@ -51,7 +58,6 @@ const validationSchema = yup.object().shape({
 const FormDialog = ({ client, open, onCloseHandler }) => {
   const {
     towerId,
-    history,
     dispatch: containerDispatcher,
     makeAlert,
     createClient,
@@ -81,6 +87,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
 
   const handleSubmit = async (values) => {
     try {
+      dispatch(clientRequestStart());
       if (innerClient.id) {
         const res = await services.putClient(
           innerClient.identityDocument,
@@ -88,19 +95,19 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
           values,
         );
         containerDispatcher(updateClient(res.data));
+        dispatch(clientRequestSuccess());
       } else {
         const res = await services.postClient(towerId, values);
         containerDispatcher(createClient(res.data));
-        history.push(
-          `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${res.data.id}`,
-        );
+        dispatch(clientRequestSuccess());
+        dispatch(createdClient(res.data.id));
       }
-      onCloseHandler();
       makeAlert(
-        `Se ${innerClient.id ? 'actualizo' : 'creo'} correctamente el usuaro'`,
+        `Se ${innerClient.id ? 'actualizo' : 'creo'} correctamente el usuaro`,
         'success',
       );
     } catch (error) {
+      dispatch(clientRequestFailure());
       makeAlert(error.response.data.message, 'error');
     }
   };
@@ -169,24 +176,33 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                 <Grid container spacing={1} direction="row-reverse">
                   <Grid item>
                     {!innerClient.id && (
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        disableElevation
+                      <Link
+                        to={`${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`}
+                        className={Styles.link}
                       >
-                        Crear e ir a sala de ventas
-                      </Button>
+                        <Button
+                          disabled={!state.createdClient}
+                          type="submit"
+                          variant="contained"
+                          color="secondary"
+                          disableElevation
+                        >
+                          Ir a sala de ventas
+                        </Button>
+                      </Link>
                     )}
                   </Grid>
                   <Grid item>
-                    <Button
+                    <LoadingButton
+                      loading={state.clientRequestLoading}
                       type="submit"
                       variant="contained"
                       color="primary"
+                      disabled={innerClient.id === null && state.createdClient}
                       disableElevation
                     >
                       {innerClient.id ? 'Actualizar' : 'Crear'}
-                    </Button>
+                    </LoadingButton>
                   </Grid>
                 </Grid>
               </Form>
