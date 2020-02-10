@@ -144,6 +144,9 @@ const GeneralInfo = ({
             className={styles.textField}
             label="Titulo De Contrato"
             margin="normal"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') document.getElementById('select1').focus();
+            }}
             variant="outlined"
             defaultValue={dataIfEdit && dataIfEdit.title}
             onChange={onChangeText('title')}
@@ -153,13 +156,17 @@ const GeneralInfo = ({
               <Select
                 className={styles.SelectSimpleForLabel}
                 required
-                inputId="react-select-single"
+                inputId="select1"
                 TextFieldProps={{
                   label: 'Socio de negocios',
                   InputLabelProps: {
                     htmlFor: 'react-select-single',
                     shrink: true,
                   },
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter')
+                    document.getElementById('select2').focus();
                 }}
                 placeholder="Seleccione socio"
                 options={partners}
@@ -205,7 +212,7 @@ const GeneralInfo = ({
             <div className={styles.selectColumn}>
               <Select
                 className={styles.SelectSimpleForLabel}
-                inputId="react-select-single"
+                inputId="select2"
                 required
                 TextFieldProps={{
                   label: 'Selecciona un grupo',
@@ -213,6 +220,10 @@ const GeneralInfo = ({
                     htmlFor: 'react-select-single',
                     shrink: true,
                   },
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter')
+                    document.getElementById('select3').focus();
                 }}
                 placeholder="Selecciona un grupo"
                 options={categories}
@@ -259,8 +270,11 @@ const GeneralInfo = ({
         <div className={styles.columnFullRigth}>
           <Select
             className={styles.SelectSimple}
-            inputId="react-select-single"
+            inputId="select3"
             required
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') document.getElementById('4').focus();
+            }}
             TextFieldProps={{
               label: 'Estado',
               InputLabelProps: {
@@ -283,6 +297,10 @@ const GeneralInfo = ({
             className={styles.leftInputs}
             label="Numero de contrato"
             required
+            id="4"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') document.getElementById('select5').focus();
+            }}
             margin="normal"
             variant="outlined"
             defaultValue={dataIfEdit && dataIfEdit.contractNumber}
@@ -294,8 +312,12 @@ const GeneralInfo = ({
               <Select
                 isDisabled={dataIfEdit ? false : isLocked}
                 className={styles.SelectSimpleForLabel}
-                inputId="react-select-single"
+                inputId="select5"
                 required
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter')
+                    document.getElementById('TEXT6').focus();
+                }}
                 TextFieldProps={{
                   label: 'item',
                   InputLabelProps: {
@@ -351,6 +373,7 @@ const GeneralInfo = ({
           multiline
           required
           rows="5"
+          id="TEXT6"
           className={styles.multiline}
           label="Descripción/Comentarios"
           variant="outlined"

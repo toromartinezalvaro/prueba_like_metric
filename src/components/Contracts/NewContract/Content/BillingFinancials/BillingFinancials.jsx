@@ -374,7 +374,6 @@ const BillingFinancials = ({
                       true,
                     )}
                   />
-                  {console.log('MUESTRAS', billings)}
                   <Events
                     towerId={towerId}
                     isLocked={billing.isLocked}
