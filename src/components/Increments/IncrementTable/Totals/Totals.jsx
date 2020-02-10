@@ -15,6 +15,7 @@ function Totals({
   blockIncrements,
   inventoryUnits,
   salesIncrement,
+  isReset,
 }) {
   const {
     date,
@@ -31,6 +32,7 @@ function Totals({
     ear,
     suggestedIncrement,
   } = groupSummary;
+  console.log(isReset);
   return (
     <div className={`${Styles.total} ${className}`}>
       <div className={Styles['total-header']}>Total</div>
@@ -95,8 +97,10 @@ function Totals({
             }
             onChange={(target) => {
               putIncrement(target.value);
+              /*               isReset = true;
+               */
             }}
-            disable={inventoryUnits === 0}
+            disable={inventoryUnits === 0 || !isReset}
             updateWithProp
           />
         )}
