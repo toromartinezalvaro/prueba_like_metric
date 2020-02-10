@@ -152,7 +152,7 @@ class Events extends Component {
             .postEvent(this.props.towerId, this.state.event)
             .then((response) => {
               const currentEvent = {
-                eventId: response.data.eventId,
+                eventId: response.data.id,
                 value: response.data.customDate,
                 label: response.data.description,
               };

@@ -302,7 +302,6 @@ const BillingFinancials = ({
                     ),
                   }}
                 />
-                {console.log('ESTO ES', billings)}
                 <TextField
                   required
                   disabled={billing.isLocked}
@@ -311,7 +310,7 @@ const BillingFinancials = ({
                   margin="normal"
                   variant="outlined"
                   defaultValue={billing.iva}
-                  value={billing.billingAmount}
+                  value={billing.iva}
                   onChange={changeCardValue('iva', billing.id)}
                 />
                 <div className={styles.amountIva}>
@@ -357,19 +356,16 @@ const BillingFinancials = ({
                     }}
                     placeholder="Fecha inicial"
                     components={Option}
-                    defaultValue={
-                      dataIfEdit
-                        ? events.find((option) => {
-                            return (
-                              option.value === billings.eventId &&
-                              billings.event && {
-                                value: option.value,
-                                label: option.label,
-                              }
-                            );
-                          })
-                        : billing.eventId
-                    }
+                    value={events.find((option) => {
+                      return (
+                        option.eventId === billing.eventId &&
+                        billing.eventId && {
+                          eventId: option.eventId,
+                          value: option.value,
+                          label: option.label,
+                        }
+                      );
+                    })}
                     options={events}
                     onChange={changeCardValue(
                       'eventId',
@@ -378,6 +374,7 @@ const BillingFinancials = ({
                       true,
                     )}
                   />
+                  {console.log('MUESTRAS', billings)}
                   <Events
                     towerId={towerId}
                     isLocked={billing.isLocked}
@@ -408,7 +405,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Inicial"
-                      value={billing.initalBillingDate}
+                      value={Number(billing.initalBillingDate)}
                       onChange={changeCardValue(
                         'initalBillingDate',
                         billing.id,
