@@ -281,6 +281,9 @@ const BillingFinancials = ({
                     value: billing.cycle,
                   }}
                   onChange={changeCardValue('cycle', billing.id, false, true)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') document.getElementById('2').focus();
+                  }}
                 />
               </div>
               <div className={styles.amountSection}>
@@ -294,7 +297,10 @@ const BillingFinancials = ({
                   defaultValue={billing.amount}
                   value={billing.amount}
                   onBlur={changeCardValue('amount', billing.id)}
-                  id={billing.id}
+                  id={2}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') document.getElementById('3').focus();
+                  }}
                   InputProps={{
                     inputComponent: NumberFormatCustom,
                     startAdornment: (
@@ -310,6 +316,11 @@ const BillingFinancials = ({
                   margin="normal"
                   variant="outlined"
                   defaultValue={billing.iva}
+                  id="3"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter')
+                      document.getElementById('sel4').focus();
+                  }}
                   value={billing.iva}
                   onChange={changeCardValue('iva', billing.id)}
                 />
@@ -345,7 +356,7 @@ const BillingFinancials = ({
                 <div className={styles.event}>
                   <Select
                     className={styles.SelectDate}
-                    inputId="react-select-single"
+                    inputId="sel4"
                     isDisabled={billing.isLocked}
                     TextFieldProps={{
                       label: 'Fecha inicial',
