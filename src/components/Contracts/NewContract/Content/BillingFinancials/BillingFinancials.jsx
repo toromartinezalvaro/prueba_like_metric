@@ -106,7 +106,7 @@ const BillingFinancials = ({
         setEventIsUnique(true);
         bill = {
           ...billingsArray[billIndex],
-          initalBillingDate: uniqueEvent.value,
+          initalBillingDate: Number(uniqueEvent.value),
           eventId: element.eventId,
         };
         billingsArray[billIndex].eventId = element.eventId;
@@ -142,12 +142,41 @@ const BillingFinancials = ({
           ...billingsArray[billIndex],
         };
         billingsArray[billIndex].initalBillingDate = Number(newDate);
+        billingsArray[billIndex].lastBillingDate = Number(newDate);
+        if (
+          billingsArray[billIndex].type !== 'quarter' ||
+          billingsArray[billIndex].type !== 'unique'
+        ) {
+          billingsArray[billIndex].lastBillingDate = newDate;
+          const date = moment(newDate)
+            .add(
+              Number(
+                billingsArray[billIndex].paymentNumber !== 1
+                  ? Number(billingsArray[billIndex].paymentNumber) - 1
+                  : 0,
+              ),
+              billingsArray[billIndex].type,
+            )
+            .format('x');
+          bill = {
+            ...billingsArray[billIndex],
+          };
+          billingsArray[billIndex].lastBillingDate = Number(date);
+        }
+        billingsArray[billIndex].lastBillingDate = Number(newDate);
       } else if (name === 'paymentNumber') {
         billingsArray[billIndex].lastBillingDate = Number(lastDate);
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(lastDate);
           const newDate = moment(billingsArray[billIndex].initalBillingDate)
-            .add(Number(element.target.value), billingsArray[billIndex].type)
+            .add(
+              Number(
+                Number(element.target.value) !== 1
+                  ? Number(element.target.value) - 1
+                  : 0,
+              ),
+              billingsArray[billIndex].type,
+            )
             .format('x');
           bill = {
             ...billingsArray[billIndex],
@@ -155,7 +184,14 @@ const BillingFinancials = ({
           billingsArray[billIndex].lastBillingDate = Number(newDate);
         }
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .add(Number(element.target.value), billingsArray[billIndex].type)
+          .add(
+            Number(
+              Number(element.target.value) !== 1
+                ? Number(element.target.value) - 1
+                : 0,
+            ),
+            billingsArray[billIndex].type,
+          )
           .format('x');
         bill = {
           ...billingsArray[billIndex],
