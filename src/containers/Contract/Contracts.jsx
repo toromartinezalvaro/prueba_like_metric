@@ -160,8 +160,9 @@ class Contracts extends Component {
       contractModal: {
         ...this.state.categoryModal,
         isOpen: false,
-        contract: { generalInformationData: undefined },
+        contract: { generalInformationData: false },
       },
+      isEditable: false,
     });
   };
 
@@ -642,6 +643,7 @@ class Contracts extends Component {
       contract: dataEditated,
     });
 
+
     this.services
       .putContract(
         dataEditated,
@@ -667,7 +669,11 @@ class Contracts extends Component {
     this.services
       .deleteContract(id, this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ currentContract: true });
+        this.setState({
+          currentContract: true,
+          contractModal: { isOpen: false, generalInformationData: false },
+          isEditable: false,
+        });
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede eliminar el contrato');
@@ -680,7 +686,7 @@ class Contracts extends Component {
     this.setState({
       contractModal: {
         isOpen: true,
-        generalInformationData: undefined,
+        generalInformationData: false,
       },
     });
   };
