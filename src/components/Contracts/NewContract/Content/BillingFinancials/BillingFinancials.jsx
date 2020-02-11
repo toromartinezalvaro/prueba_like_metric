@@ -443,6 +443,7 @@ const BillingFinancials = ({
                   />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+                      autoOk
                       className={styles.picker}
                       disabled={!eventIsUnique}
                       disableToolbar
@@ -478,6 +479,7 @@ const BillingFinancials = ({
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       disabled={true}
+                      autoOk
                       className={styles.picker}
                       disableToolbar
                       variant="inline"
