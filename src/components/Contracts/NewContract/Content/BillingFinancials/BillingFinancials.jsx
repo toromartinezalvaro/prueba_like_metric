@@ -69,7 +69,13 @@ const BillingFinancials = ({
     if (dataIfEdit) {
       const data = dataIfEdit.billings;
       setBillings(data);
-      setLastId(1);
+      setLastDate(
+        events.find((option) => {
+          return (
+            option.eventId === data.eventId && data.eventId && option.value
+          );
+        }),
+      );
       setTimeout(() => {
         watchingContract();
       }, 1000);
@@ -125,6 +131,7 @@ const BillingFinancials = ({
       bill = { ...billingsArray[billIndex], [name]: element.value };
     } else if (name === true) {
       bill = { ...billingsArray[billIndex], isLocked: true };
+      console.log(billingsArray);
     } else if (name === false) {
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
@@ -142,10 +149,7 @@ const BillingFinancials = ({
           ...billingsArray[billIndex],
         };
         billingsArray[billIndex].initalBillingDate = Number(newDate);
-        if (
-          billingsArray[billIndex].type !== 'quarter' ||
-          billingsArray[billIndex].type !== 'unique'
-        ) {
+        if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(newDate);
           const date = moment(billingsArray[billIndex].lastBillingDate)
             .add(
@@ -405,9 +409,9 @@ const BillingFinancials = ({
                       return (
                         option.eventId === billing.eventId &&
                         billing.eventId && {
-                          eventId: option.eventId,
-                          value: option.value,
-                          label: option.label,
+                          eventId: billing.eventId,
+                          value: billing.value,
+                          label: billing.label,
                         }
                       );
                     })}
@@ -435,8 +439,12 @@ const BillingFinancials = ({
                     label={`Desplazamiento ${billing.cycle}`}
                     margin="normal"
                     variant="outlined"
-                    defaultValue={billing.displacement}
-                    value={billing.displacement}
+                    defaultValue={
+                      billing.displacement === null ? 0 : billing.displacement
+                    }
+                    value={
+                      billing.displacement === null ? 0 : billing.displacement
+                    }
                     onChange={changeCardValue('displacement', billing.id)}
                   />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -470,8 +478,12 @@ const BillingFinancials = ({
                     label="Numero de pagos"
                     margin="normal"
                     variant="outlined"
-                    defaultValue={billing.paymentNumber}
-                    value={billing.paymentNumber}
+                    defaultValue={
+                      billing.paymentNumber === null ? 1 : billing.paymentNumber
+                    }
+                    value={
+                      billing.paymentNumber === null ? 1 : billing.paymentNumber
+                    }
                     onChange={changeCardValue('paymentNumber', billing.id)}
                   />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
