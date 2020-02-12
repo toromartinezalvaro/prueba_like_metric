@@ -6,16 +6,26 @@ import Button from '@material-ui/core/Button';
 import AddToTower from './AddToTower';
 import { DashboardRoutes } from '../../../../routes/local/routes';
 import ContainerContext from '../../../../containers/Client/context';
+import Styles from './ClientActions.module.scss';
 
 const ClientActions = ({ client }) => {
-  const { towerId } = useContext(ContainerContext);
+  const { towerId, isOpen, setIsOpen, setSelectedClient } = useContext(
+    ContainerContext,
+  );
 
   return (
     <Grid container direction="column" spacing={1}>
       {client.id !== null && (
         <Fragment>
           <Grid item>
-            <Button color="primary" fullWidth>
+            <Button
+              color="primary"
+              onClick={() => {
+                setIsOpen({ ...isOpen, detail: true });
+                setSelectedClient(client);
+              }}
+              fullWidth
+            >
               Ver detalles
             </Button>
           </Grid>
@@ -27,6 +37,7 @@ const ClientActions = ({ client }) => {
               <Grid item xs={6}>
                 <Link
                   to={`${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${client.id}`}
+                  className={Styles.link}
                 >
                   <Button color="primary" variant="outlined" fullWidth>
                     Ir a sala de ventas

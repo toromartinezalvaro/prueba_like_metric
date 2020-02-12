@@ -152,7 +152,7 @@ class Events extends Component {
             .postEvent(this.props.towerId, this.state.event)
             .then((response) => {
               const currentEvent = {
-                eventId: response.data.eventId,
+                eventId: response.data.id,
                 value: response.data.customDate,
                 label: response.data.description,
               };
@@ -236,7 +236,7 @@ class Events extends Component {
           variant="contained"
           color="primary"
           size="small"
-          disabled={this.props.eventIsUnique}
+          disabled={this.props.eventIsUnique || this.props.isLocked}
           className={styles.fab}
         >
           <AddIcon />

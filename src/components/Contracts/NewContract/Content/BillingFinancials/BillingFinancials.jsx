@@ -38,6 +38,7 @@ const BillingFinancials = ({
   events,
   currentEvent,
   dataIfEdit,
+  watchingContract,
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
@@ -66,7 +67,12 @@ const BillingFinancials = ({
 
   useEffect(() => {
     if (dataIfEdit) {
-      setBillings(dataIfEdit.billings);
+      const data = dataIfEdit.billings;
+      setBillings(data);
+      setLastId(1);
+      setTimeout(() => {
+        watchingContract();
+      }, 1000);
     }
   });
 
@@ -100,7 +106,7 @@ const BillingFinancials = ({
         setEventIsUnique(true);
         bill = {
           ...billingsArray[billIndex],
-          initalBillingDate: uniqueEvent.value,
+          initalBillingDate: Number(uniqueEvent.value),
           eventId: element.eventId,
         };
         billingsArray[billIndex].eventId = element.eventId;
@@ -136,12 +142,39 @@ const BillingFinancials = ({
           ...billingsArray[billIndex],
         };
         billingsArray[billIndex].initalBillingDate = Number(newDate);
+        if (
+          billingsArray[billIndex].type !== 'quarter' ||
+          billingsArray[billIndex].type !== 'unique'
+        ) {
+          billingsArray[billIndex].lastBillingDate = Number(newDate);
+          const date = moment(billingsArray[billIndex].lastBillingDate)
+            .add(
+              Number(
+                billingsArray[billIndex].paymentNumber !== 1
+                  ? Number(billingsArray[billIndex].paymentNumber) - 1
+                  : 0,
+              ),
+              billingsArray[billIndex].type,
+            )
+            .format('x');
+          bill = {
+            ...billingsArray[billIndex],
+          };
+          billingsArray[billIndex].lastBillingDate = Number(date);
+        }
       } else if (name === 'paymentNumber') {
         billingsArray[billIndex].lastBillingDate = Number(lastDate);
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(lastDate);
           const newDate = moment(billingsArray[billIndex].initalBillingDate)
-            .add(Number(element.target.value), billingsArray[billIndex].type)
+            .add(
+              Number(
+                Number(element.target.value) !== 1
+                  ? Number(element.target.value) - 1
+                  : 0,
+              ),
+              billingsArray[billIndex].type,
+            )
             .format('x');
           bill = {
             ...billingsArray[billIndex],
@@ -149,7 +182,14 @@ const BillingFinancials = ({
           billingsArray[billIndex].lastBillingDate = Number(newDate);
         }
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .add(Number(element.target.value), billingsArray[billIndex].type)
+          .add(
+            Number(
+              Number(element.target.value) !== 1
+                ? Number(element.target.value) - 1
+                : 0,
+            ),
+            billingsArray[billIndex].type,
+          )
           .format('x');
         bill = {
           ...billingsArray[billIndex],
@@ -275,6 +315,9 @@ const BillingFinancials = ({
                     value: billing.cycle,
                   }}
                   onChange={changeCardValue('cycle', billing.id, false, true)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') document.getElementById('2').focus();
+                  }}
                 />
               </div>
               <div className={styles.amountSection}>
@@ -285,10 +328,13 @@ const BillingFinancials = ({
                   label={`Valor antes de IVA ${billing.cycle}`}
                   margin="normal"
                   variant="outlined"
-                  defaultValue={dataIfEdit && billing.amount}
+                  defaultValue={billing.amount}
                   value={billing.amount}
                   onBlur={changeCardValue('amount', billing.id)}
-                  id={billing.id}
+                  id={2}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') document.getElementById('3').focus();
+                  }}
                   InputProps={{
                     inputComponent: NumberFormatCustom,
                     startAdornment: (
@@ -304,7 +350,12 @@ const BillingFinancials = ({
                   margin="normal"
                   variant="outlined"
                   defaultValue={billing.iva}
-                  value={billing.billingAmount}
+                  id="3"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter')
+                      document.getElementById('sel4').focus();
+                  }}
+                  value={billing.iva}
                   onChange={changeCardValue('iva', billing.id)}
                 />
                 <div className={styles.amountIva}>
@@ -339,7 +390,7 @@ const BillingFinancials = ({
                 <div className={styles.event}>
                   <Select
                     className={styles.SelectDate}
-                    inputId="react-select-single"
+                    inputId="sel4"
                     isDisabled={billing.isLocked}
                     TextFieldProps={{
                       label: 'Fecha inicial',
@@ -350,6 +401,16 @@ const BillingFinancials = ({
                     }}
                     placeholder="Fecha inicial"
                     components={Option}
+                    value={events.find((option) => {
+                      return (
+                        option.eventId === billing.eventId &&
+                        billing.eventId && {
+                          eventId: option.eventId,
+                          value: option.value,
+                          label: option.label,
+                        }
+                      );
+                    })}
                     options={events}
                     onChange={changeCardValue(
                       'eventId',
@@ -360,6 +421,7 @@ const BillingFinancials = ({
                   />
                   <Events
                     towerId={towerId}
+                    isLocked={billing.isLocked}
                     defaultDate={defaultDate}
                     currentEvent={createdEvent}
                     eventIsUnique={eventIsUnique}
@@ -379,6 +441,7 @@ const BillingFinancials = ({
                   />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+                      autoOk
                       className={styles.picker}
                       disabled={!eventIsUnique}
                       disableToolbar
@@ -387,7 +450,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Inicial"
-                      value={billing.initalBillingDate}
+                      value={Number(billing.initalBillingDate)}
                       onChange={changeCardValue(
                         'initalBillingDate',
                         billing.id,
@@ -414,6 +477,7 @@ const BillingFinancials = ({
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       disabled={true}
+                      autoOk
                       className={styles.picker}
                       disableToolbar
                       variant="inline"
@@ -421,7 +485,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Final"
-                      value={billing.lastBillingDate}
+                      value={Number(billing.lastBillingDate)}
                       onChange={changeCardValue(
                         'lastBillingDate',
                         billing.id,

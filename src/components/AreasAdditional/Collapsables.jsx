@@ -162,12 +162,15 @@ const Collapsables = (props) => {
                   prefix="$"
                   value={areaType.additionalAreas
                     .reduce(
-                      (current, next) => current + parseFloat(next.price),
+                      (current, next) =>
+                        current +
+                        parseFloat(next.price) * parseFloat(next.measure),
                       0,
                     )
                     .toFixed(2)}
                 />
               </div>
+              {console.log('DATA', areaType.additionalAreas)}
               <div className={Styles.stat}>
                 <span className={Styles.label}>Precio promedio:</span>
                 <NumberFormat
@@ -178,7 +181,8 @@ const Collapsables = (props) => {
                     .reduce(
                       (current, next) =>
                         current +
-                        parseFloat(next.price) / areaType.additionalAreas.length,
+                        (parseFloat(next.price) * parseFloat(next.measure)) /
+                          areaType.additionalAreas.length,
                       0,
                     )
                     .toFixed(2)}

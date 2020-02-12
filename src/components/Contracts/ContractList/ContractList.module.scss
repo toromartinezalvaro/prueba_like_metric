@@ -13,7 +13,8 @@
   justify-content: center !important;
   align-content: space-between !important;
   position: relative;
-  left: 35%;
+  left: 10%;
+  overflow-y: scroll;
 }
 
 .container {
@@ -48,6 +49,9 @@
 
 .Loader {
   align-self: center !important;
+  position: relative;
+  left: 45% !important;
+  overflow-x: hidden;
 }
 
 .noContractBody {
@@ -55,4 +59,24 @@
   position: relative;
   left: 10%;
   color: $black-color;
+}
+
+.header,
+.content {
+  width: 8vw;
+  margin-top: 1% !important;
+}
+
+.title {
+  width: 14vw;
+  margin-top: 2%;
+  text-align: center;
+}
+
+.container,
+.dataContainer {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 100px 100px 100px 100px 100px 100px;
+  grid-template-rows: 150px 150px;
 }

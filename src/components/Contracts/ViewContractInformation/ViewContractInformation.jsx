@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import Icon from '@material-ui/core/Icon';
 import ContractService from '../../../services/contract/contractService';
 import {
   Button,
@@ -14,7 +15,7 @@ import {
   Dialog,
   DialogContentText,
 } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import DeleteAction from './DeleteAction';
 import ViewGeneralInfo from './viewGeneralInfo/ViewGeneralInfo';
 import ViewBillingAndFinancials from './viewBillingAndFinancials/ViewBillingAndFInancials';
 import style from './ViewContractInformation.module.scss';
@@ -26,6 +27,7 @@ class ViewContractInformation extends Component {
       viewerModal: {
         isOpen: false,
       },
+      deleteAction: false,
     };
   }
 
@@ -36,6 +38,18 @@ class ViewContractInformation extends Component {
   openEditable = () => {
     this.props.editContractOpen(true, this.props.contractId);
     this.props.closeInformationView(true);
+  };
+
+  setOpenDeleteAction = () => {
+    this.setState({ deleteAction: true });
+  };
+
+  setCloseDeleteAction = () => {
+    this.setState({ deleteAction: false });
+  };
+
+  deletedContract = () => {
+    this.setState({ deleteAction: false, viewerModal: { isOpen: false } });
   };
 
   render() {
@@ -53,6 +67,17 @@ class ViewContractInformation extends Component {
             <ViewBillingAndFinancials
               contractDataView={this.props.contractDataView}
             />
+            {this.state.deleteAction && (
+              <DeleteAction
+                title={this.props.contractDataView.title}
+                contractNumber={this.props.contractDataView.contractNumber}
+                id={this.props.id}
+                isOpen={this.state.deleteAction}
+                setClose={this.setCloseDeleteAction}
+                deleteContract={this.props.deleteContract}
+                deletedContract={this.deletedContract}
+              />
+            )}
             <div className={style.actionContainer}>
               <Button
                 variant="contained"
@@ -62,6 +87,14 @@ class ViewContractInformation extends Component {
                 onClick={this.openEditable}
               >
                 Editar Contrato
+              </Button>
+              <Button
+                variant="contained"
+                className={style.deleteButton}
+                startIcon={<Icon className="fas fa-trash-alt" />}
+                onClick={this.setOpenDeleteAction}
+              >
+                Eliminar contrato
               </Button>
               <Button
                 variant="contained"

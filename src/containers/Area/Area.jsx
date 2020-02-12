@@ -14,6 +14,7 @@ import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import commonStyles from '../../assets/styles/variables.scss';
 import LoadableContainer from '../../components/UI/Loader';
+import Prices2 from '../../components/Area/Prices2';
 
 class Area extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class Area extends Component {
     modalIsLoading: false,
     isLoading: false,
     anySold: false,
+    isAreaTypeDialogOpen: false,
   };
 
   modalContent = () => {
@@ -102,8 +104,8 @@ class Area extends Component {
       }
       return (
         <div
-          onDoubleClick={() => {
-            this.toggleAreaTypeModal(areaType);
+          onClick={() => {
+            this.handleOpenAreaTypeModal(areaType);
           }}
         >
           <EditableHeader
@@ -222,14 +224,15 @@ class Area extends Component {
     this.setState({ areaMeasurementUnit: event.target.value });
   };
 
+  handleOpenAreaTypeModal = (areaType) => {
+    this.setState({
+      isAreaTypeDialogOpen: true,
+      areaTypeId: areaType.id,
+    });
+  };
+
   toggleAreaTypeModal = (areaType) => {
-    console.log(
-      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`,
-    );
     if (areaType === undefined) {
-      console.log(
-        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`,
-      );
       this.setState((prevState) => ({
         hidden: !prevState.hidden,
         areaType: '',
@@ -244,8 +247,6 @@ class Area extends Component {
         areaMeasurementUnit: areaType.measurementUnit,
         editingAreaType: true,
       }));
-
-      console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
     }
   };
 
@@ -370,7 +371,7 @@ class Area extends Component {
                   console.log(value);
                   return value !== null;
                 },
-                message: 'No puede estar vacío',
+                message: 'No puede estar vac�o',
               },
             ]}
             disable={this.state.anySold}
@@ -461,6 +462,14 @@ class Area extends Component {
             Primas
           </FloatingButton>
         ) : null}
+        <Prices2
+          open={this.state.isAreaTypeDialogOpen}
+          handleClose={() => {
+            this.setState({ isAreaTypeDialogOpen: false });
+          }}
+          towerId={this.props.match.params.towerId}
+          areaTypeId={this.state.areaTypeId}
+        />
       </LoadableContainer>
     );
   }
