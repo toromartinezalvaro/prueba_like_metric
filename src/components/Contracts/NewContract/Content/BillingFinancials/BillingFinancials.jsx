@@ -200,7 +200,7 @@ const BillingFinancials = ({
         };
         billingsArray[billIndex].lastBillingDate = Number(newDate);
       }
-      const value = element.target.value.replace(',', '');
+      const value = element.target.value.replace(/,/gi, '');
       bill = {
         ...billingsArray[billIndex],
         [name]: value,
@@ -574,7 +574,7 @@ const BillingFinancials = ({
         <div className={styles.Totalbills}>
           <h4 sclassName={styles.textTotal}> Valor Total:</h4>
           <NumberFormat
-            value={Numbers.toFixed(totalBills)}
+            value={Number(totalBills)}
             displayType={'text'}
             className={styles.TotalAmount}
             thousandSeparator={true}
