@@ -563,7 +563,10 @@ class Contracts extends Component {
             .then((response) => {
               this.setState({ currentContract: true });
               if (this.state.currentContract) {
-                this.setState({ contractModal: { isOpen: false } });
+                this.setState({
+                  contractModal: { isOpen: false },
+                  contract: null,
+                });
               }
             })
             .catch((error) => {
@@ -639,10 +642,6 @@ class Contracts extends Component {
     );
     dataEditated.append('billing', JSON.stringify(this.state.billings));
     const attach = [...this.state.attachments, dataEditated];
-    this.setState({
-      contract: dataEditated,
-    });
-
 
     this.services
       .putContract(
@@ -654,8 +653,13 @@ class Contracts extends Component {
         this.setState({ currentContract: true });
         if (this.state.currentContract) {
           this.setState({
-            contractModal: { isOpen: false, generalInformationData: false },
+            contractModal: {
+              isOpen: false,
+              generalInformationData: null,
+              data: {},
+            },
             isEditable: false,
+            contract: null,
           });
         }
       })

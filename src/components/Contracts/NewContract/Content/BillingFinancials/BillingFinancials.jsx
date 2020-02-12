@@ -142,13 +142,12 @@ const BillingFinancials = ({
           ...billingsArray[billIndex],
         };
         billingsArray[billIndex].initalBillingDate = Number(newDate);
-        billingsArray[billIndex].lastBillingDate = Number(newDate);
         if (
           billingsArray[billIndex].type !== 'quarter' ||
           billingsArray[billIndex].type !== 'unique'
         ) {
-          billingsArray[billIndex].lastBillingDate = newDate;
-          const date = moment(newDate)
+          billingsArray[billIndex].lastBillingDate = Number(newDate);
+          const date = moment(billingsArray[billIndex].lastBillingDate)
             .add(
               Number(
                 billingsArray[billIndex].paymentNumber !== 1
@@ -163,7 +162,6 @@ const BillingFinancials = ({
           };
           billingsArray[billIndex].lastBillingDate = Number(date);
         }
-        billingsArray[billIndex].lastBillingDate = Number(newDate);
       } else if (name === 'paymentNumber') {
         billingsArray[billIndex].lastBillingDate = Number(lastDate);
         if (billingsArray[billIndex].type !== 'quarter') {
