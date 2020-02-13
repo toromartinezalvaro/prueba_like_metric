@@ -15,6 +15,7 @@ import ExpandLifeCycle from './Expand/LifeCycle/LifeCycle';
 import ExpandOrganizationContact from './Expand/OrganizationContact/OrganizationContact';
 import ExpandCustom from './Expand/Custom/Custom';
 import ExpandAttachment from './Expand/Attachment/Attachment';
+import DeleteAction from './CloseModal/index';
 import styles from './NewContract.module.scss';
 
 const NewContract = ({
@@ -58,12 +59,24 @@ const NewContract = ({
   isEditable,
   setEditable,
 }) => {
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     if (dataIfEdit && isEditable) {
       sendId(dataIfEdit.id);
       setEditable(true);
     }
   }, []);
+
+  const confirmClose = () => {
+    setOpen(false);
+    handleCloseContract();
+  };
+
+  const setClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Dialog
       className={styles.dialogExpand}
@@ -122,6 +135,13 @@ const NewContract = ({
           dataIfEdit={dataIfEdit}
         />
         <br />
+        {
+          <DeleteAction
+            confirmClose={confirmClose}
+            setClose={setClose}
+            open={open}
+          />
+        }
         <div className={styles.actionContainer}>
           <Button
             variant="contained"
@@ -137,7 +157,7 @@ const NewContract = ({
             color="secondary"
             className={`${styles.button} ${styles.buttonMargin}`}
             startIcon={<Icon className="fas fa-ban" />}
-            onClick={handleCloseContract}
+            onClick={() => setOpen(true)}
           >
             Cerrar
           </Button>
