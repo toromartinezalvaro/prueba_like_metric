@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Services from '../../services/SaleRequests';
 import SaleRequestsTable from '../../components/SaleRequests/Table';
 import SaleRequestsModal from '../../components/SaleRequests/Modal';
+import DesistDialog from '../../components/SaleRequests/DesistDialog';
 import Loader from '../../components/UI/Loader';
 
 class SalesRequests extends Component {
@@ -18,6 +19,8 @@ class SalesRequests extends Component {
     saleRequest: undefined,
     modalState: false,
     loading: false,
+    desistDialogOpen: false,
+    desistRequestId: null,
   };
 
   componentDidMount() {
@@ -99,6 +102,10 @@ class SalesRequests extends Component {
     this.setState({ modalState: false, saleRequest: undefined });
   };
 
+  handleDesistDialogOpen = (desistRequestId) => {
+    this.setState({ desistDialogOpen: true, desistRequestId });
+  };
+
   render() {
     return (
       <Fragment>
@@ -106,6 +113,7 @@ class SalesRequests extends Component {
           <SaleRequestsTable
             saleRequests={this.state.saleRequests}
             showSaleRequestHandler={this.handleShowSaleRequest}
+            handleDesistDialogOpen={this.handleDesistDialogOpen}
           />
           <SaleRequestsModal
             open={this.state.modalState}
@@ -113,6 +121,13 @@ class SalesRequests extends Component {
             rejectHandler={this.handleReject}
             cancelHandler={this.handleCancel}
             saleRequest={this.state.saleRequest}
+          />
+          <DesistDialog
+            open={this.state.desistDialogOpen}
+            desistRequestId={this.state.desistRequestId}
+            closeHandler={() => {
+              this.setState({ desistDialogOpen: false });
+            }}
           />
         </Loader>
       </Fragment>
