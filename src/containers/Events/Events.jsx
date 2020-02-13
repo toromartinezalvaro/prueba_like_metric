@@ -95,6 +95,8 @@ class Events extends Component {
           event: { scheduleId: id },
           dateValue: [
             {
+              eventId: id,
+              labelDate:'salesStartDate',
               value: Number(salesStartDate),
               label: `FECHA INICIO PROYECTO (${moment(
                 Number(salesStartDate),
@@ -102,6 +104,7 @@ class Events extends Component {
             },
             {
               eventId: id,
+              labelDate:'endOfSalesDate',
               value: Number(endOfSalesDate),
               label: `FECHA FIN PROYECTO (${moment(
                 Number(endOfSalesDate),
@@ -109,6 +112,7 @@ class Events extends Component {
             },
             {
               eventId: id,
+              labelDate:'balancePointDate',
               value: Number(balancePointDate),
               label: `FECHA PUNTO DE EQUILIBRIO (${moment(
                 Number(balancePointDate),
@@ -116,6 +120,7 @@ class Events extends Component {
             },
             {
               eventId: id,
+              labelDate:'constructionStartDate',
               value: Number(constructionStartDate),
               label: `FECHA INICIO DE CONSTRUCCIÓN (${moment(
                 Number(constructionStartDate),
@@ -124,6 +129,7 @@ class Events extends Component {
             {
               eventId: id,
               value: Number(averageDeliveryDate),
+              labelDate:'averageDeliveryDate',
               label: `FECHA PROMEDIO DE ENTREGAS (${moment(
                 Number(averageDeliveryDate),
               ).format('DD/MM/YYYY')})`,

@@ -61,20 +61,10 @@ const BillingFinancials = ({
   const [lastId, setLastId] = useState(0);
   const [month, setMonth] = useState(MonthEnum);
   const [eventIsUnique, setEventIsUnique] = useState(false);
+  const [eventId, setEventId] = useState(0);
   const [disabledLastBilling, setDisableLastBilling] = useState(true);
 
   let totalBills = 0;
-
-  useEffect(() => {
-    if (dataIfEdit) {
-      const data = dataIfEdit.billings;
-      setBillings(data);
-      setLastId(1);
-      setTimeout(() => {
-        watchingContract();
-      }, 1000);
-    }
-  });
 
   const changeCardValue = (
     name,
@@ -106,10 +96,8 @@ const BillingFinancials = ({
         setEventIsUnique(true);
         bill = {
           ...billingsArray[billIndex],
-          initalBillingDate: Number(uniqueEvent.value),
           eventId: element.eventId,
         };
-        billingsArray[billIndex].eventId = element.eventId;
       } else if (name === 'eventId' && element.eventId !== 0) {
         setEventIsUnique(false);
         bill = {
@@ -132,24 +120,24 @@ const BillingFinancials = ({
         billingsArray[billIndex].initalBillingDate = Number(lastDate);
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
           .add(
-            Number(element.target.value),
-            billingsArray[billIndex].type === 'unique'
+            parseInt(element.target.value),
+            billingsArray[billIndex].type === 'unique' ||
+              billingsArray[billIndex].cycle === 'Pago Único'
               ? 'months'
               : billingsArray[billIndex].type,
           )
           .format('x');
         bill = {
           ...billingsArray[billIndex],
+          [name]: parseInt(element.target.value),
         };
+        billingsArray[billIndex].displacement = parseInt(element.target.value);
         billingsArray[billIndex].initalBillingDate = Number(newDate);
-        if (
-          billingsArray[billIndex].type !== 'quarter' ||
-          billingsArray[billIndex].type !== 'unique'
-        ) {
+        if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(newDate);
           const date = moment(billingsArray[billIndex].lastBillingDate)
             .add(
-              Number(
+              parseInt(
                 billingsArray[billIndex].paymentNumber !== 1
                   ? Number(billingsArray[billIndex].paymentNumber) - 1
                   : 0,
@@ -159,6 +147,7 @@ const BillingFinancials = ({
             .format('x');
           bill = {
             ...billingsArray[billIndex],
+            [name]: parseInt(element.target.value),
           };
           billingsArray[billIndex].lastBillingDate = Number(date);
         }
@@ -196,7 +185,7 @@ const BillingFinancials = ({
         };
         billingsArray[billIndex].lastBillingDate = Number(newDate);
       }
-      const value = element.target.value.replace(',', '');
+      const value = element.target.value.replace(/,/gi, '');
       bill = {
         ...billingsArray[billIndex],
         [name]: value,
@@ -245,6 +234,18 @@ const BillingFinancials = ({
     type: suggestion.type,
   }));
 
+  useEffect(() => {
+    if (dataIfEdit) {
+      const data = dataIfEdit.billings;
+      setLastId(1);
+      setBillings(data);
+      setLastDate(data[0].initalBillingDate);
+      setTimeout(() => {
+        watchingContract();
+      }, 1000);
+    }
+  });
+
   const Option = (props) => {
     return (
       <MenuItem
@@ -285,7 +286,7 @@ const BillingFinancials = ({
       totalBills +=
         (Number(billing.amount) +
           Number(billing.amount) * (billing.iva / 100)) *
-        Number(billing.paymentNumber);
+        Number(billing.paymentNumber === 0 ? 1 : billing.paymentNumber);
 
       return (
         <Card key={billing.id} className={styles.cardForm}>
@@ -407,7 +408,6 @@ const BillingFinancials = ({
                         billing.eventId && {
                           eventId: option.eventId,
                           value: option.value,
-                          label: option.label,
                         }
                       );
                     })}
@@ -435,8 +435,12 @@ const BillingFinancials = ({
                     label={`Desplazamiento ${billing.cycle}`}
                     margin="normal"
                     variant="outlined"
-                    defaultValue={billing.displacement}
-                    value={billing.displacement}
+                    defaultValue={
+                      billing.displacement === null ? 0 : billing.displacement
+                    }
+                    value={
+                      billing.displacement === null ? 0 : billing.displacement
+                    }
                     onChange={changeCardValue('displacement', billing.id)}
                   />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -450,7 +454,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Inicial"
-                      value={Number(billing.initalBillingDate)}
+                      value={parseInt(billing.initalBillingDate)}
                       onChange={changeCardValue(
                         'initalBillingDate',
                         billing.id,
@@ -470,8 +474,12 @@ const BillingFinancials = ({
                     label="Numero de pagos"
                     margin="normal"
                     variant="outlined"
-                    defaultValue={billing.paymentNumber}
-                    value={billing.paymentNumber}
+                    defaultValue={
+                      billing.paymentNumber === null ? 1 : billing.paymentNumber
+                    }
+                    value={
+                      billing.paymentNumber === null ? 1 : billing.paymentNumber
+                    }
                     onChange={changeCardValue('paymentNumber', billing.id)}
                   />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -485,7 +493,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Final"
-                      value={Number(billing.lastBillingDate)}
+                      value={parseInt(billing.lastBillingDate)}
                       onChange={changeCardValue(
                         'lastBillingDate',
                         billing.id,
@@ -562,7 +570,7 @@ const BillingFinancials = ({
         <div className={styles.Totalbills}>
           <h4 sclassName={styles.textTotal}> Valor Total:</h4>
           <NumberFormat
-            value={Numbers.toFixed(totalBills)}
+            value={Number(totalBills)}
             displayType={'text'}
             className={styles.TotalAmount}
             thousandSeparator={true}
