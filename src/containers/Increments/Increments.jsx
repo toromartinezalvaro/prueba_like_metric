@@ -73,8 +73,11 @@ class Increments extends Component {
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then((response) => {
+        const filteredIncrements = response.data.increments.filter(
+          (increment) => increment.total.units > 0,
+        );
         this.setState({
-          increments: response.data.increments,
+          increments: filteredIncrements,
           market: response.data.market,
           isLoading: false,
           loadingAPI: false,
