@@ -21,7 +21,7 @@ class SalesRequests extends Component {
     loading: false,
     desistDialogOpen: false,
     desistRequestId: null,
-    propertyId: null
+    propertyId: null,
   };
 
   componentDidMount() {

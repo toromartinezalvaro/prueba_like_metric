@@ -34,9 +34,12 @@ class Increments extends Component {
 
   resetStrategy = (groupId) => {
     this.setState({ loadingAPI: true });
-    this.services
-      .resetStrategy(groupId)
-      .then(() => this.setState({ loadingAPI: false }));
+    this.services.resetStrategy(groupId).then(() => {
+      const tempIncrements = this.state.increments;
+      const group = tempIncrements.find((g) => groupId === g.id);
+      group.isReset = true;
+      this.setState({ loadingAPI: false, increments: tempIncrements });
+    });
   };
 
   toastAlert = (message) => {

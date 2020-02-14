@@ -43,11 +43,7 @@ const DesistDialog = ({
   };
 
   const onSubmitHandler = (values) => {
-    if (isLast) {
-      updatePriceProperty(values);
-    } else {
-      // TODO: Something
-    }
+    updatePriceProperty(values);
   };
 
   return (
