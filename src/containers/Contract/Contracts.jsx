@@ -253,7 +253,6 @@ class Contracts extends Component {
           });
         })
         .catch((error) => {
-          console.log(error);
           this.toastAlert('Error al crear un grupo');
         });
     } else {
@@ -284,7 +283,6 @@ class Contracts extends Component {
         })
         .catch((error) => {
           this.toastAlert('Error al crear un socio');
-          console.log(error);
         });
     } else {
       this.toastAlert('ERROR: Debes agregar un nombre para crear un socio');
@@ -307,7 +305,6 @@ class Contracts extends Component {
         })
         .catch((error) => {
           this.toastAlert('Error al crear un item');
-          console.log(error);
         });
     } else {
       this.toastAlert('ERROR: Debes agregar un nombre para crear un item');
@@ -334,7 +331,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede actualizar el grupo');
-        console.log(error);
       });
   };
 
@@ -357,7 +353,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede actualizar el socio');
-        console.log(error);
       });
   };
 
@@ -381,7 +376,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede actualizar el item');
-        console.log(error);
       });
   };
 
@@ -572,13 +566,11 @@ class Contracts extends Component {
             })
             .catch((error) => {
               this.toastAlert('Error al crear');
-              console.log(error);
             });
         }
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede crear el contrato');
-        console.log(error);
       });
   };
 
@@ -630,7 +622,6 @@ class Contracts extends Component {
         })
         .catch((error) => {
           this.toastAlert('ERROR: No se puede editar el contrato');
-          console.log(error);
         });
     }
   };
@@ -646,11 +637,9 @@ class Contracts extends Component {
       .deleteSpecificBill(id, this.props.match.params.towerId)
       .then((response) => {
         this.toastAlert('Se ha borrado la cuenta con exito!');
-        console.log(response);
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede elimibar esta cuenta');
-        console.log(error);
       });
   };
 
@@ -688,7 +677,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede editar el contrato');
-        console.log(error);
       });
   };
 
@@ -704,7 +692,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede eliminar el contrato');
-        console.log(error);
       });
     console.log('Contrato eliminado', id);
   };
