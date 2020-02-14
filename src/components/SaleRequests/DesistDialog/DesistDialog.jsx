@@ -14,7 +14,13 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import CurrencyInput from './CurrencyInput';
 
-const DesistDialog = ({ open, desistRequestId, closeHandler }) => {
+const DesistDialog = ({
+  open,
+  desistRequestId,
+  closeHandler,
+  updatePriceProperty,
+  propertyId,
+}) => {
   const formRef = useRef();
 
   const handleSubmit = () => {
@@ -33,6 +39,7 @@ const DesistDialog = ({ open, desistRequestId, closeHandler }) => {
         <Formik
           initialValues={{ priceType: 'basePrice', price: 0 }}
           onSubmit={(values) => {
+            updatePriceProperty(propertyId, values);
             // TODO: Hacer la llamada al servicio aqui con el id que viene por props
             console.log(values);
           }}
@@ -91,7 +98,9 @@ const DesistDialog = ({ open, desistRequestId, closeHandler }) => {
 DesistDialog.propTypes = {
   open: PropTypes.bool,
   desistRequestId: PropTypes.number.isRequired,
+  propertyId: PropTypes.number.isRequired,
   closeHandler: PropTypes.func.isRequired,
+  updatePriceProperty: PropTypes.func.isRequired,
 };
 
 DesistDialog.defaultProps = {

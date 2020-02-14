@@ -11,6 +11,10 @@ const ServiceDefinitions = {
   putSaleRequest: (id) => {
     return `${API_PATH}sale-requests/${id}`;
   },
+
+  putPriceProperty: (id) => {
+    return `${API_PATH}sale-requests/price-property/${id}`;
+  },
 };
 
 export default ServiceDefinitions;

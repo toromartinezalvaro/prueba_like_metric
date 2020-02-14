@@ -48,7 +48,10 @@ const SaleRequestTable = ({
                             if (
                               request.saleRequest.requestStatus === 'Desistido'
                             ) {
-                              handleDesistDialogOpen(request.saleRequest.id);
+                              handleDesistDialogOpen(
+                                request.saleRequest.id,
+                                request.property.id,
+                              );
                             } else {
                               showSaleRequestHandler(request.saleRequest.id);
                             }

@@ -21,6 +21,7 @@ class SalesRequests extends Component {
     loading: false,
     desistDialogOpen: false,
     desistRequestId: null,
+    propertyId: null
   };
 
   componentDidMount() {
@@ -102,8 +103,14 @@ class SalesRequests extends Component {
     this.setState({ modalState: false, saleRequest: undefined });
   };
 
-  handleDesistDialogOpen = (desistRequestId) => {
-    this.setState({ desistDialogOpen: true, desistRequestId });
+  handleDesistDialogOpen = (desistRequestId, propertyId) => {
+    this.setState({ desistDialogOpen: true, desistRequestId, propertyId });
+  };
+
+  updatePriceProperty = (propertyId, values) => {
+    this.services
+      .putPriceProperty(propertyId, values)
+      .then(() => this.setState({ desistDialogOpen: false }));
   };
 
   render() {
@@ -125,6 +132,8 @@ class SalesRequests extends Component {
           <DesistDialog
             open={this.state.desistDialogOpen}
             desistRequestId={this.state.desistRequestId}
+            propertyId={this.state.propertyId}
+            updatePriceProperty={this.updatePriceProperty}
             closeHandler={() => {
               this.setState({ desistDialogOpen: false });
             }}
