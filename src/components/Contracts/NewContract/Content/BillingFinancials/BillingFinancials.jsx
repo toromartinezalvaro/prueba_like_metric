@@ -39,6 +39,7 @@ const BillingFinancials = ({
   currentEvent,
   dataIfEdit,
   watchingContract,
+  sendToDelete,
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
@@ -220,6 +221,8 @@ const BillingFinancials = ({
     });
     const removed = [billingsArray.splice(billIndex, 1)];
     setBillings(billingsArray);
+    console.log('ID FOR DELETE', id);
+    sendToDelete(id);
   };
 
   const addBilling = () => {

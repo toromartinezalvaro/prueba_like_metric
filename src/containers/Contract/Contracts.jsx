@@ -77,6 +77,7 @@ class Contracts extends Component {
         message: '',
       },
       isEditable: false,
+      billsToDelete: [],
     };
   }
 
@@ -634,6 +635,25 @@ class Contracts extends Component {
     }
   };
 
+  sendToDelete = (id) => {
+    this.setState({
+      billsToDelete: { idArray: [...this.state.billsToDelete, { id }] },
+    });
+  };
+
+  sendToDeleteSpecificBill = (id) => {
+    this.services
+      .deleteSpecificBill(id, this.props.match.params.towerId)
+      .then((response) => {
+        this.toastAlert('Se ha borrado la cuenta con exito!');
+        console.log(response);
+      })
+      .catch((error) => {
+        this.toastAlert('ERROR: No se puede elimibar esta cuenta');
+        console.log(error);
+      });
+  };
+
   editContract = () => {
     const dataEditated = new FormData();
     dataEditated.append(
@@ -651,6 +671,9 @@ class Contracts extends Component {
       )
       .then((response) => {
         this.setState({ currentContract: true });
+        if (this.state.billsToDelete) {
+          this.sendToDeleteSpecificBill(this.state.billsToDelete);
+        }
         if (this.state.currentContract) {
           this.setState({
             contractModal: {
@@ -751,6 +774,7 @@ class Contracts extends Component {
           editContract={this.editContract}
           watchingContract={this.watchingContract}
           sendContractNumber={this.sendContractNumber}
+          sendToDelete={this.sendToDelete}
         />
         <Dialog
           className={styles.dialogExpand}

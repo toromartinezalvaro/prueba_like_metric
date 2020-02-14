@@ -57,6 +57,7 @@ const NewContract = ({
   sendId,
   isEditable,
   setEditable,
+  sendToDelete,
 }) => {
   useEffect(() => {
     if (dataIfEdit && isEditable) {
@@ -115,6 +116,7 @@ const NewContract = ({
           currentEvent={currentEvent}
           watchingContract={watchingContract}
           dataIfEdit={dataIfEdit}
+          sendToDelete={sendToDelete}
         />
         <br />
         <ExpandAttachment
