@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
@@ -33,6 +34,7 @@ const CurrencyInput = ({ field, ...rest }) => {
       InputProps={{
         inputComponent: Format,
       }}
+      fullWidth
     />
   );
 };

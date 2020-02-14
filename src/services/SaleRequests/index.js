@@ -17,6 +17,10 @@ class SaleRequestsServices extends Services {
   putPriceProperty(id, request) {
     return this.put(ServiceDefinitions.putPriceProperty(id), request);
   }
+
+  getGroupDesistStatus(id) {
+    return this.get(ServiceDefinitions.getGroupDesistStatus(id));
+  }
 }
 
 export default SaleRequestsServices;
