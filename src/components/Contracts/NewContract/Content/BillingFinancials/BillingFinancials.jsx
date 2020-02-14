@@ -56,6 +56,8 @@ const BillingFinancials = ({
     paymentNumber: 1,
     isLocked: false,
     type: 'unique',
+    new: true,
+    removed: false,
   };
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
@@ -221,7 +223,7 @@ const BillingFinancials = ({
   };
 
   const addBilling = () => {
-    const newBill = { ...cardValue, id: lastId + 1 };
+    const newBill = { ...cardValue, id: lastId + 1, new: true };
     setBillings([...billings, newBill]);
     setLastId(lastId + 1);
   };
