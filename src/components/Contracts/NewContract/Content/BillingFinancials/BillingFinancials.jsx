@@ -39,6 +39,7 @@ const BillingFinancials = ({
   currentEvent,
   dataIfEdit,
   watchingContract,
+  sendToDelete,
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
@@ -56,6 +57,8 @@ const BillingFinancials = ({
     paymentNumber: 1,
     isLocked: false,
     type: 'unique',
+    new: true,
+    removed: false,
   };
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
@@ -203,10 +206,11 @@ const BillingFinancials = ({
     });
     const removed = [billingsArray.splice(billIndex, 1)];
     setBillings(billingsArray);
+    sendToDelete(id);
   };
 
   const addBilling = () => {
-    const newBill = { ...cardValue, id: lastId + 1 };
+    const newBill = { ...cardValue, id: lastId + 1, new: true };
     setBillings([...billings, newBill]);
     setLastId(lastId + 1);
   };
