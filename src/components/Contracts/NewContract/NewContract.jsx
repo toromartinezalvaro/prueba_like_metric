@@ -58,6 +58,7 @@ const NewContract = ({
   sendId,
   isEditable,
   setEditable,
+  sendToDelete,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -128,6 +129,7 @@ const NewContract = ({
           currentEvent={currentEvent}
           watchingContract={watchingContract}
           dataIfEdit={dataIfEdit}
+          sendToDelete={sendToDelete}
         />
         <br />
         <ExpandAttachment

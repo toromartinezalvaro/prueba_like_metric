@@ -39,6 +39,7 @@ const ContractServiceDefinitions = {
   findByForeignId: (towerId, data) =>
     `${API_PATH}contract/item-group/${towerId}/${data}`,
   contractById: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
+  toDeleteBill: (towerId) => `${API_PATH}contract/bill/${towerId}`,
 };
 
 export default ContractServiceDefinitions;
