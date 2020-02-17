@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
@@ -8,7 +8,7 @@ const validationSchema = yup.object().shape({
   price: yup.number('El valor debe ser un numero'),
 });
 
-const ManualPrice = ({ ref, onSubmit }) => {
+const ManualPrice = forwardRef(({ onSubmit }, ref) => {
   return (
     <Formik
       initialValues={{ price: 0 }}
@@ -30,13 +30,11 @@ const ManualPrice = ({ ref, onSubmit }) => {
       }}
     </Formik>
   );
-};
+});
+
+ManualPrice.displayName = 'ManualPrice';
 
 ManualPrice.propTypes = {
-  ref: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.any }),
-  ]).isRequired,
   onSubmit: PropTypes.func,
 };
 

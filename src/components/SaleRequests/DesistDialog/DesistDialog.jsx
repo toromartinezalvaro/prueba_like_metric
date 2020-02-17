@@ -18,7 +18,7 @@ const DesistDialog = ({
   updatePriceProperty,
   propertyId,
 }) => {
-  const formRef = useRef();
+  const formRef = useRef(null);
 
   const [isLast, setIsLast] = useState(false);
 
