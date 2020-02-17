@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  margin-bottom: 15px;
+  .header {
+    flex-grow: 1;
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.infoContainer {
+  display: flex;
+  .client {
+    flex-grow: 1;
+  }
+}
