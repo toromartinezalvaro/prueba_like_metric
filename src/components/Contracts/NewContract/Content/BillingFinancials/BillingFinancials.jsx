@@ -100,6 +100,8 @@ const BillingFinancials = ({
         bill = {
           ...billingsArray[billIndex],
           eventId: element.eventId,
+          initalBillingDate: todayDate,
+          lastBillingDate: todayDate,
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
         setEventIsUnique(false);
@@ -412,6 +414,10 @@ const BillingFinancials = ({
                         billing.eventId && {
                           eventId: option.eventId,
                           value: option.value,
+                          label:
+                            billing.eventId === 0
+                              ? 'FECHA MANUAL'
+                              : option.label,
                         }
                       );
                     })}
@@ -451,14 +457,18 @@ const BillingFinancials = ({
                     <KeyboardDatePicker
                       autoOk
                       className={styles.picker}
-                      disabled={!eventIsUnique}
+                      disabled={!eventIsUnique || billing.isLocked}
                       disableToolbar
                       variant="inline"
                       format="dd/MM/yyyy"
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Inicial"
-                      value={parseInt(billing.initalBillingDate)}
+                      value={parseInt(
+                        billing.initalBillingDate
+                          ? billing.initalBillingDate
+                          : billing.lastBillingDate,
+                      )}
                       onChange={changeCardValue(
                         'initalBillingDate',
                         billing.id,
