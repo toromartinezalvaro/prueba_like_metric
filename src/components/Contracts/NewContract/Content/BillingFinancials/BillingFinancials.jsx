@@ -409,17 +409,7 @@ const BillingFinancials = ({
                     placeholder="Fecha inicial"
                     components={Option}
                     value={events.find((option) => {
-                      return (
-                        option.eventId === billing.eventId &&
-                        billing.eventId && {
-                          eventId: option.eventId,
-                          value: option.value,
-                          label:
-                            billing.eventId === 0
-                              ? 'FECHA MANUAL'
-                              : option.label,
-                        }
-                      );
+                      return option.eventId === billing.eventId;
                     })}
                     options={events}
                     onChange={changeCardValue(
