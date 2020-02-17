@@ -180,6 +180,9 @@ class SalesRoom extends Component {
           {property.requestStatus === 'R' && (
             <span className={Styles.rejectBadge}>R</span>
           )}
+          {property.requestStatus === 'D' && (
+            <span className={Styles.rejectBadge}>D</span>
+          )}
           {active === 'name' && property.name}
         </p>
       ) : (
@@ -207,6 +210,9 @@ class SalesRoom extends Component {
           {active === 'groups' && property.groupName}
           {property.requestStatus === 'R' && (
             <span className={Styles.rejectBadge}>R</span>
+          )}
+          {property.requestStatus === 'D' && (
+            <span className={Styles.rejectBadge}>D</span>
           )}
           {active === 'name' && property.name}
         </p>
@@ -521,6 +527,9 @@ class SalesRoom extends Component {
                       this.props.match.params.clientId ||
                     this.state.selectedProperty.clientId === null ? (
                     <SalesRoomModal
+                      isDisabled={
+                        this.state.selectedProperty.requestStatus === 'D'
+                      }
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}
@@ -541,7 +550,13 @@ class SalesRoom extends Component {
                 {(this.state.selectedProperty.clientId ===
                   this.props.match.params.clientId ||
                   this.state.selectedProperty.clientId === null) && (
-                  <Button onClick={this.save} className={Styles.ConfirmButton}>
+                  <Button
+                    onClick={this.save}
+                    className={Styles.ConfirmButton}
+                    isDisabled={
+                      this.state.selectedProperty.requestStatus === 'D'
+                    }
+                  >
                     Aceptar
                   </Button>
                 )}

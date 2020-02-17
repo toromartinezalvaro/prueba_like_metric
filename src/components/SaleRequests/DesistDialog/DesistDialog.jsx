@@ -43,7 +43,8 @@ const DesistDialog = ({
   };
 
   const onSubmitHandler = (values) => {
-    updatePriceProperty(values);
+    const { price } = values;
+    updatePriceProperty(propertyId, { desistRequestId, price });
   };
 
   return (
@@ -52,10 +53,14 @@ const DesistDialog = ({
       <DialogContent>
         <DialogContentText>
           {!isLast
-            ? 'Agrege el precio manualmente del apartemento'
+            ? 'Agregue el precio manualmente del apartamento'
             : 'El precio se actualizara de acuerdo con la lista'}
         </DialogContentText>
-        {!isLast && <ManualPrice ref={formRef} onSubmit={onSubmitHandler} />}
+        <ManualPrice
+          ref={formRef}
+          onSubmit={onSubmitHandler}
+          isHidden={isLast}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={submit} variant="contained" color="primary">
