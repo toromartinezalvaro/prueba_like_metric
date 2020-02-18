@@ -17,6 +17,7 @@ const SaleRequestModal = ({
   cancelHandler,
   saleRequest: { id, requestStatus, client, property, pricing },
 }) => {
+  console.log(pricing);
   const [l0, setL0] = useState(pricing.l0);
   const [discount, setDiscount] = useState(pricing.financial);
   const [tradeDiscount, setTradeDiscount] = useState(pricing.trade);

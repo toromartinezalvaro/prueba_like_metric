@@ -117,9 +117,10 @@ class SalesRequests extends Component {
           1,
         );
         tempSaleRequests.resolved.push(approvedRequest.data);
+        console.log(tempSaleRequests, this.state.saleRequests);
         this.setState({
           desistDialogOpen: false,
-          saleRequest: tempSaleRequests,
+          saleRequests: tempSaleRequests,
         });
       });
   };
