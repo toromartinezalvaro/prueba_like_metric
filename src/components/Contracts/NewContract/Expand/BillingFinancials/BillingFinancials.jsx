@@ -19,7 +19,8 @@ const ExpandBillingFinancials = ({
   events,
   currentEvent,
   dataIfEdit,
-  watchingContract
+  watchingContract,
+  sendToDelete,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mt={4} expanded={true}>
@@ -42,6 +43,7 @@ const ExpandBillingFinancials = ({
             currentEvent={currentEvent}
             dataIfEdit={dataIfEdit}
             watchingContract={watchingContract}
+            sendToDelete={sendToDelete}
           />
         </Typography>
       </ExpansionPanelDetails>

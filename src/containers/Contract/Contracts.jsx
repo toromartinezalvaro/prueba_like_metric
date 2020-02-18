@@ -77,6 +77,7 @@ class Contracts extends Component {
         message: '',
       },
       isEditable: false,
+      billsToDelete: [],
     };
   }
 
@@ -252,7 +253,6 @@ class Contracts extends Component {
           });
         })
         .catch((error) => {
-          console.log(error);
           this.toastAlert('Error al crear un grupo');
         });
     } else {
@@ -283,7 +283,6 @@ class Contracts extends Component {
         })
         .catch((error) => {
           this.toastAlert('Error al crear un socio');
-          console.log(error);
         });
     } else {
       this.toastAlert('ERROR: Debes agregar un nombre para crear un socio');
@@ -306,7 +305,6 @@ class Contracts extends Component {
         })
         .catch((error) => {
           this.toastAlert('Error al crear un item');
-          console.log(error);
         });
     } else {
       this.toastAlert('ERROR: Debes agregar un nombre para crear un item');
@@ -333,7 +331,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede actualizar el grupo');
-        console.log(error);
       });
   };
 
@@ -356,7 +353,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede actualizar el socio');
-        console.log(error);
       });
   };
 
@@ -380,7 +376,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede actualizar el item');
-        console.log(error);
       });
   };
 
@@ -571,13 +566,11 @@ class Contracts extends Component {
             })
             .catch((error) => {
               this.toastAlert('Error al crear');
-              console.log(error);
             });
         }
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede crear el contrato');
-        console.log(error);
       });
   };
 
@@ -629,9 +622,25 @@ class Contracts extends Component {
         })
         .catch((error) => {
           this.toastAlert('ERROR: No se puede editar el contrato');
-          console.log(error);
         });
     }
+  };
+
+  sendToDelete = (id) => {
+    this.setState({
+      billsToDelete: { idArray: [...this.state.billsToDelete, { id }] },
+    });
+  };
+
+  sendToDeleteSpecificBill = (id) => {
+    this.services
+      .deleteSpecificBill(id, this.props.match.params.towerId)
+      .then((response) => {
+        this.toastAlert('Se ha borrado la cuenta con exito!');
+      })
+      .catch((error) => {
+        this.toastAlert('ERROR: No se puede elimibar esta cuenta');
+      });
   };
 
   editContract = () => {
@@ -651,6 +660,9 @@ class Contracts extends Component {
       )
       .then((response) => {
         this.setState({ currentContract: true });
+        if (this.state.billsToDelete) {
+          this.sendToDeleteSpecificBill(this.state.billsToDelete);
+        }
         if (this.state.currentContract) {
           this.setState({
             contractModal: {
@@ -665,7 +677,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede editar el contrato');
-        console.log(error);
       });
   };
 
@@ -681,7 +692,6 @@ class Contracts extends Component {
       })
       .catch((error) => {
         this.toastAlert('ERROR: No se puede eliminar el contrato');
-        console.log(error);
       });
     console.log('Contrato eliminado', id);
   };
@@ -751,6 +761,7 @@ class Contracts extends Component {
           editContract={this.editContract}
           watchingContract={this.watchingContract}
           sendContractNumber={this.sendContractNumber}
+          sendToDelete={this.sendToDelete}
         />
         <Dialog
           className={styles.dialogExpand}
