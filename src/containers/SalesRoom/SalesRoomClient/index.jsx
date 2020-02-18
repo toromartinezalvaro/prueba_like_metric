@@ -259,7 +259,6 @@ class SalesRoom extends Component {
       properties = this.findGroup(groups);
     }
     return properties.reduce((current, next) => {
-      console.log(next);
       let { price } = next;
       if (next.manualPrice) {
         price = next.manualPrice;

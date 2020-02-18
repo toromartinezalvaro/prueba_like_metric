@@ -117,7 +117,6 @@ class SalesRequests extends Component {
           1,
         );
         tempSaleRequests.resolved.push(approvedRequest.data);
-        console.log(tempSaleRequests, this.state.saleRequests);
         this.setState({
           desistDialogOpen: false,
           saleRequests: tempSaleRequests,
@@ -126,7 +125,6 @@ class SalesRequests extends Component {
   };
 
   render() {
-    console.log(this.state.saleRequests);
     return (
       <Fragment>
         <Loader isLoading={this.state.loading}>

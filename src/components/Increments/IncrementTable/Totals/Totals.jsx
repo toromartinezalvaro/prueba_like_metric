@@ -32,7 +32,6 @@ function Totals({
     ear,
     suggestedIncrement,
   } = groupSummary;
-  console.log(isReset);
   return (
     <div className={`${Styles.total} ${className}`}>
       <div className={Styles['total-header']}>Total</div>
