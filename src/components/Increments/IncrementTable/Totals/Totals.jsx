@@ -96,8 +96,6 @@ function Totals({
             }
             onChange={(target) => {
               putIncrement(target.value);
-              /*               isReset = true;
-               */
             }}
             disable={inventoryUnits === 0 || !isReset}
             updateWithProp

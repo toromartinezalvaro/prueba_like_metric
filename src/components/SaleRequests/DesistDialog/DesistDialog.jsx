@@ -21,6 +21,7 @@ const DesistDialog = ({
   const formRef = useRef(null);
 
   const [isLast, setIsLast] = useState(false);
+  const [isDisabled, setDisabled] = useState(false);
 
   useEffect(() => {
     async function fetchDesistStatus() {
@@ -38,6 +39,7 @@ const DesistDialog = ({
 
   const submit = () => {
     if (formRef.current) {
+      setDisabled(true);
       formRef.current.handleSubmit();
     }
   };
@@ -63,7 +65,12 @@ const DesistDialog = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={submit} variant="contained" color="primary">
+        <Button
+          onClick={submit}
+          variant="contained"
+          color="primary"
+          disabled={isDisabled}
+        >
           Actualizar
         </Button>
         <Button onClick={closeHandler} color="primary">
