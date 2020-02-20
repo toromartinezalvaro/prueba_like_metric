@@ -26,6 +26,7 @@ function IncrementTable({
   futureSalesSpeedHandler,
   resetStrategy,
   towerId,
+  endOfSalesDate,
   ...props
 }) {
   const [isBadgeIncrement] = useState(props.isBadgeIncrement);
@@ -122,6 +123,7 @@ function IncrementTable({
                     />
                     <Sales className={styles.sold} groupSummary={group.sales} />
                     <Inventory
+                      endOfSalesDate={endOfSalesDate}
                       blockIncrements={group.total.units < 2}
                       salesStartDate={group.total.date}
                       className={styles.inventory}
