@@ -118,6 +118,7 @@ function IncrementTable({
                       ]}
                       inventoryUnits={group.inventory.units}
                       salesIncrement={group.sales.increment}
+                      isReset={group.isReset}
                     />
                     <Sales className={styles.sold} groupSummary={group.sales} />
                     <Inventory

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Services from '../../services/SaleRequests';
 import SaleRequestsTable from '../../components/SaleRequests/Table';
 import SaleRequestsModal from '../../components/SaleRequests/Modal';
+import DesistDialog from '../../components/SaleRequests/DesistDialog';
 import Loader from '../../components/UI/Loader';
 
 class SalesRequests extends Component {
@@ -18,6 +19,9 @@ class SalesRequests extends Component {
     saleRequest: undefined,
     modalState: false,
     loading: false,
+    desistDialogOpen: false,
+    desistRequestId: null,
+    propertyId: null,
   };
 
   componentDidMount() {
@@ -99,6 +103,27 @@ class SalesRequests extends Component {
     this.setState({ modalState: false, saleRequest: undefined });
   };
 
+  handleDesistDialogOpen = (desistRequestId, propertyId) => {
+    this.setState({ desistDialogOpen: true, desistRequestId, propertyId });
+  };
+
+  updatePriceProperty = (propertyId, values) => {
+    this.services
+      .putPriceProperty(propertyId, values)
+      .then((approvedRequest) => {
+        const tempSaleRequests = this.state.saleRequests;
+        tempSaleRequests.pending.splice(
+          tempSaleRequests.pending.indexOf(approvedRequest.data),
+          1,
+        );
+        tempSaleRequests.resolved.push(approvedRequest.data);
+        this.setState({
+          desistDialogOpen: false,
+          saleRequests: tempSaleRequests,
+        });
+      });
+  };
+
   render() {
     return (
       <Fragment>
@@ -106,6 +131,7 @@ class SalesRequests extends Component {
           <SaleRequestsTable
             saleRequests={this.state.saleRequests}
             showSaleRequestHandler={this.handleShowSaleRequest}
+            handleDesistDialogOpen={this.handleDesistDialogOpen}
           />
           <SaleRequestsModal
             open={this.state.modalState}
@@ -113,6 +139,15 @@ class SalesRequests extends Component {
             rejectHandler={this.handleReject}
             cancelHandler={this.handleCancel}
             saleRequest={this.state.saleRequest}
+          />
+          <DesistDialog
+            open={this.state.desistDialogOpen}
+            desistRequestId={this.state.desistRequestId}
+            propertyId={this.state.propertyId}
+            updatePriceProperty={this.updatePriceProperty}
+            closeHandler={() => {
+              this.setState({ desistDialogOpen: false });
+            }}
           />
         </Loader>
       </Fragment>

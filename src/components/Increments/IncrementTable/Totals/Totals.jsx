@@ -15,6 +15,7 @@ function Totals({
   blockIncrements,
   inventoryUnits,
   salesIncrement,
+  isReset,
 }) {
   const {
     date,
@@ -96,7 +97,7 @@ function Totals({
             onChange={(target) => {
               putIncrement(target.value);
             }}
-            disable={inventoryUnits === 0}
+            disable={inventoryUnits === 0 || !isReset}
             updateWithProp
           />
         )}
