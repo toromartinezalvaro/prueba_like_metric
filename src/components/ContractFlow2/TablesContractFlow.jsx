@@ -6,24 +6,28 @@ import {
   Table,
   TableHeaderRow,
   TableFixedColumns,
+  TableGroupRow,
 } from '@devexpress/dx-react-grid-material-ui';
 
 import {
   GroupingState,
   SelectionState,
   IntegratedGrouping,
+  CustomGrouping,
 } from '@devexpress/dx-react-grid';
 
 const TablesContractFlow = ({ billings }) => {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([{ group: 'name' }]);
   const [columns, setColumns] = useState([]);
 
   const [tableColumnExtensions, setTableColumnExtensions] = useState([
-    { columnName: 'channel', width: 27 },
-    { columnName: 'subject', width: 180 },
-    { columnName: 'proyectado', width: 27 },
+    { columnName: 'contract', width: 180 },
+    { columnName: 'acumulado', width: 89 },
+    { columnName: 'projected', width: 89 },
     { columnName: 'total', width: 90 },
     { columnName: 'date', width: 100 },
+    { columnName: 'group', width: 100 },
+    { columnName: 'item', width: 100 },
   ]);
 
   useEffect(() => {
@@ -49,7 +53,9 @@ const TablesContractFlow = ({ billings }) => {
         );
 
         let result = {
-          subject: item,
+          contract,
+          item,
+          group,
           acumulado: acumulated,
           projected,
           total: parseInt(total[n], 10),
@@ -125,7 +131,9 @@ const TablesContractFlow = ({ billings }) => {
         });
       });
       columnsPerLineDefined.unshift(
-        { name: 'subject', title: ' ' },
+        { name: 'contract', title: 'Contrato' },
+        { name: 'group', title: 'Grupo' },
+        { name: 'item', title: 'Item' },
         { name: 'acumulado', title: 'Acumulado' },
         { name: 'projected', title: 'Proyectado' },
         { name: 'total', title: 'Total' },
@@ -140,20 +148,23 @@ const TablesContractFlow = ({ billings }) => {
   }, [billings]);
 
   const [leftColumns] = useState([
-    'subject',
+    'contract',
     'acumulado',
     'projected',
     'total',
+    'group',
+    'item',
   ]);
 
   return (
     <Paper>
       {console.log('the row ', rows)}
       <Grid rows={rows} columns={columns}>
-        <SelectionState />
-
-        <Table columnExtensions={tableColumnExtensions} />
+        {/*         <GroupingState grouping={[{ columnName: 'group' }]} />
+        <IntegratedGrouping /> */}
+        <Table />
         <TableHeaderRow />
+        {/*         <TableGroupRow /> */}
         <TableFixedColumns leftColumns={leftColumns} />
       </Grid>
     </Paper>
