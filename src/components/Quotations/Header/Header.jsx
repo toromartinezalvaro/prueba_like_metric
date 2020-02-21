@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import UUIDV4 from 'uuid/v4';
 import Typography from '@material-ui/core/Typography';
 import PropertyInfo from './PropertyInfo';
+import ClientInfo from './ClientInfo';
 import Styles from './Header.module.scss';
 
-const Header = () => {
+const Header = ({ quotation }) => {
   return (
     <>
       <div className={Styles.container}>
@@ -15,7 +16,7 @@ const Header = () => {
         <div className={Styles.info}>
           <div className="id">
             <span>ID: </span>
-            <span>{UUIDV4()}</span>
+            <span>{quotation.id}</span>
           </div>
           <div className="date">
             <span>Fecha:</span>{' '}
@@ -28,11 +29,38 @@ const Header = () => {
         </div>
       </div>
       <div className={Styles.infoContainer}>
-        <div className={Styles.client}>Client info</div>
-        <PropertyInfo />
+        <div className={Styles.client}>
+          <ClientInfo client={quotation.client} />
+        </div>
+        <PropertyInfo
+          property={quotation.property}
+          propertyPrice={quotation.propertyPrice}
+          initialFeePercentage={quotation.initialFeePercentage}
+          reservePercentage={quotation.reservePercentage}
+          periods={quotation.periods}
+        />
       </div>
     </>
   );
+};
+
+Header.propTypes = {
+  quotation: PropTypes.shape({
+    id: PropTypes.string,
+    propertyPrice: PropTypes.number,
+    initialFeePercentage: PropTypes.number,
+    reservePercentage: PropTypes.number,
+    periods: PropTypes.number,
+    paymentStartDate: PropTypes.string,
+    property: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+    client: PropTypes.shape({
+      identityDocument: PropTypes.string,
+      name: PropTypes.string,
+      email: PropTypes.string,
+    }),
+  }),
 };
 
 export default Header;

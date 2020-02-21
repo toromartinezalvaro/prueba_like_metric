@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import NumberFormat from 'react-number-format';
 import MuiTable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,11 +9,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Styles from './Table.module.scss';
 
-const Table = () => {
+const Table = ({ quotation }) => {
   return (
-    <TableContainer component={Paper}>
-      <MuiTable aria-label="simple table">
+    <TableContainer component={Paper} classes={{ root: Styles.table }}>
+      <MuiTable stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>
@@ -30,20 +32,57 @@ const Table = () => {
           <TableRow>
             <TableCell>Separacion</TableCell>
             <TableCell>
-              {moment()
+              {moment(Number(quotation.paymentStartDate))
                 .format('MMM YY')
                 .toString()}
             </TableCell>
-            <TableCell>$3,600,000</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>1</TableCell>
             <TableCell>
-              {moment()
+              <NumberFormat
+                value={quotation.propertyPrice * quotation.reservePercentage}
+                displayType="text"
+                thousandSeparator
+                prefix="$"
+              />
+            </TableCell>
+          </TableRow>
+          {Array(Math.max(1, quotation.periods))
+            .fill(null)
+            .map((_, index) => (
+              <TableRow key={`QuotationRow-${index}`}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>
+                  {moment(Number(quotation.paymentStartDate))
+                    .add(index + 1, 'M')
+                    .format('MMM YY')
+                    .toString()}
+                </TableCell>
+                <TableCell>
+                  <NumberFormat
+                    value={quotation.propertyPrice / quotation.periods}
+                    displayType="text"
+                    thousandSeparator
+                    prefix="$"
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          <TableRow>
+            <TableCell>Cuota final</TableCell>
+            <TableCell>
+              {moment(Number(quotation.paymentStartDate))
                 .format('MMM YY')
                 .toString()}
             </TableCell>
-            <TableCell>$2,676,923</TableCell>
+            <TableCell>
+              <NumberFormat
+                value={
+                  quotation.propertyPrice * (1 - quotation.initialFeePercentage)
+                }
+                displayType="text"
+                thousandSeparator
+                prefix="$"
+              />
+            </TableCell>
           </TableRow>
         </TableBody>
       </MuiTable>

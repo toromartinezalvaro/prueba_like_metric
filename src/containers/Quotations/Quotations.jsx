@@ -1,32 +1,31 @@
-import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import Header from '../../components/Quotations/Header';
-import MonthlyPayments from '../../components/Quotations/Table';
-import Styles from './Quotations.module.scss';
+import QuotationsDialog from '../../components/Quotations/Dialog';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
-const Quotations = () => {
+const Quotations = ({ spawnMessage, ...props }) => {
+  const [open, setOpen] = useState(false);
   return (
     <div>
-      <Dialog open fullScreen>
-        <DialogTitle>Cotización</DialogTitle>
-        <DialogContent>
-          <Header />
-
-          <MonthlyPayments />
-        </DialogContent>
-        <DialogActions>
-          <Button size="small" color="primary">
-            Cerrar
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Button onClick={() => setOpen(true)}>Abrir cotizacion</Button>
+      <QuotationsDialog
+        open={open}
+        closeHandler={() => setOpen(false)}
+        quotationData={{
+          propertyId: 1944,
+          identityDocument: '1017242984',
+          propertyPrice: 3283000.0,
+        }}
+        towerId={props.match.params.towerId}
+        spawnMessage={spawnMessage}
+      />
     </div>
   );
 };
 
-export default Quotations;
+Quotations.propTypes = {
+  spawnMessage: PropTypes.func.isRequired,
+};
+
+export default withDefaultLayout(Quotations);
