@@ -441,7 +441,6 @@ class SalesRoom extends Component {
 
   render() {
     let isStrategyNull = this.state.selectedProperty.isReset;
-    console.log(isStrategyNull, this.state.selectedProperty);
 
     let showModalSelectedProperty = !isStrategyNull;
 
