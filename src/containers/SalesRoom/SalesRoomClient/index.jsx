@@ -440,17 +440,9 @@ class SalesRoom extends Component {
   };
 
   render() {
-    let isStrategyNull = false;
-    if (this.state.selectedProperty)
-      isStrategyNull =
-        this.state.selectedProperty.increment !== 0 &&
-        !this.state.selectedProperty.strategy;
+    let isStrategyNull = this.state.selectedProperty.isReset;
 
-    let showModalSelectedProperty = false;
-    if (this.state.selectedProperty)
-      showModalSelectedProperty =
-        this.state.selectedProperty.strategy > 0 ||
-        !this.state.selectedProperty.increment;
+    let showModalSelectedProperty = !isStrategyNull;
 
     if (
       isStrategyNull &&
@@ -462,7 +454,6 @@ class SalesRoom extends Component {
         this.state.selectedProperty,
         this.state.response.properties,
       );
-      isStrategyNull = !isThereOneProperty;
       showModalSelectedProperty = isThereOneProperty;
     }
 
