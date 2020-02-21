@@ -17,8 +17,11 @@ import {
 } from '@devexpress/dx-react-grid';
 
 const TablesContractFlow = ({ billings }) => {
-  const [rows, setRows] = useState([{ group: 'name' }]);
-  const [columns, setColumns] = useState([]);
+  const [rows, setRows] = useState([{ group: 'default' }, { item: 'default' }]);
+  const [columns, setColumns] = useState([
+    { name: 'group', title: 'default' },
+    { name: 'item', title: 'default' },
+  ]);
 
   const [tableColumnExtensions, setTableColumnExtensions] = useState([
     { columnName: 'contract', width: 180 },
@@ -158,13 +161,14 @@ const TablesContractFlow = ({ billings }) => {
 
   return (
     <Paper>
-      {console.log('the row ', rows)}
       <Grid rows={rows} columns={columns}>
-        {/*         <GroupingState grouping={[{ columnName: 'group' }]} />
-        <IntegratedGrouping /> */}
+        <GroupingState
+          grouping={[{ columnName: 'group' }, { columnName: 'item' }]}
+        />
+        <IntegratedGrouping />
         <Table />
         <TableHeaderRow />
-        {/*         <TableGroupRow /> */}
+        <TableGroupRow />
         <TableFixedColumns leftColumns={leftColumns} />
       </Grid>
     </Paper>
