@@ -107,21 +107,22 @@ class SalesRequests extends Component {
     this.setState({ desistDialogOpen: true, desistRequestId, propertyId });
   };
 
-  updatePriceProperty = (propertyId, values) => {
-    this.services
-      .putPriceProperty(propertyId, values)
-      .then((approvedRequest) => {
-        const tempSaleRequests = this.state.saleRequests;
-        tempSaleRequests.pending.splice(
-          tempSaleRequests.pending.indexOf(approvedRequest.data),
-          1,
-        );
-        tempSaleRequests.resolved.push(approvedRequest.data);
-        this.setState({
-          desistDialogOpen: false,
-          saleRequests: tempSaleRequests,
-        });
-      });
+  updatePriceProperty = async (propertyId, values) => {
+    const approvedRequest = await this.services.putPriceProperty(
+      propertyId,
+      values,
+    );
+    const tempSaleRequests = this.state.saleRequests;
+    tempSaleRequests.pending.splice(
+      tempSaleRequests.pending.indexOf(approvedRequest.data),
+      1,
+    );
+    tempSaleRequests.resolved.push(approvedRequest.data);
+    this.setState({
+      desistDialogOpen: false,
+      saleRequests: tempSaleRequests,
+    });
+    return false;
   };
 
   render() {
