@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ContractFlowService from '../../services/contractFlow/contractFlowService';
 import TablesContractFlow from '../../components/ContractFlow2/TablesContractFlow';
+import styles from './ContractFlow.module.scss';
 
 const ContractFlow = (props) => {
   const [data, setData] = useState([]);
@@ -20,8 +21,9 @@ const ContractFlow = (props) => {
   return (
     <React.Fragment>
       <h1>FLUJO DE CAJA</h1>
-      {console.log('REACTIVE', data)}
-      <TablesContractFlow billings={data} />
+      <div className={styles.container}>
+        <TablesContractFlow billings={data} />
+      </div>
     </React.Fragment>
   );
 };
