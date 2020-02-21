@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
+import moment from 'moment';
 import {
   Grid,
   Table,
@@ -15,26 +16,23 @@ import {
 
 const TablesContractFlow = ({ billings }) => {
   const [rows, setRows] = useState([]);
+  const [columns, setColumns] = useState([
+    { name: 'subject', title: ' ' },
+    { name: 'acumulado', title: 'Acumulado' },
+    { name: 'projected', title: 'Proyectado' },
+    { name: 'total', title: 'Total' },
+  ]);
+
+  const [tableColumnExtensions, setTableColumnExtensions] = useState([
+    { columnName: 'channel', width: 40 },
+    { columnName: 'subject', width: 180 },
+    { columnName: 'proyectado', width: 40 },
+    { columnName: 'Total', width: 40 },
+  ]);
 
   useEffect(() => {
     let active = true;
     if (active) {
-      /* const parsedRowsData = {};
-      const parsedAcemulated = billings.map((bill) => {
-        bill.items.map((value, i) =>
-          parsedRowsData.push({
-            acumulado: String(value.contracts[i].acumulated[0][0]),
-          }),
-        );
-      });
-      const parsedItems = billings.map((bill) => {
-        bill.items.map((value) => parsedRowsData.push({ subject: value.item }));
-      });
-      const parsedGroups = billings.map((bill) => {
-        const parsed = { subject: bill.group };
-        parsedRowsData.push(parsed);
-      }); */
-
       const rowsPerLine = billings.map((bill, n) => {
         const group = bill.group;
         const item = bill.items.map((value) => value.item);
@@ -55,6 +53,45 @@ const TablesContractFlow = ({ billings }) => {
         };
       });
 
+      const columnsPerLine = billings.map((bill, n) => {
+        let initialNumber = 0;
+        let finalNumber = 0;
+        const datesNumberInitial = bill.items[n].contracts.map((date) => {
+          if (parseInt(date.schedulesDate.salesStartDate) >= initialNumber) {
+            initialNumber = parseInt(date.schedulesDate.salesStartDate);
+          }
+        });
+
+        const datesNumberFinal = bill.items[n].contracts.map((date) => {
+          console.log(
+            '--->',
+            setTimeout(() => {
+              return date.billing;
+            }, 100),
+          );
+        });
+        const numberOfDates = moment(finalNumber).diff(
+          initialNumber,
+          'months',
+          true,
+        );
+
+        const objects = [];
+
+        for (let index = 0; index <= numberOfDates; index++) {
+          objects.push({
+            date: moment(initialNumber)
+              .add(index, 'M')
+              .format('MMM YYYY'),
+          });
+        }
+
+        return objects;
+      });
+
+      columnsPerLine.map((item) => {
+        setTableColumnExtensions(...tableColumnExtensions, item);
+      });
       setRows(rowsPerLine);
     }
     return () => {
@@ -62,19 +99,6 @@ const TablesContractFlow = ({ billings }) => {
     };
   }, [billings]);
 
-  const [columns] = useState([
-    { name: 'subject', title: ' ' },
-    { name: 'acumulado', title: 'Acumulado' },
-    { name: 'projected', title: 'Proyectado' },
-    { name: 'total', title: 'Total' },
-    { name: 'channel', title: 'Channel' },
-  ]);
-  const [tableColumnExtensions] = useState([
-    { columnName: 'channel', width: 100 },
-    { columnName: 'subject', width: 100 },
-    { columnName: 'proyectado', width: 100 },
-    { columnName: 'Total', width: 100 },
-  ]);
   const [leftColumns] = useState([
     'subject',
     'acumulado',
