@@ -17,6 +17,9 @@ class Increments extends Component {
   }
 
   state = {
+    schedule: {
+      endOfSalesDate: new Date().getTime(),
+    },
     market: { averagePrice: 0, anualEffectiveIncrement: 0 },
     increments: [],
     graphData: [],
@@ -34,9 +37,12 @@ class Increments extends Component {
 
   resetStrategy = (groupId) => {
     this.setState({ loadingAPI: true });
-    this.services
-      .resetStrategy(groupId)
-      .then(() => this.setState({ loadingAPI: false }));
+    this.services.resetStrategy(groupId).then(() => {
+      const tempIncrements = this.state.increments;
+      const group = tempIncrements.find((g) => groupId === g.id);
+      group.isReset = true;
+      this.setState({ loadingAPI: false, increments: tempIncrements });
+    });
   };
 
   toastAlert = (message) => {
@@ -77,6 +83,7 @@ class Increments extends Component {
           (increment) => increment.total.units > 0,
         );
         this.setState({
+          schedule: response.data.schedule,
           increments: filteredIncrements,
           market: response.data.market,
           isLoading: false,
@@ -250,6 +257,7 @@ class Increments extends Component {
           futureSalesSpeedHandler={this.futureSalesSpeedHandler}
           resetStrategy={this.resetStrategy}
           towerId={this.props.match.params.towerId}
+          endOfSalesDate={this.state.schedule.endOfSalesDate}
           {...this.props}
         />
 

@@ -26,14 +26,18 @@ const SelectStrategy = (props) => {
               let styleButton = {
                 backgroundColor: variables.grayColor,
               };
-              if (strategyActive === dataHelper[index].id) {
+              
+              if (
+                strategyActive === dataHelper[index].id &&
+                !groupActive.isReset
+              ) {
                 styleButton = {
                   backgroundColor: dataHelper[index].borderColor,
                 };
               }
               return (
                 <Button
-                  disabled={strategyActive}
+                  disabled={strategyActive && !groupActive.isReset}
                   onClick={() => selectStrategy(index, dataHelper[index].id)}
                   style={styleButton}
                 >

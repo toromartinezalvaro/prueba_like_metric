@@ -3,75 +3,111 @@ import PropTypes from 'prop-types';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Table from '../../UI/Table/Table';
-import Button from '../../UI2/Button';
-import Styles from './SaleRequestsTable.module.scss';
-import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
+import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
-const SaleRequestTable = ({ saleRequests, showSaleRequestHandler }) => {
-  const getPendingData = () => {
-    return saleRequests.pending.map((request, index) => {
-      return [
-        request.property.name,
-        <Button
-          key={`saleRequestAction-${index}`}
-          onClick={() => {
-            showSaleRequestHandler(request.saleRequest.id);
-          }}
-        >
-          Abrir
-        </Button>,
-      ];
-    });
-  };
-
-  const getResolvedData = () => {
-    return saleRequests.resolved.map((request, index) => {
-      return [
-        request.property.name,
-        request.saleRequest.requestStatus,
-        <Button
-          key={`solvedSaleRequestAction-${index}`}
-          onClick={() => {
-            showSaleRequestHandler(request.saleRequest.id);
-          }}
-        >
-          Abrir
-        </Button>,
-      ];
-    });
-  };
-
+const SaleRequestTable = ({
+  saleRequests,
+  showSaleRequestHandler,
+  handleDesistDialogOpen,
+}) => {
   return (
-    <Card>
-      <CardHeader>
-        <span>Solicitudes de venta</span>
-      </CardHeader>
-      <CardBody>
-        <ExpansionPanel>
-          <ExpansionPanelSummary>Pendientes</ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Table
-              intersect="Pendientes"
-              headers={['Propiedad', '']}
-              columns={[]}
-              data={getPendingData()}
-            />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary>Resueltos</ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Table
-              intersect="Resueltos"
-              headers={['Propiedad', 'Estado', '']}
-              columns={[]}
-              data={getResolvedData()}
-            />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </CardBody>
-    </Card>
+    <>
+      <ExpansionPanel>
+        <ExpansionPanelSummary>
+          <Typography>Solicitudes de venta pendientes</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Propiedad</TableCell>
+                  <TableCell>Estado</TableCell>
+                  <TableCell align="center"></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {saleRequests.pending.map((request, index) => {
+                  return (
+                    <TableRow key={`pendingSaleRequest-${index}`}>
+                      <TableCell>{request.property.name}</TableCell>
+                      <TableCell>{request.saleRequest.requestStatus}</TableCell>
+                      <TableCell align="center">
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            if (
+                              request.saleRequest.requestStatus === 'Desistido'
+                            ) {
+                              handleDesistDialogOpen(
+                                request.saleRequest.id,
+                                request.property.id,
+                              );
+                            } else {
+                              showSaleRequestHandler(request.saleRequest.id);
+                            }
+                          }}
+                        >
+                          Abrir
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <ExpansionPanel>
+        <ExpansionPanelSummary>
+          <Typography>Solicitudes de venta resultas</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Propiedad</TableCell>
+                  <TableCell>Estado</TableCell>
+                  <TableCell align="center"></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {saleRequests.resolved.map((request, index) => {
+                  return (
+                    <TableRow key={`pendingSaleRequest-${index}`}>
+                      <TableCell>{request.property.name}</TableCell>
+                      <TableCell>{request.saleRequest.requestStatus}</TableCell>
+                      <TableCell align="center">
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            showSaleRequestHandler(request.saleRequest.id);
+                          }}
+                        >
+                          Abrir
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </>
   );
 };
 
