@@ -26,12 +26,12 @@ const TablesContractFlow = ({ billings }) => {
 
   const [tableColumnExtensions, setTableColumnExtensions] = useState([
     { columnName: 'contract', width: 180 },
-    { columnName: 'acumulated', width: 89 },
-    { columnName: 'projected', width: 89 },
-    { columnName: 'total', width: 90 },
+    { columnName: 'acumulated', width: 100 },
+    { columnName: 'projected', width: 100 },
+    { columnName: 'total', width: 100 },
     { columnName: 'date', width: 100 },
-    { columnName: 'group', width: 100 },
-    { columnName: 'item', width: 100 },
+    { columnName: 'group', width: 250 },
+    { columnName: 'item', width: 110 },
   ]);
 
   const formatNumber = (number) => {
@@ -142,7 +142,7 @@ const TablesContractFlow = ({ billings }) => {
         );
         const objects = [];
         if (firstPull) {
-          for (let index = 0; index <= numberOfDates; index++) {
+          for (let index = 1; index <= numberOfDates; index++) {
             objects.push({
               name: `date${index}`,
               title: String(
@@ -194,10 +194,13 @@ const TablesContractFlow = ({ billings }) => {
     <Paper>
       <Grid rows={rows} columns={columns}>
         <GroupingState
-          grouping={[{ columnName: 'group' }, { columnName: 'item' }]}
+          grouping={[
+            { columnName: 'group', width: 150 },
+            { columnName: 'item' },
+          ]}
         />
         <IntegratedGrouping />
-        <Table />
+        <Table columnExtensions={tableColumnExtensions} />
         <TableHeaderRow />
         <TableGroupRow />
         <TableFixedColumns leftColumns={leftColumns} />
