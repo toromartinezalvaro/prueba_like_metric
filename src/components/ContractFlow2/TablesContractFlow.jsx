@@ -102,15 +102,20 @@ const TablesContractFlow = ({ billings }) => {
   };
 
   const datesFinalNumber = (bill) => {
-    let finalNumber = 0;
-    bill.items.map((information, x) => {
-      information.contracts[x].billing.map((data) => {
-        if (parseInt(data.lastBillingDate, 10) >= finalNumber) {
-          finalNumber = parseInt(data.lastBillingDate, 10);
-        }
-      });
+    const finalNumber = [];
+    bill.items.map((information) => {
+      const numberOfContract = information.contracts.length;
+      for (let index = 0; index <= numberOfContract; index++) {
+        information.contracts[index].billing.map((val) => {
+          console.log('CONSTRUC', val.lastBillingDate);
+        });
+        information.contracts[index].billing.map((val) => {
+          finalNumber.push(val.lastBillingDate);
+        });
+      }
     });
-    return finalNumber;
+    console.log('READY', Math.max(...finalNumber));
+    return Math.max(...finalNumber);
   };
 
   useEffect(() => {
