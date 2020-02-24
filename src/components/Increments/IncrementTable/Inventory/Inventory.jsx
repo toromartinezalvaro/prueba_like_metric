@@ -17,7 +17,12 @@ function Inventory({
   salesStartDate,
   totalUnits,
   groupId,
+  endOfSalesDate,
 }) {
+  const endOfSales = moment(Number(endOfSalesDate))
+    .startOf('month')
+    .diff(moment().startOf('month'), 'months');
+
   const {
     units,
     averageArea,
@@ -153,7 +158,13 @@ function Inventory({
       </div>
       <div className={Styles['inv-speed-sales']}>
         <Input
-          validations={futureSpeedValidation()}
+          validations={[
+            ...futureSpeedValidation(),
+            {
+              fn: (value) => totalUnits / value < endOfSales,
+              message: `Este valor supera el plazo de cuota inicial a hoy`,
+            },
+          ]}
           value={salesSpeedState}
           style={{ width: '75px' }}
           onChange={(target) => {
@@ -172,8 +183,8 @@ function Inventory({
         </div>
         -
         <div>
-          <span>Meses a hoy: </span>
-          {limitTodayDate > 0 ? limitTodayDate : 0}
+          <span>Plazo cuota inicial hoy: </span>
+          {endOfSales}
         </div>
       </div>
       <div className={Styles['inv-ear']}>

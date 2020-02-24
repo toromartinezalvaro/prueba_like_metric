@@ -15,6 +15,7 @@ function Totals({
   blockIncrements,
   inventoryUnits,
   salesIncrement,
+  isReset,
 }) {
   const {
     date,
@@ -96,7 +97,7 @@ function Totals({
             onChange={(target) => {
               putIncrement(target.value);
             }}
-            disable={inventoryUnits === 0}
+            disable={inventoryUnits === 0 || !isReset}
             updateWithProp
           />
         )}
@@ -129,23 +130,8 @@ function Totals({
       <div className={Styles['total-inventory-base-price-mt2']} />
       <div className={Styles['total-inventory-base-price']} />
       <div className={Styles['total-sales-speed']} />
-      <div className={Styles['total-retention-months']}>
-        <Input
-          validations={validations}
-          value={retentionMonths}
-          onChange={(target) => {
-            putSalesSpeed(target.value);
-          }}
-        />
-      </div>
-      <div className={Styles['total-ear']}>
-        <NumberFormat
-          value={(ear * 100).toFixed(2)}
-          displayType={'text'}
-          thousandSeparator={true}
-          suffix={'%'}
-        />
-      </div>
+      <div className={Styles['total-retention-months']}></div>
+      <div className={Styles['total-ear']}></div>
     </div>
   );
 }
