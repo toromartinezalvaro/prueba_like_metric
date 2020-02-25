@@ -106,15 +106,13 @@ const TablesContractFlow = ({ billings }) => {
     bill.items.map((information) => {
       const numberOfContract = information.contracts.length;
       for (let index = 0; index <= numberOfContract; index++) {
-        information.contracts[index].billing.map((val) => {
-          console.log('CONSTRUC', val.lastBillingDate);
-        });
-        information.contracts[index].billing.map((val) => {
-          finalNumber.push(val.lastBillingDate);
+        information.contracts.map((info) => {
+          info.billing.map((date) => {
+            finalNumber.push(date.lastBillingDate);
+          });
         });
       }
     });
-    console.log('READY', Math.max(...finalNumber));
     return Math.max(...finalNumber);
   };
 
