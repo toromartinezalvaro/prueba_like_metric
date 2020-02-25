@@ -139,17 +139,18 @@ const TablesContractFlow = ({ billings }) => {
     let active = true;
     if (active) {
       const rowsPerLine = () => {
-        const rows = [];
-        const arrayRows = billings.map((bill) => {
+        const rows = billings.reduce((acummulated, bill) => {
           const group = bill.group;
           const item = bill.items.map((value) => value.item);
-          const contracts = deepInformation(bill, group[0], item[0]);
-          contracts.map((contract) =>
-            contract.map((row) => {
-              rows.push(row);
+          const contracts = deepInformation(bill, group, item[0]);
+          contracts.forEach((contract) =>
+            contract.forEach((row) => {
+              /*  rows.push(row); */
+              acummulated.push(row);
             }),
           );
-        });
+          return acummulated;
+        }, []);
 
         return rows;
       };
@@ -220,7 +221,7 @@ const TablesContractFlow = ({ billings }) => {
           ]}
         />
         <IntegratedGrouping />
-        <Table  />
+        <Table />
         <TableHeaderRow />
         <TableGroupRow />
         <TableFixedColumns leftColumns={leftColumns} />
