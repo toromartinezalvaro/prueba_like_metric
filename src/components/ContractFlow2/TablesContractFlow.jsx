@@ -17,6 +17,8 @@ import {
   CustomGrouping,
 } from '@devexpress/dx-react-grid';
 
+import styles from './TableContractFlow.module.scss';
+
 const TablesContractFlow = ({ billings }) => {
   const [rows, setRows] = useState([{ group: 'default' }, { item: 'default' }]);
   const [columns, setColumns] = useState([
@@ -34,7 +36,7 @@ const TablesContractFlow = ({ billings }) => {
     { columnName: 'item', width: 110 },
   ]);
 
-  const formatNumber = (number) => {
+  const numberFormater = (number) => {
     return (
       <NumberFormat
         value={number}
@@ -44,6 +46,23 @@ const TablesContractFlow = ({ billings }) => {
         prefix="$"
       />
     );
+  };
+
+  const textFormater = (title, type) => {
+    switch (type) {
+      case 'group':
+        return (
+          <div className={styles.forColumnGroup}>
+            <h3>{title}</h3>
+          </div>
+        );
+      case 'item':
+        return <h4 className={styles.forColumnItem}>{title}</h4>;
+      case 'text':
+        return <span>{title}</span>;
+      default:
+        break;
+    }
   };
 
   const totalFunc = (total) => {
@@ -58,7 +77,7 @@ const TablesContractFlow = ({ billings }) => {
   const deepInformation = (bill, group, item) => {
     const information = bill.items.map((value) => {
       return value.contracts.map((val) => {
-        const contract = val.title;
+        const contract = textFormater(val.title, 'text');
         const acumulated =
           val.acumulated.length !== 0 ? parseInt(val.acumulated[0][0], 10) : 0;
         const projected =
@@ -69,14 +88,18 @@ const TablesContractFlow = ({ billings }) => {
           group,
           item,
           contract,
-          acumulated: formatNumber(acumulated),
-          projected: formatNumber(projected),
-          total: formatNumber(total),
+          acumulated: numberFormater(acumulated),
+          projected: numberFormater(projected),
+          total: numberFormater(total),
         };
+        const initialDatesValues = columns.forEach((column, x) => {
+          const name = `date${x}`;
+          result = { ...result, [name]: [numberFormater(0)] };
+        });
         const datesValues = val.billings.map((dateValue, j) => {
-          dateValue.map((singleValue, l) => {
+          dateValue.forEach((singleValue, l) => {
             const name = `date${l}`;
-            result = { ...result, [name]: [formatNumber(singleValue)] };
+            result = { ...result, [name]: [numberFormater(singleValue)] };
           });
         });
         return result;
@@ -87,7 +110,7 @@ const TablesContractFlow = ({ billings }) => {
 
   const datesInitialNumber = (bill) => {
     let initialNumber = 0;
-    bill.items.map((information, x) => {
+    bill.items.forEach((information, x) => {
       if (
         parseInt(information.contracts[x].schedulesDate.salesStartDate, 10) >=
         initialNumber
@@ -160,18 +183,16 @@ const TablesContractFlow = ({ billings }) => {
         return objects;
       });
 
-      const columnsPerLineDefined = [];
-
-      columnsPerLine.map((items) => {
-        items.map((item) => {
-          columnsPerLineDefined.push(item);
+      const columnsPerLineDefined = columnsPerLine.flatMap((items) => {
+        return items.flatMap((item) => {
+          return [item];
         });
       });
 
       columnsPerLineDefined.unshift(
         { name: 'contract', title: 'Contrato' },
-        { name: 'group', title: 'Grupo' },
-        { name: 'item', title: 'Item' },
+        { name: 'group', title: textFormater('Grupo', 'group') },
+        { name: 'item', title: textFormater('Item', 'item') },
         { name: 'acumulated', title: 'Acumulado' },
         { name: 'projected', title: 'Proyectado' },
         { name: 'total', title: 'Total' },
