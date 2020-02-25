@@ -1,16 +1,5 @@
+.forColumnItem,
 .forColumnGroup {
-  display: flex !important;
-  flex-direction: row !important;
-  padding: 0 !important;
+  position: relative !important;
   margin: 0 !important;
-}
-td,
-.MuiTableCell-root {
-  align-content: center;
-}
-
-.ContainerBase-wrapper-139 {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
 }

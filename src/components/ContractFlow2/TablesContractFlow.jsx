@@ -51,13 +51,9 @@ const TablesContractFlow = ({ billings }) => {
   const textFormater = (title, type) => {
     switch (type) {
       case 'group':
-        return (
-          <div className={styles.forColumnGroup}>
-            <h3>{title}</h3>
-          </div>
-        );
+        return <h2 className={styles.forColumnGroup}>{title}</h2>;
       case 'item':
-        return <h4 className={styles.forColumnItem}>{title}</h4>;
+        return <h3 className={styles.forColumnItem}>{title}</h3>;
       case 'text':
         return <span>{title}</span>;
       default:
@@ -224,7 +220,7 @@ const TablesContractFlow = ({ billings }) => {
           ]}
         />
         <IntegratedGrouping />
-        <Table columnExtensions={tableColumnExtensions} />
+        <Table  />
         <TableHeaderRow />
         <TableGroupRow />
         <TableFixedColumns leftColumns={leftColumns} />
