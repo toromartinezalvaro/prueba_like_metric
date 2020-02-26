@@ -45,6 +45,23 @@ const Dialog = ({
     }
   };
 
+  const deleteQuotation = async () => {
+    try {
+      dispatch(fetchQuotationStart());
+      if (!store.error) {
+        await services.deleteQuotation(store.quotation.id);
+        spawnMessage('Se cancelo correctamente la cotización', 'info');
+      }
+      closeHandler();
+    } catch (error) {
+      dispatch(fetchQuotationFailure());
+      spawnMessage(
+        `Hubo un problema cancelando la cotizacion ${error.response.data.message}`,
+        'error',
+      );
+    }
+  };
+
   useEffect(() => {
     let active = true;
     async function fetchQuotation() {
@@ -78,7 +95,7 @@ const Dialog = ({
             edge="start"
             color="inherit"
             aria-label="close"
-            onClick={closeHandler}
+            onClick={deleteQuotation}
           >
             <CloseIcon />
           </IconButton>

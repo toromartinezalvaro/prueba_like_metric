@@ -6,26 +6,26 @@ const ClientInfo = ({ client }) => {
   return (
     <div>
       <div className={Styles.infoContainer}>
-        <div>
+        <div className={Styles.title}>
           <span>Nombre:</span>
         </div>
-        <div>
+        <div className={Styles.value}>
           <span>{client.name}</span>
         </div>
       </div>
       <div className={Styles.infoContainer}>
-        <div>
+        <div className={Styles.title}>
           <span>Documento de identidad:</span>
         </div>
-        <div>
+        <div className={Styles.value}>
           <span>{client.identityDocument}</span>
         </div>
       </div>
       <div className={Styles.infoContainer}>
-        <div>
+        <div className={Styles.title}>
           <span>Correo:</span>
         </div>
-        <div>
+        <div className={Styles.value}>
           <span>{client.email}</span>
         </div>
       </div>

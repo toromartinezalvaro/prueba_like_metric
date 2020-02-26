@@ -69,7 +69,7 @@ const Table = ({ quotation }) => {
           <TableRow>
             <TableCell>Cuota final</TableCell>
             <TableCell>
-              {moment(Number(quotation.paymentStartDate))
+              {moment(Number(quotation.deliveryDate))
                 .format('MMM YY')
                 .toString()}
             </TableCell>

@@ -11,82 +11,76 @@ const PropertyInfo = ({
   periods,
 }) => {
   return (
-    <div>
-      <div className={Styles.infoContainer}>
-        <div className={Styles.title}>
-          <span>Apartamento:</span>
-        </div>
-        <div className={Styles.value}>
-          <span>{property.name}</span>
-        </div>
+    <div className={Styles.container}>
+      <div className={Styles.title}>
+        <span>Apartamento:</span>
       </div>
-      <div className={Styles.infoContainer}>
-        <div className={Styles.title}>
-          <span>Cuota inicial:</span>
-        </div>
-        <div className={Styles.value}>
-          <span>{initialFeePercentage * 100}%</span>
-        </div>
-        <div>
+      <div className={Styles.rate}>
+        <span>{property.name}</span>
+      </div>
+      <div></div>
+      <div className={Styles.title}>
+        <span>Cuota inicial:</span>
+      </div>
+      <div className={Styles.rate}>
+        <span>{(initialFeePercentage * 100).toFixed(2)}%</span>
+      </div>
+      <div className={Styles.value}>
+        <NumberFormat
+          value={(propertyPrice * initialFeePercentage).toFixed(2)}
+          displayType="text"
+          thousandSeparator
+          prefix="$"
+        />
+      </div>
+
+      <div className={Styles.title}>
+        <span>Separación:</span>
+      </div>
+      <div className={Styles.rate}>
+        <span>{(reservePercentage * 100).toFixed(2)}%</span>
+      </div>
+      <div className={Styles.value}>
+        <NumberFormat
+          value={(propertyPrice * reservePercentage).toFixed(2)}
+          displayType="text"
+          thousandSeparator
+          prefix="$"
+        />
+      </div>
+
+      <div className={Styles.title}>
+        <span>Cuotas mensuales:</span>
+      </div>
+      <div className={Styles.rate}>
+        <span>{periods}</span>
+      </div>
+      <div className={Styles.value}>
+        <span>
           <NumberFormat
-            value={propertyPrice * initialFeePercentage}
+            value={(propertyPrice / periods).toFixed(2)}
             displayType="text"
             thousandSeparator
             prefix="$"
           />
-        </div>
+        </span>
       </div>
-      <div className={Styles.infoContainer}>
-        <div className={Styles.title}>
-          <span>Separación:</span>
-        </div>
-        <div className={Styles.value}>
-          <span>{reservePercentage * 100}%</span>
-        </div>
-        <div>
+
+      <div className={Styles.title}>
+        <span>Pago final:</span>
+      </div>
+      <div className={Styles.rate}>
+        <span>{((1 - initialFeePercentage) * 100).toFixed(2)}%</span>
+      </div>
+      <div className={Styles.value}>
+        <span>
           <NumberFormat
-            value={propertyPrice * reservePercentage}
+            value={(propertyPrice * (1 - initialFeePercentage)).toFixed(2)}
             displayType="text"
             thousandSeparator
             prefix="$"
           />
-        </div>
-      </div>
-      <div className={Styles.infoContainer}>
-        <div className={Styles.title}>
-          <span>Cuotas mensuales:</span>
-        </div>
-        <div className={Styles.value}>
-          <span>{periods}</span>
-        </div>
-        <div>
-          <span>
-            <NumberFormat
-              value={propertyPrice / periods}
-              displayType="text"
-              thousandSeparator
-              prefix="$"
-            />
-          </span>
-        </div>
-      </div>
-      <div className={Styles.infoContainer}>
-        <div className={Styles.title}>
-          <span>Pago final:</span>
-        </div>
-        <div className={Styles.value}>
-          <span>{(1 - initialFeePercentage) * 100}%</span>
-        </div>
-        <div>
-          <span>
-            <NumberFormat
-              value={propertyPrice * (1 - initialFeePercentage)}
-              displayType="text"
-              thousandSeparator
-              prefix="$"
-            />
-          </span>
-        </div>
+        </span>
       </div>
     </div>
   );

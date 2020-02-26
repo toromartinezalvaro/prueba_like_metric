@@ -9,6 +9,7 @@ const ClientsServiceDefinitions = {
   getClientQuotations: (clientId) =>
     `${API_PATH}${QUOTATIONS}/clients/${clientId}`,
   getQuotation: (quotationId) => `${API_PATH}${QUOTATIONS}/${quotationId}`,
+  deleteQuotation: (quotationId) => `${API_PATH}${QUOTATIONS}/${quotationId}`,
 };
 
 export default ClientsServiceDefinitions;

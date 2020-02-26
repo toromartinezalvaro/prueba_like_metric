@@ -17,4 +17,8 @@ export default class ClientsServices extends Services {
   getQuotation(quotationId) {
     return this.get(definitions.getQuotation(quotationId));
   }
+
+  deleteQuotation(quotationId) {
+    return this.delete(definitions.deleteQuotation(quotationId));
+  }
 }
