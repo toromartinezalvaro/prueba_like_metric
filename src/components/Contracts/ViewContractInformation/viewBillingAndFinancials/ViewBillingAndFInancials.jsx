@@ -44,7 +44,6 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                       <Card className={style.leftTitle}>
                         <span className={style.labelForTitle}>Evento</span>
                         <p className={style.information}>
-                          {console.log('event', events)}
                           {events.find(
                             (element) => element.id === billing.eventId,
                           )}
