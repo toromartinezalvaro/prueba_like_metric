@@ -219,7 +219,7 @@ const TablesContractFlow = ({ billings }) => {
         <IntegratedGrouping />
         <Table columnExtensions={tableColumnExtensions} />
         <TableHeaderRow />
-        <TableGroupRow rowComponent={TableRow} />
+        <TableGroupRow />
         <TableFixedColumns leftColumns={leftColumns} />
       </Grid>
     </Paper>
