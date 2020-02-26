@@ -1,4 +1,5 @@
 import React, { useState, useReducer, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -62,6 +63,7 @@ const validationSchema = yup.object().shape({
 });
 
 const FormDialog = ({ client, open, onCloseHandler }) => {
+  const history = useHistory();
   const {
     towerId,
     dispatch: containerDispatcher,
@@ -133,6 +135,12 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
     }
   };
 
+  function goToSalesRom() {
+    history.push(
+      `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`,
+    );
+  }
+
   return (
     <Dialog open={open} onClose={onCloseHandler} fullWidth>
       <DialogTitle>Cliente</DialogTitle>
@@ -182,20 +190,16 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                 <Grid container spacing={1} direction="row-reverse">
                   <Grid item>
                     {!innerClient.id && (
-                      <Link
-                        to={`${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`}
-                        className={Styles.link}
+                      <Button
+                        disabled={!state.createdClient}
+                        type="submit"
+                        variant="contained"
+                        color="secondary"
+                        disableElevation
+                        onClick={goToSalesRom}
                       >
-                        <Button
-                          disabled={!state.createdClient}
-                          type="submit"
-                          variant="contained"
-                          color="secondary"
-                          disableElevation
-                        >
-                          Ir a sala de ventas
-                        </Button>
-                      </Link>
+                        Ir a sala de ventas
+                      </Button>
                     )}
                   </Grid>
                   <Grid item>
