@@ -32,8 +32,8 @@ const TablesContractFlow = ({ billings }) => {
     { columnName: 'projected', width: 100 },
     { columnName: 'total', width: 100 },
     { columnName: 'date', width: 100 },
-    { columnName: 'group', width: 250 },
-    { columnName: 'item', width: 110 },
+    { columnName: 'group', width: 120 },
+    { columnName: 'item', width: 120 },
   ]);
 
   const numberFormater = (number) => {
@@ -145,7 +145,6 @@ const TablesContractFlow = ({ billings }) => {
           const contracts = deepInformation(bill, group, item[0]);
           contracts.forEach((contract) =>
             contract.forEach((row) => {
-              /*  rows.push(row); */
               acummulated.push(row);
             }),
           );
@@ -158,23 +157,21 @@ const TablesContractFlow = ({ billings }) => {
       const columnsPerLine = billings.map((bill, n) => {
         const initialDate = datesInitialNumber(bill);
         const finalDate = datesFinalNumber(bill);
-        const numberOfDates = moment(finalDate).diff(
-          initialDate,
-          'months',
-          true,
+        const numberOfDates = Math.round(
+          moment(finalDate).diff(initialDate, 'months', true),
         );
-        const objects = [];
+        let objects = [];
         if (firstPull) {
-          for (let index = 1; index <= numberOfDates; index++) {
-            objects.push({
+          objects = [...Array(numberOfDates)].map((value, index) => {
+            return {
               name: `date${index}`,
               title: String(
                 moment(initialDate)
                   .add(index, 'M')
                   .format('MMM YYYY'),
               ),
-            });
-          }
+            };
+          });
           firstPull = false;
         }
         return objects;
@@ -210,7 +207,6 @@ const TablesContractFlow = ({ billings }) => {
     'group',
     'item',
   ]);
-
   return (
     <Paper>
       <Grid rows={rows} columns={columns}>
@@ -221,9 +217,9 @@ const TablesContractFlow = ({ billings }) => {
           ]}
         />
         <IntegratedGrouping />
-        <Table />
+        <Table columnExtensions={tableColumnExtensions} />
         <TableHeaderRow />
-        <TableGroupRow />
+        <TableGroupRow rowComponent={TableRow} />
         <TableFixedColumns leftColumns={leftColumns} />
       </Grid>
     </Paper>

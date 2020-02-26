@@ -1,5 +1,18 @@
+@import '../../assets/styles/variables.scss';
 .forColumnItem,
 .forColumnGroup {
   position: relative !important;
   margin: 0 !important;
+}
+
+.forColumnGroup {
+  background-color: $gray-color;
+}
+
+.forColumnItem {
+  background-color: $softGrayBackground-color;
+}
+
+.custom-style.react-data-grid {
+  background-color: $gray-color !important;
 }
