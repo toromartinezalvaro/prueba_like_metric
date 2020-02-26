@@ -126,7 +126,6 @@ const TablesContractFlow = ({ billings }) => {
     bill.items[i] &&
       bill.items[i].contracts.forEach((information) => {
         information.billing.forEach((internalInfo) => {
-          console.log(internalInfo.lastBillingDate);
           if (parseInt(internalInfo.lastBillingDate, 10) >= finalNumber) {
             finalNumber.push(parseInt(internalInfo.lastBillingDate, 10));
           }
@@ -161,14 +160,6 @@ const TablesContractFlow = ({ billings }) => {
           Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
             ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
             : 1;
-        console.log(
-          'ESTO ->',
-          finalDate,
-          'MENOS ESTO->',
-          initialDate,
-          'IGUAL A ESTO->',
-          numberOfDates,
-        );
         let objects = [];
         if (firstPull) {
           objects = [...Array(numberOfDates)].map((value, index) => {
