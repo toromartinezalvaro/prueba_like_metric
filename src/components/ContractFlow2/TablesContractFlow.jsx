@@ -104,34 +104,34 @@ const TablesContractFlow = ({ billings }) => {
     return information;
   };
 
-  const datesInitialNumber = (bill) => {
+  const datesInitialNumber = (bill, i) => {
     let initialNumber = 0;
-    bill.items.forEach((information, x) => {
-      if (
-        parseInt(information.contracts[x].schedulesDate.salesStartDate, 10) >=
-        initialNumber
-      ) {
-        initialNumber = parseInt(
-          information.contracts[x].schedulesDate.salesStartDate,
-          10,
-        );
-      }
-    });
+    bill.items[i] &&
+      bill.items[i].contracts.forEach((information, x) => {
+        if (
+          parseInt(information.schedulesDate.salesStartDate, 10) >=
+          initialNumber
+        ) {
+          initialNumber = parseInt(
+            information.schedulesDate.salesStartDate,
+            10,
+          );
+        }
+      });
     return initialNumber;
   };
 
-  const datesFinalNumber = (bill) => {
-    const finalNumber = [];
-    bill.items.map((information) => {
-      const numberOfContract = information.contracts.length;
-      for (let index = 0; index <= numberOfContract; index++) {
-        information.contracts.map((info) => {
-          info.billing.map((date) => {
-            finalNumber.push(date.lastBillingDate);
-          });
+  const datesFinalNumber = (bill, i) => {
+    let finalNumber = [];
+    bill.items[i] &&
+      bill.items[i].contracts.forEach((information) => {
+        information.billing.forEach((internalInfo) => {
+          console.log(internalInfo.lastBillingDate);
+          if (parseInt(internalInfo.lastBillingDate, 10) >= finalNumber) {
+            finalNumber.push(parseInt(internalInfo.lastBillingDate, 10));
+          }
         });
-      }
-    });
+      });
     return Math.max(...finalNumber);
   };
 
@@ -155,10 +155,19 @@ const TablesContractFlow = ({ billings }) => {
       };
       let firstPull = true;
       const columnsPerLine = billings.map((bill, n) => {
-        const initialDate = datesInitialNumber(bill);
-        const finalDate = datesFinalNumber(bill);
-        const numberOfDates = Math.round(
-          moment(finalDate).diff(initialDate, 'months', true),
+        const initialDate = datesInitialNumber(bill, n);
+        const finalDate = datesFinalNumber(bill, n);
+        const numberOfDates =
+          Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
+            ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
+            : 1;
+        console.log(
+          'ESTO ->',
+          finalDate,
+          'MENOS ESTO->',
+          initialDate,
+          'IGUAL A ESTO->',
+          numberOfDates,
         );
         let objects = [];
         if (firstPull) {
