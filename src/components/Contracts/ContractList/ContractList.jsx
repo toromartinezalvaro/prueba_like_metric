@@ -28,6 +28,7 @@ class ContractList extends Component {
       contractData: {},
       isLoading: true,
       contractAvailable: true,
+      events: [],
     };
     this.services = new ContractService();
     this.service = new ContractFlowService();
@@ -75,6 +76,7 @@ class ContractList extends Component {
   }
 
   componentDidMount() {
+    this.setState({ events: this.props.events });
     this.service
       .getContractsInformation(this.props.towerId)
       .then((response) => {
@@ -215,6 +217,7 @@ class ContractList extends Component {
             openView={this.state.openDataView}
             closeViewModal={this.closeViewModal}
             contractDataView={this.state.contractDataView}
+            events={this.state.events}
           />
         )}
       </div>

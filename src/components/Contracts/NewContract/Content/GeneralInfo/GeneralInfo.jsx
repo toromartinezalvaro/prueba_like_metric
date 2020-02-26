@@ -51,13 +51,8 @@ const GeneralInfo = ({
     contractNumber: '',
     itemId: '',
     description: '',
+    itemLabel: 'Seleccione un item',
   });
-
-  const [itemProps, setItemProp] = useState({
-    label: 'Seleccione un item',
-    value: 0,
-  });
-
   const [isLocked, setIsLocked] = useState(true);
   const [isLockedEdit, setsLockedEdit] = useState(true);
 
@@ -73,6 +68,14 @@ const GeneralInfo = ({
       setGeneralInformation(dataIfEdit);
     }
   }, []);
+
+  const itemClean = () => {
+    setGeneralInformation({
+      ...generalInformation,
+      itemLabel: 'Seleccione un item',
+      itemId: 0,
+    });
+  };
 
   const onChangeText = (name) => (e) => {
     const information = { ...generalInformation, [name]: e.target.value };
@@ -123,13 +126,6 @@ const GeneralInfo = ({
     }
   };
 
-  const itemClean = () => {
-    setItemProp({
-      label: 'Seleccione un item',
-      value: 0,
-    });
-  };
-
   const changeAndSearchPartner = (currentPartner) => {
     const currentPartnerValue = currentPartner.value;
     setGeneralInformation({
@@ -142,7 +138,12 @@ const GeneralInfo = ({
 
   const changeAndSearchItem = (currentItem) => {
     const currentItemValue = currentItem.value;
-    setGeneralInformation({ ...generalInformation, itemId: currentItemValue });
+    const currentItemLabel = currentItem.label;
+    setGeneralInformation({
+      ...generalInformation,
+      itemId: currentItemValue,
+      itemLabel: currentItemLabel,
+    });
     sendGeneralInfo(generalInformation);
     changeForSearchItem(currentItem);
   };
@@ -253,7 +254,7 @@ const GeneralInfo = ({
                     : categoryProp
                 }
                 onChange={changeAndSearchCategory}
-                onBlur={itemClean}
+                onFocus={itemClean}
               />
             </div>
             <div className={styles.buttonColumn}>
@@ -341,16 +342,15 @@ const GeneralInfo = ({
                 placeholder="Seleccione un Item"
                 components={Option}
                 options={items}
-                defaultValue={
-                  dataIfEdit &&
-                  items.find((option) => {
-                    return (
-                      option.value === dataIfEdit.itemId && {
-                        value: dataIfEdit.itemId,
-                        label: dataIfEdit.item,
+                value={
+                  dataIfEdit
+                    ? items.find((option) => {
+                        return option.value === dataIfEdit.itemId;
+                      })
+                    : {
+                        label: generalInformation.itemLabel,
+                        value: generalInformation.itemId,
                       }
-                    );
-                  })
                 }
                 onChange={changeAndSearchItem}
               />

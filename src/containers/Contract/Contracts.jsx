@@ -731,6 +731,7 @@ class Contracts extends Component {
           sendId={this.sendId}
           currentContract={this.state.currentContract}
           currentPut={this.currentPut}
+          events={this.state.events}
           deleteContract={this.deleteContract}
         />
         <NewContract

@@ -66,6 +66,7 @@ class ViewContractInformation extends Component {
             <ViewGeneralInfo contractDataView={this.props.contractDataView} />
             <ViewBillingAndFinancials
               contractDataView={this.props.contractDataView}
+              events={this.props.events}
             />
             {this.state.deleteAction && (
               <DeleteAction
