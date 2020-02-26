@@ -1,7 +1,6 @@
 import React, { useState, useReducer, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import Dialog from '@material-ui/core/Dialog';
@@ -75,7 +74,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
   const [innerClient, setInnerClient] = useState(defaultClient);
 
   useEffect(() => {
-    if (client && open) {
+    if (open && client) {
       if (client.id) {
         setInnerClient(client);
       } else {
@@ -128,6 +127,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
         towerId,
       );
       containerDispatcher(addClient(res.data));
+      setInnerClient(res.data);
       dispatch(fetchAddToTowerSuccess());
     } catch (error) {
       dispatch(fetchAddToTowerFailure());
@@ -135,7 +135,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
     }
   };
 
-  function goToSalesRom() {
+  function gotoSalesroom() {
     history.push(
       `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`,
     );
@@ -196,7 +196,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                         variant="contained"
                         color="secondary"
                         disableElevation
-                        onClick={goToSalesRom}
+                        onClick={gotoSalesroom}
                       >
                         Ir a sala de ventas
                       </Button>
