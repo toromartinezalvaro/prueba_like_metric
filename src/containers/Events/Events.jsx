@@ -96,7 +96,7 @@ class Events extends Component {
           dateValue: [
             {
               eventId: id,
-              labelDate:'salesStartDate',
+              labelDate: 'salesStartDate',
               value: Number(salesStartDate),
               label: `FECHA INICIO PROYECTO (${moment(
                 Number(salesStartDate),
@@ -104,7 +104,7 @@ class Events extends Component {
             },
             {
               eventId: id,
-              labelDate:'endOfSalesDate',
+              labelDate: 'endOfSalesDate',
               value: Number(endOfSalesDate),
               label: `FECHA FIN PROYECTO (${moment(
                 Number(endOfSalesDate),
@@ -112,7 +112,7 @@ class Events extends Component {
             },
             {
               eventId: id,
-              labelDate:'balancePointDate',
+              labelDate: 'balancePointDate',
               value: Number(balancePointDate),
               label: `FECHA PUNTO DE EQUILIBRIO (${moment(
                 Number(balancePointDate),
@@ -120,7 +120,7 @@ class Events extends Component {
             },
             {
               eventId: id,
-              labelDate:'constructionStartDate',
+              labelDate: 'constructionStartDate',
               value: Number(constructionStartDate),
               label: `FECHA INICIO DE CONSTRUCCIÓN (${moment(
                 Number(constructionStartDate),
@@ -129,7 +129,7 @@ class Events extends Component {
             {
               eventId: id,
               value: Number(averageDeliveryDate),
-              labelDate:'averageDeliveryDate',
+              labelDate: 'averageDeliveryDate',
               label: `FECHA PROMEDIO DE ENTREGAS (${moment(
                 Number(averageDeliveryDate),
               ).format('DD/MM/YYYY')})`,
@@ -177,9 +177,31 @@ class Events extends Component {
   };
 
   onChangeText = (e) => {
+    const time = new Date().getTime();
     this.setState({
-      event: { ...this.state.event, description: e.target.value },
-      description: e.target.value,
+      event: {
+        description: `${e.target.value}(${moment(Number(time)).format(
+          'DD/MM/YYYY',
+        )})`,
+        customDate: moment(Number(time)).format('x'),
+        scheduleId: null,
+      },
+      description: `${e.target.value}(${moment(
+        Number(this.state.customDate),
+      ).format('DD/MM/YYYY')})`,
+    });
+  };
+
+  uniqueDateValue = (e) => {
+    const time = Number(moment(e.getTime()).format('x'));
+    this.setState({
+      event: {
+        description: `${this.state.description}(${moment(Number(time)).format(
+          'DD/MM/YYYY',
+        )})`,
+        customDate: time,
+        scheduleId: null,
+      },
     });
   };
 
@@ -221,17 +243,6 @@ class Events extends Component {
         canDisplace: true,
       });
     }
-  };
-
-  uniqueDateValue = (e) => {
-    const time = Number(moment(e.getTime()).format('x'));
-    this.setState({
-      event: {
-        ...this.state.event,
-        customDate: time,
-        scheduleId: null,
-      },
-    });
   };
 
   render() {

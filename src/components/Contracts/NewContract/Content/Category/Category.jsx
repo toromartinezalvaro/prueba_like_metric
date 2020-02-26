@@ -1,4 +1,4 @@
- /*
+/*
  * Created on Thu Oct 31 2019
  *
  * Copyright (c) 2019 JCATMAN INSTABUILD
@@ -68,10 +68,16 @@ const Category = ({
           variant="contained"
           color="primary"
           className={styles.button}
-          startIcon={<AddIcon />}
+          startIcon={
+            informationToEdit !== undefined ? (
+              <Icon className="fa fa-edit" />
+            ) : (
+              <AddIcon />
+            )
+          }
           onClick={sendTextOfCategory}
         >
-          {informationToEdit === undefined ? 'Crear' : 'Editar'}
+          {informationToEdit !== undefined ? 'Editar' : 'Crear'}
         </Button>
 
         <Button

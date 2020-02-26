@@ -17,6 +17,7 @@ const Navbar = ({
   deleteContract,
   currentContract,
   currentPut,
+  events,
 }) => {
   return (
     <div>
@@ -37,6 +38,7 @@ const Navbar = ({
           currentContract={currentContract}
           currentPut={currentPut}
           deleteContract={deleteContract}
+          events={events}
         />
       </div>
     </div>

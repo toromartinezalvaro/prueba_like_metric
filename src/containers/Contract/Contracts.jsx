@@ -561,6 +561,18 @@ class Contracts extends Component {
                 this.setState({
                   contractModal: { isOpen: false },
                   contract: null,
+                  businessPatnerModal: {
+                    ...this.state.businessPatnerModal,
+                    currentPatner: { value: 0, label: 'Seleccione un socio' },
+                  },
+                  itemModal: {
+                    ...this.state.itemModal,
+                    currentItem: { value: 0, label: 'Seleccione un item' },
+                  },
+                  categoryModal: {
+                    ...this.state.categoryModal,
+                    currentCategory: { value: 0, label: 'Seleccione un grupo' },
+                  },
                 });
               }
             })
@@ -719,6 +731,7 @@ class Contracts extends Component {
           sendId={this.sendId}
           currentContract={this.state.currentContract}
           currentPut={this.currentPut}
+          events={this.state.events}
           deleteContract={this.deleteContract}
         />
         <NewContract

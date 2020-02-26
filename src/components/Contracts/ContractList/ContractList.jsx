@@ -28,6 +28,7 @@ class ContractList extends Component {
       contractData: {},
       isLoading: true,
       contractAvailable: true,
+      events: [],
     };
     this.services = new ContractService();
     this.service = new ContractFlowService();
@@ -38,13 +39,16 @@ class ContractList extends Component {
       this.service
         .getContractsInformation(this.props.towerId)
         .then((response) => {
-          this.setState({ isLoading: false });
+          this.setState({ isLoading: true });
           const information = response.data;
           const data = [];
           information.map((contract) => {
             data.push(contract.salesStartDate);
-            this.setState({ datesAndEvent: data });
+            this.setState({ datesAndEvent: data, isLoading: false });
           });
+          this.setTimeout(() => {
+            this.setState({ isLoading: false });
+          }, 1000);
         })
         .catch((error) => {
           console.log(error);
@@ -72,17 +76,20 @@ class ContractList extends Component {
   }
 
   componentDidMount() {
+    this.setState({ events: this.props.events });
     this.service
       .getContractsInformation(this.props.towerId)
       .then((response) => {
         this.setState({ isLoading: true });
         const information = response.data;
         const data = [];
-        console.log(information);
         information.map((contract) => {
           data.push(contract.schedulesDate.salesStartDate);
           this.setState({ datesAndEvent: data, isLoading: false });
         });
+        setTimeout(() => {
+          this.setState({ isLoading: false });
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -210,6 +217,7 @@ class ContractList extends Component {
             openView={this.state.openDataView}
             closeViewModal={this.closeViewModal}
             contractDataView={this.state.contractDataView}
+            events={this.state.events}
           />
         )}
       </div>

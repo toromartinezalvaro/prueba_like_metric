@@ -66,6 +66,7 @@ class ViewContractInformation extends Component {
             <ViewGeneralInfo contractDataView={this.props.contractDataView} />
             <ViewBillingAndFinancials
               contractDataView={this.props.contractDataView}
+              events={this.props.events}
             />
             {this.state.deleteAction && (
               <DeleteAction
@@ -83,7 +84,7 @@ class ViewContractInformation extends Component {
                 variant="contained"
                 color="primary"
                 className={style.button}
-                startIcon={<Icon className="fas fa-file-signature" />}
+                startIcon={<Icon className="fa fa-edit" />}
                 onClick={this.openEditable}
               >
                 Editar Contrato

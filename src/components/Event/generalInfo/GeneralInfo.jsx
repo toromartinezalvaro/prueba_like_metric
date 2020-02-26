@@ -52,7 +52,7 @@ const GeneralInfo = ({
   const [initialDate, setInitialDate] = useState(new Date());
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const uniqueDateValueSend = (e) => {
+  const uniqueDateValueSend = (e = new Date()) => {
     uniqueDateValue(e);
   };
 
@@ -76,13 +76,14 @@ const GeneralInfo = ({
         <div className={styles.itemSelect}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+              autoOk
               disableToolbar
               variant="inline"
               format="MM/dd/yyyy"
               margin="normal"
               id="date-picker-inline"
               label="Fecha De Evento"
-              value={initialDate}
+              defaultValue={initialDate}
               onChange={uniqueDateValueChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
