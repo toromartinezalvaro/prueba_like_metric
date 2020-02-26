@@ -270,10 +270,7 @@ class SalesRoom extends Component {
         next.id !== this.state.id
       ) {
         current += increment;
-      } else if (
-        next.id === this.state.id &&
-        this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE
-      ) {
+      } else if (next.id === this.state.id) {
         increment =
           this.state.priceSold -
           price -
