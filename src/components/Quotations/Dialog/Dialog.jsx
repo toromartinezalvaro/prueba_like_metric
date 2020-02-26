@@ -56,7 +56,7 @@ const Dialog = ({
     } catch (error) {
       dispatch(fetchQuotationFailure());
       spawnMessage(
-        `Hubo un problema cancelando la cotizacion ${error.response.data.message}`,
+        `Hubo un problema cancelando la cotización ${error.response.data.message}`,
         'error',
       );
     }
