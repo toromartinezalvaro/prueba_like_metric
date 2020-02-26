@@ -23,6 +23,7 @@ const DISCOUNT = 'DISCOUNT';
 const INCREMENT = 'INCREMENT';
 
 const SalesRoomModal = ({
+  isDisabled,
   property,
   onChange,
   clientId,
@@ -85,13 +86,22 @@ const SalesRoomModal = ({
               }}
               horizontal
             >
-              <RadioButton value={SalesRoomEnum.status.AVAILABLE}>
+              <RadioButton
+                value={SalesRoomEnum.status.AVAILABLE}
+                disabled={isDisabled}
+              >
                 Disponible
               </RadioButton>
-              <RadioButton value={SalesRoomEnum.status.OPTIONAL}>
+              <RadioButton
+                value={SalesRoomEnum.status.OPTIONAL}
+                disabled={isDisabled}
+              >
                 Opcionado
               </RadioButton>
-              <RadioButton value={SalesRoomEnum.status.SOLD}>
+              <RadioButton
+                value={SalesRoomEnum.status.SOLD}
+                disabled={isDisabled}
+              >
                 Vendido
               </RadioButton>
             </RadioGroup>
@@ -125,7 +135,6 @@ const SalesRoomModal = ({
         )}
         {currentState === SalesRoomEnum.status.SOLD && (
           <div>
-            {console.log('AREAS', additionalAreas)}
             <div className={Styles.inputContainer}>
               <span className={Styles.title}>Valor Apartamento</span>
               <div>
@@ -303,7 +312,7 @@ const SalesRoomModal = ({
         closeHandler={() => setQuotationOpen(false)}
         quotationData={{
           propertyId: property.id,
-          clientId: clientId,
+          clientId,
           propertyPrice: getTradePrice(),
         }}
         towerId={towerId}

@@ -181,6 +181,9 @@ class SalesRoom extends Component {
           {property.requestStatus === 'R' && (
             <span className={Styles.rejectBadge}>R</span>
           )}
+          {property.requestStatus === 'D' && (
+            <span className={Styles.rejectBadge}>D</span>
+          )}
           {active === 'name' && property.name}
         </p>
       ) : (
@@ -208,6 +211,9 @@ class SalesRoom extends Component {
           {active === 'groups' && property.groupName}
           {property.requestStatus === 'R' && (
             <span className={Styles.rejectBadge}>R</span>
+          )}
+          {property.requestStatus === 'D' && (
+            <span className={Styles.rejectBadge}>D</span>
           )}
           {active === 'name' && property.name}
         </p>
@@ -254,7 +260,11 @@ class SalesRoom extends Component {
       properties = this.findGroup(groups);
     }
     return properties.reduce((current, next) => {
-      let increment = next.priceSold - next.price;
+      let { price } = next;
+      if (next.manualPrice) {
+        price = next.manualPrice;
+      }
+      let increment = next.priceSold - price;
       if (
         next.groupId === this.state.groupId &&
         next.status !== Status.Available &&
@@ -267,7 +277,7 @@ class SalesRoom extends Component {
       ) {
         increment =
           this.state.priceSold -
-          next.price -
+          price -
           this.state.selectedProperty.discount +
           this.state.discountApplied;
         current += increment;
@@ -431,17 +441,9 @@ class SalesRoom extends Component {
   };
 
   render() {
-    let isStrategyNull = false;
-    if (this.state.selectedProperty)
-      isStrategyNull =
-        this.state.selectedProperty.increment !== 0 &&
-        !this.state.selectedProperty.strategy;
+    let isStrategyNull = this.state.selectedProperty.isReset;
 
-    let showModalSelectedProperty = false;
-    if (this.state.selectedProperty)
-      showModalSelectedProperty =
-        this.state.selectedProperty.strategy > 0 ||
-        !this.state.selectedProperty.increment;
+    let showModalSelectedProperty = !isStrategyNull;
 
     if (
       isStrategyNull &&
@@ -453,7 +455,6 @@ class SalesRoom extends Component {
         this.state.selectedProperty,
         this.state.response.properties,
       );
-      isStrategyNull = !isThereOneProperty;
       showModalSelectedProperty = isThereOneProperty;
     }
 
@@ -517,6 +518,9 @@ class SalesRoom extends Component {
                       this.props.match.params.clientId ||
                     this.state.selectedProperty.clientId === null ? (
                     <SalesRoomModal
+                      isDisabled={
+                        this.state.selectedProperty.requestStatus === 'D'
+                      }
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}
@@ -540,7 +544,13 @@ class SalesRoom extends Component {
                 {(this.state.selectedProperty.clientId ===
                   this.props.match.params.clientId ||
                   this.state.selectedProperty.clientId === null) && (
-                  <Button onClick={this.save} className={Styles.ConfirmButton}>
+                  <Button
+                    onClick={this.save}
+                    className={Styles.ConfirmButton}
+                    isDisabled={
+                      this.state.selectedProperty.requestStatus === 'D'
+                    }
+                  >
                     Aceptar
                   </Button>
                 )}
