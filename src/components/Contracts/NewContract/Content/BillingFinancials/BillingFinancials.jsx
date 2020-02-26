@@ -245,7 +245,7 @@ const BillingFinancials = ({
       const data = dataIfEdit.billings;
       setLastId(1);
       setBillings(data);
-      setLastDate(data[0].initalBillingDate);
+      setLastDate(data[0] ? data[0].initalBillingDate : null);
       setTimeout(() => {
         watchingContract();
       }, 1000);
@@ -430,7 +430,7 @@ const BillingFinancials = ({
                 <div className={styles.dateInitial}>
                   <TextField
                     required
-                    disabled={eventIsUnique}
+                    disabled={eventIsUnique || billing.isLocked}
                     className={styles.textFieldDisplace}
                     label={`Desplazamiento ${billing.cycle}`}
                     margin="normal"
@@ -473,7 +473,9 @@ const BillingFinancials = ({
                 <div className={styles.lastDate}>
                   <TextField
                     required
-                    disabled={billing.cycle === 'Pago Único'}
+                    disabled={
+                      billing.cycle === 'Pago Único' || billing.isLocked
+                    }
                     className={styles.textFieldDisplace}
                     label="Numero de pagos"
                     margin="normal"

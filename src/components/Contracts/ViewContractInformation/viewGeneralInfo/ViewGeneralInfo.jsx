@@ -7,6 +7,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardContent } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
+import statusOfContract from '../../NewContract/Content/GeneralInfo/statusOfContract.enum';
 import style from '../ViewContractInformation.module.scss';
 
 const viewGeneralInfo = ({ contractDataView }) => {

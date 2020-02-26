@@ -27,7 +27,7 @@ class ContractList extends Component {
       contractId: 0,
       contractData: {},
       isLoading: true,
-      contractAvailable: true,
+      contractAvailable: false,
     };
     this.services = new ContractService();
     this.service = new ContractFlowService();
@@ -38,12 +38,12 @@ class ContractList extends Component {
       this.service
         .getContractsInformation(this.props.towerId)
         .then((response) => {
-          this.setState({ isLoading: false });
+          this.setState({ isLoading: true });
           const information = response.data;
           const data = [];
           information.map((contract) => {
             data.push(contract.salesStartDate);
-            this.setState({ datesAndEvent: data });
+            this.setState({ datesAndEvent: data, isLoading: false });
           });
         })
         .catch((error) => {
@@ -78,11 +78,13 @@ class ContractList extends Component {
         this.setState({ isLoading: true });
         const information = response.data;
         const data = [];
-        console.log(information);
         information.map((contract) => {
           data.push(contract.schedulesDate.salesStartDate);
           this.setState({ datesAndEvent: data, isLoading: false });
         });
+        setTimeout(() => {
+          this.setState({ isLoading: false });
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -103,6 +105,7 @@ class ContractList extends Component {
       .catch((error) => {
         console.log(error);
       });
+    this.setState({ isLoading: false });
   }
 
   closeInformationView = () => {

@@ -83,7 +83,7 @@ class ViewContractInformation extends Component {
                 variant="contained"
                 color="primary"
                 className={style.button}
-                startIcon={<Icon className="fas fa-file-signature" />}
+                startIcon={<Icon className="fa fa-edit" />}
                 onClick={this.openEditable}
               >
                 Editar Contrato

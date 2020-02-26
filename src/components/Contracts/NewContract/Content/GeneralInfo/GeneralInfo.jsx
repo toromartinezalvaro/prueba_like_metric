@@ -53,6 +53,11 @@ const GeneralInfo = ({
     description: '',
   });
 
+  const [itemProps, setItemProp] = useState({
+    label: 'Seleccione un item',
+    value: 0,
+  });
+
   const [isLocked, setIsLocked] = useState(true);
   const [isLockedEdit, setsLockedEdit] = useState(true);
 
@@ -116,6 +121,13 @@ const GeneralInfo = ({
     if (items) {
       setsLockedEdit(false);
     }
+  };
+
+  const itemClean = () => {
+    setItemProp({
+      label: 'Seleccione un item',
+      value: 0,
+    });
   };
 
   const changeAndSearchPartner = (currentPartner) => {
@@ -241,6 +253,7 @@ const GeneralInfo = ({
                     : categoryProp
                 }
                 onChange={changeAndSearchCategory}
+                onBlur={itemClean}
               />
             </div>
             <div className={styles.buttonColumn}>

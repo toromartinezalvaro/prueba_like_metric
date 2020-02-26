@@ -7,10 +7,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
+import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import styles from './BusinessPatner.module.scss';
@@ -263,7 +263,13 @@ const BusinessPatner = ({
           variant="contained"
           color="primary"
           className={styles.button}
-          startIcon={<AddIcon />}
+          startIcon={
+            informationToEdit !== undefined ? (
+              <Icon className="fa fa-edit" />
+            ) : (
+              <AddIcon />
+            )
+          }
           onClick={sendPartner}
         >
           {informationToEdit !== undefined
