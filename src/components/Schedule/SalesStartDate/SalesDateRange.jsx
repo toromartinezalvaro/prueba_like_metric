@@ -12,12 +12,20 @@ const displacementValidation = () => [
     fn: (value) => value >= 0,
     message: 'Debe ser mayor 0',
   },
+  {
+    fn: (value) => value <= 100,
+    message: 'El desplazamiento es demasiado grande',
+  },
 ];
 
 const displacementValidationMaximumCollectionDate = () => [
   {
     fn: (value) => value <= 0,
     message: 'Debe ser menor 0',
+  },
+  {
+    fn: (value) => value >= -100,
+    message: 'El desplazamiento es demasiado grande',
   },
 ];
 
