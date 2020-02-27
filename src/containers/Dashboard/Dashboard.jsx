@@ -35,6 +35,7 @@ import ContractFlow from '../ContractFlow2/ContractFlow';
 import CashFlow from '../CashFlow';
 import SaleRequests from '../SaleRequests';
 import Pairing from '../Pairing';
+import Quotations from '../Quotations';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -240,6 +241,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Pairing}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.quotations.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Quotations}
         />
       </DashboardLayout>
     );
