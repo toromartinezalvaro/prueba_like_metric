@@ -50,6 +50,10 @@ export const DashboardRoutes = {
     value: '/pairing/',
     withIndicator: '/pairing/:towerId',
   },
+  quotations: {
+    value: '/quotations/',
+    withIndicator: '/quotations/:towerId',
+  },
 };
 
 export const ContractRoutes = {
@@ -114,6 +118,10 @@ export const Contracts = {
 
 export const ContractFlow = {
   array: [DashboardRoutes.base + ContractFlowRoutes.base.value],
+};
+
+export const Quotation = {
+  array: [DashboardRoutes.base + DashboardRoutes.quotations.value],
 };
 
 export const UserRoutes = {

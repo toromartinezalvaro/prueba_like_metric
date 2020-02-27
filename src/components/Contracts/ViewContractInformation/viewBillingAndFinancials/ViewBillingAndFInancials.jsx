@@ -12,7 +12,7 @@ import NumberFormat from 'react-number-format';
 import Numbers from '../../../../helpers/numbers';
 import style from '../ViewContractInformation.module.scss';
 
-const ViewBillingAndFinancials = ({ contractDataView }) => {
+const ViewBillingAndFinancials = ({ contractDataView, events }) => {
   const totalBills = contractDataView.billings.map((billing) => {
     let billingSum = 0;
     billingSum += Number(billing.amount);
@@ -43,7 +43,11 @@ const ViewBillingAndFinancials = ({ contractDataView }) => {
                       </Card>
                       <Card className={style.leftTitle}>
                         <span className={style.labelForTitle}>Evento</span>
-                        <p className={style.information}>{billing.eventId}</p>
+                        <p className={style.information}>
+                          {events.find(
+                            (element) => element.id === billing.eventId,
+                          )}
+                        </p>
                       </Card>
                       <Card className={style.leftTitle}>
                         <span className={style.cont}>

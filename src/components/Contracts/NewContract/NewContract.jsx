@@ -149,7 +149,13 @@ const NewContract = ({
             variant="contained"
             color="primary"
             className={styles.button}
-            startIcon={<Icon className="fas fa-file-signature" />}
+            startIcon={
+              isEditable ? (
+                <Icon className="fa fa-edit" />
+              ) : (
+                <Icon className="fas fa-file-signature" />
+              )
+            }
             onClick={isEditable ? editContract : addContract}
           >
             {isEditable ? 'Editar Contrato' : 'Crear Contrato'}

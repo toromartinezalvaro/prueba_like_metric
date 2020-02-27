@@ -12,6 +12,7 @@ import {
   SalesRoom,
   Reports,
   Contracts,
+  Quotation,
 } from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
@@ -346,6 +347,26 @@ const SideMenu = ({
                         DashboardRoutes.base + ContractFlowRoutes.base.value,
                         'fas fa-file-contract',
                         'Flujo de Contratos',
+                      ),
+                  ]}
+                />
+                <Header
+                  title="Cotización"
+                  validation={!!agent.isAuthorized([Role.Admin, Role.Super])}
+                />
+                <Section
+                  title={'Cotizaciones'}
+                  validation={Quotation.array.some((url) =>
+                    window.location.pathname.includes(url),
+                  )}
+                  display={!!agent.isAuthorized([Role.Admin, Role.Super])}
+                  items={[
+                    agent.isAuthorized([Role.Admin, Role.Super]) &&
+                      itemForSlidebar(
+                        style.MenuItem,
+                        DashboardRoutes.base + DashboardRoutes.quotations.value,
+                        'fas fa-file-signature',
+                        'Contratos',
                       ),
                   ]}
                 />

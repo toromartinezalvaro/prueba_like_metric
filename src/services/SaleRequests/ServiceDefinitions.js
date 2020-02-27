@@ -12,8 +12,8 @@ const ServiceDefinitions = {
     return `${API_PATH}sale-requests/${id}`;
   },
 
-  putPriceProperty: (id) => {
-    return `${API_PATH}sale-requests/price-property/${id}`;
+  putPriceProperty: (id, towerId) => {
+    return `${API_PATH}sale-requests/price-property/${towerId}/${id}`;
   },
 
   getGroupDesistStatus: (id) => {

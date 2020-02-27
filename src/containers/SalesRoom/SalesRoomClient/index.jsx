@@ -28,6 +28,7 @@ import LoadableContainer from '../../../components/UI/Loader';
 import SalesRoomModal from '../../../components/SalesRoom/modal';
 import SalesRoomEnum from '../SalesRoom.enum';
 import Styles from './salesRoomClient.module.scss';
+import withDefaultLayout from '../../../HOC/Layouts/Default/withDefaultLayout';
 
 class SalesRoom extends Component {
   constructor(props) {
@@ -270,10 +271,7 @@ class SalesRoom extends Component {
         next.id !== this.state.id
       ) {
         current += increment;
-      } else if (
-        next.id === this.state.id &&
-        this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE
-      ) {
+      } else if (next.id === this.state.id) {
         increment =
           this.state.priceSold -
           price -
@@ -528,6 +526,9 @@ class SalesRoom extends Component {
                       additionalAreas={this.state.additionalAreas}
                       addAdditionalAreaHandler={this.addAdditionalArea}
                       deleteAdditionalAreaHandler={this.deleteAdditionalArea}
+                      towerId={this.props.match.params.towerId}
+                      spawnMessage={this.props.spawnMessage}
+                      clientId={this.props.match.params.clientId}
                     />
                   ) : (
                     'El apartamento seleccionado no le pertenece a este cliente'
@@ -559,4 +560,4 @@ class SalesRoom extends Component {
   }
 }
 
-export default SalesRoom;
+export default withDefaultLayout(SalesRoom);

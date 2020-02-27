@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 import Card, { CardBody } from '../../components/UI/Card/Card';
-import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import ClusteringServices from '../../services/clustering/ClusteringServices';
 import GroupTable from '../../components/Clustering/GroupTable/GroupTable';
@@ -132,34 +132,44 @@ class Clustering extends Component {
                       value={this.state.groupsSize}
                       placeholder="Grupos"
                       forceUpdate={true}
-                      disable={this.state.locked}
+                      disable={this.state.locked || this.state.loadingTable}
                     />
                   </div>
                   {!this.state.locked && (
                     <div>
-                      <Button
-                        onClick={() => {
-                          this.postClusters(true);
-                        }}
-                        disabled={
-                          this.state.waitingForResponse ||
-                          this.state.groupsSize > this.state.clusters.length
-                        }
-                      >
-                        Agrupar por area
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          this.postClusters(false);
-                        }}
-                        disabled={
-                          this.state.waitingForResponse ||
-                          this.state.message === 2 ||
-                          this.state.groupsSize > this.state.clusters.length
-                        }
-                      >
-                        Agrupar por precio
-                      </Button>
+                      <div style={{ marginBottom: '10px' }}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            this.postClusters(true);
+                          }}
+                          disabled={
+                            this.state.loadingTable ||
+                            this.state.groupsSize > this.state.clusters.length
+                          }
+                        >
+                          Agrupar por area
+                        </Button>
+                      </div>
+                      <div>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            this.postClusters(false);
+                          }}
+                          disabled={
+                            this.state.loadingTable ||
+                            this.state.message === 2 ||
+                            this.state.groupsSize > this.state.clusters.length
+                          }
+                        >
+                          Agrupar por precio
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
