@@ -14,8 +14,8 @@ class SaleRequestsServices extends Services {
     return this.put(ServiceDefinitions.putSaleRequest(id), request);
   }
 
-  putPriceProperty(id, request) {
-    return this.put(ServiceDefinitions.putPriceProperty(id), request);
+  putPriceProperty(towerId, id, request) {
+    return this.put(ServiceDefinitions.putPriceProperty(id, towerId), request);
   }
 
   getGroupDesistStatus(id) {

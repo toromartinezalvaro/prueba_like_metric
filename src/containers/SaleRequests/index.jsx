@@ -109,6 +109,7 @@ class SalesRequests extends Component {
 
   updatePriceProperty = async (propertyId, values) => {
     const approvedRequest = await this.services.putPriceProperty(
+      this.props.match.params.towerId,
       propertyId,
       values,
     );

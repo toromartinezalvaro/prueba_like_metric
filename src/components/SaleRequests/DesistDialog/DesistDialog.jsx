@@ -44,9 +44,13 @@ const DesistDialog = ({
     }
   };
 
-  const onSubmitHandler = (values) => {
+  const onSubmitHandler = async (values) => {
     const { price } = values;
-    const result = updatePriceProperty(propertyId, { desistRequestId, price });
+    const result = await updatePriceProperty(propertyId, {
+      desistRequestId,
+      price,
+    });
+
     setDisabled(result);
   };
 
