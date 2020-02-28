@@ -705,7 +705,6 @@ class Contracts extends Component {
       .catch((error) => {
         this.toastAlert('ERROR: No se puede eliminar el contrato');
       });
-    console.log('Contrato eliminado', id);
   };
 
   watchingContract = () => {
