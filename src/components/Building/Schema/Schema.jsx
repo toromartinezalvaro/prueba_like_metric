@@ -124,7 +124,10 @@ const Schema = (props) => {
             <div>
               <Button
                 onClick={() => {
-                  setHidden(false);
+                  if (!props.selled) {
+                    save();
+                    setHidden(false);
+                  }
                 }}
               >
                 Guardar
@@ -150,17 +153,17 @@ const Schema = (props) => {
           )}
         </div>
 
-        {hidden ? null : (
+        {props.selled ? (
           <Modal
             title={'Actualizar nomenclatura'}
-            hidden={hidden}
+            hidden={props.selled}
             onConfirm={save}
             onCancel={cancel}
           >
             Guardar este nuevo esquema eliminara toda la nomenclatura anterior{' '}
             <br /> deseas continuar?
           </Modal>
-        )}
+        ) : null}
       </CardFooter>
     </Card>
   );

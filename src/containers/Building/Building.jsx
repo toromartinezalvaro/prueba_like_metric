@@ -33,6 +33,7 @@ class Building extends Component {
       salesStartDate: new Date().getTime(),
       endOfSalesDate: new Date().getTime(),
     },
+    selled: false,
   };
 
   componentDidMount() {
@@ -131,7 +132,7 @@ class Building extends Component {
         lowestFloor: parseInt(this.state.lowestFloor, 10),
       })
       .then(() => {
-        this.setState({ floors: [], disable: true, names: [] });
+        this.setState({ floors: [], disable: true, names: [], selled: true });
         this.updateNames(true);
         this.setState({ isLoadingSchemas: false });
       })
@@ -254,6 +255,7 @@ class Building extends Component {
             updateStratum={this.updateStratum}
             disableWarning={this.state.disableWarning}
             toggleWarning={this.toggleWarning}
+            selled={this.state.selled}
           />
           {!this.state.disable ? null : (
             <Naming
