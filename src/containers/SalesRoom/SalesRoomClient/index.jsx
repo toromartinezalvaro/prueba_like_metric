@@ -57,6 +57,7 @@ class SalesRoom extends Component {
     clientName: null,
     deadlineDate: new Date(),
     additionalAreas: [],
+    isLastProperty: false,
   };
 
   propertyHandler = (key, value) => {
@@ -121,6 +122,12 @@ class SalesRoom extends Component {
       tempProperty.adminAdditionalAreas = tempProperty.additionalAreas.filter(
         (additionalArea) => !additionalArea.addedFromSalesRoom,
       );
+      const group = this.state.response.properties.find(
+        (g) => g[0].groupId === tempProperty.groupId,
+      );
+      const availableProperties = group.filter(
+        (p) => p.status === Status.Available,
+      );
       this.setState({
         id: property.id,
         groupId: property.groupId,
@@ -130,6 +137,7 @@ class SalesRoom extends Component {
         priceSold: property.priceWithIncrement,
         selectedProperty: tempProperty,
         discountApplied: property.discount,
+        isLastProperty: availableProperties.length === 1,
       });
     }
   };
@@ -455,6 +463,10 @@ class SalesRoom extends Component {
       showModalSelectedProperty = isThereOneProperty;
     }
 
+    if (isStrategyNull && this.state.isLastProperty) {
+      showModalSelectedProperty = true;
+    }
+
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.isEmpty && (
@@ -500,6 +512,7 @@ class SalesRoom extends Component {
               </DialogTitle>
               <DialogContent>
                 {isStrategyNull &&
+                  !this.state.isLastProperty &&
                   'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
                 {showModalSelectedProperty &&
                   (this.state.isLoadingModal ? (
@@ -518,6 +531,7 @@ class SalesRoom extends Component {
                       isDisabled={
                         this.state.selectedProperty.requestStatus === 'D'
                       }
+                      isLast={this.state.isLastProperty}
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}
