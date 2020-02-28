@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import Dialog from '@material-ui/core/Dialog';
@@ -46,16 +46,23 @@ const defaultClient = {
 const validationSchema = yup.object().shape({
   identityDocument: yup
     .string()
+    .matches(/^[a-zA-Z0-9-]*$/)
     .required('Debe ingresar un documento de identidad'),
   name: yup.string().required('Debe ingresar un nombre'),
   email: yup
     .string()
-    .email('El correo electronico es invalido')
-    .required('Debe ingresar un correo electronico'),
-  phoneNumber: yup.string().required('Debe ingresar un numero de telefono'),
+    .email('El correo electrónico es invalido')
+    .required('Debe ingresar un correo electrónico'),
+  phoneNumber: yup
+    .number()
+    .typeError('Teléfono debe ser un número')
+    .integer('Debe ser un número real')
+    .positive('Debe ser un número real')
+    .required('Debe ingresar un número de teléfono'),
 });
 
 const FormDialog = ({ client, open, onCloseHandler }) => {
+  const history = useHistory();
   const {
     towerId,
     dispatch: containerDispatcher,
@@ -67,7 +74,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
   const [innerClient, setInnerClient] = useState(defaultClient);
 
   useEffect(() => {
-    if (client && open) {
+    if (open && client) {
       if (client.id) {
         setInnerClient(client);
       } else {
@@ -103,7 +110,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
         dispatch(createdClient(res.data.id));
       }
       makeAlert(
-        `Se ${innerClient.id ? 'actualizo' : 'creo'} correctamente el usuaro`,
+        `Se ${innerClient.id ? 'actualizó' : 'creó'} correctamente el usuaro`,
         'success',
       );
     } catch (error) {
@@ -120,6 +127,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
         towerId,
       );
       containerDispatcher(addClient(res.data));
+      setInnerClient(res.data);
       dispatch(fetchAddToTowerSuccess());
     } catch (error) {
       dispatch(fetchAddToTowerFailure());
@@ -127,11 +135,17 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
     }
   };
 
+  function gotoSalesroom() {
+    history.push(
+      `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`,
+    );
+  }
+
   return (
     <Dialog open={open} onClose={onCloseHandler} fullWidth>
       <DialogTitle>Cliente</DialogTitle>
       <DialogContent>
-        <DialogContentText>Informacion del cliente</DialogContentText>
+        <DialogContentText>Información del cliente</DialogContentText>
         <Box mb={2}>
           <Formik
             validationSchema={validationSchema}
@@ -162,7 +176,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                   touched={touched.email}
                   name="email"
                   placeholder="contact@email.com"
-                  label="Correo electronico"
+                  label="Correo electrónico"
                   component={Input}
                 />
                 <Field
@@ -170,26 +184,22 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                   touched={touched.phoneNumber}
                   name="phoneNumber"
                   placeholder="3001234567"
-                  label="Numero de telefono"
+                  label="Número de teléfono"
                   component={Input}
                 />
                 <Grid container spacing={1} direction="row-reverse">
                   <Grid item>
                     {!innerClient.id && (
-                      <Link
-                        to={`${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`}
-                        className={Styles.link}
+                      <Button
+                        disabled={!state.createdClient}
+                        type="submit"
+                        variant="contained"
+                        color="secondary"
+                        disableElevation
+                        onClick={gotoSalesroom}
                       >
-                        <Button
-                          disabled={!state.createdClient}
-                          type="submit"
-                          variant="contained"
-                          color="secondary"
-                          disableElevation
-                        >
-                          Ir a sala de ventas
-                        </Button>
-                      </Link>
+                        Ir a sala de ventas
+                      </Button>
                     )}
                   </Grid>
                   <Grid item>
