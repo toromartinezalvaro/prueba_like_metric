@@ -57,6 +57,7 @@ class SalesRoom extends Component {
     clientName: null,
     deadlineDate: new Date(),
     additionalAreas: [],
+    lastSelector: 'priceWithIncrements',
   };
 
   propertyHandler = (key, value) => {
@@ -72,6 +73,7 @@ class SalesRoom extends Component {
       .getProperties(towerId, clientId)
       .then((properties) => {
         const { data } = properties;
+        console.log('INCREMENT LIST', data.incrementList);
         this.makeArrayOfProperties(data.incrementList);
         this.setState({
           isLoading: false,
@@ -244,6 +246,7 @@ class SalesRoom extends Component {
         lowestFloor: data.lowestFloor,
         data: matrix,
         isEmpty: false,
+        lastSelector: active,
       });
     } else {
       this.setState({ isEmpty: true });
@@ -332,7 +335,7 @@ class SalesRoom extends Component {
       .then((response) => {
         const { incrementList } = response.data;
         if (incrementList) {
-          this.makeArrayOfProperties(incrementList);
+          this.makeArrayOfProperties(incrementList, this.state.lastSelector);
         }
         this.setState({
           isOpen: false,
