@@ -73,7 +73,6 @@ class SalesRoom extends Component {
       .getProperties(towerId, clientId)
       .then((properties) => {
         const { data } = properties;
-        console.log('INCREMENT LIST', data.incrementList);
         this.makeArrayOfProperties(data.incrementList);
         this.setState({
           isLoading: false,
