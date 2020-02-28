@@ -11,8 +11,9 @@ export const fetchAddToTowerStart = () => ({
   type: FETCH_ADD_TO_TOWER__START,
 });
 
-export const fetchAddToTowerSuccess = () => ({
+export const fetchAddToTowerSuccess = (client) => ({
   type: FETCH_ADD_TO_TOWER__SUCCESS,
+  payload: client,
 });
 
 export const fetchAddToTowerFailure = () => ({
