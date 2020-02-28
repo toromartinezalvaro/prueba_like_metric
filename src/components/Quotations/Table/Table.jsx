@@ -47,7 +47,7 @@ const Table = ({ quotation }) => {
               />
             </TableCell>
           </TableRow>
-          {Array(Math.max(1, quotation.periods - 1))
+          {Array(Math.max(1, quotation.periods))
             .fill(null)
             .map((_, index) => (
               <TableRow key={`QuotationRow-${index}`}>
