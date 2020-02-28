@@ -47,7 +47,7 @@ const Table = ({ quotation }) => {
               />
             </TableCell>
           </TableRow>
-          {Array(Math.max(1, quotation.periods))
+          {Array(Math.max(1, quotation.periods - 1))
             .fill(null)
             .map((_, index) => (
               <TableRow key={`QuotationRow-${index}`}>
@@ -61,7 +61,10 @@ const Table = ({ quotation }) => {
                 <TableCell>
                   <NumberFormat
                     value={(
-                      quotation.propertyPrice / quotation.periods
+                      (quotation.propertyPrice *
+                        quotation.initialFeePercentage -
+                        quotation.propertyPrice * quotation.reservePercentage) /
+                      (quotation.periods - 1)
                     ).toFixed(2)}
                     displayType="text"
                     thousandSeparator
