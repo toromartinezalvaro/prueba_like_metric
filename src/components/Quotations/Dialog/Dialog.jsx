@@ -37,7 +37,7 @@ const Dialog = ({
     try {
       dispatch(fetchQuotationStart());
       await services.putQuotationToPermanent(store.quotation.id);
-      spawnMessage('Se agrego correctamente la cotización', 'success');
+      spawnMessage('Se agregó correctamente la cotización', 'success');
       closeHandler();
     } catch (error) {
       dispatch(fetchQuotationFailure());
@@ -50,7 +50,7 @@ const Dialog = ({
       dispatch(fetchQuotationStart());
       if (!store.error) {
         await services.deleteQuotation(store.quotation.id);
-        spawnMessage('Se cancelo correctamente la cotización', 'info');
+        spawnMessage('Se canceló correctamente la cotización', 'info');
       }
       closeHandler();
     } catch (error) {
@@ -104,7 +104,9 @@ const Dialog = ({
           <div className={Styles.toolbarRightSide}>
             <Button
               autoFocus
-              color="inherit"
+              color="secondary"
+              variant="contained"
+              disableElevation
               onClick={putQuotation}
               disabled={store.loading || store.error}
             >

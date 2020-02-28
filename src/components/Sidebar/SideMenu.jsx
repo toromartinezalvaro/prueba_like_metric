@@ -350,7 +350,7 @@ const SideMenu = ({
                       ),
                   ]}
                 />
-                <Header
+                {/* <Header
                   title="Cotización"
                   validation={!!agent.isAuthorized([Role.Admin, Role.Super])}
                 />
@@ -369,7 +369,7 @@ const SideMenu = ({
                         'Contratos',
                       ),
                   ]}
-                />
+                /> */}
               </div>
             </div>
           </Fragment>
