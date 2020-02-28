@@ -18,6 +18,8 @@ const Navbar = ({
   currentContract,
   currentPut,
   events,
+  listInformationPartner,
+  listInformationGroup,
 }) => {
   return (
     <div>
@@ -39,6 +41,8 @@ const Navbar = ({
           currentPut={currentPut}
           deleteContract={deleteContract}
           events={events}
+          listInformationGroup={listInformationGroup}
+          listInformationPartner={listInformationPartner}
         />
       </div>
     </div>
