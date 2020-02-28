@@ -27,12 +27,12 @@ const TablesContractFlow = ({ billings }) => {
   ]);
 
   const [tableColumnExtensions, setTableColumnExtensions] = useState([
-    { columnName: 'contract', width: 180 },
+    { columnName: 'contract', width: 100 },
     { columnName: 'acumulated', width: 100 },
     { columnName: 'projected', width: 100 },
     { columnName: 'total', width: 100 },
     { columnName: 'date', width: 100 },
-    { columnName: 'group', width: 120 },
+    { columnName: 'group', width: 200 },
     { columnName: 'item', width: 120 },
   ]);
 
@@ -48,12 +48,23 @@ const TablesContractFlow = ({ billings }) => {
     );
   };
 
+  const GroupCellContent = ({ column, row }) => (
+    <span>
+      {column.title === 'Grupo' ? (
+        <i className={styles.forColumnGroup}>{column.title}</i>
+      ) : (
+        <i className={styles.forColumnItem}>{column.title}</i>
+      )}{' '}
+      : <strong>{row.value}</strong>
+    </span>
+  );
+
   const textFormater = (title, type) => {
     switch (type) {
       case 'group':
-        return <h2 className={styles.forColumnGroup}>{title}</h2>;
+        return <span className={styles.forColumnGroup}>{title}</span>;
       case 'item':
-        return <h3 className={styles.forColumnItem}>{title}</h3>;
+        return <span className={styles.forColumnItem}>{title}</span>;
       case 'text':
         return <span>{title}</span>;
       default:
@@ -185,8 +196,8 @@ const TablesContractFlow = ({ billings }) => {
 
       columnsPerLineDefined.unshift(
         { name: 'contract', title: 'Contrato' },
-        { name: 'group', title: textFormater('Grupo', 'group') },
-        { name: 'item', title: textFormater('Item', 'item') },
+        { name: 'group', title: 'Grupo' },
+        { name: 'item', title: 'Item' },
         { name: 'acumulated', title: 'Acumulado' },
         { name: 'projected', title: 'Proyectado' },
         { name: 'total', title: 'Total' },
@@ -219,7 +230,7 @@ const TablesContractFlow = ({ billings }) => {
         <IntegratedGrouping />
         <Table columnExtensions={tableColumnExtensions} />
         <TableHeaderRow />
-        <TableGroupRow />
+        <TableGroupRow contentComponent={GroupCellContent} />
         <TableFixedColumns leftColumns={leftColumns} />
       </Grid>
     </Paper>
