@@ -356,13 +356,12 @@ const BillingFinancials = ({
                   label="Valor IVA %"
                   margin="normal"
                   variant="outlined"
-                  defaultValue={billing.iva}
+                  placeholder={billing.iva}
                   id="3"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter')
                       document.getElementById('sel4').focus();
                   }}
-                  value={billing.iva}
                   onChange={changeCardValue('iva', billing.id)}
                 />
                 <div className={styles.amountIva}>
