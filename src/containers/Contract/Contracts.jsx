@@ -522,7 +522,7 @@ class Contracts extends Component {
   };
 
   currentEvent = (currentEvent) => {
-    this.setState({ events: [...this.state.events, currentEvent] });
+    this.setState({ events: [...this.state.events, currentEvent].sort() });
   };
 
   sendContractNumber = (contractNumber) => {

@@ -229,7 +229,8 @@ const BillingFinancials = ({
           return event.label === date.label;
         })
       ) {
-        events.push(date);
+        events.sort();
+        events.unshift(date);
       }
     });
   };
