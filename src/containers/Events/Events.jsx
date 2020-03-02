@@ -11,7 +11,7 @@ import moment from 'moment';
 import styles from './Events.module.scss';
 import Event from '../../components/Event/Event';
 import ScheduleService from '../../services/schedule/ScheduleServices';
-import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import EventServices from '../../services/event/EventServices';
 
 class Events extends Component {
@@ -47,13 +47,6 @@ class Events extends Component {
 
   handleEvent = () => {
     this.setState({ eventModal: { isOpen: !this.state.eventModal.isOpen } });
-  };
-
-  toastAlert = (message) => {
-    this.setState({ alert: { opened: true, message } });
-    setTimeout(() => {
-      this.setState({ alert: { opened: false, message } });
-    }, 500);
   };
 
   componentDidMount() {
@@ -152,7 +145,11 @@ class Events extends Component {
             (event) => event.description === this.state.description,
           )
         ) {
-          this.toastAlert('ERROR: Ya existe un evento con ese nombre');
+          this.props.spawnMessage(
+            'Ya existe un evento con ese nombre',
+            'error',
+            'ERROR',
+          );
         } else {
           this.services
             .postEvent(this.props.towerId, this.state.event)
@@ -294,13 +291,9 @@ class Events extends Component {
             </DialogContentText>
           </DialogContent>
         </Dialog>
-        <SimpleSnackbar
-          message={this.state.alert.message}
-          opened={this.state.alert.opened}
-        />
       </div>
     );
   }
 }
 
-export default Events;
+export default withDefaultLayout(Events);
