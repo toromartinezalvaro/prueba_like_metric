@@ -57,7 +57,7 @@ const Schema = (props) => {
               onChange={props.onChange}
               value={props.floors}
               validations={inputValidation}
-              disable={props.disable}
+              disable={props.disableSold}
             />
           </div>
 
@@ -108,6 +108,7 @@ const Schema = (props) => {
                   props.editMode();
                   toggleWarning();
                 }}
+                disabled={props.disableSold}
               >
                 Editar
               </Button>
@@ -124,10 +125,7 @@ const Schema = (props) => {
             <div>
               <Button
                 onClick={() => {
-                  if (!props.sold) {
-                    save();
-                    setHidden(false);
-                  }
+                  save();
                 }}
               >
                 Guardar

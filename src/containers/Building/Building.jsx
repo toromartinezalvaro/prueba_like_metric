@@ -33,10 +33,12 @@ class Building extends Component {
       salesStartDate: new Date().getTime(),
       endOfSalesDate: new Date().getTime(),
     },
-    selled: false,
+    sold: false,
+    disableSold: false,
   };
 
   componentDidMount() {
+    this.disableIfEdit();
     this.updateNames();
     this.setState({ isLoading: true });
   }
@@ -45,6 +47,17 @@ class Building extends Component {
     this.setState({
       [target.name]: target.value,
     });
+  };
+
+  disableIfEdit = () => {
+    this.services
+      .isDisable(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ disableSold: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   updateNames = (isLoadingSchemas = false) => {
@@ -132,7 +145,7 @@ class Building extends Component {
         lowestFloor: parseInt(this.state.lowestFloor, 10),
       })
       .then(() => {
-        this.setState({ floors: [], disable: true, names: [], selled: true });
+        this.setState({ floors: [], disable: true, names: [], sold: true });
         this.updateNames(true);
         this.setState({ isLoadingSchemas: false });
       })
@@ -255,7 +268,8 @@ class Building extends Component {
             updateStratum={this.updateStratum}
             disableWarning={this.state.disableWarning}
             toggleWarning={this.toggleWarning}
-            selled={this.state.selled}
+            sold={this.state.sold}
+            disableSold={this.state.disableSold}
           />
           {!this.state.disable ? null : (
             <Naming
