@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import Styles from './PropertyInfo.module.scss';
@@ -10,6 +10,11 @@ const PropertyInfo = ({
   reservePercentage,
   periods,
 }) => {
+  const initialFee = useMemo(() => propertyPrice * initialFeePercentage, [
+    propertyPrice,
+    initialFeePercentage,
+  ]);
+
   return (
     <div className={Styles.container}>
       <div className={Styles.title}>
@@ -18,7 +23,14 @@ const PropertyInfo = ({
       <div className={Styles.rate}>
         <span>{property.name}</span>
       </div>
-      <div></div>
+      <div className={Styles.value}>
+        <NumberFormat
+          value={propertyPrice.toFixed(2)}
+          displayType="text"
+          thousandSeparator
+          prefix="$"
+        />
+      </div>
       <div className={Styles.title}>
         <span>Cuota inicial:</span>
       </div>
@@ -27,7 +39,7 @@ const PropertyInfo = ({
       </div>
       <div className={Styles.value}>
         <NumberFormat
-          value={(propertyPrice * initialFeePercentage).toFixed(2)}
+          value={initialFee.toFixed(2)}
           displayType="text"
           thousandSeparator
           prefix="$"
@@ -42,7 +54,7 @@ const PropertyInfo = ({
       </div>
       <div className={Styles.value}>
         <NumberFormat
-          value={(propertyPrice * reservePercentage).toFixed(2)}
+          value={(initialFee * reservePercentage).toFixed(2)}
           displayType="text"
           thousandSeparator
           prefix="$"
@@ -58,7 +70,10 @@ const PropertyInfo = ({
       <div className={Styles.value}>
         <span>
           <NumberFormat
-            value={(propertyPrice / periods).toFixed(2)}
+            value={(
+              (initialFee - initialFee * reservePercentage) /
+              periods 
+            ).toFixed(2)}
             displayType="text"
             thousandSeparator
             prefix="$"
