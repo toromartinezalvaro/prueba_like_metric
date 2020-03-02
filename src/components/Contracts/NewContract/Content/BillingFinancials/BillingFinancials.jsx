@@ -68,6 +68,7 @@ const BillingFinancials = ({
   const [disabledLastBilling, setDisableLastBilling] = useState(true);
 
   let totalBills = 0;
+  let totalBillsNoIva = 0;
 
   const changeCardValue = (
     name,
@@ -294,6 +295,7 @@ const BillingFinancials = ({
         (Number(billing.amount) +
           Number(billing.amount) * (billing.iva / 100)) *
         Number(billing.paymentNumber === 0 ? 1 : billing.paymentNumber);
+      totalBillsNoIva += Number(billing.amount);
 
       return (
         <Card key={billing.id} className={styles.cardForm}>
@@ -574,9 +576,17 @@ const BillingFinancials = ({
       {displayComponent()}
       <div className={styles.cardForm}>
         <div className={styles.Totalbills}>
-          <h4 sclassName={styles.textTotal}> Valor Total:</h4>
+          <h4 sclassName={styles.textTotal}> Valor Total Con IVA:</h4>
           <NumberFormat
             value={Number(totalBills)}
+            displayType={'text'}
+            className={styles.TotalAmount}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+          <h4 sclassName={styles.textTotal}>  - Valor Total Sin IVA:</h4>
+          <NumberFormat
+            value={Number(totalBillsNoIva)}
             displayType={'text'}
             className={styles.TotalAmount}
             thousandSeparator={true}
