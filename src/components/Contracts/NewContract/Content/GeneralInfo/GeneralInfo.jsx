@@ -10,6 +10,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
 import { FormControl, Fab, TextField } from '@material-ui/core';
+import agent from '../../../../../config/config';
+import { Role } from '../../../../../helpers';
 import statusOfContractEnum from './statusOfContract.enum';
 
 import styles from './GeneralInfo.module.scss';
@@ -208,27 +210,29 @@ const GeneralInfo = ({
                 onChange={changeAndSearchPartner}
               />
             </div>
-            <div className={styles.buttonColumn}>
-              <Fab
-                color="primary"
-                size="small"
-                aria-label="add"
-                onClick={handleOpenBusinessPatner}
-                className={styles.fab}
-              >
-                <AddIcon />
-              </Fab>
-              <Fab
-                color="secondary"
-                mx={2}
-                size="small"
-                aria-label="edit"
-                className={styles.fab}
-                onClick={searchForPatner}
-              >
-                <EditIcon />
-              </Fab>
-            </div>
+            {agent.isAuthorized([Role.Admin, Role.Super]) && (
+              <div className={styles.buttonColumn}>
+                <Fab
+                  color="primary"
+                  size="small"
+                  aria-label="add"
+                  onClick={handleOpenBusinessPatner}
+                  className={styles.fab}
+                >
+                  <AddIcon />
+                </Fab>
+                <Fab
+                  color="secondary"
+                  mx={2}
+                  size="small"
+                  aria-label="edit"
+                  className={styles.fab}
+                  onClick={searchForPatner}
+                >
+                  <EditIcon />
+                </Fab>
+              </div>
+            )}
           </div>
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
@@ -266,27 +270,29 @@ const GeneralInfo = ({
                 onFocus={itemClean}
               />
             </div>
-            <div className={styles.buttonColumn}>
-              <Fab
-                color="primary"
-                size="small"
-                aria-label="add"
-                className={styles.fab}
-                onClick={handleOpenCategory}
-              >
-                <AddIcon />
-              </Fab>
-              <Fab
-                color="secondary"
-                mx={2}
-                size="small"
-                aria-label="edit"
-                className={styles.fab}
-                onClick={searchForCategory}
-              >
-                <EditIcon />
-              </Fab>
-            </div>
+            {agent.isAuthorized([Role.Admin, Role.Super]) && (
+              <div className={styles.buttonColumn}>
+                <Fab
+                  color="primary"
+                  size="small"
+                  aria-label="add"
+                  className={styles.fab}
+                  onClick={handleOpenCategory}
+                >
+                  <AddIcon />
+                </Fab>
+                <Fab
+                  color="secondary"
+                  mx={2}
+                  size="small"
+                  aria-label="edit"
+                  className={styles.fab}
+                  onClick={searchForCategory}
+                >
+                  <EditIcon />
+                </Fab>
+              </div>
+            )}
           </div>
         </div>
 
@@ -367,29 +373,31 @@ const GeneralInfo = ({
                 />
               </FormControl>
             </div>
-            <div className={styles.buttonColumnForItem}>
-              <Fab
-                disabled={isLocked}
-                color="primary"
-                size="small"
-                aria-label="add"
-                className={styles.fab}
-                onClick={handleOpenItem}
-              >
-                <AddIcon />
-              </Fab>
-              <Fab
-                disabled={isLockedEdit}
-                color="secondary"
-                mx={2}
-                size="small"
-                aria-label="edit"
-                className={styles.fab}
-                onClick={searchForItem}
-              >
-                <EditIcon />
-              </Fab>
-            </div>
+            {agent.isAuthorized([Role.Admin, Role.Super]) && (
+              <div className={styles.buttonColumnForItem}>
+                <Fab
+                  disabled={isLocked}
+                  color="primary"
+                  size="small"
+                  aria-label="add"
+                  className={styles.fab}
+                  onClick={handleOpenItem}
+                >
+                  <AddIcon />
+                </Fab>
+                <Fab
+                  disabled={isLockedEdit}
+                  color="secondary"
+                  mx={2}
+                  size="small"
+                  aria-label="edit"
+                  className={styles.fab}
+                  onClick={searchForItem}
+                >
+                  <EditIcon />
+                </Fab>
+              </div>
+            )}
           </div>
         </div>
       </div>
