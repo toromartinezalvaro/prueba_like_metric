@@ -39,6 +39,7 @@ const ExpandGeneralInfo = ({
   currentGroupId,
   dataIfEdit,
   sendContractNumber,
+  alreadyCreated,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4} expanded={true}>
@@ -70,6 +71,7 @@ const ExpandGeneralInfo = ({
             partnerProp={partnerProp}
             itemProp={itemProp}
             searchItem={searchItem}
+            alreadyCreated={alreadyCreated}
             changeForSearchItem={changeForSearchItem}
             changeForSearchCategory={changeForSearchCategory}
             changeForSearchPartner={changeForSearchPartner}

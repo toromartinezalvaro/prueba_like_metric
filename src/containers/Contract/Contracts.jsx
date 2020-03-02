@@ -78,6 +78,7 @@ class Contracts extends Component {
       },
       isEditable: false,
       billsToDelete: [],
+      alreadyCreated: false,
     };
   }
 
@@ -525,7 +526,7 @@ class Contracts extends Component {
   };
 
   sendContractNumber = (contractNumber) => {
-    this.setState({ contractNumber });
+    this.setState({ contractNumber, alreadyCreated: false });
   };
 
   currentPut = (event) => {
@@ -549,9 +550,11 @@ class Contracts extends Component {
         if (
           contracts.data.find(
             (contract) => contract.contractNumber === this.state.contractNumber,
-          )
+          ) ||
+          this.state.contractNumber === ''
         ) {
           this.toastAlert('ERROR: Ya existe ese numero de contrato');
+          this.setState({ alreadyCreated: true });
         } else {
           this.services
             .postContract(data, this.props.match.params.towerId)
@@ -560,6 +563,7 @@ class Contracts extends Component {
               if (this.state.currentContract) {
                 this.setState({
                   contractModal: { isOpen: false },
+                  alreadyCreated: false,
                   contract: null,
                   businessPatnerModal: {
                     ...this.state.businessPatnerModal,
@@ -736,6 +740,7 @@ class Contracts extends Component {
         />
         <NewContract
           towerId={this.props.match.params.towerId}
+          alreadyCreated={this.state.alreadyCreated}
           expanded={this.state.expanded}
           setEditable={this.setEditable}
           isEditable={this.state.isEditable}

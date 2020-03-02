@@ -5,12 +5,11 @@
  */
 
 import React, { Fragment, useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
+import { FormControl, Fab, TextField } from '@material-ui/core';
 import statusOfContractEnum from './statusOfContract.enum';
 
 import styles from './GeneralInfo.module.scss';
@@ -42,10 +41,11 @@ const GeneralInfo = ({
   changeItemIsLocked,
   dataIfEdit,
   sendContractNumber,
+  alreadyCreated,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
-    businessPartnerId: '',
+    businessPartnerId: 0,
     groupId: '',
     state: '',
     contractNumber: '',
@@ -55,6 +55,8 @@ const GeneralInfo = ({
   });
   const [isLocked, setIsLocked] = useState(true);
   const [isLockedEdit, setsLockedEdit] = useState(true);
+  const [isEmptyTitle, setIsEmptyTitle] = useState(false);
+  const [isEmptyDescription, setIsEmptyDescription] = useState(false);
 
   const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
@@ -83,7 +85,13 @@ const GeneralInfo = ({
     sendGeneralInfo(information);
     if (name === 'contractNumber') {
       sendContractNumber(e.target.value);
+    } else if (name === 'title' && e.target.value === '') {
+      setIsEmptyTitle(true);
+    } else if (name === 'description' && e.target.value === '') {
+      setIsEmptyDescription(true);
     }
+    setIsEmptyDescription(false);
+    setIsEmptyTitle(false);
   };
 
   const onChangeSelect = (name) => (label) => {
@@ -154,6 +162,7 @@ const GeneralInfo = ({
         <div className={styles.columnFullLeft}>
           <TextField
             required
+            error={!generalInformation.title || isEmptyTitle}
             className={styles.textField}
             label="Titulo De Contrato"
             margin="normal"
@@ -312,6 +321,7 @@ const GeneralInfo = ({
             label="Numero de contrato"
             required
             id="4"
+            error={!generalInformation.contractNumber || alreadyCreated}
             onKeyDown={(e) => {
               if (e.key === 'Enter') document.getElementById('select5').focus();
             }}
@@ -323,37 +333,39 @@ const GeneralInfo = ({
 
           <div className={styles.gridSubContainerRigth}>
             <div className={styles.selectColumn}>
-              <Select
-                isDisabled={dataIfEdit ? false : isLocked}
-                className={styles.SelectSimpleForLabel}
-                inputId="select5"
-                required
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter')
-                    document.getElementById('TEXT6').focus();
-                }}
-                TextFieldProps={{
-                  label: 'item',
-                  InputLabelProps: {
-                    htmlFor: 'react-select-single',
-                    shrink: true,
-                  },
-                }}
-                placeholder="Seleccione un Item"
-                components={Option}
-                options={items}
-                value={
-                  dataIfEdit
-                    ? items.find((option) => {
-                        return option.value === dataIfEdit.itemId;
-                      })
-                    : {
-                        label: generalInformation.itemLabel,
-                        value: generalInformation.itemId,
-                      }
-                }
-                onChange={changeAndSearchItem}
-              />
+              <FormControl>
+                <Select
+                  isDisabled={dataIfEdit ? false : isLocked}
+                  className={styles.SelectSimpleForLabel}
+                  inputId="select5"
+                  required
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter')
+                      document.getElementById('TEXT6').focus();
+                  }}
+                  TextFieldProps={{
+                    label: 'item',
+                    InputLabelProps: {
+                      htmlFor: 'react-select-single',
+                      shrink: true,
+                    },
+                  }}
+                  placeholder="Seleccione un Item"
+                  components={Option}
+                  options={items}
+                  value={
+                    dataIfEdit
+                      ? items.find((option) => {
+                          return option.value === dataIfEdit.itemId;
+                        })
+                      : {
+                          label: generalInformation.itemLabel,
+                          value: generalInformation.itemId,
+                        }
+                  }
+                  onChange={changeAndSearchItem}
+                />
+              </FormControl>
             </div>
             <div className={styles.buttonColumnForItem}>
               <Fab
@@ -384,6 +396,7 @@ const GeneralInfo = ({
       <div className={styles.gridContainer}>
         <TextField
           multiline
+          error={!generalInformation.description || isEmptyDescription}
           required
           rows="5"
           id="TEXT6"
