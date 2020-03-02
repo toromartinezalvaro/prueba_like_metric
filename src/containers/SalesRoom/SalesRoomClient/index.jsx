@@ -395,9 +395,10 @@ class SalesRoom extends Component {
     this.services
       .getAdditionalArea(id, this.props.match.params.towerId)
       .then((response) => {
+        const { measure, price } = response.data;
         this.setState((prevState) => {
           const tempProperty = { ...prevState.selectedProperty };
-          tempProperty.priceWithIncrement += response.data.price;
+          response.data.unitPrice = measure * price;
           tempProperty.addedAdditionalAreas.push(response.data);
           const tempAdditionalAreas = prevState.additionalAreas.filter(
             (additionalArea) => additionalArea.id !== id,

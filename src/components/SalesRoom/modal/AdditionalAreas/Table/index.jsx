@@ -13,11 +13,11 @@ import Styles from './Table.module.scss';
 const Table = ({ property, deleteAdditionalAreaHandler }) => {
   const getSubtotal = () => {
     const adminSubtotal = property.adminAdditionalAreas.reduce(
-      (current, next) => current + next.price,
+      (current, next) => current + next.unitPrice,
       0,
     );
     const addedSubtotal = property.addedAdditionalAreas.reduce(
-      (current, next) => current + next.price,
+      (current, next) => current + next.unitPrice,
       0,
     );
     return adminSubtotal + addedSubtotal;

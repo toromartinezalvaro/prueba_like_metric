@@ -5,7 +5,12 @@ import MUISelect from '@material-ui/core/Select';
 import Button from '../../../../UI2/Button';
 import Styles from './Select.module.scss';
 
-const Select = ({ property, additionalAreas, addAdditionalAreaHandler }) => {
+const Select = ({
+  property,
+  additionalAreas,
+  addAdditionalAreaHandler,
+  setAdditionalPrices,
+}) => {
   const [selectedArea, setSelectedArea] = useState('');
   const [addingArea, setAddingArea] = useState(false);
 
@@ -37,6 +42,7 @@ const Select = ({ property, additionalAreas, addAdditionalAreaHandler }) => {
               setSelectedArea('');
               setAddingArea(false);
               addAdditionalAreaHandler(selectedArea);
+              setAdditionalPrices();
             }}
           >
             <i className="fas fa-check"></i>
@@ -90,6 +96,7 @@ Select.propTypes = {
     }),
   ).isRequired,
   addAdditionalAreaHandler: PropTypes.func.isRequired,
+  setAdditionalPrices: PropTypes.func.isRequired,
 };
 
 export default Select;
