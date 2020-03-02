@@ -17,6 +17,7 @@ import StyleVariables from '../../../assets/styles/variables.scss';
 import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
 import AdditionalAreas from './AdditionalAreas';
 import QuotationDialog from '../../Quotations/Dialog';
+import Status from '../../../helpers/status';
 
 // Internal constants definitions
 const DISCOUNT = 'DISCOUNT';
@@ -24,6 +25,7 @@ const INCREMENT = 'INCREMENT';
 
 const SalesRoomModal = ({
   isDisabled,
+  isLast,
   property,
   onChange,
   clientId,
@@ -94,13 +96,17 @@ const SalesRoomModal = ({
               </RadioButton>
               <RadioButton
                 value={SalesRoomEnum.status.OPTIONAL}
-                disabled={isDisabled}
+                disabled={
+                  isDisabled || (isLast && currentState !== Status.Available)
+                }
               >
                 Opcionado
               </RadioButton>
               <RadioButton
                 value={SalesRoomEnum.status.SOLD}
-                disabled={isDisabled}
+                disabled={
+                  isDisabled || (isLast && currentState !== Status.Available)
+                }
               >
                 Vendido
               </RadioButton>

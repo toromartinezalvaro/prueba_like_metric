@@ -61,7 +61,10 @@ const Table = ({ quotation }) => {
                 <TableCell>
                   <NumberFormat
                     value={(
-                      quotation.propertyPrice / quotation.periods
+                      (quotation.propertyPrice *
+                        quotation.initialFeePercentage -
+                        quotation.propertyPrice * quotation.reservePercentage) /
+                      (quotation.periods - 1)
                     ).toFixed(2)}
                     displayType="text"
                     thousandSeparator

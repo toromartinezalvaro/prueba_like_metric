@@ -211,9 +211,12 @@ export default class Strategy extends Component {
         return this.services.getStrategies(this.props.match.params.towerId);
       })
       .then((strategies) => {
+        const tempGroupActive = this.state.groupActive;
+        tempGroupActive.isReset = false;
         this.setState({
           hidden: true,
           strategyActive: this.state.strategySelected,
+          groupActive: tempGroupActive,
           groups: strategies.data.increments,
         });
       })

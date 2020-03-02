@@ -13,7 +13,7 @@ const ManualPrice = forwardRef(({ onSubmit, isHidden }, ref) => {
   return (
     <div className={isHidden ? styles.hide : ''}>
       <Formik
-        initialValues={{ price: 0 }}
+        initialValues={{ price: '' }}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         innerRef={ref}
@@ -24,7 +24,7 @@ const ManualPrice = forwardRef(({ onSubmit, isHidden }, ref) => {
               <Field
                 name="price"
                 label="Precio"
-                placeholder="$1,935.46"
+                placeholder="$0"
                 component={CurrencyInput}
               />
             </Form>
