@@ -96,19 +96,6 @@ const SalesRoomModal = ({
     setFixed((priceWithIncrement + parseFloat(discount || 0)).toFixed(2));
   }, [priceWithIncrement]);
 
-  console.log(
-    (parseFloat(priceSold) + parseFloat(discount || 0)).toFixed(2),
-    priceSold,
-    discount,
-    addedAdditionalAreas,
-    addedAdditionalAreas.reduce((c, n) => {
-      c += n.unitPrice;
-      return c;
-    }, 0),
-    additionalPrices,
-    priceWithIncrement,
-  );
-
   return (
     <>
       <div>
