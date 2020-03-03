@@ -57,8 +57,8 @@ const GeneralInfo = ({
   });
   const [isLocked, setIsLocked] = useState(true);
   const [isLockedEdit, setsLockedEdit] = useState(true);
-  const [isEmptyTitle, setIsEmptyTitle] = useState(false);
-  const [isEmptyDescription, setIsEmptyDescription] = useState(false);
+  const [isEmptyTitle, setEmptyTitle] = useState(false);
+  const [isEmptyDescription, setEmptyDescription] = useState(false);
 
   const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
@@ -88,12 +88,12 @@ const GeneralInfo = ({
     if (name === 'contractNumber') {
       sendContractNumber(e.target.value);
     } else if (name === 'title' && e.target.value === '') {
-      setIsEmptyTitle(true);
+      setEmptyTitle(true);
     } else if (name === 'description' && e.target.value === '') {
-      setIsEmptyDescription(true);
+      setEmptyDescription(true);
     }
-    setIsEmptyDescription(false);
-    setIsEmptyTitle(false);
+    setEmptyDescription(false);
+    setEmptyTitle(false);
   };
 
   const onChangeSelect = (name) => (label) => {

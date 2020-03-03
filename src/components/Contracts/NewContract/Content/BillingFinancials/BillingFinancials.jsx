@@ -388,9 +388,9 @@ const BillingFinancials = ({
                         Number(billing.amount) * (Number(billing.iva) / 100)) *
                         Number(billing.paymentNumber),
                     )}
-                    displayType={'text'}
-                    thousandSeparator={true}
-                    prefix={'$'}
+                    displayType='text'
+                    thousandSeparator
+                    prefix='$'
                   />
                 </div>
               </div>
@@ -579,18 +579,18 @@ const BillingFinancials = ({
           <h4 sclassName={styles.textTotal}> Valor Total Con IVA:</h4>
           <NumberFormat
             value={Number(totalBills)}
-            displayType={'text'}
+            displayType='text'
             className={styles.TotalAmount}
-            thousandSeparator={true}
-            prefix={'$'}
+            thousandSeparator
+            prefix='$'
           />
           <h4 sclassName={styles.textTotal}>  - Valor Total Sin IVA:</h4>
           <NumberFormat
             value={Number(totalBillsNoIva)}
-            displayType={'text'}
+            displayType='text'
             className={styles.TotalAmount}
-            thousandSeparator={true}
-            prefix={'$'}
+            thousandSeparator
+            prefix='$'
           />
         </div>
       </div>
