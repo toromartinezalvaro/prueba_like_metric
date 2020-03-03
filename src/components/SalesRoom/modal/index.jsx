@@ -72,24 +72,18 @@ const SalesRoomModal = ({
   );
 
   const getTradePrice = () => {
-    return (fixedPrice - currentDiscount).toFixed(2);
+    return (fixedPrice - currentDiscount + additionalPrices).toFixed(2);
   };
 
   const getFinalTradePrice = () => {
-    return (fixedPrice - currentDiscount - currentTradeDiscount).toFixed(2);
+    return (
+      fixedPrice -
+      currentDiscount -
+      currentTradeDiscount +
+      additionalPrices
+    ).toFixed(2);
   };
-
-  useEffect(() => {
-    setFixed((priceWithIncrement + parseFloat(discount || 0)).toFixed(2));
-  }, [priceWithIncrement]);
-
   const setAdditionalPricesHandler = () => {
-    const value = addedAdditionalAreas.reduce((c, n) => {
-      c += n.unitPrice;
-      return c;
-    }, 0);
-    console.log('Hi', value);
-
     setAdditionalPrices(
       addedAdditionalAreas.reduce((c, n) => {
         c += n.unitPrice;
@@ -97,6 +91,10 @@ const SalesRoomModal = ({
       }, 0),
     );
   };
+
+  useEffect(() => {
+    setFixed((priceWithIncrement + parseFloat(discount || 0)).toFixed(2));
+  }, [priceWithIncrement]);
 
   console.log(
     (parseFloat(priceSold) + parseFloat(discount || 0)).toFixed(2),
@@ -175,18 +173,24 @@ const SalesRoomModal = ({
             </div>
           </div>
         )}
-        {console.log(property, fixedPrice)}
+        {console.log(property, fixedPrice, status)}
         {currentState === SalesRoomEnum.status.SOLD && (
           <div>
             <div className={Styles.inputContainer}>
               <span className={Styles.title}>Valor Apartamento</span>
               <div>
                 <NumberFormat
-                  value={(
-                    priceWithIncrement +
-                    discount -
-                    additionalPrices
-                  ).toFixed(2)}
+                  value={
+                    /* priceSold
+                      ? (
+                          priceWithIncrement +
+                          discount -
+                          additionalPrices
+                        ).toFixed(2)
+                      : */ (
+                      priceWithIncrement + discount
+                    ).toFixed(2)
+                  }
                   displayType="text"
                   thousandSeparator
                   prefix="$"
@@ -211,7 +215,7 @@ const SalesRoomModal = ({
                   value={
                     priceSold === null
                       ? (priceWithIncrement + additionalPrices).toFixed(2)
-                      : fixedPrice
+                      : (Number(fixedPrice) + additionalPrices).toFixed(2)
                   }
                   displayType="text"
                   thousandSeparator

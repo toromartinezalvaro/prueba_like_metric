@@ -38,10 +38,10 @@ const Select = ({
             })}
           </MUISelect>
           <Button
-            onClick={() => {
+            onClick={async () => {
               setSelectedArea('');
               setAddingArea(false);
-              addAdditionalAreaHandler(selectedArea);
+              await addAdditionalAreaHandler(selectedArea);
               setAdditionalPrices();
             }}
           >

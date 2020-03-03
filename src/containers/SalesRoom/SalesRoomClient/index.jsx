@@ -392,7 +392,7 @@ class SalesRoom extends Component {
   };
 
   addAdditionalArea = (id) => {
-    this.services
+    return this.services
       .getAdditionalArea(id, this.props.match.params.towerId)
       .then((response) => {
         const { measure, price } = response.data;
@@ -447,7 +447,7 @@ class SalesRoom extends Component {
   };
 
   render() {
-    let isStrategyNull = this.state.selectedProperty.isReset;
+    const isStrategyNull = this.state.selectedProperty.isReset;
 
     let showModalSelectedProperty = !isStrategyNull;
 
