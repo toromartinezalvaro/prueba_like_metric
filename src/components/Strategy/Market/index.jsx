@@ -2,7 +2,7 @@
  * Created Date: Thursday January 30th 2020
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 4th March 2020 3:42:42 pm
+ * Last Modified: Wednesday, 4th March 2020 4:11:43 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2020 Instabuild
@@ -129,11 +129,6 @@ const Market = (props) => {
           onBlur={(e) => {
             const annualEffectiveIncrementFormated = Number(
               e.target.value.slice(0, -1) / 100,
-            );
-            console.log(
-              anualEffectiveIncrement,
-              annualEffectiveIncrementFormated,
-              e.target.value.slice(0, -1),
             );
             if (
               anualEffectiveIncrement !== annualEffectiveIncrementFormated &&
