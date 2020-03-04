@@ -57,7 +57,7 @@ const Schema = (props) => {
               onChange={props.onChange}
               value={props.floors}
               validations={inputValidation}
-              disable={props.disable}
+              disable={props.disableSold}
             />
           </div>
 
@@ -108,6 +108,7 @@ const Schema = (props) => {
                   props.editMode();
                   toggleWarning();
                 }}
+                disabled={props.disableSold}
               >
                 Editar
               </Button>
@@ -124,7 +125,7 @@ const Schema = (props) => {
             <div>
               <Button
                 onClick={() => {
-                  setHidden(false);
+                  save();
                 }}
               >
                 Guardar
@@ -150,10 +151,10 @@ const Schema = (props) => {
           )}
         </div>
 
-        {hidden ? null : (
+        {props.sold && (
           <Modal
             title={'Actualizar nomenclatura'}
-            hidden={hidden}
+            hidden={props.sold}
             onConfirm={save}
             onCancel={cancel}
           >

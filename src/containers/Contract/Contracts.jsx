@@ -782,6 +782,8 @@ class Contracts extends Component {
           currentContract={this.state.currentContract}
           currentPut={this.currentPut}
           events={this.state.events}
+          listInformationPartner={this.state.partners}
+          listInformationGroup={this.state.categories}
           deleteContract={this.deleteContract}
         />
         <NewContract

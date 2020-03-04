@@ -57,6 +57,7 @@ class SalesRoom extends Component {
     clientName: null,
     deadlineDate: new Date(),
     additionalAreas: [],
+    lastSelector: 'priceWithIncrements',
     isLastProperty: false,
   };
 
@@ -252,6 +253,7 @@ class SalesRoom extends Component {
         lowestFloor: data.lowestFloor,
         data: matrix,
         isEmpty: false,
+        lastSelector: active,
       });
     } else {
       this.setState({ isEmpty: true });
@@ -340,7 +342,7 @@ class SalesRoom extends Component {
       .then((response) => {
         const { incrementList } = response.data;
         if (incrementList) {
-          this.makeArrayOfProperties(incrementList);
+          this.makeArrayOfProperties(incrementList, this.state.lastSelector);
         }
         this.setState({
           isOpen: false,
