@@ -204,7 +204,7 @@ function Inventory({
         </div>
       </div>
       <div className={Styles['inv-ear']}>
-        <span>{units === salesSpeedState ? 0 : (ear * 100).toFixed(2)}%</span>
+        <span>{(ear * 100).toFixed(2)}%</span>
       </div>
     </div>
   );
