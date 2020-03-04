@@ -116,6 +116,7 @@ function Inventory({
         ) : (
           <Input
             mask="currency"
+            style={{ textAlign: 'left' }}
             validations={[
               {
                 fn: (value) => value !== '.',
