@@ -56,7 +56,7 @@ const GeneralInfo = ({
     itemLabel: 'Seleccione un item',
   });
   const [isLocked, setIsLocked] = useState(true);
-  const [isLockedEdit, setsLockedEdit] = useState(true);
+  const [isLockedEdit, setLockedEdit] = useState(true);
   const [isEmptyTitle, setEmptyTitle] = useState(false);
   const [isEmptyDescription, setEmptyDescription] = useState(false);
 
@@ -67,9 +67,27 @@ const GeneralInfo = ({
     };
   });
 
+  const changeAndSearchCategory = (currentGroup) => {
+    const currentGroupValue = currentGroup.value;
+    setGeneralInformation({
+      ...generalInformation,
+      groupId: currentGroupValue,
+    });
+    sendGeneralInfo(generalInformation);
+    changeForSearchCategory(currentGroup);
+    changeItemIsLocked(currentGroupValue);
+    currentGroupId(currentGroupValue);
+    setIsLocked(false);
+    if (items) {
+      setLockedEdit(false);
+    }
+  };
+
   useEffect(() => {
     if (dataIfEdit) {
       setGeneralInformation(dataIfEdit);
+      setLockedEdit(false);
+      changeAndSearchCategory({ value: dataIfEdit.groupId });
     }
   }, []);
 
@@ -117,22 +135,6 @@ const GeneralInfo = ({
   const searchForItem = () => {
     if (itemProp && itemProp.value !== '') {
       searchItem(itemProp.value);
-    }
-  };
-
-  const changeAndSearchCategory = (currentGroup) => {
-    const currentGroupValue = currentGroup.value;
-    setGeneralInformation({
-      ...generalInformation,
-      groupId: currentGroupValue,
-    });
-    sendGeneralInfo(generalInformation);
-    changeForSearchCategory(currentGroup);
-    changeItemIsLocked(currentGroupValue);
-    currentGroupId(currentGroupValue);
-    setIsLocked(false);
-    if (items) {
-      setsLockedEdit(false);
     }
   };
 
@@ -341,7 +343,7 @@ const GeneralInfo = ({
             <div className={styles.selectColumn}>
               <FormControl>
                 <Select
-                  isDisabled={dataIfEdit ? false : isLocked}
+                  isDisabled={dataIfEdit ? false : isLockedEdit}
                   className={styles.SelectSimpleForLabel}
                   inputId="select5"
                   required
@@ -376,7 +378,7 @@ const GeneralInfo = ({
             {agent.isAuthorized([Role.Admin, Role.Super]) && (
               <div className={styles.buttonColumnForItem}>
                 <Fab
-                  disabled={isLocked}
+                  disabled={isLockedEdit}
                   color="primary"
                   size="small"
                   aria-label="add"
