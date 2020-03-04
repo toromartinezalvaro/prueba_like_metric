@@ -88,6 +88,11 @@ const GeneralInfo = ({
       setGeneralInformation(dataIfEdit);
       setLockedEdit(false);
       changeAndSearchCategory({ value: dataIfEdit.groupId });
+      setEmptyTitle(false);
+      setEmptyDescription(false);
+    } else {
+      setEmptyTitle(true);
+      setEmptyDescription(true);
     }
   }, []);
 
@@ -166,7 +171,7 @@ const GeneralInfo = ({
         <div className={styles.columnFullLeft}>
           <TextField
             required
-            error={!generalInformation.title || isEmptyTitle}
+            error={isEmptyTitle}
             className={styles.textField}
             label="Titulo De Contrato"
             margin="normal"
@@ -329,7 +334,7 @@ const GeneralInfo = ({
             label="Numero de contrato"
             required
             id="4"
-            error={!generalInformation.contractNumber || alreadyCreated}
+            error={isEmptyTitle || alreadyCreated}
             onKeyDown={(e) => {
               if (e.key === 'Enter') document.getElementById('select5').focus();
             }}
@@ -406,7 +411,7 @@ const GeneralInfo = ({
       <div className={styles.gridContainer}>
         <TextField
           multiline
-          error={!generalInformation.description || isEmptyDescription}
+          error={isEmptyDescription}
           required
           rows="5"
           id="TEXT6"
