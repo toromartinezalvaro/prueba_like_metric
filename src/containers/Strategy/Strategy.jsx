@@ -229,15 +229,14 @@ export default class Strategy extends Component {
   };
 
   putMarketAveragePrice = (groupId, averagePrice) => {
-    console.log(groupId, averagePrice);
     this.setState({ isLoading: true });
-    console.log(this.state.currentGroup);
     this.incrementServices
       .putMarketAveragePrice(groupId, {
         averagePrice,
         length: this.state.labels.length - 1,
       })
       .then((res) => {
+        this.changeMarketAveragePrice(averagePrice);
         this.setState((prevState) => {
           const tempGroupActive = { ...prevState.groupActive };
           const market = res.data[0];
@@ -277,6 +276,9 @@ export default class Strategy extends Component {
         length: this.state.labels.length - 1,
       })
       .then((res) => {
+        this.changeMarketAnnualEffectiveIncrement(
+          anualEffectiveIncrement / 100,
+        );
         this.setState((prevState) => {
           const tempGroupActive = { ...prevState.groupActive };
           const market = res.data[0];

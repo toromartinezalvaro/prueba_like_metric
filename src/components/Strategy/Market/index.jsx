@@ -2,13 +2,13 @@
  * Created Date: Thursday January 30th 2020
  * Author: Caraham
  * -----
- * Last Modified: Friday, 31st January 2020 4:55:41 pm
+ * Last Modified: Thursday, 27th February 2020 4:42:08 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2020 Instabuild
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
 import {
@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import Styles from './Market.module.scss';
 
-function NumberFormatCustom(props) {
+function NumberFormatCustomPecentage(props) {
   const { inputRef, onChange, ...other } = props;
 
   return (
@@ -39,15 +39,54 @@ function NumberFormatCustom(props) {
   );
 }
 
+function NumberFormatCustomPrice(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="$"
+    />
+  );
+}
+
+function handleKeyPress(e) {
+  if (e.keyCode === 13) {
+    e.target.blur();
+  }
+}
+
 const Market = (props) => {
+  const [tempAveragePrice, setTempAveragePrice] = useState();
+  const [
+    tempAnnualEffectiveIncrement,
+    setTempAnnualEffectiveIncrement,
+  ] = useState();
+
+  function changeMarketAveragePrice(value) {
+    setTempAveragePrice(value);
+  }
+
+  function changeMarketAnnualEffectiveIncrement(value) {
+    setTempAnnualEffectiveIncrement(value);
+  }
+
   const {
     id,
     averagePrice,
     anualEffectiveIncrement,
     putMarketAveragePrice,
     putMarketAnnualEffectiveIncrement,
-    changeMarketAveragePrice,
-    changeMarketAnnualEffectiveIncrement,
   } = props;
   return (
     <Card classes={{ root: Styles.Container }}>
@@ -56,32 +95,47 @@ const Market = (props) => {
         <TextField
           label="Precio Promedio"
           size="small"
-          value={averagePrice || ''}
+          value={tempAveragePrice || averagePrice || ''}
           onChange={(e) => changeMarketAveragePrice(e.target.value)}
-          onBlur={(e) =>
-            averagePrice !== Number(e.target.value)
-              ? putMarketAveragePrice(id, e.target.value)
-              : null
-          }
+          InputProps={{
+            inputComponent: NumberFormatCustomPrice,
+          }}
+          onBlur={(e) => {
+            const averagePriceFormated = Number(
+              e.target.value.replace(/,/g, '').substring(1),
+            );
+            if (averagePrice !== averagePriceFormated) {
+              putMarketAveragePrice(id, averagePriceFormated);
+            }
+          }}
+          onKeyDown={(e) => handleKeyPress(e)}
         />
         <TextField
           label="E.A."
           size="small"
-          value={anualEffectiveIncrement ? anualEffectiveIncrement * 100 : ''}
-          onChange={(e) =>
-            changeMarketAnnualEffectiveIncrement(e.target.value / 100)
+          value={
+            tempAnnualEffectiveIncrement || anualEffectiveIncrement * 100 || ''
           }
+          onChange={(e) => changeMarketAnnualEffectiveIncrement(e.target.value)}
           InputProps={{
-            inputComponent: NumberFormatCustom,
+            inputComponent: NumberFormatCustomPecentage,
           }}
-          onBlur={(e) =>
-            anualEffectiveIncrement !== Number(e.target.value.slice(0, -1))
-              ? putMarketAnnualEffectiveIncrement(
-                  id,
-                  e.target.value.slice(0, -1) / 100,
-                )
-              : null
-          }
+          onBlur={(e) => {
+            const annualEffectiveIncrementFormated = Number(
+              e.target.value.slice(0, -1) / 100,
+            );
+            console.log(
+              anualEffectiveIncrement,
+              annualEffectiveIncrementFormated,
+            );
+            if (anualEffectiveIncrement !== annualEffectiveIncrementFormated) {
+              putMarketAnnualEffectiveIncrement(
+                id,
+                e.target.value.slice(0, -1),
+              );
+            }
+          }}
+          onKeyDown={(e) => handleKeyPress(e)}
         />
       </CardContent>
     </Card>
