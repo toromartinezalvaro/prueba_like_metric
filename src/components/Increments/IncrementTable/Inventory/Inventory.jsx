@@ -18,6 +18,9 @@ function Inventory({
   totalUnits,
   groupId,
   endOfSalesDate,
+  putIncrement,
+  isReset,
+  salesIncrement,
 }) {
   const endOfSales = moment(Number(endOfSalesDate))
     .startOf('month')
@@ -60,11 +63,11 @@ function Inventory({
       message: 'Debe ser mayor 0',
     },
     {
-      fn: (value) => totalUnits / value <= 98,
+      fn: (value) => units / value <= 98,
       message: 'El numero de periodos no puede ser mayor a 98',
     },
     {
-      fn: (value) => value < totalUnits,
+      fn: (value) => value <= units,
       message: 'Debe ser menor a las unidades',
     },
   ];
@@ -108,12 +111,25 @@ function Inventory({
         />
       </div>
       <div className={incrementTextColor}>
-        <NumberFormat
-          value={units !== 0 ? increment && increment.toFixed(2) : 0}
-          displayType="text"
-          thousandSeparator={true}
-          prefix="$"
-        />
+        {blockIncrements ? (
+          <span>No se puede incrementar con 1 unidad</span>
+        ) : (
+          <Input
+            mask="currency"
+            validations={[
+              {
+                fn: (value) => value !== '.',
+                message: 'Debe ingresar un numero',
+              },
+            ]}
+            value={increment && increment.toFixed(2)}
+            onChange={(target) => {
+              putIncrement(Number(target.value) + salesIncrement);
+            }}
+            disable={units === 0 || !isReset}
+            updateWithProp
+          />
+        )}
       </div>
       <div className={Styles['inv-sales-future']}>
         <NumberFormat
@@ -161,7 +177,7 @@ function Inventory({
           validations={[
             ...futureSpeedValidation(),
             {
-              fn: (value) => totalUnits / value < endOfSales,
+              fn: (value) => units / value < endOfSales,
               message: `Este valor supera el plazo de cuota inicial a hoy`,
             },
           ]}
@@ -188,7 +204,7 @@ function Inventory({
         </div>
       </div>
       <div className={Styles['inv-ear']}>
-        <span>{(ear * 100).toFixed(2)}%</span>
+        <span>{units === salesSpeedState ? 0 : (ear * 100).toFixed(2)}%</span>
       </div>
     </div>
   );
