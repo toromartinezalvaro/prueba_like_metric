@@ -2,7 +2,7 @@
  * Created Date: Thursday January 30th 2020
  * Author: Caraham
  * -----
- * Last Modified: Thursday, 27th February 2020 4:42:08 pm
+ * Last Modified: Wednesday, 4th March 2020 3:42:42 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2020 Instabuild
@@ -88,6 +88,14 @@ const Market = (props) => {
     putMarketAveragePrice,
     putMarketAnnualEffectiveIncrement,
   } = props;
+
+  let valueEA = '';
+  if (tempAnnualEffectiveIncrement || tempAnnualEffectiveIncrement === '') {
+    valueEA = tempAnnualEffectiveIncrement;
+  } else if (anualEffectiveIncrement) {
+    valueEA = anualEffectiveIncrement * 100;
+  }
+
   return (
     <Card classes={{ root: Styles.Container }}>
       <CardContent classes={{ root: Styles.Content }}>
@@ -113,9 +121,7 @@ const Market = (props) => {
         <TextField
           label="E.A."
           size="small"
-          value={
-            tempAnnualEffectiveIncrement || anualEffectiveIncrement * 100 || ''
-          }
+          value={valueEA}
           onChange={(e) => changeMarketAnnualEffectiveIncrement(e.target.value)}
           InputProps={{
             inputComponent: NumberFormatCustomPecentage,
@@ -127,11 +133,15 @@ const Market = (props) => {
             console.log(
               anualEffectiveIncrement,
               annualEffectiveIncrementFormated,
+              e.target.value.slice(0, -1),
             );
-            if (anualEffectiveIncrement !== annualEffectiveIncrementFormated) {
+            if (
+              anualEffectiveIncrement !== annualEffectiveIncrementFormated &&
+              e.target.value.slice(0, -1) !== ''
+            ) {
               putMarketAnnualEffectiveIncrement(
                 id,
-                e.target.value.slice(0, -1),
+                e.target.value.slice(0, -1) / 100,
               );
             }
           }}

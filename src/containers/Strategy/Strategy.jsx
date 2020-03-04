@@ -276,9 +276,7 @@ export default class Strategy extends Component {
         length: this.state.labels.length - 1,
       })
       .then((res) => {
-        this.changeMarketAnnualEffectiveIncrement(
-          anualEffectiveIncrement / 100,
-        );
+        this.changeMarketAnnualEffectiveIncrement(anualEffectiveIncrement);
         this.setState((prevState) => {
           const tempGroupActive = { ...prevState.groupActive };
           const market = res.data[0];
