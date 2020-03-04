@@ -14,7 +14,7 @@ import statusOfContractEnum from '../../components/Contracts/NewContract/Content
 import BusinessPatner from '../../components/Contracts/NewContract/BusinessPatner/BusinessPatner';
 import ContractService from '../../services/contract/contractService';
 import Item from '../../components/Contracts/NewContract/Content/Item/Item';
-import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import EventService from '../../services/event/EventServices';
 
 class Contracts extends Component {
@@ -78,15 +78,9 @@ class Contracts extends Component {
       },
       isEditable: false,
       billsToDelete: [],
+      alreadyCreated: false,
     };
   }
-
-  toastAlert = (message) => {
-    this.setState({ alert: { opened: true, message } });
-    setTimeout(() => {
-      this.setState({ alert: { opened: false, message } });
-    }, 500);
-  };
 
   componentDidMount() {
     this.services
@@ -253,10 +247,14 @@ class Contracts extends Component {
           });
         })
         .catch((error) => {
-          this.toastAlert('Error al crear un grupo');
+          this.props.spawnMessage('Error al crear un grupo', 'error', 'ERROR');
         });
     } else {
-      this.toastAlert('ERROR: Debes agregar un nombre para crear un grupo');
+      this.props.spawnMessage(
+        'Debes agregar un nombre para crear un grupo',
+        'error',
+        'ERROR',
+      );
     }
   };
 
@@ -282,10 +280,14 @@ class Contracts extends Component {
           });
         })
         .catch((error) => {
-          this.toastAlert('Error al crear un socio');
+          this.props.spawnMessage('Error al crear un socio', 'error', 'ERROR');
         });
     } else {
-      this.toastAlert('ERROR: Debes agregar un nombre para crear un socio');
+      this.props.spawnMessage(
+        'Debes agregar un nombre para crear un socio',
+        'error',
+        'ERROR',
+      );
     }
   };
 
@@ -304,10 +306,14 @@ class Contracts extends Component {
           });
         })
         .catch((error) => {
-          this.toastAlert('Error al crear un item');
+          this.props.spawnMessage('Error al crear un item', 'error', 'ERROR');
         });
     } else {
-      this.toastAlert('ERROR: Debes agregar un nombre para crear un item');
+      this.props.spawnMessage(
+        'Debes agregar un nombre para crear un item',
+        'error',
+        'ERROR',
+      );
     }
   };
 
@@ -330,7 +336,11 @@ class Contracts extends Component {
         });
       })
       .catch((error) => {
-        this.toastAlert('ERROR: No se puede actualizar el grupo');
+        this.props.spawnMessage(
+          'No se puede actualizar el grupo',
+          'error',
+          'ERROR',
+        );
       });
   };
 
@@ -352,7 +362,11 @@ class Contracts extends Component {
         });
       })
       .catch((error) => {
-        this.toastAlert('ERROR: No se puede actualizar el socio');
+        this.props.spawnMessage(
+          'No se puede actualizar el socio',
+          'error',
+          'ERROR',
+        );
       });
   };
 
@@ -375,7 +389,11 @@ class Contracts extends Component {
         });
       })
       .catch((error) => {
-        this.toastAlert('ERROR: No se puede actualizar el item');
+        this.props.spawnMessage(
+          'No se puede actualizar el item',
+          'error',
+          'ERROR',
+        );
       });
   };
 
@@ -521,11 +539,13 @@ class Contracts extends Component {
   };
 
   currentEvent = (currentEvent) => {
-    this.setState({ events: [...this.state.events, currentEvent] });
+    this.setState((prevState) => ({
+      events: [...prevState.events, currentEvent].sort(),
+    }));
   };
 
   sendContractNumber = (contractNumber) => {
-    this.setState({ contractNumber });
+    this.setState({ contractNumber, alreadyCreated: false });
   };
 
   currentPut = (event) => {
@@ -549,9 +569,15 @@ class Contracts extends Component {
         if (
           contracts.data.find(
             (contract) => contract.contractNumber === this.state.contractNumber,
-          )
+          ) ||
+          this.state.contractNumber === ''
         ) {
-          this.toastAlert('ERROR: Ya existe ese numero de contrato');
+          this.props.spawnMessage(
+            'Ya existe ese numero de contrato',
+            'error',
+            'ERROR',
+          );
+          this.setState({ alreadyCreated: true });
         } else {
           this.services
             .postContract(data, this.props.match.params.towerId)
@@ -560,6 +586,7 @@ class Contracts extends Component {
               if (this.state.currentContract) {
                 this.setState({
                   contractModal: { isOpen: false },
+                  alreadyCreated: false,
                   contract: null,
                   businessPatnerModal: {
                     ...this.state.businessPatnerModal,
@@ -577,12 +604,16 @@ class Contracts extends Component {
               }
             })
             .catch((error) => {
-              this.toastAlert('Error al crear');
+              this.props.spawnMessage('Error al crear', 'error', 'ERROR');
             });
         }
       })
       .catch((error) => {
-        this.toastAlert('ERROR: No se puede crear el contrato');
+        this.props.spawnMessage(
+          'No se puede crear el contrato',
+          'error',
+          'ERROR',
+        );
       });
   };
 
@@ -633,7 +664,11 @@ class Contracts extends Component {
           });
         })
         .catch((error) => {
-          this.toastAlert('ERROR: No se puede editar el contrato');
+          this.props.spawnMessage(
+            'No se puede editar el contrato',
+            'error',
+            'ERROR',
+          );
         });
     }
   };
@@ -648,10 +683,18 @@ class Contracts extends Component {
     this.services
       .deleteSpecificBill(id, this.props.match.params.towerId)
       .then((response) => {
-        this.toastAlert('Se ha borrado la cuenta con exito!');
+        this.props.spawnMessage(
+          '¡Se ha borrado la cuenta con exito!',
+          'SUCCESS',
+          '¡CORRECTO!',
+        );
       })
       .catch((error) => {
-        this.toastAlert('ERROR: No se puede elimibar esta cuenta');
+        this.props.spawnMessage(
+          'No se puede eliminar esta cuenta',
+          'error',
+          'ERROR',
+        );
       });
   };
 
@@ -688,7 +731,11 @@ class Contracts extends Component {
         }
       })
       .catch((error) => {
-        this.toastAlert('ERROR: No se puede editar el contrato');
+        this.props.spawnMessage(
+          'No se puede editar el contrato',
+          'error',
+          'ERROR',
+        );
       });
   };
 
@@ -703,9 +750,12 @@ class Contracts extends Component {
         });
       })
       .catch((error) => {
-        this.toastAlert('ERROR: No se puede eliminar el contrato');
+        this.props.spawnMessage(
+          'No se puede eliminar el contrato',
+          'error',
+          'ERROR',
+        );
       });
-    console.log('Contrato eliminado', id);
   };
 
   watchingContract = () => {
@@ -736,6 +786,7 @@ class Contracts extends Component {
         />
         <NewContract
           towerId={this.props.match.params.towerId}
+          alreadyCreated={this.state.alreadyCreated}
           expanded={this.state.expanded}
           setEditable={this.setEditable}
           isEditable={this.state.isEditable}
@@ -830,12 +881,8 @@ class Contracts extends Component {
             />
           </DialogContent>
         </Dialog>
-        <SimpleSnackbar
-          message={this.state.alert.message}
-          opened={this.state.alert.opened}
-        />
       </div>
     );
   }
 }
-export default Contracts;
+export default withDefaultLayout(Contracts);

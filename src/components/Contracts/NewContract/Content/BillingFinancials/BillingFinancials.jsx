@@ -59,15 +59,16 @@ const BillingFinancials = ({
     type: 'unique',
     new: true,
     removed: false,
+    eventIsUnique: false,
   };
   const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
   const [month, setMonth] = useState(MonthEnum);
-  const [eventIsUnique, setEventIsUnique] = useState(false);
   const [eventId, setEventId] = useState(0);
   const [disabledLastBilling, setDisableLastBilling] = useState(true);
 
   let totalBills = 0;
+  let totalBillsNoIva = 0;
 
   const changeCardValue = (
     name,
@@ -86,8 +87,19 @@ const BillingFinancials = ({
     if (elementIsADate) {
       bill = {
         ...billingsArray[billIndex],
-        [name]: Number(moment(element).format('x')),
+        initalBillingDate: parseInt(moment(element).format('x'), 10),
+        lastBillingDate:
+          parseInt(moment(element).format('x'), 10) *
+          parseInt(billingsArray[billIndex].paymentNumber, 10),
       };
+      billingsArray[billIndex].initalBillingDate = parseInt(
+        moment(element).format('x'),
+        10,
+      );
+      billingsArray[billIndex].lastBillingDate = parseInt(
+        moment(element).format('x'),
+        10,
+      );
     } else if (elementIsASelect) {
       if (name === 'cycle') {
         bill = {
@@ -96,20 +108,20 @@ const BillingFinancials = ({
           type: element.type,
         };
       } else if (name === 'eventId' && element.eventId === 0) {
-        setEventIsUnique(true);
         bill = {
           ...billingsArray[billIndex],
           eventId: element.eventId,
           initalBillingDate: todayDate,
           lastBillingDate: todayDate,
+          eventIsUnique: true,
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
-        setEventIsUnique(false);
         bill = {
           ...billingsArray[billIndex],
           initalBillingDate: Number(element.value),
           lastBillingDate: Number(element.value),
           eventId: element.eventId,
+          eventIsUnique: false,
         };
         setLastDate(Number(element.value));
         billingsArray[billIndex].eventId = element.eventId;
@@ -124,19 +136,16 @@ const BillingFinancials = ({
       if (name === 'displacement') {
         billingsArray[billIndex].initalBillingDate = Number(lastDate);
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .add(
-            parseInt(element.target.value),
-            billingsArray[billIndex].type === 'unique' ||
-              billingsArray[billIndex].cycle === 'Pago Único'
-              ? 'months'
-              : billingsArray[billIndex].type,
-          )
+          .add(parseInt(element.target.value, 10), 'months')
           .format('x');
         bill = {
           ...billingsArray[billIndex],
-          [name]: parseInt(element.target.value),
+          [name]: parseInt(element.target.value, 10),
         };
-        billingsArray[billIndex].displacement = parseInt(element.target.value);
+        billingsArray[billIndex].displacement = parseInt(
+          element.target.value,
+          10,
+        );
         billingsArray[billIndex].initalBillingDate = Number(newDate);
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(newDate);
@@ -146,13 +155,14 @@ const BillingFinancials = ({
                 billingsArray[billIndex].paymentNumber !== 1
                   ? Number(billingsArray[billIndex].paymentNumber) - 1
                   : 0,
+                10,
               ),
               billingsArray[billIndex].type,
             )
             .format('x');
           bill = {
             ...billingsArray[billIndex],
-            [name]: parseInt(element.target.value),
+            [name]: parseInt(element.target.value, 10),
           };
           billingsArray[billIndex].lastBillingDate = Number(date);
         }
@@ -229,7 +239,8 @@ const BillingFinancials = ({
           return event.label === date.label;
         })
       ) {
-        events.push(date);
+        events.sort();
+        events.unshift(date);
       }
     });
   };
@@ -293,6 +304,7 @@ const BillingFinancials = ({
         (Number(billing.amount) +
           Number(billing.amount) * (billing.iva / 100)) *
         Number(billing.paymentNumber === 0 ? 1 : billing.paymentNumber);
+      totalBillsNoIva += Number(billing.amount);
 
       return (
         <Card key={billing.id} className={styles.cardForm}>
@@ -356,13 +368,12 @@ const BillingFinancials = ({
                   label="Valor IVA %"
                   margin="normal"
                   variant="outlined"
-                  defaultValue={billing.iva}
+                  placeholder={billing.iva}
                   id="3"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter')
                       document.getElementById('sel4').focus();
                   }}
-                  value={billing.iva}
                   onChange={changeCardValue('iva', billing.id)}
                 />
                 <div className={styles.amountIva}>
@@ -386,9 +397,9 @@ const BillingFinancials = ({
                         Number(billing.amount) * (Number(billing.iva) / 100)) *
                         Number(billing.paymentNumber),
                     )}
-                    displayType={'text'}
-                    thousandSeparator={true}
-                    prefix={'$'}
+                    displayType="text"
+                    thousandSeparator
+                    prefix="$"
                   />
                 </div>
               </div>
@@ -424,15 +435,15 @@ const BillingFinancials = ({
                     isLocked={billing.isLocked}
                     defaultDate={defaultDate}
                     currentEvent={createdEvent}
-                    eventIsUnique={eventIsUnique}
+                    eventIsUnique={billing.eventIsUnique}
                   />
                 </div>
                 <div className={styles.dateInitial}>
                   <TextField
                     required
-                    disabled={eventIsUnique || billing.isLocked}
+                    disabled={billing.eventIsUnique || billing.isLocked}
                     className={styles.textFieldDisplace}
-                    label={`Desplazamiento ${billing.cycle}`}
+                    label={`Desplazamiento Mensual`}
                     margin="normal"
                     variant="outlined"
                     defaultValue={
@@ -447,17 +458,19 @@ const BillingFinancials = ({
                     <KeyboardDatePicker
                       autoOk
                       className={styles.picker}
-                      disabled={!eventIsUnique || billing.isLocked}
+                      disabled={!billing.eventIsUnique || billing.isLocked}
                       disableToolbar
                       variant="inline"
                       format="dd/MM/yyyy"
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Inicial"
+                      defaultValue={parseInt(todayDate, 10)}
                       value={parseInt(
                         billing.initalBillingDate
                           ? billing.initalBillingDate
                           : billing.lastBillingDate,
+                        10,
                       )}
                       onChange={changeCardValue(
                         'initalBillingDate',
@@ -499,7 +512,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Final"
-                      value={parseInt(billing.lastBillingDate)}
+                      value={parseInt(billing.lastBillingDate, 10)}
                       onChange={changeCardValue(
                         'lastBillingDate',
                         billing.id,
@@ -574,13 +587,21 @@ const BillingFinancials = ({
       {displayComponent()}
       <div className={styles.cardForm}>
         <div className={styles.Totalbills}>
-          <h4 sclassName={styles.textTotal}> Valor Total:</h4>
+          <h4 sclassName={styles.textTotal}> Valor Total Con IVA:</h4>
           <NumberFormat
             value={Number(totalBills)}
-            displayType={'text'}
+            displayType="text"
             className={styles.TotalAmount}
-            thousandSeparator={true}
-            prefix={'$'}
+            thousandSeparator
+            prefix="$"
+          />
+          <h4 sclassName={styles.textTotal}> - Valor Total Sin IVA:</h4>
+          <NumberFormat
+            value={Number(totalBillsNoIva)}
+            displayType="text"
+            className={styles.TotalAmount}
+            thousandSeparator
+            prefix="$"
           />
         </div>
       </div>
