@@ -32,13 +32,7 @@ const Header = ({ quotation }) => {
         <div className={Styles.client}>
           <ClientInfo client={quotation.client} />
         </div>
-        <PropertyInfo
-          property={quotation.property}
-          propertyPrice={quotation.propertyPrice}
-          initialFeePercentage={quotation.initialFeePercentage}
-          reservePercentage={quotation.reservePercentage}
-          periods={quotation.periods}
-        />
+        <PropertyInfo />
       </div>
     </>
   );

@@ -1,15 +1,23 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
+import DialogContext from '../../Dialog/context';
+import PercentageInput from './PercentageInput';
 import Styles from './PropertyInfo.module.scss';
 
-const PropertyInfo = ({
-  property,
-  propertyPrice,
-  initialFeePercentage,
-  reservePercentage,
-  periods,
-}) => {
+const PropertyInfo = () => {
+  const {
+    quotation: {
+      property,
+      propertyPrice,
+      initialFeePercentage,
+      reservePercentage,
+      periods,
+    },
+    initialFeeHandler,
+    reserveHandler,
+  } = useContext(DialogContext);
+
   const initialFee = useMemo(() => propertyPrice * initialFeePercentage, [
     propertyPrice,
     initialFeePercentage,
@@ -24,33 +32,47 @@ const PropertyInfo = ({
         <span>{property.name}</span>
       </div>
       <div className={Styles.value}>
-        <NumberFormat
-          value={propertyPrice.toFixed(2)}
-          displayType="text"
-          thousandSeparator
-          prefix="$"
-        />
+        <b>
+          <NumberFormat
+            value={propertyPrice.toFixed(2)}
+            displayType="text"
+            thousandSeparator
+            prefix="$"
+          />
+        </b>
       </div>
       <div className={Styles.title}>
         <span>Cuota inicial:</span>
       </div>
       <div className={Styles.rate}>
-        <span>{(initialFeePercentage * 100).toFixed(2)}%</span>
+        <PercentageInput
+          value={(initialFeePercentage * 100).toFixed(2)}
+          onChange={(event) => {
+            initialFeeHandler(event.target.value);
+          }}
+        />
       </div>
       <div className={Styles.value}>
-        <NumberFormat
-          value={initialFee.toFixed(2)}
-          displayType="text"
-          thousandSeparator
-          prefix="$"
-        />
+        <b>
+          <NumberFormat
+            value={initialFee.toFixed(2)}
+            displayType="text"
+            thousandSeparator
+            prefix="$"
+          />
+        </b>
       </div>
 
       <div className={Styles.title}>
         <span>Separación:</span>
       </div>
       <div className={Styles.rate}>
-        <span>{(reservePercentage * 100).toFixed(2)}%</span>
+        <PercentageInput
+          value={(reservePercentage * 100).toFixed(2)}
+          onChange={(event) => {
+            reserveHandler(event.target.value);
+          }}
+        />
       </div>
       <div className={Styles.value}>
         <NumberFormat
@@ -72,7 +94,7 @@ const PropertyInfo = ({
           <NumberFormat
             value={(
               (initialFee - initialFee * reservePercentage) /
-              periods 
+              periods
             ).toFixed(2)}
             displayType="text"
             thousandSeparator
@@ -89,12 +111,14 @@ const PropertyInfo = ({
       </div>
       <div className={Styles.value}>
         <span>
-          <NumberFormat
-            value={(propertyPrice * (1 - initialFeePercentage)).toFixed(2)}
-            displayType="text"
-            thousandSeparator
-            prefix="$"
-          />
+          <b>
+            <NumberFormat
+              value={(propertyPrice * (1 - initialFeePercentage)).toFixed(2)}
+              displayType="text"
+              thousandSeparator
+              prefix="$"
+            />
+          </b>
         </span>
       </div>
     </div>
