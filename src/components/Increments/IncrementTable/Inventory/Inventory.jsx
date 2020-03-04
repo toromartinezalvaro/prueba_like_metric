@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import {
+  Tooltip,
+  DialogContent,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+} from '@material-ui/core';
 import NumberFormat from 'react-number-format';
+import Button from '../../../UI/Button/Button';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
 import Numbers from '../../../../helpers/numbers';
@@ -46,6 +54,8 @@ function Inventory({
   } = groupSummary;
 
   const [salesSpeedState, setSalesSpeedState] = useState(salesSpeed);
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const limitTodayDate =
     retentionMonths -
     moment()
@@ -114,22 +124,53 @@ function Inventory({
         {blockIncrements ? (
           <span>No se puede incrementar con 1 unidad</span>
         ) : (
-          <Input
-            mask="currency"
-            style={{ textAlign: 'left' }}
-            validations={[
-              {
-                fn: (value) => value !== '.',
-                message: 'Debe ingresar un numero',
-              },
-            ]}
-            value={increment && increment.toFixed(2)}
-            onChange={(target) => {
-              putIncrement(Number(target.value) + salesIncrement);
-            }}
-            disable={units === 0 || !isReset}
-            updateWithProp
-          />
+          <>
+            <Input
+              mask="currency"
+              style={{ textAlign: 'left' }}
+              validations={[
+                {
+                  fn: (value) => value !== '.',
+                  message: 'Debe ingresar un numero',
+                },
+              ]}
+              value={increment && increment.toFixed(2)}
+              onChange={(target) => {
+                putIncrement(Number(target.value) + salesIncrement);
+              }}
+              disable={units === 0 || !isReset}
+              updateWithProp
+            />
+            <Tooltip
+              title="Abrir ayuda ventas"
+              onClick={() => setModalOpen(true)}
+            >
+              <span className={Styles.Badge}>?</span>
+            </Tooltip>
+            <Dialog open={isModalOpen}>
+              <DialogTitle>
+                <div>
+                  <span>{`Ayuda ventas`}</span>
+                </div>
+              </DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => setModalOpen(false)}
+                  className={Styles.CancelButton}
+                >
+                  Cancelar
+                </Button>
+
+                <Button
+                  onClick={() => setModalOpen(false)}
+                  className={Styles.ConfirmButton}
+                >
+                  Aplicar
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
         )}
       </div>
       <div className={Styles['inv-sales-future']}>
