@@ -6,8 +6,11 @@ export default class ClientsServices extends Services {
     return this.post(definitions.postTempQuotation(towerId), quotation);
   }
 
-  putQuotationToPermanent(quotationId) {
-    return this.put(definitions.putQuotationToPermanent(quotationId));
+  putQuotationToPermanent(quotationId, percentages) {
+    return this.put(
+      definitions.putQuotationToPermanent(quotationId),
+      percentages,
+    );
   }
 
   getClientQuotations(clientId) {

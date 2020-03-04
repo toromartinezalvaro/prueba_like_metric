@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import MuiTable from '@material-ui/core/Table';
@@ -12,6 +12,11 @@ import Typography from '@material-ui/core/Typography';
 import Styles from './Table.module.scss';
 
 const Table = ({ quotation }) => {
+  const initialFee = useMemo(
+    () => quotation.propertyPrice * quotation.initialFeePercentage,
+    [quotation],
+  );
+
   return (
     <TableContainer component={Paper} classes={{ root: Styles.table }}>
       <MuiTable stickyHeader>
@@ -38,9 +43,7 @@ const Table = ({ quotation }) => {
             </TableCell>
             <TableCell>
               <NumberFormat
-                value={(
-                  quotation.propertyPrice * quotation.reservePercentage
-                ).toFixed(2)}
+                value={(initialFee * quotation.reservePercentage).toFixed(2)}
                 displayType="text"
                 thousandSeparator
                 prefix="$"
@@ -61,10 +64,8 @@ const Table = ({ quotation }) => {
                 <TableCell>
                   <NumberFormat
                     value={(
-                      (quotation.propertyPrice *
-                        quotation.initialFeePercentage -
-                        quotation.propertyPrice * quotation.reservePercentage) /
-                      (quotation.periods - 1)
+                      (initialFee - initialFee * quotation.reservePercentage) /
+                      quotation.periods
                     ).toFixed(2)}
                     displayType="text"
                     thousandSeparator
