@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {
-  Tooltip,
-  DialogContent,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-} from '@material-ui/core';
+import { Tooltip } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
-import Button from '../../../UI/Button/Button';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
 import Numbers from '../../../../helpers/numbers';
@@ -29,6 +22,7 @@ function Inventory({
   putIncrement,
   isReset,
   salesIncrement,
+  setModalOpen,
 }) {
   const endOfSales = moment(Number(endOfSalesDate))
     .startOf('month')
@@ -54,7 +48,6 @@ function Inventory({
   } = groupSummary;
 
   const [salesSpeedState, setSalesSpeedState] = useState(salesSpeed);
-  const [isModalOpen, setModalOpen] = useState(false);
 
   const limitTodayDate =
     retentionMonths -
@@ -147,29 +140,6 @@ function Inventory({
             >
               <span className={Styles.Badge}>?</span>
             </Tooltip>
-            <Dialog open={isModalOpen}>
-              <DialogTitle>
-                <div>
-                  <span>{`Ayuda ventas`}</span>
-                </div>
-              </DialogTitle>
-              <DialogContent></DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => setModalOpen(false)}
-                  className={Styles.CancelButton}
-                >
-                  Cancelar
-                </Button>
-
-                <Button
-                  onClick={() => setModalOpen(false)}
-                  className={Styles.ConfirmButton}
-                >
-                  Aplicar
-                </Button>
-              </DialogActions>
-            </Dialog>
           </>
         )}
       </div>
