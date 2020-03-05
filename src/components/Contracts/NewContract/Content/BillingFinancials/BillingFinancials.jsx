@@ -138,11 +138,11 @@ const BillingFinancials = ({
       if (name === 'displacement') {
         billingsArray[billIndex].initalBillingDate = Number(lastDate);
         const newDate = moment(billingsArray[billIndex].initalBillingDate)
-          .add(parseInt(element.target.value, 10), 'months')
+          .add(Number(element.target.value), 'months')
           .format('x');
         bill = {
           ...billingsArray[billIndex],
-          [name]: parseInt(element.target.value, 10),
+          [name]: Number(element.target.value),
         };
         billingsArray[billIndex].displacement = Number(element.target.value);
         billingsArray[billIndex].initalBillingDate = Number(newDate);
@@ -150,18 +150,17 @@ const BillingFinancials = ({
           billingsArray[billIndex].lastBillingDate = Number(newDate);
           const date = moment(billingsArray[billIndex].lastBillingDate)
             .add(
-              parseInt(
+              Number(
                 billingsArray[billIndex].paymentNumber !== 1
                   ? Number(billingsArray[billIndex].paymentNumber) - 1
                   : 0,
-                10,
               ),
               billingsArray[billIndex].type,
             )
             .format('x');
           bill = {
             ...billingsArray[billIndex],
-            [name]: parseInt(element.target.value, 10),
+            [name]: Number(element.target.value),
           };
           billingsArray[billIndex].lastBillingDate = Number(date);
         }
@@ -467,12 +466,11 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Inicial"
-                      defaultValue={parseInt(todayDate, 10)}
-                      value={parseInt(
+                      defaultValue={Number(todayDate)}
+                      value={Number(
                         billing.initalBillingDate
                           ? billing.initalBillingDate
                           : billing.lastBillingDate,
-                        10,
                       )}
                       onChange={changeCardValue(
                         'initalBillingDate',
@@ -514,7 +512,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Final"
-                      value={parseInt(billing.lastBillingDate, 10)}
+                      value={Number(billing.lastBillingDate)}
                       onChange={changeCardValue(
                         'lastBillingDate',
                         billing.id,
