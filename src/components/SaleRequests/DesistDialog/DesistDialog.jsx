@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import ManualPrice from './ManualPrice';
+import PropertyDetails from '../../shared/PropertyDetails';
 import RequestServices from '../../../services/SaleRequests';
 
 const services = new RequestServices();
@@ -20,22 +21,7 @@ const DesistDialog = ({
 }) => {
   const formRef = useRef(null);
 
-  const [isLast, setIsLast] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
-
-  useEffect(() => {
-    async function fetchDesistStatus() {
-      if (open) {
-        try {
-          const res = await services.getGroupDesistStatus(desistRequestId);
-          setIsLast(res.data.isLast);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-    fetchDesistStatus();
-  }, [open]);
 
   const submit = () => {
     if (formRef.current) {
@@ -59,15 +45,10 @@ const DesistDialog = ({
       <DialogTitle>Cambiar precio</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {!isLast
-            ? 'Agregue el precio manualmente del apartamento'
-            : 'El precio se actualizara de acuerdo con la lista'}
+          Agregue el precio manualmente del apartamento {}
         </DialogContentText>
-        <ManualPrice
-          ref={formRef}
-          onSubmit={onSubmitHandler}
-          isHidden={isLast}
-        />
+        {/* <PropertyDetails /> */}
+        <ManualPrice ref={formRef} onSubmit={onSubmitHandler} />
       </DialogContent>
       <DialogActions>
         <Button

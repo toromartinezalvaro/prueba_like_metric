@@ -34,4 +34,8 @@ export default class SchemeServices extends Services {
   putEndOfSalesDate(towerId, body) {
     return this.put(SchemaServiceDefinitions.putEndOfSalesDate(towerId), body);
   }
+
+  isDisable(towerId) {
+    return this.get(SchemaServiceDefinitions.getSalesRequestHistory(towerId));
+  }
 }

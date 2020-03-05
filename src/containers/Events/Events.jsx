@@ -11,7 +11,7 @@ import moment from 'moment';
 import styles from './Events.module.scss';
 import Event from '../../components/Event/Event';
 import ScheduleService from '../../services/schedule/ScheduleServices';
-import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import EventServices from '../../services/event/EventServices';
 
 class Events extends Component {
@@ -47,13 +47,6 @@ class Events extends Component {
 
   handleEvent = () => {
     this.setState({ eventModal: { isOpen: !this.state.eventModal.isOpen } });
-  };
-
-  toastAlert = (message) => {
-    this.setState({ alert: { opened: true, message } });
-    setTimeout(() => {
-      this.setState({ alert: { opened: false, message } });
-    }, 500);
   };
 
   componentDidMount() {
@@ -96,7 +89,7 @@ class Events extends Component {
           dateValue: [
             {
               eventId: id,
-              labelDate: 'salesStartDate',
+              eventLabel: 'salesStartDate',
               value: Number(salesStartDate),
               label: `FECHA INICIO PROYECTO (${moment(
                 Number(salesStartDate),
@@ -104,7 +97,7 @@ class Events extends Component {
             },
             {
               eventId: id,
-              labelDate: 'endOfSalesDate',
+              eventLabel: 'endOfSalesDate',
               value: Number(endOfSalesDate),
               label: `FECHA FIN PROYECTO (${moment(
                 Number(endOfSalesDate),
@@ -112,7 +105,7 @@ class Events extends Component {
             },
             {
               eventId: id,
-              labelDate: 'balancePointDate',
+              eventLabel: 'balancePointDate',
               value: Number(balancePointDate),
               label: `FECHA PUNTO DE EQUILIBRIO (${moment(
                 Number(balancePointDate),
@@ -120,7 +113,7 @@ class Events extends Component {
             },
             {
               eventId: id,
-              labelDate: 'constructionStartDate',
+              eventLabel: 'constructionStartDate',
               value: Number(constructionStartDate),
               label: `FECHA INICIO DE CONSTRUCCIÓN (${moment(
                 Number(constructionStartDate),
@@ -152,7 +145,11 @@ class Events extends Component {
             (event) => event.description === this.state.description,
           )
         ) {
-          this.toastAlert('ERROR: Ya existe un evento con ese nombre');
+          this.props.spawnMessage(
+            'Ya existe un evento con ese nombre',
+            'error',
+            'ERROR',
+          );
         } else {
           this.services
             .postEvent(this.props.towerId, this.state.event)
@@ -294,13 +291,9 @@ class Events extends Component {
             </DialogContentText>
           </DialogContent>
         </Dialog>
-        <SimpleSnackbar
-          message={this.state.alert.message}
-          opened={this.state.alert.opened}
-        />
       </div>
     );
   }
 }
 
-export default Events;
+export default withDefaultLayout(Events);

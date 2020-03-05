@@ -202,6 +202,10 @@
   width: 28vw !important;
 }
 
+.error:focus {
+  background-color: red !important;
+}
+
 @media (min-width: 1340px) {
   .gridContainer {
     display: flex;

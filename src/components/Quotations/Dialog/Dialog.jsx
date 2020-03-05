@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Loader from '../../UI2/Loader';
+import Context from './context';
 import Header from '../Header';
 import MonthlyPayments from '../Table';
 import Styles from './Dialog.module.scss';
@@ -18,6 +19,8 @@ import {
   fetchQuotationStart,
   fetchQuotationSuccess,
   fetchQuotationFailure,
+  changeInitialFeePercentage,
+  changeReservePercentage,
 } from './actions';
 import reducer, { initialState } from './reducer';
 import QuotationsServices from '../../../services/Quotations';
@@ -36,7 +39,10 @@ const Dialog = ({
   const putQuotation = async () => {
     try {
       dispatch(fetchQuotationStart());
-      await services.putQuotationToPermanent(store.quotation.id);
+      await services.putQuotationToPermanent(store.quotation.id, {
+        initialFeePercentage: store.quotation.initialFeePercentage,
+        reservePercentage: store.quotation.reservePercentage,
+      });
       spawnMessage('Se agregó correctamente la cotización', 'success');
       closeHandler();
     } catch (error) {
@@ -87,6 +93,14 @@ const Dialog = ({
     };
   }, [open]);
 
+  const handleInitialFeePercentageChange = (value) => {
+    dispatch(changeInitialFeePercentage(value / 100));
+  };
+
+  const handleReservePercentageChange = (value) => {
+    dispatch(changeReservePercentage(value / 100));
+  };
+
   return (
     <MuiDialog open={open} fullScreen>
       <AppBar>
@@ -125,8 +139,16 @@ const Dialog = ({
             </DialogContentText>
           ) : (
             <>
-              <Header quotation={store.quotation} />
-              <MonthlyPayments quotation={store.quotation} />
+              <Context.Provider
+                value={{
+                  quotation: store.quotation,
+                  initialFeeHandler: handleInitialFeePercentageChange,
+                  reserveHandler: handleReservePercentageChange,
+                }}
+              >
+                <Header quotation={store.quotation} />
+                <MonthlyPayments quotation={store.quotation} />
+              </Context.Provider>
             </>
           )}
         </Loader>

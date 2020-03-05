@@ -59,6 +59,7 @@ const NewContract = ({
   isEditable,
   setEditable,
   sendToDelete,
+  alreadyCreated,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -120,6 +121,7 @@ const NewContract = ({
           sendGeneralInfo={sendGeneralInfo}
           dataIfEdit={dataIfEdit}
           sendContractNumber={sendContractNumber}
+          alreadyCreated={alreadyCreated}
         />
         <br />
         <ExpandBillingFinancials

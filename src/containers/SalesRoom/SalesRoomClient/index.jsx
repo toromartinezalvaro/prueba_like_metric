@@ -57,6 +57,8 @@ class SalesRoom extends Component {
     clientName: null,
     deadlineDate: new Date(),
     additionalAreas: [],
+    lastSelector: 'priceWithIncrements',
+    isLastProperty: false,
   };
 
   propertyHandler = (key, value) => {
@@ -121,6 +123,12 @@ class SalesRoom extends Component {
       tempProperty.adminAdditionalAreas = tempProperty.additionalAreas.filter(
         (additionalArea) => !additionalArea.addedFromSalesRoom,
       );
+      const group = this.state.response.properties.find(
+        (g) => g[0].groupId === tempProperty.groupId,
+      );
+      const availableProperties = group.filter(
+        (p) => p.status === Status.Available,
+      );
       this.setState({
         id: property.id,
         groupId: property.groupId,
@@ -130,6 +138,7 @@ class SalesRoom extends Component {
         priceSold: property.priceWithIncrement,
         selectedProperty: tempProperty,
         discountApplied: property.discount,
+        isLastProperty: availableProperties.length === 1,
       });
     }
   };
@@ -244,6 +253,7 @@ class SalesRoom extends Component {
         lowestFloor: data.lowestFloor,
         data: matrix,
         isEmpty: false,
+        lastSelector: active,
       });
     } else {
       this.setState({ isEmpty: true });
@@ -332,7 +342,7 @@ class SalesRoom extends Component {
       .then((response) => {
         const { incrementList } = response.data;
         if (incrementList) {
-          this.makeArrayOfProperties(incrementList);
+          this.makeArrayOfProperties(incrementList, this.state.lastSelector);
         }
         this.setState({
           isOpen: false,
@@ -384,12 +394,13 @@ class SalesRoom extends Component {
   };
 
   addAdditionalArea = (id) => {
-    this.services
+    return this.services
       .getAdditionalArea(id, this.props.match.params.towerId)
       .then((response) => {
+        const { measure, price } = response.data;
         this.setState((prevState) => {
           const tempProperty = { ...prevState.selectedProperty };
-          tempProperty.priceWithIncrement += response.data.price;
+          response.data.unitPrice = measure * price;
           tempProperty.addedAdditionalAreas.push(response.data);
           const tempAdditionalAreas = prevState.additionalAreas.filter(
             (additionalArea) => additionalArea.id !== id,
@@ -438,7 +449,7 @@ class SalesRoom extends Component {
   };
 
   render() {
-    let isStrategyNull = this.state.selectedProperty.isReset;
+    const isStrategyNull = this.state.selectedProperty.isReset;
 
     let showModalSelectedProperty = !isStrategyNull;
 
@@ -453,6 +464,10 @@ class SalesRoom extends Component {
         this.state.response.properties,
       );
       showModalSelectedProperty = isThereOneProperty;
+    }
+
+    if (isStrategyNull && this.state.isLastProperty) {
+      showModalSelectedProperty = true;
     }
 
     return (
@@ -500,6 +515,7 @@ class SalesRoom extends Component {
               </DialogTitle>
               <DialogContent>
                 {isStrategyNull &&
+                  !this.state.isLastProperty &&
                   'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
                 {showModalSelectedProperty &&
                   (this.state.isLoadingModal ? (
@@ -518,6 +534,7 @@ class SalesRoom extends Component {
                       isDisabled={
                         this.state.selectedProperty.requestStatus === 'D'
                       }
+                      isLast={this.state.isLastProperty}
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}

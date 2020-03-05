@@ -72,7 +72,11 @@ function IncrementTable({
               group.sales.increment > group.total.increment && isBadgeIncrement
             }
             trigger={
-              <AccordionTrigger group={group} resetStrategy={resetStrategy} />
+              <AccordionTrigger
+                group={group}
+                resetStrategy={resetStrategy}
+                isReset={group.isReset}
+              />
             }
           >
             <div className={styles.AccordionContainer}>
@@ -156,6 +160,16 @@ function IncrementTable({
                             'Los meses de retencion superan la fecha final de ventas',
                         },
                       ]}
+                      putIncrement={(increment) => {
+                        putIncrement(
+                          group.id,
+                          increment,
+                          group.inventory.units,
+                          group.sales.increment,
+                        );
+                      }}
+                      salesIncrement={group.sales.increment}
+                      isReset={group.isReset}
                     />
                   </div>
                   <SalesWizard

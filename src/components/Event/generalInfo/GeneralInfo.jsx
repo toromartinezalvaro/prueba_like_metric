@@ -84,6 +84,7 @@ const GeneralInfo = ({
               id="date-picker-inline"
               label="Fecha De Evento"
               defaultValue={initialDate}
+              value={initialDate}
               onChange={uniqueDateValueChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
