@@ -89,7 +89,6 @@ const TablesContractFlow = ({ billings }) => {
           val.acumulated.length !== 0 ? parseInt(val.acumulated[0][0], 10) : 0;
         const projected =
           val.projected.length !== 0 ? parseInt(val.projected[0][0], 10) : 0;
-        const total = val.total.length !== 0 ? totalFunc(val.total) : 0;
 
         let result = {
           group,
