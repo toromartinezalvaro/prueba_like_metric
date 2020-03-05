@@ -9,29 +9,27 @@ const validationSchema = yup.object().shape({
   price: yup.number('El valor debe ser un numero'),
 });
 
-const ManualPrice = forwardRef(({ onSubmit, isHidden }, ref) => {
+const ManualPrice = forwardRef(({ onSubmit }, ref) => {
   return (
-    <div className={isHidden ? styles.hide : ''}>
-      <Formik
-        initialValues={{ price: '' }}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-        innerRef={ref}
-      >
-        {() => {
-          return (
-            <Form>
-              <Field
-                name="price"
-                label="Precio"
-                placeholder="$0"
-                component={CurrencyInput}
-              />
-            </Form>
-          );
-        }}
-      </Formik>
-    </div>
+    <Formik
+      initialValues={{ price: '' }}
+      onSubmit={onSubmit}
+      validationSchema={validationSchema}
+      innerRef={ref}
+    >
+      {() => {
+        return (
+          <Form>
+            <Field
+              name="price"
+              label="Precio"
+              placeholder="$0"
+              component={CurrencyInput}
+            />
+          </Form>
+        );
+      }}
+    </Formik>
   );
 });
 
