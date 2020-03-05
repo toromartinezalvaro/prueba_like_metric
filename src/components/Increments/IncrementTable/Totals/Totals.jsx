@@ -78,29 +78,12 @@ function Totals({
         />
       </div>
       <div className={Styles['total-increment-goal']}>
-        {blockIncrements ? (
-          <span>No se puede incrementar con 1 unidad</span>
-        ) : (
-          <Input
-            mask="currency"
-            validations={[
-              {
-                fn: (value) => value !== '.',
-                message: 'Debe ingresar un numero',
-              },
-            ]}
-            value={
-              inventoryUnits !== 0
-                ? increment && increment.toFixed(2)
-                : salesIncrement.toFixed(2)
-            }
-            onChange={(target) => {
-              putIncrement(target.value);
-            }}
-            disable={inventoryUnits === 0 || !isReset}
-            updateWithProp
-          />
-        )}
+        <NumberFormat
+          value={increment.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
       </div>
       <div className={Styles['total-sales-future']}>
         <NumberFormat
