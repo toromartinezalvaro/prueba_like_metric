@@ -6,9 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import NumberFormat from 'react-number-format';
 import Button from '../../UI/Button/Button';
-import Table from '../../UI/Table/Table';
 import Input from '../../UI/Input/Input';
+import PropertyDetails from './PropertyDetails';
+import ClientsService from '../../../services/client/ClientsServices';
 import Styles from './SaleRequestsModal.module.scss';
+
+const services = new ClientsService();
 
 const SaleRequestModal = ({
   open,
@@ -17,10 +20,21 @@ const SaleRequestModal = ({
   cancelHandler,
   saleRequest: { id, requestStatus, client, property, pricing },
 }) => {
+  const [innerProperty, setInnerProperty] = useState(null);
   const [l0, setL0] = useState(pricing.l0);
   const [discount, setDiscount] = useState(pricing.financial);
   const [tradeDiscount, setTradeDiscount] = useState(pricing.trade);
   const [readOnly, setReadOnly] = useState(requestStatus !== 'P');
+
+  useEffect(() => {
+    if (open) {
+      services.getPropertyInfo(property.id).then((response) => {
+        const requestedProperty = response.data;
+        requestedProperty.id = id;
+        setInnerProperty(requestedProperty);
+      });
+    }
+  }, [property, open]);
 
   useEffect(() => {
     setL0(pricing.l0);
@@ -29,40 +43,20 @@ const SaleRequestModal = ({
     setReadOnly(requestStatus !== 'P');
   }, [pricing]);
 
-  const getColumns = () => {
-    return property.details.map((detail) => {
-      return detail.name;
-    });
-  };
-
-  const getData = () => {
-    return property.details.map((detail, index) => {
-      return [detail.reference, detail.quantity, detail.unit, detail.value];
-    });
-  };
-
   return (
     <Dialog open={open} scroll="body" maxWidth="lg">
       <DialogTitle>Solicitud de venta</DialogTitle>
       <DialogContent>
         <div className={Styles.info}>
           <span className={Styles.client}>{client.name}</span>{' '}
-          <div className={Styles.property}>
-            Propiedad: <span className={Styles.name}>{property.name}</span>
-          </div>
+          {innerProperty && (
+            <div className={Styles.property}>
+              Propiedad: <span className={Styles.name}>{property.name}</span>
+            </div>
+          )}
         </div>
         <div className={Styles.details}>
-          <div className={Styles.header}>
-            <span>Detalle Estado:{requestStatus}</span>
-          </div>
-          <div>
-            <Table
-              intersect="Item"
-              headers={['#', 'Cantidad', 'Unidad', 'Valor']}
-              columns={getColumns()}
-              data={getData()}
-            />
-          </div>
+          {innerProperty && <PropertyDetails property={innerProperty} />}
         </div>
         <div className={Styles.pricing}>
           <div className={Styles.l0}>
@@ -85,10 +79,10 @@ const SaleRequestModal = ({
               <Input
                 disable={readOnly}
                 mask="currency"
-                value={tradeDiscount ? parseFloat(tradeDiscount).toFixed(2) : 0}
+                value={discount ? discount.toFixed(2) : 0}
                 validations={[]}
                 onChange={(target) => {
-                  setTradeDiscount(target.value);
+                  setDiscount(target.value);
                 }}
               />
             </span>
@@ -99,10 +93,10 @@ const SaleRequestModal = ({
               <Input
                 disable={readOnly}
                 mask="currency"
-                value={discount ? discount.toFixed(2) : 0}
+                value={tradeDiscount ? parseFloat(tradeDiscount).toFixed(2) : 0}
                 validations={[]}
                 onChange={(target) => {
-                  setDiscount(target.value);
+                  setTradeDiscount(target.value);
                 }}
               />
             </span>
