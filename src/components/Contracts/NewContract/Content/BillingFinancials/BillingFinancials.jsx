@@ -59,6 +59,7 @@ const BillingFinancials = ({
     type: 'unique',
     new: true,
     removed: false,
+    eventLabel: '',
     eventIsUnique: false,
   };
   const [billings, setBillings] = useState([]);
@@ -87,18 +88,16 @@ const BillingFinancials = ({
     if (elementIsADate) {
       bill = {
         ...billingsArray[billIndex],
-        initalBillingDate: parseInt(moment(element).format('x'), 10),
+        initalBillingDate: Number(moment(element).format('x')),
         lastBillingDate:
-          parseInt(moment(element).format('x'), 10) *
-          parseInt(billingsArray[billIndex].paymentNumber, 10),
+          Number(moment(element).format('x')) *
+          Number(billingsArray[billIndex].paymentNumber),
       };
-      billingsArray[billIndex].initalBillingDate = parseInt(
+      billingsArray[billIndex].initalBillingDate = Number(
         moment(element).format('x'),
-        10,
       );
-      billingsArray[billIndex].lastBillingDate = parseInt(
+      billingsArray[billIndex].lastBillingDate = Number(
         moment(element).format('x'),
-        10,
       );
     } else if (elementIsASelect) {
       if (name === 'cycle') {
@@ -114,6 +113,7 @@ const BillingFinancials = ({
           initalBillingDate: todayDate,
           lastBillingDate: todayDate,
           eventIsUnique: true,
+          eventLabel: element.eventLabel,
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
         bill = {
@@ -122,9 +122,11 @@ const BillingFinancials = ({
           lastBillingDate: Number(element.value),
           eventId: element.eventId,
           eventIsUnique: false,
+          eventLabel: element.eventLabel,
         };
         setLastDate(Number(element.value));
         billingsArray[billIndex].eventId = element.eventId;
+        billingsArray[billIndex].eventLabel = element.eventLabel;
       }
     } else if (elementIsAnEvent) {
       bill = { ...billingsArray[billIndex], [name]: element.value };
@@ -142,10 +144,7 @@ const BillingFinancials = ({
           ...billingsArray[billIndex],
           [name]: parseInt(element.target.value, 10),
         };
-        billingsArray[billIndex].displacement = parseInt(
-          element.target.value,
-          10,
-        );
+        billingsArray[billIndex].displacement = Number(element.target.value);
         billingsArray[billIndex].initalBillingDate = Number(newDate);
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(newDate);
@@ -420,6 +419,9 @@ const BillingFinancials = ({
                     placeholder="Fecha inicial"
                     components={Option}
                     value={events.find((option) => {
+                      if (option.eventLabel) {
+                        return option.eventLabel === billing.eventLabel;
+                      }
                       return option.eventId === billing.eventId;
                     })}
                     options={events}
