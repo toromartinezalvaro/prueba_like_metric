@@ -154,7 +154,20 @@ class AreasAdditional extends Component {
     this.services
       .getAreas(this.props.match.params.towerId)
       .then((areas) => {
-        this.setState({ arrayAreaTypes: _.sortBy(areas.data, ['name']), isLoading: false });
+        const sortedAreas = areas.data.map((areaType) => {
+          const tempAreaType = { ...areaType };
+          tempAreaType.additionalAreas.sort((a, b) =>
+            a.nomenclature.localeCompare(b.nomenclature, undefined, {
+              numeric: true,
+              sensitivity: 'base',
+            }),
+          );
+          return tempAreaType;
+        });
+        this.setState({
+          arrayAreaTypes: sortedAreas,
+          isLoading: false,
+        });
       })
       .catch((error) => {
         this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
