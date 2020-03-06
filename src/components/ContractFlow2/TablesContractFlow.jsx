@@ -98,12 +98,12 @@ const TablesContractFlow = ({ billings }) => {
           projected: numberFormater(projected),
           total: numberFormater(acumulated + projected),
         };
-        const initialDatesValues = columns.forEach((column, x) => {
+        const initialDatesValues = columns.slice(1).forEach((column, x) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
         const datesValues = val.billings.map((dateValue) => {
-          dateValue.forEach((singleValue, l) => {
+          dateValue.slice(1).forEach((singleValue, l) => { 
             const name = `date${l}`;
             result = { ...result, [name]: [numberFormater(singleValue)] };
           });
