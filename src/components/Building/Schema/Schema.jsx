@@ -7,6 +7,7 @@ import Modal from '../../UI/Modal/Modal';
 
 const Schema = (props) => {
   const [hidden, setHidden] = useState(true);
+  const [locked, setLock] = useState(false);
 
   const inputValidation = [
     {
@@ -25,9 +26,11 @@ const Schema = (props) => {
   ];
 
   const save = () => {
+    console.log(props.update);
     if (props.update) {
       props.updateSchema();
       setHidden(true);
+      setLock(true);
     } else {
       props.saveSchema();
     }
@@ -57,7 +60,7 @@ const Schema = (props) => {
               onChange={props.onChange}
               value={props.floors}
               validations={inputValidation}
-              disable={props.disableSold}
+              disable={props.disableSold || locked}
             />
           </div>
 
