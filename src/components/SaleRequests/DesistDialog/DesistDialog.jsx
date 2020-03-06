@@ -6,6 +6,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import ManualPrice from './ManualPrice';
 import AreasDetails from '../../shared/Areas';
 import ClientServices from '../../../services/client/ClientsServices';
@@ -62,10 +64,24 @@ const DesistDialog = ({
         <DialogContentText>
           Agregue el precio manualmente del apartamento {}
         </DialogContentText>
+        {property && <span>{property.name}</span>}
         {property && <AreasDetails property={property} />}
+        <Box my={2}>
+          <Typography variant="caption">
+            * Esta propiedad pertenece al {property && property.group}
+          </Typography>
+        </Box>
         <ManualPrice ref={formRef} onSubmit={onSubmitHandler} />
       </DialogContent>
       <DialogActions>
+        <Button
+          onClick={submit}
+          variant="contained"
+          color="secondary"
+          disabled={isDisabled}
+        >
+          Rechazar
+        </Button>
         <Button
           onClick={submit}
           variant="contained"
