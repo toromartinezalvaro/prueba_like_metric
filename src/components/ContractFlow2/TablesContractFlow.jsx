@@ -89,7 +89,6 @@ const TablesContractFlow = ({ billings }) => {
           val.acumulated.length !== 0 ? parseInt(val.acumulated[0][0], 10) : 0;
         const projected =
           val.projected.length !== 0 ? parseInt(val.projected[0][0], 10) : 0;
-        const total = val.total.length !== 0 ? totalFunc(val.total) : 0;
 
         let result = {
           group,
@@ -97,13 +96,13 @@ const TablesContractFlow = ({ billings }) => {
           contract,
           acumulated: numberFormater(acumulated),
           projected: numberFormater(projected),
-          total: numberFormater(total),
+          total: numberFormater(acumulated + projected),
         };
         const initialDatesValues = columns.forEach((column, x) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
-        const datesValues = val.billings.map((dateValue, j) => {
+        const datesValues = val.billings.map((dateValue) => {
           dateValue.forEach((singleValue, l) => {
             const name = `date${l}`;
             result = { ...result, [name]: [numberFormater(singleValue)] };
