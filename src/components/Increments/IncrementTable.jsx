@@ -30,6 +30,7 @@ function IncrementTable({
   ...props
 }) {
   const [isBadgeIncrement] = useState(props.isBadgeIncrement);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const inputValidations = [
     {
@@ -97,14 +98,6 @@ function IncrementTable({
                       blockIncrements={group.total.units < 2}
                       className={styles.total}
                       groupSummary={group.total}
-                      putIncrement={(increment) => {
-                        putIncrement(
-                          group.id,
-                          increment,
-                          group.inventory.units,
-                          group.sales.increment,
-                        );
-                      }}
                       putSalesSpeed={(retentionMonths) => {
                         putSalesSpeed(group.id, retentionMonths, i);
                       }}
@@ -170,6 +163,7 @@ function IncrementTable({
                       }}
                       salesIncrement={group.sales.increment}
                       isReset={group.isReset}
+                      setModalOpen={setModalOpen}
                     />
                   </div>
                   <SalesWizard
@@ -196,6 +190,18 @@ function IncrementTable({
                         i,
                       );
                     }}
+                    isModalOpen={isModalOpen}
+                    setModalOpen={setModalOpen}
+                    isReset={group.isReset}
+                    putIncrement={(increment) => {
+                      putIncrement(
+                        group.id,
+                        increment,
+                        group.inventory.units,
+                        group.sales.increment,
+                      );
+                    }}
+                    salesIncrement={group.sales.increment}
                   />
                 </React.Fragment>
               )}

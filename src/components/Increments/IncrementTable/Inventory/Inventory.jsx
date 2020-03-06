@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Tooltip } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
@@ -21,6 +22,7 @@ function Inventory({
   putIncrement,
   isReset,
   salesIncrement,
+  setModalOpen,
 }) {
   const endOfSales = moment(Number(endOfSalesDate))
     .startOf('month')
@@ -46,6 +48,7 @@ function Inventory({
   } = groupSummary;
 
   const [salesSpeedState, setSalesSpeedState] = useState(salesSpeed);
+
   const limitTodayDate =
     retentionMonths -
     moment()
@@ -114,22 +117,30 @@ function Inventory({
         {blockIncrements ? (
           <span>No se puede incrementar con 1 unidad</span>
         ) : (
-          <Input
-            mask="currency"
-            style={{ textAlign: 'left' }}
-            validations={[
-              {
-                fn: (value) => value !== '.',
-                message: 'Debe ingresar un numero',
-              },
-            ]}
-            value={increment && increment.toFixed(2)}
-            onChange={(target) => {
-              putIncrement(Number(target.value) + salesIncrement);
-            }}
-            disable={units === 0 || !isReset}
-            updateWithProp
-          />
+          <>
+            <Input
+              mask="currency"
+              style={{ textAlign: 'left' }}
+              validations={[
+                {
+                  fn: (value) => value !== '.',
+                  message: 'Debe ingresar un numero',
+                },
+              ]}
+              value={increment && increment.toFixed(2)}
+              onChange={(target) => {
+                putIncrement(Number(target.value) + salesIncrement);
+              }}
+              disable={units === 0 || !isReset}
+              updateWithProp
+            />
+            <Tooltip
+              title="Abrir ayuda ventas"
+              onClick={() => setModalOpen(true)}
+            >
+              <span className={Styles.Badge}>?</span>
+            </Tooltip>
+          </>
         )}
       </div>
       <div className={Styles['inv-sales-future']}>
