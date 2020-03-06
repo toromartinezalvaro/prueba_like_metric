@@ -26,7 +26,6 @@ const Schema = (props) => {
   ];
 
   const save = () => {
-    console.log(props.update);
     if (props.update) {
       props.updateSchema();
       setHidden(true);
