@@ -19,6 +19,10 @@ const ServiceDefinitions = {
   getGroupDesistStatus: (id) => {
     return `${API_PATH}sale-requests/desists-status/${id}`;
   },
+
+  getPropertyAreas: (propertyId) => {
+    return `${API_PATH}sale-requests/property-areas/${propertyId}`;
+  },
 };
 
 export default ServiceDefinitions;
