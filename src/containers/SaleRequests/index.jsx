@@ -3,6 +3,7 @@ import Services from '../../services/SaleRequests';
 import SaleRequestsTable from '../../components/SaleRequests/Table';
 import SaleRequestsModal from '../../components/SaleRequests/Modal';
 import DesistDialog from '../../components/SaleRequests/DesistDialog';
+import AdditionalAreaRequests from '../../components/SaleRequests/AdditionalAreaRequests';
 import Loader from '../../components/UI/Loader';
 
 class SalesRequests extends Component {
@@ -135,6 +136,7 @@ class SalesRequests extends Component {
             showSaleRequestHandler={this.handleShowSaleRequest}
             handleDesistDialogOpen={this.handleDesistDialogOpen}
           />
+          <AdditionalAreaRequests />
           <SaleRequestsModal
             open={this.state.modalState}
             approveHandler={this.handleApprove}
