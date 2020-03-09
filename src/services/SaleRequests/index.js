@@ -25,6 +25,10 @@ class SaleRequestsServices extends Services {
   getPropertyAreas(propertyId) {
     return this.get(ServiceDefinitions.getPropertyAreas(propertyId));
   }
+
+  rejectDesistRequest(desistId) {
+    return this.put(ServiceDefinitions.rejectDesistRequest(desistId));
+  }
 }
 
 export default SaleRequestsServices;

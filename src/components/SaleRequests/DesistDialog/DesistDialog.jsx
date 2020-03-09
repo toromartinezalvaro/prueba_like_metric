@@ -11,8 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import ManualPrice from './ManualPrice';
 import AreasDetails from '../../shared/Areas';
 import ClientServices from '../../../services/client/ClientsServices';
+import SaleRequestsServices from '../../../services/SaleRequests';
 
 const services = new ClientServices();
+const saleRequestServices = new SaleRequestsServices();
 
 const DesistDialog = ({
   open,
@@ -57,12 +59,16 @@ const DesistDialog = ({
     setDisabled(result);
   };
 
+  const handleReject = async () => {
+    await saleRequestServices.rejectDesistRequest(desistRequestId);
+  };
+
   return (
     <Dialog open={open}>
       <DialogTitle>Cambiar precio</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Agregue el precio manualmente del apartamento {}
+          Agregue el precio manualmente del apartamento
         </DialogContentText>
         {property && <span>{property.name}</span>}
         {property && <AreasDetails property={property} />}
@@ -75,7 +81,7 @@ const DesistDialog = ({
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={submit}
+          onClick={handleReject}
           variant="contained"
           color="secondary"
           disabled={isDisabled}

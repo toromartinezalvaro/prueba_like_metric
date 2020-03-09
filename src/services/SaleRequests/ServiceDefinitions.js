@@ -23,6 +23,10 @@ const ServiceDefinitions = {
   getPropertyAreas: (propertyId) => {
     return `${API_PATH}sale-requests/property-areas/${propertyId}`;
   },
+
+  rejectDesistRequest: (desistId) => {
+    return `${API_PATH}sale-requests/desist-requests/${desistId}`;
+  },
 };
 
 export default ServiceDefinitions;
