@@ -61,6 +61,7 @@ const DesistDialog = ({
 
   const handleReject = async () => {
     await saleRequestServices.rejectDesistRequest(desistRequestId);
+    closeHandler();
   };
 
   return (
