@@ -175,7 +175,7 @@ const SalesRoomModal = ({
                           additionalPrices
                         ).toFixed(2)
                       : */ (
-                      priceWithIncrement + discount
+                      Number(priceWithIncrement) + Number(discount)
                     ).toFixed(2)
                   }
                   displayType="text"
