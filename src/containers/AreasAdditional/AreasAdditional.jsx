@@ -27,6 +27,7 @@ class AreasAdditional extends Component {
   state = {
     arrayAreaTypes: [],
     isLoading: false,
+    disableSold: false,
   };
 
   arrayAreaTypesHandler = (
@@ -149,18 +150,33 @@ class AreasAdditional extends Component {
       });
   };
 
+  disableIfEdit = () => {
+    this.services
+      .isDisable(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ disableSold: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   componentDidMount() {
     this.setState({ isLoading: true });
     this.services
       .getAreas(this.props.match.params.towerId)
       .then((areas) => {
-        this.setState({ arrayAreaTypes: _.sortBy(areas.data, ['name']), isLoading: false });
+        this.setState({
+          arrayAreaTypes: _.sortBy(areas.data, ['name']),
+          isLoading: false,
+        });
       })
       .catch((error) => {
         this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
         this.setState({ isLoading: false });
         console.error(error);
       });
+    this.disableIfEdit();
   }
 
   render() {
@@ -184,8 +200,12 @@ class AreasAdditional extends Component {
               addAreaAdditionalHandler={this.addAreaAdditionalHandler}
               updateAreaAdditionalHandler={this.updateAreaAdditionalHandler}
               updateAreaTypeHandler={this.updateAreaTypeHandler}
+              disableSold={this.state.disableSold}
             ></Collapsables>
-            <AddArea addAreaHandler={this.addAreaHandler}></AddArea>
+            <AddArea
+              addAreaHandler={this.addAreaHandler}
+              disableSold={this.state.disableSold}
+            ></AddArea>
           </CardBody>
         </Card>
       </LoadableContainer>

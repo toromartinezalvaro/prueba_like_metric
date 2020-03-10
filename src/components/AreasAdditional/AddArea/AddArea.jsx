@@ -229,10 +229,18 @@ const AddArea = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} className={Styles.CancelButton}>
+          <Button
+            isDisabled={props.disbaleSold}
+            onClick={handleClose}
+            className={Styles.CancelButton}
+          >
             Cancelar
           </Button>
-          <Button onClick={handleAdd} className={Styles.ConfirmButton}>
+          <Button
+            isDisabled={props.disbaleSold}
+            onClick={handleAdd}
+            className={Styles.ConfirmButton}
+          >
             Agregar
           </Button>
         </DialogActions>

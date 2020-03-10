@@ -43,4 +43,10 @@ export default class AreasAdditionalServices extends Services {
       data,
     );
   }
+
+  isDisable(towerId) {
+    return this.get(
+      AreasAdditionalServicesDefinition.getSalesRequestHistory(towerId),
+    );
+  }
 }
