@@ -48,6 +48,7 @@ const Schema = (props) => {
         <p>Esquema</p>
       </CardHeader>
       <CardBody>
+        {console.log('CAN I EDIT?', !props.disableSold)}
         <div className={styles.Container}>
           <div>
             <p className={styles.Label}>Pisos vendibles:</p>
@@ -108,7 +109,7 @@ const Schema = (props) => {
                   props.editMode();
                   toggleWarning();
                 }}
-                disabled={props.disableSold}
+                isDisabled={props.disableSold}
               >
                 Editar
               </Button>
