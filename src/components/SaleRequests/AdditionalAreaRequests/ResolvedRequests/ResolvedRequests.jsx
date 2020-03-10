@@ -12,6 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import Styles from './ResolvedRequests.module.scss';
 
 const ResolvedRequests = ({ requests }) => {
   return (
@@ -19,8 +20,8 @@ const ResolvedRequests = ({ requests }) => {
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>Areas adicionales resueltas</Typography>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        {requests.length > 0 ? (
+      {requests.length > 0 ? (
+        <ExpansionPanelDetails classes={{ root: Styles.noPadding }}>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -41,10 +42,12 @@ const ResolvedRequests = ({ requests }) => {
               </TableBody>
             </Table>
           </TableContainer>
-        ) : (
-          'No hay solicitudes para mostrar'
-        )}
-      </ExpansionPanelDetails>
+        </ExpansionPanelDetails>
+      ) : (
+        <ExpansionPanelDetails>
+          <Typography> No hay solicitudes para mostrar</Typography>
+        </ExpansionPanelDetails>
+      )}
     </ExpansionPanel>
   );
 };

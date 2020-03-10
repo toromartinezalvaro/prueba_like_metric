@@ -6,15 +6,13 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Styles from './PendingRequests.module.scss';
 
 const PendingRequests = ({ requests }) => {
   return (
@@ -24,8 +22,8 @@ const PendingRequests = ({ requests }) => {
           <Typography> Areas adicionales pendientes</Typography>
         </Badge>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        {requests.length > 0 ? (
+      {requests.length > 0 ? (
+        <ExpansionPanelDetails classes={{ root: Styles.noPadding }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -48,10 +46,12 @@ const PendingRequests = ({ requests }) => {
               ))}
             </TableBody>
           </Table>
-        ) : (
-          'No hay solicitudes pendientes'
-        )}
-      </ExpansionPanelDetails>
+        </ExpansionPanelDetails>
+      ) : (
+        <ExpansionPanelDetails>
+          No hay solicitudes pendientes
+        </ExpansionPanelDetails>
+      )}
     </ExpansionPanel>
   );
 };
