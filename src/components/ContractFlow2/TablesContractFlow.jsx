@@ -102,12 +102,15 @@ const TablesContractFlow = ({ billings }) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
-        const datesValues = val.billings.map((dateValue) => {
-          dateValue.slice(1).forEach((singleValue, l) => { 
+        let valueInSameRow = 0;
+        const datesValues = val.billings.map((dateValue, K) => {
+          dateValue.slice(1).forEach((singleValue, l) => {
+            valueInSameRow += singleValue;
             const name = `date${l}`;
-            result = { ...result, [name]: [numberFormater(singleValue)] };
+            result = { ...result, [name]: [numberFormater(valueInSameRow)] };
           });
         });
+        valueInSameRow = 0;
         return result;
       });
     });
