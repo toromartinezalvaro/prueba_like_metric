@@ -9,4 +9,8 @@ export default class AdditionalAreaRequestsServices extends Services {
   putRequestStatus(requestId, status) {
     return this.put(definitions.putRequestStatus(requestId), { status });
   }
+
+  postRequest(request) {
+    return this.post(definitions.postRequest(), request);
+  }
 }

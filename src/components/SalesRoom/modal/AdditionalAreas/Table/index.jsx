@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import MUITable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,8 +10,12 @@ import NumberFormat from 'react-number-format';
 import HoverContainer from '../../../../UI2/HoverContainer';
 import Button from '../../../../UI2/Button';
 import Styles from './Table.module.scss';
+import AdditionalAreaRequestsServices from '../../../../../services/AdditionalAreaRequests';
+
+const services = new AdditionalAreaRequestsServices();
 
 const Table = ({ property, deleteAdditionalAreaHandler }) => {
+  const { towerId } = useParams();
   const getSubtotal = () => {
     const adminSubtotal = property.adminAdditionalAreas.reduce(
       (current, next) => current + next.unitPrice,
@@ -21,6 +26,10 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
       0,
     );
     return adminSubtotal + addedSubtotal;
+  };
+
+  const handleDesist = async (additionalArea) => {
+    await services.postRequest({ additionalArea, tower: towerId });
   };
 
   return (
@@ -40,7 +49,21 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
             return (
               <TableRow key={additionalArea.id}>
                 <TableCell>
-                  {additionalArea.nomenclature || additionalArea.areaType.name}
+                  <HoverContainer
+                    noHover={
+                      additionalArea.nomenclature ||
+                      additionalArea.areaType.name
+                    }
+                    hover={
+                      <Button
+                        onClick={() => {
+                          handleDesist(additionalArea.id);
+                        }}
+                      >
+                        Desistir
+                      </Button>
+                    }
+                  />
                 </TableCell>
                 <TableCell>{additionalArea.areaType.name}</TableCell>
                 <TableCell>

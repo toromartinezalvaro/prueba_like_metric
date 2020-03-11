@@ -35,7 +35,7 @@ const AdditionalAreaRequests = ({ alert }) => {
         }
       } catch (error) {
         dispatch(failedDataFetch());
-        alert(error, 'error');
+        alert(error.response.data.message, 'error');
       }
     }
     fetchData();
@@ -54,7 +54,7 @@ const AdditionalAreaRequests = ({ alert }) => {
       alert('Solicitud procesada correctamente', 'success');
       dispatch(resolveRequest(id));
     } catch (error) {
-      alert(error, 'error');
+      alert(error.response.data.message, 'error');
       dispatch(closeModal());
     }
   };
@@ -65,7 +65,7 @@ const AdditionalAreaRequests = ({ alert }) => {
       alert('Solicitud procesada correctamente', 'success');
       dispatch(resolveRequest(id));
     } catch (error) {
-      alert(error, 'error');
+      alert(error.response.data.message, 'error');
       dispatch(closeModal());
     }
   };
