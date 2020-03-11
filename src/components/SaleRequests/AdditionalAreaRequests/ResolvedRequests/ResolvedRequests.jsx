@@ -5,24 +5,26 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import LoadingContainer from '../../../UI2/Loader';
 import Styles from './ResolvedRequests.module.scss';
 
-const ResolvedRequests = ({ requests }) => {
+const ResolvedRequests = ({ loading, requests }) => {
   return (
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>Areas adicionales resueltas</Typography>
       </ExpansionPanelSummary>
-      {requests.length > 0 ? (
-        <ExpansionPanelDetails classes={{ root: Styles.noPadding }}>
-          <TableContainer component={Paper}>
+
+      <ExpansionPanelDetails
+        classes={requests.length > 0 ? { root: Styles.noPadding } : {}}
+      >
+        <LoadingContainer isLoading={loading}>
+          {requests.length > 0 ? (
             <Table>
               <TableHead>
                 <TableRow>
@@ -41,22 +43,22 @@ const ResolvedRequests = ({ requests }) => {
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
-        </ExpansionPanelDetails>
-      ) : (
-        <ExpansionPanelDetails>
-          <Typography> No hay solicitudes para mostrar</Typography>
-        </ExpansionPanelDetails>
-      )}
+          ) : (
+            <Typography> No hay solicitudes para mostrar</Typography>
+          )}
+        </LoadingContainer>
+      </ExpansionPanelDetails>
     </ExpansionPanel>
   );
 };
 
 ResolvedRequests.propTypes = {
+  loading: PropTypes.bool,
   requests: PropTypes.array,
 };
 
 ResolvedRequests.defaultProps = {
+  loading: false,
   requests: [],
 };
 

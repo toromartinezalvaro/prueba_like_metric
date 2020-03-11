@@ -6,24 +6,38 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import LoadingContainer from '../../../UI2/Loader/Loader';
 
-const Dialog = ({ open, request, acceptHandler, rejectHandler }) => {
+const Dialog = ({ loading, open, request, acceptHandler, rejectHandler }) => {
   const { name, nomenclature, property } = request;
-  console.log(JSON.stringify(request));
   return (
     <MuiDialog open={open}>
       <DialogTitle>Solicitud pendiente para {nomenclature}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          ¿Qué desea hacer para el desistimiento del area {name} -{' '}
-          {nomenclature} de la propiedad {property}?
-        </DialogContentText>
+        <LoadingContainer isLoading={loading}>
+          <DialogContentText>
+            ¿Qué desea hacer para el desistimiento del area {name} -{' '}
+            {nomenclature} de la propiedad {property}?
+          </DialogContentText>
+        </LoadingContainer>
       </DialogContent>
       <DialogActions>
-        <Button onClick={acceptHandler} size="small" color="primary">
+        <Button
+          onClick={() => {
+            acceptHandler(request.id);
+          }}
+          size="small"
+          color="primary"
+        >
           Aceptar
         </Button>
-        <Button onClick={rejectHandler} size="small" color="secondary">
+        <Button
+          onClick={() => {
+            rejectHandler(request.id);
+          }}
+          size="small"
+          color="secondary"
+        >
           Rechazar
         </Button>
       </DialogActions>
@@ -32,8 +46,10 @@ const Dialog = ({ open, request, acceptHandler, rejectHandler }) => {
 };
 
 Dialog.propTypes = {
+  loading: PropTypes.bool,
   open: PropTypes.bool,
   request: PropTypes.shape({
+    id: PropTypes.number,
     name: PropTypes.string,
     nomenclature: PropTypes.string,
     property: PropTypes.string,
@@ -43,11 +59,13 @@ Dialog.propTypes = {
 };
 
 Dialog.defaultProps = {
+  loading: false,
   open: false,
   request: {
-    name: 'PropTypes.string',
-    nomenclature: 'PropTypes.string',
-    property: 'PropTypes.string',
+    id: 0,
+    name: '',
+    nomenclature: '',
+    property: '',
   },
 };
 

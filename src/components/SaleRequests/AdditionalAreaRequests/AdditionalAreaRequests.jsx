@@ -10,11 +10,15 @@ import {
   failedDataFetch,
   requestSelection,
   closeModal,
+  resolveRequest,
 } from './actions';
 import reducer, { initialState } from './reducer';
 import AdditionalAreaRequestsServices from '../../../services/AdditionalAreaRequests';
 
 const services = new AdditionalAreaRequestsServices();
+
+const ACCEPT = 'A';
+const REJECT = 'R';
 
 const AdditionalAreaRequests = () => {
   const { towerId } = useParams();
@@ -44,12 +48,20 @@ const AdditionalAreaRequests = () => {
     dispatch(requestSelection(request));
   };
 
-  const handleAccept = () => {
-    dispatch(closeModal());
+  const handleAccept = async (id) => {
+    try {
+      dispatch(resolveRequest(id));
+    } catch (error) {
+      dispatch(closeModal());
+    }
   };
 
-  const handleReject = () => {
-    dispatch(closeModal());
+  const handleReject = (id) => {
+    try {
+      dispatch(resolveRequest(id));
+    } catch (error) {
+      dispatch(closeModal());
+    }
   };
 
   return (

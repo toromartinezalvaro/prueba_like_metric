@@ -4,6 +4,7 @@ import {
   DATA_FETCH__FAILURE,
   SELECT_REQUEST,
   CLOSE_MODAL,
+  RESOLVE_REQUEST,
 } from './actions';
 
 export const initialState = {
@@ -13,6 +14,16 @@ export const initialState = {
   modalOpen: false,
   selectedRequest: undefined,
   error: false,
+};
+
+const removeItemFromArray = (id, array) => {
+  return array.filter((element) => element.id !== id);
+};
+
+const moveItem = (id, from, to) => {
+  const item = from.find((element) => element.id === id);
+  const tempArray = [...to, item];
+  return tempArray;
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -33,6 +44,14 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, modalOpen: true, selectedRequest: payload };
     case CLOSE_MODAL:
       return { ...state, modalOpen: false, selectedRequest: undefined };
+    case RESOLVE_REQUEST:
+      return {
+        ...state,
+        resolved: moveItem(payload, state.pending, state.resolved),
+        pending: removeItemFromArray(payload, state.pending),
+        modalOpen: false,
+        selectedRequest: undefined,
+      };
     default:
       return state;
   }
