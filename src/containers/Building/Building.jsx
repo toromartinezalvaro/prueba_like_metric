@@ -293,7 +293,6 @@ class Building extends Component {
               disableSold={this.state.disableSold}
             />
           )}
-          {console.log('names', this.state.names)}
         </div>
         {this.state.showFloatingButton ? (
           <FloatingButton

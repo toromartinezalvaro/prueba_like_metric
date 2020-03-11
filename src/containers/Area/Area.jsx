@@ -303,7 +303,6 @@ class Area extends Component {
   };
 
   addAreaType = () => {
-    console.log('addAreaType :D');
     this.setState({ modalIsLoading: true });
     this.services
       .postArea({
@@ -312,7 +311,6 @@ class Area extends Component {
         towerId: this.props.match.params.towerId,
       })
       .then((data) => {
-        console.log(data);
         this.setState({ calculateTotals: true });
         this.toggleAreaTypeModal();
         this.updateTableInformation();
@@ -331,8 +329,6 @@ class Area extends Component {
   sumTotalHeader(actualValue, value, type, arrayTotals) {
     const index = arrayTotals.findIndex((obj) => obj.id === type);
     if (arrayTotals[index] !== undefined) {
-      console.log('actualValue', actualValue);
-
       if (actualValue > parseFloat(value)) {
         arrayTotals[index].total -= actualValue - parseFloat(value);
       } else {
@@ -371,7 +367,6 @@ class Area extends Component {
   inputsForData = (data) => {
     return data.map((row, rowIndex) => {
       return row.map((e2, cellIndex) => {
-        console.log('state in', this.rowIndex);
         return (
           <Input
             updateWithProp
@@ -380,7 +375,6 @@ class Area extends Component {
             validations={[
               {
                 fn: (value) => {
-                  console.log(value);
                   return value !== null;
                 },
                 message: 'No puede estar vac�o',
