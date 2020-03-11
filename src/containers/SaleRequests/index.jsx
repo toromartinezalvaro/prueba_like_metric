@@ -3,7 +3,9 @@ import Services from '../../services/SaleRequests';
 import SaleRequestsTable from '../../components/SaleRequests/Table';
 import SaleRequestsModal from '../../components/SaleRequests/Modal';
 import DesistDialog from '../../components/SaleRequests/DesistDialog';
+import AdditionalAreaRequests from '../../components/SaleRequests/AdditionalAreaRequests';
 import Loader from '../../components/UI/Loader';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 class SalesRequests extends Component {
   constructor(props) {
@@ -135,6 +137,7 @@ class SalesRequests extends Component {
             showSaleRequestHandler={this.handleShowSaleRequest}
             handleDesistDialogOpen={this.handleDesistDialogOpen}
           />
+          <AdditionalAreaRequests alert={this.props.spawnMessage} />
           <SaleRequestsModal
             open={this.state.modalState}
             approveHandler={this.handleApprove}
@@ -157,4 +160,4 @@ class SalesRequests extends Component {
   }
 }
 
-export default SalesRequests;
+export default withDefaultLayout(SalesRequests);
