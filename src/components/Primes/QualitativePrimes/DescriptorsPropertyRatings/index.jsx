@@ -21,7 +21,6 @@ const DescriptorsPropertyRatings = ({
   disabledProp,
 }) => {
   const makeHeaders = () => {
-    console.log('PROP ----->', disabledProp);
     const headers = descriptors.map((descriptor, index) => {
       return (
         <Descriptor
