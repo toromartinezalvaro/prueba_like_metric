@@ -35,6 +35,7 @@ const altitudes = (props) => {
           headers={[`Precio (${props.unit.value})`]}
           columns={props.floorsNames}
           data={props.prices}
+          
         />
       </CardBody>
     </Card>

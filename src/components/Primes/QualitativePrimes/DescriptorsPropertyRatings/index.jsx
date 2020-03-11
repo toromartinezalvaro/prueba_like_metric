@@ -18,8 +18,10 @@ const DescriptorsPropertyRatings = ({
   removeDescriptorHandler,
   addPropertyRatingHandler,
   propertyRatingUpdateHandler,
+  disabledProp,
 }) => {
   const makeHeaders = () => {
+    console.log('PROP ----->', disabledProp);
     const headers = descriptors.map((descriptor, index) => {
       return (
         <Descriptor
@@ -32,7 +34,7 @@ const DescriptorsPropertyRatings = ({
       );
     });
     headers.push(
-      <Button onClick={addDescriptorHandler}>
+      <Button onClick={addDescriptorHandler} disabled={disabledProp}>
         <i className="fas fa-plus"></i>
       </Button>,
     );

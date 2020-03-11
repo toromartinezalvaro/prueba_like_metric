@@ -201,6 +201,7 @@ class AreasAdditional extends Component {
               <EmptyContentMessageView
                 title="Vamos a crear areas adicionales 📏!"
                 message="Es fácil, debes hacer click en el botón inferior y llenar el formulario"
+                disableSold={this.state.disableSold}
               />
             )}
             <Collapsables
