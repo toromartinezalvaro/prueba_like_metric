@@ -97,6 +97,7 @@ const Collapsables = (props) => {
       props.updateAreaAdditionalHandler,
       actualValueHandler,
       i,
+      props.disableSold,
     );
 
     let columns = COLUMNS_MT2;
@@ -144,6 +145,7 @@ const Collapsables = (props) => {
               <Actions
                 handleClose={handleClose}
                 handleUpdate={handleUpdate}
+                disableWhenSold={props.disableSold}
                 areaType={props.data[currentArea]}
               />
             </DialogActions>
@@ -170,7 +172,6 @@ const Collapsables = (props) => {
                     .toFixed(2)}
                 />
               </div>
-              {console.log('DATA', areaType.additionalAreas)}
               <div className={Styles.stat}>
                 <span className={Styles.label}>Precio promedio:</span>
                 <NumberFormat

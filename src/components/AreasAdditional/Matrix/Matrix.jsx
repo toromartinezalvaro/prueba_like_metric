@@ -42,6 +42,7 @@ const Matrix = (
   updateAreaAdditionalHandler,
   actualValueHandler,
   index,
+  disableSold,
 ) => {
   const onBlurNomenclature = (e, area, j, validation) => {
     if (e.target.value && e.target.value !== actualValue) {
@@ -142,6 +143,7 @@ const Matrix = (
               input: Styles.ContainerTexField,
             },
           }}
+          disabled={disableSold}
         />
       ),
       measure: (
@@ -160,6 +162,7 @@ const Matrix = (
               input: Styles.ContainerTexField,
             },
           }}
+          disabled={disableSold}
         />
       ),
       price: (
@@ -182,6 +185,7 @@ const Matrix = (
             }
             actualValueHandler={(value) => actualValueHandler(value)}
             areaType={areaType}
+            disabled={disableSold}
           />
         </div>
       ),
@@ -192,6 +196,7 @@ const Matrix = (
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
+            disabled={disableSold}
           />
         </span>
       ),

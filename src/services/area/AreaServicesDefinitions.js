@@ -19,6 +19,9 @@ const AreaServiceDefinitions = {
   updateAreaType: (id) => {
     return `${API_PATH}areas/prices-managements/area-types/${id}`;
   },
+  getSalesRequestHistory: (towerId) => {
+    return `${API_PATH}sale-requests/sales-request-history/${towerId}`;
+  },
 };
 
 export default AreaServiceDefinitions;

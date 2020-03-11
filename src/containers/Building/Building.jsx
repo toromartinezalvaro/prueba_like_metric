@@ -290,9 +290,9 @@ class Building extends Component {
               onPropertyEmpty={this.propertyDelete}
               editMode={this.toggleEditMode}
               names={this.state.names}
+              disableSold={this.state.disableSold}
             />
           )}
-          {console.log('names', this.state.names)}
         </div>
         {this.state.showFloatingButton ? (
           <FloatingButton

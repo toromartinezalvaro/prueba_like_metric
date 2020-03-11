@@ -34,6 +34,9 @@ const AreaAdditionalServiceDefinitions = {
   putAreaAdditional: () => {
     return `${API_PATH}areasV2/areas/additional`;
   },
+  getSalesRequestHistory: (towerId) => {
+    return `${API_PATH}sale-requests/sales-request-history/${towerId}`;
+  },
 };
 
 export default AreaAdditionalServiceDefinitions;
