@@ -9,6 +9,7 @@ const AdditionalAreas = ({
   additionalAreas,
   addAdditionalAreaHandler,
   deleteAdditionalAreaHandler,
+  setAdditionalPrices,
 }) => {
   return (
     <Fragment>
@@ -21,6 +22,7 @@ const AdditionalAreas = ({
         property={property}
         additionalAreas={additionalAreas}
         addAdditionalAreaHandler={addAdditionalAreaHandler}
+        setAdditionalPrices={setAdditionalPrices}
       />
     </Fragment>
   );
@@ -53,6 +55,7 @@ AdditionalAreas.propTypes = {
   ).isRequired,
   addAdditionalAreaHandler: PropTypes.func.isRequired,
   deleteAdditionalAreaHandler: PropTypes.func.isRequired,
+  setAdditionalPrices: PropTypes.func.isRequired,
 };
 
 export default AdditionalAreas;

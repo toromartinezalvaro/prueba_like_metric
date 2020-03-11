@@ -21,3 +21,10 @@
     font-weight: 700;
   }
 }
+.ConfirmButton {
+  background: $softGreenColor;
+}
+
+.CancelButton {
+  background: $redButton-color !important;
+}

@@ -1,49 +1,92 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
-import Accordion from '../../../UI/Accordion/Accordion';
+import {
+  DialogContent,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+} from '@material-ui/core';
+import Button from '../../../UI/Button/Button';
 import Input from '../../../UI/Input/Input';
 import Styles from './styles.module.scss';
 
-const SalesWizard = ({ putSuggestedEffectiveAnnualInterestRate, data }) => {
+const SalesWizard = ({
+  putSuggestedEffectiveAnnualInterestRate,
+  data,
+  setModalOpen,
+  isModalOpen,
+  isReset,
+  putIncrement,
+  salesIncrement,
+}) => {
   return (
-    <Accordion trigger={<div className={Styles.title}>Ayuda Ventas</div>}>
-      <div className={Styles.container}>
-        <div className={Styles.definition}>Meses Retención de Inventario</div>
-        <div></div>
-        <div></div>
-        <div>{data.inventory.retentionMonths}</div>
-        <div className={Styles.definition}>Tasas Incremento e.a</div>
-        <div></div>
-        <div></div>
+    <Dialog open={isModalOpen}>
+      <DialogTitle>
         <div>
-          <Input
-            mask="percentage"
-            validations={[]}
-            value={(
-              data.inventory.suggestedEffectiveAnnualInterestRate * 100
-            ).toFixed(2)}
-            onChange={(target) => {
-              putSuggestedEffectiveAnnualInterestRate(target.value / 100);
-            }}
-          />
+          <span>{`Ayuda ventas`}</span>
         </div>
-        <div className={Styles.definition}>Incremento Pesos (Meta)</div>
-        <div>
-          
+      </DialogTitle>
+      <DialogContent>
+        <div className={Styles.container}>
+          <div className={Styles.definition}>Meses Retención de Inventario</div>
+          <div></div>
+          <div></div>
+          <div>{data.inventory.retentionMonths}</div>
+          <div className={Styles.definition}>Tasas Incremento e.a</div>
+          <div></div>
+          <div></div>
+          <div>
+            <Input
+              mask="percentage"
+              validations={[]}
+              value={(
+                data.inventory.suggestedEffectiveAnnualInterestRate * 100
+              ).toFixed(2)}
+              onChange={(target) => {
+                putSuggestedEffectiveAnnualInterestRate(target.value / 100);
+              }}
+            />
+          </div>
+          <div className={Styles.definition}>Incremento Pesos (Meta)</div>
+          <div></div>
+          <div></div>
+          <div>
+            <NumberFormat
+              value={data.inventory.suggestedIncrement.toFixed(2)}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'$'}
+            />
+          </div>
         </div>
-        <div>
-         
-        </div>
-        <div>
-          <NumberFormat
-            value={data.inventory.suggestedIncrement.toFixed(2)}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
-        </div>
-      </div>
-    </Accordion>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => setModalOpen(false)}
+          className={Styles.CancelButton}
+        >
+          Cerrar
+        </Button>
+
+        <Button
+          onClick={() => {
+            console.log(
+              data.inventory.suggestedIncrement,
+              salesIncrement,
+              Number(data.inventory.suggestedIncrement) + salesIncrement,
+            );
+            putIncrement(
+              Number(data.inventory.suggestedIncrement) + salesIncrement,
+            );
+            setModalOpen(false);
+          }}
+          className={Styles.ConfirmButton}
+          isDisabled={!isReset}
+        >
+          Aplicar
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

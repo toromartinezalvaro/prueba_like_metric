@@ -166,8 +166,18 @@ class AreasAdditional extends Component {
     this.services
       .getAreas(this.props.match.params.towerId)
       .then((areas) => {
+        const sortedAreas = areas.data.map((areaType) => {
+          const tempAreaType = { ...areaType };
+          tempAreaType.additionalAreas.sort((a, b) =>
+            a.nomenclature.localeCompare(b.nomenclature, undefined, {
+              numeric: true,
+              sensitivity: 'base',
+            }),
+          );
+          return tempAreaType;
+        });
         this.setState({
-          arrayAreaTypes: _.sortBy(areas.data, ['name']),
+          arrayAreaTypes: sortedAreas,
           isLoading: false,
         });
       })

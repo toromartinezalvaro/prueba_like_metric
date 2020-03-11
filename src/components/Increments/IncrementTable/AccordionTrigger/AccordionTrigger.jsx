@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import { Button } from '@material-ui/core';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
+import RemoveIcon from '@material-ui/icons/Remove';
 import Styles from './AccordionTrigger.module.scss';
 
-function AccordionTrigger({ group, resetStrategy }) {
+function AccordionTrigger({ group, resetStrategy, isReset }) {
   return (
     <div className={Styles.Header}>
       <div>
         <span>{group.name}</span>
         <NumberFormat
-          value={group.total.increment}
+          value={group.total.increment.toFixed(2)}
           displayType={'text'}
           prefix=" - $"
           thousandSeparator={true}
@@ -21,14 +22,14 @@ function AccordionTrigger({ group, resetStrategy }) {
         <div className={Styles.DeleteButton}>
           <Button
             variant="contained"
-            color="secondary"
-            startIcon={<AutorenewIcon />}
+            color={isReset ? 'primary' : 'secondary'}
+            startIcon={isReset ? <RemoveIcon /> : <AutorenewIcon />}
             onClick={(e) => {
               e.stopPropagation();
               resetStrategy(group.id);
             }}
           >
-            Reiniciar Estrategia
+            {isReset ? 'Sin Estrategia' : 'Reiniciar Estrategia'}
           </Button>
         </div>
       </div>
@@ -43,6 +44,8 @@ AccordionTrigger.propTypes = {
       increment: PropTypes.number,
     }),
   }).isRequired,
+  resetStrategy: PropTypes.func.isRequired,
+  isReset: PropTypes.bool.isRequired,
 };
 
 export default AccordionTrigger;

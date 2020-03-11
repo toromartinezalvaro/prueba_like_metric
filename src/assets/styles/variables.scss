@@ -29,6 +29,9 @@ $header-size: 20px;
 $body-size: 16px;
 $secondaryText-size: 14px;
 
+$box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6),
+  -9px -9px 16px rgba(255, 255, 255, 0.5);
+
 :export {
   mainColor: $main-color;
   softMainColor: $softMain-color;
