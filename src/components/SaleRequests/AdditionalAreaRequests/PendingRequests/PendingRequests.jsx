@@ -12,9 +12,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
+import LoadingContainer from '../../../UI2/Loader';
 import Styles from './PendingRequests.module.scss';
 
-const PendingRequests = ({ requests }) => {
+const PendingRequests = ({ loading, requests, selectHandler }) => {
   return (
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -22,45 +23,57 @@ const PendingRequests = ({ requests }) => {
           <Typography> Areas adicionales pendientes</Typography>
         </Badge>
       </ExpansionPanelSummary>
-      {requests.length > 0 ? (
-        <ExpansionPanelDetails classes={{ root: Styles.noPadding }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Tipo de area</TableCell>
-                <TableCell>Nomenclatura</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {requests.map((request) => (
-                <TableRow key={`resolvedRequest-${request.id}`}>
-                  <TableCell>{request.name}</TableCell>
-                  <TableCell>{request.nomenclature}</TableCell>
-                  <TableCell>
-                    <Button color="primary" variant="contained">
-                      Abrir
-                    </Button>
-                  </TableCell>
+
+      <ExpansionPanelDetails
+        classes={requests.length > 0 ? { root: Styles.noPadding } : {}}
+      >
+        <LoadingContainer isLoading={loading}>
+          {requests.length > 0 ? (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Tipo de area</TableCell>
+                  <TableCell>Nomenclatura</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ExpansionPanelDetails>
-      ) : (
-        <ExpansionPanelDetails>
-          No hay solicitudes pendientes
-        </ExpansionPanelDetails>
-      )}
+              </TableHead>
+              <TableBody>
+                {requests.map((request) => (
+                  <TableRow key={`resolvedRequest-${request.id}`}>
+                    <TableCell>{request.name}</TableCell>
+                    <TableCell>{request.nomenclature}</TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => {
+                          selectHandler(request);
+                        }}
+                        color="primary"
+                        variant="contained"
+                      >
+                        Abrir
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <Typography>No hay solicitudes pendientes</Typography>
+          )}
+        </LoadingContainer>
+      </ExpansionPanelDetails>
     </ExpansionPanel>
   );
 };
 
 PendingRequests.propTypes = {
+  loading: PropTypes.bool,
   requests: PropTypes.array,
+  selectHandler: PropTypes.func.isRequired,
 };
 
 PendingRequests.defaultProps = {
+  loading: false,
   requests: [],
 };
 

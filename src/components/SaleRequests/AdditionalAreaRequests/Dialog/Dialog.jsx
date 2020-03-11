@@ -7,7 +7,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const Dialog = ({ open, name, nomenclature, property }) => {
+const Dialog = ({ open, request, acceptHandler, rejectHandler }) => {
+  const { name, nomenclature, property } = request;
+  console.log(JSON.stringify(request));
   return (
     <MuiDialog open={open}>
       <DialogTitle>Solicitud pendiente para {nomenclature}</DialogTitle>
@@ -18,8 +20,12 @@ const Dialog = ({ open, name, nomenclature, property }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button color="primary">Aceptar</Button>
-        <Button color="secondary">Rechazar</Button>
+        <Button onClick={acceptHandler} size="small" color="primary">
+          Aceptar
+        </Button>
+        <Button onClick={rejectHandler} size="small" color="secondary">
+          Rechazar
+        </Button>
       </DialogActions>
     </MuiDialog>
   );
@@ -27,13 +33,22 @@ const Dialog = ({ open, name, nomenclature, property }) => {
 
 Dialog.propTypes = {
   open: PropTypes.bool,
-  name: PropTypes.string.isRequired,
-  nomenclature: PropTypes.string.isRequired,
-  property: PropTypes.string.isRequired,
+  request: PropTypes.shape({
+    name: PropTypes.string,
+    nomenclature: PropTypes.string,
+    property: PropTypes.string,
+  }),
+  acceptHandler: PropTypes.func.isRequired,
+  rejectHandler: PropTypes.func.isRequired,
 };
 
 Dialog.defaultProps = {
   open: false,
+  request: {
+    name: 'PropTypes.string',
+    nomenclature: 'PropTypes.string',
+    property: 'PropTypes.string',
+  },
 };
 
 export default Dialog;
