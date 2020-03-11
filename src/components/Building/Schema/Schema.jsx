@@ -119,6 +119,7 @@ const Schema = (props) => {
                 onClick={() => {
                   props.editMode();
                 }}
+                isDisabled={props.disableSold}
               >
                 Cancelar
               </Button>
