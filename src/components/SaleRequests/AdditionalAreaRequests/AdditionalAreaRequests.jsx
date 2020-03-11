@@ -20,7 +20,7 @@ const services = new AdditionalAreaRequestsServices();
 const ACCEPT = 'A';
 const REJECT = 'R';
 
-const AdditionalAreaRequests = () => {
+const AdditionalAreaRequests = ({ alert }) => {
   const { towerId } = useParams();
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -35,7 +35,7 @@ const AdditionalAreaRequests = () => {
         }
       } catch (error) {
         dispatch(failedDataFetch());
-        console.error(error);
+        alert(error, 'error');
       }
     }
     fetchData();
@@ -50,16 +50,22 @@ const AdditionalAreaRequests = () => {
 
   const handleAccept = async (id) => {
     try {
+      await services.putRequestStatus(id, ACCEPT);
+      alert('Solicitud procesada correctamente', 'success');
       dispatch(resolveRequest(id));
     } catch (error) {
+      alert(error, 'error');
       dispatch(closeModal());
     }
   };
 
-  const handleReject = (id) => {
+  const handleReject = async (id) => {
     try {
+      await services.putRequestStatus(id, REJECT);
+      alert('Solicitud procesada correctamente', 'success');
       dispatch(resolveRequest(id));
     } catch (error) {
+      alert(error, 'error');
       dispatch(closeModal());
     }
   };
