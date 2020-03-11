@@ -476,6 +476,7 @@ class Area extends Component {
           }}
           towerId={this.props.match.params.towerId}
           areaTypeId={this.state.areaTypeId}
+          disableSold={this.state.disableSold}
         />
       </LoadableContainer>
     );
