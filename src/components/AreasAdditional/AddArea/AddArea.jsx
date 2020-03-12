@@ -138,7 +138,7 @@ const AddArea = (props) => {
           aria-label="add"
           className={Styles.MuiFab}
           onClick={handleClickOpen}
-          disabled={props.disabledSold}
+          disabled={props.disableSold}
         >
           <AddIcon />
         </Fab>

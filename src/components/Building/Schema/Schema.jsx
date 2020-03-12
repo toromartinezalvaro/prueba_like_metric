@@ -110,7 +110,7 @@ const Schema = (props) => {
                   props.editMode();
                   toggleWarning();
                 }}
-                isDisabled={props.disable}
+                isDisabled={props.disableSold}
               >
                 Editar
               </Button>
