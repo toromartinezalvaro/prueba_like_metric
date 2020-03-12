@@ -87,10 +87,15 @@ const Locations = (props) => {
             reloadPrimes={props.reloadPrimes}
             alertHandler={props.alertHandler}
             lowestFloor={props.lowestFloor}
+            disabledProp={props.disabledProp}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={changeModalState} color="primary">
+          <Button
+            onClick={changeModalState}
+            isDisabled={props.disabledProp}
+            color="primary"
+          >
             Guardar
           </Button>
         </DialogActions>

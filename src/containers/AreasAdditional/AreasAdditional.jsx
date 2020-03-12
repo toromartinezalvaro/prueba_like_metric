@@ -150,7 +150,8 @@ class AreasAdditional extends Component {
       });
   };
 
-  disableIfEdit = () => {
+  componentDidMount() {
+    this.setState({ isLoading: true });
     this.services
       .isDisable(this.props.match.params.towerId)
       .then((response) => {
@@ -159,10 +160,6 @@ class AreasAdditional extends Component {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  componentDidMount() {
-    this.setState({ isLoading: true });
     this.services
       .getAreas(this.props.match.params.towerId)
       .then((areas) => {
@@ -186,7 +183,6 @@ class AreasAdditional extends Component {
         this.setState({ isLoading: false });
         console.error(error);
       });
-    this.disableIfEdit();
   }
 
   render() {
@@ -201,6 +197,7 @@ class AreasAdditional extends Component {
               <EmptyContentMessageView
                 title="Vamos a crear areas adicionales 📏!"
                 message="Es fácil, debes hacer click en el botón inferior y llenar el formulario"
+                disableSold={this.state.disableSold}
               />
             )}
             <Collapsables

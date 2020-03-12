@@ -9,6 +9,7 @@ const Ratings = ({
   addRatingHandler,
   removeRatingHandler,
   updateRatingHandler,
+  disabledProp,
 }) => {
   return (
     <div className={Styles.container}>
@@ -17,8 +18,12 @@ const Ratings = ({
           <span>Calificaciones</span>
         </div>
         <div className={Styles.actions}>
-          <Button onClick={addRatingHandler}>Agregar calificación</Button>
-          <Button onClick={removeRatingHandler}>Eliminar calificación</Button>
+          <Button onClick={addRatingHandler} disabled={disabledProp}>
+            Agregar calificación
+          </Button>
+          <Button onClick={removeRatingHandler} disabled={disabledProp}>
+            Eliminar calificación
+          </Button>
         </div>
       </div>
       <div className={Styles.ratings}>

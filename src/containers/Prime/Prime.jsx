@@ -26,6 +26,7 @@ class Prime extends Component {
     floorsNames: [],
     showFloatingButton: false,
     lowestFloor: 0,
+    disabledProp: false,
   };
 
   componentDidMount() {
@@ -34,6 +35,14 @@ class Prime extends Component {
     if (!towerId) {
       return;
     }
+    this.services
+      .isDisable(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ disabledProp: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     this.services.getAltitudePrimes(towerId).then((response) => {
       if (response.data.primes.length !== 0) {
@@ -98,6 +107,7 @@ class Prime extends Component {
             this.priceHandler('ALT', prime.id, parseInt(target.value));
           }}
           value={prime.price}
+          disable={this.state.disabledProp}
         />,
       ]);
       return inputs;
@@ -116,6 +126,7 @@ class Prime extends Component {
                 }}
                 placeholder={prime.name}
                 tooltip={prime.name}
+                disable={this.state.disabledProp}
               />
             );
           } else {
@@ -206,6 +217,7 @@ class Prime extends Component {
           reloadPrimes={this.getLocationPrimes}
           alertHandler={this.props.spawnMessage}
           lowestFloor={this.state.lowestFloor}
+          disabledProp={this.state.disabledProp}
         />
         {this.state.showFloatingButton ? (
           <FloatingButton

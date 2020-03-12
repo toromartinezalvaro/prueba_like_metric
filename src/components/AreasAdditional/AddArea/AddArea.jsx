@@ -138,6 +138,7 @@ const AddArea = (props) => {
           aria-label="add"
           className={Styles.MuiFab}
           onClick={handleClickOpen}
+          disabled={props.disabledSold}
         >
           <AddIcon />
         </Fab>
@@ -230,14 +231,14 @@ const AddArea = (props) => {
         </DialogContent>
         <DialogActions>
           <Button
-            isDisabled={props.disbaleSold}
+            isDisabled={props.disabledSold}
             onClick={handleClose}
             className={Styles.CancelButton}
           >
             Cancelar
           </Button>
           <Button
-            isDisabled={props.disbaleSold}
+            isDisabled={props.disabledSold}
             onClick={handleAdd}
             className={Styles.ConfirmButton}
           >

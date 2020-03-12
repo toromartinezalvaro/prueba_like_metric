@@ -16,6 +16,7 @@ const QualitativePrimes = ({
   reloadPrimes,
   alertHandler,
   lowestFloor,
+  disabledProp,
 }) => {
   const services = new Services();
 
@@ -235,6 +236,7 @@ const QualitativePrimes = ({
       <TabPanel>
         <Ratings
           ratings={ratings}
+          disabledProp={disabledProp}
           addRatingHandler={handleAddRating}
           removeRatingHandler={handleRemoveRating}
           updateRatingHandler={handleRatingUpdate}
@@ -251,6 +253,7 @@ const QualitativePrimes = ({
           removeDescriptorHandler={handleRemoveDescriptor}
           addPropertyRatingHandler={handleAddPropertyRating}
           propertyRatingUpdateHandler={handlePropertyRatingUpdate}
+          disabledProp={disabledProp}
         />
       </TabPanel>
       <TabPanel>
