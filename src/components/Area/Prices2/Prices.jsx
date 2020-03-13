@@ -41,7 +41,7 @@ const schema = Yup.object().shape({
   ),
 });
 
-const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
+const Prices = ({ open, areaTypeId, towerId, handleClose, disableSold }) => {
   const formRef = useRef();
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -98,7 +98,7 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
                             name="name"
                             label="Nombre"
                             component={Input}
-                            disabled={values.primary}
+                            disabled={values.primary || disableSold}
                           />
                         </Grid>
                         <Grid item>
@@ -140,6 +140,7 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
                                     <Field
                                       name={`areas.${index}.price`}
                                       component={CurrencyInput}
+                                      disabled={disableSold}
                                       label="Precio"
                                     />
                                   </TableCell>
@@ -159,7 +160,12 @@ const Prices = ({ open, areaTypeId, towerId, handleClose }) => {
       </DialogContent>
       <DialogActions>
         {!state.loading && !state.error && (
-          <Button variant="contained" color="primary" onClick={submit}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={disableSold}
+            onClick={submit}
+          >
             Guardar
           </Button>
         )}
@@ -174,6 +180,7 @@ Prices.propTypes = {
   areaTypeId: PropTypes.number,
   towerId: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired,
+  disableSold: PropTypes.bool,
 };
 
 Prices.defaultProps = {

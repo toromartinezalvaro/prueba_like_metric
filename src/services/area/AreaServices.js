@@ -37,4 +37,8 @@ export default class AreaServices extends Services {
   updateAreaType(id, values) {
     return this.put(AreaServiceDefinitions.updateAreaType(id), values);
   }
+  
+  isDisable(towerId) {
+    return this.get(AreaServiceDefinitions.getSalesRequestHistory(towerId));
+  }
 }

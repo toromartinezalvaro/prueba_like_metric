@@ -21,6 +21,14 @@ class SaleRequestsServices extends Services {
   getGroupDesistStatus(id) {
     return this.get(ServiceDefinitions.getGroupDesistStatus(id));
   }
+
+  getPropertyAreas(propertyId) {
+    return this.get(ServiceDefinitions.getPropertyAreas(propertyId));
+  }
+
+  rejectDesistRequest(desistId) {
+    return this.put(ServiceDefinitions.rejectDesistRequest(desistId));
+  }
 }
 
 export default SaleRequestsServices;

@@ -81,14 +81,31 @@ const TablesContractFlow = ({ billings }) => {
     return totalAdded;
   };
 
+  const projectedFunc = (arrProjected) => {
+    let valueTotal = 0;
+    arrProjected.reduce((a, b) => {
+      const vla = b.slice(1).map((val) => {
+        return val;
+      });
+      if (vla.length !== 1) {
+        valueTotal = vla.reduce((accum, act) => {
+          return accum + act;
+        });
+      } else {
+        valueTotal += parseInt(vla, 10);
+      }
+    });
+    return parseInt(valueTotal, 10);
+  };
+
   const deepInformation = (bill, group, item) => {
     const information = bill.items.map((value) => {
       return value.contracts.map((val) => {
         const contract = textFormater(val.title, 'text');
         const acumulated =
-          val.acumulated.length !== 0 ? parseInt(val.acumulated[0][0], 10) : 0;
+          val.acumulated.length !== 0 ? parseInt(val.acumulated[0][1], 10) : 0;
         const projected =
-          val.projected.length !== 0 ? parseInt(val.projected[0][0], 10) : 0;
+          val.projected.length !== 0 ? projectedFunc(val.projected) : 0;
 
         let result = {
           group,
@@ -98,16 +115,19 @@ const TablesContractFlow = ({ billings }) => {
           projected: numberFormater(projected),
           total: numberFormater(acumulated + projected),
         };
-        const initialDatesValues = columns.forEach((column, x) => {
+        const initialDatesValues = columns.slice(1).forEach((column, x) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
-        const datesValues = val.billings.map((dateValue) => {
-          dateValue.forEach((singleValue, l) => {
+        let valueInSameRow = 0;
+        const datesValues = val.billings.map((dateValue, K) => {
+          dateValue.slice(1).forEach((singleValue, l) => {
+            valueInSameRow += singleValue;
             const name = `date${l}`;
-            result = { ...result, [name]: [numberFormater(singleValue)] };
+            result = { ...result, [name]: [numberFormater(valueInSameRow)] };
           });
         });
+        valueInSameRow = 0;
         return result;
       });
     });

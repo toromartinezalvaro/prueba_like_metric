@@ -27,6 +27,7 @@ class AreasAdditional extends Component {
   state = {
     arrayAreaTypes: [],
     isLoading: false,
+    disableSold: false,
   };
 
   arrayAreaTypesHandler = (
@@ -152,6 +153,14 @@ class AreasAdditional extends Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     this.services
+      .isDisable(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ disableSold: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    this.services
       .getAreas(this.props.match.params.towerId)
       .then((areas) => {
         const sortedAreas = areas.data.map((areaType) => {
@@ -188,6 +197,7 @@ class AreasAdditional extends Component {
               <EmptyContentMessageView
                 title="Vamos a crear areas adicionales 📏!"
                 message="Es fácil, debes hacer click en el botón inferior y llenar el formulario"
+                disableSold={this.state.disableSold}
               />
             )}
             <Collapsables
@@ -197,8 +207,12 @@ class AreasAdditional extends Component {
               addAreaAdditionalHandler={this.addAreaAdditionalHandler}
               updateAreaAdditionalHandler={this.updateAreaAdditionalHandler}
               updateAreaTypeHandler={this.updateAreaTypeHandler}
+              disableSold={this.state.disableSold}
             ></Collapsables>
-            <AddArea addAreaHandler={this.addAreaHandler}></AddArea>
+            <AddArea
+              addAreaHandler={this.addAreaHandler}
+              disableSold={this.state.disableSold}
+            ></AddArea>
           </CardBody>
         </Card>
       </LoadableContainer>

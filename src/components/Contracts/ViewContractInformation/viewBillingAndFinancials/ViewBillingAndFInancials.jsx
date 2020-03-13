@@ -13,11 +13,9 @@ import Numbers from '../../../../helpers/numbers';
 import style from '../ViewContractInformation.module.scss';
 
 const ViewBillingAndFinancials = ({ contractDataView, events }) => {
-  const totalBills = contractDataView.billings.map((billing) => {
-    let billingSum = 0;
-    billingSum += Number(billing.amount);
-    return billingSum;
-  });
+  const totalBills = contractDataView.billings.reduce((a, b) => {
+    return a + b.amount + b.amount * b.iva;
+  }, 0);
   return (
     <Fragment>
       <div className={style.generalTitle}>
@@ -91,10 +89,10 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                 <h4 sclassName={style.textTotal}> Valor Total:</h4>
                 <NumberFormat
                   value={Numbers.toFixed(totalBills)}
-                  displayType={'text'}
-                  className={style.TotalAmount}
-                  thousandSeparator={true}
-                  prefix={'$'}
+                  displayType="text"
+                  className={style.totalAmount}
+                  thousandSeparator
+                  prefix="$"
                 />
               </div>
             </div>

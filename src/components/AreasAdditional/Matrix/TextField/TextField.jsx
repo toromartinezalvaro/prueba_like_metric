@@ -52,6 +52,7 @@ const TextField = (props) => {
         onBlur={(e) => {
           onBlur(e, error);
         }}
+        {...props}
       />
     </div>
   );

@@ -59,7 +59,7 @@ const Schema = (props) => {
               onChange={props.onChange}
               value={props.floors}
               validations={inputValidation}
-              disable={props.disableSold || locked}
+              disable={props.disable}
             />
           </div>
 
@@ -110,7 +110,7 @@ const Schema = (props) => {
                   props.editMode();
                   toggleWarning();
                 }}
-                disabled={props.disableSold}
+                isDisabled={props.disableSold}
               >
                 Editar
               </Button>
@@ -119,6 +119,7 @@ const Schema = (props) => {
                 onClick={() => {
                   props.editMode();
                 }}
+                isDisabled={props.disableSold}
               >
                 Cancelar
               </Button>

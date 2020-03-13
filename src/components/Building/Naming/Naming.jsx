@@ -28,6 +28,7 @@ const Naming = (props) => {
                 message: 'Nombres únicos',
               },
             ]}
+            disable={props.disableSold}
             location={propertyIndex + 1}
             floor={floorIndex + props.lowestFloor}
             onChange={(target) => {

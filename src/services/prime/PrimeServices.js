@@ -25,4 +25,10 @@ export default class PrimeServices extends Services {
   putLocationPrimeUnit(unit) {
     return this.put(PrimeServiceDefinitions.location("units"), unit);
   }
+
+  isDisable(towerId) {
+    return this.get(
+      PrimeServiceDefinitions.getSalesRequestHistory(towerId),
+    );
+  }
 }

@@ -14,12 +14,13 @@ import Styles from './Actions.module.scss';
 const Actions = (props) => {
   return (
     <div>
-      <Button onClick={props.handleClose} className={Styles.CancelButton}>
+      <Button onClick={props.handleClose} isDisabled={props.disableWhenSold} className={Styles.CancelButton}>
         Cancelar
       </Button>
       <Button
         onClick={() => props.handleUpdate(props.areaType.id)}
         className={Styles.ConfirmButton}
+        isDisabled={props.disableWhenSold}
       >
         Editar
       </Button>
