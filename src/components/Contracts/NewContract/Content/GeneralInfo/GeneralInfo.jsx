@@ -59,6 +59,7 @@ const GeneralInfo = ({
   const [isLockedEdit, setLockedEdit] = useState(true);
   const [isEmptyTitle, setEmptyTitle] = useState(false);
   const [isEmptyDescription, setEmptyDescription] = useState(false);
+  const [isEmptyNumber, setEmptyNumber] = useState(false);
 
   const statusOfContract = statusOfContractEnum.map((contract) => {
     return {
@@ -91,8 +92,9 @@ const GeneralInfo = ({
       setEmptyTitle(false);
       setEmptyDescription(false);
     } else {
-      setEmptyTitle(true);
-      setEmptyDescription(true);
+      setEmptyTitle(false);
+      setEmptyDescription(false);
+      setEmptyNumber(false);
     }
   }, []);
 
@@ -108,15 +110,15 @@ const GeneralInfo = ({
     const information = { ...generalInformation, [name]: e.target.value };
     setGeneralInformation(information);
     sendGeneralInfo(information);
-    if (name === 'contractNumber') {
+    if (name === 'contractNumber' && e.target.value !== '') {
       sendContractNumber(e.target.value);
     } else if (name === 'title' && e.target.value === '') {
       setEmptyTitle(true);
+    } else if (name === 'contractNumber' && e.target.value === '') {
+      setEmptyNumber(true);
     } else if (name === 'description' && e.target.value === '') {
       setEmptyDescription(true);
     }
-    setEmptyDescription(false);
-    setEmptyTitle(false);
   };
 
   const onChangeSelect = (name) => (label) => {
@@ -334,7 +336,7 @@ const GeneralInfo = ({
             label="Numero de contrato"
             required
             id="4"
-            error={isEmptyTitle || alreadyCreated}
+            error={isEmptyNumber || alreadyCreated}
             onKeyDown={(e) => {
               if (e.key === 'Enter') document.getElementById('select5').focus();
             }}
