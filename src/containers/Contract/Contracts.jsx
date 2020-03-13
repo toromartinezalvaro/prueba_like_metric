@@ -581,7 +581,7 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
-      this.sendErrorInProp('partner', 'Debes seleccionar un socio');
+      this.sendErrorInProp('partner', 'Seleccionar un socio');
     }
     if (requiredInformation.groupId === '') {
       this.props.spawnMessage(
@@ -590,7 +590,7 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
-      this.sendErrorInProp('group', 'Debe seleccionar un grupo');
+      this.sendErrorInProp('group', 'Seleccionar un grupo');
     }
     if (requiredInformation.state === '') {
       this.props.spawnMessage(
@@ -599,7 +599,7 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
-      this.sendErrorInProp('state', 'Debe seleccionar un estado de contrato');
+      this.sendErrorInProp('state', 'Seleccionar un estado');
     }
     if (requiredInformation.itemId === '') {
       this.props.spawnMessage(
@@ -608,7 +608,7 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
-      this.sendErrorInProp('item', 'Debe seleccionar un item');
+      this.sendErrorInProp('item', 'Seleccionar un item');
     }
     if (requiredInformation.contractNumber === '') {
       this.props.spawnMessage(
@@ -683,6 +683,15 @@ class Contracts extends Component {
                         value: 0,
                         label: 'Seleccione un grupo',
                       },
+                    },
+                    errors: {
+                      title: false,
+                      description: false,
+                      contractNumber: false,
+                      partner: '',
+                      group: '',
+                      state: '',
+                      item: '',
                     },
                   });
                 }
