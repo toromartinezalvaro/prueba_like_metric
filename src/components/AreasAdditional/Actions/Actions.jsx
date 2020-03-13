@@ -8,21 +8,21 @@
  * Copyright (c) 2019 Instabuild
  */
 import React from 'react';
-import Button from '../../UI/Button/Button';
-import Styles from './Actions.module.scss';
+import Button from '@material-ui/core/Button';
 
 const Actions = (props) => {
   return (
     <div>
-      <Button onClick={props.handleClose} isDisabled={props.disableWhenSold} className={Styles.CancelButton}>
-        Cancelar
-      </Button>
       <Button
         onClick={() => props.handleUpdate(props.areaType.id)}
-        className={Styles.ConfirmButton}
         isDisabled={props.disableWhenSold}
+        color="primary"
+        size="small"
       >
         Editar
+      </Button>
+      <Button size="small" onClick={props.handleClose}>
+        Cancelar
       </Button>
     </div>
   );
