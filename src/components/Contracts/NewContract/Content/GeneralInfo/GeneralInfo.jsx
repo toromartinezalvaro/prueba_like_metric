@@ -114,6 +114,7 @@ const GeneralInfo = ({
     sendGeneralInfo(information);
     if (name === 'contractNumber' && e.target.value !== '') {
       sendContractNumber(e.target.value);
+      setEmptyNumber(false);
     } else if (name === 'title' && e.target.value === '') {
       setEmptyTitle(true);
     } else if (name === 'contractNumber' && e.target.value === '') {
