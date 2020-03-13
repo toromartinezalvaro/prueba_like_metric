@@ -41,6 +41,7 @@ const ExpandGeneralInfo = ({
   sendContractNumber,
   alreadyCreated,
   errors,
+  noError,
 }) => {
   return (
     <ExpansionPanel className={styles.expansionPanel} mb={4} expanded={true}>
@@ -82,6 +83,7 @@ const ExpandGeneralInfo = ({
             dataIfEdit={dataIfEdit}
             sendContractNumber={sendContractNumber}
             errors={errors}
+            noError={noError}
           />
         </Typography>
       </ExpansionPanelDetails>

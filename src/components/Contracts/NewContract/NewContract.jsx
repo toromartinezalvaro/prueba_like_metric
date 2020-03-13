@@ -61,6 +61,7 @@ const NewContract = ({
   sendToDelete,
   alreadyCreated,
   errors,
+  noError,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -124,6 +125,7 @@ const NewContract = ({
           sendContractNumber={sendContractNumber}
           alreadyCreated={alreadyCreated}
           errors={errors}
+          noError={noError}
         />
         <br />
         <ExpandBillingFinancials

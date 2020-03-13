@@ -45,6 +45,7 @@ const GeneralInfo = ({
   sendContractNumber,
   alreadyCreated,
   errors,
+  noError,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
@@ -113,12 +114,18 @@ const GeneralInfo = ({
     sendGeneralInfo(information);
     if (name === 'contractNumber' && e.target.value !== '') {
       sendContractNumber(e.target.value);
+      setEmptyNumber(false);
     } else if (name === 'title' && e.target.value === '') {
       setEmptyTitle(true);
     } else if (name === 'contractNumber' && e.target.value === '') {
       setEmptyNumber(true);
     } else if (name === 'description' && e.target.value === '') {
       setEmptyDescription(true);
+    } else {
+      setEmptyTitle(false);
+      setEmptyNumber(false);
+      setEmptyDescription(false);
+      noError(name);
     }
   };
 
@@ -126,6 +133,7 @@ const GeneralInfo = ({
     const information = { ...generalInformation, [name]: label.value };
     setGeneralInformation(information);
     sendGeneralInfo(information);
+    noError(name);
   };
 
   const searchForCategory = () => {
@@ -345,7 +353,7 @@ const GeneralInfo = ({
             label="Numero de contrato"
             required
             id="4"
-            error={isEmptyNumber || alreadyCreated || errors.contractNumber}
+            error={isEmptyNumber || errors.contractNumber}
             onKeyDown={(e) => {
               if (e.key === 'Enter') document.getElementById('select5').focus();
             }}
