@@ -24,6 +24,19 @@
   left: 12%;
 }
 
+.errorField {
+  top: -5% !important;
+  margin-top: -5%;
+  color: red;
+}
+
+.errorFieldGroup {
+  margin-top: -4%;
+  margin-left: 8%;
+  margin-bottom: 15%;
+  color: red;
+}
+
 .gridSubContainer {
   display: flex;
   flex-direction: row;
