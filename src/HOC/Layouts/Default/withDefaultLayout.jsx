@@ -22,7 +22,7 @@ function withDefaultLayout(WrappedComponent) {
       });
     };
 
-    addMessage = (message, type, title) => {
+    addMessage = (message, type, title, timeout = 3000) => {
       this.setState((prevState) => ({
         messages: [
           ...prevState.messages,
@@ -32,7 +32,7 @@ function withDefaultLayout(WrappedComponent) {
             text: message,
             timeout: setTimeout(() => {
               this.close();
-            }, 3000),
+            }, timeout),
           },
         ],
       }));

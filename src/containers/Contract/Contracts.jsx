@@ -126,11 +126,6 @@ class Contracts extends Component {
             label: event.description,
           };
         });
-        events.unshift({
-          eventId: 0,
-          value: 0,
-          label: 'FECHA MANUAL',
-        });
         this.setState({ events });
       })
       .catch((error) => {
@@ -553,6 +548,55 @@ class Contracts extends Component {
   };
 
   addContract = () => {
+    const requiredInformation = this.state.generalInformation;
+    if (requiredInformation.title === '') {
+      this.props.spawnMessage(
+        'Debe llenar el campo titulo',
+        'error',
+        'ERROR',
+        10000,
+      );
+    }
+    if (requiredInformation.businessPartnerId === 0) {
+      this.props.spawnMessage(
+        'Debe seleccionar un socio',
+        'error',
+        'ERROR',
+        10000,
+      );
+    }
+    if (requiredInformation.roupId === '') {
+      this.props.spawnMessage(
+        'Debe seleccionar un grupo',
+        'error',
+        'ERROR',
+        10000,
+      );
+    }
+    if (requiredInformation.state === '') {
+      this.props.spawnMessage(
+        'Debe seleccionar un estado de contrato',
+        'error',
+        'ERROR',
+        10000,
+      );
+    }
+    if (requiredInformation.itemId === '') {
+      this.props.spawnMessage(
+        'Debe seleccionar un item',
+        'error',
+        'ERROR',
+        10000,
+      );
+    }
+    if (requiredInformation.description === '') {
+      this.props.spawnMessage(
+        'Debe llenar el campo descripción',
+        'error',
+        'ERROR',
+        10000,
+      );
+    }
     let data = new FormData();
     if (this.state.contract) {
       data = this.state.contract;
@@ -563,6 +607,7 @@ class Contracts extends Component {
       );
       data.append('billing', JSON.stringify(this.state.billings));
     }
+
     this.services
       .getAllContracts(this.props.match.params.towerId)
       .then((contracts) => {
