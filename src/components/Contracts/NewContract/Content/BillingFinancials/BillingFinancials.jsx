@@ -7,6 +7,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import NumberFormat from 'react-number-format';
+import _ from 'lodash';
 import {
   Button,
   Card,
@@ -114,6 +115,7 @@ const BillingFinancials = ({
           lastBillingDate: todayDate,
           eventIsUnique: true,
           eventLabel: element.eventLabel,
+          displacement: 0,
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
         bill = {
@@ -123,6 +125,7 @@ const BillingFinancials = ({
           eventId: element.eventId,
           eventIsUnique: false,
           eventLabel: element.eventLabel,
+          displacement: 0,
         };
         setLastDate(Number(element.value));
         billingsArray[billIndex].eventId = element.eventId;
@@ -237,8 +240,13 @@ const BillingFinancials = ({
           return event.label === date.label;
         })
       ) {
-        events.sort();
+        _.orderBy(events, ['name'], ['asc']);
         events.unshift(date);
+        events.unshift({
+          eventId: 0,
+          value: 0,
+          label: 'FECHA MANUAL',
+        });
       }
     });
   };

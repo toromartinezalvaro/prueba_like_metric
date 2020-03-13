@@ -174,18 +174,18 @@ class Events extends Component {
   };
 
   onChangeText = (e) => {
-    const time = new Date().getTime();
+    const time = this.state.event.customDate;
     this.setState({
       event: {
         description: `${e.target.value}(${moment(Number(time)).format(
-          'DD/MM/YYYY',
+          'MM/DD/YYYY',
         )})`,
         customDate: moment(Number(time)).format('x'),
         scheduleId: null,
       },
       description: `${e.target.value}(${moment(
         Number(this.state.customDate),
-      ).format('DD/MM/YYYY')})`,
+      ).format('MM/DD/YYYY')})`,
     });
   };
 
@@ -194,7 +194,7 @@ class Events extends Component {
     this.setState({
       event: {
         description: `${this.state.description}(${moment(Number(time)).format(
-          'DD/MM/YYYY',
+          'MM/DD/YYYY',
         )})`,
         customDate: time,
         scheduleId: null,
