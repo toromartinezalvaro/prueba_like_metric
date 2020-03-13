@@ -136,6 +136,11 @@ class Contracts extends Component {
             label: event.description,
           };
         });
+        events.unshift({
+          eventId: 0,
+          value: 0,
+          label: 'FECHA MANUAL',
+        });
         this.setState({ events });
       })
       .catch((error) => {
@@ -865,6 +870,21 @@ class Contracts extends Component {
     this.setState({ isEditable: param });
   };
 
+  noError = (name) => {
+    if (
+      name !== 'title' ||
+      name !== 'description' ||
+      name !== 'contractNumber'
+    ) {
+      this.setState((prevState) => ({
+        errors: { ...prevState.errors, [name]: '' },
+      }));
+    }
+    this.setState((prevState) => ({
+      errors: { ...prevState.errors, [name]: false },
+    }));
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -882,6 +902,7 @@ class Contracts extends Component {
         />
         <NewContract
           towerId={this.props.match.params.towerId}
+          noError={this.noError}
           errors={this.state.errors}
           alreadyCreated={this.state.alreadyCreated}
           expanded={this.state.expanded}
