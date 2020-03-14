@@ -60,6 +60,8 @@ const NewContract = ({
   setEditable,
   sendToDelete,
   alreadyCreated,
+  errors,
+  noError,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -122,6 +124,8 @@ const NewContract = ({
           dataIfEdit={dataIfEdit}
           sendContractNumber={sendContractNumber}
           alreadyCreated={alreadyCreated}
+          errors={errors}
+          noError={noError}
         />
         <br />
         <ExpandBillingFinancials

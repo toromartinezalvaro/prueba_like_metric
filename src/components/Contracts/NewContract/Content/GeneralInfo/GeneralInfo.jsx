@@ -44,6 +44,8 @@ const GeneralInfo = ({
   dataIfEdit,
   sendContractNumber,
   alreadyCreated,
+  errors,
+  noError,
 }) => {
   const [generalInformation, setGeneralInformation] = useState({
     title: '',
@@ -112,12 +114,18 @@ const GeneralInfo = ({
     sendGeneralInfo(information);
     if (name === 'contractNumber' && e.target.value !== '') {
       sendContractNumber(e.target.value);
+      setEmptyNumber(false);
     } else if (name === 'title' && e.target.value === '') {
       setEmptyTitle(true);
     } else if (name === 'contractNumber' && e.target.value === '') {
       setEmptyNumber(true);
     } else if (name === 'description' && e.target.value === '') {
       setEmptyDescription(true);
+    } else {
+      setEmptyTitle(false);
+      setEmptyNumber(false);
+      setEmptyDescription(false);
+      noError(name);
     }
   };
 
@@ -125,6 +133,7 @@ const GeneralInfo = ({
     const information = { ...generalInformation, [name]: label.value };
     setGeneralInformation(information);
     sendGeneralInfo(information);
+    noError(name);
   };
 
   const searchForCategory = () => {
@@ -173,7 +182,7 @@ const GeneralInfo = ({
         <div className={styles.columnFullLeft}>
           <TextField
             required
-            error={isEmptyTitle}
+            error={isEmptyTitle || errors.title}
             className={styles.textField}
             label="Titulo De Contrato"
             margin="normal"
@@ -218,7 +227,9 @@ const GeneralInfo = ({
                 }
                 onChange={changeAndSearchPartner}
               />
+              {<div className={styles.errorFieldGroup}>{errors.partner}</div>}
             </div>
+
             {agent.isAuthorized([Role.Admin, Role.Super]) && (
               <div className={styles.buttonColumn}>
                 <Fab
@@ -278,6 +289,7 @@ const GeneralInfo = ({
                 onChange={changeAndSearchCategory}
                 onFocus={itemClean}
               />
+              {<div className={styles.errorFieldGroup}>{errors.group}</div>}
             </div>
             {agent.isAuthorized([Role.Admin, Role.Super]) && (
               <div className={styles.buttonColumn}>
@@ -306,37 +318,42 @@ const GeneralInfo = ({
         </div>
 
         <div className={styles.columnFullRigth}>
-          <Select
-            className={styles.SelectSimple}
-            inputId="select3"
-            required
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') document.getElementById('4').focus();
-            }}
-            TextFieldProps={{
-              label: 'Estado',
-              InputLabelProps: {
-                htmlFor: 'react-select-single',
-                shrink: true,
-              },
-            }}
-            placeholder="Estado"
-            options={statusOfContract}
-            components={Option}
-            defaultValue={
-              dataIfEdit &&
-              statusOfContract.find((option) => {
-                return option.value === dataIfEdit.state.id && dataIfEdit.state;
-              })
-            }
-            onChange={onChangeSelect('state')}
-          />
+          <Fragment>
+            <Select
+              className={styles.SelectSimple}
+              inputId="select3"
+              required
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') document.getElementById('4').focus();
+              }}
+              TextFieldProps={{
+                label: 'Estado',
+                InputLabelProps: {
+                  htmlFor: 'react-select-single',
+                  shrink: true,
+                },
+              }}
+              placeholder="Estado"
+              options={statusOfContract}
+              components={Option}
+              defaultValue={
+                dataIfEdit &&
+                statusOfContract.find((option) => {
+                  return (
+                    option.value === dataIfEdit.state.id && dataIfEdit.state
+                  );
+                })
+              }
+              onChange={onChangeSelect('state')}
+            />
+            {<div className={styles.errorField}>{errors.state}</div>}
+          </Fragment>
           <TextField
             className={styles.leftInputs}
             label="Numero de contrato"
             required
             id="4"
-            error={isEmptyNumber || alreadyCreated}
+            error={isEmptyNumber || errors.contractNumber}
             onKeyDown={(e) => {
               if (e.key === 'Enter') document.getElementById('select5').focus();
             }}
@@ -380,6 +397,7 @@ const GeneralInfo = ({
                   }
                   onChange={changeAndSearchItem}
                 />
+                {<div className={styles.errorField}>{errors.item}</div>}
               </FormControl>
             </div>
             {agent.isAuthorized([Role.Admin, Role.Super]) && (
@@ -413,7 +431,7 @@ const GeneralInfo = ({
       <div className={styles.gridContainer}>
         <TextField
           multiline
-          error={isEmptyDescription}
+          error={isEmptyDescription || errors.description}
           required
           rows="5"
           id="TEXT6"

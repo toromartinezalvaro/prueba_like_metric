@@ -242,11 +242,6 @@ const BillingFinancials = ({
       ) {
         _.orderBy(events, ['name'], ['asc']);
         events.unshift(date);
-        events.unshift({
-          eventId: 0,
-          value: 0,
-          label: 'FECHA MANUAL',
-        });
       }
     });
   };
@@ -267,6 +262,7 @@ const BillingFinancials = ({
         watchingContract();
       }, 1000);
     }
+  
   });
 
   const Option = (props) => {

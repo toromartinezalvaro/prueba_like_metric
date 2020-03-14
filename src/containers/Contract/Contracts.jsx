@@ -79,6 +79,16 @@ class Contracts extends Component {
       isEditable: false,
       billsToDelete: [],
       alreadyCreated: false,
+      errors: {
+        title: false,
+        description: false,
+        contractNumber: false,
+        partner: '',
+        group: '',
+        state: '',
+        item: '',
+      },
+      readyToSend: false,
     };
   }
 
@@ -125,6 +135,11 @@ class Contracts extends Component {
             value: event.customDate,
             label: event.description,
           };
+        });
+        events.unshift({
+          eventId: 0,
+          value: 0,
+          label: 'FECHA MANUAL',
         });
         this.setState({ events });
       })
@@ -547,6 +562,12 @@ class Contracts extends Component {
     this.setState({ currentContract: event });
   };
 
+  sendErrorInProp = (name, errorMessage) => {
+    this.setState((prevState) => ({
+      errors: { ...prevState.errors, [name]: errorMessage },
+    }));
+  };
+
   addContract = () => {
     const requiredInformation = this.state.generalInformation;
     if (requiredInformation.title === '') {
@@ -556,6 +577,7 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
+      this.sendErrorInProp('title', true);
     }
     if (requiredInformation.businessPartnerId === 0) {
       this.props.spawnMessage(
@@ -564,14 +586,16 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
+      this.sendErrorInProp('partner', 'Seleccionar un socio');
     }
-    if (requiredInformation.roupId === '') {
+    if (requiredInformation.groupId === '') {
       this.props.spawnMessage(
         'Debe seleccionar un grupo',
         'error',
         'ERROR',
         10000,
       );
+      this.sendErrorInProp('group', 'Seleccionar un grupo');
     }
     if (requiredInformation.state === '') {
       this.props.spawnMessage(
@@ -580,6 +604,7 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
+      this.sendErrorInProp('state', 'Seleccionar un estado');
     }
     if (requiredInformation.itemId === '') {
       this.props.spawnMessage(
@@ -588,6 +613,16 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
+      this.sendErrorInProp('item', 'Seleccionar un item');
+    }
+    if (requiredInformation.contractNumber === '') {
+      this.props.spawnMessage(
+        'Debe llenar el campo numero de contrato',
+        'error',
+        'ERROR',
+        10000,
+      );
+      this.sendErrorInProp('contractNumber', true);
     }
     if (requiredInformation.description === '') {
       this.props.spawnMessage(
@@ -596,70 +631,89 @@ class Contracts extends Component {
         'ERROR',
         10000,
       );
+      this.sendErrorInProp('description', true);
     }
-    let data = new FormData();
-    if (this.state.contract) {
-      data = this.state.contract;
-    } else {
-      data.append(
-        'generalInformation',
-        JSON.stringify(this.state.generalInformation),
-      );
-      data.append('billing', JSON.stringify(this.state.billings));
-    }
+    this.setState({
+      readyToSend: true,
+    });
+    if (this.state.readyToSend) {
+      let data = new FormData();
+      if (this.state.contract) {
+        data = this.state.contract;
+      } else {
+        data.append(
+          'generalInformation',
+          JSON.stringify(this.state.generalInformation),
+        );
+        data.append('billing', JSON.stringify(this.state.billings));
+      }
 
-    this.services
-      .getAllContracts(this.props.match.params.towerId)
-      .then((contracts) => {
-        if (
-          contracts.data.find(
-            (contract) => contract.contractNumber === this.state.contractNumber,
-          ) ||
-          this.state.contractNumber === ''
-        ) {
+      this.services
+        .getAllContracts(this.props.match.params.towerId)
+        .then((contracts) => {
+          if (
+            contracts.data.find(
+              (contract) =>
+                contract.contractNumber === this.state.contractNumber,
+            ) ||
+            this.state.contractNumber === ''
+          ) {
+            this.props.spawnMessage(
+              'Ya existe ese numero de contrato',
+              'error',
+              'ERROR',
+            );
+            this.setState({ alreadyCreated: true });
+          } else {
+            this.services
+              .postContract(data, this.props.match.params.towerId)
+              .then((response) => {
+                this.setState({ currentContract: true });
+                if (this.state.currentContract) {
+                  this.setState({
+                    contractModal: { isOpen: false },
+                    alreadyCreated: false,
+                    contract: null,
+                    businessPatnerModal: {
+                      ...this.state.businessPatnerModal,
+                      currentPatner: { value: 0, label: 'Seleccione un socio' },
+                    },
+                    itemModal: {
+                      ...this.state.itemModal,
+                      currentItem: { value: 0, label: 'Seleccione un item' },
+                    },
+                    categoryModal: {
+                      ...this.state.categoryModal,
+                      currentCategory: {
+                        value: 0,
+                        label: 'Seleccione un grupo',
+                      },
+                    },
+                    errors: {
+                      title: false,
+                      description: false,
+                      contractNumber: false,
+                      partner: '',
+                      group: '',
+                      state: '',
+                      item: '',
+                    },
+                  });
+                }
+              })
+              .catch((error) => {
+                this.props.spawnMessage('Error al crear', 'error', 'ERROR');
+              });
+          }
+        })
+        .catch((error) => {
           this.props.spawnMessage(
-            'Ya existe ese numero de contrato',
+            'No se puede crear el contrato',
             'error',
             'ERROR',
           );
-          this.setState({ alreadyCreated: true });
-        } else {
-          this.services
-            .postContract(data, this.props.match.params.towerId)
-            .then((response) => {
-              this.setState({ currentContract: true });
-              if (this.state.currentContract) {
-                this.setState({
-                  contractModal: { isOpen: false },
-                  alreadyCreated: false,
-                  contract: null,
-                  businessPatnerModal: {
-                    ...this.state.businessPatnerModal,
-                    currentPatner: { value: 0, label: 'Seleccione un socio' },
-                  },
-                  itemModal: {
-                    ...this.state.itemModal,
-                    currentItem: { value: 0, label: 'Seleccione un item' },
-                  },
-                  categoryModal: {
-                    ...this.state.categoryModal,
-                    currentCategory: { value: 0, label: 'Seleccione un grupo' },
-                  },
-                });
-              }
-            })
-            .catch((error) => {
-              this.props.spawnMessage('Error al crear', 'error', 'ERROR');
-            });
-        }
-      })
-      .catch((error) => {
-        this.props.spawnMessage(
-          'No se puede crear el contrato',
-          'error',
-          'ERROR',
-        );
-      });
+        });
+    }
   };
 
   sendId = (id) => {
@@ -816,6 +870,21 @@ class Contracts extends Component {
     this.setState({ isEditable: param });
   };
 
+  noError = (name) => {
+    if (
+      name !== 'title' ||
+      name !== 'description' ||
+      name !== 'contractNumber'
+    ) {
+      this.setState((prevState) => ({
+        errors: { ...prevState.errors, [name]: '' },
+      }));
+    }
+    this.setState((prevState) => ({
+      errors: { ...prevState.errors, [name]: false },
+    }));
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -833,6 +902,8 @@ class Contracts extends Component {
         />
         <NewContract
           towerId={this.props.match.params.towerId}
+          noError={this.noError}
+          errors={this.state.errors}
           alreadyCreated={this.state.alreadyCreated}
           expanded={this.state.expanded}
           setEditable={this.setEditable}

@@ -127,7 +127,9 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
         towerId,
       );
       containerDispatcher(addClient(res.data));
-      setInnerClient(res.data);
+      const tempClient = { ...res.data };
+      tempClient.associated = true;
+      setInnerClient(tempClient);
       dispatch(fetchAddToTowerSuccess());
     } catch (error) {
       dispatch(fetchAddToTowerFailure());
