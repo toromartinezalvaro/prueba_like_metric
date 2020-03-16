@@ -33,6 +33,10 @@ class Pairing extends Component {
     this.services
       .getData(this.props.match.params.towerId)
       .then((response) => {
+        console.log("PAIRING --->", _.sortBy(response.data.tower.properties, [
+          'floor',
+          'location',
+        ]));
         this.setState({
           properties: _.sortBy(response.data.tower.properties, [
             'floor',

@@ -11,6 +11,7 @@ const PropertyRow = ({
   maxCols,
   addAreaHandler,
   removeAreaHandler,
+  propertyStatus,
 }) => {
   const sortedAreas = _.sortBy(property.additionalAreas, [
     'areaType.name',
@@ -33,6 +34,7 @@ const PropertyRow = ({
               key={`${property.id}-${index}`}
               areas={areas}
               area={area}
+              status={propertyStatus}
               addAreaHandler={addAreaHandler}
               removeAreaHandler={removeAreaHandler}
             />
