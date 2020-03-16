@@ -75,6 +75,7 @@ const PairingTable = ({
                   key={property.id}
                   property={property}
                   maxCols={maxAreasLength}
+                  propertyStatus={property.status}
                   areas={areas}
                   addAreaHandler={addArea(property.id)}
                   removeAreaHandler={removeAreaHandler}

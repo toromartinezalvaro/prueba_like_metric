@@ -15,7 +15,6 @@ const Actions = (props) => {
     <div>
       <Button
         onClick={() => props.handleUpdate(props.areaType.id)}
-        isDisabled={props.disableWhenSold}
         color="primary"
         size="small"
       >
