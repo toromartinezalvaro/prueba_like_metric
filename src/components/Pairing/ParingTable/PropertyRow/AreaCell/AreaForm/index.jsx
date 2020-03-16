@@ -4,7 +4,7 @@ import Button from '../../../../../UI2/Button';
 import AreasSelect from './AreasSelect';
 import Styles from './AreaForm.module.scss';
 
-const AreaForm = ({ areas, isEditingHandler, addAreaHandler }) => {
+const AreaForm = ({ areas, isEditingHandler, addAreaHandler, status }) => {
   const [selectedArea, setSelectedArea] = useState('');
 
   return (
