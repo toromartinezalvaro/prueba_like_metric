@@ -34,11 +34,11 @@ function IncrementTable({
   const inputValidations = [
     {
       fn: (value) => value > 0,
-      message: 'Los meses de retenciÃ³n deben ser mayores a 0',
+      message: 'Los meses de retención deben ser mayores a 0',
     },
     {
       fn: (value) => value <= 98,
-      message: 'Los meses de retenciÃ³n deben ser menores a 98',
+      message: 'Los meses de retención deben ser menores a 98',
     },
   ];
 
@@ -65,9 +65,9 @@ function IncrementTable({
             prefix={'$'}
           />
         </div>
-        {data.map((group, i) => (
+        {data.map((group, index) => (
           <Accordion
-            key={`group-accordion-${i}`}
+            key={`group-accordion-${index}`}
             open={
               group.sales.increment > group.total.increment && isBadgeIncrement
             }
@@ -98,7 +98,7 @@ function IncrementTable({
                       className={styles.total}
                       groupSummary={group.total}
                       putSalesSpeed={(retentionMonths) => {
-                        putSalesSpeed(group.id, retentionMonths, i);
+                        putSalesSpeed(group.id, retentionMonths, index);
                       }}
                       validations={[
                         ...inputValidations,
@@ -121,14 +121,14 @@ function IncrementTable({
                     <Inventory
                       group={group}
                       inputValidations={inputValidations}
-                      i={i}
+                      index={index}
                       endOfSalesDate={endOfSalesDate}
                       blockIncrements={group.total.units < 2}
                       salesStartDate={group.total.date}
                       className={styles.inventory}
                       groupSummary={group.inventory}
                       putSuggestedSalesSpeed={(retentionMonths) => {
-                        putSuggestedSalesSpeed(group.id, retentionMonths, i);
+                        putSuggestedSalesSpeed(group.id, retentionMonths, index);
                       }}
                       putSuggestedEffectiveAnnualInterestRate={(
                         effectiveAnnualInterestRate,
@@ -136,7 +136,7 @@ function IncrementTable({
                         putSuggestedEffectiveAnnualInterestRate(
                           group.id,
                           effectiveAnnualInterestRate,
-                          i,
+                          index,
                         );
                       }}
                       futureSalesSpeedHandler={futureSalesSpeedHandler}
