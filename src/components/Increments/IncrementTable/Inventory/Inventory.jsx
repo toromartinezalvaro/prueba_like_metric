@@ -11,7 +11,7 @@ import SalesWizard from '../SalesWizard';
 function Inventory({
   group,
   inputValidations,
-  i,
+  index,
   className,
   groupSummary,
   putSuggestedSalesSpeed,
@@ -238,7 +238,7 @@ function Inventory({
           putSuggestedEffectiveAnnualInterestRate(
             group.id,
             effectiveAnnualInterestRate,
-            i,
+            index,
           );
         }}
         isModalOpen={isModalOpen}
