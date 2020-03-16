@@ -6,8 +6,12 @@ import NumberFormat from 'react-number-format';
 import Input from '../../../UI/Input/Input';
 import Styles from './Inventory.module.scss';
 import Numbers from '../../../../helpers/numbers';
+import SalesWizard from '../SalesWizard';
 
 function Inventory({
+  group,
+  inputValidations,
+  index,
   className,
   groupSummary,
   putSuggestedSalesSpeed,
@@ -22,7 +26,6 @@ function Inventory({
   putIncrement,
   isReset,
   salesIncrement,
-  setModalOpen,
 }) {
   const endOfSales = moment(Number(endOfSalesDate))
     .startOf('month')
@@ -48,6 +51,7 @@ function Inventory({
   } = groupSummary;
 
   const [salesSpeedState, setSalesSpeedState] = useState(salesSpeed);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const limitTodayDate =
     retentionMonths -
@@ -218,6 +222,38 @@ function Inventory({
       <div className={Styles['inv-ear']}>
         <span>{(ear * 100).toFixed(2)}%</span>
       </div>
+      <SalesWizard
+        data={group}
+        validations={[
+          ...inputValidations,
+          {
+            fn: (value) =>
+              value <= moment(Number(group.sales.date)).diff(moment(), 'month'),
+            message: 'Los meses de retencion superan la fecha final de ventas',
+          },
+        ]}
+        putSuggestedEffectiveAnnualInterestRate={(
+          effectiveAnnualInterestRate,
+        ) => {
+          putSuggestedEffectiveAnnualInterestRate(
+            group.id,
+            effectiveAnnualInterestRate,
+            index,
+          );
+        }}
+        isModalOpen={isModalOpen}
+        setModalOpen={setModalOpen}
+        isReset={group.isReset}
+        putIncrement={(incrementP) => {
+          putIncrement(
+            group.id,
+            incrementP,
+            group.inventory.units,
+            group.sales.increment,
+          );
+        }}
+        salesIncrement={group.sales.increment}
+      />
     </div>
   );
 }

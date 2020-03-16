@@ -30,16 +30,15 @@ function IncrementTable({
   ...props
 }) {
   const [isBadgeIncrement] = useState(props.isBadgeIncrement);
-  const [isModalOpen, setModalOpen] = useState(false);
 
   const inputValidations = [
     {
       fn: (value) => value > 0,
-      message: 'Los meses de retenciÃ³n deben ser mayores a 0',
+      message: 'Los meses de retención deben ser mayores a 0',
     },
     {
       fn: (value) => value <= 98,
-      message: 'Los meses de retenciÃ³n deben ser menores a 98',
+      message: 'Los meses de retención deben ser menores a 98',
     },
   ];
 
@@ -66,9 +65,9 @@ function IncrementTable({
             prefix={'$'}
           />
         </div>
-        {data.map((group, i) => (
+        {data.map((group, index) => (
           <Accordion
-            key={`group-accordion-${i}`}
+            key={`group-accordion-${index}`}
             open={
               group.sales.increment > group.total.increment && isBadgeIncrement
             }
@@ -99,7 +98,7 @@ function IncrementTable({
                       className={styles.total}
                       groupSummary={group.total}
                       putSalesSpeed={(retentionMonths) => {
-                        putSalesSpeed(group.id, retentionMonths, i);
+                        putSalesSpeed(group.id, retentionMonths, index);
                       }}
                       validations={[
                         ...inputValidations,
@@ -120,13 +119,16 @@ function IncrementTable({
                     />
                     <Sales className={styles.sold} groupSummary={group.sales} />
                     <Inventory
+                      group={group}
+                      inputValidations={inputValidations}
+                      index={index}
                       endOfSalesDate={endOfSalesDate}
                       blockIncrements={group.total.units < 2}
                       salesStartDate={group.total.date}
                       className={styles.inventory}
                       groupSummary={group.inventory}
                       putSuggestedSalesSpeed={(retentionMonths) => {
-                        putSuggestedSalesSpeed(group.id, retentionMonths, i);
+                        putSuggestedSalesSpeed(group.id, retentionMonths, index);
                       }}
                       putSuggestedEffectiveAnnualInterestRate={(
                         effectiveAnnualInterestRate,
@@ -134,7 +136,7 @@ function IncrementTable({
                         putSuggestedEffectiveAnnualInterestRate(
                           group.id,
                           effectiveAnnualInterestRate,
-                          i,
+                          index,
                         );
                       }}
                       futureSalesSpeedHandler={futureSalesSpeedHandler}
@@ -163,46 +165,8 @@ function IncrementTable({
                       }}
                       salesIncrement={group.sales.increment}
                       isReset={group.isReset}
-                      setModalOpen={setModalOpen}
                     />
                   </div>
-                  <SalesWizard
-                    data={group}
-                    validations={[
-                      ...inputValidations,
-                      {
-                        fn: (value) =>
-                          value <=
-                          moment(Number(group.sales.date)).diff(
-                            moment(),
-                            'month',
-                          ),
-                        message:
-                          'Los meses de retencion superan la fecha final de ventas',
-                      },
-                    ]}
-                    putSuggestedEffectiveAnnualInterestRate={(
-                      effectiveAnnualInterestRate,
-                    ) => {
-                      putSuggestedEffectiveAnnualInterestRate(
-                        group.id,
-                        effectiveAnnualInterestRate,
-                        i,
-                      );
-                    }}
-                    isModalOpen={isModalOpen}
-                    setModalOpen={setModalOpen}
-                    isReset={group.isReset}
-                    putIncrement={(increment) => {
-                      putIncrement(
-                        group.id,
-                        increment,
-                        group.inventory.units,
-                        group.sales.increment,
-                      );
-                    }}
-                    salesIncrement={group.sales.increment}
-                  />
                 </React.Fragment>
               )}
             </div>
