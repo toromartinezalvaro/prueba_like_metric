@@ -20,6 +20,8 @@ import Card, {
   CardFooter,
 } from '../../../components/UI/Card/Card';
 import Modal from '../../../components/UI/Modal/Modal';
+import agent from '../../../config/config';
+import { Role } from '../../../helpers';
 import variables from '../../../assets/styles/variables.scss';
 import Selectors from '../../../components/SalesRoom/Selectors';
 import PropertiesTable from '../../../components/SalesRoom/PropertiesTable';
@@ -76,6 +78,10 @@ class SalesRoom extends Component {
       .then((properties) => {
         const { data } = properties;
         this.makeArrayOfProperties(data.incrementList);
+
+        if (!agent.isAuthorized([Role.Admin, Role.Super])) {
+        }
+
         this.setState({
           isLoading: false,
           clientName: data.client.name,
@@ -144,7 +150,15 @@ class SalesRoom extends Component {
     }
   };
 
-  makeCells = (buttons, property, active = 'priceWithIncrements') => {
+  makeCells = (
+    buttons,
+    property,
+    active = `${
+      agent.isAuthorized([Role.Admin, Role.Super])
+        ? 'priceWithIncrements'
+        : 'name'
+    }`,
+  ) => {
     const propertyPrice = ReactDOMServer.renderToStaticMarkup(
       <NumberFormat
         value={property.price}
@@ -493,6 +507,9 @@ class SalesRoom extends Component {
                 response={this.state.response}
                 buttonsStyles={this.buttonsStyles}
                 makeCells={this.makeCells}
+                agent={agent.isAuthorized([Role.Admin, Role.Super])
+                  ? 'super'
+                  : 'staff'}
               />
               <PropertiesTable
                 properties={this.state.properties}
