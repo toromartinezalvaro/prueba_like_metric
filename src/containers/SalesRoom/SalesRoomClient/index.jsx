@@ -79,9 +79,6 @@ class SalesRoom extends Component {
         const { data } = properties;
         this.makeArrayOfProperties(data.incrementList);
 
-        if (!agent.isAuthorized([Role.Admin, Role.Super])) {
-        }
-
         this.setState({
           isLoading: false,
           clientName: data.client.name,
