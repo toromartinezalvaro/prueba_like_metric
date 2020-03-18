@@ -15,7 +15,7 @@ const Section = (props) => {
       {display && (
         <ExpansionPanel
           classes={{ root: style.expansionPanel }}
-          onClick={() => setExpanded(validation)}
+          onClick={() => setExpanded(!expanded)}
           expanded={expanded}
         >
           <ExpansionPanelSummary
