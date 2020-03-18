@@ -119,18 +119,19 @@ const SideMenu = ({
                   validation={InitialData.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  icon="fas fa-info-circle"
                   display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.schedule.value,
-                        'fas fa-users',
+                        null,
                         'Calendario',
                       ),
                   ]}
                 />
-
+                <hr className={style.lineSpace} />
                 <Header
                   title="Ventas"
                   validation={
@@ -143,20 +144,21 @@ const SideMenu = ({
                   validation={AreasAndPrices.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  icon="fas fa-building"
                   display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.building.value,
-                        'fa-building',
+                        null,
                         'Esquema',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.areas.value,
-                        'fa-layer-group',
+                        null,
                         'Areas',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
@@ -164,28 +166,28 @@ const SideMenu = ({
                         style.MenuItem,
                         DashboardRoutes.base +
                           DashboardRoutes.areasAdditional.value,
-                        'fa-layer-group',
+                        null,
                         'Areas Adicionales',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.pairing.value,
-                        'fas fa-star-half-alt',
+                        null,
                         'Apareamiento',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.prime.value,
-                        'fa-sort-amount-up',
+                        null,
                         'Primas',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.clustering.value,
-                        'fas fa-object-group',
+                        null,
                         'Agrupamiento',
                       ),
                   ]}
@@ -196,13 +198,14 @@ const SideMenu = ({
                   validation={Increments.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  icon="fas fa-chart-line"
                   display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.increments.value,
-                        'fas fa-angle-double-up',
+                        null,
                         'Incrementos',
                         isBadgeIncrement,
                       ),
@@ -210,7 +213,7 @@ const SideMenu = ({
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.strategy.value,
-                        'fas fa-chart-line',
+                        null,
                         'Estrategia',
                       ),
                   ]}
@@ -228,10 +231,11 @@ const SideMenu = ({
                         style.MenuItem,
                         DashboardRoutes.base +
                           DashboardRoutes.futureSalesSpeed.value,
-                        'fas fa-calendar-alt',
+                        null,
                         'Forma de pago',
                       ),
                   ]}
+                  icon="fas fa-money-check-alt"
                 />
 
                 <Section
@@ -243,19 +247,20 @@ const SideMenu = ({
                     !!agent.isAuthorized([Role.Admin, Role.Super]) ||
                     !!agent.isAuthorized([Role.User])
                   }
+                  icon="fas fa-users"
                   items={[
                     agent.isAuthorized([Role.User]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.clients.value,
-                        'fas fa-users',
+                        null,
                         'Clientes',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.clients.value,
-                        'fas fa-users',
+                        null,
                         'Clientes',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
@@ -263,7 +268,7 @@ const SideMenu = ({
                         style.MenuItem,
                         DashboardRoutes.base +
                           DashboardRoutes.saleRequests.value,
-                        'fas fa-clipboard-check',
+                        null,
                         'Solicitudes de venta',
                       ),
                   ]}
@@ -275,19 +280,20 @@ const SideMenu = ({
                     window.location.pathname.includes(url),
                   )}
                   display={!!agent.isAuthorized([Role.Admin, Role.Super])}
+                  icon="fas fa-file-alt"
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.summary.value,
-                        'fa-list-ol',
+                        null,
                         'Resumen',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.rackAreas.value,
-                        'fas fa-ruler',
+                        null,
                         'Resumen Areas',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
@@ -295,14 +301,14 @@ const SideMenu = ({
                         style.MenuItem,
                         DashboardRoutes.base +
                           DashboardRoutes.detailAdmin.value,
-                        'fas fa-book-open',
+                        null,
                         'Detalle admin',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super, Role.User]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.detail.value,
-                        'fas fa-book-open',
+                        null,
                         'Detalle',
                       ),
 
@@ -310,18 +316,20 @@ const SideMenu = ({
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.report.value,
-                        'fas fa-file-alt',
+                        null,
                         'Reporte',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.cashFlow.value,
-                        'fas fa-cash-register',
+                        null,
                         'Flujo de caja',
                       ),
                   ]}
                 />
+
+                <hr className={style.lineSpace} />
 
                 <Header
                   title="Contratos"
@@ -332,24 +340,26 @@ const SideMenu = ({
                   validation={Contracts.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  icon="fas fa-file-signature"
                   display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + ContractRoutes.base.value,
-                        'fas fa-file-signature',
+                        null,
                         'Contratos',
                       ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
                         DashboardRoutes.base + ContractFlowRoutes.base.value,
-                        'fas fa-file-contract',
+                        null,
                         'Flujo de Contratos',
                       ),
                   ]}
                 />
+                <hr className={style.lineSpace} />
                 {/* <Header
                   title="Cotización"
                   validation={!!agent.isAuthorized([Role.Admin, Role.Super])}
