@@ -117,7 +117,9 @@ class SalesRequests extends Component {
     );
     const tempSaleRequests = this.state.saleRequests;
     tempSaleRequests.pending.splice(
-      tempSaleRequests.pending.indexOf(approvedRequest.data),
+      tempSaleRequests.pending.findIndex(
+        (request) => request.property.id === approvedRequest.data.property.id,
+      ),
       1,
     );
     tempSaleRequests.resolved.push(approvedRequest.data);
