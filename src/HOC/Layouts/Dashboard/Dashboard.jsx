@@ -7,7 +7,7 @@ import styles from './Dashboard.module.scss';
 import { UserRoutes, ContractRoutes } from '../../../routes/local/routes';
 
 const Dashboard = (props) => {
-  const [resizableWidth, setResizableWidth] = useState(200);
+  const [resizableWidth, setResizableWidth] = useState(250);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const [isMenuHidden, setHideMenu] = useState(false);
   const [showContent, setShowContent] = useState(true);

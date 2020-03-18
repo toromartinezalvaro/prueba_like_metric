@@ -20,7 +20,7 @@ const sidebar = () => {
       {itemForSlidebar(
         `${style.Start} ${style.MenuItem}`,
         DashboardRoutes.base + ProjectRoutes.base,
-        'fa-file-contract',
+        'fa-home',
       )}
       {itemForSlidebar(
         `${style.MenuItem}`,
