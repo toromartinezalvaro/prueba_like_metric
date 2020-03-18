@@ -10,17 +10,13 @@ const Section = (props) => {
   const { items, title, validation, display, icon } = props;
   const [expanded, setExpanded] = useState(validation);
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
   return (
     <Fragment>
       {display && (
         <ExpansionPanel
           classes={{ root: style.expansionPanel }}
-          onChange={handleChange(expandIndex)}
-          expanded={expanded === expandIndex}
+          onClick={() => setExpanded(validation)}
+          expanded={expanded}
         >
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
