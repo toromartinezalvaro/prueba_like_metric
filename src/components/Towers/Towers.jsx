@@ -13,13 +13,12 @@ const towerItems = (props) => {
 
   const itemFromTower = (tower) => {
     return (
-      <a>
+      <a href={`${props.baseRoute + props.mainComponentUrl + tower.id}`}>
         <div
           className={styles.ItemContainer}
           key={tower.id}
           onClick={(event) => {
             event.stopPropagation();
-            props.openTower(tower)
           }}
         >
           <div className={styles.DescriptionItem}>
