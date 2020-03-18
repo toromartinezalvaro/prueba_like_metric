@@ -12,7 +12,7 @@ const CollapseAndExpand = ({
   const ArrowType = isMenuHidden ? 'fa-arrow-right' : 'fa-arrow-left';
 
   const handleClick = () => {
-    const expandableValue = isMenuHidden ? 200 : 17;
+    const expandableValue = isMenuHidden ? 250 : 17;
     onChange(expandableValue);
     onChangeShowContent(isMenuHidden);
   };
