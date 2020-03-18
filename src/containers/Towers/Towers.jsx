@@ -38,7 +38,7 @@ export default class Towers extends Component {
         ? DashboardRoutes.clients.value
         : DashboardRoutes.schedule.value;
     const urlToGo = DashboardRoutes.base + mainComponentUrl + tower.id;
-
+    
     this.props.history.push(urlToGo);
   };
 

@@ -13,45 +13,47 @@ const towerItems = (props) => {
 
   const itemFromTower = (tower) => {
     return (
-      <div
-        className={styles.ItemContainer}
-        key={tower.id}
-        onClick={(event) => {
-          event.stopPropagation();
-          props.openTower(tower);
-        }}
-      >
-        <div className={styles.DescriptionItem}>
-          <div className={styles.Buttons}>
-            <div
-              className={styles.Remove}
-              onClick={(event) => {
-                event.stopPropagation();
-                props.editTower(tower.id);
-              }}
-            >
-              <i className="fas fa-edit"></i>
+      <a>
+        <div
+          className={styles.ItemContainer}
+          key={tower.id}
+          onClick={(event) => {
+            event.stopPropagation();
+            props.openTower(tower)
+          }}
+        >
+          <div className={styles.DescriptionItem}>
+            <div className={styles.Buttons}>
+              <div
+                className={styles.Remove}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  props.editTower(tower.id);
+                }}
+              >
+                <i className="fas fa-edit"></i>
+              </div>
+              <div
+                className={styles.Remove}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  props.removeTower(tower.id);
+                }}
+              >
+                <Icon name="fa-trash-alt" />
+              </div>
             </div>
-            <div
-              className={styles.Remove}
-              onClick={(event) => {
-                event.stopPropagation();
-                props.removeTower(tower.id);
-              }}
-            >
-              <Icon name="fa-trash-alt" />
+            <div className={styles.Description}>
+              <p>{tower.description}</p>
             </div>
           </div>
-          <div className={styles.Description}>
-            <p>{tower.description}</p>
+          <div className={styles.Item}>
+            <div>
+              <p>{tower.name}</p>
+            </div>
           </div>
         </div>
-        <div className={styles.Item}>
-          <div>
-            <p>{tower.name}</p>
-          </div>
-        </div>
-      </div>
+      </a>
     );
   };
 

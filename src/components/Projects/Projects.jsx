@@ -7,46 +7,50 @@ import Button from '../UI/Button/Button';
 const projectItems = (props) => {
   const itemFromProject = (project) => {
     return (
-      <div
-        className={styles.ItemContainer}
-        key={project.id}
-        onClick={(event) => {
-          event.stopPropagation();
-          props.openProject(project.id);
-        }}
+      <a
+        className={styles.noBlue}
+        href={`${props.url + props.DashboardRoutesValue + project.id}`}
       >
-        <div className={styles.DescriptionItem}>
-          <div className={styles.Buttons}>
-            <div
-              className={styles.Remove}
-              onClick={(event) => {
-                event.stopPropagation();
-                props.editHandler(project.id);
-              }}
-            >
-              <i className="fas fa-edit"></i>
+        <div
+          className={styles.ItemContainer}
+          key={project.id}
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        >
+          <div className={styles.DescriptionItem}>
+            <div className={styles.Buttons}>
+              <div
+                className={styles.Remove}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  props.editHandler(project.id);
+                }}
+              >
+                <i className="fas fa-edit"></i>
+              </div>
+              <div
+                className={styles.Remove}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  props.removeProject(project.id);
+                }}
+              >
+                <Icon name="fa-trash-alt" />
+              </div>
             </div>
-            <div
-              className={styles.Remove}
-              onClick={(event) => {
-                event.stopPropagation();
-                props.removeProject(project.id);
-              }}
-            >
-              <Icon name="fa-trash-alt" />
-            </div>
-          </div>
 
-          <div className={styles.Description}>
-            <p>{project.description}</p>
+            <div className={styles.Description}>
+              <p>{project.description}</p>
+            </div>
+          </div>
+          <div className={styles.Item}>
+            <div>
+              <p>{project.name}</p>
+            </div>
           </div>
         </div>
-        <div className={styles.Item}>
-          <div>
-            <p>{project.name}</p>
-          </div>
-        </div>
-      </div>
+      </a>
     );
   };
 

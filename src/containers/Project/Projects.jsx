@@ -335,6 +335,8 @@ export default class Projects extends Component {
             createProject={this.createProjectHandler}
             removeProject={this.removeProjectHandler}
             editHandler={this.editHandler}
+            DashboardRoutesValue={DashboardRoutes.towers.value}
+            url={this.props.match.url}
           />
         )}
         {(!this.state.modalIsHidden || this.state.currentEditingProject) &&
