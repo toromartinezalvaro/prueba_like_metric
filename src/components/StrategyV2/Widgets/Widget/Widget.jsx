@@ -13,7 +13,7 @@ const Widget = ({ title, value }) => {
         </Typography>
       </Box>
       <Box pb={3} px={3}>
-        <Typography variant="subtitle1" color="textSecondary">
+        <Typography variant="subtitle1" color="textSecondary" align="center">
           {title}
         </Typography>
       </Box>
