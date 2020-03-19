@@ -14,7 +14,10 @@ import style from '../ViewContractInformation.module.scss';
 
 const ViewBillingAndFinancials = ({ contractDataView, events }) => {
   const totalBills = contractDataView.billings.reduce((a, b) => {
-    return a + b.amount + b.amount * b.iva;
+    return a + b.amount + b.amount * (b.iva / 100);
+  }, 0);
+  const totalBillsWithouIVA = contractDataView.billings.reduce((a, b) => {
+    return a + b.amount;
   }, 0);
   return (
     <Fragment>
@@ -61,6 +64,23 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                           />
                         </span>
                       </Card>
+                      <Card className={style.leftTitle}>
+                        <span className={style.cont}>
+                          <span className={style.labelForTitle}>
+                            VALOR DE CUENTA CON IVA
+                          </span>
+                          <NumberFormat
+                            value={Numbers.toFixed(
+                              billing.amount +
+                                billing.amount * (billing.iva / 100),
+                            )}
+                            displayType={'text'}
+                            className={style.informationAmount}
+                            thousandSeparator={true}
+                            prefix={'$'}
+                          />
+                        </span>
+                      </Card>
                     </div>
                     <div className="rightInformation">
                       <Card className={style.rightTitle}>
@@ -79,6 +99,10 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                           {billing.description}
                         </p>
                       </Card>
+                      <Card className={style.rightTitle}>
+                        <span className={style.labelForTitle}>IVA</span>
+                        <p className={style.information}>{billing.iva}%</p>
+                      </Card>
                     </div>
                   </div>
                 </Card>
@@ -86,7 +110,17 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
             })}
             <div className={style.cardForm}>
               <div className={style.Totalbills}>
-                <h4 sclassName={style.textTotal}> Valor Total:</h4>
+                <h4 sclassName={style.textTotal}> Valor Total Sin IVA:</h4>
+                <NumberFormat
+                  value={Numbers.toFixed(totalBillsWithouIVA)}
+                  displayType="text"
+                  className={style.totalAmount}
+                  thousandSeparator
+                  prefix="$"
+                />
+              </div>
+              <div className={style.Totalbills}>
+                <h4 sclassName={style.textTotal}> Valor Total mas IVA:</h4>
                 <NumberFormat
                   value={Numbers.toFixed(totalBills)}
                   displayType="text"
