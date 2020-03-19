@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import ReactTooltip from 'react-tooltip';
 import moment from 'moment';
+import ReactDOMServer from 'react-dom/server';
 import NumberFormat from 'react-number-format';
 import {
   Dialog,
@@ -19,6 +20,8 @@ import Card, {
   CardFooter,
 } from '../../../components/UI/Card/Card';
 import Modal from '../../../components/UI/Modal/Modal';
+import agent from '../../../config/config';
+import { Role } from '../../../helpers';
 import variables from '../../../assets/styles/variables.scss';
 import Selectors from '../../../components/SalesRoom/Selectors';
 import PropertiesTable from '../../../components/SalesRoom/PropertiesTable';
@@ -75,6 +78,7 @@ class SalesRoom extends Component {
       .then((properties) => {
         const { data } = properties;
         this.makeArrayOfProperties(data.incrementList);
+
         this.setState({
           isLoading: false,
           clientName: data.client.name,
@@ -143,93 +147,100 @@ class SalesRoom extends Component {
     }
   };
 
-  makeCells = (buttons, property, active = 'priceWithIncrements') => (
-    <div
-      style={{
-        backgroundColor: buttons.backgroundColor,
-        padding: '0.01em',
-        textAlign: 'center',
-        position: 'relative',
-      }}
-      onClick={() => this.onClickSelector(property, buttons)}
-    >
-      {active === 'name' ? (
-        <p
-          style={{ fontWeight: 'bold', color: 'White' }}
-          data-tip={{
-            fn: () => {
-              return (
-                <NumberFormat
-                  value={Number(property.price)}
-                  displayType={'text'}
-                  thousandSeparator={true}
-                  prefix={'$'}
-                />
-              );
-            },
-          }}
-        >
-          {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
-          {active === 'priceWithIncrements' && (
-            <NumberFormat
-              value={parseFloat(property.priceWithIncrement).toFixed(2)}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={'$'}
-            />
-          )}
-          {active === 'price' && (
-            <NumberFormat
-              value={parseFloat(property.price).toFixed(2)}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={'$'}
-            />
-          )}
-          {active === 'groups' && property.groupName}
-          {property.requestStatus === 'R' && (
-            <span className={Styles.rejectBadge}>R</span>
-          )}
-          {property.requestStatus === 'D' && (
-            <span className={Styles.rejectBadge}>D</span>
-          )}
-          {active === 'name' && property.name}
-        </p>
-      ) : (
-        <p
-          style={{ fontWeight: 'bold', color: 'White' }}
-          data-tip={property.name}
-        >
-          {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
-          {active === 'priceWithIncrements' && (
-            <NumberFormat
-              value={parseFloat(property.priceWithIncrement).toFixed(2)}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={'$'}
-            />
-          )}
-          {active === 'price' && (
-            <NumberFormat
-              value={parseFloat(property.price).toFixed(2)}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={'$'}
-            />
-          )}
-          {active === 'groups' && property.groupName}
-          {property.requestStatus === 'R' && (
-            <span className={Styles.rejectBadge}>R</span>
-          )}
-          {property.requestStatus === 'D' && (
-            <span className={Styles.rejectBadge}>D</span>
-          )}
-          {active === 'name' && property.name}
-        </p>
-      )}
-      <ReactTooltip />
-    </div>
-  );
+  makeCells = (
+    buttons,
+    property,
+    active = `${
+      agent.isAuthorized([Role.Admin, Role.Super])
+        ? 'priceWithIncrements'
+        : 'name'
+    }`,
+  ) => {
+    const propertyPrice = ReactDOMServer.renderToStaticMarkup(
+      <NumberFormat
+        value={property.price}
+        displayType={'text'}
+        thousandSeparator
+        prefix={'$'}
+      />,
+    );
+    return (
+      <div
+        style={{
+          backgroundColor: buttons.backgroundColor,
+          padding: '0.01em',
+          textAlign: 'center',
+          position: 'relative',
+        }}
+        onClick={() => this.onClickSelector(property, buttons)}
+      >
+        {active === 'name' ? (
+          <p
+            style={{ fontWeight: 'bold', color: 'White' }}
+            data-tip={JSON.stringify(propertyPrice).slice(1, -1)}
+          >
+            {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
+            {active === 'priceWithIncrements' && (
+              <NumberFormat
+                value={parseFloat(property.priceWithIncrement).toFixed(2)}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix={'$'}
+              />
+            )}
+            {active === 'price' && (
+              <NumberFormat
+                value={parseFloat(property.price).toFixed(2)}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix={'$'}
+              />
+            )}
+            {active === 'groups' && property.groupName}
+            {property.requestStatus === 'R' && (
+              <span className={Styles.rejectBadge}>R</span>
+            )}
+            {property.requestStatus === 'D' && (
+              <span className={Styles.rejectBadge}>D</span>
+            )}
+            {active === 'name' && property.name}
+          </p>
+        ) : (
+          <p
+            style={{ fontWeight: 'bold', color: 'White' }}
+            data-tip={property.name}
+          >
+            {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
+            {active === 'priceWithIncrements' && (
+              <NumberFormat
+                value={parseFloat(property.priceWithIncrement).toFixed(2)}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix={'$'}
+              />
+            )}
+            {active === 'price' && (
+              <NumberFormat
+                value={parseFloat(property.price).toFixed(2)}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix={'$'}
+              />
+            )}
+            {active === 'groups' && property.groupName}
+            {property.requestStatus === 'R' && (
+              <span className={Styles.rejectBadge}>R</span>
+            )}
+            {property.requestStatus === 'D' && (
+              <span className={Styles.rejectBadge}>D</span>
+            )}
+            {active === 'name' && property.name}
+          </p>
+        )}
+        <ReactTooltip data-html={true} html={true} />
+      </div>
+    );
+  };
 
   makeArrayOfProperties(properties, active) {
     const data = properties;
@@ -493,6 +504,9 @@ class SalesRoom extends Component {
                 response={this.state.response}
                 buttonsStyles={this.buttonsStyles}
                 makeCells={this.makeCells}
+                agent={agent.isAuthorized([Role.Admin, Role.Super])
+                  ? 'super'
+                  : 'staff'}
               />
               <PropertiesTable
                 properties={this.state.properties}

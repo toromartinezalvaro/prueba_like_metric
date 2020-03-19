@@ -232,15 +232,9 @@ function Inventory({
             message: 'Los meses de retencion superan la fecha final de ventas',
           },
         ]}
-        putSuggestedEffectiveAnnualInterestRate={(
-          effectiveAnnualInterestRate,
-        ) => {
-          putSuggestedEffectiveAnnualInterestRate(
-            group.id,
-            effectiveAnnualInterestRate,
-            index,
-          );
-        }}
+        putSuggestedEffectiveAnnualInterestRate={
+          putSuggestedEffectiveAnnualInterestRate
+        }
         isModalOpen={isModalOpen}
         setModalOpen={setModalOpen}
         isReset={group.isReset}

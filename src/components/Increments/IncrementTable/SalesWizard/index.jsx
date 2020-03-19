@@ -43,7 +43,9 @@ const SalesWizard = ({
                 data.inventory.suggestedEffectiveAnnualInterestRate * 100
               ).toFixed(2)}
               onChange={(target) => {
-                putSuggestedEffectiveAnnualInterestRate(target.value / 100);
+                putSuggestedEffectiveAnnualInterestRate(
+                  parseFloat(target.value / 100),
+                );
               }}
             />
           </div>

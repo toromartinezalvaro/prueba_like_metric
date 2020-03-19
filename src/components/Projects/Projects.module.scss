@@ -16,32 +16,6 @@
   margin: 12px;
   transition: box-shadow 0.3s ease-in-out 0s, background-color 0.6s ease-in 0s;
 
-  .DescriptionItem {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 0px 5px;
-    color: $defaultWhite-color;
-  }
-
-  .Item {
-    display: flex;
-    flex-direction: column;
-    color: inherit;
-    height: 30%;
-    background: $defaultWhite-color;
-    padding: 3px 5px;
-  }
-
-  .Buttons {
-    display: flex;
-    flex-direction: row;
-    color: inherit;
-    align-items: center;
-    justify-content: flex-end;
-    height: 30%;
-  }
-
   &:focus {
     outline: auto 5px;
   }
@@ -51,6 +25,37 @@
       rgb(179, 186, 197) 0px 0px 1px 0px;
     text-decoration: none;
   }
+}
+
+.noBlue {
+  text-decoration: none;
+  color: inherit;
+}
+
+.DescriptionItem {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0px 5px;
+  color: $defaultWhite-color;
+}
+
+.Item {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  height: 30%;
+  background: $defaultWhite-color;
+  padding: 3px 5px;
+}
+
+.Buttons {
+  display: flex;
+  flex-direction: row;
+  color: inherit;
+  align-items: center;
+  justify-content: flex-end;
+  height: 30%;
 }
 
 .Projects {

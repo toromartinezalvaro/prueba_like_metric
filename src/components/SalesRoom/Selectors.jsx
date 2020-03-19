@@ -9,7 +9,9 @@ const GROUPS = 'groups';
 const NAME = 'name';
 
 const Selectors = (props) => {
-  const [selectedButton, setSelectedButton] = useState(PRICE_WITH_INCREMENTS);
+  const [selectedButton, setSelectedButton] = useState(
+    `${props.agent === 'super' ? PRICE_WITH_INCREMENTS : NAME}`,
+  );
 
   return (
     <div className={Styles.container}>

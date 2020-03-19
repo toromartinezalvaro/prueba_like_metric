@@ -5,7 +5,8 @@
   flex-direction: column;
   flex-basis: 5rem;
   flex-shrink: 0;
-  background: $softGray-color;
+  color: #2d3436 !important;
+  background: #fff;
   height: 100%;
   flex: 0.8;
   justify-content: flex-start;
@@ -35,10 +36,37 @@
 }
 
 .title {
-  margin: 16% 0;
   padding: 15px;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
+  font-size: 20px;
+  color: #f5f5f5;
+  background-color: $main-color !important;
+  -webkit-box-shadow: 0px 12px 33px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 12px 33px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 0px 12px 33px -10px rgba(0, 0, 0, 0.57);
+}
+
+.towerName {
+  opacity: 1 !important;
+}
+
+.collapseHeader {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+}
+
+.iconLabel {
+  font-size: 19px !important;
+  margin-top: 1.5% !important;
+  margin-right: 3.5% !important;
+  padding-right: 5% !important;
+}
+
+.lineSpace {
+  margin: 0.05% !important;
+  opacity: 0.15 !important;
 }
 
 .IconsContainer {
@@ -47,10 +75,13 @@
 
 .Description {
   color: #2d3436;
+  margin-left: 0.5%;
 }
 
 .DescriptionActive {
-  color: #fff;
+  color: $main-color;
+  background-color: #f5f5f5;
+  margin-left: 0.5%;
 }
 
 .Start {
@@ -63,29 +94,29 @@
 }
 
 .MenuItem {
-  color: #2d3436;
   display: flex;
   justify-content: center !important;
   width: 100vw !important;
-  background-color: $itemNoActive !important;
+  font-size: 13px !important;
   z-index: 3;
+  color: #2d3436;
+  background-color: #fff;
+  width: 100vw !important;
   a:link,
   a:visited {
     padding: 15px 16px;
-    color: #2d3436;
     flex: 1;
     border: none;
     transition-duration: 0.4s;
     text-decoration: none;
-    font-size: 16px;
     cursor: pointer;
+    color: #2d3436;
   }
   a:focus {
     color: $main-color;
   }
   a:hover,
   a:active {
-    color: #2d3436;
     border-left: 5px solid $softGray-color;
   }
 }
@@ -94,17 +125,18 @@
   display: flex;
   justify-content: center;
   width: 100%;
-
+  background-color: #f5f5f5 !important;
+  font-size: 15px !important;
   a:link,
   a:visited {
     flex: 1;
     border: none;
-    color: #fff;
+    color: $main-color;
     border-left: 5px solid $softGray-color;
     padding: 10px 2px;
     transition-duration: 0.4s;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
   }
 
@@ -142,15 +174,22 @@
 }
 
 .header {
-  text-align: center;
-  font-weight: 700;
+  text-align: left;
+  font-weight: bold;
+  font-size: 13px;
   margin: 15px 0;
+  padding-left: 15px !important;
+  opacity: 0.45;
 }
 
 .expansionPanel {
   background-color: transparent !important;
   box-shadow: none !important;
   margin: 0 !important;
+}
+
+.expansionPanelActive {
+  color: $main-color !important;
 }
 
 .expansionPanel:before {
@@ -161,16 +200,16 @@
   margin: 0 !important;
   padding: 0 10px !important;
   box-sizing: content-box;
+  font-size: 16px;
   &:hover {
-    background-color: #00000021 !important;
+    background-color: rgb(245, 245, 245) !important;
   }
 }
 
 .expansionPanelDetails {
   padding: 0 !important;
-
   margin-bottom: 15px;
-  background-color: #2d3436;
+  background-color: $itemNoActive !important;
 }
 
 .linkContainer {

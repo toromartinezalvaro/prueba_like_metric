@@ -30,6 +30,11 @@ export default class Towers extends Component {
     this.loadCurrentTowers();
   }
 
+  mainComponentUrl =
+    Agent.currentUser.userType === Role.User
+      ? DashboardRoutes.clients.value
+      : DashboardRoutes.schedule.value;
+
   openTowerHandler = (tower) => {
     tower = { ...tower, projectId: this.props.match.params.projectId };
     this.props.changeTower(tower);
@@ -38,7 +43,6 @@ export default class Towers extends Component {
         ? DashboardRoutes.clients.value
         : DashboardRoutes.schedule.value;
     const urlToGo = DashboardRoutes.base + mainComponentUrl + tower.id;
-
     this.props.history.push(urlToGo);
   };
 
@@ -269,6 +273,8 @@ export default class Towers extends Component {
             createTower={this.createTowerHandler}
             editTower={this.editTower}
             removeTower={this.removetowerHandler}
+            mainComponentUrl={this.mainComponentUrl}
+            baseRoute={DashboardRoutes.base}
           />
         )}
         {(!this.state.modalIsHidden || this.state.currentEditingTower) &&
