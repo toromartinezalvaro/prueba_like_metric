@@ -34,11 +34,11 @@ function IncrementTable({
   const inputValidations = [
     {
       fn: (value) => value > 0,
-      message: 'Los meses de retención deben ser mayores a 0',
+      message: 'Los meses de retenciï¿½n deben ser mayores a 0',
     },
     {
       fn: (value) => value <= 98,
-      message: 'Los meses de retención deben ser menores a 98',
+      message: 'Los meses de retenciï¿½n deben ser menores a 98',
     },
   ];
 
@@ -128,7 +128,11 @@ function IncrementTable({
                       className={styles.inventory}
                       groupSummary={group.inventory}
                       putSuggestedSalesSpeed={(retentionMonths) => {
-                        putSuggestedSalesSpeed(group.id, retentionMonths, index);
+                        putSuggestedSalesSpeed(
+                          group.id,
+                          retentionMonths,
+                          index,
+                        );
                       }}
                       putSuggestedEffectiveAnnualInterestRate={(
                         effectiveAnnualInterestRate,

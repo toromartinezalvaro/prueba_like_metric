@@ -239,12 +239,7 @@ function Inventory({
         setModalOpen={setModalOpen}
         isReset={group.isReset}
         putIncrement={(incrementP) => {
-          putIncrement(
-            group.id,
-            incrementP,
-            group.inventory.units,
-            group.sales.increment,
-          );
+          putIncrement(incrementP);
         }}
         salesIncrement={group.sales.increment}
       />
