@@ -13,7 +13,10 @@ const towerItems = (props) => {
 
   const itemFromTower = (tower) => {
     return (
-      <a href={`${props.baseRoute + props.mainComponentUrl + tower.id}`}>
+      <a
+        href={`${props.baseRoute + props.mainComponentUrl + tower.id}`}
+        className={styles.noLinks}
+      >
         <div
           className={styles.ItemContainer}
           key={tower.id}
