@@ -4,21 +4,21 @@ import Typography from '@material-ui/core/Typography';
 import Overview from '../Overview';
 import Widget from '../../Shared/Widget';
 
-const TotalOverView = () => {
+const SalesOverview = () => {
   return (
     <Overview
-      title="Detalle del Total"
-      subtitle="10 Unidades de 4m² Promedio"
+      title="Detalles del Inventario"
+      subtitle="5 Unidades de 4m² Promedio"
       infoWidgets={[
         <Widget key="SaleSpeed" title="Velocidad de ventas" size="sm">
-          <Typography>PD</Typography>
+          PD
         </Widget>,
         <Widget
           key="InventoryRotation"
           title="Rotacion de intentario"
           size="sm"
         >
-          <Typography>10</Typography>
+          PD
         </Widget>,
         <Widget key="Increment" title="Incremento en pesos" size="sm">
           <NumberFormat
@@ -47,4 +47,4 @@ const TotalOverView = () => {
   );
 };
 
-export default TotalOverView;
+export default SalesOverview;

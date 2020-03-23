@@ -50,7 +50,7 @@ Widget.propTypes = {
   size: PropTypes.oneOf([SMALL, MEDIUM]),
 };
 
-Widget.defualtProps = {
+Widget.defaultProps = {
   size: MEDIUM,
 };
 

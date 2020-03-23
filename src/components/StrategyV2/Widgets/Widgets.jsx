@@ -1,7 +1,6 @@
 import React from 'react';
-import NumberFormat from 'react-number-format';
 import Grid from '@material-ui/core/Grid';
-import Widget from './Widget';
+import Widget from '../Shared/Widget';
 import TotalSalesWidget from './TotalSalesWidget';
 import ProjectedSalesWidget from './ProjectedSalesWidget'
 

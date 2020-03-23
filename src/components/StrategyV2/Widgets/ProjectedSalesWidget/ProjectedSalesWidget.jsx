@@ -1,7 +1,7 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
-import Widget from '../Widget';
-import WidgetGroup from '../WidgetGroup';
+import Widget from '../../Shared/Widget';
+import WidgetGroup from '../../Shared/WidgetGroup';
 
 const ProjectedSalesWidget = () => {
   return (
