@@ -6,7 +6,7 @@ import InventoryOverview from './InventoryOverview';
 
 const Overviews = () => {
   return (
-    <Grid container justify="space-around">
+    <Grid container justify="space-between">
       <Grid item md={3}>
         <TotalOverview />
       </Grid>
