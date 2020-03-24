@@ -83,27 +83,36 @@ const TablesContractFlow = ({ billings }) => {
 
   const projectedFunc = (arrProjected) => {
     let valueTotal = 0;
-    arrProjected.reduce((a, b) => {
-      const vla = b.slice(1).map((val) => {
-        return val;
+    if (arrProjected.slice(1).length >= 1) {
+      arrProjected.forEach((value) => {
+        if (value.length > 1) {
+          value.slice(1).forEach((item) => {
+            valueTotal += item;
+          });
+        } else if (value.length <= 1) {
+          value.slice(1).forEach((item) => {
+            valueTotal += item;
+          });
+        }
       });
-      if (vla.length !== 1) {
-        valueTotal = vla.reduce((accum, act) => {
-          return accum + act;
-        });
-      } else {
-        valueTotal += parseInt(vla, 10);
-      }
-    });
+    }
     return parseInt(valueTotal, 10);
+  };
+
+  const acummulatedFunc = (acummulated) => {
+    let totalAcummulated = 0;
+    acummulated.forEach((value) => {
+      totalAcummulated += value[1];
+    });
+    return parseInt(totalAcummulated, 10);
   };
 
   const deepInformation = (bill, group, item) => {
     const information = bill.items.map((value) => {
-      return value.contracts.map((val) => {
+      return value.contracts.map((val, n) => {
         const contract = textFormater(val.title, 'text');
         const acumulated =
-          val.acumulated.length !== 0 ? parseInt(val.acumulated[0][1], 10) : 0;
+          val.acumulated.length !== 0 ? acummulatedFunc(val.acumulated) : 0;
         const projected =
           val.projected.length !== 0 ? projectedFunc(val.projected) : 0;
 
@@ -125,7 +134,7 @@ const TablesContractFlow = ({ billings }) => {
             valueInSameRow += singleValue;
             const name = `date${l}`;
             result = { ...result, [name]: [numberFormater(valueInSameRow)] };
-          });
+          }); 
         });
         valueInSameRow = 0;
         return result;
