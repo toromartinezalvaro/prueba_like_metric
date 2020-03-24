@@ -97,21 +97,27 @@ const UserSideMenu = (props) => {
                   {itemForSidebar(
                     style.MenuItem,
                     UserRoutes.base,
-                    'fa-building',
+                    null,
                     'Perfil',
                   )}
                   {agent.isAuthorized([Role.Admin, Role.Super]) &&
                     itemForSidebar(
                       style.MenuItem,
                       UserRoutes.base + UserRoutes.create,
-                      'fa-building',
+                      null,
                       'Crear usuario',
                     )}
                   {itemForSidebar(
                     style.MenuItem,
                     UserRoutes.base + UserRoutes.assignProjects,
-                    'fa-building',
+                    null,
                     'Admin usuarios',
+                  )}
+                  {itemForSidebar(
+                    style.MenuItem,
+                    UserRoutes.base + UserRoutes.assignCompanies,
+                    null,
+                    'Admin compañías',
                   )}
                 </div>
               </ExpansionPanelDetails>

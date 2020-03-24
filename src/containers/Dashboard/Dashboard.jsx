@@ -36,6 +36,7 @@ import CashFlow from '../CashFlow';
 import SaleRequests from '../SaleRequests';
 import Pairing from '../Pairing';
 import Quotations from '../Quotations';
+import Companies from '../Companies/Companies';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -161,6 +162,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={AssignTowerToUsers}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.user + UserRoutes.assignCompanies}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Companies}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.strategy.withIndicator}
