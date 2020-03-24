@@ -45,9 +45,11 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                       <Card className={style.leftTitle}>
                         <span className={style.labelForTitle}>Evento</span>
                         <p className={style.information}>
-                          {events.find(
-                            (element) => element.id === billing.eventId,
-                          )}
+                          {billing.eventId === 0 || billing.eventId === null
+                            ? 'Evento elegido manualmente'
+                            : events.find(
+                                (element) => element.id === billing.eventId,
+                              )}
                         </p>
                       </Card>
                       <Card className={style.leftTitle}>
@@ -101,7 +103,9 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                       </Card>
                       <Card className={style.rightTitle}>
                         <span className={style.labelForTitle}>IVA</span>
-                        <p className={style.information}>{billing.iva}%</p>
+                        <p className={style.information}>
+                          {billing.iva ? billing.iva : 0}%
+                        </p>
                       </Card>
                     </div>
                   </div>
