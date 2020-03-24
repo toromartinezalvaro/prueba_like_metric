@@ -132,6 +132,7 @@ const BillingFinancials = ({
         billingsArray[billIndex].eventLabel = element.eventLabel;
       }
     } else if (elementIsAnEvent) {
+      bill = { ...billingsArray[billIndex], eventLabel: element.eventLabel };
       bill = { ...billingsArray[billIndex], [name]: element.value };
     } else if (name === true) {
       bill = { ...billingsArray[billIndex], isLocked: true };
@@ -262,7 +263,6 @@ const BillingFinancials = ({
         watchingContract();
       }, 1000);
     }
-  
   });
 
   const Option = (props) => {
