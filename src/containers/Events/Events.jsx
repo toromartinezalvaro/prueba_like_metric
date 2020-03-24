@@ -60,7 +60,6 @@ class Events extends Component {
           balancePointDate,
           constructionStartDate,
         } = response.data;
-
         if (!salesStartDate) {
           salesStartDate = new Date().getTime();
         }
@@ -122,13 +121,14 @@ class Events extends Component {
             {
               eventId: id,
               value: Number(averageDeliveryDate),
-              labelDate: 'averageDeliveryDate',
+              eventLabel: 'averageDeliveryDate',
               label: `FECHA PROMEDIO DE ENTREGAS (${moment(
                 Number(averageDeliveryDate),
               ).format('DD/MM/YYYY')})`,
             },
           ],
         });
+
         this.props.defaultDate(this.state.dateValue);
       })
       .catch((error) => {

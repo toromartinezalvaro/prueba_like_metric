@@ -783,16 +783,16 @@ class Contracts extends Component {
       .deleteSpecificBill(id, this.props.match.params.towerId)
       .then((response) => {
         this.props.spawnMessage(
-          '¡Se ha borrado la cuenta con exito!',
-          'SUCCESS',
+          '¡Se ha borrado la cuenta con éxito!',
+          'success',
           '¡CORRECTO!',
         );
       })
       .catch((error) => {
         this.props.spawnMessage(
-          'No se puede eliminar esta cuenta',
-          'error',
-          'ERROR',
+          '¡Se ha editado con éxito la cuenta!',
+          'success',
+          '¡CORRECTO!',
         );
       });
   };

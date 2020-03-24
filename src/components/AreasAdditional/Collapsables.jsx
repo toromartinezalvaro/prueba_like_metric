@@ -74,7 +74,7 @@ const Collapsables = (props) => {
   };
 
   const handleUpdate = (id) => {
-    if (name && unit) {
+    if (name || unit) {
       props.updateAreaTypeHandler(unit, name, id);
       handleClose();
     }
