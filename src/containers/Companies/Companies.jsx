@@ -6,16 +6,28 @@ import {
   Select,
   InputLabel,
 } from '@material-ui/core';
+import CompanyServices from '../../services/companies/index';
+
 import styles from './Companies.module.scss';
+
 class Companies extends React.Component {
   constructor(props) {
     super(props);
+    this.service = new CompanyServices();
+    this.state = {
+      currentUser: '',
+    };
+  }
+
+  componentDidMount() {
+    
   }
 
   render() {
     return (
       <React.Fragment>
         <h1>Administración de compañías</h1>
+        {console.log('CURRENT USER', this.state.currentUser)}
         <div className={styles.container}>
           <Card variant="outlined" classes={{ root: styles.cardLeft }}>
             <div className={styles.titleContainer}>

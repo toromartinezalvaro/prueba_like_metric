@@ -19,4 +19,12 @@ export default class CompanyServices extends Services {
       projectId,
     });
   }
+
+  childrenInfo() {
+    return this.get(CompanyServiceDefinitions.childrenInfo);
+  }
+
+  getCompanies(userId) {
+    return this.get(CompanyServiceDefinitions.getAllForUser(userId));
+  }
 }
