@@ -33,7 +33,7 @@ const TextField = (props) => {
       <TextFieldMaterial
         size="small"
         error={error}
-        helperText={error ? 'Tiene que ser un nombre unico' : ''}
+        helperText={error ? 'Debe ingresar un número valido' : ''}
         value={value}
         type={typeTextField}
         InputProps={InputProps}
