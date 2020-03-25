@@ -124,7 +124,7 @@ const TablesContractFlow = ({ billings }) => {
           projected: numberFormater(projected),
           total: numberFormater(acumulated + projected),
         };
-        const initialDatesValues = columns.slice(1).forEach((column, x) => {
+        const initialDatesValues = columns.forEach((column, x) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
@@ -134,7 +134,7 @@ const TablesContractFlow = ({ billings }) => {
             valueInSameRow += singleValue;
             const name = `date${l}`;
             result = { ...result, [name]: [numberFormater(valueInSameRow)] };
-          }); 
+          });
         });
         valueInSameRow = 0;
         return result;
@@ -146,7 +146,7 @@ const TablesContractFlow = ({ billings }) => {
   const datesInitialNumber = (bill, i) => {
     let initialNumber = 0;
     bill.items[i] &&
-      bill.items[i].contracts.forEach((information, x) => {
+      bill.items[i].contracts.forEach((information) => {
         if (
           parseInt(information.schedulesDate.salesStartDate, 10) >=
           initialNumber
