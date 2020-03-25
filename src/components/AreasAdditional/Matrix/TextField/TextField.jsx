@@ -33,17 +33,11 @@ const TextField = (props) => {
       <TextFieldMaterial
         size="small"
         error={error}
-        helperText={error ? 'Tiene que ser un nombre unico' : ''}
+        helperText={error ? 'Debe ingresar un número valido' : ''}
         value={value}
         type={typeTextField}
         InputProps={InputProps}
         onChange={(e) => {
-          const validation = areaType.additionalAreas.some(
-            (formatedArea) =>
-              formatedArea.nomenclature === e.target.value &&
-              formatedArea.id !== id,
-          );
-          setError(validation);
           arrayAreaTypesHandler(areaType.id, e.target.value);
         }}
         onFocus={(e) => {
