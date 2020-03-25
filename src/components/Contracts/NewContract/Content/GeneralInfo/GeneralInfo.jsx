@@ -86,11 +86,24 @@ const GeneralInfo = ({
     }
   };
 
+  const changeAndSearchItem = (currentItem) => {
+    const currentItemValue = currentItem.value;
+    const currentItemLabel = currentItem.label;
+    setGeneralInformation({
+      ...generalInformation,
+      itemId: currentItemValue,
+      itemLabel: currentItemLabel,
+    });
+    sendGeneralInfo(generalInformation);
+    changeForSearchItem(currentItem);
+  };
+
   useEffect(() => {
     if (dataIfEdit) {
       setGeneralInformation(dataIfEdit);
       setLockedEdit(false);
       changeAndSearchCategory({ value: dataIfEdit.groupId });
+      changeAndSearchItem({ value: dataIfEdit.itemId, label: dataIfEdit.item });
       setEmptyTitle(false);
       setEmptyDescription(false);
     } else {
@@ -162,18 +175,6 @@ const GeneralInfo = ({
     });
     sendGeneralInfo(generalInformation);
     changeForSearchPartner(currentPartner);
-  };
-
-  const changeAndSearchItem = (currentItem) => {
-    const currentItemValue = currentItem.value;
-    const currentItemLabel = currentItem.label;
-    setGeneralInformation({
-      ...generalInformation,
-      itemId: currentItemValue,
-      itemLabel: currentItemLabel,
-    });
-    sendGeneralInfo(generalInformation);
-    changeForSearchItem(currentItem);
   };
 
   return (
