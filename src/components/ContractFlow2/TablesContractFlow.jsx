@@ -86,11 +86,11 @@ const TablesContractFlow = ({ billings }) => {
     if (arrProjected.slice(1).length >= 1) {
       arrProjected.forEach((value) => {
         if (value.length > 1) {
-          value.slice(1).forEach((item) => {
+          value.slice(2).forEach((item) => {
             valueTotal += item;
           });
         } else if (value.length <= 1) {
-          value.slice(1).forEach((item) => {
+          value.slice(2).forEach((item) => {
             valueTotal += item;
           });
         }
