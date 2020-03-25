@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  Card,
-  Button,
-  FormControl,
-  Select,
-  InputLabel,
-} from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import CompanyServices from '../../services/companies/index';
-
+import CompaniesSelector from '../../components/Companies/CompanieSelector';
+import AssignedCompanies from '../../components/Companies/AssignedCompanies';
 import styles from './Companies.module.scss';
 
 class Companies extends React.Component {
@@ -15,46 +10,42 @@ class Companies extends React.Component {
     super(props);
     this.service = new CompanyServices();
     this.state = {
-      currentUser: '',
+      companies: [],
+      projects: [],
     };
   }
 
+  getCompanies = () => {
+    this.service
+      .getCompanies()
+      .then((response) => {
+        const companies = response.data;
+        this.setState({ companies });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  getProject = () => {
+    this.service
+      .getProjects()
+      .then((response) => {
+        const projects = response.data;
+        console.log('DATOS CARGA', projects);
+      })
+      .catch((error) => console.log(error));
+  };
+
   componentDidMount() {
-    
+    this.getCompanies();
   }
 
   render() {
     return (
       <React.Fragment>
         <h1>Administración de compañías</h1>
-        {console.log('CURRENT USER', this.state.currentUser)}
         <div className={styles.container}>
-          <Card variant="outlined" classes={{ root: styles.cardLeft }}>
-            <div className={styles.titleContainer}>
-              <h3>Selecciona una de las compañías disponibles</h3>
-            </div>
-            <FormControl
-              variant="outlined"
-              classes={{ root: styles.selectController }}
-            >
-              <InputLabel>Seleccione una compañía</InputLabel>
-              <Select></Select>
-            </FormControl>
-            <div className={styles.actions}>
-              <Button classes={{ root: styles.btnStyle }} variant="contained">
-                CREAR COMPAÑÍA
-              </Button>
-              <Button classes={{ root: styles.btnStyle }} variant="contained">
-                AGREGAR PROYECTO
-              </Button>
-            </div>
-          </Card>
-
-          <Card variant="outlined" classes={{ root: styles.cardRight }}>
-            <div className={styles.titleContainer}>
-              <h3>Compañías y Proyectos asociados</h3>
-            </div>
-          </Card>
+          <CompaniesSelector companies={this.state.companies} />
+          <AssignedCompanies />
         </div>
       </React.Fragment>
     );

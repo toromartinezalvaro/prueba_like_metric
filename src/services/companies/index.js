@@ -24,7 +24,11 @@ export default class CompanyServices extends Services {
     return this.get(CompanyServiceDefinitions.childrenInfo);
   }
 
-  getCompanies(userId) {
-    return this.get(CompanyServiceDefinitions.getAllForUser(userId));
+  getCompanies() {
+    return this.get(CompanyServiceDefinitions.getAllForUser);
+  }
+
+  getProjects() {
+    return this.get(CompanyServiceDefinitions.getProjects)
   }
 }

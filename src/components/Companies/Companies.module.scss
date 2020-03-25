@@ -1,0 +1,41 @@
+@import '../../assets/styles/variables.scss';
+
+.btnStyle {
+  color: #fff !important;
+  background-color: $main-color !important;
+  margin: 2% !important;
+}
+
+.cardLeft {
+  display: flex;
+  flex-direction: column;
+  width: 35vw;
+}
+
+.cardRight {
+  display: flex;
+  flex-direction: column;
+  width: 35vw;
+  margin-left: 3% !important;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.selectController {
+  margin: 2% !important ;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
