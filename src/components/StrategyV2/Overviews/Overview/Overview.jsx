@@ -4,12 +4,34 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
-const Overview = ({ title, subtitle, infoWidgets, priceWidgets }) => {
+const Overview = ({
+  title,
+  titleButton,
+  onClick,
+  subtitle,
+  infoWidgets,
+  priceWidgets,
+}) => {
   return (
     <div>
       <Box mb={3}>
-        <Typography variant="h5">{title}</Typography>
+        {titleButton ? (
+          <Button
+            onClick={onClick}
+            size="large"
+            variant="contained"
+            fullWidth
+            disableElevation
+            color="primary"
+          >
+            {title}
+          </Button>
+        ) : (
+          <Typography variant="h5">{title}</Typography>
+        )}
+
         <Typography variant="subtitle1">{subtitle}</Typography>
       </Box>
 
@@ -38,9 +60,16 @@ const Overview = ({ title, subtitle, infoWidgets, priceWidgets }) => {
 
 Overview.propTypes = {
   title: PropTypes.string.isRequired,
+  titleButton: PropTypes.bool,
+  onClick: PropTypes.func,
   subtitle: PropTypes.string.isRequired,
   infoWidgets: PropTypes.array.isRequired,
   priceWidgets: PropTypes.array.isRequired,
+};
+
+Overview.defaultProps = {
+  titleButton: false,
+  onClick: () => {},
 };
 
 export default Overview;

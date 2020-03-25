@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -16,6 +16,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Switch from '@material-ui/core/Switch';
 import Styles from './Settings.module.scss';
+import Context from '../../../containers/StrategyV2/context';
+import { togglePrice } from '../../../containers/StrategyV2/actions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -23,6 +25,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 Transition.displayName = 'TransitionComponent';
 
 const Settings = () => {
+  const { state, dispatch } = useContext(Context);
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -31,6 +35,10 @@ const Settings = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const togglePriceHandler = () => {
+    dispatch(togglePrice());
   };
 
   return (
@@ -54,10 +62,14 @@ const Settings = () => {
         </AppBar>
         <DialogContent>
           <List subheader={<ListSubheader>Precios</ListSubheader>}>
-            <ListItem button>
+            <ListItem button onClick={togglePriceHandler}>
               <ListItemText>Mostrar precios sin incrementos</ListItemText>
               <ListItemSecondaryAction>
-                <Switch edge="end" />
+                <Switch
+                  edge="end"
+                  onChange={togglePriceHandler}
+                  checked={state.settings.prices.withoutIncrements}
+                />
               </ListItemSecondaryAction>
             </ListItem>
           </List>

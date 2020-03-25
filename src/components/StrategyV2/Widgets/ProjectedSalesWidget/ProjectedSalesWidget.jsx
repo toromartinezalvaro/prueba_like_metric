@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import NumberFormat from 'react-number-format';
 import Widget from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
+import Context from '../../../../containers/StrategyV2/context';
 
 const ProjectedSalesWidget = () => {
+  const { state } = useContext(Context);
   return (
     <WidgetGroup
+      showGroup={state.settings.prices.withoutIncrements}
       widgets={[
         <Widget
+          showGroup={state.settings.prices.withoutIncrements}
           key="projectedSalesWithIncrement"
           title="Ventas Proyectadas"
           subtitle="Con incrementos"
-          size="sm"
+          size={state.settings.prices.withoutIncrements ? 'md' : 'sm'}
         >
           <NumberFormat
             value={536.1}
