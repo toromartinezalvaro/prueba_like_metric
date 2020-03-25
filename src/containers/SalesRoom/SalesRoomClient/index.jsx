@@ -270,10 +270,7 @@ class SalesRoom extends Component {
       properties = this.findGroup(groups);
     }
     return properties.reduce((current, next) => {
-      let { price } = next;
-      if (next.manualPrice) {
-        price = next.manualPrice;
-      }
+      const { price } = next;
       let increment = next.priceSold - price;
       if (
         next.groupId === this.state.groupId &&
