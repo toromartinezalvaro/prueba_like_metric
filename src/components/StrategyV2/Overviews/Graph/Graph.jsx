@@ -1,7 +1,7 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Chart from './Chart';
+import Controls from './Controls';
 import Widgets from './Widgets';
 import Styles from './Graph.module.scss';
 
@@ -15,6 +15,9 @@ const Graph = () => {
     >
       <Grid item xs={12}>
         <Chart />
+      </Grid>
+      <Grid item xs={12}>
+        <Controls />
       </Grid>
       <Grid item xs={12}>
         <Widgets />

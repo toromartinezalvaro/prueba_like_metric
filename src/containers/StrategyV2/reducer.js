@@ -11,6 +11,11 @@ export const initialState = {
   },
   view: MAIN_VIEW,
   selectedGroup: null,
+  data2: {
+    '1': {
+      
+    },
+  },
   data: {
     total: {
       units: 10,
