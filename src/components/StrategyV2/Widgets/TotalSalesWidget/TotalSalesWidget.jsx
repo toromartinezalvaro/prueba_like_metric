@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import uuidv4 from 'uuid/v4';
 import NumberFormat from 'react-number-format';
 import Widget from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
@@ -11,26 +12,26 @@ const TotalSalesWidget = () => {
       showGroup={state.settings.prices.withoutIncrements}
       widgets={[
         <Widget
-          key="totalSalesWithIncrement"
+          key={uuidv4()}
           title="Ventas Totales"
           subtitle="Con incrementos"
           size={state.settings.prices.withoutIncrements ? 'md' : 'sm'}
         >
           <NumberFormat
-            value={1056.2}
+            value={state.data.total.sales.withIncrement}
             displayType="text"
             prefix="$"
             thousandSeparator
           />
         </Widget>,
         <Widget
-          key="totalSalesWithoutIncrement"
+          key={uuidv4()}
           title="Ventas Totales"
           subtitle="Sin incrementos"
           size="sm"
         >
           <NumberFormat
-            value={1056.2}
+            value={state.data.total.sales.withoutIncrement}
             displayType="text"
             prefix="$"
             thousandSeparator

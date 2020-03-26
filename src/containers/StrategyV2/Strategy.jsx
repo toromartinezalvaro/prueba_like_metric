@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { memo, useReducer } from 'react';
 import Box from '@material-ui/core/Box';
 import Settings from '../../components/StrategyV2/Settings';
 import Widgets from '../../components/StrategyV2/Widgets';
@@ -25,4 +25,4 @@ const Strategy = () => {
   );
 };
 
-export default Strategy;
+export default memo(Strategy);

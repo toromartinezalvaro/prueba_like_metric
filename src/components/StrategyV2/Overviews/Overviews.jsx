@@ -27,14 +27,14 @@ const Overviews = () => {
             setCompletedTransition(false);
           }}
         >
-          <Grid item md={9}>
-            <Graph></Graph>
+          <Grid item xs={12} lg={9}>
+            <Graph />
           </Grid>
         </Zoom>
       )}
 
       <Zoom in={state.view === MAIN_VIEW} mountOnEnter unmountOnExit>
-        <Grid item md={3}>
+        <Grid item xs={12} lg={3}>
           <TotalOverview />
         </Grid>
       </Zoom>
@@ -46,11 +46,11 @@ const Overviews = () => {
           setCompletedTransition(true);
         }}
       >
-        <Grid item md={3}>
+        <Grid item xs={12} lg={3}>
           <SalesOverview />
         </Grid>
       </Zoom>
-      <Grid item md={3}>
+      <Grid item xs={12} lg={3}>
         <InventoryOverview />
       </Grid>
     </Grid>

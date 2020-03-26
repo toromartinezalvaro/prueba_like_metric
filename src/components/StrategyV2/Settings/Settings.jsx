@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -29,17 +29,17 @@ const Settings = () => {
 
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
-  const togglePriceHandler = () => {
+  const togglePriceHandler = useCallback(() => {
     dispatch(togglePrice());
-  };
+  }, []);
 
   return (
     <Box mb={1}>

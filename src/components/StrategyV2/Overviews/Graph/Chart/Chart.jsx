@@ -81,7 +81,7 @@ const Chart = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip />
+            <Tooltip isAnimationActive={false} />
             <Legend />
             <Line
               type="monotone"

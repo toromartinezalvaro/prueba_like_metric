@@ -10,7 +10,7 @@ const WidgetGroup = ({ widgets, defaultWidgetIndex, showGroup }) => {
       {widgets
         .filter((_, index) => index === defaultWidgetIndex || !showGroup)
         .map((widget) => (
-          <Grid item key={uuidv4}>
+          <Grid item key={uuidv4()} xs={12}>
             {widget}
           </Grid>
         ))}
