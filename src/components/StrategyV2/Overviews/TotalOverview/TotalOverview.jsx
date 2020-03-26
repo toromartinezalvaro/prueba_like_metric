@@ -54,7 +54,7 @@ const TotalOverView = () => {
       priceWidgets={[
         <Widget key="Total-Sales" title="Ventas" size="sm">
           <NumberFormat
-            value={1046.2}
+            value={state.data.total.sales.withIncrement}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -62,7 +62,7 @@ const TotalOverView = () => {
         </Widget>,
         <Widget key="Total-AverageSales" title="Precio promedio" size="sm">
           <NumberFormat
-            value={104.6}
+            value={state.data.total.averagePrice}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -70,7 +70,7 @@ const TotalOverView = () => {
         </Widget>,
         <Widget key="Total-M2Price" title="Valor m²" size="sm">
           <NumberFormat
-            value={26.1}
+            value={state.data.total.M2Price}
             displayType="text"
             prefix="$"
             thousandSeparator

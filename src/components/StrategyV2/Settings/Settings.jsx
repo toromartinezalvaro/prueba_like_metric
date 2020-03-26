@@ -15,6 +15,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Switch from '@material-ui/core/Switch';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Styles from './Settings.module.scss';
 import Context from '../../../containers/StrategyV2/context';
 import { togglePrice } from '../../../containers/StrategyV2/actions';
@@ -41,8 +43,17 @@ const Settings = () => {
     dispatch(togglePrice());
   }, []);
 
+  const changeGroupHandler = useCallback(() => {
+    dispatch(togglePrice());
+  }, []);
+
   return (
     <Box mb={1}>
+      <Select value={state.selectedGroup} onChange={changeGroupHandler}>
+        <MenuItem value={10}>Ten</MenuItem>
+        <MenuItem value={20}>Twenty</MenuItem>
+        <MenuItem value={30}>Thirty</MenuItem>
+      </Select>
       <IconButton onClick={handleOpen}>
         <MoreVertIcon />
       </IconButton>

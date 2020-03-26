@@ -1,57 +1,60 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import NumberFormat from 'react-number-format';
 import Typography from '@material-ui/core/Typography';
 import Overview from '../Overview';
 import Widget from '../../Shared/Widget';
+import Context from '../../../../containers/StrategyV2/context';
 
 const SalesOverview = () => {
+  const { state } = useContext(Context);
+
   return (
     <Overview
-      title={<Typography variant="h5">Detalles del Inventario</Typography>}
-      subtitle="5 Unidades de 4m² Promedio"
+      title={<Typography variant="h5">Detalles de lo vendido</Typography>}
+      subtitle={`${state.data.sales.units} Unidades de ${state.data.sales.averageArea}m² Promedio`}
       infoWidgets={[
-        <Widget key="Inventory-SaleSpeed" title="Velocidad de ventas" size="sm">
-          PD
+        <Widget key="Sales-SaleSpeed" title="Velocidad de ventas" size="sm">
+          {state.data.sales.saleSpeed}
         </Widget>,
         <Widget
-          key="Inventory-InventoryRotation"
+          key="Sales-InventoryRotation"
           title="Rotacion de intentario"
           size="sm"
         >
-          PD
+          {state.data.sales.inventoryRotation}
         </Widget>,
-        <Widget key="Inventory-Increment" title="Incremento en pesos" size="sm">
+        <Widget key="Sales-Increment" title="Incremento en pesos" size="sm">
           <NumberFormat
-            value={46.2}
+            value={state.data.sales.increment}
             displayType="text"
             prefix="$"
             thousandSeparator
           />
         </Widget>,
-        <Widget key="Inventory-EARate" title="Tasa de incremento e.a" size="sm">
-          PD
+        <Widget key="Sales-EARate" title="Tasa de incremento e.a" size="sm">
+          {state.data.sales.EARate}
         </Widget>,
       ]}
       priceWidgets={[
-        <Widget key="Inventory-Sales" title="Ventas" size="sm">
+        <Widget key="Sales-Sales" title="Ventas" size="sm">
           <NumberFormat
-            value={1046.2}
+            value={state.data.sales.sales}
             displayType="text"
             prefix="$"
             thousandSeparator
           />
         </Widget>,
-        <Widget key="Inventory-AverageSales" title="Precio promedio" size="sm">
+        <Widget key="Sales-AverageSales" title="Precio promedio" size="sm">
           <NumberFormat
-            value={104.6}
+            value={state.data.sales.averagePrice}
             displayType="text"
             prefix="$"
             thousandSeparator
           />
         </Widget>,
-        <Widget key="Inventory-M2Price" title="Valor m²" size="sm">
+        <Widget key="Sales-M2Price" title="Valor m²" size="sm">
           <NumberFormat
-            value={26.1}
+            value={state.data.sales.M2Price}
             displayType="text"
             prefix="$"
             thousandSeparator

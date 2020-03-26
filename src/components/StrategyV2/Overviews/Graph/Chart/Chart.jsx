@@ -62,9 +62,12 @@ const data = [
 const Chart = () => {
   return (
     <Paper classes={{ root: Styles.container }}>
-      <div className={Styles.header}>
-        <Typography variant="h5">Estrategias</Typography>
-      </div>
+      <Grid container classes={{ root: Styles.header }}>
+        <Grid>
+          <Typography variant="h5">Estrategias</Typography>
+        </Grid>
+        <Grid> </Grid>
+      </Grid>
       <div>
         <ResponsiveContainer width="99%" aspect={3}>
           <LineChart

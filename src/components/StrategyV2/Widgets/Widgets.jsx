@@ -28,7 +28,7 @@ const Widgets = () => {
       <Grid item xs={12} lg={2}>
         <Widget title="Ventas realizadas">
           <NumberFormat
-            value={state.data.sales}
+            value={state.data.sales.sales}
             displayType="text"
             prefix="$"
             thousandSeparator

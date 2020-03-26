@@ -12,10 +12,10 @@ export const MEDIUM = 'md';
 
 const VARIANTS = {
   xs: {
-    padding: 1,
+    padding: 0,
     headerVariant: {
       content: 'body1',
-      title: 'body2',
+      title: 'body1',
       subtitle: 'caption',
     },
   },
@@ -38,40 +38,44 @@ const Widget = ({ title, subtitle, children, size }) => {
   const cols = size === EXTRA_SMALL ? 6 : 12;
   return (
     <Paper classes={{ root: Styles.container }}>
-      <Grid container>
-        <Grid item xs={cols}>
-          <Box pt={padding} px={padding}>
+      <Box p={size === EXTRA_SMALL ? 1 : 0}>
+        <Grid container>
+          <Grid item xs={cols}>
+            <Box pt={padding} px={padding}>
+              <Typography
+                variant={headerVariant.content}
+                component="div"
+                align="center"
+                classes={{ root: size === EXTRA_SMALL ? Styles.xs : null }}
+              >
+                {children}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={cols}>
+            <Box px={padding}>
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                align="center"
+                classes={{ root: size === EXTRA_SMALL ? Styles.xs : null }}
+              >
+                {title}
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+        <Box pb={padding}>
+          {subtitle && (
             <Typography
-              variant={headerVariant.content}
+              variant={headerVariant.subtitle}
               component="div"
               align="center"
             >
-              {children}
+              {subtitle}
             </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={cols}>
-          <Box px={padding}>
-            <Typography
-              variant="subtitle1"
-              color="textSecondary"
-              align="center"
-            >
-              {title}
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
-      <Box pb={padding}>
-        {subtitle && (
-          <Typography
-            variant={headerVariant.subtitle}
-            component="div"
-            align="center"
-          >
-            {subtitle}
-          </Typography>
-        )}
+          )}
+        </Box>
       </Box>
     </Paper>
   );
