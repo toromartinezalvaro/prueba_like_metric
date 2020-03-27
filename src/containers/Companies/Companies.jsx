@@ -1,8 +1,9 @@
 import React from 'react';
-import { MenuItem } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import CompanyServices from '../../services/companies/index';
 import CompaniesSelector from '../../components/Companies/CompanieSelector';
 import AssignedCompanies from '../../components/Companies/AssignedCompanies';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import styles from './Companies.module.scss';
 
 class Companies extends React.Component {
@@ -11,7 +12,7 @@ class Companies extends React.Component {
     this.service = new CompanyServices();
     this.state = {
       companies: [],
-      projects: [],
+      projects: undefined,
     };
   }
 
@@ -22,7 +23,7 @@ class Companies extends React.Component {
         const companies = response.data;
         this.setState({ companies });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => this.props.spawnMessage(error, 'error'));
   };
 
   getProject = () => {
@@ -30,12 +31,30 @@ class Companies extends React.Component {
       .getProjects()
       .then((response) => {
         const projects = response.data;
-        console.log('DATOS CARGA', projects);
+        console.log('PROJECTS', projects);
+        this.setState({ projects });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => this.props.spawnMessage(error, 'error'));
+  };
+
+  createCompany = (company) => {
+    this.service
+      .create(company)
+      .then((response) => {
+        this.props.spawnMessage(
+          'La compañía fué creada exitosamente ',
+          'success',
+        );
+        this.getCompanies();
+        this.getProject();
+      })
+      .catch((error) => {
+        this.props.spawnMessage(error, 'error');
+      });
   };
 
   componentDidMount() {
+    this.getProject();
     this.getCompanies();
   }
 
@@ -44,12 +63,23 @@ class Companies extends React.Component {
       <React.Fragment>
         <h1>Administración de compañías</h1>
         <div className={styles.container}>
-          <CompaniesSelector companies={this.state.companies} />
-          <AssignedCompanies />
+          {this.state.companies && (
+            <CompaniesSelector
+              companies={this.state.companies}
+              createCompanyService={this.createCompany}
+            />
+          )}
+          {this.state.projects && (
+            <AssignedCompanies associations={this.state.projects} />
+          )}
         </div>
       </React.Fragment>
     );
   }
 }
 
-export default Companies;
+Companies.propTypes = {
+  spawnMessage: PropTypes.func,
+};
+
+export default withDefaultLayout(Companies);

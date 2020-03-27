@@ -6,6 +6,10 @@
   margin: 2% !important;
 }
 
+.btnModal {
+  color: $main-color !important;
+}
+
 .cardLeft {
   display: flex;
   flex-direction: column;
@@ -38,4 +42,36 @@
 .container {
   display: flex;
   flex-direction: row;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.downList {
+  display: flex !important;
+  flex-direction: column !important;
+  margin-left: 5%;
+}
+
+.collapsable {
+  margin: 2% !important;
+  padding: -5% !important;
+}
+
+.projectList {
+  margin: 1%;
+}
+.titleDashboard {
+  margin-left: 3%;
+}
+.dialogContent {
+  width: 92% !important;
+  height: 20vh !important;
+}
+
+.texfieldModal {
+  margin: 1% !important;
+  margin-left: 7% !important;
 }
