@@ -13,6 +13,8 @@ class Companies extends React.Component {
     this.state = {
       companies: [],
       projects: undefined,
+      companySelected: undefined,
+      actionOn: false,
     };
   }
 
@@ -23,7 +25,9 @@ class Companies extends React.Component {
         const companies = response.data;
         this.setState({ companies });
       })
-      .catch((error) => this.props.spawnMessage(error, 'error'));
+      .catch(() =>
+        this.props.spawnMessage('Error al conectar con el servidor', 'error'),
+      );
   };
 
   getProject = () => {
@@ -31,16 +35,17 @@ class Companies extends React.Component {
       .getProjects()
       .then((response) => {
         const projects = response.data;
-        console.log('PROJECTS', projects);
         this.setState({ projects });
       })
-      .catch((error) => this.props.spawnMessage(error, 'error'));
+      .catch(() =>
+        this.props.spawnMessage('Error al conectar con el servidor', 'error'),
+      );
   };
 
   createCompany = (company) => {
     this.service
       .create(company)
-      .then((response) => {
+      .then(() => {
         this.props.spawnMessage(
           'La compañía fué creada exitosamente ',
           'success',
@@ -48,15 +53,33 @@ class Companies extends React.Component {
         this.getCompanies();
         this.getProject();
       })
-      .catch((error) => {
-        this.props.spawnMessage(error, 'error');
-      });
+      .catch(() =>
+        this.props.spawnMessage('No se pudo crear la compañía', 'error'),
+      );
+  };
+
+  associateModal = () => {
+    if (this.state.companySelected) {
+      this.getProject();
+      this.actionModal();
+    } else {
+      this.props.spawnMessage('Debes seleccionar una compañía', 'error');
+    }
   };
 
   componentDidMount() {
     this.getProject();
     this.getCompanies();
   }
+
+  actionModal = () => {
+    this.setState(!this.state.actionOn);
+  };
+
+  companyToSelect = (id) => {
+    const companySelected = id;
+    this.setState({ companySelected });
+  };
 
   render() {
     return (
@@ -67,6 +90,11 @@ class Companies extends React.Component {
             <CompaniesSelector
               companies={this.state.companies}
               createCompanyService={this.createCompany}
+              companyToSelect={this.companyToSelect}
+              associateModal={this.associateModal}
+              projects={this.state.projects}
+              actionModal={this.actionModal}
+              actionOn={this.state.actionOn}
             />
           )}
           {this.state.projects && (

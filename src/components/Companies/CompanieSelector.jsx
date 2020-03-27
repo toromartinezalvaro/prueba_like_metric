@@ -9,15 +9,24 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import CreateCompany from './CreateCompany';
+import AssociateProject from './AssociateProject';
 
 import styles from './Companies.module.scss';
 
-const CompanieSelector = ({ companies, createCompanyService }) => {
+const CompanieSelector = ({
+  companies,
+  createCompanyService,
+  companyToSelect,
+  associateModal,
+  projects,
+  actionOn,
+  actionModal,
+}) => {
   const [createCompany, setCreateCompany] = useState(false);
   const CompanieOptions = (arrOption) => {
     return arrOption.map((option, index) => {
       return (
-        <MenuItem value={option.id} key={index}>
+        <MenuItem value={option.id} key={index} selected={index === 0}>
           {option.name}
         </MenuItem>
       );
@@ -25,6 +34,10 @@ const CompanieSelector = ({ companies, createCompanyService }) => {
   };
   const createACompany = () => {
     setCreateCompany(!createCompany);
+  };
+  const selectCompany = (element) => {
+    const company = element.target.value;
+    companyToSelect(company);
   };
   return (
     <React.Fragment>
@@ -37,7 +50,7 @@ const CompanieSelector = ({ companies, createCompanyService }) => {
           classes={{ root: styles.selectController }}
         >
           <InputLabel>Seleccione una compañía</InputLabel>
-          <Select>{CompanieOptions(companies)}</Select>
+          <Select onChange={selectCompany}>{CompanieOptions(companies)}</Select>
         </FormControl>
         <div className={styles.actions}>
           <Button
@@ -47,7 +60,11 @@ const CompanieSelector = ({ companies, createCompanyService }) => {
           >
             CREAR COMPAÑÍA
           </Button>
-          <Button classes={{ root: styles.btnStyle }} variant="contained">
+          <Button
+            classes={{ root: styles.btnStyle }}
+            variant="contained"
+            onClick={associateModal}
+          >
             AGREGAR PROYECTO
           </Button>
         </div>
@@ -59,6 +76,13 @@ const CompanieSelector = ({ companies, createCompanyService }) => {
           createCompanyService={createCompanyService}
         />
       )}
+      {actionOn && (
+        <AssociateProject
+          projects={projects}
+          actionModal={actionModal}
+          actionOn={actionOn}
+        />
+      )}
     </React.Fragment>
   );
 };
@@ -66,6 +90,11 @@ const CompanieSelector = ({ companies, createCompanyService }) => {
 CompanieSelector.propTypes = {
   companies: PropTypes.array,
   createCompanyService: PropTypes.func,
+  companyToSelect: PropTypes.func,
+  associateModal: PropTypes.func,
+  projects: PropTypes.array,
+  actionModal: PropTypes.func,
+  actionOn: PropTypes.bool,
 };
 
 export default CompanieSelector;
