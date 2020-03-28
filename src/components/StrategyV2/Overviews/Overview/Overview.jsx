@@ -1,5 +1,5 @@
 import React from 'react';
-import uuidv4 from 'uuid/v4';
+import uuidV4 from 'uuid/v4';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -16,7 +16,7 @@ const Overview = ({ title, subtitle, infoWidgets, priceWidgets }) => {
       <Box mb={3}>
         <Grid container spacing={2}>
           {infoWidgets.map((infoWidget) => (
-            <Grid key={uuidv4()} item md={6}>
+            <Grid key={uuidV4()} item md={6}>
               {infoWidget}
             </Grid>
           ))}
@@ -26,7 +26,7 @@ const Overview = ({ title, subtitle, infoWidgets, priceWidgets }) => {
       <Box>
         <Grid container direction="column" spacing={2}>
           {priceWidgets.map((priceWidget) => (
-            <Grid key={uuidv4()} item>
+            <Grid key={uuidV4()} item>
               {priceWidget}
             </Grid>
           ))}

@@ -1,5 +1,5 @@
 import React from 'react';
-import uuidv4 from 'uuid/v4';
+import uuidV4 from 'uuid/v4';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Widget from '../Widget';
@@ -10,7 +10,7 @@ const WidgetGroup = ({ widgets, defaultWidgetIndex, showGroup }) => {
       {widgets
         .filter((_, index) => index === defaultWidgetIndex || !showGroup)
         .map((widget) => (
-          <Grid item key={uuidv4()} xs={12}>
+          <Grid item key={uuidV4()} xs={12}>
             {widget}
           </Grid>
         ))}

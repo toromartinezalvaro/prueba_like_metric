@@ -1,38 +1,42 @@
 import React, { useContext } from 'react';
-import uuidv4 from 'uuid/v4';
+import uuidV4 from 'uuid/v4';
 import NumberFormat from 'react-number-format';
-import Widget from '../../Shared/Widget';
+import Widget, { SM, MD } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 import Context from '../../../../containers/StrategyV2/context';
 
 const ProjectedSalesWidget = () => {
   const { state } = useContext(Context);
+  const { selectedGroup } = state;
   return (
     <WidgetGroup
       showGroup={state.settings.prices.withoutIncrements}
       widgets={[
         <Widget
-          showGroup={state.settings.prices.withoutIncrements}
-          key={uuidv4()}
+          key={uuidV4()}
           title="Ventas Proyectadas"
           subtitle="Con incrementos"
-          size={state.settings.prices.withoutIncrements ? 'md' : 'sm'}
+          size={state.settings.prices.withoutIncrements ? MD : SM}
         >
           <NumberFormat
-            value={state.data.projectedSales.withIncrement}
+            value={
+              state.groups[selectedGroup].inventory.projectedSales +
+              state.groups[selectedGroup].total.increment -
+              state.groups[selectedGroup].sales.increment
+            }
             displayType="text"
             prefix="$"
             thousandSeparator
           />
         </Widget>,
         <Widget
-          key={uuidv4()}
+          key={uuidV4()}
           title="Ventas Proyectadas"
           subtitle="Sin incrementos"
-          size="sm"
+          size={SM}
         >
           <NumberFormat
-            value={state.data.projectedSales.withoutIncrement}
+            value={state.groups[selectedGroup].inventory.projectedSales}
             displayType="text"
             prefix="$"
             thousandSeparator

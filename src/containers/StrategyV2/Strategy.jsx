@@ -5,6 +5,7 @@ import Widgets from '../../components/StrategyV2/Widgets';
 import Overviews from '../../components/StrategyV2/Overviews';
 import reducer, { initialState } from './reducer';
 import Context from './context';
+import { Typography } from '@material-ui/core';
 
 const Strategy = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -14,12 +15,18 @@ const Strategy = () => {
         <Box>
           <Settings />
         </Box>
-        <Box mb={3}>
-          <Widgets />
-        </Box>
-        <Box>
-          <Overviews />
-        </Box>
+        {state.selectedGroup !== '' ? (
+          <>
+            <Box mb={3}>
+              <Widgets />
+            </Box>
+            <Box>
+              <Overviews />
+            </Box>
+          </>
+        ) : (
+          <Typography>Debe selecionar un grupo</Typography>
+        )}
       </Context.Provider>
     </div>
   );

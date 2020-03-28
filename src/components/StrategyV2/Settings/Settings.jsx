@@ -1,4 +1,5 @@
 import React, { useState, useContext, useCallback } from 'react';
+import uuidV4 from 'uuid';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -15,11 +16,16 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Switch from '@material-ui/core/Switch';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Styles from './Settings.module.scss';
 import Context from '../../../containers/StrategyV2/context';
-import { togglePrice } from '../../../containers/StrategyV2/actions';
+import {
+  togglePrice,
+  changeGroup,
+} from '../../../containers/StrategyV2/actions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -43,17 +49,26 @@ const Settings = () => {
     dispatch(togglePrice());
   }, []);
 
-  const changeGroupHandler = useCallback(() => {
-    dispatch(togglePrice());
-  }, []);
+  const changeGroupHandler = (event) => {
+    dispatch(changeGroup(event.target.value));
+  };
 
   return (
     <Box mb={1}>
-      <Select value={state.selectedGroup} onChange={changeGroupHandler}>
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
-      </Select>
+      <FormControl classes={{ root: Styles.formControl }}>
+        <InputLabel id="group-select">Grupo</InputLabel>
+        <Select
+          labelId="group-select"
+          value={state.selectedGroup}
+          onChange={changeGroupHandler}
+        >
+          {Object.keys(state.groups).map((group) => (
+            <MenuItem key={uuidV4()} value={group}>
+              Grupo {group}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <IconButton onClick={handleOpen}>
         <MoreVertIcon />
       </IconButton>

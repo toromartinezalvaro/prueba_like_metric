@@ -1,4 +1,11 @@
-import { TOGGLE_PRICES, CHANGE_VIEW } from './actions';
+import {
+  TOGGLE_PRICES,
+  CHANGE_VIEW,
+  CHANGE_GROUP,
+  CHANGE_STRATEGY,
+  CHANGE_MARKET__AVERAGE_PRICE,
+  CHANGE_MARKET__EA_RATE,
+} from './actions';
 
 export const MAIN_VIEW = 'main';
 export const DETAILS_VIEW = 'details';
@@ -10,55 +17,62 @@ export const initialState = {
     },
   },
   view: MAIN_VIEW,
-  selectedGroup: null,
-  data2: {
-    '1': {
-      
-    },
-  },
-  data: {
-    total: {
-      units: 10,
-      averageArea: 4,
-      saleSpeed: 'PD',
-      inventoryRotation: 10,
-      increment: 46.2,
-      EARate: 'PD',
-      L0Rate: 'PD',
-      sales: {
-        withIncrement: 1056.2,
-        withoutIncrement: 1056.2,
+  selectedGroup: 1,
+  groups: {
+    1: {
+      total: {
+        l0: 1000,
+        units: 10,
+        averageArea: 4,
+        increment: 56.2,
+        saleSpeed: 1,
+        EARate: 0,
+        incrementRate: 0,
       },
-      averagePrice: 104.6,
-      M2Price: 25.5,
+      sales: {
+        l0: 500,
+        units: 5,
+        averageArea: 4,
+        increment: 10.1,
+        saleSpeed: 1,
+        EARate: 0,
+      },
+      inventory: {
+        l0: 500,
+        averageArea: 4,
+        projectedSales: 500,
+        saleSpeed: 1,
+        EARate: 0.1269,
+        appliedIncrement: 25.5,
+        sales: 600,
+      },
+      strategy: 3,
+      market: {
+        averagePrice: 100,
+        EARate: 0.123,
+      },
     },
-    sales: {
-      units: 5,
-      averageArea: 4,
-      saleSpeed: 'PD',
-      inventoryRotation: 10,
-      increment: 10.1,
-      EARate: 'PD',
-      sales: 510.1,
-      averagePrice: 104.6,
-      M2Price: 25.5,
-    },
-    inventory: {
-      units: 5,
-      averageArea: 4,
-      saleSpeed: 1,
-      inventoryRotation: 10,
-      appliedIncrement: 25.5,
-      projectedIncrement: 10.6,
-      EARate: 0.1268,
-    },
-    soldUnits: 5,
-    totalSales: {},
-    projectedSales: {
-      withIncrement: 536.1,
-      withoutIncrement: 500,
-    },
+    2: {},
+    3: {},
   },
+};
+
+const changeStrategy = (groups, group, strategy) => {
+  const tempGroups = { ...groups };
+  tempGroups[group].strategy = strategy;
+  return tempGroups;
+};
+
+const changeMarketAveragePrice = (groups, group, averagePrice) => {
+  const tempGroups = { ...groups };
+  tempGroups[group].market.averagePrice = averagePrice;
+  return tempGroups;
+};
+
+const changeMarketEARate = (groups, group, EARate) => {
+  const tempGroups = { ...groups };
+  tempGroups[group].market.EARate = EARate;
+  return tempGroups;
 };
 
 const reducer = (state = initialState, action) => {
@@ -75,6 +89,27 @@ const reducer = (state = initialState, action) => {
       };
     case CHANGE_VIEW:
       return { ...state, view: payload };
+    case CHANGE_GROUP:
+      return { ...state, selectedGroup: payload };
+    case CHANGE_STRATEGY:
+      return {
+        ...state,
+        groups: changeStrategy(state.groups, state.selectedGroup, payload),
+      };
+    case CHANGE_MARKET__AVERAGE_PRICE:
+      return {
+        ...state,
+        groups: changeMarketAveragePrice(
+          state.groups,
+          state.selectedGroup,
+          payload,
+        ),
+      };
+    case CHANGE_MARKET__EA_RATE:
+      return {
+        ...state,
+        groups: changeMarketEARate(state.groups, state.selectedGroup, payload),
+      };
     default:
       return state;
   }

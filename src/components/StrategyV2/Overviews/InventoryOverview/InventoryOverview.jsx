@@ -3,7 +3,7 @@ import NumberFormat from 'react-number-format';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import Overview from '../Overview';
-import Widget from '../../Shared/Widget';
+import Widget, { XS, SM } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 import Context from '../../../../containers/StrategyV2/context';
 import { changeView } from '../../../../containers/StrategyV2/actions';
@@ -11,9 +11,16 @@ import {
   MAIN_VIEW,
   DETAILS_VIEW,
 } from '../../../../containers/StrategyV2/reducer';
+import Numbers from '../../../../helpers/numbers';
 
 const InventoryOverview = () => {
   const { state, dispatch } = useContext(Context);
+  const { selectedGroup, groups } = state;
+
+  const units =
+    groups[selectedGroup].total.units - groups[selectedGroup].sales.units;
+  const { sales } = groups[selectedGroup].inventory;
+  const averagePrice = sales / units;
 
   const changeViewHandler = () => {
     if (state.view === MAIN_VIEW) {
@@ -26,30 +33,39 @@ const InventoryOverview = () => {
   return (
     <Overview
       title={
-        <Tooltip title="Estrategia seleccionada" arrow>
+        <Tooltip
+          title={
+            groups[selectedGroup].strategy === null
+              ? 'NO hay una estrategia'
+              : 'Estrategia seleccionada'
+          }
+          arrow
+        >
           <Button
             onClick={changeViewHandler}
             size="large"
             variant="contained"
             fullWidth
             disableElevation
-            color="primary"
+            color={
+              groups[selectedGroup].strategy === null ? 'secondary' : 'primary'
+            }
           >
             Detalles del Inventario
           </Button>
         </Tooltip>
       }
-      subtitle={`${state.data.inventory.units} Unidades de ${state.data.inventory.averageArea}m² Promedio`}
+      subtitle={`${units} Unidades de ${groups[selectedGroup].inventory.averageArea}m² Promedio`}
       infoWidgets={[
         <Widget key="DetailInv-SaleSpeed" title="Velocidad de ventas" size="sm">
-          {state.data.inventory.saleSpeed}
+          {groups[selectedGroup].inventory.saleSpeed}
         </Widget>,
         <Widget
           key="DetailInv-InventoryRotation"
           title="Rotacion de intentario"
-          size="sm"
+          size={SM}
         >
-          {state.data.inventory.inventoryRotation}
+          {Numbers.toFixed(units / groups[selectedGroup].inventory.saleSpeed)}
         </Widget>,
         <WidgetGroup
           key="DetailInv-IncrementRates"
@@ -57,10 +73,12 @@ const InventoryOverview = () => {
             <Widget
               key="DetailInv-appliedIncrement"
               title="Incremento aplicado en Inv"
-              size="xs"
+              size={XS}
             >
               <NumberFormat
-                value={state.data.inventory.appliedIncrement}
+                value={Numbers.toFixed(
+                  groups[selectedGroup].inventory.appliedIncrement,
+                )}
                 displayType="text"
                 prefix="$"
                 thousandSeparator
@@ -69,10 +87,12 @@ const InventoryOverview = () => {
             <Widget
               key="DetailInv-ProjectedIncrement"
               title="Incremento proyectado"
-              size="xs"
+              size={XS}
             >
               <NumberFormat
-                value={state.data.inventory.projectedIncrement}
+                value={Numbers.toFixed(
+                  groups[selectedGroup].inventory.projectedIncrement * 100,
+                )}
                 displayType="text"
                 prefix="$"
                 thousandSeparator
@@ -83,32 +103,37 @@ const InventoryOverview = () => {
         <Widget
           key="DetailInv-EARate"
           title="Tasa Incremento e.a Proyectada"
-          size="sm"
+          size={SM}
         >
-          {state.data.inventory.EARate * 100}%
+          {Numbers.toFixed(groups[selectedGroup].inventory.EARate * 100)}%
         </Widget>,
       ]}
       priceWidgets={[
-        <Widget
-          key="DetailInv-IncrementRate"
-          title="Velocidad de ventas"
-          size="sm"
-        >
-          PD
+        <Widget key="DetailInv-IncrementRate" title="Ventas" size={SM}>
+          <NumberFormat
+            value={Numbers.toFixed(sales)}
+            displayType="text"
+            prefix="$"
+            thousandSeparator
+          />
         </Widget>,
-        <Widget
-          key="DetailInv-IncrementRate"
-          title="Velocidad de ventas"
-          size="sm"
-        >
-          PD
+        <Widget key="DetailInv-AverageSales" title="Precio promedio" size={SM}>
+          <NumberFormat
+            value={Numbers.toFixed(averagePrice)}
+            displayType="text"
+            prefix="$"
+            thousandSeparator
+          />
         </Widget>,
-        <Widget
-          key="DetailInv-IncrementRate"
-          title="Velocidad de ventas"
-          size="sm"
-        >
-          PD
+        <Widget key="DetailInv-M2Price" title="Valor m²" size={SM}>
+          <NumberFormat
+            value={Numbers.toFixed(
+              averagePrice / groups[selectedGroup].inventory.averageArea,
+            )}
+            displayType="text"
+            prefix="$"
+            thousandSeparator
+          />
         </Widget>,
       ]}
     />

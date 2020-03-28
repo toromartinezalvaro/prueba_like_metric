@@ -6,9 +6,9 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Styles from './Widget.module.scss';
 
-export const EXTRA_SMALL = 'xs';
-export const SMALL = 'sm';
-export const MEDIUM = 'md';
+export const XS = 'xs';
+export const SM = 'sm';
+export const MD = 'md';
 
 const VARIANTS = {
   xs: {
@@ -35,10 +35,10 @@ const VARIANTS = {
 
 const Widget = ({ title, subtitle, children, size }) => {
   const { padding, headerVariant } = VARIANTS[size];
-  const cols = size === EXTRA_SMALL ? 6 : 12;
+  const cols = size === XS ? 6 : 12;
   return (
     <Paper classes={{ root: Styles.container }}>
-      <Box p={size === EXTRA_SMALL ? 1 : 0}>
+      <Box p={size === XS ? 1 : 0}>
         <Grid container>
           <Grid item xs={cols}>
             <Box pt={padding} px={padding}>
@@ -46,7 +46,7 @@ const Widget = ({ title, subtitle, children, size }) => {
                 variant={headerVariant.content}
                 component="div"
                 align="center"
-                classes={{ root: size === EXTRA_SMALL ? Styles.xs : null }}
+                classes={{ root: size === XS ? Styles.xs : null }}
               >
                 {children}
               </Typography>
@@ -58,7 +58,7 @@ const Widget = ({ title, subtitle, children, size }) => {
                 variant="subtitle1"
                 color="textSecondary"
                 align="center"
-                classes={{ root: size === EXTRA_SMALL ? Styles.xs : null }}
+                classes={{ root: size === XS ? Styles.xs : null }}
               >
                 {title}
               </Typography>
@@ -85,11 +85,11 @@ Widget.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   children: PropTypes.node.isRequired,
-  size: PropTypes.oneOf([EXTRA_SMALL, SMALL, MEDIUM]),
+  size: PropTypes.oneOf([XS, SM, MD]),
 };
 
 Widget.defaultProps = {
-  size: MEDIUM,
+  size: MD,
 };
 
 export default Widget;

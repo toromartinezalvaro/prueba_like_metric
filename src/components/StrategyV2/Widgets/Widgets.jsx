@@ -8,18 +8,23 @@ import Context from '../../../containers/StrategyV2/context';
 
 const Widgets = () => {
   const { state } = useContext(Context);
-
+  const { selectedGroup } = state;
   return (
     <Grid container justify="space-between" alignItems="stretch" spacing={3}>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Totales">{state.data.total.units}</Widget>
+        <Widget title="Unidades Totales">
+          {state.groups[selectedGroup].total.units}
+        </Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Vendidas">{state.data.soldUnits}</Widget>
+        <Widget title="Unidades Vendidas">
+          {state.groups[selectedGroup].sales.units}
+        </Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
         <Widget title="Unidades Disponibles">
-          {state.data.total.units - state.data.soldUnits}
+          {state.groups[selectedGroup].total.units -
+            state.groups[selectedGroup].sales.units}
         </Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
@@ -28,7 +33,10 @@ const Widgets = () => {
       <Grid item xs={12} lg={2}>
         <Widget title="Ventas realizadas">
           <NumberFormat
-            value={state.data.sales.sales}
+            value={
+              state.groups[selectedGroup].sales.l0 +
+              state.groups[selectedGroup].sales.increment
+            }
             displayType="text"
             prefix="$"
             thousandSeparator

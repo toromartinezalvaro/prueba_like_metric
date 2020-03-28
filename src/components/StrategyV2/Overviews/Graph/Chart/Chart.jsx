@@ -64,7 +64,7 @@ const Chart = () => {
     <Paper classes={{ root: Styles.container }}>
       <Grid container classes={{ root: Styles.header }}>
         <Grid>
-          <Typography variant="h5">Estrategias</Typography>
+          <Typography variant="h5">Precios</Typography>
         </Grid>
         <Grid> </Grid>
       </Grid>
