@@ -19,7 +19,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
     return a + actualBill;
   }, 0);
   const totalBillsWithouIVA = contractDataView.billings.reduce((a, b) => {
-    return a + b.amount * (b.paymentNumber + 1  );
+    return a + b.amount * (b.paymentNumber + 1);
   }, 0);
   return (
     <Fragment>
@@ -92,9 +92,9 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                           FECHA FINAL DE COBRO
                         </span>
                         <p className={style.information}>
-                          {moment(Number(billing.lastBillingDate)).format(
-                            'DD/MM/YYYY',
-                          )}
+                          {moment(Number(billing.lastBillingDate))
+                            .add(Number(billing.paymentNumber), 'M')
+                            .format('DD/MM/YYYY')}
                         </p>
                       </Card>
                       <Card className={style.rightTitle}>

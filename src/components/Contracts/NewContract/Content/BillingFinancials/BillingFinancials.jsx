@@ -106,6 +106,7 @@ const BillingFinancials = ({
           ...billingsArray[billIndex],
           [name]: element.label,
           type: element.type,
+          paymentNumber: 0,
         };
       } else if (name === 'eventId' && element.eventId === 0) {
         bill = {
@@ -516,7 +517,12 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Final"
-                      value={Number(billing.lastBillingDate)}
+                      value={Number(
+                        moment(Number(billing.lastBillingDate)).add(
+                          Number(billing.paymentNumber),
+                          'M',
+                        ),
+                      )}
                       onChange={changeCardValue(
                         'lastBillingDate',
                         billing.id,

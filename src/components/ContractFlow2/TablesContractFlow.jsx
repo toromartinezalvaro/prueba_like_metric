@@ -48,6 +48,36 @@ const TablesContractFlow = ({ billings }) => {
     );
   };
 
+  const datesInitialNumber = (bill, i) => {
+    let initialNumber = 0;
+    bill.items[i] &&
+      bill.items[i].contracts.forEach((information) => {
+        if (
+          parseInt(information.schedulesDate.salesStartDate, 10) >=
+          initialNumber
+        ) {
+          initialNumber = parseInt(
+            information.schedulesDate.salesStartDate,
+            10,
+          );
+        }
+      });
+    return initialNumber;
+  };
+
+  const datesFinalNumber = (bill, i) => {
+    let finalNumber = [];
+    bill.items[i] &&
+      bill.items[i].contracts.forEach((information) => {
+        information.billing.forEach((internalInfo) => {
+          if (parseInt(internalInfo.lastBillingDate, 10) >= finalNumber) {
+            finalNumber.push(parseInt(internalInfo.lastBillingDate, 10));
+          }
+        });
+      });
+    return Math.max(...finalNumber);
+  };
+
   const GroupCellContent = ({ column, row }) => (
     <span>
       {column.title === 'Grupo' ? (
@@ -83,19 +113,17 @@ const TablesContractFlow = ({ billings }) => {
 
   const projectedFunc = (arrProjected) => {
     let valueTotal = 0;
-    if (arrProjected.slice(1).length >= 1) {
-      arrProjected.forEach((value) => {
-        if (value.length > 1) {
-          value.slice(2).forEach((item) => {
-            valueTotal += item;
-          });
-        } else if (value.length <= 1) {
-          value.slice(2).forEach((item) => {
-            valueTotal += item;
-          });
-        }
-      });
-    }
+    arrProjected.forEach((value) => {
+      if (value.length > 1) {
+        value.slice(2).forEach((item) => {
+          valueTotal += item;
+        });
+      } else if (value.length <= 1) {
+        value.slice(2).forEach((item) => {
+          valueTotal += item;
+        });
+      }
+    });
     return parseInt(valueTotal, 10);
   };
 
@@ -107,9 +135,16 @@ const TablesContractFlow = ({ billings }) => {
     return parseInt(totalAcummulated, 10);
   };
 
-  const deepInformation = (bill, group, item) => {
+  const deepInformation = (bill, group, item, q) => {
+    const initialDate = datesInitialNumber(bill, q);
+    const finalDate = datesFinalNumber(bill, q);
+    const numberOfDates =
+      Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
+        ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
+        : 1;
     const information = bill.items.map((value) => {
       return value.contracts.map((val, n) => {
+        let prices = {};
         const contract = textFormater(val.title, 'text');
         const acumulated =
           val.acumulated.length !== 0 ? acummulatedFunc(val.acumulated) : 0;
@@ -124,63 +159,37 @@ const TablesContractFlow = ({ billings }) => {
           projected: numberFormater(projected),
           total: numberFormater(acumulated + projected),
         };
-        const initialDatesValues = columns.forEach((column, x) => {
-          const name = `date${x}`;
-          result = { ...result, [name]: [numberFormater(0)] };
-        });
-        let valueInSameRow = 0;
+        const initialDatesValues = [...Array(numberOfDates)].forEach(
+          (column, x) => {
+            const name = `date${x}`;
+            result = { ...result, [name]: [numberFormater(0)] };
+          },
+        );
         const datesValues = val.billings.map((dateValue, K) => {
           dateValue.slice(1).forEach((singleValue, l) => {
-            valueInSameRow += singleValue;
             const name = `date${l}`;
-            result = { ...result, [name]: [numberFormater(valueInSameRow)] };
+            if (prices[name]) {
+              prices = { ...prices, [name]: [singleValue + prices[name][0]] };
+            } else {
+              prices = { ...prices, [name]: [singleValue] };
+            }
+            result = { ...result, [name]: [numberFormater(prices[name][0])] };
           });
         });
-        valueInSameRow = 0;
         return result;
       });
     });
     return information;
   };
 
-  const datesInitialNumber = (bill, i) => {
-    let initialNumber = 0;
-    bill.items[i] &&
-      bill.items[i].contracts.forEach((information) => {
-        if (
-          parseInt(information.schedulesDate.salesStartDate, 10) >=
-          initialNumber
-        ) {
-          initialNumber = parseInt(
-            information.schedulesDate.salesStartDate,
-            10,
-          );
-        }
-      });
-    return initialNumber;
-  };
-
-  const datesFinalNumber = (bill, i) => {
-    let finalNumber = [];
-    bill.items[i] &&
-      bill.items[i].contracts.forEach((information) => {
-        information.billing.forEach((internalInfo) => {
-          if (parseInt(internalInfo.lastBillingDate, 10) >= finalNumber) {
-            finalNumber.push(parseInt(internalInfo.lastBillingDate, 10));
-          }
-        });
-      });
-    return Math.max(...finalNumber);
-  };
-
   useEffect(() => {
     let active = true;
     if (active) {
       const rowsPerLine = () => {
-        const rows = billings.reduce((acummulated, bill) => {
+        const rows = billings.reduce((acummulated, bill, n) => {
           const group = bill.group;
           const item = bill.items.map((value) => value.item);
-          const contracts = deepInformation(bill, group, item[0]);
+          const contracts = deepInformation(bill, group, item[0], n);
           contracts.forEach((contract) =>
             contract.forEach((row) => {
               acummulated.push(row);
@@ -199,6 +208,7 @@ const TablesContractFlow = ({ billings }) => {
           Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
             ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
             : 1;
+
         let objects = [];
         if (firstPull) {
           objects = [...Array(numberOfDates)].map((value, index) => {

@@ -33,7 +33,9 @@ const SummaryStrategy = (props) => {
                 <p className={styles.gridItem}>{group.units}</p>
                 <p className={styles.gridItem}>
                   <NumberFormat
-                    value={group.averageValue.toFixed(2)}
+                    value={
+                      group.averageValue ? group.averageValue.toFixed(2) : 0
+                    }
                     displayType={'text'}
                     thousandSeparator={true}
                     prefix={'$'}
