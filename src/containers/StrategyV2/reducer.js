@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux';
 import {
   TOGGLE_PRICES,
   CHANGE_VIEW,
@@ -6,6 +7,7 @@ import {
   CHANGE_MARKET__AVERAGE_PRICE,
   CHANGE_MARKET__EA_RATE,
 } from './actions';
+import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 
 export const MAIN_VIEW = 'main';
 export const DETAILS_VIEW = 'details';
@@ -115,4 +117,7 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+export default combineReducers({
+  root: reducer,
+  settings: SettingsReducer,
+});

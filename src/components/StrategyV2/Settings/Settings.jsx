@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import uuidV4 from 'uuid';
@@ -23,17 +23,20 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Styles from './Settings.module.scss';
-import {
-  togglePrice,
-  changeGroup,
-} from '../../../containers/StrategyV2/actions';
+import { toggleShowNoIncrement, changeGroup } from './actions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 Transition.displayName = 'TransitionComponent';
 
-const Settings = ({ state, onTogglePrice, onChangeGroup }) => {
+const Settings = ({
+  selectedGroup,
+  showPricesWithoutIncrement,
+  groups,
+  onTogglePrice,
+  onChangeGroup,
+}) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = useCallback(() => {
@@ -58,10 +61,10 @@ const Settings = ({ state, onTogglePrice, onChangeGroup }) => {
         <InputLabel id="group-select">Grupo</InputLabel>
         <Select
           labelId="group-select"
-          value={state.selectedGroup}
+          value={selectedGroup}
           onChange={changeGroupHandler}
         >
-          {Object.keys(state.groups).map((group) => (
+          {Object.keys(groups).map((group) => (
             <MenuItem key={uuidV4()} value={group}>
               Grupo {group}
             </MenuItem>
@@ -93,7 +96,7 @@ const Settings = ({ state, onTogglePrice, onChangeGroup }) => {
                 <Switch
                   edge="end"
                   onChange={togglePriceHandler}
-                  checked={state.settings.prices.withoutIncrements}
+                  checked={showPricesWithoutIncrement}
                 />
               </ListItemSecondaryAction>
             </ListItem>
@@ -105,19 +108,23 @@ const Settings = ({ state, onTogglePrice, onChangeGroup }) => {
 };
 
 Settings.propTypes = {
-  state: PropTypes.any,
-  onTogglePrice: PropTypes.any,
-  onChangeGroup: PropTypes.any,
+  selectedGroup: PropTypes.number.isRequired,
+  showPricesWithoutIncrement: PropTypes.bool.isRequired,
+  groups: PropTypes.object.isRequired,
+  onTogglePrice: PropTypes.func.isRequired,
+  onChangeGroup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ strategy }) => {
   return {
-    state: strategy,
+    selectedGroup: strategy.settings.selectedGroup,
+    showPricesWithoutIncrement: strategy.settings.showPricesWithoutIncrement,
+    groups: strategy.root.groups,
   };
 };
 
 const mapDispatchToProps = {
-  onTogglePrice: togglePrice,
+  onTogglePrice: toggleShowNoIncrement,
   onChangeGroup: changeGroup,
 };
 
