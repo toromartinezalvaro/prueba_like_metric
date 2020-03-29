@@ -1,4 +1,6 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { memo, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import uuidV4 from 'uuid';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,7 +23,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Styles from './Settings.module.scss';
-import Context from '../../../containers/StrategyV2/context';
 import {
   togglePrice,
   changeGroup,
@@ -32,9 +33,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 Transition.displayName = 'TransitionComponent';
 
-const Settings = () => {
-  const { state, dispatch } = useContext(Context);
-
+const Settings = ({ state, onTogglePrice, onChangeGroup }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = useCallback(() => {
@@ -46,11 +45,11 @@ const Settings = () => {
   }, []);
 
   const togglePriceHandler = useCallback(() => {
-    dispatch(togglePrice());
+    onTogglePrice();
   }, []);
 
   const changeGroupHandler = (event) => {
-    dispatch(changeGroup(event.target.value));
+    onChangeGroup(event.target.value);
   };
 
   return (
@@ -105,4 +104,24 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+Settings.propTypes = {
+  state: PropTypes.any,
+  onTogglePrice: PropTypes.any,
+  onChangeGroup: PropTypes.any,
+};
+
+const mapStateToProps = ({ strategy }) => {
+  return {
+    state: strategy,
+  };
+};
+
+const mapDispatchToProps = {
+  onTogglePrice: togglePrice,
+  onChangeGroup: changeGroup,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Settings);

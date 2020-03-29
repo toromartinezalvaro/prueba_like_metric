@@ -13,7 +13,7 @@ export const DETAILS_VIEW = 'details';
 export const initialState = {
   settings: {
     prices: {
-      withoutIncrements: false,
+      withoutIncrements: true,
     },
   },
   view: MAIN_VIEW,
