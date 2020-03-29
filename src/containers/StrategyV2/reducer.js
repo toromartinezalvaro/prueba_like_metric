@@ -1,24 +1,13 @@
 import { combineReducers } from 'redux';
 import {
-  TOGGLE_PRICES,
-  CHANGE_VIEW,
-  CHANGE_GROUP,
   CHANGE_STRATEGY,
   CHANGE_MARKET__AVERAGE_PRICE,
   CHANGE_MARKET__EA_RATE,
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
-
-export const MAIN_VIEW = 'main';
-export const DETAILS_VIEW = 'details';
+import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
 
 export const initialState = {
-  settings: {
-    prices: {
-      withoutIncrements: true,
-    },
-  },
-  view: MAIN_VIEW,
   selectedGroup: 1,
   groups: {
     1: {
@@ -80,19 +69,6 @@ const changeMarketEARate = (groups, group, EARate) => {
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case TOGGLE_PRICES:
-      return {
-        ...state,
-        settings: {
-          prices: {
-            withoutIncrements: !state.settings.prices.withoutIncrements,
-          },
-        },
-      };
-    case CHANGE_VIEW:
-      return { ...state, view: payload };
-    case CHANGE_GROUP:
-      return { ...state, selectedGroup: payload };
     case CHANGE_STRATEGY:
       return {
         ...state,
@@ -120,4 +96,5 @@ const reducer = (state = initialState, action) => {
 export default combineReducers({
   root: reducer,
   settings: SettingsReducer,
+  overviews: OverviewReducer,
 });

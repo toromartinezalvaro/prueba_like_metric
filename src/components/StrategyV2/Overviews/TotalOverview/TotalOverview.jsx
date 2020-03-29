@@ -1,16 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Typography from '@material-ui/core/Typography';
 import Overview from '../Overview';
 import Widget, { SM, XS } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
-import Context from '../../../../containers/StrategyV2/context';
 import Numbers from '../../../../helpers/numbers';
 
-const TotalOverView = () => {
-  const { state } = useContext(Context);
-  const { selectedGroup, groups } = state;
-
+const TotalOverView = ({ groups, selectedGroup }) => {
   const sales =
     groups[selectedGroup].total.l0 + groups[selectedGroup].total.increment;
   const averagePrice = sales / groups[selectedGroup].total.units;
@@ -94,4 +92,26 @@ const TotalOverView = () => {
   );
 };
 
-export default TotalOverView;
+TotalOverView.propTypes = {
+  groups: PropTypes.objectOf(
+    PropTypes.shape({
+      total: PropTypes.shape({
+        l0: PropTypes.number,
+        increment: PropTypes.number,
+        units: PropTypes.number,
+        averageArea: PropTypes.number,
+        saleSpeed: PropTypes.number,
+        EARate: PropTypes.number,
+        incrementRate: PropTypes.number,
+      }),
+    }),
+  ).isRequired,
+  selectedGroup: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  groups: state.strategy.root.groups,
+  selectedGroup: state.strategy.settings.selectedGroup,
+});
+
+export default connect(mapStateToProps)(TotalOverView);

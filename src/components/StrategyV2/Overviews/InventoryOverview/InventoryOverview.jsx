@@ -1,32 +1,27 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import Overview from '../Overview';
 import Widget, { XS, SM } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
-import Context from '../../../../containers/StrategyV2/context';
-import { changeView } from '../../../../containers/StrategyV2/actions';
-import {
-  MAIN_VIEW,
-  DETAILS_VIEW,
-} from '../../../../containers/StrategyV2/reducer';
+import { changeView } from '../actions';
+import { MAIN_VIEW, DETAILS_VIEW } from '../reducer';
 import Numbers from '../../../../helpers/numbers';
 
-const InventoryOverview = () => {
-  const { state, dispatch } = useContext(Context);
-  const { selectedGroup, groups } = state;
-
+const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
   const units =
     groups[selectedGroup].total.units - groups[selectedGroup].sales.units;
   const { sales } = groups[selectedGroup].inventory;
   const averagePrice = sales / units;
 
   const changeViewHandler = () => {
-    if (state.view === MAIN_VIEW) {
-      dispatch(changeView(DETAILS_VIEW));
-    } else if (state.view === DETAILS_VIEW) {
-      dispatch(changeView(MAIN_VIEW));
+    if (view === MAIN_VIEW) {
+      onViewChange(DETAILS_VIEW);
+    } else if (view === DETAILS_VIEW) {
+      onViewChange(MAIN_VIEW);
     }
   };
 
@@ -140,4 +135,42 @@ const InventoryOverview = () => {
   );
 };
 
-export default InventoryOverview;
+InventoryOverview.propTypes = {
+  groups: PropTypes.objectOf(
+    PropTypes.shape({
+      total: PropTypes.shape({
+        units: PropTypes.number,
+      }),
+      sales: PropTypes.shape({
+        units: PropTypes.number,
+      }),
+      inventory: PropTypes.shape({
+        averageArea: PropTypes.number,
+        saleSpeed: PropTypes.number,
+        sales: PropTypes.number,
+        appliedIncrement: PropTypes.number,
+        projectedIncrement: PropTypes.number,
+        EARate: PropTypes.number,
+      }),
+      strategy: PropTypes.number,
+    }),
+  ).isRequired,
+  selectedGroup: PropTypes.number.isRequired,
+  view: PropTypes.oneOf([MAIN_VIEW, DETAILS_VIEW]),
+  onViewChange: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  groups: state.strategy.root.groups,
+  selectedGroup: state.strategy.settings.selectedGroup,
+  view: state.strategy.overviews.view,
+});
+
+const mapDispatchToProps = {
+  onViewChange: changeView,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(InventoryOverview);
