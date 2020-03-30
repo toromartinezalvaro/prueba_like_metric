@@ -70,8 +70,22 @@ const TablesContractFlow = ({ billings }) => {
     bill.items[i] &&
       bill.items[i].contracts.forEach((information) => {
         information.billing.forEach((internalInfo) => {
-          if (parseInt(internalInfo.lastBillingDate, 10) >= finalNumber) {
-            finalNumber.push(parseInt(internalInfo.lastBillingDate, 10));
+          if (
+            Number(
+              moment(Number(internalInfo.lastBillingDate)).add(
+                Number(internalInfo.paymentNumber),
+                'M',
+              ),
+            ) >= finalNumber
+          ) {
+            finalNumber.push(
+              Number(
+                moment(Number(internalInfo.lastBillingDate)).add(
+                  Number(internalInfo.paymentNumber),
+                  'M',
+                ),
+              ),
+            );
           }
         });
       });
