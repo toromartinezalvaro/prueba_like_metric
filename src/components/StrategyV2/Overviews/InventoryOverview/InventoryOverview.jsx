@@ -11,6 +11,8 @@ import { changeView } from '../actions';
 import { MAIN_VIEW, DETAILS_VIEW } from '../reducer';
 import Numbers from '../../../../helpers/numbers';
 
+import TextField from '@material-ui/core/TextField';
+
 const InventoryOverview = ({
   totalUnits,
   salesUnits,
@@ -34,6 +36,98 @@ const InventoryOverview = ({
       onViewChange(MAIN_VIEW);
     }
   };
+
+  const mainInfoWidgets = [
+    <Widget key="DetailInv-SaleSpeed" title="Velocidad de ventas" size={SM}>
+      {saleSpeed}
+    </Widget>,
+    <Widget
+      key="DetailInv-InventoryRotation"
+      title="Rotacion de intentario"
+      size={SM}
+    >
+      {Numbers.toFixed(units / saleSpeed)}
+    </Widget>,
+    <WidgetGroup
+      key="DetailInv-IncrementRates"
+      showGroup
+      widgets={[
+        <Widget
+          key="DetailInv-appliedIncrement"
+          title="Incremento aplicado en Inv"
+          size={XS}
+        >
+          <NumberFormat
+            value={Numbers.toFixed(appliedIncrement)}
+            displayType="text"
+            prefix="$"
+            thousandSeparator
+          />
+        </Widget>,
+        <Widget
+          key="DetailInv-ProjectedIncrement"
+          title="Incremento proyectado"
+          size={XS}
+        >
+          <NumberFormat
+            value={Numbers.toFixed(projectedIncrement * 100)}
+            displayType="text"
+            prefix="$"
+            thousandSeparator
+          />
+        </Widget>,
+      ]}
+    />,
+    <Widget
+      key="DetailInv-EARate"
+      title="Tasa Incremento e.a Proyectada"
+      size={SM}
+    >
+      {Numbers.toFixed(EARate * 100)}%
+    </Widget>,
+  ];
+
+  const detailWidget = [
+    <Widget key="DetailInv-SaleSpeed" title="Velocidad de ventas" size={SM}>
+      <TextField
+        label="Velocidad de ventas"
+        placeholder="1.3"
+        value={saleSpeed}
+        variant="outlined"
+      />
+    </Widget>,
+    <WidgetGroup
+      key="DetailInv-IncrementRates"
+      showGroup
+      widgets={[
+        <Widget
+          key="DetailInv-appliedIncrement"
+          title="Rotacion de inventario"
+          size={XS}
+        >
+          5
+        </Widget>,
+        <Widget
+          key="DetailInv-ProjectedIncrement"
+          title="Plazo cuota inciial"
+          size={XS}
+        >
+          17
+        </Widget>,
+      ]}
+    />,
+    <Widget key="567567fasdfa" title="Incremento Futuro en Pesos" size={SM}>
+      <TextField
+        label="Incremento"
+        placeholder="1.3"
+        value={saleSpeed}
+        variant="outlined"
+      />
+    </Widget>,
+    <Widget key="567567fasdfa" title="Tasa incremento e.a" size={SM}>
+      12.68%
+    </Widget>,
+  ];
 
   return (
     <Overview
@@ -59,55 +153,7 @@ const InventoryOverview = ({
         </Tooltip>
       }
       subtitle={`${units} Unidades de ${averageArea}m² Promedio`}
-      infoWidgets={[
-        <Widget key="DetailInv-SaleSpeed" title="Velocidad de ventas" size="sm">
-          {saleSpeed}
-        </Widget>,
-        <Widget
-          key="DetailInv-InventoryRotation"
-          title="Rotacion de intentario"
-          size={SM}
-        >
-          {Numbers.toFixed(units / saleSpeed)}
-        </Widget>,
-        <WidgetGroup
-          key="DetailInv-IncrementRates"
-          showGroup
-          widgets={[
-            <Widget
-              key="DetailInv-appliedIncrement"
-              title="Incremento aplicado en Inv"
-              size={XS}
-            >
-              <NumberFormat
-                value={Numbers.toFixed(appliedIncrement)}
-                displayType="text"
-                prefix="$"
-                thousandSeparator
-              />
-            </Widget>,
-            <Widget
-              key="DetailInv-ProjectedIncrement"
-              title="Incremento proyectado"
-              size={XS}
-            >
-              <NumberFormat
-                value={Numbers.toFixed(projectedIncrement * 100)}
-                displayType="text"
-                prefix="$"
-                thousandSeparator
-              />
-            </Widget>,
-          ]}
-        />,
-        <Widget
-          key="DetailInv-EARate"
-          title="Tasa Incremento e.a Proyectada"
-          size={SM}
-        >
-          {Numbers.toFixed(EARate * 100)}%
-        </Widget>,
-      ]}
+      infoWidgets={view === MAIN_VIEW ? mainInfoWidgets : detailWidget}
       priceWidgets={[
         <Widget key="DetailInv-IncrementRate" title="Ventas" size={SM}>
           <NumberFormat
