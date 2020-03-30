@@ -48,18 +48,6 @@ export const initialState = {
   },
 };
 
-const changeStrategy = (groups, group, strategy) => {
-  const tempGroups = { ...groups };
-  tempGroups[group].strategy = strategy;
-  return tempGroups;
-};
-
-const changeMarketAveragePrice = (groups, group, averagePrice) => {
-  const tempGroups = { ...groups };
-  tempGroups[group].market.averagePrice = averagePrice;
-  return tempGroups;
-};
-
 const changeMarketEARate = (groups, group, EARate) => {
   const tempGroups = { ...groups };
   tempGroups[group].market.EARate = EARate;
@@ -72,16 +60,27 @@ const reducer = (state = initialState, action) => {
     case CHANGE_STRATEGY:
       return {
         ...state,
-        groups: changeStrategy(state.groups, state.selectedGroup, payload),
+        groups: {
+          ...state.groups,
+          [state.selectedGroup]: {
+            ...state.groups[state.selectedGroup],
+            strategy: payload,
+          },
+        },
       };
     case CHANGE_MARKET__AVERAGE_PRICE:
       return {
         ...state,
-        groups: changeMarketAveragePrice(
-          state.groups,
-          state.selectedGroup,
-          payload,
-        ),
+        groups: {
+          ...state.groups,
+          [state.selectedGroup]: {
+            ...state.groups[state.selectedGroup],
+            market: {
+              ...state.groups[state.selectedGroup].market,
+              averagePrice: payload,
+            },
+          },
+        },
       };
     case CHANGE_MARKET__EA_RATE:
       return {

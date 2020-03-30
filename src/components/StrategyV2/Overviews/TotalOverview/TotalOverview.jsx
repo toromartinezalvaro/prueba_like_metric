@@ -8,32 +8,36 @@ import Widget, { SM, XS } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 import Numbers from '../../../../helpers/numbers';
 
-const TotalOverView = ({ groups, selectedGroup }) => {
-  const sales =
-    groups[selectedGroup].total.l0 + groups[selectedGroup].total.increment;
-  const averagePrice = sales / groups[selectedGroup].total.units;
+const TotalOverView = ({
+  l0,
+  increment,
+  units,
+  averageArea,
+  saleSpeed,
+  EARate,
+  incrementRate,
+}) => {
+  const sales = l0 + increment;
+  const averagePrice = sales / units;
 
   return (
     <Overview
       title={<Typography variant="h5">Detalle del Total</Typography>}
-      subtitle={`${groups[selectedGroup].total.units} Unidades de ${groups[selectedGroup].total.averageArea}m² Promedio`}
+      subtitle={`${units} Unidades de ${averageArea}m² Promedio`}
       infoWidgets={[
         <Widget key="Total-SaleSpeed" title="Velocidad de ventas" size={SM}>
-          {groups[selectedGroup].total.saleSpeed}
+          {saleSpeed}
         </Widget>,
         <Widget
           key="Total-InventoryRotation"
           title="Rotacion de intentario"
           size={SM}
         >
-          {Numbers.toFixed(
-            groups[selectedGroup].total.units /
-              groups[selectedGroup].total.saleSpeed,
-          )}
+          {Numbers.toFixed(units / saleSpeed)}
         </Widget>,
         <Widget key="Total-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
-            value={groups[selectedGroup].total.increment}
+            value={increment}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -41,21 +45,21 @@ const TotalOverView = ({ groups, selectedGroup }) => {
         </Widget>,
         <WidgetGroup
           key="Total-IncrementRates"
+          showGroup
           widgets={[
             <Widget
               key="Total-AERate"
               title="Tasa de incrementos e.a"
               size={XS}
             >
-              {Numbers.toFixed(groups[selectedGroup].total.EARate * 100)}%
+              {Numbers.toFixed(EARate * 100)}%
             </Widget>,
             <Widget
               key="Total-IncrementPercentage"
               title="% Lista de incremento"
               size={XS}
             >
-              {Numbers.toFixed(groups[selectedGroup].total.incrementRate * 100)}
-              %
+              {Numbers.toFixed(incrementRate * 100)}%
             </Widget>,
           ]}
         />,
@@ -79,9 +83,7 @@ const TotalOverView = ({ groups, selectedGroup }) => {
         </Widget>,
         <Widget key="Total-M2Price" title="Valor m²" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(
-              averagePrice / groups[selectedGroup].total.averageArea,
-            )}
+            value={Numbers.toFixed(averagePrice / averageArea)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -93,25 +95,28 @@ const TotalOverView = ({ groups, selectedGroup }) => {
 };
 
 TotalOverView.propTypes = {
-  groups: PropTypes.objectOf(
-    PropTypes.shape({
-      total: PropTypes.shape({
-        l0: PropTypes.number,
-        increment: PropTypes.number,
-        units: PropTypes.number,
-        averageArea: PropTypes.number,
-        saleSpeed: PropTypes.number,
-        EARate: PropTypes.number,
-        incrementRate: PropTypes.number,
-      }),
-    }),
-  ).isRequired,
-  selectedGroup: PropTypes.number.isRequired,
+  l0: PropTypes.number.isRequired,
+  increment: PropTypes.number.isRequired,
+  units: PropTypes.number.isRequired,
+  averageArea: PropTypes.number.isRequired,
+  saleSpeed: PropTypes.number.isRequired,
+  EARate: PropTypes.number.isRequired,
+  incrementRate: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  groups: state.strategy.root.groups,
-  selectedGroup: state.strategy.settings.selectedGroup,
-});
+const mapStateToProps = (state) => {
+  const { total } = state.strategy.root.groups[
+    state.strategy.settings.selectedGroup
+  ];
+  return {
+    l0: total.l0,
+    increment: total.increment,
+    units: total.units,
+    averageArea: total.averageArea,
+    saleSpeed: total.saleSpeed,
+    EARate: total.EARate,
+    incrementRate: total.incrementRate,
+  };
+};
 
 export default connect(mapStateToProps)(TotalOverView);

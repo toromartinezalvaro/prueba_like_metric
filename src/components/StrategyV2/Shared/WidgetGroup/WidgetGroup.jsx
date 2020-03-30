@@ -8,7 +8,7 @@ const WidgetGroup = ({ widgets, defaultWidgetIndex, showGroup }) => {
   return (
     <Grid container direction="column" alignItems="stretch" spacing={1}>
       {widgets
-        .filter((_, index) => index === defaultWidgetIndex || !showGroup)
+        .filter((_, index) => index === defaultWidgetIndex || showGroup)
         .map((widget) => (
           <Grid item key={uuidV4()} xs={12}>
             {widget}

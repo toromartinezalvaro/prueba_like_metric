@@ -33,7 +33,7 @@ Transition.displayName = 'TransitionComponent';
 const Settings = ({
   selectedGroup,
   showPricesWithoutIncrement,
-  groups,
+  groups, // ! Performance issues, groups are not being evaluated correctly and being re-render
   onTogglePrice,
   onChangeGroup,
 }) => {
@@ -64,7 +64,7 @@ const Settings = ({
           value={selectedGroup}
           onChange={changeGroupHandler}
         >
-          {Object.keys(groups).map((group) => (
+          {groups.map((group) => (
             <MenuItem key={uuidV4()} value={group}>
               Grupo {group}
             </MenuItem>
@@ -110,7 +110,7 @@ const Settings = ({
 Settings.propTypes = {
   selectedGroup: PropTypes.number.isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
-  groups: PropTypes.object.isRequired,
+  groups: PropTypes.arrayOf(PropTypes.number).isRequired,
   onTogglePrice: PropTypes.func.isRequired,
   onChangeGroup: PropTypes.func.isRequired,
 };
@@ -119,7 +119,7 @@ const mapStateToProps = ({ strategy }) => {
   return {
     selectedGroup: strategy.settings.selectedGroup,
     showPricesWithoutIncrement: strategy.settings.showPricesWithoutIncrement,
-    groups: strategy.root.groups,
+    groups: Object.keys(strategy.root.groups),
   };
 };
 

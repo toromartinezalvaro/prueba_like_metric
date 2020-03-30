@@ -7,13 +7,14 @@ import Widget, { SM, MD } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 
 const ProjectedSalesWidget = ({
-  groups,
-  selectedGroup,
+  totalIncrement,
+  salesIncrement,
+  inventoryProjectedSales,
   showPricesWithoutIncrement,
 }) => {
   return (
     <WidgetGroup
-      showGroup={!showPricesWithoutIncrement}
+      showGroup={showPricesWithoutIncrement}
       widgets={[
         <Widget
           key={uuidV4()}
@@ -22,11 +23,7 @@ const ProjectedSalesWidget = ({
           size={showPricesWithoutIncrement ? SM : MD}
         >
           <NumberFormat
-            value={
-              groups[selectedGroup].inventory.projectedSales +
-              groups[selectedGroup].total.increment -
-              groups[selectedGroup].sales.increment
-            }
+            value={inventoryProjectedSales + totalIncrement - salesIncrement}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -39,7 +36,7 @@ const ProjectedSalesWidget = ({
           size={SM}
         >
           <NumberFormat
-            value={groups[selectedGroup].inventory.projectedSales}
+            value={inventoryProjectedSales}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -51,29 +48,23 @@ const ProjectedSalesWidget = ({
 };
 
 ProjectedSalesWidget.propTypes = {
-  groups: PropTypes.objectOf(
-    PropTypes.shape({
-      total: PropTypes.shape({
-        increment: PropTypes.number,
-      }),
-      sales: PropTypes.shape({
-        increment: PropTypes.number,
-      }),
-      inventory: PropTypes.shape({
-        increment: PropTypes.number,
-        projectedSales: PropTypes.number,
-      }),
-    }),
-  ).isRequired,
-  selectedGroup: PropTypes.number.isRequired,
+  totalIncrement: PropTypes.number.isRequired,
+  salesIncrement: PropTypes.number.isRequired,
+  inventoryProjectedSales: PropTypes.number.isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  groups: state.strategy.root.groups,
-  selectedGroup: state.strategy.settings.selectedGroup,
-  showPricesWithoutIncrement:
-    state.strategy.settings.showPricesWithoutIncrement,
-});
+const mapStateToProps = (state) => {
+  const { total, sales, inventory } = state.strategy.root.groups[
+    state.strategy.settings.selectedGroup
+  ];
+  return {
+    totalIncrement: total.increment,
+    salesIncrement: sales.increment,
+    inventoryProjectedSales: inventory.projectedSales,
+    showPricesWithoutIncrement:
+      state.strategy.settings.showPricesWithoutIncrement,
+  };
+};
 
 export default connect(mapStateToProps)(ProjectedSalesWidget);

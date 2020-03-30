@@ -6,14 +6,10 @@ import NumberFormat from 'react-number-format';
 import Widget, { SM, MD } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 
-const TotalSalesWidget = ({
-  groups,
-  selectedGroup,
-  showPricesWithoutIncrement,
-}) => {
+const TotalSalesWidget = ({ l0, increment, showPricesWithoutIncrement }) => {
   return (
     <WidgetGroup
-      showGroup={!showPricesWithoutIncrement}
+      showGroup={showPricesWithoutIncrement}
       widgets={[
         <Widget
           key={uuidV4()}
@@ -22,10 +18,7 @@ const TotalSalesWidget = ({
           size={showPricesWithoutIncrement ? SM : MD}
         >
           <NumberFormat
-            value={
-              groups[selectedGroup].total.l0 +
-              groups[selectedGroup].total.increment
-            }
+            value={l0 + increment}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -38,7 +31,7 @@ const TotalSalesWidget = ({
           size={SM}
         >
           <NumberFormat
-            value={groups[selectedGroup].total.l0}
+            value={l0}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -50,23 +43,20 @@ const TotalSalesWidget = ({
 };
 
 TotalSalesWidget.propTypes = {
-  groups: PropTypes.objectOf(
-    PropTypes.shape({
-      total: PropTypes.shape({
-        l0: PropTypes.number,
-        increment: PropTypes.number,
-      }),
-    }),
-  ).isRequired,
-  selectedGroup: PropTypes.number.isRequired,
+  l0: PropTypes.number.isRequired,
+  increment: PropTypes.number.isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  groups: state.strategy.root.groups,
-  selectedGroup: state.strategy.settings.selectedGroup,
-  showPricesWithoutIncrement:
-    state.strategy.settings.showPricesWithoutIncrement,
-});
+const mapStateToProps = (state) => {
+  const group =
+    state.strategy.root.groups[state.strategy.settings.selectedGroup];
+  return {
+    l0: group.total.l0,
+    increment: group.total.increment,
+    showPricesWithoutIncrement:
+      state.strategy.settings.showPricesWithoutIncrement,
+  };
+};
 
 export default connect(mapStateToProps)(TotalSalesWidget);

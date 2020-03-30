@@ -7,24 +7,17 @@ import Widget from '../Shared/Widget';
 import TotalSalesWidget from './TotalSalesWidget';
 import ProjectedSalesWidget from './ProjectedSalesWidget';
 
-const Widgets = ({ groups, selectedGroup }) => {
+const Widgets = ({ totalUnits, salesUnits, salesL0, salesIncrement }) => {
   return (
     <Grid container justify="space-between" alignItems="stretch" spacing={3}>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Totales">
-          {groups[selectedGroup].total.units}
-        </Widget>
+        <Widget title="Unidades Totales">{totalUnits}</Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Vendidas">
-          {groups[selectedGroup].sales.units}
-        </Widget>
+        <Widget title="Unidades Vendidas">{salesUnits}</Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Disponibles">
-          {groups[selectedGroup].total.units -
-            groups[selectedGroup].sales.units}
-        </Widget>
+        <Widget title="Unidades Disponibles">{totalUnits - salesUnits}</Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
         <TotalSalesWidget />
@@ -32,10 +25,7 @@ const Widgets = ({ groups, selectedGroup }) => {
       <Grid item xs={12} lg={2}>
         <Widget title="Ventas realizadas">
           <NumberFormat
-            value={
-              groups[selectedGroup].sales.l0 +
-              groups[selectedGroup].sales.increment
-            }
+            value={salesL0 + salesIncrement}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -50,22 +40,22 @@ const Widgets = ({ groups, selectedGroup }) => {
 };
 
 Widgets.propTypes = {
-  groups: PropTypes.objectOf(
-    PropTypes.shape({
-      total: PropTypes.shape({ units: PropTypes.number }),
-      sales: PropTypes.shape({
-        units: PropTypes.number,
-        l0: PropTypes.number,
-        increment: PropTypes.number,
-      }),
-    }),
-  ).isRequired,
-  selectedGroup: PropTypes.number.isRequired,
+  totalUnits: PropTypes.number.isRequired,
+  salesUnits: PropTypes.number.isRequired,
+  salesL0: PropTypes.number.isRequired,
+  salesIncrement: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  groups: state.strategy.root.groups,
-  selectedGroup: state.strategy.settings.selectedGroup,
-});
+const mapStateToProps = (state) => {
+  const { total, sales } = state.strategy.root.groups[
+    state.strategy.settings.selectedGroup
+  ];
+  return {
+    totalUnits: total.units,
+    salesUnits: sales.units,
+    salesL0: sales.l0,
+    salesIncrement: sales.increment,
+  };
+};
 
 export default connect(mapStateToProps)(Widgets);

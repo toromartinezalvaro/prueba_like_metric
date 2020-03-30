@@ -1,29 +1,29 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Input, { CURRENCY, PERCENTAGE } from './Input';
+import Numbers from '../../../../../../helpers/numbers';
 import {
   changeMarketAveragePrice,
   changeMarketEARate,
 } from '../../../../../../containers/StrategyV2/actions';
-import Context from '../../../../../../containers/StrategyV2/context';
-import Input, { CURRENCY, PERCENTAGE } from './Input';
-import Numbers from '../../../../../../helpers/numbers';
 
-const Market = () => {
-  const { state, dispatch } = useContext(Context);
-
-  const { selectedGroup } = state;
-  const group = state.groups[selectedGroup];
-  const { averagePrice, EARate } = group.market;
-
+const Market = ({
+  averagePrice,
+  EARate,
+  onChangeMarketAveragePrice,
+  onChangeMarketEARate,
+}) => {
   const averagePriceChangeHandler = (event) => {
-    dispatch(changeMarketAveragePrice(event.target.value));
+    onChangeMarketAveragePrice(event.target.value);
   };
 
   const EARateChangeHandler = (event) => {
-    dispatch(changeMarketEARate(event.target.value));
+    onChangeMarketEARate(event.target.value);
   };
 
   return (
@@ -61,4 +61,26 @@ const Market = () => {
   );
 };
 
-export default Market;
+Market.propTypes = {
+  averagePrice: PropTypes.number.isRequired,
+  EARate: PropTypes.number.isRequired,
+  onChangeMarketAveragePrice: PropTypes.func.isRequired,
+  onChangeMarketEARate: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  const { market } = state.strategy.root.groups[
+    state.strategy.settings.selectedGroup
+  ];
+  return { averagePrice: market.averagePrice, EARate: market.EARate };
+};
+
+const mapDispatchToProps = {
+  onChangeMarketAveragePrice: changeMarketAveragePrice,
+  onChangeMarketEARate: changeMarketEARate,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Market);

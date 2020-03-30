@@ -11,10 +11,20 @@ import { changeView } from '../actions';
 import { MAIN_VIEW, DETAILS_VIEW } from '../reducer';
 import Numbers from '../../../../helpers/numbers';
 
-const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
-  const units =
-    groups[selectedGroup].total.units - groups[selectedGroup].sales.units;
-  const { sales } = groups[selectedGroup].inventory;
+const InventoryOverview = ({
+  totalUnits,
+  salesUnits,
+  averageArea,
+  saleSpeed,
+  sales,
+  appliedIncrement,
+  projectedIncrement,
+  EARate,
+  strategy,
+  view,
+  onViewChange,
+}) => {
+  const units = totalUnits - salesUnits;
   const averagePrice = sales / units;
 
   const changeViewHandler = () => {
@@ -30,7 +40,7 @@ const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
       title={
         <Tooltip
           title={
-            groups[selectedGroup].strategy === null
+            strategy === null
               ? 'NO hay una estrategia'
               : 'Estrategia seleccionada'
           }
@@ -42,28 +52,27 @@ const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
             variant="contained"
             fullWidth
             disableElevation
-            color={
-              groups[selectedGroup].strategy === null ? 'secondary' : 'primary'
-            }
+            color={strategy === null ? 'secondary' : 'primary'}
           >
             Detalles del Inventario
           </Button>
         </Tooltip>
       }
-      subtitle={`${units} Unidades de ${groups[selectedGroup].inventory.averageArea}m² Promedio`}
+      subtitle={`${units} Unidades de ${averageArea}m² Promedio`}
       infoWidgets={[
         <Widget key="DetailInv-SaleSpeed" title="Velocidad de ventas" size="sm">
-          {groups[selectedGroup].inventory.saleSpeed}
+          {saleSpeed}
         </Widget>,
         <Widget
           key="DetailInv-InventoryRotation"
           title="Rotacion de intentario"
           size={SM}
         >
-          {Numbers.toFixed(units / groups[selectedGroup].inventory.saleSpeed)}
+          {Numbers.toFixed(units / saleSpeed)}
         </Widget>,
         <WidgetGroup
           key="DetailInv-IncrementRates"
+          showGroup
           widgets={[
             <Widget
               key="DetailInv-appliedIncrement"
@@ -71,9 +80,7 @@ const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
               size={XS}
             >
               <NumberFormat
-                value={Numbers.toFixed(
-                  groups[selectedGroup].inventory.appliedIncrement,
-                )}
+                value={Numbers.toFixed(appliedIncrement)}
                 displayType="text"
                 prefix="$"
                 thousandSeparator
@@ -85,9 +92,7 @@ const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
               size={XS}
             >
               <NumberFormat
-                value={Numbers.toFixed(
-                  groups[selectedGroup].inventory.projectedIncrement * 100,
-                )}
+                value={Numbers.toFixed(projectedIncrement * 100)}
                 displayType="text"
                 prefix="$"
                 thousandSeparator
@@ -100,7 +105,7 @@ const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
           title="Tasa Incremento e.a Proyectada"
           size={SM}
         >
-          {Numbers.toFixed(groups[selectedGroup].inventory.EARate * 100)}%
+          {Numbers.toFixed(EARate * 100)}%
         </Widget>,
       ]}
       priceWidgets={[
@@ -122,9 +127,7 @@ const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
         </Widget>,
         <Widget key="DetailInv-M2Price" title="Valor m²" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(
-              averagePrice / groups[selectedGroup].inventory.averageArea,
-            )}
+            value={Numbers.toFixed(averagePrice / averageArea)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -136,35 +139,36 @@ const InventoryOverview = ({ groups, selectedGroup, view, onViewChange }) => {
 };
 
 InventoryOverview.propTypes = {
-  groups: PropTypes.objectOf(
-    PropTypes.shape({
-      total: PropTypes.shape({
-        units: PropTypes.number,
-      }),
-      sales: PropTypes.shape({
-        units: PropTypes.number,
-      }),
-      inventory: PropTypes.shape({
-        averageArea: PropTypes.number,
-        saleSpeed: PropTypes.number,
-        sales: PropTypes.number,
-        appliedIncrement: PropTypes.number,
-        projectedIncrement: PropTypes.number,
-        EARate: PropTypes.number,
-      }),
-      strategy: PropTypes.number,
-    }),
-  ).isRequired,
-  selectedGroup: PropTypes.number.isRequired,
+  totalUnits: PropTypes.number.isRequired,
+  salesUnits: PropTypes.number.isRequired,
+  averageArea: PropTypes.number.isRequired,
+  saleSpeed: PropTypes.number.isRequired,
+  sales: PropTypes.number.isRequired,
+  appliedIncrement: PropTypes.number.isRequired,
+  projectedIncrement: PropTypes.number.isRequired,
+  EARate: PropTypes.number.isRequired,
+  strategy: PropTypes.number.isRequired,
   view: PropTypes.oneOf([MAIN_VIEW, DETAILS_VIEW]),
   onViewChange: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  groups: state.strategy.root.groups,
-  selectedGroup: state.strategy.settings.selectedGroup,
-  view: state.strategy.overviews.view,
-});
+const mapStateToProps = (state) => {
+  const { total, sales, inventory, strategy } = state.strategy.root.groups[
+    state.strategy.settings.selectedGroup
+  ];
+  return {
+    totalUnits: total.units,
+    salesUnits: sales.units,
+    averageArea: inventory.averageArea,
+    saleSpeed: inventory.saleSpeed,
+    sales: inventory.sales,
+    appliedIncrement: inventory.appliedIncrement,
+    projectedIncrement: inventory.projectedIncrement,
+    EARate: inventory.EARate,
+    strategy,
+    view: state.strategy.overviews.view,
+  };
+};
 
 const mapDispatchToProps = {
   onViewChange: changeView,

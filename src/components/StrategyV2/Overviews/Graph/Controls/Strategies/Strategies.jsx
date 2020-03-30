@@ -1,4 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -9,19 +11,14 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import { changeStrategy } from '../../../../../../containers/StrategyV2/actions';
-import Context from '../../../../../../containers/StrategyV2/context';
 
-const Strategies = () => {
-  const { state, dispatch } = useContext(Context);
-
-  const group = state.groups[state.selectedGroup];
-
+const Strategies = ({ strategy, onChangeStrategy }) => {
   const changeStrategyHandler = (event) => {
-    dispatch(changeStrategy(Number(event.target.value)));
+    onChangeStrategy(Number(event.target.value));
   };
 
   const resetStrategyHandler = () => {
-    dispatch(changeStrategy(null));
+    onChangeStrategy(null);
   };
 
   return (
@@ -36,7 +33,7 @@ const Strategies = () => {
             <RadioGroup
               row
               aria-label="estrategia"
-              value={group.strategy}
+              value={strategy}
               onChange={changeStrategyHandler}
             >
               <FormControlLabel
@@ -77,4 +74,23 @@ const Strategies = () => {
   );
 };
 
-export default Strategies;
+Strategies.propTypes = {
+  strategy: PropTypes.number.isRequired,
+  onChangeStrategy: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  const { strategy } = state.strategy.root.groups[
+    state.strategy.settings.selectedGroup
+  ];
+  return { strategy };
+};
+
+const mapDispatchToProps = {
+  onChangeStrategy: changeStrategy,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Strategies);

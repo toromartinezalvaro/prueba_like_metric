@@ -7,38 +7,41 @@ import Overview from '../Overview';
 import Widget, { SM } from '../../Shared/Widget';
 import Numbers from '../../../../helpers/numbers';
 
-const SalesOverview = ({ groups, selectedGroup }) => {
-  const sales =
-    groups[selectedGroup].sales.l0 + groups[selectedGroup].sales.increment;
-  const averagePrice = sales / groups[selectedGroup].sales.units;
+const SalesOverview = ({
+  l0,
+  increment,
+  units,
+  averageArea,
+  saleSpeed,
+  EARate,
+}) => {
+  const sales = l0 + increment;
+  const averagePrice = sales / units;
   return (
     <Overview
       title={<Typography variant="h5">Detalles de lo vendido</Typography>}
-      subtitle={`${groups[selectedGroup].sales.units} Unidades de ${groups[selectedGroup].sales.averageArea}m² Promedio`}
+      subtitle={`${units} Unidades de ${averageArea}m² Promedio`}
       infoWidgets={[
         <Widget key="Sales-SaleSpeed" title="Velocidad de ventas" size={SM}>
-          {groups[selectedGroup].sales.saleSpeed}
+          {saleSpeed}
         </Widget>,
         <Widget
           key="Sales-InventoryRotation"
           title="Rotacion de intentario"
           size={SM}
         >
-          {Numbers.toFixed(
-            groups[selectedGroup].sales.units /
-              groups[selectedGroup].sales.saleSpeed,
-          )}
+          {Numbers.toFixed(units / saleSpeed)}
         </Widget>,
         <Widget key="Sales-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
-            value={groups[selectedGroup].sales.increment}
+            value={increment}
             displayType="text"
             prefix="$"
             thousandSeparator
           />
         </Widget>,
         <Widget key="Sales-EARate" title="Tasa de incremento e.a" size={SM}>
-          {Numbers.toFixed(groups[selectedGroup].sales.EARate * 100)}%
+          {Numbers.toFixed(EARate * 100)}%
         </Widget>,
       ]}
       priceWidgets={[
@@ -60,9 +63,7 @@ const SalesOverview = ({ groups, selectedGroup }) => {
         </Widget>,
         <Widget key="Sales-M2Price" title="Valor m²" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(
-              averagePrice / groups[selectedGroup].sales.averageArea,
-            )}
+            value={Numbers.toFixed(averagePrice / averageArea)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -74,24 +75,25 @@ const SalesOverview = ({ groups, selectedGroup }) => {
 };
 
 SalesOverview.propTypes = {
-  groups: PropTypes.objectOf(
-    PropTypes.shape({
-      sales: PropTypes.shape({
-        l0: PropTypes.number,
-        increment: PropTypes.number,
-        units: PropTypes.number,
-        averageArea: PropTypes.number,
-        saleSpeed: PropTypes.number,
-        EARate: PropTypes.number,
-      }),
-    }),
-  ).isRequired,
-  selectedGroup: PropTypes.number.isRequired,
+  l0: PropTypes.number.isRequired,
+  increment: PropTypes.number.isRequired,
+  units: PropTypes.number.isRequired,
+  averageArea: PropTypes.number.isRequired,
+  saleSpeed: PropTypes.number.isRequired,
+  EARate: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  groups: state.strategy.root.groups,
-  selectedGroup: state.strategy.settings.selectedGroup,
-});
-
+const mapStateToProps = (state) => {
+  const { sales } = state.strategy.root.groups[
+    state.strategy.settings.selectedGroup
+  ];
+  return {
+    l0: sales.l0,
+    increment: sales.increment,
+    units: sales.units,
+    averageArea: sales.averageArea,
+    saleSpeed: sales.saleSpeed,
+    EARate: sales.EARate,
+  };
+};
 export default connect(mapStateToProps)(SalesOverview);
