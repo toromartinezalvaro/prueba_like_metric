@@ -148,7 +148,7 @@ const TablesContractFlow = ({ billings }) => {
     });
     return parseInt(totalAcummulated, 10);
   };
-
+  let bigDummie = 0;
   const deepInformation = (bill, group, item, q) => {
     const initialDate = datesInitialNumber(bill, q);
     const finalDate = datesFinalNumber(bill, q);
@@ -156,6 +156,7 @@ const TablesContractFlow = ({ billings }) => {
       Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
         ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
         : 1;
+    bigDummie = numberOfDates > bigDummie ? numberOfDates : bigDummie;
     const information = bill.items.map((value) => {
       return value.contracts.map((val, n) => {
         let prices = {};
@@ -173,7 +174,8 @@ const TablesContractFlow = ({ billings }) => {
           projected: numberFormater(projected),
           total: numberFormater(acumulated + projected),
         };
-        const initialDatesValues = [...Array(numberOfDates)].forEach(
+
+        const initialDatesValues = [...Array(bigDummie)].forEach(
           (column, x) => {
             const name = `date${x}`;
             result = { ...result, [name]: [numberFormater(0)] };
@@ -215,6 +217,7 @@ const TablesContractFlow = ({ billings }) => {
         return rows;
       };
       let firstPull = true;
+      let dummie = 0;
       const columnsPerLine = billings.map((bill, n) => {
         const initialDate = datesInitialNumber(bill, n);
         const finalDate = datesFinalNumber(bill, n);
@@ -224,8 +227,9 @@ const TablesContractFlow = ({ billings }) => {
             : 1;
 
         let objects = [];
+        dummie = numberOfDates > dummie ? numberOfDates : dummie;
         if (firstPull) {
-          objects = [...Array(numberOfDates)].map((value, index) => {
+          objects = [...Array(dummie)].map((value, index) => {
             return {
               name: `date${index}`,
               title: String(
