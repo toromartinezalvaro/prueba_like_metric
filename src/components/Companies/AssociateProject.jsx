@@ -13,7 +13,15 @@ import {
 } from '@material-ui/core';
 import Styles from './Companies.module.scss';
 
-const AssociateProject = ({ projects, actionModal, actionOn }) => {
+const AssociateProject = ({
+  projects,
+  actionModal,
+  actionOn,
+  companyForAssign,
+}) => {
+  const [company, setCompany] = useState(companyForAssign.name);
+  const [project, setProject] = useState('----');
+
   return (
     <Dialog
       open={actionOn}
@@ -24,10 +32,13 @@ const AssociateProject = ({ projects, actionModal, actionOn }) => {
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>Nueva Compañía</DialogTitle>
+      <DialogTitle>Asignación de proyectos</DialogTitle>
       <DialogContent classes={{ root: Styles.dialogContent }}>
+        <h3>
+          Asignar {project} a la compañía {company}
+        </h3>
         <FormControl variant="outlined" className={Styles.dialogContent}>
-          <InputLabel>Seleccione una compañía</InputLabel>
+          <InputLabel>Seleccione un proyecto</InputLabel>
           <Select></Select>
         </FormControl>
       </DialogContent>
@@ -35,7 +46,7 @@ const AssociateProject = ({ projects, actionModal, actionOn }) => {
         <Button onClick={actionModal} color="secondary">
           CANCELAR
         </Button>
-        <Button classes={{ root: Styles.btnModal }}>CREAR</Button>
+        <Button classes={{ root: Styles.btnModal }}>ASIGNAR</Button>
       </DialogActions>
     </Dialog>
   );

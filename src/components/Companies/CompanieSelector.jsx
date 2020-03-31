@@ -21,8 +21,10 @@ const CompanieSelector = ({
   projects,
   actionOn,
   actionModal,
+  companyForAssign,
 }) => {
   const [createCompany, setCreateCompany] = useState(false);
+
   const CompanieOptions = (arrOption) => {
     return arrOption.map((option, index) => {
       return (
@@ -81,6 +83,7 @@ const CompanieSelector = ({
           projects={projects}
           actionModal={actionModal}
           actionOn={actionOn}
+          companyForAssign={companyForAssign}
         />
       )}
     </React.Fragment>

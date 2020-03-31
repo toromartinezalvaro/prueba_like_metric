@@ -15,6 +15,7 @@ class Companies extends React.Component {
       projects: undefined,
       companySelected: undefined,
       actionOn: false,
+      companyForAssign: undefined,
     };
   }
 
@@ -62,6 +63,10 @@ class Companies extends React.Component {
     if (this.state.companySelected) {
       this.getProject();
       this.actionModal();
+      const companyForAssign = this.state.companies.find(
+        (element) => element.id === this.state.companySelected,
+      );
+      this.setState({ companyForAssign });
     } else {
       this.props.spawnMessage('Debes seleccionar una compañía', 'error');
     }
@@ -73,7 +78,7 @@ class Companies extends React.Component {
   }
 
   actionModal = () => {
-    this.setState(!this.state.actionOn);
+    this.setState({ actionOn: !this.state.actionOn });
   };
 
   companyToSelect = (id) => {
@@ -95,10 +100,13 @@ class Companies extends React.Component {
               projects={this.state.projects}
               actionModal={this.actionModal}
               actionOn={this.state.actionOn}
+              companyForAssign={this.state.companyForAssign}
             />
           )}
           {this.state.projects && (
-            <AssignedCompanies associations={this.state.projects} />
+            <AssignedCompanies
+              associations={this.state.projects}
+            />
           )}
         </div>
       </React.Fragment>
