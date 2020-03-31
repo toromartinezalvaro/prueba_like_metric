@@ -184,10 +184,19 @@ const TablesContractFlow = ({ billings }) => {
         const datesValues = val.billings.map((dateValue, K) => {
           dateValue.slice(1).forEach((singleValue, l) => {
             const name = `date${l}`;
-            if (prices[name]) {
-              prices = { ...prices, [name]: [singleValue + prices[name][0]] };
+            if (
+              columns.find(
+                (element) =>
+                  element.title ===
+                  String(moment(singleValue.date).format('MMM YYYY')),
+              )
+            ) {
+              prices = {
+                ...prices,
+                [name]: [singleValue.value + prices[name][0]],
+              };
             } else {
-              prices = { ...prices, [name]: [singleValue] };
+              prices = { ...prices, [name]: [singleValue.value] };
             }
             result = { ...result, [name]: [numberFormater(prices[name][0])] };
           });
