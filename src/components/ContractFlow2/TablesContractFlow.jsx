@@ -70,8 +70,22 @@ const TablesContractFlow = ({ billings }) => {
     bill.items[i] &&
       bill.items[i].contracts.forEach((information) => {
         information.billing.forEach((internalInfo) => {
-          if (parseInt(internalInfo.lastBillingDate, 10) >= finalNumber) {
-            finalNumber.push(parseInt(internalInfo.lastBillingDate, 10));
+          if (
+            Number(
+              moment(Number(internalInfo.lastBillingDate)).add(
+                Number(internalInfo.paymentNumber),
+                'M',
+              ),
+            ) >= finalNumber
+          ) {
+            finalNumber.push(
+              Number(
+                moment(Number(internalInfo.lastBillingDate)).add(
+                  Number(internalInfo.paymentNumber),
+                  'M',
+                ),
+              ),
+            );
           }
         });
       });
@@ -116,11 +130,11 @@ const TablesContractFlow = ({ billings }) => {
     arrProjected.forEach((value) => {
       if (value.length > 1) {
         value.slice(2).forEach((item) => {
-          valueTotal += item;
+          valueTotal += item.value;
         });
       } else if (value.length <= 1) {
         value.slice(2).forEach((item) => {
-          valueTotal += item;
+          valueTotal += item.value;
         });
       }
     });
@@ -130,11 +144,11 @@ const TablesContractFlow = ({ billings }) => {
   const acummulatedFunc = (acummulated) => {
     let totalAcummulated = 0;
     acummulated.forEach((value) => {
-      totalAcummulated += value[1];
+      totalAcummulated += value[1].value;
     });
     return parseInt(totalAcummulated, 10);
   };
-
+  let bigDummie = 0;
   const deepInformation = (bill, group, item, q) => {
     const initialDate = datesInitialNumber(bill, q);
     const finalDate = datesFinalNumber(bill, q);
@@ -142,6 +156,7 @@ const TablesContractFlow = ({ billings }) => {
       Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
         ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
         : 1;
+    bigDummie = numberOfDates > bigDummie ? numberOfDates : bigDummie;
     const information = bill.items.map((value) => {
       return value.contracts.map((val, n) => {
         let prices = {};
@@ -159,7 +174,8 @@ const TablesContractFlow = ({ billings }) => {
           projected: numberFormater(projected),
           total: numberFormater(acumulated + projected),
         };
-        const initialDatesValues = [...Array(numberOfDates)].forEach(
+
+        const initialDatesValues = [...Array(bigDummie)].forEach(
           (column, x) => {
             const name = `date${x}`;
             result = { ...result, [name]: [numberFormater(0)] };
@@ -168,10 +184,23 @@ const TablesContractFlow = ({ billings }) => {
         const datesValues = val.billings.map((dateValue, K) => {
           dateValue.slice(1).forEach((singleValue, l) => {
             const name = `date${l}`;
-            if (prices[name]) {
-              prices = { ...prices, [name]: [singleValue + prices[name][0]] };
+            if (
+              columns.find(
+                (element) =>
+                  element.title ===
+                  String(
+                    moment(Number(singleValue.date))
+                      .add(singleValue.displacement, 'M')
+                      .format('MMM YYYY'),
+                  ),
+              )
+            ) {
+              prices = {
+                ...prices,
+                [name]: [singleValue.value + prices[name][0]],
+              };
             } else {
-              prices = { ...prices, [name]: [singleValue] };
+              prices = { ...prices, [name]: [singleValue.value] };
             }
             result = { ...result, [name]: [numberFormater(prices[name][0])] };
           });
@@ -201,6 +230,7 @@ const TablesContractFlow = ({ billings }) => {
         return rows;
       };
       let firstPull = true;
+      let dummie = 0;
       const columnsPerLine = billings.map((bill, n) => {
         const initialDate = datesInitialNumber(bill, n);
         const finalDate = datesFinalNumber(bill, n);
@@ -210,8 +240,9 @@ const TablesContractFlow = ({ billings }) => {
             : 1;
 
         let objects = [];
+        dummie = numberOfDates > dummie ? numberOfDates : dummie;
         if (firstPull) {
-          objects = [...Array(numberOfDates)].map((value, index) => {
+          objects = [...Array(dummie)].map((value, index) => {
             return {
               name: `date${index}`,
               title: String(
