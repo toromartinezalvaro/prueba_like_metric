@@ -4,6 +4,7 @@ export const CHANGE_MARKET__EA_RATE = 6;
 export const CHANGE_GROUP = 'CHANGE_GROUP';
 export const CHANGE_SALE_SPEED = 'CHANGE_SALE_SPEED';
 export const CHANGE_INCREMENT = 'CHANGE_INCREMENT';
+export const FETCH_DATA__SUCCESS = 'FETCH_DATA__SUCCESS';
 
 export const changeStrategy = (strategy) => ({
   type: CHANGE_STRATEGY,
@@ -29,4 +30,8 @@ export const changeSaleSpeed = (saleSpeed) => ({
 export const changeIncrement = (increment) => ({
   type: CHANGE_INCREMENT,
   payload: increment,
+});
+export const fetchDataSuccess = (payload) => ({
+  type: FETCH_DATA__SUCCESS,
+  payload,
 });

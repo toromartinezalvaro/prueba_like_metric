@@ -6,6 +6,7 @@ import {
   CHANGE_MARKET__EA_RATE,
   CHANGE_INCREMENT,
   CHANGE_SALE_SPEED,
+  FETCH_DATA__SUCCESS,
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
@@ -125,6 +126,8 @@ const reducer = (state = initialState, action) => {
         },
       };
     }
+    case FETCH_DATA__SUCCESS:
+      return { ...state, groups: payload };
     default:
       return state;
   }
