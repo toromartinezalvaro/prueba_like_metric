@@ -110,14 +110,14 @@ const Settings = ({
 Settings.propTypes = {
   selectedGroup: PropTypes.number.isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
-  groups: PropTypes.arrayOf(PropTypes.number).isRequired,
+  groups: PropTypes.arrayOf(PropTypes.string).isRequired,
   onTogglePrice: PropTypes.func.isRequired,
   onChangeGroup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ strategy }) => {
   return {
-    selectedGroup: strategy.settings.selectedGroup,
+    selectedGroup: strategy.root.selectedGroup,
     showPricesWithoutIncrement: strategy.settings.showPricesWithoutIncrement,
     groups: Object.keys(strategy.root.groups),
   };

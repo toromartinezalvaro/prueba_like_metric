@@ -9,13 +9,21 @@ import Context from './context';
 
 const Strategy = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // useEffect(() => {
+  //   async function fetch() {
+  //     const response = await services.getData(useHistory)
+  //     onFetchedData(response.data)
+  //   }
+  // }, []);
+
   return (
     <div>
       <Context.Provider value={{ state, dispatch }}>
         <Box>
           <Settings />
         </Box>
-        {state.selectedGroup !== '' ? (
+        {state.selectedGroup !== null ? (
           <>
             <Box mb={3}>
               <Widgets />
@@ -25,7 +33,14 @@ const Strategy = () => {
             </Box>
           </>
         ) : (
-          <Typography>Debe selecionar un grupo</Typography>
+          <Typography
+            variant="h4"
+            component="span"
+            display="block"
+            align="center"
+          >
+            Debe selecionar un grupo
+          </Typography>
         )}
       </Context.Provider>
     </div>

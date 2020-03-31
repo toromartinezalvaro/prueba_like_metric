@@ -1,27 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import uuidV4 from 'uuid/v4';
 import NumberFormat from 'react-number-format';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import Overview from '../Overview';
-import Widget, { XS, SM } from '../../Shared/Widget';
+import Widget, { SM } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 import { changeView } from '../actions';
 import { MAIN_VIEW, DETAILS_VIEW } from '../reducer';
 import Numbers from '../../../../helpers/numbers';
+import SaleSpeed from './InfoWidgets/SaleSpeed';
+import InventoryRotation from './InfoWidgets/InventoryRotation';
+import AppliedIncrement from './InfoWidgets/AppliedIncrement';
+import ProjectedIncrement from './InfoWidgets/ProjectedIncrement';
+import EARateWidget from './InfoWidgets/EARate';
+import InitialFee from './InfoWidgets/InitialFee';
 
-import TextField from '@material-ui/core/TextField';
+const mainInfoWidgets = [
+  <SaleSpeed key={uuidV4()} />,
+  <InventoryRotation key={uuidV4()} />,
+  <WidgetGroup
+    showGroup
+    widgets={[
+      <AppliedIncrement key={uuidV4()} />,
+      <ProjectedIncrement mini key={uuidV4()} />,
+    ]}
+    key={uuidV4()}
+  />,
+  <EARateWidget key={uuidV4()} />,
+];
+
+const detailWidget = [
+  <SaleSpeed field key={uuidV4()} />,
+  <WidgetGroup
+    showGroup
+    widgets={[
+      <InventoryRotation mini key={uuidV4()} />,
+      <InitialFee key={uuidV4()} />,
+    ]}
+    key={uuidV4()}
+  />,
+  <ProjectedIncrement field key={uuidV4()} />,
+  <EARateWidget key={uuidV4()} />,
+];
+
+const mainPriceWidgets = [];
 
 const InventoryOverview = ({
   totalUnits,
   salesUnits,
   averageArea,
-  saleSpeed,
   sales,
-  appliedIncrement,
-  projectedIncrement,
-  EARate,
   strategy,
   view,
   onViewChange,
@@ -36,98 +67,6 @@ const InventoryOverview = ({
       onViewChange(MAIN_VIEW);
     }
   };
-
-  const mainInfoWidgets = [
-    <Widget key="DetailInv-SaleSpeed" title="Velocidad de ventas" size={SM}>
-      {saleSpeed}
-    </Widget>,
-    <Widget
-      key="DetailInv-InventoryRotation"
-      title="Rotacion de intentario"
-      size={SM}
-    >
-      {Numbers.toFixed(units / saleSpeed)}
-    </Widget>,
-    <WidgetGroup
-      key="DetailInv-IncrementRates"
-      showGroup
-      widgets={[
-        <Widget
-          key="DetailInv-appliedIncrement"
-          title="Incremento aplicado en Inv"
-          size={XS}
-        >
-          <NumberFormat
-            value={Numbers.toFixed(appliedIncrement)}
-            displayType="text"
-            prefix="$"
-            thousandSeparator
-          />
-        </Widget>,
-        <Widget
-          key="DetailInv-ProjectedIncrement"
-          title="Incremento proyectado"
-          size={XS}
-        >
-          <NumberFormat
-            value={Numbers.toFixed(projectedIncrement * 100)}
-            displayType="text"
-            prefix="$"
-            thousandSeparator
-          />
-        </Widget>,
-      ]}
-    />,
-    <Widget
-      key="DetailInv-EARate"
-      title="Tasa Incremento e.a Proyectada"
-      size={SM}
-    >
-      {Numbers.toFixed(EARate * 100)}%
-    </Widget>,
-  ];
-
-  const detailWidget = [
-    <Widget key="DetailInv-SaleSpeed" title="Velocidad de ventas" size={SM}>
-      <TextField
-        label="Velocidad de ventas"
-        placeholder="1.3"
-        value={saleSpeed}
-        variant="outlined"
-      />
-    </Widget>,
-    <WidgetGroup
-      key="DetailInv-IncrementRates"
-      showGroup
-      widgets={[
-        <Widget
-          key="DetailInv-appliedIncrement"
-          title="Rotacion de inventario"
-          size={XS}
-        >
-          5
-        </Widget>,
-        <Widget
-          key="DetailInv-ProjectedIncrement"
-          title="Plazo cuota inciial"
-          size={XS}
-        >
-          17
-        </Widget>,
-      ]}
-    />,
-    <Widget key="567567fasdfa" title="Incremento Futuro en Pesos" size={SM}>
-      <TextField
-        label="Incremento"
-        placeholder="1.3"
-        value={saleSpeed}
-        variant="outlined"
-      />
-    </Widget>,
-    <Widget key="567567fasdfa" title="Tasa incremento e.a" size={SM}>
-      12.68%
-    </Widget>,
-  ];
 
   return (
     <Overview
@@ -189,10 +128,6 @@ InventoryOverview.propTypes = {
   salesUnits: PropTypes.number.isRequired,
   averageArea: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
-  sales: PropTypes.number.isRequired,
-  appliedIncrement: PropTypes.number.isRequired,
-  projectedIncrement: PropTypes.number.isRequired,
-  EARate: PropTypes.number.isRequired,
   strategy: PropTypes.number.isRequired,
   view: PropTypes.oneOf([MAIN_VIEW, DETAILS_VIEW]),
   onViewChange: PropTypes.func.isRequired,
@@ -200,7 +135,7 @@ InventoryOverview.propTypes = {
 
 const mapStateToProps = (state) => {
   const { total, sales, inventory, strategy } = state.strategy.root.groups[
-    state.strategy.settings.selectedGroup
+    state.strategy.root.selectedGroup
   ];
   return {
     totalUnits: total.units,

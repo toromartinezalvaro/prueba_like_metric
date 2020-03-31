@@ -81,7 +81,7 @@ Strategies.propTypes = {
 
 const mapStateToProps = (state) => {
   const { strategy } = state.strategy.root.groups[
-    state.strategy.settings.selectedGroup
+    state.strategy.root.selectedGroup
   ];
   return { strategy };
 };

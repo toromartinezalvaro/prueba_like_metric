@@ -49,8 +49,7 @@ TotalSalesWidget.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const group =
-    state.strategy.root.groups[state.strategy.settings.selectedGroup];
+  const group = state.strategy.root.groups[state.strategy.root.selectedGroup];
   return {
     l0: group.total.l0,
     increment: group.total.increment,

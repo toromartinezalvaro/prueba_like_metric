@@ -56,7 +56,7 @@ ProjectedSalesWidget.propTypes = {
 
 const mapStateToProps = (state) => {
   const { total, sales, inventory } = state.strategy.root.groups[
-    state.strategy.settings.selectedGroup
+    state.strategy.root.selectedGroup
   ];
   return {
     totalIncrement: total.increment,

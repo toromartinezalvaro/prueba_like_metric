@@ -106,7 +106,7 @@ TotalOverView.propTypes = {
 
 const mapStateToProps = (state) => {
   const { total } = state.strategy.root.groups[
-    state.strategy.settings.selectedGroup
+    state.strategy.root.selectedGroup
   ];
   return {
     l0: total.l0,

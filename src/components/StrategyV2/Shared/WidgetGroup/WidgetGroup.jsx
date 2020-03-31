@@ -19,9 +19,7 @@ const WidgetGroup = ({ widgets, defaultWidgetIndex, showGroup }) => {
 };
 
 WidgetGroup.propTypes = {
-  widgets: PropTypes.arrayOf(
-    PropTypes.shape({ type: PropTypes.oneOf([Widget]) }),
-  ).isRequired,
+  widgets: PropTypes.array.isRequired,
   defaultWidgetIndex: PropTypes.number,
   showGroup: PropTypes.bool,
 };

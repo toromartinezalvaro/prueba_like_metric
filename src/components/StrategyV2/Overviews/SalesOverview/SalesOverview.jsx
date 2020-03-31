@@ -85,7 +85,7 @@ SalesOverview.propTypes = {
 
 const mapStateToProps = (state) => {
   const { sales } = state.strategy.root.groups[
-    state.strategy.settings.selectedGroup
+    state.strategy.root.selectedGroup
   ];
   return {
     l0: sales.l0,

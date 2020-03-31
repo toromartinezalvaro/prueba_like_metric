@@ -70,7 +70,7 @@ Market.propTypes = {
 
 const mapStateToProps = (state) => {
   const { market } = state.strategy.root.groups[
-    state.strategy.settings.selectedGroup
+    state.strategy.root.selectedGroup
   ];
   return { averagePrice: market.averagePrice, EARate: market.EARate };
 };

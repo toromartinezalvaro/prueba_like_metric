@@ -48,7 +48,7 @@ Widgets.propTypes = {
 
 const mapStateToProps = (state) => {
   const { total, sales } = state.strategy.root.groups[
-    state.strategy.settings.selectedGroup
+    state.strategy.root.selectedGroup
   ];
   return {
     totalUnits: total.units,
