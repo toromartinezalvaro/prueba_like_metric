@@ -130,11 +130,11 @@ const TablesContractFlow = ({ billings }) => {
     arrProjected.forEach((value) => {
       if (value.length > 1) {
         value.slice(2).forEach((item) => {
-          valueTotal += item;
+          valueTotal += item.value;
         });
       } else if (value.length <= 1) {
         value.slice(2).forEach((item) => {
-          valueTotal += item;
+          valueTotal += item.value;
         });
       }
     });
@@ -144,7 +144,7 @@ const TablesContractFlow = ({ billings }) => {
   const acummulatedFunc = (acummulated) => {
     let totalAcummulated = 0;
     acummulated.forEach((value) => {
-      totalAcummulated += value[1];
+      totalAcummulated += value[1].value;
     });
     return parseInt(totalAcummulated, 10);
   };
@@ -188,7 +188,11 @@ const TablesContractFlow = ({ billings }) => {
               columns.find(
                 (element) =>
                   element.title ===
-                  String(moment(singleValue.date).format('MMM YYYY')),
+                  String(
+                    moment(Number(singleValue.date))
+                      .add(singleValue.displacement, 'M')
+                      .format('MMM YYYY'),
+                  ),
               )
             ) {
               prices = {
