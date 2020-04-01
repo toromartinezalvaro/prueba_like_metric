@@ -159,6 +159,7 @@ class Events extends Component {
                 value: response.data.customDate,
                 label: response.data.description,
               };
+              this.props.spawnMessage('EVENTO CREADO CON EXITO', 'success');
               this.props.currentEvent(currentEvent);
             })
             .catch((error) => {
@@ -174,18 +175,19 @@ class Events extends Component {
   };
 
   onChangeText = (e) => {
+    const defaultDate = new Date();
     const time = this.state.event.customDate;
+    const times = time === '' ? defaultDate.getTime() : time;
     this.setState({
       event: {
-        description: `${e.target.value}(${moment(Number(time)).format(
-          'MM/DD/YYYY',
-        )})`,
-        customDate: moment(Number(time)).format('x'),
+        description:
+          time === 'Invalid date'
+            ? `${e.target.value}`
+            : `${e.target.value}(${moment(Number(time)).format('MM/DD/YYYY')})`,
+        customDate: moment(Number(times)).format('x'),
         scheduleId: null,
       },
-      description: `${e.target.value}(${moment(
-        Number(this.state.customDate),
-      ).format('MM/DD/YYYY')})`,
+      description: `${e.target.value}`,
     });
   };
 
