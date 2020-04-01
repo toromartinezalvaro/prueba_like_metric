@@ -30,7 +30,6 @@ import ContainerContext from '../../../containers/Client/context';
 import Context from './context';
 import { DashboardRoutes } from '../../../routes/local/routes';
 import LoadingButton from '../../UI2/LoadingButton';
-import Styles from './FormDialog.module.scss';
 
 const services = new Services();
 
