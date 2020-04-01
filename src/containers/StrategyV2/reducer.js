@@ -15,6 +15,8 @@ export const initialState = {
   selectedGroup: 1,
   groups: {
     1: {
+      id: 568,
+      name: '',
       total: {
         l0: 1000,
         units: 10,

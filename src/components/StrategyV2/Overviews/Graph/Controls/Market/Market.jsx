@@ -11,19 +11,39 @@ import {
   changeMarketAveragePrice,
   changeMarketEARate,
 } from '../../../../../../containers/StrategyV2/actions';
+import IncrementsServices from '../../../../../../services/increments/IncrementsServices';
 
 const Market = ({
+  id,
   averagePrice,
   EARate,
   onChangeMarketAveragePrice,
   onChangeMarketEARate,
 }) => {
+  const service = new IncrementsServices();
+
   const averagePriceChangeHandler = (event) => {
     onChangeMarketAveragePrice(event.target.value);
+  };
+  const putAveragePrice = (event) => {
+    service.putMarketAveragePrice(id, {
+      averagePrice: event.target.value.substring(1),
+      length: 0,
+    });
   };
 
   const EARateChangeHandler = (event) => {
     onChangeMarketEARate(event.target.value);
+  };
+
+  const putEArate = (event) => {
+    service.putMarketAnualEffectiveIncrement(id, {
+      anualEffectiveIncrement: event.target.value.substring(
+        0,
+        event.target.value.length - 1,
+      ),
+      length: 0,
+    });
   };
 
   return (
@@ -41,6 +61,7 @@ const Market = ({
               variant="outlined"
               value={averagePrice}
               onChange={averagePriceChangeHandler}
+              onBlur={putAveragePrice}
               mask={CURRENCY}
             />
           </Grid>
@@ -52,6 +73,7 @@ const Market = ({
               fullWidth
               value={Numbers.toFixed(EARate * 100)}
               onChange={EARateChangeHandler}
+              onBlur={putEArate}
               mask={PERCENTAGE}
             />
           </Grid>
@@ -62,6 +84,7 @@ const Market = ({
 };
 
 Market.propTypes = {
+  id: PropTypes.number.isRequired,
   averagePrice: PropTypes.number.isRequired,
   EARate: PropTypes.number.isRequired,
   onChangeMarketAveragePrice: PropTypes.func.isRequired,
@@ -69,10 +92,10 @@ Market.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { market } = state.strategy.root.groups[
+  const { market, id } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
-  return { averagePrice: market.averagePrice, EARate: market.EARate };
+  return { averagePrice: market.averagePrice, EARate: market.EARate, id };
 };
 
 const mapDispatchToProps = {
