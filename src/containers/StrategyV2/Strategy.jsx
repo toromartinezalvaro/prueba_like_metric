@@ -1,16 +1,14 @@
-import React, { memo, useReducer, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
-import { Typography } from '@material-ui/core';
 import _ from 'lodash';
 import Settings from '../../components/StrategyV2/Settings';
 import Widgets from '../../components/StrategyV2/Widgets';
 import Overviews from '../../components/StrategyV2/Overviews';
 import { fetchDataSuccess } from './actions';
-import reducer, { initialState } from './reducer';
 import IncrementServices from '../../services/incrementsV2/incrementsService';
 
-const Strategy = ({ validGroup, onFetchedData }) => {
+const Strategy = ({ onFetchedData }) => {
   const services = new IncrementServices();
 
   const helper = [
