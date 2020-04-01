@@ -50,13 +50,16 @@ const mainPriceWidgets = [];
 
 const InventoryOverview = ({
   totalUnits,
+  totalIncrement,
   salesUnits,
+  salesIncrement,
   averageArea,
-  sales,
+  l0,
   strategy,
   view,
   onViewChange,
 }) => {
+  const sales = l0 + totalIncrement - salesIncrement;
   const units = totalUnits - salesUnits;
   const averagePrice = sales / units;
 
@@ -125,10 +128,13 @@ const InventoryOverview = ({
 
 InventoryOverview.propTypes = {
   totalUnits: PropTypes.number.isRequired,
+  totalIncrement: PropTypes.number.isRequired,
   salesUnits: PropTypes.number.isRequired,
+  salesIncrement: PropTypes.number.isRequired,
   averageArea: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
   strategy: PropTypes.number.isRequired,
+  l0: PropTypes.number.isRequired,
   view: PropTypes.oneOf([MAIN_VIEW, DETAILS_VIEW]),
   onViewChange: PropTypes.func.isRequired,
 };
@@ -139,10 +145,12 @@ const mapStateToProps = (state) => {
   ];
   return {
     totalUnits: total.units,
+    totalIncrement: total.increment,
     salesUnits: sales.units,
+    salesIncrement: sales.increment,
     averageArea: inventory.averageArea,
     saleSpeed: inventory.saleSpeed,
-    sales: inventory.sales,
+    l0: inventory.l0,
     appliedIncrement: inventory.appliedIncrement,
     projectedIncrement: inventory.projectedIncrement,
     EARate: inventory.EARate,

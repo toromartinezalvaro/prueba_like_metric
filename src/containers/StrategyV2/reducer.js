@@ -35,11 +35,9 @@ export const initialState = {
       inventory: {
         l0: 500,
         averageArea: 4,
-        projectedSales: 500,
         saleSpeed: 1,
         EARate: 0.1269,
         appliedIncrement: 25.5,
-        sales: 600,
       },
       strategy: 3,
       market: {

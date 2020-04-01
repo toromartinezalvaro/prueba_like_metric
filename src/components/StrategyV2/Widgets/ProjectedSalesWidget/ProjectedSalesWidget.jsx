@@ -9,7 +9,7 @@ import WidgetGroup from '../../Shared/WidgetGroup';
 const ProjectedSalesWidget = ({
   totalIncrement,
   salesIncrement,
-  inventoryProjectedSales,
+  l0,
   showPricesWithoutIncrement,
 }) => {
   return (
@@ -23,7 +23,7 @@ const ProjectedSalesWidget = ({
           size={showPricesWithoutIncrement ? SM : MD}
         >
           <NumberFormat
-            value={inventoryProjectedSales + totalIncrement - salesIncrement}
+            value={l0 + totalIncrement - salesIncrement}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -36,7 +36,7 @@ const ProjectedSalesWidget = ({
           size={SM}
         >
           <NumberFormat
-            value={inventoryProjectedSales}
+            value={l0}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -50,7 +50,7 @@ const ProjectedSalesWidget = ({
 ProjectedSalesWidget.propTypes = {
   totalIncrement: PropTypes.number.isRequired,
   salesIncrement: PropTypes.number.isRequired,
-  inventoryProjectedSales: PropTypes.number.isRequired,
+  l0: PropTypes.number.isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
 };
 
@@ -61,7 +61,7 @@ const mapStateToProps = (state) => {
   return {
     totalIncrement: total.increment,
     salesIncrement: sales.increment,
-    inventoryProjectedSales: inventory.projectedSales,
+    l0: inventory.l0,
     showPricesWithoutIncrement:
       state.strategy.settings.showPricesWithoutIncrement,
   };
