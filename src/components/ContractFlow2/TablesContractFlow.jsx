@@ -157,7 +157,7 @@ const TablesContractFlow = ({ billings }) => {
         ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
         : 1;
     bigDummie = numberOfDates > bigDummie ? numberOfDates : bigDummie;
-    const information = bill.items.map((value) => {
+    const information = bill.items.map((value, t) => {
       return value.contracts.map((val, n) => {
         let prices = {};
         const contract = textFormater(val.title, 'text');
@@ -165,10 +165,9 @@ const TablesContractFlow = ({ billings }) => {
           val.acumulated.length !== 0 ? acummulatedFunc(val.acumulated) : 0;
         const projected =
           val.projected.length !== 0 ? projectedFunc(val.projected) : 0;
-
         let result = {
           group,
-          item,
+          item: item[t],
           contract,
           acumulated: numberFormater(acumulated),
           projected: numberFormater(projected),
@@ -218,7 +217,7 @@ const TablesContractFlow = ({ billings }) => {
         const rows = billings.reduce((acummulated, bill, n) => {
           const group = bill.group;
           const item = bill.items.map((value) => value.item);
-          const contracts = deepInformation(bill, group, item[0], n);
+          const contracts = deepInformation(bill, group, item, n);
           contracts.forEach((contract) =>
             contract.forEach((row) => {
               acummulated.push(row);

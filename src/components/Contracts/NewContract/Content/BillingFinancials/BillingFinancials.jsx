@@ -106,7 +106,7 @@ const BillingFinancials = ({
           ...billingsArray[billIndex],
           [name]: element.label,
           type: element.type,
-          paymentNumber: 0,
+          paymentNumber: 1,
         };
       } else if (name === 'eventId' && element.eventId === 0) {
         bill = {
