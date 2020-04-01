@@ -50,17 +50,26 @@ const TablesContractFlow = ({ billings }) => {
 
   const datesInitialNumber = (bill, i) => {
     let initialNumber = 0;
+    // eslint-disable-next-line no-unused-expressions
     bill.items[i] &&
       bill.items[i].contracts.forEach((information) => {
-        if (
-          parseInt(information.schedulesDate.salesStartDate, 10) >=
-          initialNumber
-        ) {
-          initialNumber = parseInt(
-            information.schedulesDate.salesStartDate,
-            10,
-          );
-        }
+        information.billing.forEach((internalInfo) => {
+          if (
+            Number(
+              moment(Number(information.schedulesDate.salesStartDate)).add(
+                Number(internalInfo.displacement),
+                'M',
+              ),
+            ) >= initialNumber
+          ) {
+            initialNumber = Number(
+              moment(Number(information.schedulesDate.salesStartDate)).add(
+                Number(internalInfo.displacement),
+                'M',
+              ),
+            );
+          }
+        });
       });
     return initialNumber;
   };
@@ -149,13 +158,19 @@ const TablesContractFlow = ({ billings }) => {
     return parseInt(totalAcummulated, 10);
   };
   let bigDummie = 0;
-  const deepInformation = (bill, group, item, q) => {
-    const initialDate = datesInitialNumber(bill, q);
-    const finalDate = datesFinalNumber(bill, q);
+  const deepInformation = (
+    bill,
+    group,
+    item,
+    q,
+    initialNumber,
+    finalNumber,
+  ) => {
     const numberOfDates =
-      Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
-        ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
-        : 1;
+      Math.round(moment(finalNumber).diff(initialNumber, 'months', true)) > 0 &&
+      finalNumber > initialNumber
+        ? Math.round(moment(finalNumber).diff(initialNumber, 'months', true))
+        : Math.round(moment(initialNumber).diff(finalNumber, 'months', true));
     bigDummie = numberOfDates > bigDummie ? numberOfDates : bigDummie;
     const information = bill.items.map((value, t) => {
       return value.contracts.map((val, n) => {
@@ -215,9 +230,61 @@ const TablesContractFlow = ({ billings }) => {
     if (active) {
       const rowsPerLine = () => {
         const rows = billings.reduce((acummulated, bill, n) => {
+          const billingsForDates = () => {
+            const initialNumber = [];
+            const finalNumber = [];
+            const initial = billings.map((bill, n) => {
+              const billLength = bill.items.length;
+              bill.items &&
+                bill.items.map((individual) => {
+                  individual.contracts.forEach((information) => {
+                    information.billing.forEach((internalInfo) => {
+                      initialNumber.push(
+                        Number(
+                          moment(
+                            Number(information.schedulesDate.salesStartDate),
+                          ).add(Number(internalInfo.displacement), 'M'),
+                        ),
+                      );
+                    });
+                  });
+                });
+            });
+            const final = billings.map((bill, n) => {
+              const billLength = bill.items.length;
+              bill.items &&
+                bill.items.map((individual) => {
+                  individual.contracts.forEach((information) => {
+                    information.billing.forEach((internalInfo) => {
+                      finalNumber.push(
+                        Number(
+                          moment(Number(internalInfo.lastBillingDate)).add(
+                            Number(internalInfo.paymentNumber),
+                            'M',
+                          ),
+                        ),
+                      );
+                    });
+                  });
+                });
+            });
+            return {
+              initialNumber: Math.min(...initialNumber),
+              finalNumber: Math.max(...finalNumber),
+            };
+          };
+          const { initialNumber } = billingsForDates();
+          const { finalNumber } = billingsForDates();
           const group = bill.group;
           const item = bill.items.map((value) => value.item);
-          const contracts = deepInformation(bill, group, item, n);
+          const contracts = deepInformation(
+            bill,
+            group,
+            item,
+            n,
+            initialNumber,
+            finalNumber,
+          );
           contracts.forEach((contract) =>
             contract.forEach((row) => {
               acummulated.push(row);
@@ -230,13 +297,63 @@ const TablesContractFlow = ({ billings }) => {
       };
       let firstPull = true;
       let dummie = 0;
+
+      const billingsForDates = () => {
+        const initialNumber = [];
+        const finalNumber = [];
+        const initial = billings.map((bill, n) => {
+          const billLength = bill.items.length;
+          bill.items &&
+            bill.items.map((individual) => {
+              individual.contracts.forEach((information) => {
+                information.billing.forEach((internalInfo) => {
+                  initialNumber.push(
+                    Number(
+                      moment(
+                        Number(information.schedulesDate.salesStartDate),
+                      ).add(Number(internalInfo.displacement), 'M'),
+                    ),
+                  );
+                });
+              });
+            });
+        });
+        const final = billings.map((bill, n) => {
+          const billLength = bill.items.length;
+          bill.items &&
+            bill.items.map((individual) => {
+              individual.contracts.forEach((information) => {
+                information.billing.forEach((internalInfo) => {
+                  finalNumber.push(
+                    Number(
+                      moment(Number(internalInfo.lastBillingDate)).add(
+                        Number(internalInfo.paymentNumber),
+                        'M',
+                      ),
+                    ),
+                  );
+                });
+              });
+            });
+        });
+        return {
+          initialNumber: Math.min(...initialNumber),
+          finalNumber: Math.max(...finalNumber),
+        };
+      };
+
       const columnsPerLine = billings.map((bill, n) => {
-        const initialDate = datesInitialNumber(bill, n);
-        const finalDate = datesFinalNumber(bill, n);
+        const { initialNumber } = billingsForDates();
+        const { finalNumber } = billingsForDates();
         const numberOfDates =
-          Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
-            ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
-            : 1;
+          Math.round(moment(finalNumber).diff(initialNumber, 'months', true)) >
+            0 && finalNumber > initialNumber
+            ? Math.round(
+                moment(finalNumber).diff(initialNumber, 'months', true),
+              )
+            : Math.round(
+                moment(initialNumber).diff(initialNumber, 'months', true),
+              );
 
         let objects = [];
         dummie = numberOfDates > dummie ? numberOfDates : dummie;
@@ -245,7 +362,7 @@ const TablesContractFlow = ({ billings }) => {
             return {
               name: `date${index}`,
               title: String(
-                moment(initialDate)
+                moment(initialNumber)
                   .add(index, 'M')
                   .format('MMM YYYY'),
               ),
