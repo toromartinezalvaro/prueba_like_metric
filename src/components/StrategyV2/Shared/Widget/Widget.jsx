@@ -29,7 +29,7 @@ const VARIANTS = {
   },
   md: {
     padding: 3,
-    headerVariant: { content: 'h4', title: 'subtitle1' },
+    headerVariant: { content: 'h5', title: 'subtitle1' },
   },
 };
 

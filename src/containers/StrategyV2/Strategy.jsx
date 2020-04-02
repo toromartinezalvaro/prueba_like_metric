@@ -44,7 +44,6 @@ const Strategy = ({ onFetchedData }) => {
             });
           });
         });
-
         onFetchedData(response.data.summary.increments);
       } catch (error) {
         console.error(error);

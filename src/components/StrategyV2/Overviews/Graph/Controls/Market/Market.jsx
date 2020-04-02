@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Input, { CURRENCY, PERCENTAGE } from './Input';
+import Input, { CURRENCY, PERCENTAGE } from '../../../../Shared/Input';
 import Numbers from '../../../../../../helpers/numbers';
 import {
   changeMarketAveragePrice,
@@ -53,7 +53,7 @@ const Market = ({
           <Typography variant="h5">Mercado</Typography>
         </Box>
         <Grid container spacing={2} direction="row">
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Input
               label="Precio promedio"
               placeholder="$5000000"
@@ -76,7 +76,7 @@ const Market = ({
               onBlur={putEArate}
               mask={PERCENTAGE}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </Paper>
