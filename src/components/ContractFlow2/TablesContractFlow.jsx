@@ -202,7 +202,13 @@ const TablesContractFlow = ({ billings }) => {
         });
         const datesValues = val.billings.map((dateValue, K) => {
           dateValue.slice(1).forEach((singleValue, l) => {
-            const name = `date${singleValue.cycle === 'Pago Único' ? K : l}`;
+            const currentCell = columnsPerDefined.find((element) => {
+              const currentDate = moment(Number(singleValue.date))
+                .add(singleValue.displacement, 'M')
+                .format('MMM YYYY');
+              return element.title === String(currentDate);
+            });
+            console.log('noname', currentCell.name, currentCell.title);
             if (
               columnsPerDefined.find((element) => {
                 const currentDate = moment(Number(singleValue.date))
@@ -213,13 +219,16 @@ const TablesContractFlow = ({ billings }) => {
             ) {
               prices = {
                 ...prices,
-                [name]: Number(singleValue.value),
+                [currentCell.name]: Number(singleValue.value),
               };
             } else {
-              prices = { ...prices, [name]: Number(0) };
+              prices = { ...prices, [currentCell.name]: Number(0) };
             }
 
-            result = { ...result, [name]: [numberFormater(prices[name])] };
+            result = {
+              ...result,
+              [currentCell.name]: [numberFormater(prices[currentCell.name])],
+            };
           });
         });
         console.log('ENDPOINT', result);
