@@ -171,7 +171,11 @@ const reducer = (state = initialState, action) => {
       };
     }
     case FETCH_DATA__SUCCESS:
-      return { ...state, groups: payload };
+      return {
+        ...state,
+        selectedGroup: Object.keys(payload)[0],
+        groups: payload,
+      };
     default:
       return state;
   }
