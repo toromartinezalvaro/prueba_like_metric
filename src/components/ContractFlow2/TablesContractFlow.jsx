@@ -50,27 +50,31 @@ const TablesContractFlow = ({ billings }) => {
 
   const datesInitialNumber = (bill, i) => {
     let initialNumber = 0;
-    // eslint-disable-next-line no-unused-expressions
-    bill.items[i] &&
-      bill.items[i].contracts.forEach((information) => {
-        information.billing.forEach((internalInfo) => {
-          if (
-            Number(
-              moment(Number(information.schedulesDate.salesStartDate)).add(
-                Number(internalInfo.displacement),
-                'M',
-              ),
-            ) >= initialNumber
-          ) {
-            initialNumber = Number(
-              moment(Number(information.schedulesDate.salesStartDate)).add(
-                Number(internalInfo.displacement),
-                'M',
-              ),
-            );
-          }
+    const initial = billings.map((bill, n) => {
+      bill.items &&
+        bill.items.map((individual) => {
+          individual.contracts.forEach((information) => {
+            information.billing.forEach((internalInfo) => {
+              if (internalInfo.eventId === 0) {
+                Number(
+                  moment(Number(internalInfo.initalBillingDate)).add(
+                    Number(internalInfo.displacement),
+                    'M',
+                  ),
+                );
+              } else {
+                initialNumber.push(
+                  Number(
+                    moment(
+                      Number(information.schedulesDate.salesStartDate),
+                    ).add(Number(internalInfo.displacement), 'M'),
+                  ),
+                );
+              }
+            });
+          });
         });
-      });
+    });
     return initialNumber;
   };
 
@@ -158,6 +162,7 @@ const TablesContractFlow = ({ billings }) => {
     return parseInt(totalAcummulated, 10);
   };
   let bigDummie = 0;
+  let columnsPerDefined = [];
   const deepInformation = (
     bill,
     group,
@@ -189,36 +194,35 @@ const TablesContractFlow = ({ billings }) => {
           total: numberFormater(acumulated + projected),
         };
 
-        const initialDatesValues = [...Array(bigDummie)].forEach(
-          (column, x) => {
-            const name = `date${x}`;
-            result = { ...result, [name]: [numberFormater(0)] };
-          },
-        );
+        const initialDatesValues = [
+          ...Array(bigDummie <= 0 ? 1 : bigDummie),
+        ].forEach((column, x) => {
+          const name = `date${x}`;
+          result = { ...result, [name]: [numberFormater(0)] };
+        });
         const datesValues = val.billings.map((dateValue, K) => {
           dateValue.slice(1).forEach((singleValue, l) => {
-            const name = `date${l}`;
+            const name = `date${singleValue.cycle === 'Pago Único' ? K : l}`;
             if (
-              columns.find(
-                (element) =>
-                  element.title ===
-                  String(
-                    moment(Number(singleValue.date))
-                      .add(singleValue.displacement, 'M')
-                      .format('MMM YYYY'),
-                  ),
-              )
+              columnsPerDefined.find((element) => {
+                const currentDate = moment(Number(singleValue.date))
+                  .add(singleValue.displacement, 'M')
+                  .format('MMM YYYY');
+                return element.title === String(currentDate);
+              })
             ) {
               prices = {
                 ...prices,
-                [name]: [singleValue.value + prices[name][0]],
+                [name]: Number(singleValue.value),
               };
             } else {
-              prices = { ...prices, [name]: [singleValue.value] };
+              prices = { ...prices, [name]: Number(0) };
             }
-            result = { ...result, [name]: [numberFormater(prices[name][0])] };
+
+            result = { ...result, [name]: [numberFormater(prices[name])] };
           });
         });
+        console.log('ENDPOINT', result);
         return result;
       });
     });
@@ -228,73 +232,6 @@ const TablesContractFlow = ({ billings }) => {
   useEffect(() => {
     let active = true;
     if (active) {
-      const rowsPerLine = () => {
-        const rows = billings.reduce((acummulated, bill, n) => {
-          const billingsForDates = () => {
-            const initialNumber = [];
-            const finalNumber = [];
-            const initial = billings.map((bill, n) => {
-              const billLength = bill.items.length;
-              bill.items &&
-                bill.items.map((individual) => {
-                  individual.contracts.forEach((information) => {
-                    information.billing.forEach((internalInfo) => {
-                      initialNumber.push(
-                        Number(
-                          moment(
-                            Number(information.schedulesDate.salesStartDate),
-                          ).add(Number(internalInfo.displacement), 'M'),
-                        ),
-                      );
-                    });
-                  });
-                });
-            });
-            const final = billings.map((bill, n) => {
-              const billLength = bill.items.length;
-              bill.items &&
-                bill.items.map((individual) => {
-                  individual.contracts.forEach((information) => {
-                    information.billing.forEach((internalInfo) => {
-                      finalNumber.push(
-                        Number(
-                          moment(Number(internalInfo.lastBillingDate)).add(
-                            Number(internalInfo.paymentNumber),
-                            'M',
-                          ),
-                        ),
-                      );
-                    });
-                  });
-                });
-            });
-            return {
-              initialNumber: Math.min(...initialNumber),
-              finalNumber: Math.max(...finalNumber),
-            };
-          };
-          const { initialNumber } = billingsForDates();
-          const { finalNumber } = billingsForDates();
-          const group = bill.group;
-          const item = bill.items.map((value) => value.item);
-          const contracts = deepInformation(
-            bill,
-            group,
-            item,
-            n,
-            initialNumber,
-            finalNumber,
-          );
-          contracts.forEach((contract) =>
-            contract.forEach((row) => {
-              acummulated.push(row);
-            }),
-          );
-          return acummulated;
-        }, []);
-
-        return rows;
-      };
       let firstPull = true;
       let dummie = 0;
 
@@ -302,18 +239,28 @@ const TablesContractFlow = ({ billings }) => {
         const initialNumber = [];
         const finalNumber = [];
         const initial = billings.map((bill, n) => {
-          const billLength = bill.items.length;
           bill.items &&
             bill.items.map((individual) => {
               individual.contracts.forEach((information) => {
                 information.billing.forEach((internalInfo) => {
-                  initialNumber.push(
-                    Number(
-                      moment(
-                        Number(information.schedulesDate.salesStartDate),
-                      ).add(Number(internalInfo.displacement), 'M'),
-                    ),
-                  );
+                  if (internalInfo.eventId === 0) {
+                    initialNumber.push(
+                      Number(
+                        moment(Number(internalInfo.initalBillingDate)).add(
+                          Number(internalInfo.displacement),
+                          'M',
+                        ),
+                      ),
+                    );
+                  } else {
+                    initialNumber.push(
+                      Number(
+                        moment(
+                          Number(information.schedulesDate.salesStartDate),
+                        ).add(Number(internalInfo.displacement), 'M'),
+                      ),
+                    );
+                  }
                 });
               });
             });
@@ -358,7 +305,15 @@ const TablesContractFlow = ({ billings }) => {
         let objects = [];
         dummie = numberOfDates > dummie ? numberOfDates : dummie;
         if (firstPull) {
-          objects = [...Array(dummie)].map((value, index) => {
+          objects = [...Array(dummie <= 0 ? 1 : dummie)].map((value, index) => {
+            console.log('AVAILABLE', {
+              name: `date${index}`,
+              title: String(
+                moment(initialNumber)
+                  .add(index, 'M')
+                  .format('MMM YYYY'),
+              ),
+            });
             return {
               name: `date${index}`,
               title: String(
@@ -387,6 +342,99 @@ const TablesContractFlow = ({ billings }) => {
         { name: 'projected', title: 'Proyectado' },
         { name: 'total', title: 'Total' },
       );
+      const rowsPerLine = () => {
+        const rows = billings.reduce((acummulated, bill, n) => {
+          const billingsForDates = () => {
+            const initialNumber = [];
+            const finalNumber = [];
+            const initial = billings.map((bill, n) => {
+              bill.items &&
+                bill.items.map((individual) => {
+                  individual.contracts.forEach((information) => {
+                    information.billing.forEach((internalInfo) => {
+                      if (internalInfo.eventId === 0) {
+                        console.log(
+                          'DATE -->',
+                          Number(
+                            moment(Number(internalInfo.initalBillingDate))
+                              .add(Number(internalInfo.displacement), 'M')
+                              .format('MMM YYYY'),
+                          ),
+                        );
+                        initialNumber.push(
+                          Number(
+                            moment(Number(internalInfo.initalBillingDate)).add(
+                              Number(internalInfo.displacement),
+                              'M',
+                            ),
+                          ),
+                        );
+                      } else {
+                        console.log(
+                          'DATE2 --->',
+                          Number(
+                            moment(
+                              Number(information.schedulesDate.salesStartDate),
+                            ).add(Number(internalInfo.displacement), 'M'),
+                          ),
+                        );
+                        initialNumber.push(
+                          Number(
+                            moment(
+                              Number(information.schedulesDate.salesStartDate),
+                            ).add(Number(internalInfo.displacement), 'M'),
+                          ),
+                        );
+                      }
+                    });
+                  });
+                });
+            });
+            const final = billings.map((bill, n) => {
+              bill.items &&
+                bill.items.map((individual) => {
+                  individual.contracts.forEach((information) => {
+                    information.billing.forEach((internalInfo) => {
+                      finalNumber.push(
+                        Number(
+                          moment(Number(internalInfo.lastBillingDate)).add(
+                            Number(internalInfo.paymentNumber),
+                            'M',
+                          ),
+                        ),
+                      );
+                    });
+                  });
+                });
+            });
+            return {
+              initialNumber: Math.min(...initialNumber),
+              finalNumber: Math.max(...finalNumber),
+            };
+          };
+          const { initialNumber } = billingsForDates();
+          const { finalNumber } = billingsForDates();
+          const group = bill.group;
+          const item = bill.items.map((value) => value.item);
+          const contracts = deepInformation(
+            bill,
+            group,
+            item,
+            n,
+            initialNumber,
+            finalNumber,
+          );
+          contracts.forEach((contract) =>
+            contract.forEach((row) => {
+              acummulated.push(row);
+            }),
+          );
+          return acummulated;
+        }, []);
+
+        return rows;
+      };
+      columnsPerDefined = columnsPerLineDefined;
       setColumns(columnsPerLineDefined);
       setRows(rowsPerLine);
     }
