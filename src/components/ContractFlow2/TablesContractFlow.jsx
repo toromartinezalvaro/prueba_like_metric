@@ -115,7 +115,7 @@ const TablesContractFlow = ({ billings }) => {
       : <strong>{row.value}</strong>
     </span>
   );
-
+  let columnsPerDefined = [];
   const textFormater = (title, type) => {
     switch (type) {
       case 'group':
@@ -139,30 +139,38 @@ const TablesContractFlow = ({ billings }) => {
   };
 
   const projectedFunc = (arrProjected) => {
+    const dateRef = columnsPerDefined.find(
+      (element) => element.name === 'date0',
+    );
     let valueTotal = 0;
     arrProjected.forEach((value) => {
-      if (value.length > 1) {
-        value.slice(2).forEach((item) => {
-          valueTotal += item.value;
-        });
-      } else if (value.length <= 1) {
-        value.slice(2).forEach((item) => {
-          valueTotal += item.value;
-        });
+      if (
+        String(moment(Number(value[1].date)).format('MMM YYYY')) !==
+        dateRef.title
+      ) {
+        valueTotal += value[1].value;
       }
     });
     return parseInt(valueTotal, 10);
   };
 
   const acummulatedFunc = (acummulated) => {
+    const dateRef = columnsPerDefined.find(
+      (element) => element.name === 'date0',
+    );
     let totalAcummulated = 0;
     acummulated.forEach((value) => {
-      totalAcummulated += value[1].value;
+      if (
+        String(moment(Number(value[1].date)).format('MMM YYYY')) ===
+        dateRef.title
+      ) {
+        totalAcummulated += value[1].value;
+      }
     });
     return parseInt(totalAcummulated, 10);
   };
   let bigDummie = 0;
-  let columnsPerDefined = [];
+
   const deepInformation = (
     bill,
     group,
@@ -208,7 +216,6 @@ const TablesContractFlow = ({ billings }) => {
                 .format('MMM YYYY');
               return element.title === String(currentDate);
             });
-            console.log('noname', currentCell.name, currentCell.title);
             if (
               columnsPerDefined.find((element) => {
                 const currentDate = moment(Number(singleValue.date))
@@ -231,7 +238,6 @@ const TablesContractFlow = ({ billings }) => {
             };
           });
         });
-        console.log('ENDPOINT', result);
         return result;
       });
     });
@@ -315,14 +321,6 @@ const TablesContractFlow = ({ billings }) => {
         dummie = numberOfDates > dummie ? numberOfDates : dummie;
         if (firstPull) {
           objects = [...Array(dummie <= 0 ? 1 : dummie)].map((value, index) => {
-            console.log('AVAILABLE', {
-              name: `date${index}`,
-              title: String(
-                moment(initialNumber)
-                  .add(index, 'M')
-                  .format('MMM YYYY'),
-              ),
-            });
             return {
               name: `date${index}`,
               title: String(
@@ -362,14 +360,6 @@ const TablesContractFlow = ({ billings }) => {
                   individual.contracts.forEach((information) => {
                     information.billing.forEach((internalInfo) => {
                       if (internalInfo.eventId === 0) {
-                        console.log(
-                          'DATE -->',
-                          Number(
-                            moment(Number(internalInfo.initalBillingDate))
-                              .add(Number(internalInfo.displacement), 'M')
-                              .format('MMM YYYY'),
-                          ),
-                        );
                         initialNumber.push(
                           Number(
                             moment(Number(internalInfo.initalBillingDate)).add(
@@ -379,14 +369,6 @@ const TablesContractFlow = ({ billings }) => {
                           ),
                         );
                       } else {
-                        console.log(
-                          'DATE2 --->',
-                          Number(
-                            moment(
-                              Number(information.schedulesDate.salesStartDate),
-                            ).add(Number(internalInfo.displacement), 'M'),
-                          ),
-                        );
                         initialNumber.push(
                           Number(
                             moment(
