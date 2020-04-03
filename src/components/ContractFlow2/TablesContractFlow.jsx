@@ -208,7 +208,11 @@ const TablesContractFlow = ({ billings }) => {
             bill.items.flatMap((individual) => {
               individual.contracts.forEach((information) => {
                 information.billing.forEach((internalInfo) => {
-                  if (internalInfo.eventId === 0) {
+                  if (
+                    internalInfo.eventId === 0 &&
+                    information.schedulesDate.salesStartDate !==
+                      internalInfo.initalBillingDate
+                  ) {
                     initialNumber.push(
                       Number(
                         moment(Number(internalInfo.initalBillingDate)).add(
@@ -310,7 +314,11 @@ const TablesContractFlow = ({ billings }) => {
                 bill.items.flatMap((individual) => {
                   individual.contracts.forEach((information) => {
                     information.billing.forEach((internalInfo) => {
-                      if (internalInfo.eventId === 0) {
+                      if (
+                        internalInfo.eventId === 0 &&
+                        information.schedulesDate.salesStartDate !==
+                          internalInfo.initalBillingDate
+                      ) {
                         initialNumber.push(
                           Number(
                             moment(Number(internalInfo.initalBillingDate)).add(
