@@ -1,9 +1,9 @@
 import React from 'react';
-import NumberFormat from 'react-number-format';
+import ReactNumberFormat from 'react-number-format';
 
-const PercentageFormat = ({ inputRef, name, onChange, ...other }) => {
+const NumberFormat = ({ inputRef, name, onChange, ...other }) => {
   return (
-    <NumberFormat
+    <ReactNumberFormat
       {...other}
       name={name}
       getInputRef={inputRef}
@@ -17,9 +17,8 @@ const PercentageFormat = ({ inputRef, name, onChange, ...other }) => {
       }}
       thousandSeparator
       isNumericString
-      suffix="%"
     />
   );
 };
 
-export default PercentageFormat;
+export default NumberFormat;

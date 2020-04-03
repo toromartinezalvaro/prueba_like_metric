@@ -1,4 +1,5 @@
 import React, { useMemo, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
@@ -27,6 +28,7 @@ const ProjectedIncrement = ({
   mini,
   field,
 }) => {
+  const { towerId } = useParams();
   const formRef = useRef();
 
   const projectedIncrement = useMemo(() => {
@@ -40,8 +42,13 @@ const ProjectedIncrement = ({
   };
 
   const submitHandler = (values) => {
-    services.putIncrement(groupId, values.projectedIncrement);
-    onIncrementChange(Number(values.projectedIncrement));
+    const increment =
+      Number(values.projectedIncrement) + appliedIncrement + salesIncrement;
+    services.putIncrement(towerId, {
+      groupId,
+      increment,
+    });
+    onIncrementChange(Number(increment));
   };
 
   return (

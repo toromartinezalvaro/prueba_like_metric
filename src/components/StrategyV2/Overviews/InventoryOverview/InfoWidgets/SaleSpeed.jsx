@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import Input from '../../../Shared/Input';
+import Input, { NUMBER } from '../../../Shared/Input';
 import Widget, { SM } from '../../../Shared/Widget';
 import { changeSaleSpeed } from '../../../../../containers/StrategyV2/actions';
 import IncrementServices from '../../../../../services/increments/IncrementsServices';
@@ -16,7 +16,7 @@ const validationSchema = yup.object().shape({
 
 const services = new IncrementServices();
 
-const SaleSpeed = ({ saleSpeed, field, onSaleSpeedChange }) => {
+const SaleSpeed = ({ groupId, saleSpeed, field, onSaleSpeedChange }) => {
   const formRef = useRef();
 
   const blurHandler = () => {
@@ -25,8 +25,10 @@ const SaleSpeed = ({ saleSpeed, field, onSaleSpeedChange }) => {
     }
   };
 
-  const submitHandler = async (values) => {
-    await services.putIncrement(values.saleSpeed);
+  const submitHandler = (values) => {
+    services.putSalesSpeeds(groupId, {
+      salesSpeed: values.saleSpeed,
+    });
     onSaleSpeedChange(Number(values.saleSpeed));
   };
 
@@ -38,8 +40,8 @@ const SaleSpeed = ({ saleSpeed, field, onSaleSpeedChange }) => {
             saleSpeed,
           }}
           innerRef={formRef}
-          onSubmit={submitHandler}
           validationSchema={validationSchema}
+          onSubmit={submitHandler}
         >
           {() => (
             <Form>
@@ -47,6 +49,7 @@ const SaleSpeed = ({ saleSpeed, field, onSaleSpeedChange }) => {
                 name="saleSpeed"
                 label="Velocidad de ventas"
                 placeholder="1,3"
+                mask={NUMBER}
                 onBlur={blurHandler}
                 component={Input}
               />
@@ -61,6 +64,7 @@ const SaleSpeed = ({ saleSpeed, field, onSaleSpeedChange }) => {
 };
 
 SaleSpeed.propTypes = {
+  groupId: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
   onSaleSpeedChange: PropTypes.func.isRequired,
   field: PropTypes.bool,
@@ -71,6 +75,7 @@ SaleSpeed.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  groupId: state.strategy.root.groups[state.strategy.root.selectedGroup].id,
   saleSpeed:
     state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
       .saleSpeed,

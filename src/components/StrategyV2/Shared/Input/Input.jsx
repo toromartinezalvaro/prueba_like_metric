@@ -4,13 +4,18 @@ import { getIn } from 'formik';
 import TextField from '@material-ui/core/TextField';
 import CurrencyFormat from './CurrencyFormat';
 import PercentageFormat from './PercentageFormat';
+import NumberFormat from './NumberFormat';
 
 export const DEFAULT = 'default';
+export const NUMBER = 'number';
 export const CURRENCY = 'currency';
 export const PERCENTAGE = 'percentage';
 
 const variants = {
   default: {},
+  number: {
+    inputComponent: NumberFormat,
+  },
   currency: {
     inputComponent: CurrencyFormat,
   },
@@ -38,7 +43,7 @@ const Input = ({ mask, field, form, ...rest }) => {
 };
 
 Input.propTypes = {
-  mask: PropTypes.oneOf([DEFAULT, CURRENCY, PERCENTAGE]),
+  mask: PropTypes.oneOf([DEFAULT, NUMBER, CURRENCY, PERCENTAGE]),
 };
 
 Input.defaultMask = {
