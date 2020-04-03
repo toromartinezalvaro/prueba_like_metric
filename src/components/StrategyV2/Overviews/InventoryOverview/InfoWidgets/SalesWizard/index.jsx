@@ -12,6 +12,7 @@ import Styles from './styles.module.scss';
 
 const SalesWizard = ({
   putSuggestedEffectiveAnnualInterestRate,
+  suggestedEffectiveAnnualInterestRate,
   data,
   setModalOpen,
   isModalOpen,
@@ -31,7 +32,7 @@ const SalesWizard = ({
           <div className={Styles.definition}>Meses Retención de Inventario</div>
           <div></div>
           <div></div>
-          <div>{data.inventory.retentionMonths}</div>
+          <div>{data.initialFee}</div>
           <div className={Styles.definition}>Tasas Incremento e.a</div>
           <div></div>
           <div></div>
@@ -39,7 +40,7 @@ const SalesWizard = ({
             <Input
               mask="percentage"
               validations={[]}
-              value={0}
+              value={suggestedEffectiveAnnualInterestRate * 100}
               onChange={(target) => {
                 putSuggestedEffectiveAnnualInterestRate(
                   parseFloat(target.value / 100),
@@ -52,7 +53,7 @@ const SalesWizard = ({
           <div></div>
           <div>
             <NumberFormat
-              value={0}
+              value={data.inventory.suggestedIncrement}
               displayType={'text'}
               thousandSeparator={true}
               prefix={'$'}

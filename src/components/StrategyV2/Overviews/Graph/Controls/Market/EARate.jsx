@@ -37,7 +37,7 @@ const EARateInput = ({ groupId, EARate, onChangeMarketEARate }) => {
         <Form>
           <Field
             name="EARate"
-            label="Precio promedio"
+            label="E.A"
             placeholder="1.5%"
             mask={PERCENTAGE}
             onBlur={blurHandler}

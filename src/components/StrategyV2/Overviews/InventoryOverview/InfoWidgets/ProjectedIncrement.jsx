@@ -1,16 +1,18 @@
-import React, { useMemo, useCallback, useState, useRef } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import NumberFormat from 'react-number-format';
-import TextField from '@material-ui/core/TextField';
 import { Tooltip } from '@material-ui/core';
 import moment from 'moment';
 import Widget, { XS, SM } from '../../../Shared/Widget';
 import Input, { CURRENCY } from '../../../Shared/Input';
-import { changeIncrement } from '../../../../../containers/StrategyV2/actions';
+import {
+  changeIncrement,
+  changeSuggestedEA,
+} from '../../../../../containers/StrategyV2/actions';
 import Numbers from '../../../../../helpers/numbers';
 import Styles from './ProjectedIncrement.module.scss';
 import SalesWizard from './SalesWizard/index';
@@ -24,14 +26,18 @@ const validationSchema = yup.object().shape({
 
 const ProjectedIncrement = ({
   group,
+  suggestedEffectiveAnnualInterestRate,
   groupId,
   totalIncrement,
   salesIncrement,
   appliedIncrement,
+  onSuggestedIncrementChange,
   onIncrementChange,
   mini,
   field,
 }) => {
+  const { towerId } = useParams();
+  const formRef = useRef();
   const [isModalOpen, setModalOpen] = useState(false);
   const services = new IncrementsServices();
   const inputValidations = [
@@ -46,22 +52,30 @@ const ProjectedIncrement = ({
   ];
 
   const putIncrement = (id, increment) => {
-    services.putIncrement(this.props.match.params.towerId, {
+    services.putIncrement(towerId, {
       groupId: id,
       increment: parseFloat(increment),
     });
+    onIncrementChange(Number(increment));
   };
 
-  const putSuggestedEffectiveAnnualInterestRate = (
+  const putSuggestedEffectiveAnnualInterestRate = async (
     id,
     effectiveAnnualInterestRate,
   ) => {
-    services.putSuggestedEffectiveAnnualInterestRate(id, {
-      effectiveAnnualInterestRate: parseFloat(effectiveAnnualInterestRate),
+    const suggestedIncrement = await services.putSuggestedEffectiveAnnualInterestRate(
+      id,
+      {
+        effectiveAnnualInterestRate: parseFloat(effectiveAnnualInterestRate),
+      },
+    );
+    onSuggestedIncrementChange({
+      suggestedEffectiveAnnualInterestRate: parseFloat(
+        effectiveAnnualInterestRate,
+      ),
+      suggestedIncrement: suggestedIncrement.data,
     });
   };
-  const { towerId } = useParams();
-  const formRef = useRef();
 
   const projectedIncrement = useMemo(() => {
     return Numbers.toFixed(totalIncrement - salesIncrement - appliedIncrement);
@@ -125,6 +139,9 @@ const ProjectedIncrement = ({
       )}
       <SalesWizard
         data={group}
+        suggestedEffectiveAnnualInterestRate={
+          suggestedEffectiveAnnualInterestRate
+        }
         validations={[
           ...inputValidations,
           {
@@ -152,7 +169,9 @@ ProjectedIncrement.propTypes = {
   groupId: PropTypes.number.isRequired,
   totalIncrement: PropTypes.number.isRequired,
   salesIncrement: PropTypes.number.isRequired,
+  suggestedEffectiveAnnualInterestRate: PropTypes.number.isRequired,
   appliedIncrement: PropTypes.number.isRequired,
+  onSuggestedIncrementChange: PropTypes.func.isRequired,
   onIncrementChange: PropTypes.func.isRequired,
   mini: PropTypes.bool,
   field: PropTypes.bool,
@@ -174,11 +193,14 @@ const mapStateToProps = (state) => {
     totalIncrement: total.increment,
     salesIncrement: sales.increment,
     appliedIncrement: inventory.appliedIncrement,
+    suggestedEffectiveAnnualInterestRate:
+      inventory.suggestedEffectiveAnnualInterestRate,
   };
 };
 
 const mapDispatchToProps = {
   onIncrementChange: changeIncrement,
+  onSuggestedIncrementChange: changeSuggestedEA,
 };
 
 export default connect(

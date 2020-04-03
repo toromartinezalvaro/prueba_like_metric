@@ -7,6 +7,7 @@ import {
   CHANGE_INCREMENT,
   CHANGE_SALE_SPEED,
   FETCH_DATA__SUCCESS,
+  CHANGE_SUGGESTED_EA,
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
@@ -40,6 +41,8 @@ export const initialState = {
         saleSpeed: 1,
         EARate: 0.1269,
         appliedIncrement: 25.5,
+        suggestedEffectiveAnnualInterestRate: 0,
+        suggestedIncrement: 0,
       },
       strategy: 3,
       market: {
@@ -47,6 +50,7 @@ export const initialState = {
         anualEffectiveIncrement: 0.123,
       },
       initialFee: 17,
+      isReset: true,
       data: [
         {
           name: 'Page A',
@@ -165,6 +169,23 @@ const reducer = (state = initialState, action) => {
             total: {
               ...state.groups[state.selectedGroup].total,
               increment: payload,
+            },
+          },
+        },
+      };
+    }
+    case CHANGE_SUGGESTED_EA: {
+      return {
+        ...state,
+        groups: {
+          ...state.groups,
+          [state.selectedGroup]: {
+            ...state.groups[state.selectedGroup],
+            inventory: {
+              ...state.groups[state.selectedGroup].inventory,
+              suggestedEffectiveAnnualInterestRate:
+                payload.suggestedEffectiveAnnualInterestRate,
+              suggestedIncrement: payload.suggestedIncrement,
             },
           },
         },

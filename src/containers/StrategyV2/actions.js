@@ -5,6 +5,7 @@ export const CHANGE_GROUP = 'CHANGE_GROUP';
 export const CHANGE_SALE_SPEED = 'CHANGE_SALE_SPEED';
 export const CHANGE_INCREMENT = 'CHANGE_INCREMENT';
 export const FETCH_DATA__SUCCESS = 'FETCH_DATA__SUCCESS';
+export const CHANGE_SUGGESTED_EA = 'CHANGE_SUGGESTED_EA';
 
 export const changeStrategy = (strategy) => ({
   type: CHANGE_STRATEGY,
@@ -31,6 +32,12 @@ export const changeIncrement = (increment) => ({
   type: CHANGE_INCREMENT,
   payload: increment,
 });
+
+export const changeSuggestedEA = (suggestedEffectiveAnnualInterestRate) => ({
+  type: CHANGE_SUGGESTED_EA,
+  payload: suggestedEffectiveAnnualInterestRate,
+});
+
 export const fetchDataSuccess = (payload) => ({
   type: FETCH_DATA__SUCCESS,
   payload,
