@@ -173,8 +173,8 @@ const reducer = (state = initialState, action) => {
     case FETCH_DATA__SUCCESS:
       return {
         ...state,
-        selectedGroup: Object.keys(payload)[0],
-        groups: payload,
+        selectedGroup: 0,
+        ...payload,
       };
     default:
       return state;
