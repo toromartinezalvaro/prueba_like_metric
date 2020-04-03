@@ -1,19 +1,30 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
 import NumberFormat from 'react-number-format';
 import TextField from '@material-ui/core/TextField';
 import { Tooltip } from '@material-ui/core';
 import moment from 'moment';
 import Widget, { XS, SM } from '../../../Shared/Widget';
+import Input, { CURRENCY } from '../../../Shared/Input';
 import { changeIncrement } from '../../../../../containers/StrategyV2/actions';
 import Numbers from '../../../../../helpers/numbers';
 import Styles from './ProjectedIncrement.module.scss';
 import SalesWizard from './SalesWizard/index';
 import IncrementsServices from '../../../../../services/increments/IncrementsServices';
 
+const validationSchema = yup.object().shape({
+  projectedIncrement: yup
+    .number('El incremento es un dato numerico')
+    .required('Es necesario ingresar un incremento'),
+});
+
 const ProjectedIncrement = ({
   group,
+  groupId,
   totalIncrement,
   salesIncrement,
   appliedIncrement,
@@ -49,26 +60,54 @@ const ProjectedIncrement = ({
       effectiveAnnualInterestRate: parseFloat(effectiveAnnualInterestRate),
     });
   };
+  const { towerId } = useParams();
+  const formRef = useRef();
 
   const projectedIncrement = useMemo(() => {
-    return totalIncrement - salesIncrement - appliedIncrement;
+    return Numbers.toFixed(totalIncrement - salesIncrement - appliedIncrement);
   }, [totalIncrement, salesIncrement, appliedIncrement]);
 
-  const incrementChangeHandler = (event) => {
-    onIncrementChange(Number(event.target.value));
+  const blurHandler = () => {
+    if (formRef.current) {
+      formRef.current.handleSubmit();
+    }
+  };
+
+  const submitHandler = (values) => {
+    const increment =
+      Number(values.projectedIncrement) + appliedIncrement + salesIncrement;
+    services.putIncrement(towerId, {
+      groupId,
+      increment,
+    });
+    onIncrementChange(Number(increment));
   };
 
   return (
     <Widget title="Incremento proyectado " size={mini ? XS : SM}>
       {field ? (
         <>
-          <TextField
-            label="Incremento"
-            placeholder="1.3"
-            value={projectedIncrement}
-            onChange={incrementChangeHandler}
-            variant="outlined"
-          />
+          <Formik
+            initialValues={{
+              projectedIncrement,
+            }}
+            innerRef={formRef}
+            onSubmit={submitHandler}
+            validationSchema={validationSchema}
+          >
+            {() => (
+              <Form>
+                <Field
+                  name="projectedIncrement"
+                  label="Incremento"
+                  placeholder="1000,3"
+                  mask={CURRENCY}
+                  component={Input}
+                  onBlur={blurHandler}
+                />
+              </Form>
+            )}
+          </Formik>
           <Tooltip
             title="Abrir ayuda ventas"
             onClick={() => setModalOpen(true)}
@@ -110,6 +149,7 @@ const ProjectedIncrement = ({
 };
 
 ProjectedIncrement.propTypes = {
+  groupId: PropTypes.number.isRequired,
   totalIncrement: PropTypes.number.isRequired,
   salesIncrement: PropTypes.number.isRequired,
   appliedIncrement: PropTypes.number.isRequired,
@@ -125,11 +165,12 @@ ProjectedIncrement.defaultProps = {
 
 const mapStateToProps = (state) => {
   const group = state.strategy.root.groups[state.strategy.root.selectedGroup];
-  const { total, sales, inventory } = state.strategy.root.groups[
+  const { total, sales, inventory, id } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
     group,
+    groupId: id,
     totalIncrement: total.increment,
     salesIncrement: sales.increment,
     appliedIncrement: inventory.appliedIncrement,

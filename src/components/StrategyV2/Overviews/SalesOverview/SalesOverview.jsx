@@ -20,7 +20,9 @@ const SalesOverview = ({
   return (
     <Overview
       title={<Typography variant="h5">Detalles de lo vendido</Typography>}
-      subtitle={`${units} Unidades de ${averageArea}m² Promedio`}
+      subtitle={`${units} Unidades de ${Numbers.toFixed(
+        averageArea,
+      )}m² Promedio`}
       infoWidgets={[
         <Widget key="Sales-SaleSpeed" title="Velocidad de ventas" size={SM}>
           {saleSpeed}
@@ -34,7 +36,7 @@ const SalesOverview = ({
         </Widget>,
         <Widget key="Sales-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
-            value={increment}
+            value={Numbers.toFixed(increment)}
             displayType="text"
             prefix="$"
             thousandSeparator

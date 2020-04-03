@@ -44,7 +44,7 @@ export const initialState = {
       strategy: 3,
       market: {
         averagePrice: 100,
-        EARate: 0.123,
+        anualEffectiveIncrement: 0.123,
       },
       initialFee: 17,
       data: [
@@ -136,7 +136,7 @@ const reducer = (state = initialState, action) => {
             ...state.groups[state.selectedGroup],
             market: {
               ...state.groups[state.selectedGroup].market,
-              EARate: payload,
+              anualEffectiveIncrement: payload,
             },
           },
         },
@@ -156,22 +156,26 @@ const reducer = (state = initialState, action) => {
         },
       };
     case CHANGE_INCREMENT: {
-      const group = state.groups[state.selectedGroup];
-      const increment =
-        payload + group.inventory.appliedIncrement + group.sales.increment;
       return {
         ...state,
         groups: {
           ...state.groups,
           [state.selectedGroup]: {
             ...state.groups[state.selectedGroup],
-            total: { ...state.groups[state.selectedGroup].total, increment },
+            total: {
+              ...state.groups[state.selectedGroup].total,
+              increment: payload,
+            },
           },
         },
       };
     }
     case FETCH_DATA__SUCCESS:
-      return { ...state, groups: payload };
+      return {
+        ...state,
+        selectedGroup: 0,
+        ...payload,
+      };
     default:
       return state;
   }
