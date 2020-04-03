@@ -23,7 +23,9 @@ const TotalOverView = ({
   return (
     <Overview
       title={<Typography variant="h5">Detalle del Total</Typography>}
-      subtitle={`${units} Unidades de ${Numbers.toFixed(averageArea)}m² Promedio`}
+      subtitle={`${units} Unidades de ${Numbers.toFixed(
+        averageArea,
+      )}m² Promedio`}
       infoWidgets={[
         <Widget key="Total-SaleSpeed" title="Velocidad de ventas" size={SM}>
           {saleSpeed}

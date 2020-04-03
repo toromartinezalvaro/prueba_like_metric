@@ -94,7 +94,9 @@ const InventoryOverview = ({
           </Button>
         </Tooltip>
       }
-      subtitle={`${units} Unidades de ${averageArea}m² Promedio`}
+      subtitle={`${units} Unidades de ${Numbers.toFixed(
+        averageArea,
+      )}m² Promedio`}
       infoWidgets={view === MAIN_VIEW ? mainInfoWidgets : detailWidget}
       priceWidgets={[
         <Widget key="DetailInv-IncrementRate" title="Ventas" size={SM}>
