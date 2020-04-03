@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import _ from 'lodash';
 import Settings from '../../components/StrategyV2/Settings';

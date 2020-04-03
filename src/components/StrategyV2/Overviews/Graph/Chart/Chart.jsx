@@ -4,6 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Styles from './Chart.module.scss';
 import Line from '../../../../UI/ChartLine/ChartLine';
@@ -33,9 +34,9 @@ const Chart = ({ groupStrategies, initialMonth }) => {
         </Grid>
         <Grid> </Grid>
       </Grid>
-      <div>
+      <Box pb={4} px={4}>
         <Line currentGroup={[...groupStrategies]} labels={makeArrayLabels()} />
-      </div>
+      </Box>
     </Paper>
   );
 };
