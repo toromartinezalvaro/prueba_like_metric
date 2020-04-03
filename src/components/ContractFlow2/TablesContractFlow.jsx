@@ -138,7 +138,7 @@ const TablesContractFlow = ({ billings }) => {
     return totalAdded;
   };
 
-  const projectedFunc = (arrProjected) => {
+  const acummulatedFunc = (arrProjected) => {
     const dateRef = columnsPerDefined.find(
       (element) => element.name === 'date0',
     );
@@ -154,7 +154,7 @@ const TablesContractFlow = ({ billings }) => {
     return parseInt(valueTotal, 10);
   };
 
-  const acummulatedFunc = (acummulated) => {
+  const projectedFunc = (acummulated) => {
     const dateRef = columnsPerDefined.find(
       (element) => element.name === 'date0',
     );
@@ -190,15 +190,15 @@ const TablesContractFlow = ({ billings }) => {
         let prices = {};
         const contract = textFormater(val.title, 'text');
         const acumulated =
-          val.acumulated.length !== 0 ? acummulatedFunc(val.acumulated) : 0;
+          val.acumulated.length !== 0 ? acummulatedFunc(val.projected) : 0;
         const projected =
-          val.projected.length !== 0 ? projectedFunc(val.projected) : 0;
+          val.projected.length !== 0 ? projectedFunc(val.acumulated) : 0;
         let result = {
           group,
           item: item[t],
           contract,
-          acumulated: numberFormater(acumulated),
           projected: numberFormater(projected),
+          acumulated: numberFormater(acumulated),
           total: numberFormater(acumulated + projected),
         };
 
@@ -352,8 +352,8 @@ const TablesContractFlow = ({ billings }) => {
         { name: 'contract', title: 'Contrato' },
         { name: 'group', title: 'Grupo' },
         { name: 'item', title: 'Item' },
-        { name: 'acumulated', title: 'Acumulado' },
         { name: 'projected', title: 'Proyectado' },
+        { name: 'acumulated', title: 'Acumulado' },
         { name: 'total', title: 'Total' },
       );
       const rowsPerLine = () => {
@@ -438,8 +438,8 @@ const TablesContractFlow = ({ billings }) => {
 
   const [leftColumns] = useState([
     'contract',
-    'acumulated',
     'projected',
+    'acumulated',
     'total',
     'group',
     'item',
