@@ -48,63 +48,6 @@ const TablesContractFlow = ({ billings }) => {
     );
   };
 
-  const datesInitialNumber = (bill, i) => {
-    let initialNumber = 0;
-    const initial = billings.map((bill, n) => {
-      bill.items &&
-        bill.items.map((individual) => {
-          individual.contracts.forEach((information) => {
-            information.billing.forEach((internalInfo) => {
-              if (internalInfo.eventId === 0) {
-                Number(
-                  moment(Number(internalInfo.initalBillingDate)).add(
-                    Number(internalInfo.displacement),
-                    'M',
-                  ),
-                );
-              } else {
-                initialNumber.push(
-                  Number(
-                    moment(
-                      Number(information.schedulesDate.salesStartDate),
-                    ).add(Number(internalInfo.displacement), 'M'),
-                  ),
-                );
-              }
-            });
-          });
-        });
-    });
-    return initialNumber;
-  };
-
-  const datesFinalNumber = (bill, i) => {
-    let finalNumber = [];
-    bill.items[i] &&
-      bill.items[i].contracts.forEach((information) => {
-        information.billing.forEach((internalInfo) => {
-          if (
-            Number(
-              moment(Number(internalInfo.lastBillingDate)).add(
-                Number(internalInfo.paymentNumber),
-                'M',
-              ),
-            ) >= finalNumber
-          ) {
-            finalNumber.push(
-              Number(
-                moment(Number(internalInfo.lastBillingDate)).add(
-                  Number(internalInfo.paymentNumber),
-                  'M',
-                ),
-              ),
-            );
-          }
-        });
-      });
-    return Math.max(...finalNumber);
-  };
-
   const GroupCellContent = ({ column, row }) => (
     <span>
       {column.title === 'Grupo' ? (
@@ -261,8 +204,8 @@ const TablesContractFlow = ({ billings }) => {
         const initialNumber = [];
         const finalNumber = [];
         const initial = billings.map((bill, n) => {
-          bill.items &&
-            bill.items.map((individual) => {
+          if (bill.items) {
+            bill.items.flatMap((individual) => {
               individual.contracts.forEach((information) => {
                 information.billing.forEach((internalInfo) => {
                   if (internalInfo.eventId === 0) {
@@ -286,11 +229,11 @@ const TablesContractFlow = ({ billings }) => {
                 });
               });
             });
+          }
         });
         const final = billings.map((bill, n) => {
-          const billLength = bill.items.length;
-          bill.items &&
-            bill.items.map((individual) => {
+          if (bill.items) {
+            bill.items.flatMap((individual) => {
               individual.contracts.forEach((information) => {
                 information.billing.forEach((internalInfo) => {
                   finalNumber.push(
@@ -304,6 +247,7 @@ const TablesContractFlow = ({ billings }) => {
                 });
               });
             });
+          }
         });
         return {
           initialNumber: Math.min(...initialNumber),
@@ -362,8 +306,8 @@ const TablesContractFlow = ({ billings }) => {
             const initialNumber = [];
             const finalNumber = [];
             const initial = billings.map((bill, n) => {
-              bill.items &&
-                bill.items.map((individual) => {
+              if (bill.items) {
+                bill.items.flatMap((individual) => {
                   individual.contracts.forEach((information) => {
                     information.billing.forEach((internalInfo) => {
                       if (internalInfo.eventId === 0) {
@@ -387,10 +331,11 @@ const TablesContractFlow = ({ billings }) => {
                     });
                   });
                 });
+              }
             });
             const final = billings.map((bill, n) => {
-              bill.items &&
-                bill.items.map((individual) => {
+              if (bill.items) {
+                bill.items.flatMap((individual) => {
                   individual.contracts.forEach((information) => {
                     information.billing.forEach((internalInfo) => {
                       finalNumber.push(
@@ -399,6 +344,7 @@ const TablesContractFlow = ({ billings }) => {
                     });
                   });
                 });
+              }
             });
             return {
               initialNumber: Math.min(...initialNumber),
