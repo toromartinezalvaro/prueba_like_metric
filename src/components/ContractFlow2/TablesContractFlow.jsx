@@ -202,9 +202,7 @@ const TablesContractFlow = ({ billings }) => {
           total: numberFormater(acumulated + projected),
         };
 
-        const initialDatesValues = [
-          ...Array(bigDummie <= 0 ? 1 : bigDummie),
-        ].forEach((column, x) => {
+        const initialDatesValues = columnsPerDefined.forEach((column, x) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
@@ -224,10 +222,19 @@ const TablesContractFlow = ({ billings }) => {
                 return element.title === String(currentDate);
               })
             ) {
-              prices = {
-                ...prices,
-                [currentCell.name]: Number(singleValue.value),
-              };
+              if (prices[currentCell.name]) {
+                const summarized =
+                  Number(singleValue.value) + Number(prices[currentCell.name]);
+                prices = {
+                  ...prices,
+                  [currentCell.name]: summarized,
+                };
+              } else {
+                prices = {
+                  ...prices,
+                  [currentCell.name]: Number(singleValue.value),
+                };
+              }
             } else {
               prices = { ...prices, [currentCell.name]: Number(0) };
             }
@@ -387,12 +394,7 @@ const TablesContractFlow = ({ billings }) => {
                   individual.contracts.forEach((information) => {
                     information.billing.forEach((internalInfo) => {
                       finalNumber.push(
-                        Number(
-                          moment(Number(internalInfo.lastBillingDate)).add(
-                            Number(internalInfo.paymentNumber),
-                            'M',
-                          ),
-                        ),
+                        Number(moment(Number(internalInfo.lastBillingDate))),
                       );
                     });
                   });

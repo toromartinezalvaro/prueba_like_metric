@@ -13,6 +13,7 @@ import Numbers from '../../../../helpers/numbers';
 import style from '../ViewContractInformation.module.scss';
 
 const ViewBillingAndFinancials = ({ contractDataView, events }) => {
+  console.log('LO QUE HAY', contractDataView);
   const totalBills = contractDataView.billings.reduce((a, b) => {
     const actualBill =
       (b.amount + b.amount * (b.iva / 100)) * (b.paymentNumber + 1);
@@ -89,12 +90,24 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                     <div className="rightInformation">
                       <Card className={style.rightTitle}>
                         <span className={style.labelForTitle}>
+                          FECHA INICIAL DE COBRO
+                        </span>
+                        <p className={style.information}>
+                          {billing.lastBillingDate
+                            ? moment(Number(billing.initalBillingDate)).format(
+                                'DD/MM/YYYY',
+                              )
+                            : 'FECHA CALENDARIO'}
+                        </p>
+                      </Card>
+                      <Card className={style.rightTitle}>
+                        <span className={style.labelForTitle}>
                           FECHA FINAL DE COBRO
                         </span>
                         <p className={style.information}>
-                          {moment(Number(billing.lastBillingDate))
-                            .add(Number(billing.paymentNumber), 'M')
-                            .format('DD/MM/YYYY')}
+                          {moment(Number(billing.lastBillingDate)).format(
+                            'DD/MM/YYYY',
+                          )}
                         </p>
                       </Card>
                       <Card className={style.rightTitle}>
