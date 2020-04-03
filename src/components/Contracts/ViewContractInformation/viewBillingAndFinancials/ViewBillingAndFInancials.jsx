@@ -13,7 +13,6 @@ import Numbers from '../../../../helpers/numbers';
 import style from '../ViewContractInformation.module.scss';
 
 const ViewBillingAndFinancials = ({ contractDataView, events }) => {
-  console.log('LO QUE HAY', contractDataView);
   const totalBills = contractDataView.billings.reduce((a, b) => {
     const actualBill =
       (b.amount + b.amount * (b.iva / 100)) * (b.paymentNumber + 1);
