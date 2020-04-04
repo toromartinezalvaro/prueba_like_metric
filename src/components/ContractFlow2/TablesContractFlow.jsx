@@ -155,6 +155,12 @@ const TablesContractFlow = ({ billings }) => {
               const currentDate = moment(Number(singleValue.date))
                 .add(singleValue.displacement, 'M')
                 .format('MMM YYYY');
+              console.log(
+                'FECHA',
+                currentDate,
+                'comparación',
+                element.title === String(currentDate),
+              );
               return element.title === String(currentDate);
             });
             if (
@@ -208,10 +214,15 @@ const TablesContractFlow = ({ billings }) => {
             bill.items.flatMap((individual) => {
               individual.contracts.forEach((information) => {
                 information.billing.forEach((internalInfo) => {
+                  console.log(
+                    'EVENT ID',
+                    internalInfo.eventId,
+                    internalInfo.initalBillingDate,
+                  );
                   if (
-                    internalInfo.eventId === 0 &&
-                    information.schedulesDate.salesStartDate !==
-                      internalInfo.initalBillingDate
+                    internalInfo.eventId === 0 ||
+                    internalInfo.initalBillingDate !==
+                      information.schedulesDate.salesStartDate
                   ) {
                     initialNumber.push(
                       Number(
@@ -316,8 +327,8 @@ const TablesContractFlow = ({ billings }) => {
                     information.billing.forEach((internalInfo) => {
                       if (
                         internalInfo.eventId === 0 &&
-                        information.schedulesDate.salesStartDate !==
-                          internalInfo.initalBillingDate
+                        internalInfo.initalBillingDate !==
+                          information.schedulesDate.salesStartDate
                       ) {
                         initialNumber.push(
                           Number(
