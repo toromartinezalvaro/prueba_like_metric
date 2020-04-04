@@ -153,13 +153,20 @@ const BillingFinancials = ({
         billingsArray[billIndex].initalBillingDate = Number(newDate);
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(newDate);
+          const payment = (value) => {
+            let result = 0;
+            if (Number(value) > 1) {
+              result = parseInt(value, 10) - 1;
+              return result;
+            }
+            if (Number(value) === 1) {
+              return 0;
+            }
+            return parseInt(value, 10);
+          };
           const date = moment(billingsArray[billIndex].lastBillingDate)
             .add(
-              Number(
-                billingsArray[billIndex].paymentNumber !== 1
-                  ? Number(billingsArray[billIndex].paymentNumber) - 1
-                  : 0,
-              ),
+              Number(payment(billingsArray[billIndex].paymentNumber)),
               billingsArray[billIndex].type,
             )
             .format('x');
@@ -517,12 +524,7 @@ const BillingFinancials = ({
                       margin="normal"
                       id="date-picker-inline"
                       label="Fecha Final"
-                      value={Number(
-                        moment(Number(billing.lastBillingDate)).add(
-                          Number(billing.paymentNumber),
-                          'M',
-                        ),
-                      )}
+                      value={Number(moment(Number(billing.lastBillingDate)))}
                       onChange={changeCardValue(
                         'lastBillingDate',
                         billing.id,

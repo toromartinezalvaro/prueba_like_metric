@@ -48,50 +48,6 @@ const TablesContractFlow = ({ billings }) => {
     );
   };
 
-  const datesInitialNumber = (bill, i) => {
-    let initialNumber = 0;
-    bill.items[i] &&
-      bill.items[i].contracts.forEach((information) => {
-        if (
-          parseInt(information.schedulesDate.salesStartDate, 10) >=
-          initialNumber
-        ) {
-          initialNumber = parseInt(
-            information.schedulesDate.salesStartDate,
-            10,
-          );
-        }
-      });
-    return initialNumber;
-  };
-
-  const datesFinalNumber = (bill, i) => {
-    let finalNumber = [];
-    bill.items[i] &&
-      bill.items[i].contracts.forEach((information) => {
-        information.billing.forEach((internalInfo) => {
-          if (
-            Number(
-              moment(Number(internalInfo.lastBillingDate)).add(
-                Number(internalInfo.paymentNumber),
-                'M',
-              ),
-            ) >= finalNumber
-          ) {
-            finalNumber.push(
-              Number(
-                moment(Number(internalInfo.lastBillingDate)).add(
-                  Number(internalInfo.paymentNumber),
-                  'M',
-                ),
-              ),
-            );
-          }
-        });
-      });
-    return Math.max(...finalNumber);
-  };
-
   const GroupCellContent = ({ column, row }) => (
     <span>
       {column.title === 'Grupo' ? (
@@ -102,7 +58,7 @@ const TablesContractFlow = ({ billings }) => {
       : <strong>{row.value}</strong>
     </span>
   );
-
+  let columnsPerDefined = [];
   const textFormater = (title, type) => {
     switch (type) {
       case 'group':
@@ -125,83 +81,112 @@ const TablesContractFlow = ({ billings }) => {
     return totalAdded;
   };
 
-  const projectedFunc = (arrProjected) => {
+  const acummulatedFunc = (arrProjected) => {
+    const dateRef = columnsPerDefined.find(
+      (element) => element.name === 'date0',
+    );
     let valueTotal = 0;
     arrProjected.forEach((value) => {
-      if (value.length > 1) {
-        value.slice(2).forEach((item) => {
-          valueTotal += item.value;
-        });
-      } else if (value.length <= 1) {
-        value.slice(2).forEach((item) => {
-          valueTotal += item.value;
-        });
+      if (
+        String(moment(Number(value[1].date)).format('MMM YYYY')) !==
+        dateRef.title
+      ) {
+        valueTotal += value[1].value;
       }
     });
     return parseInt(valueTotal, 10);
   };
 
-  const acummulatedFunc = (acummulated) => {
+  const projectedFunc = (acummulated) => {
+    const dateRef = columnsPerDefined.find(
+      (element) => element.name === 'date0',
+    );
     let totalAcummulated = 0;
     acummulated.forEach((value) => {
-      totalAcummulated += value[1].value;
+      if (
+        String(moment(Number(value[1].date)).format('MMM YYYY')) ===
+        dateRef.title
+      ) {
+        totalAcummulated += value[1].value;
+      }
     });
     return parseInt(totalAcummulated, 10);
   };
   let bigDummie = 0;
-  const deepInformation = (bill, group, item, q) => {
-    const initialDate = datesInitialNumber(bill, q);
-    const finalDate = datesFinalNumber(bill, q);
+
+  const deepInformation = (
+    bill,
+    group,
+    item,
+    q,
+    initialNumber,
+    finalNumber,
+  ) => {
     const numberOfDates =
-      Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
-        ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
-        : 1;
+      Math.round(moment(finalNumber).diff(initialNumber, 'months', true)) > 0 &&
+      finalNumber > initialNumber
+        ? Math.round(moment(finalNumber).diff(initialNumber, 'months', true))
+        : Math.round(moment(initialNumber).diff(finalNumber, 'months', true));
     bigDummie = numberOfDates > bigDummie ? numberOfDates : bigDummie;
     const information = bill.items.map((value, t) => {
       return value.contracts.map((val, n) => {
         let prices = {};
         const contract = textFormater(val.title, 'text');
         const acumulated =
-          val.acumulated.length !== 0 ? acummulatedFunc(val.acumulated) : 0;
+          val.acumulated.length !== 0 ? acummulatedFunc(val.projected) : 0;
         const projected =
-          val.projected.length !== 0 ? projectedFunc(val.projected) : 0;
+          val.projected.length !== 0 ? projectedFunc(val.acumulated) : 0;
         let result = {
           group,
           item: item[t],
           contract,
-          acumulated: numberFormater(acumulated),
           projected: numberFormater(projected),
+          acumulated: numberFormater(acumulated),
           total: numberFormater(acumulated + projected),
         };
 
-        const initialDatesValues = [...Array(bigDummie)].forEach(
-          (column, x) => {
-            const name = `date${x}`;
-            result = { ...result, [name]: [numberFormater(0)] };
-          },
-        );
+        const initialDatesValues = columnsPerDefined.forEach((column, x) => {
+          const name = `date${x}`;
+          result = { ...result, [name]: [numberFormater(0)] };
+        });
         const datesValues = val.billings.map((dateValue, K) => {
           dateValue.slice(1).forEach((singleValue, l) => {
-            const name = `date${l}`;
+            const currentCell = columnsPerDefined.find((element) => {
+              const currentDate = moment(Number(singleValue.date))
+                .add(singleValue.displacement, 'M')
+                .format('MMM YYYY');
+              
+              return element.title === String(currentDate);
+            });
             if (
-              columns.find(
-                (element) =>
-                  element.title ===
-                  String(
-                    moment(Number(singleValue.date))
-                      .add(singleValue.displacement, 'M')
-                      .format('MMM YYYY'),
-                  ),
-              )
+              columnsPerDefined.find((element) => {
+                const currentDate = moment(Number(singleValue.date))
+                  .add(singleValue.displacement, 'M')
+                  .format('MMM YYYY');
+                return element.title === String(currentDate);
+              })
             ) {
-              prices = {
-                ...prices,
-                [name]: [singleValue.value + prices[name][0]],
-              };
+              if (prices[currentCell.name]) {
+                const summarized =
+                  Number(singleValue.value) + Number(prices[currentCell.name]);
+                prices = {
+                  ...prices,
+                  [currentCell.name]: summarized,
+                };
+              } else {
+                prices = {
+                  ...prices,
+                  [currentCell.name]: Number(singleValue.value),
+                };
+              }
             } else {
-              prices = { ...prices, [name]: [singleValue.value] };
+              prices = { ...prices, [currentCell.name]: Number(0) };
             }
-            result = { ...result, [name]: [numberFormater(prices[name][0])] };
+
+            result = {
+              ...result,
+              [currentCell.name]: [numberFormater(prices[currentCell.name])],
+            };
           });
         });
         return result;
@@ -213,39 +198,89 @@ const TablesContractFlow = ({ billings }) => {
   useEffect(() => {
     let active = true;
     if (active) {
-      const rowsPerLine = () => {
-        const rows = billings.reduce((acummulated, bill, n) => {
-          const group = bill.group;
-          const item = bill.items.map((value) => value.item);
-          const contracts = deepInformation(bill, group, item, n);
-          contracts.forEach((contract) =>
-            contract.forEach((row) => {
-              acummulated.push(row);
-            }),
-          );
-          return acummulated;
-        }, []);
-
-        return rows;
-      };
       let firstPull = true;
       let dummie = 0;
+
+      const billingsForDates = () => {
+        const initialNumber = [];
+        const finalNumber = [];
+        const initial = billings.map((bill, n) => {
+          if (bill.items) {
+            bill.items.flatMap((individual) => {
+              individual.contracts.forEach((information) => {
+                information.billing.forEach((internalInfo) => {
+                  if (
+                    internalInfo.eventId === 0 ||
+                    internalInfo.initalBillingDate !==
+                      information.schedulesDate.salesStartDate
+                  ) {
+                    initialNumber.push(
+                      Number(
+                        moment(Number(internalInfo.initalBillingDate)).add(
+                          Number(internalInfo.displacement),
+                          'M',
+                        ),
+                      ),
+                    );
+                  } else {
+                    initialNumber.push(
+                      Number(
+                        moment(
+                          Number(information.schedulesDate.salesStartDate),
+                        ).add(Number(internalInfo.displacement), 'M'),
+                      ),
+                    );
+                  }
+                });
+              });
+            });
+          }
+        });
+        const final = billings.map((bill, n) => {
+          if (bill.items) {
+            bill.items.flatMap((individual) => {
+              individual.contracts.forEach((information) => {
+                information.billing.forEach((internalInfo) => {
+                  finalNumber.push(
+                    Number(
+                      moment(Number(internalInfo.lastBillingDate)).add(
+                        Number(internalInfo.paymentNumber),
+                        'M',
+                      ),
+                    ),
+                  );
+                });
+              });
+            });
+          }
+        });
+        return {
+          initialNumber: Math.min(...initialNumber),
+          finalNumber: Math.max(...finalNumber),
+        };
+      };
+
       const columnsPerLine = billings.map((bill, n) => {
-        const initialDate = datesInitialNumber(bill, n);
-        const finalDate = datesFinalNumber(bill, n);
+        const { initialNumber } = billingsForDates();
+        const { finalNumber } = billingsForDates();
         const numberOfDates =
-          Math.round(moment(finalDate).diff(initialDate, 'months', true)) > 0
-            ? Math.round(moment(finalDate).diff(initialDate, 'months', true))
-            : 1;
+          Math.round(moment(finalNumber).diff(initialNumber, 'months', true)) >
+            0 && finalNumber > initialNumber
+            ? Math.round(
+                moment(finalNumber).diff(initialNumber, 'months', true),
+              )
+            : Math.round(
+                moment(initialNumber).diff(initialNumber, 'months', true),
+              );
 
         let objects = [];
         dummie = numberOfDates > dummie ? numberOfDates : dummie;
         if (firstPull) {
-          objects = [...Array(dummie)].map((value, index) => {
+          objects = [...Array(dummie <= 0 ? 1 : dummie)].map((value, index) => {
             return {
               name: `date${index}`,
               title: String(
-                moment(initialDate)
+                moment(initialNumber)
                   .add(index, 'M')
                   .format('MMM YYYY'),
               ),
@@ -266,10 +301,88 @@ const TablesContractFlow = ({ billings }) => {
         { name: 'contract', title: 'Contrato' },
         { name: 'group', title: 'Grupo' },
         { name: 'item', title: 'Item' },
-        { name: 'acumulated', title: 'Acumulado' },
         { name: 'projected', title: 'Proyectado' },
+        { name: 'acumulated', title: 'Acumulado' },
         { name: 'total', title: 'Total' },
       );
+      const rowsPerLine = () => {
+        const rows = billings.reduce((acummulated, bill, n) => {
+          const billingsForDates = () => {
+            const initialNumber = [];
+            const finalNumber = [];
+            const initial = billings.map((bill, n) => {
+              if (bill.items) {
+                bill.items.flatMap((individual) => {
+                  individual.contracts.forEach((information) => {
+                    information.billing.forEach((internalInfo) => {
+                      if (
+                        internalInfo.eventId === 0 &&
+                        internalInfo.initalBillingDate !==
+                          information.schedulesDate.salesStartDate
+                      ) {
+                        initialNumber.push(
+                          Number(
+                            moment(Number(internalInfo.initalBillingDate)).add(
+                              Number(internalInfo.displacement),
+                              'M',
+                            ),
+                          ),
+                        );
+                      } else {
+                        initialNumber.push(
+                          Number(
+                            moment(
+                              Number(information.schedulesDate.salesStartDate),
+                            ).add(Number(internalInfo.displacement), 'M'),
+                          ),
+                        );
+                      }
+                    });
+                  });
+                });
+              }
+            });
+            const final = billings.map((bill, n) => {
+              if (bill.items) {
+                bill.items.flatMap((individual) => {
+                  individual.contracts.forEach((information) => {
+                    information.billing.forEach((internalInfo) => {
+                      finalNumber.push(
+                        Number(moment(Number(internalInfo.lastBillingDate))),
+                      );
+                    });
+                  });
+                });
+              }
+            });
+            return {
+              initialNumber: Math.min(...initialNumber),
+              finalNumber: Math.max(...finalNumber),
+            };
+          };
+          const { initialNumber } = billingsForDates();
+          const { finalNumber } = billingsForDates();
+          const group = bill.group;
+          const item = bill.items.map((value) => value.item);
+          const contracts = deepInformation(
+            bill,
+            group,
+            item,
+            n,
+            initialNumber,
+            finalNumber,
+          );
+          contracts.forEach((contract) =>
+            contract.forEach((row) => {
+              acummulated.push(row);
+            }),
+          );
+          return acummulated;
+        }, []);
+
+        return rows;
+      };
+      columnsPerDefined = columnsPerLineDefined;
       setColumns(columnsPerLineDefined);
       setRows(rowsPerLine);
     }
@@ -280,8 +393,8 @@ const TablesContractFlow = ({ billings }) => {
 
   const [leftColumns] = useState([
     'contract',
-    'acumulated',
     'projected',
+    'acumulated',
     'total',
     'group',
     'item',
