@@ -87,14 +87,16 @@ const GeneralInfo = ({
   };
 
   const changeAndSearchItem = (currentItem) => {
+    let currentGeneralInformation = { ...generalInformation };
     const currentItemValue = currentItem.value;
     const currentItemLabel = currentItem.label;
-    setGeneralInformation({
-      ...generalInformation,
+    currentGeneralInformation = {
+      ...currentGeneralInformation,
       itemId: currentItemValue,
       itemLabel: currentItemLabel,
-    });
-    sendGeneralInfo(generalInformation);
+    };
+    setGeneralInformation(currentGeneralInformation);
+    sendGeneralInfo(currentGeneralInformation);
     changeForSearchItem(currentItem);
   };
 
