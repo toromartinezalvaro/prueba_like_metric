@@ -13,7 +13,7 @@ const Chart = ({ groupStrategies, initialMonth }) => {
   const makeArrayLabels = () => {
     const strategyDates =
       groupStrategies[1] !== undefined ? groupStrategies[1].data.length : 0;
-    const marketDates = groupStrategies[0].data.length;
+    const marketDates = groupStrategies[0] ? groupStrategies[0].data.length : 0;
     const length = strategyDates > 0 ? strategyDates : marketDates;
 
     const month = initialMonth || Date.now();
@@ -50,15 +50,21 @@ Chart.propTypes = {
 const mapStateToProps = (state) => {
   const currentGroup =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
+  if (currentGroup) {
+    const groupStrategies = [...currentGroup.strategies].map((strategy) => ({
+      ...strategy,
+      data: [...strategy.data],
+    }));
 
-  const groupStrategies = [...currentGroup.strategies].map((strategy) => ({
-    ...strategy,
-    data: [...strategy.data],
-  }));
+    return {
+      groupStrategies,
+      initialMonth: currentGroup.initialMonth,
+    };
+  }
 
   return {
-    groupStrategies,
-    initialMonth: currentGroup.initialMonth,
+    groupStrategies: [],
+    initialMonth: Date.now(),
   };
 };
 export default connect(mapStateToProps)(Chart);

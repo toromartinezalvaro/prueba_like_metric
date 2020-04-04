@@ -14,6 +14,7 @@ import { reducer as OverviewReducer } from '../../components/StrategyV2/Overview
 
 export const initialState = {
   selectedGroup: 1,
+  strategyLines: [],
   groups: {
     1: {
       id: 568,

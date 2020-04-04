@@ -55,25 +55,25 @@ const Strategies = ({
             >
               <FormControlLabel
                 value={1}
-                disabled={!(strategies.length >= 2) || !isReset}
+                disabled={!(strategies && strategies.length >= 2) || !isReset}
                 control={<Radio />}
                 label="Continua"
               />
               <FormControlLabel
                 value={3}
-                disabled={!(strategies.length >= 3) || !isReset}
+                disabled={!(strategies && strategies.length >= 3) || !isReset}
                 control={<Radio />}
                 label="Semi-continua"
               />
               <FormControlLabel
                 value={9}
-                disabled={!(strategies.length >= 4) || !isReset}
+                disabled={!(strategies && strategies.length >= 4) || !isReset}
                 control={<Radio />}
                 label="Semi-escalonada"
               />
               <FormControlLabel
                 value={18}
-                disabled={!(strategies.length >= 5) || !isReset}
+                disabled={!(strategies && strategies.length >= 5) || !isReset}
                 control={<Radio />}
                 label="Escalonada"
               />
@@ -111,7 +111,7 @@ const mapStateToProps = (state) => {
   return {
     strategy,
     isReset,
-    strategies: currentGroup.strategies,
+    strategies: currentGroup ? currentGroup.strategies : null,
     currentGroup,
   };
 };
