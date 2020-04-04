@@ -23,7 +23,7 @@ import Clustering from '../Clustering/Clustering';
 import Increments from '../Increments/Increments';
 import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
-import Strategy from '../Strategy/Strategy';
+//import Strategy from '../Strategy/Strategy';
 import SalesRoomClient from '../SalesRoom/SalesRoomClient';
 import Client from '../Client';
 import Client2 from '../Client/Client23';
@@ -36,6 +36,7 @@ import CashFlow from '../CashFlow';
 import SaleRequests from '../SaleRequests';
 import Pairing from '../Pairing';
 import Quotations from '../Quotations';
+import Strategy from '../StrategyV2';
 
 class Dashboard extends Component {
   constructor(props) {
