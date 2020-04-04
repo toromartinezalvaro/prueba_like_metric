@@ -102,10 +102,6 @@ const Strategy = ({ onFetchedData }) => {
             strategies: increment.strategies.map(makeArrayDataSets),
           };
         });
-        console.log('INCREMENTS --> ', {
-          strategyLines,
-          groups: response.data.summary.increments,
-        });
         onFetchedData({
           strategyLines,
           groups: response.data.summary.increments,

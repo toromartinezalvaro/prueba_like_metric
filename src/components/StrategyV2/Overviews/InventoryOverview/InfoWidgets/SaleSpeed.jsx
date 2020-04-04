@@ -27,7 +27,7 @@ const SaleSpeed = ({ groupId, saleSpeed, field, onSaleSpeedChange }) => {
 
   const submitHandler = (values) => {
     services.putSalesSpeeds(groupId, {
-      salesSpeed: values.saleSpeed,
+      salesSpeed: Number(values.saleSpeed),
     });
     onSaleSpeedChange(Number(values.saleSpeed));
   };
@@ -40,7 +40,6 @@ const SaleSpeed = ({ groupId, saleSpeed, field, onSaleSpeedChange }) => {
             saleSpeed,
           }}
           innerRef={formRef}
-          validationSchema={validationSchema}
           onSubmit={submitHandler}
         >
           {() => (

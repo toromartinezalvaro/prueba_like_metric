@@ -6,6 +6,7 @@ export const CHANGE_SALE_SPEED = 'CHANGE_SALE_SPEED';
 export const CHANGE_INCREMENT = 'CHANGE_INCREMENT';
 export const FETCH_DATA__SUCCESS = 'FETCH_DATA__SUCCESS';
 export const CHANGE_SUGGESTED_EA = 'CHANGE_SUGGESTED_EA';
+export const CHANGE_SUMMARY = 'CHANGE_SUMMARY';
 
 export const changeStrategy = (strategy) => ({
   type: CHANGE_STRATEGY,
@@ -28,9 +29,15 @@ export const changeSaleSpeed = (saleSpeed) => ({
   type: CHANGE_SALE_SPEED,
   payload: saleSpeed,
 });
+
 export const changeIncrement = (increment) => ({
   type: CHANGE_INCREMENT,
   payload: increment,
+});
+
+export const changeSummary = (summary) => ({
+  type: CHANGE_SUMMARY,
+  payload: summary,
 });
 
 export const changeSuggestedEA = (suggestedEffectiveAnnualInterestRate) => ({

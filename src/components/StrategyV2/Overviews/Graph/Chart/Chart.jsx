@@ -42,9 +42,9 @@ const Chart = ({ groupStrategies, initialMonth }) => {
 };
 
 Chart.propTypes = {
-  groupStrategies: PropTypes.array.isRequired,
-  initialMonth: PropTypes.number,
-  allStrategies: PropTypes.array.isRequired,
+  groupStrategies: PropTypes.array,
+  initialMonth: PropTypes.string,
+  allStrategies: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {

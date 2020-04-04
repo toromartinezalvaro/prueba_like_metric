@@ -8,6 +8,7 @@ import {
   CHANGE_SALE_SPEED,
   FETCH_DATA__SUCCESS,
   CHANGE_SUGGESTED_EA,
+  CHANGE_SUMMARY,
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
@@ -197,6 +198,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedGroup: 0,
         ...payload,
+      };
+
+    case CHANGE_SUMMARY:
+      return {
+        ...state,
+        groups: payload.increments,
       };
     default:
       return state;

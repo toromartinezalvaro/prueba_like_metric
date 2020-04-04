@@ -12,6 +12,7 @@ import Input, { CURRENCY } from '../../../Shared/Input';
 import {
   changeIncrement,
   changeSuggestedEA,
+  changeSummary,
 } from '../../../../../containers/StrategyV2/actions';
 import Numbers from '../../../../../helpers/numbers';
 import Styles from './ProjectedIncrement.module.scss';
@@ -33,6 +34,7 @@ const ProjectedIncrement = ({
   appliedIncrement,
   onSuggestedIncrementChange,
   onIncrementChange,
+  onSummaryChange,
   mini,
   field,
 }) => {
@@ -51,12 +53,17 @@ const ProjectedIncrement = ({
     },
   ];
 
-  const putIncrement = (id, increment) => {
-    services.putIncrement(towerId, {
-      groupId: id,
-      increment: parseFloat(increment),
-    });
-    onIncrementChange(Number(increment));
+  const putIncrement = async (id, increment) => {
+    try {
+      const incrementResponse = await services.putIncrement(towerId, {
+        groupId: id,
+        increment: parseFloat(increment),
+      });
+      onIncrementChange(Number(increment));
+      onSummaryChange(incrementResponse.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const putSuggestedEffectiveAnnualInterestRate = async (
@@ -78,6 +85,13 @@ const ProjectedIncrement = ({
   };
 
   const projectedIncrement = useMemo(() => {
+    console.log(
+      'project increment ',
+      Numbers.toFixed(totalIncrement - salesIncrement - appliedIncrement),
+      totalIncrement,
+      salesIncrement,
+      appliedIncrement,
+    );
     return Numbers.toFixed(totalIncrement - salesIncrement - appliedIncrement);
   }, [totalIncrement, salesIncrement, appliedIncrement]);
 
@@ -90,10 +104,7 @@ const ProjectedIncrement = ({
   const submitHandler = (values) => {
     const increment =
       Number(values.projectedIncrement) + appliedIncrement + salesIncrement;
-    services.putIncrement(towerId, {
-      groupId,
-      increment,
-    });
+    putIncrement(groupId, increment);
     onIncrementChange(Number(increment));
   };
 
@@ -201,6 +212,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   onIncrementChange: changeIncrement,
   onSuggestedIncrementChange: changeSuggestedEA,
+  onSummaryChange: changeSummary,
 };
 
 export default connect(
