@@ -133,7 +133,9 @@ export default class ContractService extends Services {
     return this.get(ContractServiceDefinitions.contract(towerId));
   }
 
-  deleteSpecificBill(id, towerId) {
-    return this.delete(ContractServiceDefinitions.toDeleteBill(towerId), id);
+  deleteSpecificBill(idArray, towerId) {
+    return this.delete(ContractServiceDefinitions.toDeleteBill(towerId), {
+      idArray,
+    });
   }
 }
