@@ -88,7 +88,6 @@ class Contracts extends Component {
         state: '',
         item: '',
       },
-      readyToSend: false,
     };
   }
 
@@ -569,6 +568,7 @@ class Contracts extends Component {
   };
 
   addContract = () => {
+    let readyToSend = false;
     const requiredInformation = this.state.generalInformation;
     if (requiredInformation.title === '') {
       this.props.spawnMessage(
@@ -633,10 +633,8 @@ class Contracts extends Component {
       );
       this.sendErrorInProp('description', true);
     }
-    this.setState({
-      readyToSend: true,
-    });
-    if (this.state.readyToSend) {
+    readyToSend = true;
+    if (readyToSend) {
       let data = new FormData();
       if (this.state.contract) {
         data = this.state.contract;
@@ -698,6 +696,7 @@ class Contracts extends Component {
                       state: '',
                       item: '',
                     },
+                    currentContract: false,
                   });
                 }
               })
