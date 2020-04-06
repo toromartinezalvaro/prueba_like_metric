@@ -155,7 +155,7 @@ const TablesContractFlow = ({ billings }) => {
               const currentDate = moment(Number(singleValue.date))
                 .add(singleValue.displacement, 'M')
                 .format('MMM YYYY');
-              
+
               return element.title === String(currentDate);
             });
             if (
@@ -301,8 +301,8 @@ const TablesContractFlow = ({ billings }) => {
         { name: 'contract', title: 'Contrato' },
         { name: 'group', title: 'Grupo' },
         { name: 'item', title: 'Item' },
-        { name: 'projected', title: 'Proyectado' },
         { name: 'acumulated', title: 'Acumulado' },
+        { name: 'projected', title: 'Proyectado' },
         { name: 'total', title: 'Total' },
       );
       const rowsPerLine = () => {
