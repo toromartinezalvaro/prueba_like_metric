@@ -22,6 +22,8 @@ const CompanieSelector = ({
   actionOn,
   actionModal,
   companyForAssign,
+  projectToSelect,
+  assignThisProject,
 }) => {
   const [createCompany, setCreateCompany] = useState(false);
 
@@ -84,6 +86,8 @@ const CompanieSelector = ({
           actionModal={actionModal}
           actionOn={actionOn}
           companyForAssign={companyForAssign}
+          projectToSelect={projectToSelect}
+          assignThisProject={assignThisProject}
         />
       )}
     </React.Fragment>
@@ -98,6 +102,9 @@ CompanieSelector.propTypes = {
   projects: PropTypes.array,
   actionModal: PropTypes.func,
   actionOn: PropTypes.bool,
+  companyForAssign: PropTypes.object,
+  projectToSelect: PropTypes.func,
+  assignThisProject: PropTypes.func,
 };
 
 export default CompanieSelector;

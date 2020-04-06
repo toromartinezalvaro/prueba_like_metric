@@ -16,6 +16,8 @@ class Companies extends React.Component {
       companySelected: undefined,
       actionOn: false,
       companyForAssign: undefined,
+      assigned: undefined,
+      projectToSelect: undefined,
     };
   }
 
@@ -59,6 +61,18 @@ class Companies extends React.Component {
       );
   };
 
+  projectsAssociated = () => {
+    this.service
+      .associatedProjects()
+      .then((response) => {
+        const assigned = response.data;
+        this.setState({ assigned });
+      })
+      .catch(() =>
+        this.props.spawnMessage('No se pudo crear la compañía', 'error'),
+      );
+  };
+
   associateModal = () => {
     if (this.state.companySelected) {
       this.getProject();
@@ -72,9 +86,34 @@ class Companies extends React.Component {
     }
   };
 
+  assignThisProject = () => {
+    if (this.state.projectSelected) {
+      this.service
+        .associateWithProject(
+          this.state.companySelected,
+          this.state.projectSelected,
+        )
+        .then(() => {
+          this.props.spawnMessage(
+            'El proyecto fue asociado exitosamente',
+            'success',
+          );
+          this.getCompanies();
+          this.getProject();
+          this.actionModal();
+        })
+        .catch(() =>
+          this.props.spawnMessage('No se pudo asociar el proyecto', 'error'),
+        );
+    } else {
+      this.props.spawnMessage('Debes seleccionar un proyecto', 'error');
+    }
+  };
+
   componentDidMount() {
     this.getProject();
     this.getCompanies();
+    this.projectsAssociated();
   }
 
   actionModal = () => {
@@ -84,6 +123,11 @@ class Companies extends React.Component {
   companyToSelect = (id) => {
     const companySelected = id;
     this.setState({ companySelected });
+  };
+
+  projectToSelect = (id) => {
+    const projectSelected = id;
+    this.setState({ projectSelected });
   };
 
   render() {
@@ -101,12 +145,12 @@ class Companies extends React.Component {
               actionModal={this.actionModal}
               actionOn={this.state.actionOn}
               companyForAssign={this.state.companyForAssign}
+              projectToSelect={this.projectToSelect}
+              assignThisProject={this.assignThisProject}
             />
           )}
           {this.state.projects && (
-            <AssignedCompanies
-              associations={this.state.projects}
-            />
+            <AssignedCompanies associations={this.state.projects} />
           )}
         </div>
       </React.Fragment>

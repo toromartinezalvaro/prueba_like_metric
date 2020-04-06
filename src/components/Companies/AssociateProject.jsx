@@ -18,10 +18,27 @@ const AssociateProject = ({
   actionModal,
   actionOn,
   companyForAssign,
+  projectToSelect,
+  assignThisProject,
 }) => {
   const [company, setCompany] = useState(companyForAssign.name);
   const [project, setProject] = useState('----');
-
+  const projectSelector = (arrOption) => {
+    return arrOption.projects.flatMap((option, index) => {
+      return (
+        <MenuItem value={option.id} key={index} selected={index === 0}>
+          {option.name}
+        </MenuItem>
+      );
+    });
+  };
+  const projectSelected = (element) => {
+    const selection = element.target.value;
+    const projectsInArray = projects.projects;
+    const selectionFind = projectsInArray.find((e) => e.id === selection);
+    setProject(selectionFind.name);
+    projectToSelect(selection);
+  };
   return (
     <Dialog
       open={actionOn}
@@ -39,19 +56,30 @@ const AssociateProject = ({
         </h3>
         <FormControl variant="outlined" className={Styles.dialogContent}>
           <InputLabel>Seleccione un proyecto</InputLabel>
-          <Select></Select>
+          <Select onChange={projectSelected}>
+            {projectSelector(projects)}
+          </Select>
         </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={actionModal} color="secondary">
           CANCELAR
         </Button>
-        <Button classes={{ root: Styles.btnModal }}>ASIGNAR</Button>
+        <Button classes={{ root: Styles.btnModal }} onClick={assignThisProject}>
+          ASIGNAR
+        </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-AssociateProject.propTypes = {};
+AssociateProject.propTypes = {
+  projects: PropTypes.array,
+  actionModal: PropTypes.func,
+  actionOn: PropTypes.bool,
+  companyForAssign: PropTypes.object,
+  projectToSelect: PropTypes.func,
+  assignThisProject: PropTypes.func,
+};
 
 export default AssociateProject;

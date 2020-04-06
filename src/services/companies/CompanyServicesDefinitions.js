@@ -7,6 +7,7 @@ const CompanyServiceDefinitions = {
   getAllForUser: `${API_PATH}companies/`,
   childrenInfo: `${API_PATH}user/allChildrenInfo`,
   getProjects: `${API_PATH}project/`,
+  associated: `${API_PATH}project/projectsAssigned`,
 };
 
 export default CompanyServiceDefinitions;

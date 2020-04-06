@@ -20,6 +20,10 @@ export default class CompanyServices extends Services {
     });
   }
 
+  associatedProjects() {
+    return this.get(CompanyServiceDefinitions.associated);
+  }
+
   childrenInfo() {
     return this.get(CompanyServiceDefinitions.childrenInfo);
   }
