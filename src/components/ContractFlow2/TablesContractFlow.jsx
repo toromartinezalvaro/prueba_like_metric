@@ -145,27 +145,20 @@ const TablesContractFlow = ({ billings }) => {
           total: numberFormater(acumulated + projected),
         };
 
-        const initialDatesValues = columnsPerDefined.forEach((column, x) => {
+        columnsPerDefined.forEach((column, x) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
-        const datesValues = val.billings.map((dateValue, K) => {
-          dateValue.slice(1).forEach((singleValue, l) => {
-            const currentCell = columnsPerDefined.find((element) => {
-              const currentDate = moment(Number(singleValue.date))
-                .add(singleValue.displacement, 'M')
-                .format('MMM YYYY');
 
+        val.billings.forEach((dateValue) => {
+          dateValue.slice(1).forEach((singleValue, i) => {
+            const currentCell = columnsPerDefined.find((element) => {
+              const currentDate = moment(Number(singleValue.date)).format(
+                'MMM YYYY',
+              );
               return element.title === String(currentDate);
             });
-            if (
-              columnsPerDefined.find((element) => {
-                const currentDate = moment(Number(singleValue.date))
-                  .add(singleValue.displacement, 'M')
-                  .format('MMM YYYY');
-                return element.title === String(currentDate);
-              })
-            ) {
+            if (currentCell) {
               if (prices[currentCell.name]) {
                 const summarized =
                   Number(singleValue.value) + Number(prices[currentCell.name]);

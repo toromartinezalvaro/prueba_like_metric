@@ -1,6 +1,7 @@
 export const CHANGE_STRATEGY = 4;
 export const CHANGE_MARKET__AVERAGE_PRICE = 5;
 export const CHANGE_MARKET__EA_RATE = 6;
+export const CHANGE_MARKET__LINE = 'CHANGE_MARKET__LINE';
 export const CHANGE_GROUP = 'CHANGE_GROUP';
 export const CHANGE_SALE_SPEED = 'CHANGE_SALE_SPEED';
 export const CHANGE_INCREMENT = 'CHANGE_INCREMENT';
@@ -25,6 +26,12 @@ export const changeMarketEARate = (EARate) => ({
   type: CHANGE_MARKET__EA_RATE,
   payload: EARate,
 });
+
+export const changeMarketGraph = (marketLine) => ({
+  type: CHANGE_MARKET__LINE,
+  payload: marketLine,
+});
+
 export const changeSaleSpeed = (saleSpeed) => ({
   type: CHANGE_SALE_SPEED,
   payload: saleSpeed,

@@ -35,7 +35,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
             {contractDataView.billings.map((billing, i) => {
               return (
                 <Card className={style.cardContainer} key={billing.id}>
-                  <h3>Forma de pago N°{i}</h3>
+                  <h3>Forma de pago N°{i + 1}</h3>
                   <div className={style.subContainer}>
                     <div className="leftInformation">
                       <Card className={style.leftTitle}>
@@ -74,10 +74,12 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                             VALOR DE CUENTA CON IVA
                           </span>
                           <NumberFormat
-                            value={Numbers.toFixed(
-                              billing.amount +
-                                billing.amount * (billing.iva / 100),
-                            )}
+                            value={
+                              Numbers.toFixed(
+                                billing.amount +
+                                  billing.amount * (billing.iva / 100),
+                              ) * Number(billing.paymentNumber)
+                            }
                             displayType={'text'}
                             className={style.informationAmount}
                             thousandSeparator={true}

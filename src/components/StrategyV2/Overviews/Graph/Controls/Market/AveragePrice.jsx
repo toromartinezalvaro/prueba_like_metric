@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import Input, { CURRENCY } from '../../../../Shared/Input';
-import { changeMarketAveragePrice } from '../../../../../../containers/StrategyV2/actions';
+import {
+  changeMarketAveragePrice,
+  changeMarketGraph,
+} from '../../../../../../containers/StrategyV2/actions';
 import IncrementsServices from '../../../../../../services/increments/IncrementsServices';
 
 const services = new IncrementsServices();
@@ -13,6 +16,8 @@ const AveragePrice = ({
   groupId,
   averagePrice,
   onChangeMarketAveragePrice,
+  lenghtMarket,
+  onChangeMarketGraph,
 }) => {
   const formRef = useRef();
   const blurHandler = () => {
@@ -22,9 +27,19 @@ const AveragePrice = ({
   };
 
   const submitHandler = async (values) => {
-    await services.putMarketAveragePrice(groupId, {
-      averagePrice: Number(values.averagePrice),
-    });
+    try {
+      const marketPrice = await services.putMarketAveragePrice(groupId, {
+        averagePrice: Number(values.averagePrice),
+        length: lenghtMarket,
+      });
+
+      const incrementsFixed = marketPrice.data.increments.map(
+        (increment) => increment && increment.toFixed(2),
+      );
+      onChangeMarketGraph(incrementsFixed);
+    } catch (error) {
+      console.error(error);
+    }
     onChangeMarketAveragePrice(Number(values.averagePrice));
   };
   return (
@@ -56,17 +71,29 @@ AveragePrice.propTypes = {
   groupId: PropTypes.number.isRequired,
   averagePrice: PropTypes.number.isRequired,
   onChangeMarketAveragePrice: PropTypes.func.isRequired,
+  onChangeMarketGraph: PropTypes.func.isRequired,
+  lenghtMarket: PropTypes.number,
 };
 
 const mapStateToProps = (state) => {
   const { market, id } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
-  return { averagePrice: market.averagePrice, groupId: id };
+  const currentGroup =
+    state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
+  let lenghtMarket = 0;
+  if (currentGroup) {
+    lenghtMarket = currentGroup.strategies[0]
+      ? currentGroup.strategies[0].data.length
+      : 0;
+  }
+
+  return { averagePrice: market.averagePrice, groupId: id, lenghtMarket };
 };
 
 const mapDispatchToProps = {
   onChangeMarketAveragePrice: changeMarketAveragePrice,
+  onChangeMarketGraph: changeMarketGraph,
 };
 
 export default connect(
