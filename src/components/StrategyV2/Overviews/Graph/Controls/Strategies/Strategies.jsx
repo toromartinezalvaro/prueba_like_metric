@@ -136,7 +136,7 @@ const mapStateToProps = (state) => {
     strategy,
     isReset,
     strategies: group ? group.strategies : null,
-    groupId: group.id,
+    groupId: group ? group.id : null,
   };
 };
 
