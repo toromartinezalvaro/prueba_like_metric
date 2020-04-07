@@ -5,6 +5,7 @@ export const CHANGE_MARKET__LINE = 'CHANGE_MARKET__LINE';
 export const CHANGE_GROUP = 'CHANGE_GROUP';
 export const CHANGE_SALE_SPEED = 'CHANGE_SALE_SPEED';
 export const CHANGE_INCREMENT = 'CHANGE_INCREMENT';
+export const FETCH_DATA__START = 'FETCH_DATA__START';
 export const FETCH_DATA__SUCCESS = 'FETCH_DATA__SUCCESS';
 export const CHANGE_SUGGESTED_EA = 'CHANGE_SUGGESTED_EA';
 export const CHANGE_SUMMARY = 'CHANGE_SUMMARY';
@@ -55,4 +56,8 @@ export const changeSuggestedEA = (suggestedEffectiveAnnualInterestRate) => ({
 export const fetchDataSuccess = (payload) => ({
   type: FETCH_DATA__SUCCESS,
   payload,
+});
+
+export const fetchDataStart = (payload) => ({
+  type: FETCH_DATA__START,
 });
