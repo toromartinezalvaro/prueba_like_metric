@@ -91,7 +91,7 @@ const TablesContractFlow = ({ billings }) => {
         String(moment(Number(value[1].date)).format('MMM YYYY')) !==
         dateRef.title
       ) {
-        valueTotal += value[1].value;
+        valueTotal += value[1].value * value[1].paymentNumber;
       }
     });
     return parseInt(valueTotal, 10);
