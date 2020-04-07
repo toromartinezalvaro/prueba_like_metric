@@ -33,7 +33,8 @@ Transition.displayName = 'TransitionComponent';
 const Settings = ({
   selectedGroup,
   showPricesWithoutIncrement,
-  groups, // ! Performance issues, groups are not being evaluated correctly and being re-render
+  // TODO: ! Performance issues, groups are not being evaluated correctly and being re-render
+  groups,
   onTogglePrice,
   onChangeGroup,
 }) => {

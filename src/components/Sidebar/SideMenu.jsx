@@ -201,14 +201,6 @@ const SideMenu = ({
                   icon="fas fa-chart-line"
                   display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[
-                    // agent.isAuthorized([Role.Admin, Role.Super]) &&
-                    //   itemForSlidebar(
-                    //     style.MenuItem,
-                    //     DashboardRoutes.base + DashboardRoutes.increments.value,
-                    //     null,
-                    //     'Incrementos',
-                    //     isBadgeIncrement,
-                    //   ),
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,

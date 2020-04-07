@@ -19,6 +19,7 @@ export const DashboardRoutes = {
   clustering: { value: '/clustering/', withIndicator: '/clustering/:towerId' },
   increments: { value: '/increments/', withIndicator: '/increments/:towerId' },
   strategy: { value: '/strategy/', withIndicator: '/strategy/:towerId' },
+  strategy1: { value: '/strategy1/', withIndicator: '/strategy1/:towerId' },
   salesRoom: { value: '/salesRoom/', withIndicator: '/salesRoom/:towerId' },
   salesRoomClient: {
     value: '/salesRoom/',
