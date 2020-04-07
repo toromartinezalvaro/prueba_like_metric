@@ -1,11 +1,19 @@
 import React from 'react';
-import { Card, ExpansionPanel, ExpansionPanelSummary } from '@material-ui/core';
+import {
+  Card,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  Icon,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import styles from './Companies.module.scss';
 
 const AssignedCompanies = ({ associations }) => {
+  const unassign = (projectId) => () => {
+    alert(projectId);
+  };
   const ListOfCompanies = () => {
     const { companies, projects } = associations;
     return companies.map((company, companyIndex) => {
@@ -26,7 +34,9 @@ const AssignedCompanies = ({ associations }) => {
                     key={project.id}
                     id={project.id}
                     className={styles.projectList}
+                    onClick={unassign(project.id)}
                   >
+                    <Icon className="fas fa-trash" />
                     {project.name}
                   </span>
                 )}
