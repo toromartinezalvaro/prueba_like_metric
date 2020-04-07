@@ -12,22 +12,26 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import { changeStrategy } from '../../../../../../containers/StrategyV2/actions';
 import StrategyServices from '../../../../../../services/strategy/StrategyService';
+import IncrementServices from '../../../../../../services/increments/IncrementsServices';
+
+const services = {
+  strategy: new StrategyServices(),
+  increment: new IncrementServices(),
+};
 
 const Strategies = ({
   strategy,
   onChangeStrategy,
   isReset,
   strategies,
-  currentGroup,
+  groupId,
 }) => {
-  const services = new StrategyServices();
-
   const changeStrategyHandler = (event) => {
     const id = event.target.value;
     onChangeStrategy(Number(id));
     const lineSelected = strategies.find((s) => s.id === Number(id));
-    services.putStrategy({
-      id: currentGroup.id,
+    services.strategy.putStrategy({
+      id: groupId,
       strategy: Number(id),
       incrementList: lineSelected.percentage,
       arrayIncrementList: [],
@@ -35,6 +39,10 @@ const Strategies = ({
   };
 
   const resetStrategyHandler = () => {
+    services.increment.resetStrategy(groupId).then(() => {
+      const tempIncrements = [];
+      this.setState({ loadingAPI: false, increments: tempIncrements });
+    });
     onChangeStrategy(null);
   };
 
@@ -99,10 +107,11 @@ Strategies.propTypes = {
   isReset: PropTypes.bool.isRequired,
   strategy: PropTypes.number.isRequired,
   onChangeStrategy: PropTypes.func.isRequired,
+  groupId: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const currentGroup =
+  const group =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
   const { strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
@@ -111,8 +120,8 @@ const mapStateToProps = (state) => {
   return {
     strategy,
     isReset,
-    strategies: currentGroup ? currentGroup.strategies : null,
-    currentGroup,
+    strategies: group ? group.strategies : null,
+    groupId: group.id,
   };
 };
 

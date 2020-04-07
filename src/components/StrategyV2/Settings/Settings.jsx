@@ -108,7 +108,8 @@ const Settings = ({
 };
 
 Settings.propTypes = {
-  selectedGroup: PropTypes.number.isRequired,
+  selectedGroup: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    .isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
   groups: PropTypes.arrayOf(PropTypes.string).isRequired,
   onTogglePrice: PropTypes.func.isRequired,

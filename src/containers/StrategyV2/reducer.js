@@ -116,6 +116,7 @@ const reducer = (state = initialState, action) => {
           [state.selectedGroup]: {
             ...state.groups[state.selectedGroup],
             strategy: payload,
+            isReset: payload === null,
           },
         },
       };
@@ -193,12 +194,14 @@ const reducer = (state = initialState, action) => {
         },
       };
     }
-    case FETCH_DATA__SUCCESS:
+    case FETCH_DATA__SUCCESS: {
+      const selectedGroup = Object.keys(payload.groups)[0];
       return {
         ...state,
-        selectedGroup: 0,
+        selectedGroup,
         ...payload,
       };
+    }
 
     case CHANGE_SUMMARY:
       return {

@@ -9,6 +9,7 @@ import {
 import Button from '../../../../../UI/Button/Button';
 import Input from '../../../../../UI/Input/Input';
 import Styles from './styles.module.scss';
+import Numbers from '../../../../../../helpers/numbers';
 
 const SalesWizard = ({
   putSuggestedEffectiveAnnualInterestRate,
@@ -53,7 +54,7 @@ const SalesWizard = ({
           <div></div>
           <div>
             <NumberFormat
-              value={data.inventory.suggestedIncrement}
+              value={Numbers.toFixed(data.inventory.suggestedIncrement)}
               displayType={'text'}
               thousandSeparator={true}
               prefix={'$'}
@@ -71,11 +72,6 @@ const SalesWizard = ({
 
         <Button
           onClick={() => {
-            console.log(
-              data.inventory.suggestedIncrement,
-              salesIncrement,
-              Number(data.inventory.suggestedIncrement) + salesIncrement,
-            );
             putIncrement(
               Number(data.inventory.suggestedIncrement) + salesIncrement,
             );

@@ -15,14 +15,6 @@ const services = new IncrementServices();
 const Strategy = ({ onFetchedData }) => {
   const { towerId } = useParams();
 
-  const helper = [
-    'mercado',
-    'continua',
-    'semicontinua',
-    'semiescalonada',
-    'escalonada',
-  ];
-
   const GRAPH_BASE = [
     { label: ['Mercado'], borderColor: '' },
     {
@@ -77,31 +69,14 @@ const Strategy = ({ onFetchedData }) => {
     async function fetch() {
       try {
         const response = await services.getIncrementsAndStrategy(towerId);
-        const groupsStrategy = [];
-
-        response.data.increments.forEach((group, indexGroup) => {
-          groupsStrategy.push({
-            id: group.id,
-            lines: _.times(
-              group.strategies[0].increments.length,
-              _.constant({}),
-            ),
-          });
-          group.strategies.forEach((strategy, indexStrategy) => {
-            strategy.increments.forEach((line, indexLine) => {
-              groupsStrategy[indexGroup].lines[indexLine][
-                helper[indexStrategy]
-              ] = line;
-            });
-          });
-        });
-
-        const strategyLines = response.data.increments.map((increment) => {
-          return {
+        const strategyLines = {};
+        response.data.increments.forEach((increment) => {
+          strategyLines[increment.type] = {
             ...increment,
             strategies: increment.strategies.map(makeArrayDataSets),
           };
         });
+
         onFetchedData({
           strategyLines,
           groups: response.data.summary.increments,

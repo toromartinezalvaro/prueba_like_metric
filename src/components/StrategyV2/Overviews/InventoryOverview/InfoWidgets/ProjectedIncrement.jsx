@@ -85,13 +85,6 @@ const ProjectedIncrement = ({
   };
 
   const projectedIncrement = useMemo(() => {
-    console.log(
-      'project increment ',
-      Numbers.toFixed(totalIncrement - salesIncrement - appliedIncrement),
-      totalIncrement,
-      salesIncrement,
-      appliedIncrement,
-    );
     return Numbers.toFixed(totalIncrement - salesIncrement - appliedIncrement);
   }, [totalIncrement, salesIncrement, appliedIncrement]);
 
