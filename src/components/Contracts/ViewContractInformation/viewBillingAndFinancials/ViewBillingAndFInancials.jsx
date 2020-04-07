@@ -15,10 +15,11 @@ import style from '../ViewContractInformation.module.scss';
 const ViewBillingAndFinancials = ({ contractDataView, events }) => {
   const totalBills = contractDataView.billings.reduce((a, b) => {
     const actualBill = (b.amount + b.amount * (b.iva / 100)) * b.paymentNumber;
+    console.log('VALORES', actualBill);
     return a + actualBill;
   }, 0);
   const totalBillsWithouIVA = contractDataView.billings.reduce((a, b) => {
-    return a + b.amount * (b.paymentNumber);
+    return a + b.amount * b.paymentNumber;
   }, 0);
   return (
     <Fragment>

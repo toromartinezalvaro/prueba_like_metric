@@ -314,7 +314,7 @@ const BillingFinancials = ({
         (Number(billing.amount) +
           Number(billing.amount) * (billing.iva / 100)) *
         Number(billing.paymentNumber === 0 ? 1 : billing.paymentNumber);
-      totalBillsNoIva += Number(billing.amount);
+      totalBillsNoIva += Number(billing.amount) * Number(billing.paymentNumber);
 
       return (
         <Card key={billing.id} className={styles.cardForm}>
