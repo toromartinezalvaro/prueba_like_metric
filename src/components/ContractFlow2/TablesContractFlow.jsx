@@ -91,7 +91,7 @@ const TablesContractFlow = ({ billings }) => {
         String(moment(Number(value[1].date)).format('MMM YYYY')) !==
         dateRef.title
       ) {
-        valueTotal += value[1].value;
+        valueTotal += value[1].value * value[1].paymentNumber;
       }
     });
     return parseInt(valueTotal, 10);
@@ -145,27 +145,20 @@ const TablesContractFlow = ({ billings }) => {
           total: numberFormater(acumulated + projected),
         };
 
-        const initialDatesValues = columnsPerDefined.forEach((column, x) => {
+        columnsPerDefined.forEach((column, x) => {
           const name = `date${x}`;
           result = { ...result, [name]: [numberFormater(0)] };
         });
-        const datesValues = val.billings.map((dateValue, K) => {
-          dateValue.slice(1).forEach((singleValue, l) => {
+
+        val.billings.forEach((dateValue) => {
+          dateValue.slice(1).forEach((singleValue, i) => {
             const currentCell = columnsPerDefined.find((element) => {
-              const currentDate = moment(Number(singleValue.date))
-                .add(singleValue.displacement, 'M')
-                .format('MMM YYYY');
-              
+              const currentDate = moment(Number(singleValue.date)).format(
+                'MMM YYYY',
+              );
               return element.title === String(currentDate);
             });
-            if (
-              columnsPerDefined.find((element) => {
-                const currentDate = moment(Number(singleValue.date))
-                  .add(singleValue.displacement, 'M')
-                  .format('MMM YYYY');
-                return element.title === String(currentDate);
-              })
-            ) {
+            if (currentCell) {
               if (prices[currentCell.name]) {
                 const summarized =
                   Number(singleValue.value) + Number(prices[currentCell.name]);
@@ -301,8 +294,8 @@ const TablesContractFlow = ({ billings }) => {
         { name: 'contract', title: 'Contrato' },
         { name: 'group', title: 'Grupo' },
         { name: 'item', title: 'Item' },
-        { name: 'projected', title: 'Proyectado' },
         { name: 'acumulated', title: 'Acumulado' },
+        { name: 'projected', title: 'Proyectado' },
         { name: 'total', title: 'Total' },
       );
       const rowsPerLine = () => {

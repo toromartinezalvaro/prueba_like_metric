@@ -85,7 +85,6 @@ class ContractList extends Component {
         this.setState({ isLoading: true });
 
         const information = response.data;
-        console.log('information', information);
         const data = [];
         information.flatMap((items) => {
           items.contracts.flatMap((contract) => {

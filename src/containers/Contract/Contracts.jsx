@@ -773,7 +773,7 @@ class Contracts extends Component {
 
   sendToDelete = (id) => {
     this.setState({
-      billsToDelete: { idArray: [...this.state.billsToDelete, { id }] },
+      billsToDelete: [...this.state.billsToDelete, id],
     });
   };
 
@@ -813,7 +813,7 @@ class Contracts extends Component {
       )
       .then((response) => {
         this.setState({ currentContract: true });
-        if (this.state.billsToDelete) {
+        if (this.state.billsToDelete && this.state.billsToDelete.length > 0) {
           this.sendToDeleteSpecificBill(this.state.billsToDelete);
         }
         if (this.state.currentContract) {
