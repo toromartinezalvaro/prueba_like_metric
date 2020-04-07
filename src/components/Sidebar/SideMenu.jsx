@@ -204,14 +204,6 @@ const SideMenu = ({
                     agent.isAuthorized([Role.Admin, Role.Super]) &&
                       itemForSlidebar(
                         style.MenuItem,
-                        DashboardRoutes.base + DashboardRoutes.increments.value,
-                        null,
-                        'Incrementos',
-                        isBadgeIncrement,
-                      ),
-                    agent.isAuthorized([Role.Admin, Role.Super]) &&
-                      itemForSlidebar(
-                        style.MenuItem,
                         DashboardRoutes.base + DashboardRoutes.strategy.value,
                         null,
                         'Estrategia',

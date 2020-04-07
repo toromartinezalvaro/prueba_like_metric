@@ -6,12 +6,13 @@ import {
   DialogActions,
   DialogTitle,
 } from '@material-ui/core';
-import Button from '../../../UI/Button/Button';
-import Input from '../../../UI/Input/Input';
+import Button from '../../../../../UI/Button/Button';
+import Input from '../../../../../UI/Input/Input';
 import Styles from './styles.module.scss';
 
 const SalesWizard = ({
   putSuggestedEffectiveAnnualInterestRate,
+  suggestedEffectiveAnnualInterestRate,
   data,
   setModalOpen,
   isModalOpen,
@@ -31,7 +32,7 @@ const SalesWizard = ({
           <div className={Styles.definition}>Meses Retención de Inventario</div>
           <div></div>
           <div></div>
-          <div>{data.inventory.retentionMonths}</div>
+          <div>{data.initialFee}</div>
           <div className={Styles.definition}>Tasas Incremento e.a</div>
           <div></div>
           <div></div>
@@ -39,9 +40,7 @@ const SalesWizard = ({
             <Input
               mask="percentage"
               validations={[]}
-              value={(
-                data.inventory.suggestedEffectiveAnnualInterestRate * 100
-              ).toFixed(2)}
+              value={suggestedEffectiveAnnualInterestRate * 100}
               onChange={(target) => {
                 putSuggestedEffectiveAnnualInterestRate(
                   parseFloat(target.value / 100),
@@ -54,7 +53,7 @@ const SalesWizard = ({
           <div></div>
           <div>
             <NumberFormat
-              value={data.inventory.suggestedIncrement.toFixed(2)}
+              value={data.inventory.suggestedIncrement}
               displayType={'text'}
               thousandSeparator={true}
               prefix={'$'}
