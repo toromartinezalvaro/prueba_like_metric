@@ -56,21 +56,19 @@ const Strategy = ({ onFetchedData }) => {
   ];
 
   const makeArrayDataSets = (line, i) => {
-    if (GRAPH_BASE) {
-      const incrementsFixed = line.increments.map(
-        (increment) => increment && increment.toFixed(2),
-      );
-      return {
-        id: GRAPH_BASE[i].id,
-        data: [...incrementsFixed],
-        label: GRAPH_BASE[i].label,
-        borderColor: GRAPH_BASE[i].borderColor,
-        backgroundColor: GRAPH_BASE[i].backgroundColor,
-        fill: GRAPH_BASE[i].fill,
-        lineTension: 0.05,
-        percentage: line.percentage,
-      };
-    }
+    const incrementsFixed = line.increments.map(
+      (increment) => increment && increment.toFixed(2),
+    );
+    return {
+      id: GRAPH_BASE[i].id,
+      data: [...incrementsFixed],
+      label: GRAPH_BASE[i].label,
+      borderColor: GRAPH_BASE[i].borderColor,
+      backgroundColor: GRAPH_BASE[i].backgroundColor,
+      fill: GRAPH_BASE[i].fill,
+      lineTension: 0.05,
+      percentage: line.percentage,
+    };
   };
 
   useEffect(() => {

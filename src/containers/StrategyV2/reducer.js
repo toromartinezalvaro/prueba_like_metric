@@ -9,9 +9,11 @@ import {
   FETCH_DATA__SUCCESS,
   CHANGE_SUGGESTED_EA,
   CHANGE_SUMMARY,
+  CHANGE_MARKET__LINE,
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
+import Strategies from '../../components/StrategyV2/Overviews/Graph/Controls/Strategies/Strategies';
 
 export const initialState = {
   selectedGroup: 1,
@@ -189,6 +191,27 @@ const reducer = (state = initialState, action) => {
                 payload.suggestedEffectiveAnnualInterestRate,
               suggestedIncrement: payload.suggestedIncrement,
             },
+          },
+        },
+      };
+    }
+    case CHANGE_MARKET__LINE: {
+      const marketLine = {
+        ...state.strategyLines[state.selectedGroup].strategies[0],
+      };
+      const strategies = [
+        ...state.strategyLines[state.selectedGroup].strategies,
+      ];
+      marketLine.data = payload;
+      strategies[0] = marketLine;
+
+      return {
+        ...state,
+        strategyLines: {
+          ...state.strategyLines,
+          [state.selectedGroup]: {
+            ...state.strategyLines[state.selectedGroup],
+            strategies,
           },
         },
       };
