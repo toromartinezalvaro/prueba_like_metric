@@ -2,21 +2,20 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
-import * as yup from 'yup';
 import Input, { NUMBER } from '../../../Shared/Input';
 import Widget, { SM } from '../../../Shared/Widget';
 import { changeSaleSpeed } from '../../../../../containers/StrategyV2/actions';
 import IncrementServices from '../../../../../services/increments/IncrementsServices';
 
-const validationSchema = yup.object().shape({
-  projectedIncrement: yup
-    .number('El incremento es un dato numerico')
-    .required('Es necesario ingresar un incremento'),
-});
-
 const services = new IncrementServices();
 
-const SaleSpeed = ({ groupId, saleSpeed, field, onSaleSpeedChange }) => {
+const SaleSpeed = ({
+  groupId,
+  saleSpeed,
+  field,
+  onSaleSpeedChange,
+  isReset,
+}) => {
   const formRef = useRef();
 
   const blurHandler = () => {
@@ -51,6 +50,7 @@ const SaleSpeed = ({ groupId, saleSpeed, field, onSaleSpeedChange }) => {
                 mask={NUMBER}
                 onBlur={blurHandler}
                 component={Input}
+                disabled={!isReset}
               />
             </Form>
           )}
@@ -67,18 +67,23 @@ SaleSpeed.propTypes = {
   saleSpeed: PropTypes.number.isRequired,
   onSaleSpeedChange: PropTypes.func.isRequired,
   field: PropTypes.bool,
+  isReset: PropTypes.bool.isRequired,
 };
 
 SaleSpeed.defaultProps = {
   field: false,
 };
 
-const mapStateToProps = (state) => ({
-  groupId: state.strategy.root.groups[state.strategy.root.selectedGroup].id,
-  saleSpeed:
-    state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
-      .saleSpeed,
-});
+const mapStateToProps = (state) => {
+  const { id, inventory, isReset } = state.strategy.root.groups[
+    state.strategy.root.selectedGroup
+  ];
+  return {
+    groupId: id,
+    saleSpeed: inventory.saleSpeed,
+    isReset,
+  };
+};
 
 const mapDispatchToProps = {
   onSaleSpeedChange: changeSaleSpeed,
