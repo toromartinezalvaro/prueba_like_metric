@@ -82,15 +82,10 @@ const TablesContractFlow = ({ billings }) => {
   };
 
   const acummulatedFunc = (arrProjected) => {
-    const dateRef = columnsPerDefined.find(
-      (element) => element.name === 'date0',
-    );
+    const dateRef = Number(new Date().getTime());
     let valueTotal = 0;
     arrProjected.forEach((value) => {
-      if (
-        String(moment(Number(value[1].date)).format('MMM YYYY')) !==
-        dateRef.title
-      ) {
+      if (Number(value[1].date) < dateRef) {
         valueTotal += value[1].value * value[1].paymentNumber;
       }
     });
@@ -98,16 +93,11 @@ const TablesContractFlow = ({ billings }) => {
   };
 
   const projectedFunc = (acummulated) => {
-    const dateRef = columnsPerDefined.find(
-      (element) => element.name === 'date0',
-    );
+    const dateRef = Number(new Date().getTime());
     let totalAcummulated = 0;
     acummulated.forEach((value) => {
-      if (
-        String(moment(Number(value[1].date)).format('MMM YYYY')) ===
-        dateRef.title
-      ) {
-        totalAcummulated += value[1].value;
+      if (Number(value[1].date) >= dateRef) {
+        totalAcummulated += value[1].value * value[1].paymentNumber;
       }
     });
     return parseInt(totalAcummulated, 10);
