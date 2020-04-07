@@ -79,10 +79,14 @@ const mapStateToProps = (state) => {
   const { market, id } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
-  const { strategies } = state.strategy.root.strategyLines[
-    state.strategy.root.selectedGroup
-  ];
-  const lenghtMarket = strategies[0] ? strategies[0].data.length : 0;
+  const currentGroup =
+    state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
+  let lenghtMarket = 0;
+  if (currentGroup) {
+    lenghtMarket = currentGroup.strategies[0]
+      ? currentGroup.strategies[0].data.length
+      : 0;
+  }
 
   return { averagePrice: market.averagePrice, groupId: id, lenghtMarket };
 };
