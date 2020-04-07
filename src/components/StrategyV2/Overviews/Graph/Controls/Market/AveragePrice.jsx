@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
-import * as yup from 'yup';
 import Input, { CURRENCY } from '../../../../Shared/Input';
 import {
   changeMarketAveragePrice,
@@ -60,6 +59,7 @@ const AveragePrice = ({
             mask={CURRENCY}
             onBlur={blurHandler}
             component={Input}
+            fullWidth
           />
         </Form>
       )}

@@ -37,6 +37,7 @@ const ProjectedIncrement = ({
   onSummaryChange,
   mini,
   field,
+  isReset,
 }) => {
   const { towerId } = useParams();
   const formRef = useRef();
@@ -122,6 +123,7 @@ const ProjectedIncrement = ({
                   mask={CURRENCY}
                   component={Input}
                   onBlur={blurHandler}
+                  disabled={!isReset}
                 />
               </Form>
             )}
@@ -179,6 +181,7 @@ ProjectedIncrement.propTypes = {
   onIncrementChange: PropTypes.func.isRequired,
   mini: PropTypes.bool,
   field: PropTypes.bool,
+  isReset: PropTypes.bool.isRequired,
 };
 
 ProjectedIncrement.defaultProps = {
@@ -188,7 +191,7 @@ ProjectedIncrement.defaultProps = {
 
 const mapStateToProps = (state) => {
   const group = state.strategy.root.groups[state.strategy.root.selectedGroup];
-  const { total, sales, inventory, id } = state.strategy.root.groups[
+  const { total, sales, inventory, id, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
@@ -199,6 +202,7 @@ const mapStateToProps = (state) => {
     appliedIncrement: inventory.appliedIncrement,
     suggestedEffectiveAnnualInterestRate:
       inventory.suggestedEffectiveAnnualInterestRate,
+    isReset,
   };
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -10,31 +11,52 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-import { changeStrategy } from '../../../../../../containers/StrategyV2/actions';
+import {
+  changeStrategy,
+  fetchDataSuccess,
+} from '../../../../../../containers/StrategyV2/actions';
 import StrategyServices from '../../../../../../services/strategy/StrategyService';
+import IncrementServices from '../../../../../../services/increments/IncrementsServices';
+import Increment2Services from '../../../../../../services/incrementsV2/incrementsService';
+import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
+
+const services = {
+  strategy: new StrategyServices(),
+  increment: new IncrementServices(),
+  increment2: new Increment2Services(),
+};
 
 const Strategies = ({
   strategy,
   onChangeStrategy,
   isReset,
   strategies,
-  currentGroup,
+  groupId,
+  onFetchedData,
 }) => {
-  const services = new StrategyServices();
+  const { towerId } = useParams();
 
   const changeStrategyHandler = (event) => {
     const id = event.target.value;
     onChangeStrategy(Number(id));
     const lineSelected = strategies.find((s) => s.id === Number(id));
-    services.putStrategy({
-      id: currentGroup.id,
+    services.strategy.putStrategy({
+      id: groupId,
       strategy: Number(id),
       incrementList: lineSelected.percentage,
       arrayIncrementList: [],
     });
   };
 
-  const resetStrategyHandler = () => {
+  const resetStrategyHandler = async () => {
+    await services.increment.resetStrategy(groupId);
+    const response = await services.increment2.getIncrementsAndStrategy(
+      towerId,
+    );
+    onFetchedData({
+      strategyLines: generateDataset(response.data.increments),
+      groups: response.data.summary.increments,
+    });
     onChangeStrategy(null);
   };
 
@@ -50,7 +72,7 @@ const Strategies = ({
             <RadioGroup
               row
               aria-label="estrategia"
-              value={strategy}
+              value={isReset ? null : strategy}
               onChange={changeStrategyHandler}
             >
               <FormControlLabel
@@ -99,10 +121,12 @@ Strategies.propTypes = {
   isReset: PropTypes.bool.isRequired,
   strategy: PropTypes.number.isRequired,
   onChangeStrategy: PropTypes.func.isRequired,
+  groupId: PropTypes.number.isRequired,
+  onFetchedData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const currentGroup =
+  const group =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
   const { strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
@@ -111,13 +135,14 @@ const mapStateToProps = (state) => {
   return {
     strategy,
     isReset,
-    strategies: currentGroup ? currentGroup.strategies : null,
-    currentGroup,
+    strategies: group ? group.strategies : null,
+    groupId: group.id,
   };
 };
 
 const mapDispatchToProps = {
   onChangeStrategy: changeStrategy,
+  onFetchedData: fetchDataSuccess,
 };
 
 export default connect(

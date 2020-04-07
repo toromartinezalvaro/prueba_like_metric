@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
-import * as yup from 'yup';
 import Input, { PERCENTAGE } from '../../../../Shared/Input';
 import { changeMarketEARate } from '../../../../../../containers/StrategyV2/actions';
 import IncrementsServices from '../../../../../../services/increments/IncrementsServices';
@@ -42,6 +41,7 @@ const EARateInput = ({ groupId, EARate, onChangeMarketEARate }) => {
             mask={PERCENTAGE}
             onBlur={blurHandler}
             component={Input}
+            fullWidth
           />
         </Form>
       )}
