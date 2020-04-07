@@ -6,6 +6,7 @@ import {
   CHANGE_MARKET__EA_RATE,
   CHANGE_INCREMENT,
   CHANGE_SALE_SPEED,
+  FETCH_DATA__START,
   FETCH_DATA__SUCCESS,
   CHANGE_SUGGESTED_EA,
   CHANGE_SUMMARY,
@@ -16,6 +17,7 @@ import { reducer as OverviewReducer } from '../../components/StrategyV2/Overview
 import Strategies from '../../components/StrategyV2/Overviews/Graph/Controls/Strategies/Strategies';
 
 export const initialState = {
+  loading: false,
   selectedGroup: 1,
   strategyLines: [],
   groups: {
@@ -217,11 +219,19 @@ const reducer = (state = initialState, action) => {
         },
       };
     }
+
+    case FETCH_DATA__START: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
     case FETCH_DATA__SUCCESS: {
       const selectedGroup = Object.keys(payload.groups)[0];
       return {
         ...state,
         selectedGroup,
+        loading: false,
         ...payload,
       };
     }
