@@ -10,7 +10,9 @@ import Graph from './Graph';
 import { MAIN_VIEW, DETAILS_VIEW } from './reducer';
 
 const Overviews = ({ view }) => {
-  const [completedTransition, setCompletedTransition] = useState(false);
+  const [completedTransition, setCompletedTransition] = useState(
+    view === DETAILS_VIEW,
+  );
 
   return (
     <Grid container justify="space-between" spacing={5}>
