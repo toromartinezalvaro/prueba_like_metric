@@ -44,6 +44,11 @@ export default class Projects extends Component {
     });
   };
 
+  openCtrlProjectHandler = (id) => {
+    const urlToGo = this.props.match.url + DashboardRoutes.towers.value + id;
+    window.open(urlToGo, '_blank');
+  };
+
   createProjectHandler = () => {
     this.setState({
       modalIsHidden: false,
@@ -336,6 +341,7 @@ export default class Projects extends Component {
             removeProject={this.removeProjectHandler}
             editHandler={this.editHandler}
             DashboardRoutesValue={DashboardRoutes.towers.value}
+            openCtrlProject={this.openCtrlProjectHandler}
             url={this.props.match.url}
           />
         )}
