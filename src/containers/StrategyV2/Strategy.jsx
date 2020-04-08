@@ -8,7 +8,7 @@ import Settings from '../../components/StrategyV2/Settings';
 import Widgets from '../../components/StrategyV2/Widgets';
 import Overviews from '../../components/StrategyV2/Overviews';
 import Loader from '../../components/UI2/Loader';
-import { fetchDataSuccess, fetchDataStart } from './actions';
+import { fetchDataInit, fetchDataStart } from './actions';
 import IncrementServices from '../../services/incrementsV2/incrementsService';
 import generateDataset from './helpers/dataset';
 
@@ -63,7 +63,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   onFetchedDataStart: fetchDataStart,
-  onFetchedData: fetchDataSuccess,
+  onFetchedData: fetchDataInit,
 };
 
 export default connect(

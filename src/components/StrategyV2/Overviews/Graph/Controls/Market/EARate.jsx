@@ -1,14 +1,22 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import Input, { PERCENTAGE } from '../../../../Shared/Input';
-import { changeMarketEARate } from '../../../../../../containers/StrategyV2/actions';
+import { fetchDataSuccess } from '../../../../../../containers/StrategyV2/actions';
 import IncrementsServices from '../../../../../../services/increments/IncrementsServices';
+import IncrementsV2Services from '../../../../../../services/incrementsV2/incrementsService';
+import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
+import Numbers from '../../../../../../helpers/numbers';
 
-const services = new IncrementsServices();
+const services = {
+  increments: new IncrementsServices(),
+  increments2: new IncrementsV2Services(),
+};
 
-const EARateInput = ({ groupId, EARate, onChangeMarketEARate }) => {
+const EARateInput = ({ groupId, EARate, onFetchedData }) => {
+  const { towerId } = useParams();
   const formRef = useRef();
   const blurHandler = () => {
     if (formRef.current) {
@@ -18,16 +26,23 @@ const EARateInput = ({ groupId, EARate, onChangeMarketEARate }) => {
 
   const submitHandler = async (values) => {
     const percentage = Number(values.EARate / 100);
-    await services.putMarketAnualEffectiveIncrement(groupId, {
+    await services.increments.putMarketAnualEffectiveIncrement(groupId, {
       anualEffectiveIncrement: percentage,
     });
-    onChangeMarketEARate(percentage);
+    const response = await services.increments2.getIncrementsAndStrategy(
+      towerId,
+    );
+    onFetchedData({
+      strategyLines: generateDataset(response.data.increments),
+      groups: response.data.summary.increments,
+    });
   };
+
   return (
     <Formik
       enableReinitialize
       initialValues={{
-        EARate: EARate * 100,
+        EARate: Numbers.toFixed(EARate * 100),
       }}
       innerRef={formRef}
       onSubmit={submitHandler}
@@ -53,6 +68,7 @@ EARateInput.propTypes = {
   groupId: PropTypes.number.isRequired,
   EARate: PropTypes.number.isRequired,
   onChangeMarketEARate: PropTypes.func.isRequired,
+  onFetchedData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -63,7 +79,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  onChangeMarketEARate: changeMarketEARate,
+  onFetchedData: fetchDataSuccess,
 };
 
 export default connect(
