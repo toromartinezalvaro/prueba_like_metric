@@ -375,7 +375,7 @@ const BillingFinancials = ({
                   required
                   disabled={billing.isLocked}
                   className={styles.textFieldIva}
-                  value={billing.iva / 100}
+                  value={billing.iva}
                   label="Valor IVA %"
                   margin="normal"
                   variant="outlined"
