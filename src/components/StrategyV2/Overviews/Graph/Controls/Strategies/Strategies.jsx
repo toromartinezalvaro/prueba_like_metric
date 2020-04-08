@@ -46,16 +46,23 @@ const Strategies = ({
     setResetStrategyConfirmationDialogOpen,
   ] = useState(false);
 
-  const changeStrategyHandler = (id) => {
-    onChangeStrategy(Number(id));
+  const changeStrategyHandler = async (id) => {
     const lineSelected = strategies.find((s) => s.id === Number(id));
     const arrayIncrementList = strategies.slice(1).map((s) => s.percentage);
-    services.strategy.putStrategy({
+    await services.strategy.putStrategy({
       id: groupId,
       strategy: Number(id),
       incrementList: lineSelected.percentage,
       arrayIncrementList,
     });
+    const response = await services.increment2.getIncrementsAndStrategy(
+      towerId,
+    );
+    onFetchedData({
+      strategyLines: generateDataset(response.data.increments),
+      groups: response.data.summary.increments,
+    });
+    onChangeStrategy(Number(id));
   };
 
   const resetStrategyHandler = async () => {

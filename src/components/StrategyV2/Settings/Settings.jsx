@@ -67,7 +67,7 @@ const Settings = ({
         >
           {groups.map((group) => (
             <MenuItem key={uuidV4()} value={group}>
-              Grupo {group}
+              {group}
             </MenuItem>
           ))}
         </Select>
@@ -121,7 +121,10 @@ const mapStateToProps = ({ strategy }) => {
   return {
     selectedGroup: strategy.root.selectedGroup,
     showPricesWithoutIncrement: strategy.settings.showPricesWithoutIncrement,
-    groups: Object.keys(strategy.root.groups),
+    groups: Object.keys(strategy.root.groups).sort(
+      new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
+        .compare,
+    ),
   };
 };
 

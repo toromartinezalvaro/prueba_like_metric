@@ -5,9 +5,11 @@ import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
 
-const Sales = ({
+const AveragePrice = ({
   l0,
+  totalUnits,
   totalIncrement,
+  salesUnits,
   salesIncrement,
   appliedIncrement,
   projected,
@@ -15,10 +17,12 @@ const Sales = ({
   const sales = projected
     ? l0 + totalIncrement - salesIncrement
     : l0 + appliedIncrement;
+  const units = totalUnits - salesUnits;
+  const averagePrice = sales / units;
   return (
-    <Widget key="DetailInv-IncrementRate" title="Ventas" size={SM}>
+    <Widget key="DetailInv-AverageSales" title="Precio promedio" size={SM}>
       <NumberFormat
-        value={Numbers.toFixed(sales)}
+        value={Numbers.toFixed(averagePrice)}
         displayType="text"
         prefix="$"
         thousandSeparator
@@ -27,16 +31,14 @@ const Sales = ({
   );
 };
 
-Sales.propTypes = {
+AveragePrice.propTypes = {
   l0: PropTypes.number.isRequired,
+  totalUnits: PropTypes.number.isRequired,
   totalIncrement: PropTypes.number.isRequired,
+  salesUnits: PropTypes.number.isRequired,
   salesIncrement: PropTypes.number.isRequired,
   appliedIncrement: PropTypes.number.isRequired,
-  projected: PropTypes.bool,
-};
-
-Sales.defaultProps = {
-  projected: false,
+  projected: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -45,10 +47,12 @@ const mapStateToProps = (state) => {
   ];
   return {
     l0: inventory.l0,
+    totalUnits: total.units,
     totalIncrement: total.increment,
+    salesUnits: sales.units,
     salesIncrement: sales.increment,
     appliedIncrement: inventory.appliedIncrement,
   };
 };
 
-export default connect(mapStateToProps)(Sales);
+export default connect(mapStateToProps)(AveragePrice);
