@@ -19,7 +19,9 @@ const towerItems = (props) => {
         onClick={(event) => {
           event.stopPropagation();
           if (window.event.ctrlKey) {
-            props.openTower(tower.id);
+            props.openTowerCtrl(tower);
+          } else {
+            props.openTower(tower);
           }
         }}
       >
