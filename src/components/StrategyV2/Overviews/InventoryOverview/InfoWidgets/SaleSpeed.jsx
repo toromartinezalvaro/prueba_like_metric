@@ -2,12 +2,20 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
 import Input, { NUMBER } from '../../../Shared/Input';
 import Widget, { SM } from '../../../Shared/Widget';
 import { changeSaleSpeed } from '../../../../../containers/StrategyV2/actions';
 import IncrementServices from '../../../../../services/increments/IncrementsServices';
 
 const services = new IncrementServices();
+
+const validationSchema = yup.object().shape({
+  saleSpeed: yup
+    .number()
+    .min(0, 'La velocidad debe ser mayor a 0')
+    .max(99, 'La velocidad debe ser menor a 99'),
+});
 
 const SaleSpeed = ({
   groupId,
@@ -40,6 +48,7 @@ const SaleSpeed = ({
           }}
           innerRef={formRef}
           onSubmit={submitHandler}
+          validationSchema={validationSchema}
         >
           {() => (
             <Form>
