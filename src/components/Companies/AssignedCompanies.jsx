@@ -4,6 +4,9 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   Icon,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -11,9 +14,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styles from './Companies.module.scss';
 
 const AssignedCompanies = ({ associations }) => {
-  const unassign = (projectId) => () => {
-    alert(projectId);
-  };
   const ListOfCompanies = () => {
     const { companies, projects } = associations;
     return companies.map((company, companyIndex) => {
@@ -30,15 +30,14 @@ const AssignedCompanies = ({ associations }) => {
             return (
               <div className={styles.downList} key={index}>
                 {project.companyId === company.id && (
-                  <span
+                  <ListItem
+                    button
                     key={project.id}
                     id={project.id}
                     className={styles.projectList}
-                    onClick={unassign(project.id)}
                   >
-                    <Icon className="fas fa-trash" />
-                    {project.name}
-                  </span>
+                    <ListItemText primary={project.name} />
+                  </ListItem>
                 )}
               </div>
             );

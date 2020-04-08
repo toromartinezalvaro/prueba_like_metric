@@ -69,7 +69,7 @@ const CompanieSelector = ({
             variant="contained"
             onClick={associateModal}
           >
-            AGREGAR PROYECTO
+            ASIGNAR PROYECTO
           </Button>
         </div>
       </Card>

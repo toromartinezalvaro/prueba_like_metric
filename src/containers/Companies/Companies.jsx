@@ -4,6 +4,8 @@ import CompanyServices from '../../services/companies/index';
 import CompaniesSelector from '../../components/Companies/CompanieSelector';
 import AssignedCompanies from '../../components/Companies/AssignedCompanies';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
+import { CircularProgress } from '@material-ui/core';
+import commonStyles from '../../assets/styles/variables.scss';
 import styles from './Companies.module.scss';
 
 class Companies extends React.Component {
@@ -11,6 +13,7 @@ class Companies extends React.Component {
     super(props);
     this.service = new CompanyServices();
     this.state = {
+      loading: true,
       companies: [],
       projects: undefined,
       companySelected: undefined,
@@ -114,6 +117,9 @@ class Companies extends React.Component {
     this.getProject();
     this.getCompanies();
     this.projectsAssociated();
+    this.setState({
+      loading: false,
+    });
   }
 
   actionModal = () => {
@@ -134,25 +140,33 @@ class Companies extends React.Component {
     return (
       <React.Fragment>
         <h1>Administración de compañías</h1>
-        <div className={styles.container}>
-          {this.state.companies && (
-            <CompaniesSelector
-              companies={this.state.companies}
-              createCompanyService={this.createCompany}
-              companyToSelect={this.companyToSelect}
-              associateModal={this.associateModal}
-              projects={this.state.projects}
-              actionModal={this.actionModal}
-              actionOn={this.state.actionOn}
-              companyForAssign={this.state.companyForAssign}
-              projectToSelect={this.projectToSelect}
-              assignThisProject={this.assignThisProject}
-            />
-          )}
-          {this.state.projects && (
-            <AssignedCompanies associations={this.state.projects} />
-          )}
-        </div>
+        {this.state.loading ? (
+          <div>
+            <CircularProgress classes={{ root: styles.loader }} />
+          </div>
+        ) : (
+          <div className={styles.container}>
+            <div className={styles.companieSelector}>
+              {this.state.companies && (
+                <CompaniesSelector
+                  companies={this.state.companies}
+                  createCompanyService={this.createCompany}
+                  companyToSelect={this.companyToSelect}
+                  associateModal={this.associateModal}
+                  projects={this.state.projects}
+                  actionModal={this.actionModal}
+                  actionOn={this.state.actionOn}
+                  companyForAssign={this.state.companyForAssign}
+                  projectToSelect={this.projectToSelect}
+                  assignThisProject={this.assignThisProject}
+                />
+              )}
+            </div>
+            {this.state.projects && (
+              <AssignedCompanies associations={this.state.projects} />
+            )}
+          </div>
+        )}
       </React.Fragment>
     );
   }

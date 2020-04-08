@@ -39,3 +39,13 @@
   display: flex;
   flex-direction: row;
 }
+
+.companieSelector {
+  height: 120px;
+}
+
+.loader {
+  margin-left: 50% !important;
+  color: $main-color !important;
+  margin-top: 16% !important;
+}
