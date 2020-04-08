@@ -33,7 +33,7 @@ const towerItems = (props) => {
                   props.editTower(tower.id);
                 }}
               >
-                <i className="fas fa-edit"></i>
+                <i className={`fas fa-edit ${styles.actions}`}></i>
               </div>
               <div
                 className={styles.Remove}
@@ -42,7 +42,7 @@ const towerItems = (props) => {
                   props.removeTower(tower.id);
                 }}
               >
-                <Icon name="fa-trash-alt" />
+                <Icon name="fa-trash-alt" className={styles.actions} />
               </div>
             </div>
             <div className={styles.Description}>
