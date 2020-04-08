@@ -81,26 +81,54 @@ const TablesContractFlow = ({ billings }) => {
     return totalAdded;
   };
 
-  const acummulatedFunc = (arrProjected) => {
-    const dateRef = Number(new Date().getTime());
+  const acummulatedFunc = (columnsData, columnLabels) => {
+    const currentDateFormated = moment(Number(new Date().getTime())).format(
+      'MMM YYYY',
+    );
+    const currentDate = columnLabels.find((column) => {
+      return column.title === currentDateFormated;
+    });
     let valueTotal = 0;
-    arrProjected.forEach((value) => {
-      if (Number(value[1].date) < dateRef) {
-        valueTotal += value[1].value * value[1].paymentNumber;
+    const NUMBER_OF_NO_NUMERIC_VALUES = 2;
+    const lengthOfColumns =
+      Object.keys(columnsData).length - NUMBER_OF_NO_NUMERIC_VALUES;
+    [...Array(lengthOfColumns)].reduce((a, current, index) => {
+      const numericIndexOfCurrentDate = Number(currentDate.name.slice(4));
+      const numericIndexOfColumn = index - 1;
+      const indexOfColumn = `date${index - 1}`;
+      const valueOfColumn = columnsData[indexOfColumn][0].props.value;
+      const dateIsLessThanCurrent =
+        numericIndexOfColumn < numericIndexOfCurrentDate;
+      if (dateIsLessThanCurrent) {
+        valueTotal += valueOfColumn;
       }
     });
     return parseInt(valueTotal, 10);
   };
 
-  const projectedFunc = (acummulated) => {
-    const dateRef = Number(new Date().getTime());
-    let totalAcummulated = 0;
-    acummulated.forEach((value) => {
-      if (Number(value[1].date) >= dateRef) {
-        totalAcummulated += value[1].value * value[1].paymentNumber;
+  const projectedFunc = (columnsData, columnLabels) => {
+    const currentDateFormated = moment(Number(new Date().getTime())).format(
+      'MMM YYYY',
+    );
+    const currentDate = columnLabels.find((column) => {
+      return column.title === currentDateFormated;
+    });
+    let valueTotal = 0;
+    const NUMBER_OF_NO_NUMERIC_VALUES = 2;
+    const lengthOfColumns =
+      Object.keys(columnsData).length - NUMBER_OF_NO_NUMERIC_VALUES;
+    [...Array(lengthOfColumns)].reduce((a, current, index) => {
+      const numericIndexOfCurrentDate = Number(currentDate.name.slice(4));
+      const numericIndexOfColumn = index - 1;
+      const indexOfColumn = `date${index - 1}`;
+      const valueOfColumn = columnsData[indexOfColumn][0].props.value;
+      const dateIsBiggerThanCurrent =
+        numericIndexOfColumn >= numericIndexOfCurrentDate;
+      if (dateIsBiggerThanCurrent) {
+        valueTotal += valueOfColumn;
       }
     });
-    return parseInt(totalAcummulated, 10);
+    return valueTotal;
   };
   let bigDummie = 0;
 
@@ -122,17 +150,10 @@ const TablesContractFlow = ({ billings }) => {
       return value.contracts.map((val, n) => {
         let prices = {};
         const contract = textFormater(val.title, 'text');
-        const acumulated =
-          val.acumulated.length !== 0 ? acummulatedFunc(val.projected) : 0;
-        const projected =
-          val.projected.length !== 0 ? projectedFunc(val.acumulated) : 0;
         let result = {
           group,
           item: item[t],
           contract,
-          projected: numberFormater(projected),
-          acumulated: numberFormater(acumulated),
-          total: numberFormater(acumulated + projected),
         };
 
         columnsPerDefined.forEach((column, x) => {
@@ -172,6 +193,20 @@ const TablesContractFlow = ({ billings }) => {
             };
           });
         });
+        const acumulated =
+          val.acumulated.length !== 0
+            ? acummulatedFunc(result, columnsPerDefined)
+            : 0;
+        const projected =
+          val.projected.length !== 0
+            ? projectedFunc(result, columnsPerDefined)
+            : 0;
+        result = {
+          ...result,
+          projected: numberFormater(projected),
+          acumulated: numberFormater(acumulated),
+          total: numberFormater(acumulated + projected),
+        };
         return result;
       });
     });
@@ -267,6 +302,9 @@ const TablesContractFlow = ({ billings }) => {
                   .add(index, 'M')
                   .format('MMM YYYY'),
               ),
+              date: moment(initialNumber)
+                .add(index, 'M')
+                .format('x'),
             };
           });
           firstPull = false;
