@@ -1,14 +1,23 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import Input, { NUMBER } from '../../../Shared/Input';
 import Widget, { SM } from '../../../Shared/Widget';
-import { changeSaleSpeed } from '../../../../../containers/StrategyV2/actions';
+import {
+  changeSaleSpeed,
+  fetchDataSuccess,
+} from '../../../../../containers/StrategyV2/actions';
 import IncrementServices from '../../../../../services/increments/IncrementsServices';
+import Increment2Services from '../../../../../services/incrementsV2/incrementsService';
+import generateDataset from '../../../../../containers/StrategyV2/helpers/dataset';
 
-const services = new IncrementServices();
+const services = {
+  increments: new IncrementServices(),
+  increments2: new Increment2Services(),
+};
 
 const validationSchema = yup.object().shape({
   saleSpeed: yup
@@ -23,7 +32,9 @@ const SaleSpeed = ({
   field,
   onSaleSpeedChange,
   isReset,
+  onFetchedData,
 }) => {
+  const { towerId } = useParams();
   const formRef = useRef();
 
   const blurHandler = () => {
@@ -32,9 +43,16 @@ const SaleSpeed = ({
     }
   };
 
-  const submitHandler = (values) => {
-    services.putSalesSpeeds(groupId, {
+  const submitHandler = async (values) => {
+    await services.increments.putSalesSpeeds(groupId, {
       salesSpeed: Number(values.saleSpeed),
+    });
+    const response = await services.increments2.getIncrementsAndStrategy(
+      towerId,
+    );
+    onFetchedData({
+      strategyLines: generateDataset(response.data.increments),
+      groups: response.data.summary.increments,
     });
     onSaleSpeedChange(Number(values.saleSpeed));
   };
@@ -76,6 +94,7 @@ SaleSpeed.propTypes = {
   onSaleSpeedChange: PropTypes.func.isRequired,
   field: PropTypes.bool,
   isReset: PropTypes.bool.isRequired,
+  onFetchedData: PropTypes.func.isRequired,
 };
 
 SaleSpeed.defaultProps = {
@@ -95,6 +114,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   onSaleSpeedChange: changeSaleSpeed,
+  onFetchedData: fetchDataSuccess,
 };
 
 export default connect(

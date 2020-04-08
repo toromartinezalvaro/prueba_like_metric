@@ -7,6 +7,7 @@ export const CHANGE_SALE_SPEED = 'CHANGE_SALE_SPEED';
 export const CHANGE_INCREMENT = 'CHANGE_INCREMENT';
 export const FETCH_DATA__START = 'FETCH_DATA__START';
 export const FETCH_DATA__SUCCESS = 'FETCH_DATA__SUCCESS';
+export const FETCH_DATA__INIT = 'FETCH_DATA__INIT';
 export const CHANGE_SUGGESTED_EA = 'CHANGE_SUGGESTED_EA';
 export const CHANGE_SUMMARY = 'CHANGE_SUMMARY';
 
@@ -58,6 +59,11 @@ export const fetchDataSuccess = (payload) => ({
   payload,
 });
 
-export const fetchDataStart = (payload) => ({
+export const fetchDataInit = (payload) => ({
+  type: FETCH_DATA__INIT,
+  payload,
+});
+
+export const fetchDataStart = () => ({
   type: FETCH_DATA__START,
 });

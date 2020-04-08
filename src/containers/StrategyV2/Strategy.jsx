@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
-import _ from 'lodash';
 import Settings from '../../components/StrategyV2/Settings';
 import Widgets from '../../components/StrategyV2/Widgets';
 import Overviews from '../../components/StrategyV2/Overviews';
 import Loader from '../../components/UI2/Loader';
-import { fetchDataSuccess, fetchDataStart } from './actions';
+import { fetchDataInit, fetchDataStart } from './actions';
 import IncrementServices from '../../services/incrementsV2/incrementsService';
 import generateDataset from './helpers/dataset';
 
@@ -63,7 +62,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   onFetchedDataStart: fetchDataStart,
-  onFetchedData: fetchDataSuccess,
+  onFetchedData: fetchDataInit,
 };
 
 export default connect(

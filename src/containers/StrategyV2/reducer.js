@@ -7,6 +7,7 @@ import {
   CHANGE_INCREMENT,
   CHANGE_SALE_SPEED,
   FETCH_DATA__START,
+  FETCH_DATA__INIT,
   FETCH_DATA__SUCCESS,
   CHANGE_SUGGESTED_EA,
   CHANGE_SUMMARY,
@@ -14,7 +15,6 @@ import {
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
-import Strategies from '../../components/StrategyV2/Overviews/Graph/Controls/Strategies/Strategies';
 
 export const initialState = {
   loading: false,
@@ -226,8 +226,11 @@ const reducer = (state = initialState, action) => {
         loading: true,
       };
     }
-    case FETCH_DATA__SUCCESS: {
-      const selectedGroup = Object.keys(payload.groups)[0];
+    case FETCH_DATA__INIT: {
+      const selectedGroup = Object.keys(payload.groups).sort(
+        new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
+          .compare,
+      )[0];
       return {
         ...state,
         selectedGroup,
@@ -235,7 +238,12 @@ const reducer = (state = initialState, action) => {
         ...payload,
       };
     }
-
+    case FETCH_DATA__SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        ...payload,
+      };
     case CHANGE_SUMMARY:
       return {
         ...state,
