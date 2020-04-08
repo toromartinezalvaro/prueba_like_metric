@@ -23,7 +23,7 @@ import Clustering from '../Clustering/Clustering';
 import Increments from '../Increments/Increments';
 import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
-import Strategy from '../Strategy/Strategy';
+import Strategy1 from '../Strategy/Strategy';
 import SalesRoomClient from '../SalesRoom/SalesRoomClient';
 import Client from '../Client';
 import Client2 from '../Client/Client23';
@@ -36,6 +36,7 @@ import CashFlow from '../CashFlow';
 import SaleRequests from '../SaleRequests';
 import Pairing from '../Pairing';
 import Quotations from '../Quotations';
+import Strategy from '../StrategyV2';
 import Companies from '../Companies/Companies';
 
 class Dashboard extends Component {
@@ -173,6 +174,11 @@ class Dashboard extends Component {
           path={match.url + DashboardRoutes.strategy.withIndicator}
           exact
           component={Strategy}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.strategy1.withIndicator}
+          exact
+          component={Strategy1}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.increments.withIndicator}

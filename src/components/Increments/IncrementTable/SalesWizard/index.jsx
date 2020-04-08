@@ -72,11 +72,6 @@ const SalesWizard = ({
 
         <Button
           onClick={() => {
-            console.log(
-              data.inventory.suggestedIncrement,
-              salesIncrement,
-              Number(data.inventory.suggestedIncrement) + salesIncrement,
-            );
             putIncrement(
               Number(data.inventory.suggestedIncrement) + salesIncrement,
             );
