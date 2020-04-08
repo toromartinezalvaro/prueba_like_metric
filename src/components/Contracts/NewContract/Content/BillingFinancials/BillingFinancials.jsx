@@ -90,15 +90,19 @@ const BillingFinancials = ({
       bill = {
         ...billingsArray[billIndex],
         initalBillingDate: Number(moment(element).format('x')),
-        lastBillingDate:
-          Number(moment(element).format('x')) *
-          Number(billingsArray[billIndex].paymentNumber),
+        lastBillingDate: Number(
+          moment(element)
+            .add(Number(billingsArray[billIndex].paymentNumber), 'months')
+            .format('x'),
+        ),
       };
       billingsArray[billIndex].initalBillingDate = Number(
         moment(element).format('x'),
       );
       billingsArray[billIndex].lastBillingDate = Number(
-        moment(element).format('x'),
+        moment(billingsArray[billIndex].initalBillingDate)
+          .add(Number(billingsArray[billIndex].paymentNumber), 'months')
+          .format('x'),
       );
     } else if (elementIsASelect) {
       if (name === 'cycle') {
@@ -375,10 +379,10 @@ const BillingFinancials = ({
                   required
                   disabled={billing.isLocked}
                   className={styles.textFieldIva}
-                  value={billing.iva}
                   label="Valor IVA %"
                   margin="normal"
                   variant="outlined"
+                  value={billing.iva !== 0 ? billing.iva : ""}
                   placeholder={billing.iva}
                   id="3"
                   onKeyDown={(e) => {
