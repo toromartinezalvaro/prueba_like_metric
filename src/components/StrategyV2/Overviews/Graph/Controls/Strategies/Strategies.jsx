@@ -49,11 +49,12 @@ const Strategies = ({
   const changeStrategyHandler = (id) => {
     onChangeStrategy(Number(id));
     const lineSelected = strategies.find((s) => s.id === Number(id));
+    const arrayIncrementList = strategies.slice(1).map((s) => s.percentage);
     services.strategy.putStrategy({
       id: groupId,
       strategy: Number(id),
       incrementList: lineSelected.percentage,
-      arrayIncrementList: [],
+      arrayIncrementList,
     });
   };
 
