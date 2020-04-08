@@ -77,7 +77,6 @@ const SaleSpeed = ({
                 mask={NUMBER}
                 onBlur={blurHandler}
                 component={Input}
-                disabled={!isReset}
               />
             </Form>
           )}
