@@ -13,49 +13,49 @@ const towerItems = (props) => {
 
   const itemFromTower = (tower) => {
     return (
-      <a
-        href={`${props.baseRoute + props.mainComponentUrl + tower.id}`}
-        className={styles.noLinks}
+      <div
+        className={styles.ItemContainer}
+        key={tower.id}
+        onClick={(event) => {
+          event.stopPropagation();
+          if (window.event.ctrlKey) {
+            props.openTowerCtrl(tower);
+          } else {
+            props.openTower(tower);
+          }
+        }}
       >
-        <div
-          className={styles.ItemContainer}
-          key={tower.id}
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
-        >
-          <div className={styles.DescriptionItem}>
-            <div className={styles.Buttons}>
-              <div
-                className={styles.Remove}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  props.editTower(tower.id);
-                }}
-              >
-                <i className="fas fa-edit"></i>
-              </div>
-              <div
-                className={styles.Remove}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  props.removeTower(tower.id);
-                }}
-              >
-                <Icon name="fa-trash-alt" />
-              </div>
+        <div className={styles.DescriptionItem}>
+          <div className={styles.Buttons}>
+            <div
+              className={styles.Remove}
+              onClick={(event) => {
+                event.stopPropagation();
+                props.editTower(tower.id);
+              }}
+            >
+              <i className={`fas fa-edit ${styles.actions}`}></i>
             </div>
-            <div className={styles.Description}>
-              <p>{tower.description}</p>
+            <div
+              className={styles.Remove}
+              onClick={(event) => {
+                event.stopPropagation();
+                props.removeTower(tower.id);
+              }}
+            >
+              <Icon name="fa-trash-alt" className={styles.actions} />
             </div>
           </div>
-          <div className={styles.Item}>
-            <div>
-              <p>{tower.name}</p>
-            </div>
+          <div className={styles.Description}>
+            <p>{tower.description}</p>
           </div>
         </div>
-      </a>
+        <div className={styles.Item}>
+          <div>
+            <p>{tower.name}</p>
+          </div>
+        </div>
+      </div>
     );
   };
 
