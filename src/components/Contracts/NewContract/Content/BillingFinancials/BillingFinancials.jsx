@@ -90,20 +90,16 @@ const BillingFinancials = ({
       bill = {
         ...billingsArray[billIndex],
         initalBillingDate: Number(moment(element).format('x')),
-        lastBillingDate: Number(
-          moment(element)
-            .add(Number(billingsArray[billIndex].paymentNumber), 'months')
-            .format('x'),
-        ),
+        lastBillingDate: Number(moment(element).format('x')),
+        paymentNumber: 1,
       };
       billingsArray[billIndex].initalBillingDate = Number(
         moment(element).format('x'),
       );
       billingsArray[billIndex].lastBillingDate = Number(
-        moment(billingsArray[billIndex].initalBillingDate)
-          .add(Number(billingsArray[billIndex].paymentNumber), 'months')
-          .format('x'),
+        moment(billingsArray[billIndex].initalBillingDate).format('x'),
       );
+      billingsArray[billIndex].paymentNumber = 1;
     } else if (elementIsASelect) {
       if (name === 'cycle') {
         bill = {
@@ -382,7 +378,7 @@ const BillingFinancials = ({
                   label="Valor IVA %"
                   margin="normal"
                   variant="outlined"
-                  value={billing.iva !== 0 ? billing.iva : ""}
+                  value={billing.iva !== 0 ? billing.iva : ''}
                   placeholder={billing.iva}
                   id="3"
                   onKeyDown={(e) => {
