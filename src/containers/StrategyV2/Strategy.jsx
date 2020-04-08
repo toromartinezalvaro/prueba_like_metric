@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
-import _ from 'lodash';
 import Settings from '../../components/StrategyV2/Settings';
 import Widgets from '../../components/StrategyV2/Widgets';
 import Overviews from '../../components/StrategyV2/Overviews';
