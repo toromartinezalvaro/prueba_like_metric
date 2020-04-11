@@ -15,6 +15,7 @@ import {
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
+import { reducer as APILoaderReducer } from '../../components/StrategyV2/Loader';
 
 export const initialState = {
   loading: false,
@@ -258,4 +259,5 @@ export default combineReducers({
   root: reducer,
   settings: SettingsReducer,
   overviews: OverviewReducer,
+  api: APILoaderReducer,
 });

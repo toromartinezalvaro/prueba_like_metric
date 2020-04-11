@@ -4,15 +4,14 @@ import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
+import { useSnackbar } from 'notistack';
 import Input, { NUMBER } from '../../../Shared/Input';
 import Widget, { SM } from '../../../Shared/Widget';
-import {
-  changeSaleSpeed,
-  fetchDataSuccess,
-} from '../../../../../containers/StrategyV2/actions';
+import { fetchDataSuccess } from '../../../../../containers/StrategyV2/actions';
 import IncrementServices from '../../../../../services/increments/IncrementsServices';
 import Increment2Services from '../../../../../services/incrementsV2/incrementsService';
 import generateDataset from '../../../../../containers/StrategyV2/helpers/dataset';
+import { startLoading, stopLoading } from '../../../Loader/actions';
 
 const services = {
   increments: new IncrementServices(),
@@ -30,11 +29,12 @@ const SaleSpeed = ({
   groupId,
   saleSpeed,
   field,
-  onSaleSpeedChange,
-  isReset,
   onFetchedData,
+  startApiLoading,
+  stopApiLoading,
 }) => {
   const { towerId } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
   const formRef = useRef();
 
   const blurHandler = () => {
@@ -44,17 +44,22 @@ const SaleSpeed = ({
   };
 
   const submitHandler = async (values) => {
-    await services.increments.putSalesSpeeds(groupId, {
-      salesSpeed: Number(values.saleSpeed),
-    });
-    const response = await services.increments2.getIncrementsAndStrategy(
-      towerId,
-    );
-    onFetchedData({
-      strategyLines: generateDataset(response.data.increments),
-      groups: response.data.summary.increments,
-    });
-    onSaleSpeedChange(Number(values.saleSpeed));
+    try {
+      startApiLoading();
+      await services.increments.putSalesSpeeds(groupId, {
+        salesSpeed: Number(values.saleSpeed),
+      });
+      const response = await services.increments2.getIncrementsAndStrategy(
+        towerId,
+      );
+      onFetchedData({
+        strategyLines: generateDataset(response.data.increments),
+        groups: response.data.summary.increments,
+      });
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    }
+    stopApiLoading();
   };
 
   return (
@@ -91,10 +96,10 @@ const SaleSpeed = ({
 SaleSpeed.propTypes = {
   groupId: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
-  onSaleSpeedChange: PropTypes.func.isRequired,
   field: PropTypes.bool,
-  isReset: PropTypes.bool.isRequired,
   onFetchedData: PropTypes.func.isRequired,
+  startApiLoading: PropTypes.func.isRequired,
+  stopApiLoading: PropTypes.func.isRequired,
 };
 
 SaleSpeed.defaultProps = {
@@ -102,19 +107,19 @@ SaleSpeed.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { id, inventory, isReset } = state.strategy.root.groups[
+  const { id, inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
     groupId: id,
     saleSpeed: inventory.saleSpeed,
-    isReset,
   };
 };
 
 const mapDispatchToProps = {
-  onSaleSpeedChange: changeSaleSpeed,
   onFetchedData: fetchDataSuccess,
+  startApiLoading: startLoading,
+  stopApiLoading: stopLoading,
 };
 
 export default connect(

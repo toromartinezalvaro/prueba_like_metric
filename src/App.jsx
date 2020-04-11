@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { SnackbarProvider } from 'notistack';
 import { DashboardRoutes, UserRoutes } from './routes/local/routes';
 import Dashboard from './containers/Dashboard/Dashboard';
 import { Login } from './containers/User';
@@ -13,15 +14,17 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter>
-          <CustomRoute
-            exact
-            path={`(/|${UserRoutes.login})`}
-            component={Login}
-            isPrivate={false}
-          />
-          <CustomRoute path={DashboardRoutes.base} component={Dashboard} />
-        </BrowserRouter>
+        <SnackbarProvider maxSnack={3}>
+          <BrowserRouter>
+            <CustomRoute
+              exact
+              path={`(/|${UserRoutes.login})`}
+              component={Login}
+              isPrivate={false}
+            />
+            <CustomRoute path={DashboardRoutes.base} component={Dashboard} />
+          </BrowserRouter>
+        </SnackbarProvider>
       </Provider>
     );
   }
