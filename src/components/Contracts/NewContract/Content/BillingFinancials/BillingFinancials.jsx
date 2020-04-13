@@ -506,9 +506,7 @@ const BillingFinancials = ({
                     label="Numero de pagos"
                     margin="normal"
                     variant="outlined"
-                    defaultValue={
-                      billing.paymentNumber === null ? 1 : billing.paymentNumber
-                    }
+                    placeholder={billing.paymentNumber === null ? 1 : billing.paymentNumber}
                     value={
                       billing.paymentNumber === null ? 1 : billing.paymentNumber
                     }
