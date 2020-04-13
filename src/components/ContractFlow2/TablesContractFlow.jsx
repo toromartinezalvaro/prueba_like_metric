@@ -8,6 +8,7 @@ import {
   TableHeaderRow,
   TableFixedColumns,
   TableGroupRow,
+  VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';
 
 import {
@@ -430,7 +431,7 @@ const TablesContractFlow = ({ billings }) => {
           ]}
         />
         <IntegratedGrouping />
-        <Table columnExtensions={tableColumnExtensions} />
+        <VirtualTable />
         <TableHeaderRow />
         <TableGroupRow contentComponent={GroupCellContent} />
         <TableFixedColumns leftColumns={leftColumns} />
