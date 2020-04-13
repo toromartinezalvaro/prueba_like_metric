@@ -38,6 +38,7 @@ const BusinessPatner = ({
 
   useEffect(() => {
     if (informationToEdit && informationToEdit !== '') {
+      console.log('DATOS DE ENTRADA', informationToEdit);
       setPartner(informationToEdit);
     }
   }, []);
@@ -52,11 +53,13 @@ const BusinessPatner = ({
     setPartner({ ...partner, [name]: label.value });
   };
 
+  const updateToSendPartner = () => {
+    setPartner({ ...partner, id: informationToEdit.id });
+    updatePartner(partner);
+    handleCloseBusinessPatner();
+  };
+
   const sendPartner = () => {
-    if (informationToEdit) {
-      setPartner({ ...partner, id: informationToEdit.id });
-      updatePartner(partner);
-    }
     newBusinessPartner(partner);
     handleCloseBusinessPatner();
   };
@@ -220,6 +223,9 @@ const BusinessPatner = ({
             variant="outlined"
             value={partner.patnerPhone}
             onChange={onChangeInformation('patnerPhone')}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
         </div>
       </div>
@@ -270,7 +276,9 @@ const BusinessPatner = ({
               <AddIcon />
             )
           }
-          onClick={sendPartner}
+          onClick={
+            informationToEdit !== undefined ? updateToSendPartner : sendPartner
+          }
         >
           {informationToEdit !== undefined
             ? 'Editar Socio de negocios'

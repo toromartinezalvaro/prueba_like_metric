@@ -369,6 +369,10 @@ class Contracts extends Component {
           partners: temporal,
           businessPatnerModal: { isEditable: false },
         });
+        this.props.spawnMessage(
+          'Se actualizó correctamente el socio',
+          'succsess',
+        );
       })
       .catch((error) => {
         this.props.spawnMessage(
@@ -578,8 +582,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('title', true);
-    }
-    if (requiredInformation.businessPartnerId === 0) {
+    } else if (requiredInformation.businessPartnerId === 0) {
       this.props.spawnMessage(
         'Debe seleccionar un socio',
         'error',
@@ -587,8 +590,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('partner', 'Seleccionar un socio');
-    }
-    if (requiredInformation.groupId === '') {
+    } else if (requiredInformation.groupId === '') {
       this.props.spawnMessage(
         'Debe seleccionar un grupo',
         'error',
@@ -596,8 +598,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('group', 'Seleccionar un grupo');
-    }
-    if (requiredInformation.state === '') {
+    } else if (requiredInformation.state === '') {
       this.props.spawnMessage(
         'Debe seleccionar un estado de contrato',
         'error',
@@ -605,8 +606,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('state', 'Seleccionar un estado');
-    }
-    if (requiredInformation.itemId === '') {
+    } else if (requiredInformation.itemId === '') {
       this.props.spawnMessage(
         'Debe seleccionar un item',
         'error',
@@ -614,8 +614,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('item', 'Seleccionar un item');
-    }
-    if (requiredInformation.contractNumber === '') {
+    } else if (requiredInformation.contractNumber === '') {
       this.props.spawnMessage(
         'Debe llenar el campo numero de contrato',
         'error',
@@ -623,8 +622,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('contractNumber', true);
-    }
-    if (requiredInformation.description === '') {
+    } else if (requiredInformation.description === '') {
       this.props.spawnMessage(
         'Debe llenar el campo descripción',
         'error',
@@ -632,86 +630,90 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('description', true);
-    }
-    readyToSend = true;
-    if (readyToSend) {
-      let data = new FormData();
-      if (this.state.contract) {
-        data = this.state.contract;
-      } else {
-        data.append(
-          'generalInformation',
-          JSON.stringify(this.state.generalInformation),
-        );
-        data.append('billing', JSON.stringify(this.state.billings));
-      }
+    } else {
+      readyToSend = true;
+      if (readyToSend) {
+        let data = new FormData();
+        if (this.state.contract) {
+          data = this.state.contract;
+        } else {
+          data.append(
+            'generalInformation',
+            JSON.stringify(this.state.generalInformation),
+          );
+          data.append('billing', JSON.stringify(this.state.billings));
+        }
 
-      this.services
-        .getAllContracts(this.props.match.params.towerId)
-        .then((contracts) => {
-          if (
-            contracts.data.find(
-              (contract) =>
-                contract.contractNumber === this.state.contractNumber,
-            ) ||
-            this.state.contractNumber === ''
-          ) {
+        this.services
+          .getAllContracts(this.props.match.params.towerId)
+          .then((contracts) => {
+            if (
+              contracts.data.find(
+                (contract) =>
+                  contract.contractNumber === this.state.contractNumber,
+              ) ||
+              this.state.contractNumber === ''
+            ) {
+              this.props.spawnMessage(
+                'Ya existe ese numero de contrato',
+                'error',
+                'ERROR',
+              );
+              this.setState({ alreadyCreated: true });
+            } else {
+              this.services
+                .postContract(data, this.props.match.params.towerId)
+                .then((response) => {
+                  this.setState({ currentContract: true });
+                  if (this.state.currentContract) {
+                    this.setState({
+                      contractModal: { isOpen: false },
+                      alreadyCreated: false,
+                      contract: null,
+                      businessPatnerModal: {
+                        ...this.state.businessPatnerModal,
+                        currentPatner: {
+                          value: 0,
+                          label: 'Seleccione un socio',
+                        },
+                      },
+                      itemModal: {
+                        ...this.state.itemModal,
+                        currentItem: { value: 0, label: 'Seleccione un item' },
+                      },
+                      categoryModal: {
+                        ...this.state.categoryModal,
+                        currentCategory: {
+                          value: 0,
+                          label: 'Seleccione un grupo',
+                        },
+                      },
+                      errors: {
+                        title: false,
+                        description: false,
+                        contractNumber: false,
+                        partner: '',
+                        group: '',
+                        state: '',
+                        item: '',
+                      },
+                      currentContract: false,
+                    });
+                  }
+                })
+                .catch((error) => {
+                  this.props.spawnMessage('Error al crear', 'error', 'ERROR');
+                });
+            }
+          })
+          .catch((error) => {
             this.props.spawnMessage(
-              'Ya existe ese numero de contrato',
+              'No se puede crear el contrato',
               'error',
               'ERROR',
             );
-            this.setState({ alreadyCreated: true });
-          } else {
-            this.services
-              .postContract(data, this.props.match.params.towerId)
-              .then((response) => {
-                this.setState({ currentContract: true });
-                if (this.state.currentContract) {
-                  this.setState({
-                    contractModal: { isOpen: false },
-                    alreadyCreated: false,
-                    contract: null,
-                    businessPatnerModal: {
-                      ...this.state.businessPatnerModal,
-                      currentPatner: { value: 0, label: 'Seleccione un socio' },
-                    },
-                    itemModal: {
-                      ...this.state.itemModal,
-                      currentItem: { value: 0, label: 'Seleccione un item' },
-                    },
-                    categoryModal: {
-                      ...this.state.categoryModal,
-                      currentCategory: {
-                        value: 0,
-                        label: 'Seleccione un grupo',
-                      },
-                    },
-                    errors: {
-                      title: false,
-                      description: false,
-                      contractNumber: false,
-                      partner: '',
-                      group: '',
-                      state: '',
-                      item: '',
-                    },
-                    currentContract: false,
-                  });
-                }
-              })
-              .catch((error) => {
-                this.props.spawnMessage('Error al crear', 'error', 'ERROR');
-              });
-          }
-        })
-        .catch((error) => {
-          this.props.spawnMessage(
-            'No se puede crear el contrato',
-            'error',
-            'ERROR',
-          );
-        });
+          });
+      }
     }
   };
 
