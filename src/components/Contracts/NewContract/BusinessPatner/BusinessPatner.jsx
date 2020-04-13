@@ -38,7 +38,6 @@ const BusinessPatner = ({
 
   useEffect(() => {
     if (informationToEdit && informationToEdit !== '') {
-      console.log('DATOS DE ENTRADA', informationToEdit);
       setPartner(informationToEdit);
     }
   }, []);
