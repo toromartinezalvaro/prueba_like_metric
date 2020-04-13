@@ -132,4 +132,5 @@ export const UserRoutes = {
   profile: '/profile',
   create: '/create',
   assignProjects: '/assignProjects',
+  assignCompanies: '/assignCompanies',
 };
