@@ -47,16 +47,18 @@ const GeneralInfo = ({
   errors,
   noError,
 }) => {
-  const [generalInformation, setGeneralInformation] = useState({
-    title: '',
-    businessPartnerId: 0,
-    groupId: '',
-    state: '',
-    contractNumber: '',
-    itemId: '',
-    description: '',
-    itemLabel: 'Seleccione un item',
-  });
+  const [generalInformation, setGeneralInformation] = useState(
+    dataIfEdit || {
+      title: '',
+      businessPartnerId: 0,
+      groupId: '',
+      state: '',
+      contractNumber: '',
+      itemId: '',
+      description: '',
+      itemLabel: 'Seleccione un item',
+    },
+  );
   const [isLocked, setIsLocked] = useState(true);
   const [isLockedEdit, setLockedEdit] = useState(true);
   const [isEmptyTitle, setEmptyTitle] = useState(false);
@@ -103,6 +105,7 @@ const GeneralInfo = ({
   useEffect(() => {
     if (dataIfEdit) {
       setGeneralInformation(dataIfEdit);
+      sendGeneralInfo(dataIfEdit);
       setLockedEdit(false);
       changeAndSearchCategory({ value: dataIfEdit.groupId });
       changeAndSearchItem({ value: dataIfEdit.itemId, label: dataIfEdit.item });
