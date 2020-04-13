@@ -359,8 +359,8 @@ const BillingFinancials = ({
                       label={`Valor antes de IVA ${billing.cycle}`}
                       margin="normal"
                       variant="outlined"
-                      defaultValue={billing.amount}
-                      value={billing.amount}
+                      placeholder={billing.amount}
+                      value={billing.amount !== 0 ? billing.amount : ''}
                       onBlur={changeCardValue('amount', billing.id)}
                       id={2}
                       onKeyDown={(e) => {
@@ -432,8 +432,8 @@ const BillingFinancials = ({
                         label={`Valor antes de IVA ${billing.cycle}`}
                         margin="normal"
                         variant="outlined"
-                        defaultValue={billing.amount}
-                        value={billing.amount}
+                        placeholder={billing.amount}
+                        value={billing.amount !== 0 ? billing.amount : ''}
                         onBlur={changeCardValue('amount', billing.id)}
                         id={2}
                         onKeyDown={(e) => {
