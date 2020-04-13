@@ -350,69 +350,207 @@ const BillingFinancials = ({
                 />
               </div>
               <div className={styles.amountSection}>
-                <TextField
-                  required
-                  disabled={billing.isLocked}
-                  className={styles.textField}
-                  label={`Valor antes de IVA ${billing.cycle}`}
-                  margin="normal"
-                  variant="outlined"
-                  defaultValue={billing.amount}
-                  value={billing.amount}
-                  onBlur={changeCardValue('amount', billing.id)}
-                  id={2}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') document.getElementById('3').focus();
-                  }}
-                  InputProps={{
-                    inputComponent: NumberFormatCustom,
-                    startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
-                    ),
-                  }}
-                />
-                <TextField
-                  required
-                  disabled={billing.isLocked}
-                  className={styles.textFieldIva}
-                  label="Valor IVA %"
-                  margin="normal"
-                  variant="outlined"
-                  value={billing.iva !== 0 ? billing.iva : ''}
-                  placeholder={billing.iva}
-                  id="3"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter')
-                      document.getElementById('sel4').focus();
-                  }}
-                  onChange={changeCardValue('iva', billing.id)}
-                />
-                <div className={styles.amountIva}>
-                  <h4 className={styles.ivaTitle}>Valor en pesos del IVA</h4>
-                  <NumberFormat
-                    value={Numbers.toFixed(
-                      billing.amount * (billing.iva / 100),
-                    )}
-                    displayType={'text'}
-                    className={styles.TotalAmountIva}
-                    thousandSeparator={true}
-                    prefix={'$'}
-                  />
-                </div>
-                <div className={styles.amountIvaTotal}>
-                  <h4 sclassName={styles.ivaTitle}>Valor de cuenta con IVA:</h4>
-                  <NumberFormat
-                    className={styles.amount}
-                    value={Numbers.toFixed(
-                      (Number(billing.amount) +
-                        Number(billing.amount) * (Number(billing.iva) / 100)) *
-                        Number(billing.paymentNumber),
-                    )}
-                    displayType="text"
-                    thousandSeparator
-                    prefix="$"
-                  />
-                </div>
+                {billing.cycle === 'Pago Único' ? (
+                  <div className={styles.amountSection}>
+                    <TextField
+                      required
+                      disabled={billing.isLocked}
+                      className={styles.textField}
+                      label={`Valor antes de IVA ${billing.cycle}`}
+                      margin="normal"
+                      variant="outlined"
+                      defaultValue={billing.amount}
+                      value={billing.amount}
+                      onBlur={changeCardValue('amount', billing.id)}
+                      id={2}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter')
+                          document.getElementById('3').focus();
+                      }}
+                      InputProps={{
+                        inputComponent: NumberFormatCustom,
+                        startAdornment: (
+                          <InputAdornment position="start">$</InputAdornment>
+                        ),
+                      }}
+                    />
+                    <TextField
+                      required
+                      disabled={billing.isLocked}
+                      className={styles.textFieldIva}
+                      label="Valor IVA %"
+                      margin="normal"
+                      variant="outlined"
+                      value={billing.iva !== 0 ? billing.iva : ''}
+                      placeholder={billing.iva}
+                      id="3"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter')
+                          document.getElementById('sel4').focus();
+                      }}
+                      onChange={changeCardValue('iva', billing.id)}
+                    />
+                    <div className={styles.amountIva}>
+                      <h4 className={styles.ivaTitle}>
+                        Valor en pesos del IVA
+                      </h4>
+                      <NumberFormat
+                        value={Numbers.toFixed(
+                          billing.amount * (billing.iva / 100),
+                        )}
+                        displayType={'text'}
+                        className={styles.TotalAmountIva}
+                        thousandSeparator={true}
+                        prefix={'$'}
+                      />
+                    </div>
+                    <div className={styles.amountIvaTotal}>
+                      <h4 sclassName={styles.ivaTitle}>
+                        Valor de cuenta con IVA:
+                      </h4>
+                      <NumberFormat
+                        className={styles.amount}
+                        value={Numbers.toFixed(
+                          (Number(billing.amount) +
+                            Number(billing.amount) *
+                              (Number(billing.iva) / 100)) *
+                            Number(billing.paymentNumber),
+                        )}
+                        displayType="text"
+                        thousandSeparator
+                        prefix="$"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.informationColumns}>
+                    <div className={styles.col1}>
+                      <TextField
+                        required
+                        disabled={billing.isLocked}
+                        className={styles.textField}
+                        label={`Valor antes de IVA ${billing.cycle}`}
+                        margin="normal"
+                        variant="outlined"
+                        defaultValue={billing.amount}
+                        value={billing.amount}
+                        onBlur={changeCardValue('amount', billing.id)}
+                        id={2}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter')
+                            document.getElementById('3').focus();
+                        }}
+                        InputProps={{
+                          inputComponent: NumberFormatCustom,
+                          startAdornment: (
+                            <InputAdornment position="start">$</InputAdornment>
+                          ),
+                        }}
+                      />
+                      <div className={styles.amountLabel}>
+                        <h4 sclassName={styles.ivaTitle}>
+                          Valor despues de IVA total:
+                        </h4>
+                        <NumberFormat
+                          className={styles.amountValue}
+                          value={Numbers.toFixed(
+                            Number(billing.amount) *
+                              Number(billing.paymentNumber),
+                          )}
+                          displayType="text"
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </div>
+                    </div>
+                    <div className={styles.col2}>
+                      <TextField
+                        required
+                        disabled={billing.isLocked}
+                        className={styles.textFieldIvaLarge}
+                        label="Valor IVA %"
+                        margin="normal"
+                        variant="outlined"
+                        value={billing.iva !== 0 ? billing.iva : ''}
+                        placeholder={billing.iva}
+                        id="3"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter')
+                            document.getElementById('sel4').focus();
+                        }}
+                        onChange={changeCardValue('iva', billing.id)}
+                      />
+                    </div>
+                    <div className={styles.col3}>
+                      <div className={styles.amountLabel}>
+                        <h4 sclassName={styles.ivaTitle}>
+                          Valor de IVA {billing.cycle}:
+                        </h4>
+                        <NumberFormat
+                          className={styles.amountValue}
+                          value={Numbers.toFixed(
+                            Number(billing.amount) *
+                              (Number(billing.iva) / 100),
+                          )}
+                          displayType="text"
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </div>
+                      <div className={styles.amountLabel}>
+                        <h4 sclassName={styles.ivaTitle}>
+                          Valor de IVA total:
+                        </h4>
+                        <NumberFormat
+                          className={styles.amountValue}
+                          value={Numbers.toFixed(
+                            Number(billing.amount) *
+                              (Number(billing.iva) / 100) *
+                              Number(billing.paymentNumber),
+                          )}
+                          displayType="text"
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </div>
+                    </div>
+                    <div className={styles.col4}>
+                      <div className={styles.amountLabel}>
+                        <h4 sclassName={styles.ivaTitle}>
+                          Valor despues de IVA {billing.cycle}:
+                        </h4>
+                        <NumberFormat
+                          className={styles.amountValue}
+                          value={Numbers.toFixed(
+                            Number(billing.amount) +
+                              Number(billing.amount) *
+                                (Number(billing.iva) / 100),
+                          )}
+                          displayType="text"
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </div>
+                      <div className={styles.amountLabel}>
+                        <h4 sclassName={styles.ivaTitle}>
+                          Valor despues de IVA total:
+                        </h4>
+                        <NumberFormat
+                          className={styles.amountValue}
+                          value={Numbers.toFixed(
+                            (Number(billing.amount) +
+                              Number(billing.amount) *
+                                (Number(billing.iva) / 100)) *
+                              Number(billing.paymentNumber),
+                          )}
+                          displayType="text"
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               <h4>Fecha inicial</h4>
               <div className={styles.datesSection}>
@@ -506,7 +644,9 @@ const BillingFinancials = ({
                     label="Numero de pagos"
                     margin="normal"
                     variant="outlined"
-                    placeholder={billing.paymentNumber === null ? 1 : billing.paymentNumber}
+                    placeholder={
+                      billing.paymentNumber === null ? 1 : billing.paymentNumber
+                    }
                     value={
                       billing.paymentNumber === null ? 1 : billing.paymentNumber
                     }
