@@ -571,6 +571,44 @@ class Contracts extends Component {
     }));
   };
 
+  setDefaultContract = (defaultContract) => {
+    if (defaultContract) {
+      this.setState({
+        contractModal: { isOpen: false },
+        alreadyCreated: false,
+        contract: null,
+        businessPatnerModal: {
+          ...this.state.businessPatnerModal,
+          currentPatner: {
+            value: 0,
+            label: 'Seleccione un socio',
+          },
+        },
+        itemModal: {
+          ...this.state.itemModal,
+          currentItem: { value: 0, label: 'Seleccione un item' },
+        },
+        categoryModal: {
+          ...this.state.categoryModal,
+          currentCategory: {
+            value: 0,
+            label: 'Seleccione un grupo',
+          },
+        },
+        errors: {
+          title: false,
+          description: false,
+          contractNumber: false,
+          partner: '',
+          group: '',
+          state: '',
+          item: '',
+        },
+        currentContract: false,
+      });
+    }
+  }
+
   addContract = () => {
     let readyToSend = false;
     const requiredInformation = this.state.generalInformation;
@@ -665,41 +703,7 @@ class Contracts extends Component {
                 .postContract(data, this.props.match.params.towerId)
                 .then((response) => {
                   this.setState({ currentContract: true });
-                  if (this.state.currentContract) {
-                    this.setState({
-                      contractModal: { isOpen: false },
-                      alreadyCreated: false,
-                      contract: null,
-                      businessPatnerModal: {
-                        ...this.state.businessPatnerModal,
-                        currentPatner: {
-                          value: 0,
-                          label: 'Seleccione un socio',
-                        },
-                      },
-                      itemModal: {
-                        ...this.state.itemModal,
-                        currentItem: { value: 0, label: 'Seleccione un item' },
-                      },
-                      categoryModal: {
-                        ...this.state.categoryModal,
-                        currentCategory: {
-                          value: 0,
-                          label: 'Seleccione un grupo',
-                        },
-                      },
-                      errors: {
-                        title: false,
-                        description: false,
-                        contractNumber: false,
-                        partner: '',
-                        group: '',
-                        state: '',
-                        item: '',
-                      },
-                      currentContract: false,
-                    });
-                  }
+                  this.setDefaultContract(this.state.currentContract);
                 })
                 .catch((error) => {
                   this.props.spawnMessage('Error al crear', 'error', 'ERROR');
