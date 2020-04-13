@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import { useSnackbar } from 'notistack';
 import Input, { PERCENTAGE } from '../../../../Shared/Input';
 import { fetchDataSuccess } from '../../../../../../containers/StrategyV2/actions';
 import IncrementsServices from '../../../../../../services/increments/IncrementsServices';
 import IncrementsV2Services from '../../../../../../services/incrementsV2/incrementsService';
 import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
+import { startLoading, stopLoading } from '../../../../Loader/actions';
 import Numbers from '../../../../../../helpers/numbers';
 
 const services = {
@@ -15,8 +17,15 @@ const services = {
   increments2: new IncrementsV2Services(),
 };
 
-const EARateInput = ({ groupId, EARate, onFetchedData }) => {
+const EARateInput = ({
+  groupId,
+  EARate,
+  onFetchedData,
+  startApiLoading,
+  stopApiLoading,
+}) => {
   const { towerId } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
   const formRef = useRef();
   const blurHandler = () => {
     if (formRef.current) {
@@ -25,17 +34,23 @@ const EARateInput = ({ groupId, EARate, onFetchedData }) => {
   };
 
   const submitHandler = async (values) => {
-    const percentage = Number(values.EARate / 100);
-    await services.increments.putMarketAnualEffectiveIncrement(groupId, {
-      anualEffectiveIncrement: percentage,
-    });
-    const response = await services.increments2.getIncrementsAndStrategy(
-      towerId,
-    );
-    onFetchedData({
-      strategyLines: generateDataset(response.data.increments),
-      groups: response.data.summary.increments,
-    });
+    try {
+      startApiLoading();
+      const percentage = Number(values.EARate / 100);
+      await services.increments.putMarketAnualEffectiveIncrement(groupId, {
+        anualEffectiveIncrement: percentage,
+      });
+      const response = await services.increments2.getIncrementsAndStrategy(
+        towerId,
+      );
+      onFetchedData({
+        strategyLines: generateDataset(response.data.increments),
+        groups: response.data.summary.increments,
+      });
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    }
+    stopApiLoading();
   };
 
   return (
@@ -69,6 +84,8 @@ EARateInput.propTypes = {
   EARate: PropTypes.number.isRequired,
   onChangeMarketEARate: PropTypes.func.isRequired,
   onFetchedData: PropTypes.func.isRequired,
+  startApiLoading: PropTypes.func.isRequired,
+  stopApiLoading: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -79,6 +96,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
+  startApiLoading: startLoading,
+  stopApiLoading: stopLoading,
   onFetchedData: fetchDataSuccess,
 };
 
