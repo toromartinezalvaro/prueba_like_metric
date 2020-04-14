@@ -87,6 +87,7 @@ class Contracts extends Component {
         state: '',
         item: '',
       },
+      attachmentData: [],
     };
   }
 
@@ -549,14 +550,9 @@ class Contracts extends Component {
   };
 
   sendAttachments = (attachment) => {
-    attachment.append(
-      'generalInformation',
-      JSON.stringify(this.state.generalInformation),
-    );
-    attachment.append('billing', JSON.stringify(this.state.billings));
     const attach = [...this.state.attachments, attachment];
     this.setState({
-      contract: attachment,
+      attachmentData: attach,
     });
   };
 
