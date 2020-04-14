@@ -179,7 +179,7 @@ class ContractList extends Component {
           onClick={this.editContractOpened(contract.id)}
         >
           <div className={style.dataContainer}>
-            <div className={style.title}>{contract.title}</div>
+            <div className={style.content}>{contract.title}</div>
             <div className={style.content}>{partner}</div>
             <div className={style.content}>{group}</div>
             <div className={style.content}>{status}</div>
@@ -194,7 +194,7 @@ class ContractList extends Component {
       <div className={style.wrapper}>
         <div className={style.grid}>
           <div className={style.container}>
-            <div className={style.title}>Titulo</div>
+            <div className={style.header}>Titulo</div>
             <div className={style.header}>Socio de Negocios</div>
             <div className={style.header}>Grupo</div>
             <div className={style.header}>Estado</div>
