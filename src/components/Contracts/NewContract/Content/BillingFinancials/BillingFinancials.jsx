@@ -44,7 +44,7 @@ const BillingFinancials = ({
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
-  const [lastDate, setLastDate] = useState('');
+  const [lastDate, setLastDate] = useState(new Date().getTime());
   const cardValue = {
     id: 0,
     eventId: null,
@@ -661,7 +661,6 @@ const BillingFinancials = ({
                     }
                     onChange={changeCardValue('paymentNumber', billing.id)}
                   />
-                  {console.log('Pruebas', billing.lastBillingDate)}
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       disabled={true}
