@@ -88,7 +88,7 @@ const SideMenu = ({
   };
 
   return (
-    <div className="container">
+    <div className={style.container}>
       <Resizable
         enable={{
           right: true,
