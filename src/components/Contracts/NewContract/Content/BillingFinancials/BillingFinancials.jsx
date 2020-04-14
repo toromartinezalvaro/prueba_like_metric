@@ -460,7 +460,7 @@ const BillingFinancials = ({
                       />
                       <div className={styles.amountLabel}>
                         <h4 sclassName={styles.ivaTitle}>
-                          Valor despues de IVA total:
+                          Valor antes del IVA total:
                         </h4>
                         <NumberFormat
                           className={styles.amountValue}
