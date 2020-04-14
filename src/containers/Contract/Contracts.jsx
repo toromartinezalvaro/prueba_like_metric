@@ -165,6 +165,16 @@ class Contracts extends Component {
         isOpen: false,
         contract: { generalInformationData: false },
       },
+      generalInformation: {
+        title: '',
+        businessPartnerId: 0,
+        groupId: '',
+        state: '',
+        contractNumber: '',
+        itemId: '',
+        description: '',
+        itemLabel: 'Seleccione un item',
+      },
       isEditable: false,
     });
   };
