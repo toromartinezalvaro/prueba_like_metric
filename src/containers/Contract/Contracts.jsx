@@ -3,8 +3,7 @@
  *
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
+import { ClickAwayListener, Dialog, DialogContent } from '@material-ui/core';
 import React, { Component } from 'react';
 import styles from './Contracts.module.scss';
 import Navbar from '../../components/Contracts/Navbar/Navbar';
@@ -88,6 +87,7 @@ class Contracts extends Component {
         state: '',
         item: '',
       },
+      attachmentData: [],
     };
   }
 
@@ -165,6 +165,16 @@ class Contracts extends Component {
         ...this.state.categoryModal,
         isOpen: false,
         contract: { generalInformationData: false },
+      },
+      generalInformation: {
+        title: '',
+        businessPartnerId: 0,
+        groupId: '',
+        state: '',
+        contractNumber: '',
+        itemId: '',
+        description: '',
+        itemLabel: 'Seleccione un item',
       },
       isEditable: false,
     });
@@ -369,6 +379,10 @@ class Contracts extends Component {
           partners: temporal,
           businessPatnerModal: { isEditable: false },
         });
+        this.props.spawnMessage(
+          'Se actualizó correctamente el socio',
+          'succsess',
+        );
       })
       .catch((error) => {
         this.props.spawnMessage(
@@ -536,14 +550,9 @@ class Contracts extends Component {
   };
 
   sendAttachments = (attachment) => {
-    attachment.append(
-      'generalInformation',
-      JSON.stringify(this.state.generalInformation),
-    );
-    attachment.append('billing', JSON.stringify(this.state.billings));
     const attach = [...this.state.attachments, attachment];
     this.setState({
-      contract: attachment,
+      attachmentData: attach,
     });
   };
 
@@ -567,6 +576,44 @@ class Contracts extends Component {
     }));
   };
 
+  setDefaultContract = (defaultContract) => {
+    if (defaultContract) {
+      this.setState({
+        contractModal: { isOpen: false },
+        alreadyCreated: false,
+        contract: null,
+        businessPatnerModal: {
+          ...this.state.businessPatnerModal,
+          currentPatner: {
+            value: 0,
+            label: 'Seleccione un socio',
+          },
+        },
+        itemModal: {
+          ...this.state.itemModal,
+          currentItem: { value: 0, label: 'Seleccione un item' },
+        },
+        categoryModal: {
+          ...this.state.categoryModal,
+          currentCategory: {
+            value: 0,
+            label: 'Seleccione un grupo',
+          },
+        },
+        errors: {
+          title: false,
+          description: false,
+          contractNumber: false,
+          partner: '',
+          group: '',
+          state: '',
+          item: '',
+        },
+        currentContract: false,
+      });
+    }
+  };
+
   addContract = () => {
     let readyToSend = false;
     const requiredInformation = this.state.generalInformation;
@@ -578,8 +625,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('title', true);
-    }
-    if (requiredInformation.businessPartnerId === 0) {
+    } else if (requiredInformation.businessPartnerId === 0) {
       this.props.spawnMessage(
         'Debe seleccionar un socio',
         'error',
@@ -587,8 +633,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('partner', 'Seleccionar un socio');
-    }
-    if (requiredInformation.groupId === '') {
+    } else if (requiredInformation.groupId === '') {
       this.props.spawnMessage(
         'Debe seleccionar un grupo',
         'error',
@@ -596,8 +641,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('group', 'Seleccionar un grupo');
-    }
-    if (requiredInformation.state === '') {
+    } else if (requiredInformation.state === '') {
       this.props.spawnMessage(
         'Debe seleccionar un estado de contrato',
         'error',
@@ -605,8 +649,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('state', 'Seleccionar un estado');
-    }
-    if (requiredInformation.itemId === '') {
+    } else if (requiredInformation.itemId === '') {
       this.props.spawnMessage(
         'Debe seleccionar un item',
         'error',
@@ -614,8 +657,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('item', 'Seleccionar un item');
-    }
-    if (requiredInformation.contractNumber === '') {
+    } else if (requiredInformation.contractNumber === '') {
       this.props.spawnMessage(
         'Debe llenar el campo numero de contrato',
         'error',
@@ -623,8 +665,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('contractNumber', true);
-    }
-    if (requiredInformation.description === '') {
+    } else if (requiredInformation.description === '') {
       this.props.spawnMessage(
         'Debe llenar el campo descripción',
         'error',
@@ -632,86 +673,56 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('description', true);
-    }
-    readyToSend = true;
-    if (readyToSend) {
-      let data = new FormData();
-      if (this.state.contract) {
-        data = this.state.contract;
-      } else {
-        data.append(
-          'generalInformation',
-          JSON.stringify(this.state.generalInformation),
-        );
-        data.append('billing', JSON.stringify(this.state.billings));
-      }
+    } else {
+      readyToSend = true;
+      if (readyToSend) {
+        let data = new FormData();
+        if (this.state.contract) {
+          data = this.state.contract;
+        } else {
+          data.append(
+            'generalInformation',
+            JSON.stringify(this.state.generalInformation),
+          );
+          data.append('billing', JSON.stringify(this.state.billings));
+        }
 
-      this.services
-        .getAllContracts(this.props.match.params.towerId)
-        .then((contracts) => {
-          if (
-            contracts.data.find(
-              (contract) =>
-                contract.contractNumber === this.state.contractNumber,
-            ) ||
-            this.state.contractNumber === ''
-          ) {
+        this.services
+          .getAllContracts(this.props.match.params.towerId)
+          .then((contracts) => {
+            if (
+              contracts.data.find(
+                (contract) =>
+                  contract.contractNumber === this.state.contractNumber,
+              ) ||
+              this.state.contractNumber === ''
+            ) {
+              this.props.spawnMessage(
+                'Ya existe ese numero de contrato',
+                'error',
+                'ERROR',
+              );
+              this.setState({ alreadyCreated: true });
+            } else {
+              this.services
+                .postContract(data, this.props.match.params.towerId)
+                .then((response) => {
+                  this.setState({ currentContract: true });
+                  this.setDefaultContract(this.state.currentContract);
+                })
+                .catch((error) => {
+                  this.props.spawnMessage('Error al crear', 'error', 'ERROR');
+                });
+            }
+          })
+          .catch((error) => {
             this.props.spawnMessage(
-              'Ya existe ese numero de contrato',
+              'No se puede crear el contrato',
               'error',
               'ERROR',
             );
-            this.setState({ alreadyCreated: true });
-          } else {
-            this.services
-              .postContract(data, this.props.match.params.towerId)
-              .then((response) => {
-                this.setState({ currentContract: true });
-                if (this.state.currentContract) {
-                  this.setState({
-                    contractModal: { isOpen: false },
-                    alreadyCreated: false,
-                    contract: null,
-                    businessPatnerModal: {
-                      ...this.state.businessPatnerModal,
-                      currentPatner: { value: 0, label: 'Seleccione un socio' },
-                    },
-                    itemModal: {
-                      ...this.state.itemModal,
-                      currentItem: { value: 0, label: 'Seleccione un item' },
-                    },
-                    categoryModal: {
-                      ...this.state.categoryModal,
-                      currentCategory: {
-                        value: 0,
-                        label: 'Seleccione un grupo',
-                      },
-                    },
-                    errors: {
-                      title: false,
-                      description: false,
-                      contractNumber: false,
-                      partner: '',
-                      group: '',
-                      state: '',
-                      item: '',
-                    },
-                    currentContract: false,
-                  });
-                }
-              })
-              .catch((error) => {
-                this.props.spawnMessage('Error al crear', 'error', 'ERROR');
-              });
-          }
-        })
-        .catch((error) => {
-          this.props.spawnMessage(
-            'No se puede crear el contrato',
-            'error',
-            'ERROR',
-          );
-        });
+          });
+      }
     }
   };
 
@@ -943,6 +954,9 @@ class Contracts extends Component {
           watchingContract={this.watchingContract}
           sendContractNumber={this.sendContractNumber}
           sendToDelete={this.sendToDelete}
+          businessPartnerOpen={this.state.businessPatnerModal.isOpen}
+          categoryopen={this.state.categoryModal.isOpen}
+          itemOpen={this.state.itemModal.isOpen}
         />
         <Dialog
           className={styles.dialogExpand}
@@ -952,15 +966,17 @@ class Contracts extends Component {
           fullWidth={true}
           maxWidth="lg"
         >
-          <DialogContent>
-            <Category
-              handleCloseCategory={this.handleCloseCategory}
-              newCategory={this.newCategory}
-              updateCategory={this.updateCategory}
-              editable={this.state.categoryModal.isEditable}
-              informationToEdit={this.state.categoryModal.editableInfo}
-            />
-          </DialogContent>
+          <ClickAwayListener onClickAway={this.handleCloseCategory}>
+            <DialogContent>
+              <Category
+                handleCloseCategory={this.handleCloseCategory}
+                newCategory={this.newCategory}
+                updateCategory={this.updateCategory}
+                editable={this.state.categoryModal.isEditable}
+                informationToEdit={this.state.categoryModal.editableInfo}
+              />
+            </DialogContent>
+          </ClickAwayListener>
         </Dialog>
         <Dialog
           className={styles.dialogExpand}
@@ -970,15 +986,17 @@ class Contracts extends Component {
           fullWidth={true}
           maxWidth="lg"
         >
-          <DialogContent>
-            <BusinessPatner
-              handleCloseBusinessPatner={this.handleCloseBusinessPatner}
-              newBusinessPartner={this.newBusinessPartner}
-              updatePartner={this.updatePartner}
-              editable={this.state.businessPatnerModal.isEditable}
-              informationToEdit={this.state.businessPatnerModal.editableInfo}
-            />
-          </DialogContent>
+          <ClickAwayListener onClickAway={this.handleCloseBusinessPatner}>
+            <DialogContent>
+              <BusinessPatner
+                handleCloseBusinessPatner={this.handleCloseBusinessPatner}
+                newBusinessPartner={this.newBusinessPartner}
+                updatePartner={this.updatePartner}
+                editable={this.state.businessPatnerModal.isEditable}
+                informationToEdit={this.state.businessPatnerModal.editableInfo}
+              />
+            </DialogContent>
+          </ClickAwayListener>
         </Dialog>
         <Dialog
           className={styles.dialogExpand}
@@ -988,15 +1006,17 @@ class Contracts extends Component {
           fullWidth={true}
           maxWidth="lg"
         >
-          <DialogContent>
-            <Item
-              handleCloseItem={this.handleCloseItem}
-              newItem={this.newItem}
-              updateItem={this.updateItem}
-              editable={this.state.itemModal.isEditable}
-              informationToEdit={this.state.itemModal.editableInfo}
-            />
-          </DialogContent>
+          <ClickAwayListener onClickAway={this.handleCloseItem}>
+            <DialogContent>
+              <Item
+                handleCloseItem={this.handleCloseItem}
+                newItem={this.newItem}
+                updateItem={this.updateItem}
+                editable={this.state.itemModal.isEditable}
+                informationToEdit={this.state.itemModal.editableInfo}
+              />
+            </DialogContent>
+          </ClickAwayListener>
         </Dialog>
       </div>
     );

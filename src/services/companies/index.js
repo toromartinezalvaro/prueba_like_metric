@@ -2,8 +2,8 @@ import CompanyServiceDefinitions from './CompanyServicesDefinitions';
 import Services from '../services';
 
 export default class CompanyServices extends Services {
-  create(name) {
-    return this.post(CompanyServiceDefinitions.create, { name });
+  create(company) {
+    return this.post(CompanyServiceDefinitions.create, company);
   }
 
   createWithProject(name, projectId) {
@@ -18,5 +18,21 @@ export default class CompanyServices extends Services {
       companyId,
       projectId,
     });
+  }
+
+  associatedProjects() {
+    return this.get(CompanyServiceDefinitions.associated);
+  }
+
+  childrenInfo() {
+    return this.get(CompanyServiceDefinitions.childrenInfo);
+  }
+
+  getCompanies() {
+    return this.get(CompanyServiceDefinitions.getAllForUser);
+  }
+
+  getProjects() {
+    return this.get(CompanyServiceDefinitions.getProjects);
   }
 }

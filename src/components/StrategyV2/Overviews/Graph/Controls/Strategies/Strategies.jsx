@@ -11,10 +11,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import { useSnackbar } from 'notistack';
 import {
   changeStrategy,
   fetchDataSuccess,
 } from '../../../../../../containers/StrategyV2/actions';
+import { startLoading, stopLoading } from '../../../../Loader/actions';
 import StrategyServices from '../../../../../../services/strategy/StrategyService';
 import IncrementServices from '../../../../../../services/increments/IncrementsServices';
 import Increment2Services from '../../../../../../services/incrementsV2/incrementsService';
@@ -34,8 +36,12 @@ const Strategies = ({
   strategies,
   groupId,
   onFetchedData,
+  startApiLoading,
+  stopApiLoading,
 }) => {
   const { towerId } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [
     selectStrategyConfirmationDialogOpen,
     setSelectStrategyConfirmationDialogOpen,
@@ -47,34 +53,46 @@ const Strategies = ({
   ] = useState(false);
 
   const changeStrategyHandler = async (id) => {
-    const lineSelected = strategies.find((s) => s.id === Number(id));
-    const arrayIncrementList = strategies.slice(1).map((s) => s.percentage);
-    await services.strategy.putStrategy({
-      id: groupId,
-      strategy: Number(id),
-      incrementList: lineSelected.percentage,
-      arrayIncrementList,
-    });
-    const response = await services.increment2.getIncrementsAndStrategy(
-      towerId,
-    );
-    onFetchedData({
-      strategyLines: generateDataset(response.data.increments),
-      groups: response.data.summary.increments,
-    });
-    onChangeStrategy(Number(id));
+    try {
+      startApiLoading();
+      const lineSelected = strategies.find((s) => s.id === Number(id));
+      const arrayIncrementList = strategies.slice(1).map((s) => s.percentage);
+      await services.strategy.putStrategy({
+        id: groupId,
+        strategy: Number(id),
+        incrementList: lineSelected.percentage,
+        arrayIncrementList,
+      });
+      const response = await services.increment2.getIncrementsAndStrategy(
+        towerId,
+      );
+      onFetchedData({
+        strategyLines: generateDataset(response.data.increments),
+        groups: response.data.summary.increments,
+      });
+      onChangeStrategy(Number(id));
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    }
+    stopApiLoading();
   };
 
   const resetStrategyHandler = async () => {
-    await services.increment.resetStrategy(groupId);
-    const response = await services.increment2.getIncrementsAndStrategy(
-      towerId,
-    );
-    onFetchedData({
-      strategyLines: generateDataset(response.data.increments),
-      groups: response.data.summary.increments,
-    });
-    onChangeStrategy(null);
+    try {
+      startApiLoading();
+      await services.increment.resetStrategy(groupId);
+      const response = await services.increment2.getIncrementsAndStrategy(
+        towerId,
+      );
+      onFetchedData({
+        strategyLines: generateDataset(response.data.increments),
+        groups: response.data.summary.increments,
+      });
+      onChangeStrategy(null);
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    }
+    stopApiLoading();
   };
 
   const confirmStrategySelection = () => {
@@ -91,7 +109,7 @@ const Strategies = ({
           <Box mb={2}>
             <FormControl component="fieldset">
               <FormLabel component="legend">
-                Seleccione una estrategia:
+                Seleccione una estrategia (Frecuencia de incremento):
               </FormLabel>
               <RadioGroup
                 row
@@ -106,25 +124,25 @@ const Strategies = ({
                   value={1}
                   disabled={!(strategies && strategies.length >= 2) || !isReset}
                   control={<Radio />}
-                  label="Continua"
+                  label="Continua (1)"
                 />
                 <FormControlLabel
                   value={3}
                   disabled={!(strategies && strategies.length >= 3) || !isReset}
                   control={<Radio />}
-                  label="Semi-continua"
+                  label="Semi-continua (3)"
                 />
                 <FormControlLabel
                   value={9}
                   disabled={!(strategies && strategies.length >= 4) || !isReset}
                   control={<Radio />}
-                  label="Semi-escalonada"
+                  label="Semi-escalonada (9)"
                 />
                 <FormControlLabel
                   value={18}
                   disabled={!(strategies && strategies.length >= 5) || !isReset}
                   control={<Radio />}
-                  label="Escalonada"
+                  label="Escalonada (18)"
                 />
               </RadioGroup>
             </FormControl>
@@ -177,6 +195,8 @@ Strategies.propTypes = {
   onChangeStrategy: PropTypes.func.isRequired,
   groupId: PropTypes.number.isRequired,
   onFetchedData: PropTypes.func.isRequired,
+  startApiLoading: PropTypes.func.isRequired,
+  stopApiLoading: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -197,6 +217,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   onChangeStrategy: changeStrategy,
   onFetchedData: fetchDataSuccess,
+  startApiLoading: startLoading,
+  stopApiLoading: stopLoading,
 };
 
 export default connect(

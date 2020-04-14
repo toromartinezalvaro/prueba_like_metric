@@ -8,6 +8,7 @@ import React, { Fragment, Component } from 'react';
 import { TextField, Fab, Card, CardContent, Button } from '@material-ui/core';
 import { AddIcon, EditIcon } from '@material-ui/icons';
 import ContractService from '../../../../../services/contract/contractService';
+import withDefaultLayout from '../../../../../HOC/Layouts/Default/withDefaultLayout';
 import styles from './Attachment.module.scss';
 
 class Attachment extends Component {
@@ -67,29 +68,33 @@ class Attachment extends Component {
     });
   };
 
+  cleanURLInput = () => {
+    this.setState({
+      urlText: { text: '' },
+    });
+  };
+
   updloadUrl = (e) => {
     const urlText = { text: e.target.value };
-    this.setState(urlText);
-    const tempo = {
-      multerImage: this.state.multerImage,
-      imgObject: this.state.imgObject,
-      urlText,
-      urlObject: this.state.urlObject,
-    };
-    this.props.sendAttachments(tempo);
+    this.setState({ urlText });
   };
 
   printUrl = () => {
-    this.setState({
-      urlObject: [...this.state.urlObject, this.state.urlText.text],
-    });
-    const tempo = {
-      multerImage: this.state.multerImage,
-      imgObject: this.state.imgObject,
-      urlText: this.state.urlText,
-      urlObject: this.state.urlText.text,
-    };
-    this.props.sendAttachments(tempo);
+    if (this.state.urlText.text) {
+      this.setState({
+        urlObject: [...this.state.urlObject, this.state.urlText.text],
+      });
+      const tempo = {
+        multerImage: this.state.multerImage,
+        imgObject: this.state.imgObject,
+        urlText: this.state.urlText,
+        urlObject: this.state.urlText.text,
+      };
+      this.props.sendAttachments(tempo);
+      this.cleanURLInput();
+    } else {
+      this.props.spawnMessage('El campo URL no puede estar vacío', 'error');
+    }
   };
 
   displayComponents = () => {
@@ -185,4 +190,4 @@ class Attachment extends Component {
   }
 }
 
-export default Attachment;
+export default withDefaultLayout(Attachment);

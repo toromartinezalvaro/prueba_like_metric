@@ -2,11 +2,13 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import { useSnackbar } from 'notistack';
 import Input, { CURRENCY } from '../../../../Shared/Input';
 import {
   changeMarketAveragePrice,
   changeMarketGraph,
 } from '../../../../../../containers/StrategyV2/actions';
+import { startLoading, stopLoading } from '../../../../Loader/actions';
 import IncrementsServices from '../../../../../../services/increments/IncrementsServices';
 
 const services = new IncrementsServices();
@@ -17,8 +19,11 @@ const AveragePrice = ({
   onChangeMarketAveragePrice,
   lenghtMarket,
   onChangeMarketGraph,
+  startApiLoading,
+  stopApiLoading,
 }) => {
   const formRef = useRef();
+  const { enqueueSnackbar } = useSnackbar();
   const blurHandler = () => {
     if (formRef.current) {
       formRef.current.handleSubmit();
@@ -27,6 +32,7 @@ const AveragePrice = ({
 
   const submitHandler = async (values) => {
     try {
+      startApiLoading();
       const marketPrice = await services.putMarketAveragePrice(groupId, {
         averagePrice: Number(values.averagePrice),
         length: lenghtMarket,
@@ -37,9 +43,10 @@ const AveragePrice = ({
       );
       onChangeMarketGraph(incrementsFixed);
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
     }
     onChangeMarketAveragePrice(Number(values.averagePrice));
+    stopApiLoading();
   };
   return (
     <Formik
@@ -73,6 +80,8 @@ AveragePrice.propTypes = {
   onChangeMarketAveragePrice: PropTypes.func.isRequired,
   onChangeMarketGraph: PropTypes.func.isRequired,
   lenghtMarket: PropTypes.number,
+  startApiLoading: PropTypes.func.isRequired,
+  stopApiLoading: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -94,6 +103,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   onChangeMarketAveragePrice: changeMarketAveragePrice,
   onChangeMarketGraph: changeMarketGraph,
+  startApiLoading: startLoading,
+  stopApiLoading: stopLoading,
 };
 
 export default connect(

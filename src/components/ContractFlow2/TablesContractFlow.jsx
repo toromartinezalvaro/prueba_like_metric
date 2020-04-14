@@ -8,6 +8,7 @@ import {
   TableHeaderRow,
   TableFixedColumns,
   TableGroupRow,
+  VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';
 
 import {
@@ -98,7 +99,7 @@ const TablesContractFlow = ({ billings }) => {
       const indexOfColumn = `date${index - 1}`;
       const valueOfColumn = columnsData[indexOfColumn][0].props.value;
       const dateIsLessThanCurrent =
-        numericIndexOfColumn < numericIndexOfCurrentDate;
+        numericIndexOfColumn <= numericIndexOfCurrentDate;
       if (dateIsLessThanCurrent) {
         valueTotal += valueOfColumn;
       }
@@ -123,7 +124,7 @@ const TablesContractFlow = ({ billings }) => {
       const indexOfColumn = `date${index - 1}`;
       const valueOfColumn = columnsData[indexOfColumn][0].props.value;
       const dateIsBiggerThanCurrent =
-        numericIndexOfColumn >= numericIndexOfCurrentDate;
+        numericIndexOfColumn > numericIndexOfCurrentDate;
       if (dateIsBiggerThanCurrent) {
         valueTotal += valueOfColumn;
       }
@@ -430,7 +431,7 @@ const TablesContractFlow = ({ billings }) => {
           ]}
         />
         <IntegratedGrouping />
-        <Table columnExtensions={tableColumnExtensions} />
+        <VirtualTable />
         <TableHeaderRow />
         <TableGroupRow contentComponent={GroupCellContent} />
         <TableFixedColumns leftColumns={leftColumns} />

@@ -1,7 +1,7 @@
 import { TOGGLE_SETTING__SHOW_NO_INCREMENT } from './actions';
 
 const initialState = {
-  showPricesWithoutIncrement: false,
+  showPricesWithoutIncrement: true,
 };
 
 export default (state = initialState, { type }) => {
