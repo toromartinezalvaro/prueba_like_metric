@@ -261,7 +261,7 @@ const BillingFinancials = ({
         })
       ) {
         _.orderBy(events, ['name'], ['asc']);
-        events.unshift(date);
+        events.push(date);
       }
     });
   };
