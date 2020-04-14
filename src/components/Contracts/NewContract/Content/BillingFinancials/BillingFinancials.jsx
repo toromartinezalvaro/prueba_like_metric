@@ -652,12 +652,12 @@ const BillingFinancials = ({
                       billing.cycle === 'Pago Único' || billing.isLocked
                     }
                     className={styles.textFieldDisplace}
-                    label="Numero de pagos"
+                    label={billing.paymentNumber === 1 ? 'Numero de pagos (1)': 'Numero de pagos'}
                     margin="normal"
                     variant="outlined"
                     placeholder={billing.paymentNumber}
                     value={
-                      billing.paymentNumber !== 1 ? billing.paymentNumber : 1
+                      billing.paymentNumber !== 1 ? billing.paymentNumber : ''
                     }
                     onChange={changeCardValue('paymentNumber', billing.id)}
                   />
