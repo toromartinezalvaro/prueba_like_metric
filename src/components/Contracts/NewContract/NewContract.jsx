@@ -65,6 +65,9 @@ const NewContract = ({
   alreadyCreated,
   errors,
   noError,
+  businessPartnerOpen,
+  categoryopen,
+  itemOpen,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -84,6 +87,14 @@ const NewContract = ({
     setOpen(false);
   };
 
+  const handleCloseClickAway = () => {
+    if (businessPartnerOpen || categoryopen || itemOpen) {
+      setClose(false);
+    } else {
+      confirmClose();
+    }
+  };
+
   return (
     <Dialog
       className={styles.dialogExpand}
@@ -92,11 +103,7 @@ const NewContract = ({
       fullWidth={true}
       maxWidth="lg"
     >
-      <ClickAwayListener
-        onClickAway={() => {
-          setOpen(true);
-        }}
-      >
+      <ClickAwayListener onClickAway={handleCloseClickAway}>
         <DialogContentText>
           <div className={styles.title}>
             <div className={`${styles.circleIcon}  ${styles.circleColorTitle}`}>
