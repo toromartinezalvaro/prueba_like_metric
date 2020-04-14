@@ -6,7 +6,6 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  ClickAwayListener,
   Dialog,
   DialogContentText,
   Button,
@@ -87,14 +86,6 @@ const NewContract = ({
     setOpen(false);
   };
 
-  const handleCloseClickAway = () => {
-    if (businessPartnerOpen || categoryopen || itemOpen) {
-      setClose(false);
-    } else {
-      confirmClose();
-    }
-  };
-
   return (
     <Dialog
       className={styles.dialogExpand}
@@ -103,7 +94,6 @@ const NewContract = ({
       fullWidth={true}
       maxWidth="lg"
     >
-      <ClickAwayListener onClickAway={handleCloseClickAway}>
         <DialogContentText>
           <div className={styles.title}>
             <div className={`${styles.circleIcon}  ${styles.circleColorTitle}`}>
@@ -192,7 +182,6 @@ const NewContract = ({
             </Button>
           </div>
         </DialogContentText>
-      </ClickAwayListener>
     </Dialog>
   );
 };
