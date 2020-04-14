@@ -3,8 +3,7 @@
  *
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
+import { ClickAwayListener, Dialog, DialogContent } from '@material-ui/core';
 import React, { Component } from 'react';
 import styles from './Contracts.module.scss';
 import Navbar from '../../components/Contracts/Navbar/Navbar';
@@ -607,7 +606,7 @@ class Contracts extends Component {
         currentContract: false,
       });
     }
-  }
+  };
 
   addContract = () => {
     let readyToSend = false;
@@ -949,6 +948,9 @@ class Contracts extends Component {
           watchingContract={this.watchingContract}
           sendContractNumber={this.sendContractNumber}
           sendToDelete={this.sendToDelete}
+          businessPartnerOpen={this.state.businessPatnerModal.isOpen}
+          categoryopen={this.state.categoryModal.isOpen}
+          itemOpen={this.state.itemModal.isOpen}
         />
         <Dialog
           className={styles.dialogExpand}
@@ -958,15 +960,17 @@ class Contracts extends Component {
           fullWidth={true}
           maxWidth="lg"
         >
-          <DialogContent>
-            <Category
-              handleCloseCategory={this.handleCloseCategory}
-              newCategory={this.newCategory}
-              updateCategory={this.updateCategory}
-              editable={this.state.categoryModal.isEditable}
-              informationToEdit={this.state.categoryModal.editableInfo}
-            />
-          </DialogContent>
+          <ClickAwayListener onClickAway={this.handleCloseCategory}>
+            <DialogContent>
+              <Category
+                handleCloseCategory={this.handleCloseCategory}
+                newCategory={this.newCategory}
+                updateCategory={this.updateCategory}
+                editable={this.state.categoryModal.isEditable}
+                informationToEdit={this.state.categoryModal.editableInfo}
+              />
+            </DialogContent>
+          </ClickAwayListener>
         </Dialog>
         <Dialog
           className={styles.dialogExpand}
@@ -976,15 +980,17 @@ class Contracts extends Component {
           fullWidth={true}
           maxWidth="lg"
         >
-          <DialogContent>
-            <BusinessPatner
-              handleCloseBusinessPatner={this.handleCloseBusinessPatner}
-              newBusinessPartner={this.newBusinessPartner}
-              updatePartner={this.updatePartner}
-              editable={this.state.businessPatnerModal.isEditable}
-              informationToEdit={this.state.businessPatnerModal.editableInfo}
-            />
-          </DialogContent>
+          <ClickAwayListener onClickAway={this.handleCloseBusinessPatner}>
+            <DialogContent>
+              <BusinessPatner
+                handleCloseBusinessPatner={this.handleCloseBusinessPatner}
+                newBusinessPartner={this.newBusinessPartner}
+                updatePartner={this.updatePartner}
+                editable={this.state.businessPatnerModal.isEditable}
+                informationToEdit={this.state.businessPatnerModal.editableInfo}
+              />
+            </DialogContent>
+          </ClickAwayListener>
         </Dialog>
         <Dialog
           className={styles.dialogExpand}
@@ -994,15 +1000,17 @@ class Contracts extends Component {
           fullWidth={true}
           maxWidth="lg"
         >
-          <DialogContent>
-            <Item
-              handleCloseItem={this.handleCloseItem}
-              newItem={this.newItem}
-              updateItem={this.updateItem}
-              editable={this.state.itemModal.isEditable}
-              informationToEdit={this.state.itemModal.editableInfo}
-            />
-          </DialogContent>
+          <ClickAwayListener onClickAway={this.handleCloseItem}>
+            <DialogContent>
+              <Item
+                handleCloseItem={this.handleCloseItem}
+                newItem={this.newItem}
+                updateItem={this.updateItem}
+                editable={this.state.itemModal.isEditable}
+                informationToEdit={this.state.itemModal.editableInfo}
+              />
+            </DialogContent>
+          </ClickAwayListener>
         </Dialog>
       </div>
     );
