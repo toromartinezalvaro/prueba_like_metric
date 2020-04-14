@@ -606,14 +606,16 @@ const BillingFinancials = ({
                     required
                     disabled={billing.eventIsUnique || billing.isLocked}
                     className={styles.textFieldDisplace}
-                    label={`Desplazamiento Mensual`}
+                    label={
+                      billing.displacement !== 0
+                        ? `Desplazamiento Mensual`
+                        : 'Desplazamiento Mensual (0)'
+                    }
                     margin="normal"
                     variant="outlined"
-                    defaultValue={
-                      billing.displacement === null ? 0 : billing.displacement
-                    }
+                    placeholder={billing.displacement}
                     value={
-                      billing.displacement === null ? 0 : billing.displacement
+                      billing.displacement !== 0 ? billing.displacement : ''
                     }
                     onChange={changeCardValue('displacement', billing.id)}
                   />
@@ -652,7 +654,11 @@ const BillingFinancials = ({
                       billing.cycle === 'Pago Único' || billing.isLocked
                     }
                     className={styles.textFieldDisplace}
-                    label={billing.paymentNumber === 1 ? 'Numero de pagos (1)': 'Numero de pagos'}
+                    label={
+                      billing.paymentNumber === 1
+                        ? 'Numero de pagos (1)'
+                        : 'Numero de pagos'
+                    }
                     margin="normal"
                     variant="outlined"
                     placeholder={billing.paymentNumber}
