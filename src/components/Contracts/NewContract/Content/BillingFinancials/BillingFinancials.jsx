@@ -142,7 +142,9 @@ const BillingFinancials = ({
     } else {
       if (name === 'displacement') {
         billingsArray[billIndex].initalBillingDate = Number(lastDate);
-        const newDate = moment(billingsArray[billIndex].initalBillingDate)
+        const newDate = moment(
+          Number(billingsArray[billIndex].initalBillingDate),
+        )
           .add(Number(element.target.value), 'months')
           .format('x');
         bill = {
@@ -164,7 +166,7 @@ const BillingFinancials = ({
             }
             return parseInt(value, 10);
           };
-          const date = moment(billingsArray[billIndex].lastBillingDate)
+          const date = moment(Number(billingsArray[billIndex].lastBillingDate))
             .add(
               Number(payment(billingsArray[billIndex].paymentNumber)),
               billingsArray[billIndex].type,
@@ -177,10 +179,16 @@ const BillingFinancials = ({
           billingsArray[billIndex].lastBillingDate = Number(date);
         }
       } else if (name === 'paymentNumber') {
-        billingsArray[billIndex].lastBillingDate = Number(lastDate);
+        billingsArray[billIndex].lastBillingDate = Number(
+          billingsArray[billIndex].initalBillingDate,
+        );
         if (billingsArray[billIndex].type !== 'quarter') {
-          billingsArray[billIndex].lastBillingDate = Number(lastDate);
-          const newDate = moment(billingsArray[billIndex].initalBillingDate)
+          billingsArray[billIndex].lastBillingDate = Number(
+            billingsArray[billIndex].initalBillingDate,
+          );
+          const newDate = moment(
+            Number(billingsArray[billIndex].initalBillingDate),
+          )
             .add(
               Number(
                 Number(element.target.value) !== 1
@@ -192,10 +200,13 @@ const BillingFinancials = ({
             .format('x');
           bill = {
             ...billingsArray[billIndex],
+            lastBillingDate: Number(newDate),
           };
           billingsArray[billIndex].lastBillingDate = Number(newDate);
         }
-        const newDate = moment(billingsArray[billIndex].initalBillingDate)
+        const newDate = moment(
+          Number(billingsArray[billIndex].initalBillingDate),
+        )
           .add(
             Number(
               Number(element.target.value) !== 1
@@ -644,14 +655,13 @@ const BillingFinancials = ({
                     label="Numero de pagos"
                     margin="normal"
                     variant="outlined"
-                    placeholder={
-                      billing.paymentNumber === null ? 1 : billing.paymentNumber
-                    }
+                    placeholder={billing.paymentNumber}
                     value={
-                      billing.paymentNumber === null ? 1 : billing.paymentNumber
+                      billing.paymentNumber !== 1 ? billing.paymentNumber : 1
                     }
                     onChange={changeCardValue('paymentNumber', billing.id)}
                   />
+                  {console.log('Pruebas', billing.lastBillingDate)}
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       disabled={true}
