@@ -214,6 +214,13 @@ class Contracts extends Component {
     this.setState({
       contractModal: { isOpen: true, generalInformationData: null },
     });
+    this.sendErrorInProp('title', false);
+    this.sendErrorInProp('partner', '');
+    this.sendErrorInProp('group', '');
+    this.sendErrorInProp('state', '');
+    this.sendErrorInProp('item', '');
+    this.sendErrorInProp('contractNumber', false);
+    this.sendErrorInProp('description', false);
   };
 
   handleOpenCategory = () => {
@@ -668,6 +675,14 @@ class Contracts extends Component {
     } else if (requiredInformation.description === '') {
       this.props.spawnMessage(
         'Debe llenar el campo descripción',
+        'error',
+        'ERROR',
+        10000,
+      );
+      this.sendErrorInProp('description', true);
+    } else if (requiredInformation.description.length >= 250) {
+      this.props.spawnMessage(
+        'La descripción solo puede tener 250 caracteres',
         'error',
         'ERROR',
         10000,
