@@ -44,6 +44,7 @@ const TablesContractFlow = ({ billings }) => {
         thousandSeparator
         displayType={'text'}
         isNumericString
+        decimalSeparator={false}
         prefix="$"
       />
     );

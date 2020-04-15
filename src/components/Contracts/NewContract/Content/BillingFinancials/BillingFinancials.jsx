@@ -317,6 +317,7 @@ const BillingFinancials = ({
                 },
               });
             }}
+            decimalSeparator={false}
             thousandSeparator
           />
         );
@@ -412,6 +413,7 @@ const BillingFinancials = ({
                         displayType={'text'}
                         className={styles.TotalAmountIva}
                         thousandSeparator={true}
+                        decimalSeparator={false}
                         prefix={'$'}
                       />
                     </div>
@@ -428,6 +430,7 @@ const BillingFinancials = ({
                             Number(billing.paymentNumber),
                         )}
                         displayType="text"
+                        decimalSeparator={false}
                         thousandSeparator
                         prefix="$"
                       />
@@ -470,6 +473,7 @@ const BillingFinancials = ({
                           )}
                           displayType="text"
                           thousandSeparator
+                          decimalSeparator={false}
                           prefix="$"
                         />
                       </div>
@@ -504,6 +508,7 @@ const BillingFinancials = ({
                               (Number(billing.iva) / 100),
                           )}
                           displayType="text"
+                          decimalSeparator={false}
                           thousandSeparator
                           prefix="$"
                         />
@@ -520,6 +525,7 @@ const BillingFinancials = ({
                               Number(billing.paymentNumber),
                           )}
                           displayType="text"
+                          decimalSeparator={false}
                           thousandSeparator
                           prefix="$"
                         />
@@ -538,6 +544,7 @@ const BillingFinancials = ({
                                 (Number(billing.iva) / 100),
                           )}
                           displayType="text"
+                          decimalSeparator={false}
                           thousandSeparator
                           prefix="$"
                         />
@@ -555,6 +562,7 @@ const BillingFinancials = ({
                               Number(billing.paymentNumber),
                           )}
                           displayType="text"
+                          decimalSeparator={false}
                           thousandSeparator
                           prefix="$"
                         />
@@ -758,6 +766,7 @@ const BillingFinancials = ({
             value={Number(totalBills)}
             displayType="text"
             className={styles.TotalAmount}
+            decimalSeparator={false}
             thousandSeparator
             prefix="$"
           />
@@ -766,6 +775,7 @@ const BillingFinancials = ({
             value={Number(totalBillsNoIva)}
             displayType="text"
             className={styles.TotalAmount}
+            decimalSeparator={false}
             thousandSeparator
             prefix="$"
           />

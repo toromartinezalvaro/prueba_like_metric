@@ -63,6 +63,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                             displayType={'text'}
                             className={style.informationAmount}
                             thousandSeparator={true}
+                            decimalSeparator={false}
                             prefix={'$'}
                           />
                         </span>
@@ -82,6 +83,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                             displayType={'text'}
                             className={style.informationAmount}
                             thousandSeparator={true}
+                            decimalSeparator={false}
                             prefix={'$'}
                           />
                         </span>
@@ -135,6 +137,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                   displayType="text"
                   className={style.totalAmount}
                   thousandSeparator
+                  decimalSeparator={false}
                   prefix="$"
                 />
               </div>
@@ -146,6 +149,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                   className={style.totalAmount}
                   thousandSeparator
                   prefix="$"
+                  decimalSeparator={false}
                 />
               </div>
             </div>
