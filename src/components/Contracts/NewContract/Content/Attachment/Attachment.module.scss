@@ -66,16 +66,20 @@
 }
 
 .attachment {
-  display: flex !important;
+  /* display: flex !important;
   flex: 1;
-  flex-direction: row;
-  width: 65vw;
+  flex-direction: row; */
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  column-gap: 5% !important;
+  width: 50vw;
 }
 
 .CardAttach {
   display: flex !important;
   flex: 1;
   flex-direction: row;
+  margin-top: 5% !important;
 }
 
 .inputs {
@@ -87,8 +91,7 @@
   width: 65vw !important;
 }
 
-
-@media(max-width: 1440px) { 
+@media (max-width: 1440px) {
   .cardAttachment {
     margin-left: 15vw !important;
   }

@@ -132,15 +132,17 @@ class Attachment extends Component {
         <Card className={styles.CardAttach} key={i}>
           <CardContent>
             <div className={styles.attachment}>
-              <a href={url}>{url}</a>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={this.urlRemove(i)}
-                className={styles.buttons}
-              >
-                X
-              </Button>
+              <div className={styles.URLContainer}>
+                <a href={url}>{url}</a>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.urlRemove(i)}
+                  className={styles.buttons}
+                >
+                  X
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
