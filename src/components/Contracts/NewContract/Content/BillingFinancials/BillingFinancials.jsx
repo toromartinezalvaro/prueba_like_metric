@@ -331,7 +331,7 @@ const BillingFinancials = ({
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
             <div className={styles.gridContainer}>
-              <h3 className={styles.tittlePayment}>Forma de pago N°{i}</h3>
+              <h3 className={styles.tittlePayment}>Forma de pago N°{i + 1}</h3>
               <div className={styles.paymentProjection}>
                 <h4 className={styles.tittleForProjection}>
                   Proyección de pago:
