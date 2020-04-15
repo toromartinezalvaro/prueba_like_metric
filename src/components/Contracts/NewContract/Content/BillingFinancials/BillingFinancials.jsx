@@ -407,9 +407,7 @@ const BillingFinancials = ({
                         Valor en pesos del IVA
                       </h4>
                       <NumberFormat
-                        value={Numbers.toFixed(
-                          billing.amount * (billing.iva / 100),
-                        )}
+                        value={billing.amount * (billing.iva / 100)}
                         displayType={'text'}
                         className={styles.TotalAmountIva}
                         thousandSeparator={true}
@@ -423,12 +421,12 @@ const BillingFinancials = ({
                       </h4>
                       <NumberFormat
                         className={styles.amount}
-                        value={Numbers.toFixed(
+                        value={
                           (Number(billing.amount) +
                             Number(billing.amount) *
                               (Number(billing.iva) / 100)) *
-                            Number(billing.paymentNumber),
-                        )}
+                          Number(billing.paymentNumber)
+                        }
                         displayType="text"
                         decimalSeparator={false}
                         thousandSeparator
@@ -467,10 +465,10 @@ const BillingFinancials = ({
                         </h4>
                         <NumberFormat
                           className={styles.amountValue}
-                          value={Numbers.toFixed(
+                          value={
                             Number(billing.amount) *
-                              Number(billing.paymentNumber),
-                          )}
+                            Number(billing.paymentNumber)
+                          }
                           displayType="text"
                           thousandSeparator
                           decimalSeparator={false}
@@ -503,10 +501,9 @@ const BillingFinancials = ({
                         </h4>
                         <NumberFormat
                           className={styles.amountValue}
-                          value={Numbers.toFixed(
-                            Number(billing.amount) *
-                              (Number(billing.iva) / 100),
-                          )}
+                          value={
+                            Number(billing.amount) * (Number(billing.iva) / 100)
+                          }
                           displayType="text"
                           decimalSeparator={false}
                           thousandSeparator
@@ -519,11 +516,11 @@ const BillingFinancials = ({
                         </h4>
                         <NumberFormat
                           className={styles.amountValue}
-                          value={Numbers.toFixed(
+                          value={
                             Number(billing.amount) *
-                              (Number(billing.iva) / 100) *
-                              Number(billing.paymentNumber),
-                          )}
+                            (Number(billing.iva) / 100) *
+                            Number(billing.paymentNumber)
+                          }
                           displayType="text"
                           decimalSeparator={false}
                           thousandSeparator
@@ -538,11 +535,10 @@ const BillingFinancials = ({
                         </h4>
                         <NumberFormat
                           className={styles.amountValue}
-                          value={Numbers.toFixed(
+                          value={
                             Number(billing.amount) +
-                              Number(billing.amount) *
-                                (Number(billing.iva) / 100),
-                          )}
+                            Number(billing.amount) * (Number(billing.iva) / 100)
+                          }
                           displayType="text"
                           decimalSeparator={false}
                           thousandSeparator
@@ -555,12 +551,12 @@ const BillingFinancials = ({
                         </h4>
                         <NumberFormat
                           className={styles.amountValue}
-                          value={Numbers.toFixed(
+                          value={
                             (Number(billing.amount) +
                               Number(billing.amount) *
                                 (Number(billing.iva) / 100)) *
-                              Number(billing.paymentNumber),
-                          )}
+                            Number(billing.paymentNumber)
+                          }
                           displayType="text"
                           decimalSeparator={false}
                           thousandSeparator
