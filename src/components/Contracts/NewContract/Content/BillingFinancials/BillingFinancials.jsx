@@ -25,6 +25,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import withDefaultLayout from '../../../../../HOC/Layouts/Default/withDefaultLayout';
 import Numbers from '../../../../../helpers/numbers';
 import MonthEnum from './month.enum';
 import YearEnum from './year.enum';
@@ -41,6 +42,7 @@ const BillingFinancials = ({
   dataIfEdit,
   watchingContract,
   sendToDelete,
+  spawnMessage,
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
@@ -243,9 +245,14 @@ const BillingFinancials = ({
   };
 
   const addBilling = () => {
-    const newBill = { ...cardValue, id: lastId + 1, new: true };
-    setBillings([...billings, newBill]);
-    setLastId(lastId + 1);
+    const billingsLocked = billings.some((bill) => bill.isLocked === false);
+    if (billingsLocked) {
+      spawnMessage('Debe guardar todas las cuentas para continuar', 'error');
+    } else {
+      const newBill = { ...cardValue, id: lastId + 1, new: true };
+      setBillings([...billings, newBill]);
+      setLastId(lastId + 1);
+    }
   };
 
   const createdEvent = (eventObject) => {
@@ -275,8 +282,12 @@ const BillingFinancials = ({
   useEffect(() => {
     if (dataIfEdit) {
       const data = dataIfEdit.billings;
+      const withLocked = data.map((dataValue) => {
+        const newValue = { ...dataValue, isLocked: true };
+        return newValue;
+      });
       setLastId(1);
-      setBillings(data);
+      setBillings(withLocked);
       setLastDate(data[0] ? data[0].initalBillingDate : null);
       setTimeout(() => {
         watchingContract();
@@ -788,4 +799,4 @@ BillingFinancials.propTypes = {
   sendBillings: PropTypes.func,
 };
 
-export default BillingFinancials;
+export default withDefaultLayout(BillingFinancials);
