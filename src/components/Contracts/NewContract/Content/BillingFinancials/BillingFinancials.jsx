@@ -332,7 +332,58 @@ const BillingFinancials = ({
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
             <div className={styles.gridContainer}>
-              <h3 className={styles.tittlePayment}>Forma de pago N°{i + 1}</h3>
+              <div className={styles.containerPaymentInformation}>
+                <h3 className={styles.tittlePayment}>
+                  Forma de pago N°{i + 1}
+                </h3>
+                <div className={styles.resumeLabel2}>
+                  <h4 sclassName={styles.ivaTitle}>
+                    Valor antes del IVA total:
+                  </h4>
+                  <NumberFormat
+                    className={styles.resumeValue}
+                    value={
+                      Number(billing.amount) * Number(billing.paymentNumber)
+                    }
+                    displayType="text"
+                    thousandSeparator
+                    decimalSeparator={false}
+                    prefix="$"
+                  />
+                </div>
+                <div className={styles.resumeLabel3}>
+                  <h4 sclassName={styles.ivaTitle}>Valor de IVA total:</h4>
+                  <NumberFormat
+                    className={styles.resumeValue}
+                    value={
+                      Number(billing.amount) *
+                      (Number(billing.iva) / 100) *
+                      Number(billing.paymentNumber)
+                    }
+                    displayType="text"
+                    decimalSeparator={false}
+                    thousandSeparator
+                    prefix="$"
+                  />
+                </div>
+                <div className={styles.resumeLabel}>
+                  <h4 sclassName={styles.ivaTitle}>
+                    Valor despues de IVA total:
+                  </h4>
+                  <NumberFormat
+                    className={styles.resumeValue}
+                    value={
+                      (Number(billing.amount) +
+                        Number(billing.amount) * (Number(billing.iva) / 100)) *
+                      Number(billing.paymentNumber)
+                    }
+                    displayType="text"
+                    decimalSeparator={false}
+                    thousandSeparator
+                    prefix="$"
+                  />
+                </div>
+              </div>
               <div className={styles.paymentProjection}>
                 <h4 className={styles.tittleForProjection}>
                   Proyección de pago:
@@ -459,22 +510,6 @@ const BillingFinancials = ({
                           ),
                         }}
                       />
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor antes del IVA total:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={
-                            Number(billing.amount) *
-                            Number(billing.paymentNumber)
-                          }
-                          displayType="text"
-                          thousandSeparator
-                          decimalSeparator={false}
-                          prefix="$"
-                        />
-                      </div>
                     </div>
                     <div className={styles.col2}>
                       <TextField
@@ -510,23 +545,6 @@ const BillingFinancials = ({
                           prefix="$"
                         />
                       </div>
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor de IVA total:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={
-                            Number(billing.amount) *
-                            (Number(billing.iva) / 100) *
-                            Number(billing.paymentNumber)
-                          }
-                          displayType="text"
-                          decimalSeparator={false}
-                          thousandSeparator
-                          prefix="$"
-                        />
-                      </div>
                     </div>
                     <div className={styles.col4}>
                       <div className={styles.amountLabel}>
@@ -538,24 +556,6 @@ const BillingFinancials = ({
                           value={
                             Number(billing.amount) +
                             Number(billing.amount) * (Number(billing.iva) / 100)
-                          }
-                          displayType="text"
-                          decimalSeparator={false}
-                          thousandSeparator
-                          prefix="$"
-                        />
-                      </div>
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor despues de IVA total:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={
-                            (Number(billing.amount) +
-                              Number(billing.amount) *
-                                (Number(billing.iva) / 100)) *
-                            Number(billing.paymentNumber)
                           }
                           displayType="text"
                           decimalSeparator={false}
