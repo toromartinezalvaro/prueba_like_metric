@@ -17,7 +17,13 @@ import statusOfContractEnum from './statusOfContract.enum';
 import styles from './GeneralInfo.module.scss';
 
 const Option = (props) => {
-  return <components.Option {...props} className={styles.options} />;
+  return (
+    <components.Option
+      {...props}
+      className={styles.options}
+      classes={{ root: styles.optionMenu }}
+    />
+  );
 };
 
 const GeneralInfo = ({
@@ -203,6 +209,7 @@ const GeneralInfo = ({
             className={styles.textField}
             label="Titulo De Contrato"
             margin="normal"
+            autoComplete="off"
             onKeyDown={(e) => {
               if (e.key === 'Enter') document.getElementById('select1').focus();
             }}
@@ -216,6 +223,8 @@ const GeneralInfo = ({
                 className={styles.SelectSimpleForLabel}
                 required
                 inputId="select1"
+                autoWidth={false}
+                autoComplete="off"
                 TextFieldProps={{
                   label: 'Socio de negocios',
                   InputLabelProps: {
@@ -458,6 +467,7 @@ const GeneralInfo = ({
           variant="outlined"
           defaultValue={dataIfEdit && dataIfEdit.description}
           onChange={onChangeText('description')}
+          autoComplete="off"
         />
         <div className={styles.labelWordLength}>
           <span
