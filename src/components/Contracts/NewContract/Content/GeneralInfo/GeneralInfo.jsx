@@ -118,6 +118,13 @@ const GeneralInfo = ({
       setEmptyTitle(false);
       setEmptyDescription(false);
     } else {
+      if (partnerProp) {
+        const edited = {
+          ...generalInformation,
+          businessPartnerId: partnerProp.value,
+        };
+        setGeneralInformation(edited);
+      }
       setEmptyTitle(false);
       setEmptyDescription(false);
       setEmptyNumber(false);
@@ -161,20 +168,32 @@ const GeneralInfo = ({
   };
 
   const searchForCategory = () => {
-    if (categoryProp !== undefined && categoryProp.value !== '') {
-      searchCategory(categoryProp.value);
+    if (
+      generalInformation !== undefined &&
+      generalInformation.groupId !== '' &&
+      generalInformation.groupId !== 0
+    ) {
+      searchCategory(generalInformation.groupId);
     }
   };
 
   const searchForPatner = () => {
-    if (partnerProp !== undefined && partnerProp.value !== '') {
-      searchBusinessPartner(partnerProp.value);
+    if (
+      generalInformation !== undefined &&
+      generalInformation.businessPartnerId !== '' &&
+      generalInformation.businessPartnerId !== 0
+    ) {
+      searchBusinessPartner(generalInformation.businessPartnerId);
     }
   };
 
   const searchForItem = () => {
-    if (itemProp && itemProp.value !== '') {
-      searchItem(itemProp.value);
+    if (
+      generalInformation &&
+      generalInformation.itemId !== '' &&
+      generalInformation.itemId !== 0
+    ) {
+      searchItem(generalInformation.itemId);
     }
   };
 
@@ -219,6 +238,10 @@ const GeneralInfo = ({
           />
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
+              {console.log(
+                'ESTE ME LLEGA',
+                generalInformation.businessPartnerId,
+              )}
               <Select
                 className={styles.SelectSimpleForLabel}
                 required
@@ -241,18 +264,14 @@ const GeneralInfo = ({
                 placeholder="Seleccione socio"
                 options={partners}
                 components={Option}
-                defaultValue={
-                  dataIfEdit
-                    ? partners.find((option) => {
-                        return (
-                          option.value === dataIfEdit.businessPartnerId && {
-                            value: dataIfEdit.businessPartnerId,
-                            label: dataIfEdit.businessPartner,
-                          }
-                        );
-                      })
-                    : partnerProp
-                }
+                defaultValue={partners.find((option) => {
+                  return (
+                    option.value === generalInformation.businessPartnerId && {
+                      value: generalInformation.businessPartnerId,
+                      label: generalInformation.businessPartner,
+                    }
+                  );
+                })}
                 onChange={changeAndSearchPartner}
               />
               {<div className={styles.errorFieldGroup}>{errors.partner}</div>}
@@ -303,18 +322,14 @@ const GeneralInfo = ({
                 placeholder="Selecciona un grupo"
                 options={categories}
                 components={Option}
-                defaultValue={
-                  dataIfEdit
-                    ? categories.find((option) => {
-                        return (
-                          option.value === dataIfEdit.groupId && {
-                            value: dataIfEdit.groupId,
-                            label: dataIfEdit.group,
-                          }
-                        );
-                      })
-                    : categoryProp
-                }
+                defaultValue={categories.find((option) => {
+                  return (
+                    option.value === generalInformation.groupId && {
+                      value: generalInformation.groupId,
+                      label: generalInformation.group,
+                    }
+                  );
+                })}
                 onChange={changeAndSearchCategory}
                 onFocus={itemClean}
               />
@@ -416,16 +431,14 @@ const GeneralInfo = ({
                   placeholder="Seleccione un Item"
                   components={Option}
                   options={items}
-                  value={
-                    dataIfEdit
-                      ? items.find((option) => {
-                          return option.value === dataIfEdit.itemId;
-                        })
-                      : {
-                          label: generalInformation.itemLabel,
-                          value: generalInformation.itemId,
-                        }
-                  }
+                  value={items.find((option) => {
+                    return (
+                      option.value === generalInformation.itemId && {
+                        label: generalInformation.itemLabel,
+                        value: generalInformation.itemId,
+                      }
+                    );
+                  })}
                   onChange={changeAndSearchItem}
                 />
                 {<div className={styles.errorField}>{errors.item}</div>}

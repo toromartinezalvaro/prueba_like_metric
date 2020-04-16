@@ -293,6 +293,7 @@ class Contracts extends Component {
             value: response.data.id,
             label: response.data.patnerName,
           };
+          console.log('CURRENT PATNER', currentPatner);
           this.setState({
             contractModal: {
               ...this.state.contractModal,
@@ -388,7 +389,7 @@ class Contracts extends Component {
         });
         this.props.spawnMessage(
           'Se actualizó correctamente el socio',
-          'succsess',
+          'success',
         );
       })
       .catch((error) => {
