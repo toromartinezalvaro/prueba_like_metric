@@ -28,7 +28,7 @@ const TablesContractFlow = ({ billings }) => {
   ]);
 
   const [tableColumnExtensions, setTableColumnExtensions] = useState([
-    { columnName: 'contract', width: 210 },
+    { columnName: 'contract', width: 300 },
     { columnName: 'acumulated', width: 110 },
     { columnName: 'projected', width: 110 },
     { columnName: 'total', width: 110 },
