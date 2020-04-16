@@ -89,19 +89,38 @@ const BillingFinancials = ({
     let bill = {};
 
     if (elementIsADate) {
+      const currentType = SuggestionEnum.find(
+        (e) => e.label === billingsArray[billIndex].cycle,
+      );
+      billingsArray[billIndex].type = currentType.type;
       bill = {
         ...billingsArray[billIndex],
         initalBillingDate: Number(moment(element).format('x')),
-        lastBillingDate: Number(moment(element).format('x')),
-        paymentNumber: 1,
+        lastBillingDate: Number(
+          moment(Number(moment(element).format('x')))
+            .add(
+              billingsArray[billIndex].paymentNumber - 1,
+              billingsArray[billIndex].type,
+            )
+            .format('x'),
+        ),
+        type: billingsArray[billIndex].type,
+        paymentNumber: Number(billingsArray[billIndex].paymentNumber),
       };
       billingsArray[billIndex].initalBillingDate = Number(
         moment(element).format('x'),
       );
-      billingsArray[billIndex].lastBillingDate = Number(
-        moment(billingsArray[billIndex].initalBillingDate).format('x'),
+      billingsArray[billIndex].paymentNumber = Number(
+        billingsArray[billIndex].paymentNumber,
       );
-      billingsArray[billIndex].paymentNumber = 1;
+      billingsArray[billIndex].lastBillingDate = Number(
+        moment(billingsArray[billIndex].initalBillingDate)
+          .add(
+            billingsArray[billIndex].paymentNumber,
+            billingsArray[billIndex].type,
+          )
+          .format('x'),
+      );
     } else if (elementIsASelect) {
       if (name === 'cycle') {
         bill = {
@@ -122,16 +141,42 @@ const BillingFinancials = ({
           paymentNumber: billingsArray[billIndex].paymentNumber,
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
+        const currentType = SuggestionEnum.find(
+          (e) => e.label === billingsArray[billIndex].cycle,
+        );
+        billingsArray[billIndex].type = currentType.type;
         bill = {
           ...billingsArray[billIndex],
           initalBillingDate: Number(element.value),
-          lastBillingDate: Number(element.value),
+          lastBillingDate: Number(
+            moment(Number(element.value))
+              .add(
+                Number(billingsArray[billIndex].paymentNumber) - 1,
+                billingsArray[billIndex].type,
+              )
+              .format('x'),
+          ),
           eventId: element.eventId,
           eventIsUnique: false,
           eventLabel: element.eventLabel,
           displacement: 0,
-          paymentNumber: billingsArray[billIndex].paymentNumber,
+          paymentNumber: Number(billingsArray[billIndex].paymentNumber),
+          type: currentType.type,
         };
+        billingsArray[billIndex].initalBillingDate = Number(
+          moment(Number(element.value)).format('x'),
+        );
+        billingsArray[billIndex].paymentNumber = Number(
+          billingsArray[billIndex].paymentNumber,
+        );
+        billingsArray[billIndex].lastBillingDate = Number(
+          moment(Number(element.value))
+            .add(
+              Number(billingsArray[billIndex].paymentNumber) - 1,
+              billingsArray[billIndex].type,
+            )
+            .format('x'),
+        );
         setLastDate(Number(element.value));
         billingsArray[billIndex].eventId = element.eventId;
         billingsArray[billIndex].eventLabel = element.eventLabel;
@@ -531,6 +576,7 @@ const BillingFinancials = ({
                 <div className={styles.event}>
                   <Select
                     className={styles.SelectDate}
+                    maxMenuHeight={150}
                     inputId="sel4"
                     isDisabled={billing.isLocked}
                     TextFieldProps={{
