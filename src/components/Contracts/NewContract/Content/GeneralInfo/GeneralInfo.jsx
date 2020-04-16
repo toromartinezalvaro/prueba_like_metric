@@ -238,10 +238,6 @@ const GeneralInfo = ({
           />
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
-              {console.log(
-                'ESTE ME LLEGA',
-                generalInformation.businessPartnerId,
-              )}
               <Select
                 className={styles.SelectSimpleForLabel}
                 required

@@ -293,7 +293,6 @@ class Contracts extends Component {
             value: response.data.id,
             label: response.data.patnerName,
           };
-          console.log('CURRENT PATNER', currentPatner);
           this.setState({
             contractModal: {
               ...this.state.contractModal,
