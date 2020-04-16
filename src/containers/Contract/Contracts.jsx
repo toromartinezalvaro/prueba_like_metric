@@ -388,7 +388,7 @@ class Contracts extends Component {
         });
         this.props.spawnMessage(
           'Se actualizó correctamente el socio',
-          'succsess',
+          'success',
         );
       })
       .catch((error) => {

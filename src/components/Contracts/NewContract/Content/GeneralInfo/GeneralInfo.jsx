@@ -17,7 +17,13 @@ import statusOfContractEnum from './statusOfContract.enum';
 import styles from './GeneralInfo.module.scss';
 
 const Option = (props) => {
-  return <components.Option {...props} className={styles.options} />;
+  return (
+    <components.Option
+      {...props}
+      className={styles.options}
+      classes={{ root: styles.optionMenu }}
+    />
+  );
 };
 
 const GeneralInfo = ({
@@ -112,6 +118,13 @@ const GeneralInfo = ({
       setEmptyTitle(false);
       setEmptyDescription(false);
     } else {
+      if (partnerProp) {
+        const edited = {
+          ...generalInformation,
+          businessPartnerId: partnerProp.value,
+        };
+        setGeneralInformation(edited);
+      }
       setEmptyTitle(false);
       setEmptyDescription(false);
       setEmptyNumber(false);
@@ -155,20 +168,32 @@ const GeneralInfo = ({
   };
 
   const searchForCategory = () => {
-    if (categoryProp !== undefined && categoryProp.value !== '') {
-      searchCategory(categoryProp.value);
+    if (
+      generalInformation !== undefined &&
+      generalInformation.groupId !== '' &&
+      generalInformation.groupId !== 0
+    ) {
+      searchCategory(generalInformation.groupId);
     }
   };
 
   const searchForPatner = () => {
-    if (partnerProp !== undefined && partnerProp.value !== '') {
-      searchBusinessPartner(partnerProp.value);
+    if (
+      generalInformation !== undefined &&
+      generalInformation.businessPartnerId !== '' &&
+      generalInformation.businessPartnerId !== 0
+    ) {
+      searchBusinessPartner(generalInformation.businessPartnerId);
     }
   };
 
   const searchForItem = () => {
-    if (itemProp && itemProp.value !== '') {
-      searchItem(itemProp.value);
+    if (
+      generalInformation &&
+      generalInformation.itemId !== '' &&
+      generalInformation.itemId !== 0
+    ) {
+      searchItem(generalInformation.itemId);
     }
   };
 
@@ -182,6 +207,17 @@ const GeneralInfo = ({
     changeForSearchPartner(currentPartner);
   };
 
+  const errorInDescription = () => {
+    if (
+      generalInformation.description.length > 250 ||
+      isEmptyDescription ||
+      errors.description
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Fragment className={styles.test}>
       <div className={styles.gridContainer}>
@@ -192,6 +228,7 @@ const GeneralInfo = ({
             className={styles.textField}
             label="Titulo De Contrato"
             margin="normal"
+            autoComplete="off"
             onKeyDown={(e) => {
               if (e.key === 'Enter') document.getElementById('select1').focus();
             }}
@@ -204,7 +241,11 @@ const GeneralInfo = ({
               <Select
                 className={styles.SelectSimpleForLabel}
                 required
+                maxMenuHeight={250}
                 inputId="select1"
+                autoWidth={false}
+                autoComplete="off"
+                classes={{ root: styles.SelectSimpleForLabel }}
                 TextFieldProps={{
                   label: 'Socio de negocios',
                   InputLabelProps: {
@@ -219,18 +260,14 @@ const GeneralInfo = ({
                 placeholder="Seleccione socio"
                 options={partners}
                 components={Option}
-                defaultValue={
-                  dataIfEdit
-                    ? partners.find((option) => {
-                        return (
-                          option.value === dataIfEdit.businessPartnerId && {
-                            value: dataIfEdit.businessPartnerId,
-                            label: dataIfEdit.businessPartner,
-                          }
-                        );
-                      })
-                    : partnerProp
-                }
+                defaultValue={partners.find((option) => {
+                  return (
+                    option.value === generalInformation.businessPartnerId && {
+                      value: generalInformation.businessPartnerId,
+                      label: generalInformation.businessPartner,
+                    }
+                  );
+                })}
                 onChange={changeAndSearchPartner}
               />
               {<div className={styles.errorFieldGroup}>{errors.partner}</div>}
@@ -266,6 +303,7 @@ const GeneralInfo = ({
                 className={styles.SelectSimpleForLabel}
                 inputId="select2"
                 required
+                maxMenuHeight={200}
                 TextFieldProps={{
                   label: 'Selecciona un grupo',
                   InputLabelProps: {
@@ -280,18 +318,14 @@ const GeneralInfo = ({
                 placeholder="Selecciona un grupo"
                 options={categories}
                 components={Option}
-                defaultValue={
-                  dataIfEdit
-                    ? categories.find((option) => {
-                        return (
-                          option.value === dataIfEdit.groupId && {
-                            value: dataIfEdit.groupId,
-                            label: dataIfEdit.group,
-                          }
-                        );
-                      })
-                    : categoryProp
-                }
+                defaultValue={categories.find((option) => {
+                  return (
+                    option.value === generalInformation.groupId && {
+                      value: generalInformation.groupId,
+                      label: generalInformation.group,
+                    }
+                  );
+                })}
                 onChange={changeAndSearchCategory}
                 onFocus={itemClean}
               />
@@ -329,6 +363,7 @@ const GeneralInfo = ({
               className={styles.SelectSimple}
               inputId="select3"
               required
+              maxMenuHeight={200}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') document.getElementById('4').focus();
               }}
@@ -367,6 +402,7 @@ const GeneralInfo = ({
             variant="outlined"
             defaultValue={dataIfEdit && dataIfEdit.contractNumber}
             onChange={onChangeText('contractNumber')}
+            autoComplete="off"
           />
 
           <div className={styles.gridSubContainerRigth}>
@@ -391,16 +427,14 @@ const GeneralInfo = ({
                   placeholder="Seleccione un Item"
                   components={Option}
                   options={items}
-                  value={
-                    dataIfEdit
-                      ? items.find((option) => {
-                          return option.value === dataIfEdit.itemId;
-                        })
-                      : {
-                          label: generalInformation.itemLabel,
-                          value: generalInformation.itemId,
-                        }
-                  }
+                  value={items.find((option) => {
+                    return (
+                      option.value === generalInformation.itemId && {
+                        label: generalInformation.itemLabel,
+                        value: generalInformation.itemId,
+                      }
+                    );
+                  })}
                   onChange={changeAndSearchItem}
                 />
                 {<div className={styles.errorField}>{errors.item}</div>}
@@ -434,10 +468,10 @@ const GeneralInfo = ({
           </div>
         </div>
       </div>
-      <div className={styles.gridContainer}>
+      <div className={styles.gridContainerDescription}>
         <TextField
           multiline
-          error={isEmptyDescription || errors.description}
+          error={errorInDescription()}
           required
           rows="5"
           id="TEXT6"
@@ -446,7 +480,19 @@ const GeneralInfo = ({
           variant="outlined"
           defaultValue={dataIfEdit && dataIfEdit.description}
           onChange={onChangeText('description')}
+          autoComplete="off"
         />
+        <div className={styles.labelWordLength}>
+          <span
+            className={
+              errorInDescription() ? styles.noCaracteres : styles.normalCaracter
+            }
+          >
+            {generalInformation.description.length > 250
+              ? `${generalInformation.description.length}/250 *Numero de caracteres permitido sobrepasado.`
+              : `${generalInformation.description.length}/250`}
+          </span>
+        </div>
       </div>
     </Fragment>
   );
