@@ -182,6 +182,17 @@ const GeneralInfo = ({
     changeForSearchPartner(currentPartner);
   };
 
+  const errorInDescription = () => {
+    if (
+      generalInformation.description.length > 250 ||
+      isEmptyDescription ||
+      errors.description
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Fragment className={styles.test}>
       <div className={styles.gridContainer}>
@@ -435,10 +446,10 @@ const GeneralInfo = ({
           </div>
         </div>
       </div>
-      <div className={styles.gridContainer}>
+      <div className={styles.gridContainerDescription}>
         <TextField
           multiline
-          error={isEmptyDescription || errors.description}
+          error={errorInDescription()}
           required
           rows="5"
           id="TEXT6"
@@ -448,6 +459,17 @@ const GeneralInfo = ({
           defaultValue={dataIfEdit && dataIfEdit.description}
           onChange={onChangeText('description')}
         />
+        <div className={styles.labelWordLength}>
+          <span
+            className={
+              errorInDescription() ? styles.noCaracteres : styles.normalCaracter
+            }
+          >
+            {generalInformation.description.length > 250
+              ? `${generalInformation.description.length}/250 *Numero de caracteres permitido sobrepasado.`
+              : `${generalInformation.description.length}/250`}
+          </span>
+        </div>
       </div>
     </Fragment>
   );
