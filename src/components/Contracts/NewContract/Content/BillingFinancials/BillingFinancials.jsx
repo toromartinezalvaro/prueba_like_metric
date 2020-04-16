@@ -420,6 +420,7 @@ const BillingFinancials = ({
                 </h4>
                 <Select
                   className={styles.Select}
+                  maxMenuHeight={150}
                   inputId="react-select-single"
                   isDisabled={billing.isLocked}
                   TextFieldProps={{

@@ -96,6 +96,10 @@
   width: 22vw !important;
 }
 
+.SelectSimpleForLabel_control {
+  height: 20px !important;
+}
+
 .columnFullLeft {
   display: flex;
   flex-direction: column;
@@ -303,5 +307,6 @@
 }
 
 .optionMenu {
-  z-index: 9999;
+  z-index: 999999999;
+  height: 2vh !important;
 }

@@ -222,9 +222,11 @@ const GeneralInfo = ({
               <Select
                 className={styles.SelectSimpleForLabel}
                 required
+                maxMenuHeight={250}
                 inputId="select1"
                 autoWidth={false}
                 autoComplete="off"
+                classes={{ root: styles.SelectSimpleForLabel }}
                 TextFieldProps={{
                   label: 'Socio de negocios',
                   InputLabelProps: {
@@ -286,6 +288,7 @@ const GeneralInfo = ({
                 className={styles.SelectSimpleForLabel}
                 inputId="select2"
                 required
+                maxMenuHeight={200}
                 TextFieldProps={{
                   label: 'Selecciona un grupo',
                   InputLabelProps: {
@@ -349,6 +352,7 @@ const GeneralInfo = ({
               className={styles.SelectSimple}
               inputId="select3"
               required
+              maxMenuHeight={200}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') document.getElementById('4').focus();
               }}
