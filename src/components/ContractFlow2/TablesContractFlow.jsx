@@ -100,7 +100,7 @@ const TablesContractFlow = ({ billings }) => {
       const indexOfColumn = `date${index - 1}`;
       const valueOfColumn = columnsData[indexOfColumn][0].props.value;
       const dateIsLessThanCurrent =
-        numericIndexOfColumn <= numericIndexOfCurrentDate;
+        numericIndexOfColumn < numericIndexOfCurrentDate;
       if (dateIsLessThanCurrent) {
         valueTotal += valueOfColumn;
       }
@@ -125,7 +125,7 @@ const TablesContractFlow = ({ billings }) => {
       const indexOfColumn = `date${index - 1}`;
       const valueOfColumn = columnsData[indexOfColumn][0].props.value;
       const dateIsBiggerThanCurrent =
-        numericIndexOfColumn > numericIndexOfCurrentDate;
+        numericIndexOfColumn >= numericIndexOfCurrentDate;
       if (dateIsBiggerThanCurrent) {
         valueTotal += valueOfColumn;
       }

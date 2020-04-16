@@ -623,6 +623,9 @@ class Contracts extends Component {
 
   addContract = () => {
     let readyToSend = false;
+    const billingsLocked = this.state.billings.some(
+      (bill) => bill.isLocked === false,
+    );
     const requiredInformation = this.state.generalInformation;
     if (requiredInformation.title === '') {
       this.props.spawnMessage(
@@ -688,6 +691,11 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('description', true);
+    } else if (billingsLocked) {
+      this.props.spawnMessage(
+        'Debe guardar todas las cuentas para continuar',
+        'error',
+      );
     } else {
       readyToSend = true;
       if (readyToSend) {
