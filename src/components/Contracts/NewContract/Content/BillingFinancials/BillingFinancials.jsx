@@ -155,6 +155,15 @@ const BillingFinancials = ({
         };
         billingsArray[billIndex].displacement = Number(element.target.value);
         billingsArray[billIndex].initalBillingDate = Number(newDate);
+        const dateFinalInDisplace = Number(
+          moment(
+            moment(Number(billingsArray[billIndex].lastBillingDate)).add(
+              Number(billingsArray[billIndex].paymentNumber),
+              billingsArray[billIndex].type,
+            ),
+          ),
+        );
+        billingsArray[billIndex].lastBillingDate = dateFinalInDisplace;
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(newDate);
           const payment = (value) => {
@@ -184,6 +193,10 @@ const BillingFinancials = ({
         billingsArray[billIndex].lastBillingDate = Number(
           billingsArray[billIndex].initalBillingDate,
         );
+        const currentType = SuggestionEnum.find(
+          (e) => e.label === billingsArray[billIndex].cycle,
+        );
+        billingsArray[billIndex].type = currentType.type;
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(
             billingsArray[billIndex].initalBillingDate,
@@ -220,6 +233,7 @@ const BillingFinancials = ({
           .format('x');
         bill = {
           ...billingsArray[billIndex],
+          lastBillingDate: Number(newDate),
         };
         billingsArray[billIndex].lastBillingDate = Number(newDate);
       }
