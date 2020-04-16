@@ -59,7 +59,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                             VALOR DE CUENTA
                           </span>
                           <NumberFormat
-                            value={billing.amount}
+                            value={billing.amount.toFixed(0)}
                             displayType={'text'}
                             className={style.informationAmount}
                             thousandSeparator={true}
@@ -74,11 +74,11 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                             VALOR DE CUENTA CON IVA
                           </span>
                           <NumberFormat
-                            value={
+                            value={(
                               (billing.amount +
                                 billing.amount * (billing.iva / 100)) *
                               Number(billing.paymentNumber)
-                            }
+                            ).toFixed(0)}
                             displayType={'text'}
                             className={style.informationAmount}
                             thousandSeparator={true}
@@ -132,7 +132,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
               <div className={style.Totalbills}>
                 <h4 sclassName={style.textTotal}> Valor Total Sin IVA:</h4>
                 <NumberFormat
-                  value={totalBillsWithouIVA}
+                  value={totalBillsWithouIVA.toFixed(0)}
                   displayType="text"
                   className={style.totalAmount}
                   thousandSeparator
@@ -143,7 +143,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
               <div className={style.Totalbills}>
                 <h4 sclassName={style.textTotal}> Valor Total mas IVA:</h4>
                 <NumberFormat
-                  value={totalBills}
+                  value={totalBills.toFixed(0)}
                   displayType="text"
                   className={style.totalAmount}
                   thousandSeparator
