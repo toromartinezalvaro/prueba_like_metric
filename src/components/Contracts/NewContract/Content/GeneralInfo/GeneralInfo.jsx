@@ -367,6 +367,7 @@ const GeneralInfo = ({
             variant="outlined"
             defaultValue={dataIfEdit && dataIfEdit.contractNumber}
             onChange={onChangeText('contractNumber')}
+            autoComplete="off"
           />
 
           <div className={styles.gridSubContainerRigth}>
