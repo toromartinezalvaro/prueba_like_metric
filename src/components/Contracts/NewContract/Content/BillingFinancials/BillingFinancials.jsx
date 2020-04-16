@@ -114,11 +114,12 @@ const BillingFinancials = ({
         bill = {
           ...billingsArray[billIndex],
           eventId: element.eventId,
-          initalBillingDate: todayDate,
-          lastBillingDate: todayDate,
+          initalBillingDate: billingsArray[billIndex].initalBillingDate,
+          lastBillingDate: billingsArray[billIndex].lastBillingDate,
           eventIsUnique: true,
           eventLabel: element.eventLabel,
           displacement: 0,
+          paymentNumber: billingsArray[billIndex].paymentNumber,
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
         bill = {
@@ -129,6 +130,7 @@ const BillingFinancials = ({
           eventIsUnique: false,
           eventLabel: element.eventLabel,
           displacement: 0,
+          paymentNumber: billingsArray[billIndex].paymentNumber,
         };
         setLastDate(Number(element.value));
         billingsArray[billIndex].eventId = element.eventId;
@@ -143,7 +145,9 @@ const BillingFinancials = ({
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
       if (name === 'displacement') {
-        billingsArray[billIndex].initalBillingDate = Number(lastDate);
+        billingsArray[billIndex].initalBillingDate = Number(
+          billingsArray[billIndex].initalBillingDate,
+        );
         const newDate = moment(
           Number(billingsArray[billIndex].initalBillingDate),
         )
@@ -301,7 +305,8 @@ const BillingFinancials = ({
         return newValue;
       });
       setLastId(1);
-      setBillings(withLocked);
+      const bills = data.length === 0 ? data : withLocked;
+      setBillings(bills);
       setLastDate(data[0] ? data[0].initalBillingDate : null);
       setTimeout(() => {
         watchingContract();
@@ -342,6 +347,7 @@ const BillingFinancials = ({
                 },
               });
             }}
+            decimalSeparator={false}
             thousandSeparator
           />
         );
@@ -356,7 +362,58 @@ const BillingFinancials = ({
         <Card key={billing.id} className={styles.cardForm}>
           <CardContent>
             <div className={styles.gridContainer}>
-              <h3 className={styles.tittlePayment}>Forma de pago N°{i}</h3>
+              <div className={styles.containerPaymentInformation}>
+                <h3 className={styles.tittlePayment}>
+                  Forma de pago N°{i + 1}
+                </h3>
+                <div className={styles.resumeLabel2}>
+                  <h4 sclassName={styles.ivaTitle}>
+                    Valor antes del IVA total:
+                  </h4>
+                  <NumberFormat
+                    className={styles.resumeValue}
+                    value={(
+                      Number(billing.amount) * Number(billing.paymentNumber)
+                    ).toFixed(0)}
+                    displayType="text"
+                    thousandSeparator
+                    decimalSeparator={false}
+                    prefix="$"
+                  />
+                </div>
+                <div className={styles.resumeLabel3}>
+                  <h4 sclassName={styles.ivaTitle}>Valor de IVA total:</h4>
+                  <NumberFormat
+                    className={styles.resumeValue}
+                    value={(
+                      Number(billing.amount) *
+                      (Number(billing.iva) / 100) *
+                      Number(billing.paymentNumber)
+                    ).toFixed(0)}
+                    displayType="text"
+                    decimalSeparator={false}
+                    thousandSeparator
+                    prefix="$"
+                  />
+                </div>
+                <div className={styles.resumeLabel}>
+                  <h4 sclassName={styles.ivaTitle}>
+                    Valor despues de IVA total:
+                  </h4>
+                  <NumberFormat
+                    className={styles.resumeValue}
+                    value={(
+                      (Number(billing.amount) +
+                        Number(billing.amount) * (Number(billing.iva) / 100)) *
+                      Number(billing.paymentNumber)
+                    ).toFixed(0)}
+                    displayType="text"
+                    decimalSeparator={false}
+                    thousandSeparator
+                    prefix="$"
+                  />
+                </div>
+              </div>
               <div className={styles.paymentProjection}>
                 <h4 className={styles.tittleForProjection}>
                   Proyección de pago:
@@ -386,8 +443,8 @@ const BillingFinancials = ({
                 />
               </div>
               <div className={styles.amountSection}>
-                {billing.cycle === 'Pago Único' ? (
-                  <div className={styles.amountSection}>
+                <div className={styles.informationColumns}>
+                  <div className={styles.col1}>
                     <TextField
                       required
                       disabled={billing.isLocked}
@@ -410,10 +467,12 @@ const BillingFinancials = ({
                         ),
                       }}
                     />
+                  </div>
+                  <div className={styles.col2}>
                     <TextField
                       required
                       disabled={billing.isLocked}
-                      className={styles.textFieldIva}
+                      className={styles.textFieldIvaLarge}
                       label="Valor IVA %"
                       margin="normal"
                       variant="outlined"
@@ -426,167 +485,43 @@ const BillingFinancials = ({
                       }}
                       onChange={changeCardValue('iva', billing.id)}
                     />
-                    <div className={styles.amountIva}>
-                      <h4 className={styles.ivaTitle}>
-                        Valor en pesos del IVA
+                  </div>
+                  <div className={styles.col3}>
+                    <div className={styles.amountLabel}>
+                      <h4 sclassName={styles.ivaTitle}>
+                        Valor de IVA {billing.cycle}
                       </h4>
                       <NumberFormat
-                        value={Numbers.toFixed(
-                          billing.amount * (billing.iva / 100),
-                        )}
-                        displayType={'text'}
-                        className={styles.TotalAmountIva}
-                        thousandSeparator={true}
-                        prefix={'$'}
+                        className={styles.amountValue}
+                        value={(
+                          Number(billing.amount) *
+                          (Number(billing.iva) / 100)
+                        ).toFixed(0)}
+                        displayType="text"
+                        decimalSeparator={false}
+                        thousandSeparator
+                        prefix="$"
                       />
                     </div>
-                    <div className={styles.amountIvaTotal}>
+                  </div>
+                  <div className={styles.col4}>
+                    <div className={styles.amountLabel}>
                       <h4 sclassName={styles.ivaTitle}>
-                        Valor de cuenta con IVA:
+                        Valor despues de IVA {billing.cycle}
                       </h4>
                       <NumberFormat
-                        className={styles.amount}
-                        value={Numbers.toFixed(
-                          (Number(billing.amount) +
-                            Number(billing.amount) *
-                              (Number(billing.iva) / 100)) *
-                            Number(billing.paymentNumber),
-                        )}
+                        className={styles.amountValueCol4}
+                        value={(
+                          Number(billing.amount) +
+                          Number(billing.amount) * (Number(billing.iva) / 100)
+                        ).toFixed(0)}
                         displayType="text"
                         thousandSeparator
                         prefix="$"
                       />
                     </div>
                   </div>
-                ) : (
-                  <div className={styles.informationColumns}>
-                    <div className={styles.col1}>
-                      <TextField
-                        required
-                        disabled={billing.isLocked}
-                        className={styles.textField}
-                        label={`Valor antes de IVA ${billing.cycle}`}
-                        margin="normal"
-                        variant="outlined"
-                        placeholder={billing.amount}
-                        value={billing.amount !== 0 ? billing.amount : ''}
-                        onBlur={changeCardValue('amount', billing.id)}
-                        id={2}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter')
-                            document.getElementById('3').focus();
-                        }}
-                        InputProps={{
-                          inputComponent: NumberFormatCustom,
-                          startAdornment: (
-                            <InputAdornment position="start">$</InputAdornment>
-                          ),
-                        }}
-                      />
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor antes del IVA total:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={Numbers.toFixed(
-                            Number(billing.amount) *
-                              Number(billing.paymentNumber),
-                          )}
-                          displayType="text"
-                          thousandSeparator
-                          prefix="$"
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.col2}>
-                      <TextField
-                        required
-                        disabled={billing.isLocked}
-                        className={styles.textFieldIvaLarge}
-                        label="Valor IVA %"
-                        margin="normal"
-                        variant="outlined"
-                        value={billing.iva !== 0 ? billing.iva : ''}
-                        placeholder={billing.iva}
-                        id="3"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter')
-                            document.getElementById('sel4').focus();
-                        }}
-                        onChange={changeCardValue('iva', billing.id)}
-                      />
-                    </div>
-                    <div className={styles.col3}>
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor de IVA {billing.cycle}:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={Numbers.toFixed(
-                            Number(billing.amount) *
-                              (Number(billing.iva) / 100),
-                          )}
-                          displayType="text"
-                          thousandSeparator
-                          prefix="$"
-                        />
-                      </div>
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor de IVA total:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={Numbers.toFixed(
-                            Number(billing.amount) *
-                              (Number(billing.iva) / 100) *
-                              Number(billing.paymentNumber),
-                          )}
-                          displayType="text"
-                          thousandSeparator
-                          prefix="$"
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.col4}>
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor despues de IVA {billing.cycle}:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={Numbers.toFixed(
-                            Number(billing.amount) +
-                              Number(billing.amount) *
-                                (Number(billing.iva) / 100),
-                          )}
-                          displayType="text"
-                          thousandSeparator
-                          prefix="$"
-                        />
-                      </div>
-                      <div className={styles.amountLabel}>
-                        <h4 sclassName={styles.ivaTitle}>
-                          Valor despues de IVA total:
-                        </h4>
-                        <NumberFormat
-                          className={styles.amountValue}
-                          value={Numbers.toFixed(
-                            (Number(billing.amount) +
-                              Number(billing.amount) *
-                                (Number(billing.iva) / 100)) *
-                              Number(billing.paymentNumber),
-                          )}
-                          displayType="text"
-                          thousandSeparator
-                          prefix="$"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
               <h4>Fecha inicial</h4>
               <div className={styles.datesSection}>
@@ -778,22 +713,28 @@ const BillingFinancials = ({
       {displayComponent()}
       <div className={styles.cardForm}>
         <div className={styles.Totalbills}>
-          <h4 sclassName={styles.textTotal}> Valor Total Con IVA:</h4>
-          <NumberFormat
-            value={Number(totalBills)}
-            displayType="text"
-            className={styles.TotalAmount}
-            thousandSeparator
-            prefix="$"
-          />
-          <h4 sclassName={styles.textTotal}> - Valor Total Sin IVA:</h4>
-          <NumberFormat
-            value={Number(totalBillsNoIva)}
-            displayType="text"
-            className={styles.TotalAmount}
-            thousandSeparator
-            prefix="$"
-          />
+          <div className={styles.column1}>
+            <h4 sclassName={styles.textTotal}>Valor antes del IVA total:</h4>
+            <NumberFormat
+              value={Number(totalBillsNoIva).toFixed(0)}
+              displayType="text"
+              className={styles.TotalAmount}
+              decimalSeparator={false}
+              thousandSeparator
+              prefix="$"
+            />
+          </div>
+          <div className={styles.column2}>
+            <h4 sclassName={styles.textTotal}>Valor despues de IVA total:</h4>
+            <NumberFormat
+              value={Number(totalBills).toFixed(0)}
+              displayType="text"
+              className={styles.TotalAmount}
+              decimalSeparator={false}
+              thousandSeparator
+              prefix="$"
+            />
+          </div>
         </div>
       </div>
       <Button

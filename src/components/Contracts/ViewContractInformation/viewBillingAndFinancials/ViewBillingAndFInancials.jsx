@@ -59,10 +59,11 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                             VALOR DE CUENTA
                           </span>
                           <NumberFormat
-                            value={Numbers.toFixed(billing.amount)}
+                            value={billing.amount.toFixed(0)}
                             displayType={'text'}
                             className={style.informationAmount}
                             thousandSeparator={true}
+                            decimalSeparator={false}
                             prefix={'$'}
                           />
                         </span>
@@ -73,15 +74,15 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                             VALOR DE CUENTA CON IVA
                           </span>
                           <NumberFormat
-                            value={
-                              Numbers.toFixed(
-                                billing.amount +
-                                  billing.amount * (billing.iva / 100),
-                              ) * Number(billing.paymentNumber)
-                            }
+                            value={(
+                              (billing.amount +
+                                billing.amount * (billing.iva / 100)) *
+                              Number(billing.paymentNumber)
+                            ).toFixed(0)}
                             displayType={'text'}
                             className={style.informationAmount}
                             thousandSeparator={true}
+                            decimalSeparator={false}
                             prefix={'$'}
                           />
                         </span>
@@ -131,21 +132,23 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
               <div className={style.Totalbills}>
                 <h4 sclassName={style.textTotal}> Valor Total Sin IVA:</h4>
                 <NumberFormat
-                  value={Numbers.toFixed(totalBillsWithouIVA)}
+                  value={totalBillsWithouIVA.toFixed(0)}
                   displayType="text"
                   className={style.totalAmount}
                   thousandSeparator
+                  decimalSeparator={false}
                   prefix="$"
                 />
               </div>
               <div className={style.Totalbills}>
                 <h4 sclassName={style.textTotal}> Valor Total mas IVA:</h4>
                 <NumberFormat
-                  value={Numbers.toFixed(totalBills)}
+                  value={totalBills.toFixed(0)}
                   displayType="text"
                   className={style.totalAmount}
                   thousandSeparator
                   prefix="$"
+                  decimalSeparator={false}
                 />
               </div>
             </div>
