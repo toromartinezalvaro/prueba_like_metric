@@ -346,7 +346,8 @@ const BillingFinancials = ({
     if (dataIfEdit) {
       const data = dataIfEdit.billings;
       const withLocked = data.map((dataValue) => {
-        const newValue = { ...dataValue, isLocked: true };
+        const eventIsUnique = dataValue.eventId === 0;
+        const newValue = { ...dataValue, isLocked: true, eventIsUnique };
         return newValue;
       });
       setLastId(1);
