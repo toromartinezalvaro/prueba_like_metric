@@ -125,7 +125,7 @@ export const Quotation = {
   array: [DashboardRoutes.base + DashboardRoutes.quotations.value],
 };
 
-export const Groups = {
+export const Group = {
   base: '/groups',
 };
 
@@ -140,5 +140,5 @@ export const UserRoutes = {
 };
 
 export const GroupsRoutes = {
-  base: DashboardRoutes.base + Groups.base,
+  base: DashboardRoutes.base + Group.base,
 };
