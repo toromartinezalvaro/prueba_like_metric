@@ -87,7 +87,9 @@ class Contracts extends Component {
         state: '',
         item: '',
       },
-      attachmentData: [],
+      attachmentData: undefined,
+      urlsLoaded: [],
+      urlToSend: undefined,
     };
   }
 
@@ -177,6 +179,9 @@ class Contracts extends Component {
         itemLabel: 'Seleccione un item',
       },
       isEditable: false,
+      attachmentData: undefined,
+      urlsLoaded: [],
+      urlToSend: undefined,
     });
   };
 
@@ -557,9 +562,8 @@ class Contracts extends Component {
   };
 
   sendAttachments = (attachment) => {
-    const attach = [...this.state.attachments, attachment];
     this.setState({
-      attachmentData: attach,
+      attachmentData: attachment,
     });
   };
 
@@ -699,7 +703,7 @@ class Contracts extends Component {
     } else {
       readyToSend = true;
       if (readyToSend) {
-        let data = new FormData();
+        let data = this.state.attachmentData || new FormData();
         if (this.state.contract) {
           data = this.state.contract;
         } else {
@@ -708,6 +712,7 @@ class Contracts extends Component {
             JSON.stringify(this.state.generalInformation),
           );
           data.append('billing', JSON.stringify(this.state.billings));
+          data.append('urlAttach', JSON.stringify(this.state.urlToSend));
         }
 
         this.services
@@ -837,6 +842,7 @@ class Contracts extends Component {
       JSON.stringify(this.state.generalInformation),
     );
     dataEditated.append('billing', JSON.stringify(this.state.billings));
+    dataEditated.append('urlAttach', JSON.stringify(this.state.urlToSend));
     const attach = [...this.state.attachments, dataEditated];
 
     this.services
@@ -859,6 +865,9 @@ class Contracts extends Component {
             },
             isEditable: false,
             contract: null,
+            attachmentData: undefined,
+            urlsLoaded: [],
+            urlToSend: undefined,
           });
         }
       })
@@ -916,6 +925,25 @@ class Contracts extends Component {
     this.setState((prevState) => ({
       errors: { ...prevState.errors, [name]: false },
     }));
+  };
+
+  eraseImg = (path) => {
+    this.services
+      .eraseImage(path)
+      .then(() => {
+        this.props.spawnMessage('Imagen borrada', 'success');
+      })
+      .catch((error) => {
+        this.props.spawnMessage('No se pudo borrar la imagen', 'error');
+      });
+  };
+
+  sendUrl = (url) => {
+    const urls = [...this.state.urlsLoaded, url];
+    this.setState({
+      urlsLoaded: urls,
+      urlToSend: urls,
+    });
   };
 
   render() {
@@ -980,6 +1008,8 @@ class Contracts extends Component {
           businessPartnerOpen={this.state.businessPatnerModal.isOpen}
           categoryopen={this.state.categoryModal.isOpen}
           itemOpen={this.state.itemModal.isOpen}
+          eraseImg={this.eraseImg}
+          sendUrl={this.sendUrl}
         />
         <Dialog
           className={styles.dialogExpand}

@@ -62,6 +62,8 @@ const NewContract = ({
   businessPartnerOpen,
   categoryopen,
   itemOpen,
+  eraseImg,
+  sendUrl,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -143,6 +145,8 @@ const NewContract = ({
         <ExpandAttachment
           sendAttachments={sendAttachments}
           dataIfEdit={dataIfEdit}
+          eraseImg={eraseImg}
+          sendUrl={sendUrl}
         />
         <br />
         {

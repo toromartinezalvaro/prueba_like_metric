@@ -138,4 +138,8 @@ export default class ContractService extends Services {
       idArray,
     });
   }
+
+  eraseImage(path) {
+    return this.delete(ContractServiceDefinitions.toDeleteAttach(path));
+  }
 }
