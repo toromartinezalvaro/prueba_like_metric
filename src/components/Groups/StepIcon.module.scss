@@ -1,0 +1,36 @@
+$circle-size: 50px;
+
+.componentRoot {
+  background-color: #ccc !important;
+  z-index: 1 !important;
+  color: #fff !important;
+  width: $circle-size !important;
+  height: $circle-size !important;
+  display: flex !important;
+  border-radius: 50% !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.componentActive {
+  background-image: linear-gradient(
+    136deg,
+    rgb(242, 113, 33) 0%,
+    rgb(233, 64, 87) 50%,
+    rgb(138, 35, 135) 100%
+  );
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
+}
+
+.componentCompleted {
+  background-image: linear-gradient(
+    136deg,
+    rgb(242, 113, 33) 0%,
+    rgb(233, 64, 87) 50%,
+    rgb(138, 35, 135) 100%
+  );
+}
+
+.itemIcon {
+  width: 30px !important;
+}
