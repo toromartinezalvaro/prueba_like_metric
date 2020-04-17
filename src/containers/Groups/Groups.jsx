@@ -9,6 +9,8 @@ import {
   CardContent,
 } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Group from '../../components/Groups/Groups';
+import Items from '../../components/Groups/Items';
 import StepIcon from '../../components/Groups/StepIcon';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
@@ -30,9 +32,9 @@ class Groups extends Component {
   stepsContent = (step) => {
     switch (step) {
       case 0:
-        return 'TEXTO PRUEBA GRUPO';
+        return <Group />;
       case 1:
-        return 'TEXTO PRUEBA ITEM';
+        return <Items />;
       default:
         return 'NO DISPONIBLE';
     }
@@ -41,11 +43,7 @@ class Groups extends Component {
   render() {
     return (
       <React.Fragment>
-        <Stepper
-          alternativeLabel
-          nonLinear
-          activeStep={this.state.activeStep}
-        >
+        <Stepper alternativeLabel nonLinear activeStep={this.state.activeStep}>
           {this.state.steps.map((label, index) => (
             <Step key={label}>
               <StepLabel
