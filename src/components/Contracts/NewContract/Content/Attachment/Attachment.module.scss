@@ -66,17 +66,27 @@
 }
 
 .attachment {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  column-gap: 5% !important;
-  width: 50vw;
+  display: flex !important;
+  flex-direction: row;
+  width: 80vw;
 }
 
 .CardAttach {
   display: flex !important;
   flex: 1;
   flex-direction: row;
-  margin-top: 5% !important;
+}
+
+.CardAttachUrl {
+  display: grid !important;
+  grid-template-columns: repeat(3, 4em) !important;
+  column-gap: 5em !important;
+}
+
+.attachmentUrl {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 5vw !important;
 }
 
 .inputs {

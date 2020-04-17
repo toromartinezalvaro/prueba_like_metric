@@ -40,6 +40,7 @@ const ContractServiceDefinitions = {
     `${API_PATH}contract/item-group/${towerId}/${data}`,
   contractById: (towerId, id) => `${API_PATH}contract/${towerId}/${id}`,
   toDeleteBill: (towerId) => `${API_PATH}contract/bill/${towerId}`,
+  toDeleteAttach: (path) => `${API_PATH}contract/attach/${path}`,
 };
 
 export default ContractServiceDefinitions;

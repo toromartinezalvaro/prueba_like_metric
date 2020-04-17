@@ -32,40 +32,48 @@ class Attachment extends Component {
   }
 
   uploadImage = (e) => {
-    const imageFormObject = new FormData();
-
-    imageFormObject.append('description', `insta-image-${Date.now()}`);
-    imageFormObject.append('type', 'IMAGE');
-    imageFormObject.append('attachmentPath', e.target.files[0], e.name);
-
-    const objectUrl = URL.createObjectURL(e.target.files[0]);
-    this.setState({ multerImage: objectUrl });
-    const imgObject = e.target.files[0];
-    const dataObject = [...this.state.imgObject, { imgObject }];
-    this.setState({ imgObject: dataObject });
-    const attach = {
-      path: imageFormObject.getAll('attachmentPath'),
-      description: imageFormObject.getAll('description'),
-      type: imageFormObject.getAll('type'),
-    };
-    this.setState({ attach: [...this.state.attach, attach] });
-    this.props.sendAttachments(imageFormObject);
+    if (this.state.imgObject.length >= 1) {
+      this.props.spawnMessage('Solo se puede agregar un archivo', 'error');
+    } else {
+      const imageFormObject = new FormData();
+      imageFormObject.append('description', `insta-image-${Date.now()}`);
+      imageFormObject.append(
+        'attachmentPath',
+        e.target.files[0],
+        e.target.files[0].name,
+      );
+      const attach = {
+        path: e.target.files[0].name,
+        description: e.target.files[0].name,
+        type: 'IMAGE',
+      };
+      this.setState({
+        attach: [...this.state.attach, attach],
+        imgObject: [...this.state.imgObject, attach],
+      });
+      this.props.sendAttachments(imageFormObject);
+    }
   };
 
   imageRemove = (index) => () => {
+    const eraseThis = this.state.imgObject[index];
     this.setState({
       imgObject: this.state.imgObject.filter((e, i) => {
         return i !== index;
       }),
     });
+    this.props.eraseImg(eraseThis.path);
   };
 
   urlRemove = (index) => () => {
+    let tempo = this.state.imgObject[index];
+    tempo = { ...tempo, erased: true };
     this.setState({
-      urlObject: this.state.urlObject.filter((e, i) => {
+      imgObject: this.state.imgObject.filter((e, i) => {
         return i !== index;
       }),
     });
+    this.props.sendUrl(tempo);
   };
 
   cleanURLInput = () => {
@@ -81,16 +89,16 @@ class Attachment extends Component {
 
   printUrl = () => {
     if (this.state.urlText.text) {
+      const tempo = {
+        path: this.state.urlText.text,
+        description: this.state.urlText.text,
+        type: 'URL',
+      };
       this.setState({
         urlObject: [...this.state.urlObject, this.state.urlText.text],
+        imgObject: [...this.state.imgObject, tempo],
       });
-      const tempo = {
-        multerImage: this.state.multerImage,
-        imgObject: this.state.imgObject,
-        urlText: this.state.urlText,
-        urlObject: this.state.urlText.text,
-      };
-      this.props.sendAttachments(tempo);
+      this.props.sendUrl(tempo);
       this.cleanURLInput();
     } else {
       this.props.spawnMessage('El campo URL no puede estar vacío', 'error');
@@ -98,54 +106,51 @@ class Attachment extends Component {
   };
 
   displayComponents = () => {
-    let attachs = 'Archivo';
     return this.state.imgObject.map((image, i) => {
-      if (this.props.dataIfEdit) {
-        attachs = image.description;
-      }
-      if (image.imgObject) {
-        attachs = image.imgObject.name;
-      }
       return (
-        <Card className={styles.CardAttach} key={i}>
-          <CardContent>
-            <div className={styles.attachment}>
-              <p>{attachs || ''}</p>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={this.imageRemove(i)}
-                className={styles.buttons}
-              >
-                X
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      );
-    });
-  };
-
-  displayUrl = () => {
-    return this.state.urlObject.map((url, i) => {
-      return (
-        <Card className={styles.CardAttach} key={i}>
-          <CardContent>
-            <div className={styles.attachment}>
-              <div className={styles.URLContainer}>
-                <a href={url}>{url}</a>
+        image.type === 'IMAGE' && (
+          <Card className={styles.CardAttach} key={i}>
+            <CardContent>
+              <div className={styles.attachment}>
+                <p>{image.description}</p>
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={this.urlRemove(i)}
+                  onClick={this.imageRemove(i)}
                   className={styles.buttons}
                 >
                   X
                 </Button>
               </div>
+            </CardContent>
+          </Card>
+        )
+      );
+    });
+  };
+
+  displayUrl = () => {
+    return this.state.imgObject.map((url, i) => {
+      return (
+        url.type === 'URL' && (
+          <Card key={i}>
+            <div className={styles.CardAttachUrl}>
+              <CardContent>
+                <div className={styles.attachmentUrl}>
+                  <a href={url.path}>{url.path}</a>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={this.urlRemove(i)}
+                    className={styles.buttons}
+                  >
+                    X
+                  </Button>
+                </div>
+              </CardContent>
             </div>
-          </CardContent>
-        </Card>
+          </Card>
+        )
       );
     });
   };
