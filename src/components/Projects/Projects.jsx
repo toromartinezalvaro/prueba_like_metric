@@ -65,6 +65,7 @@ const projectItems = (props) => {
       <CardHeader>
         <p>Proyectos</p>
         <Button onClick={props.createProject}> Crear Proyecto</Button>
+        <Button onClick={props.redirectToGroups}> Grupos / Items</Button>
       </CardHeader>
       <CardBody>
         <div className={styles.Projects}>{items(props.projects)}</div>

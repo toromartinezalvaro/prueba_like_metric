@@ -4,7 +4,7 @@ import CompanyServices from '../../services/companies';
 import ProjectItems from '../../components/Projects/Projects';
 import Modal from '../../components/UI/Modal/Modal';
 import Input from '../../components/UI/Input/Input';
-import { DashboardRoutes } from '../../routes/local/routes';
+import { DashboardRoutes, GroupsRoutes } from '../../routes/local/routes';
 import LoadableContainer from '../../components/UI/Loader';
 import CompanyModal from '../../components/Projects/company/CreateCompanyModal';
 import Agent from '../../config/config';
@@ -313,6 +313,12 @@ export default class Projects extends Component {
     });
   };
 
+  redirectToGroups = () => {
+    this.props.history.push({
+      pathname: GroupsRoutes.base,
+    });
+  };
+
   render() {
     const { projectIsMissingCompany, projects, companies } = this.state;
 
@@ -343,6 +349,7 @@ export default class Projects extends Component {
             DashboardRoutesValue={DashboardRoutes.towers.value}
             openCtrlProject={this.openCtrlProjectHandler}
             url={this.props.match.url}
+            redirectToGroups={this.redirectToGroups}
           />
         )}
         {(!this.state.modalIsHidden || this.state.currentEditingProject) &&
