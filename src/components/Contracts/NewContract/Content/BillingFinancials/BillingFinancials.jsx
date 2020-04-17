@@ -43,6 +43,7 @@ const BillingFinancials = ({
   watchingContract,
   sendToDelete,
   spawnMessage,
+  displayOnHeader,
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
@@ -789,6 +790,10 @@ const BillingFinancials = ({
           </div>
         </div>
       </div>
+      {displayOnHeader(
+        Number(totalBillsNoIva).toFixed(0),
+        Number(totalBills).toFixed(0),
+      )}
       <Button
         variant="contained"
         color="primary"
