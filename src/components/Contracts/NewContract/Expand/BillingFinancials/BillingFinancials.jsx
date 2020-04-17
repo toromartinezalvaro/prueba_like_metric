@@ -4,12 +4,13 @@
  * Copyright (c) 2019 Instabuild
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
+import NumberFormat from 'react-number-format';
 import BillingFinancials from '../../Content/BillingFinancials/BillingFinancials';
 import styles from './BillingFinancials.module.scss';
 
@@ -22,6 +23,12 @@ const ExpandBillingFinancials = ({
   watchingContract,
   sendToDelete,
 }) => {
+  const [AmountWithoutIva, setAmountWithoutIva] = useState();
+  const [AmountWithIva, setAmountWithIva] = useState();
+  const displayOnHeader = (amountWithoutIva, amountWithIva) => {
+    setAmountWithoutIva(amountWithoutIva);
+    setAmountWithIva(amountWithIva);
+  };
   return (
     <ExpansionPanel className={styles.expansionPanel} mt={4} expanded={true}>
       <ExpansionPanelSummary aria-controls="generalInformationContent">
@@ -31,7 +38,35 @@ const ExpandBillingFinancials = ({
           >
             <Icon className={`${styles.icon} fas fa-tag`} />
           </div>
-          <div className={styles.titleExpand}>Facturación y Finanzas</div>
+          <div className={styles.titleExpand}>
+            <div className={styles.col1}>Facturación y Finanzas</div>
+            <div className={styles.col2}>
+              <div className={styles.displayValue}>
+                Valor antes del IVA total:
+                <NumberFormat
+                  value={Number(AmountWithoutIva).toFixed(0)}
+                  displayType="text"
+                  className={styles.totalAmount}
+                  decimalSeparator={false}
+                  thousandSeparator
+                  prefix="$"
+                />
+              </div>
+            </div>
+            <div className={styles.col3}>
+              <div className={styles.displayValue}>
+                Valor despues de IVA total:
+                <NumberFormat
+                  value={Number(AmountWithIva).toFixed(0)}
+                  displayType="text"
+                  className={styles.totalAmount}
+                  decimalSeparator={false}
+                  thousandSeparator
+                  prefix="$"
+                />
+              </div>
+            </div>
+          </div>
         </Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
@@ -44,6 +79,7 @@ const ExpandBillingFinancials = ({
             dataIfEdit={dataIfEdit}
             watchingContract={watchingContract}
             sendToDelete={sendToDelete}
+            displayOnHeader={displayOnHeader}
           />
         </Typography>
       </ExpansionPanelDetails>
