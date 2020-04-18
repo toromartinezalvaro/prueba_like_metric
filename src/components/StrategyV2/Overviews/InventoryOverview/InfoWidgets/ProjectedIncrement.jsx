@@ -6,6 +6,8 @@ import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import NumberFormat from 'react-number-format';
 import { useSnackbar } from 'notistack';
+import Button from '@material-ui/core/Button';
+import SalesWizard, { actions } from './SalesWizard';
 import Widget, { XS, SM } from '../../../Shared/Widget';
 import Input, { CURRENCY } from '../../../Shared/Input';
 import { fetchDataSuccess } from '../../../../../containers/StrategyV2/actions';
@@ -37,6 +39,7 @@ const ProjectedIncrement = ({
   onFetchedData,
   startApiLoading,
   stopApiLoading,
+  openSalesWizardDialog,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -75,39 +78,52 @@ const ProjectedIncrement = ({
   };
 
   return (
-    <Widget title="Incremento proyectado " size={mini ? XS : SM}>
-      {field ? (
-        <Formik
-          initialValues={{
-            projectedIncrement,
-          }}
-          innerRef={formRef}
-          onSubmit={submitHandler}
-          validationSchema={validationSchema}
-        >
-          {() => (
-            <Form>
-              <Field
-                name="projectedIncrement"
-                label="Incremento"
-                placeholder="1000,3"
-                mask={CURRENCY}
-                component={Input}
-                onBlur={blurHandler}
-                disabled={!isReset}
-              />
-            </Form>
-          )}
-        </Formik>
-      ) : (
-        <NumberFormat
-          value={Numbers.toFixed(projectedIncrement)}
-          displayType="text"
-          prefix="$"
-          thousandSeparator
-        />
-      )}
-    </Widget>
+    <>
+      <Widget title="Incremento proyectado " size={mini ? XS : SM}>
+        {field ? (
+          <>
+            <Formik
+              enableReinitialize
+              initialValues={{
+                projectedIncrement,
+              }}
+              innerRef={formRef}
+              onSubmit={submitHandler}
+              validationSchema={validationSchema}
+            >
+              {() => (
+                <Form>
+                  <Field
+                    name="projectedIncrement"
+                    label="Incremento"
+                    placeholder="1000,3"
+                    mask={CURRENCY}
+                    component={Input}
+                    onBlur={blurHandler}
+                    disabled={!isReset}
+                  />
+                </Form>
+              )}
+            </Formik>
+            <Button
+              size="small"
+              color="primary"
+              onClick={openSalesWizardDialog}
+            >
+              Abrir asistente
+            </Button>
+          </>
+        ) : (
+          <NumberFormat
+            value={Numbers.toFixed(projectedIncrement)}
+            displayType="text"
+            prefix="$"
+            thousandSeparator
+          />
+        )}
+      </Widget>
+      <SalesWizard />
+    </>
   );
 };
 
@@ -122,6 +138,7 @@ ProjectedIncrement.propTypes = {
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
+  openSalesWizardDialog: PropTypes.func.isRequired,
 };
 
 ProjectedIncrement.defaultProps = {
@@ -146,6 +163,7 @@ const mapDispatchToProps = {
   onFetchedData: fetchDataSuccess,
   startApiLoading: startLoading,
   stopApiLoading: stopLoading,
+  openSalesWizardDialog: actions.openSalesWizardDialog,
 };
 
 export default connect(

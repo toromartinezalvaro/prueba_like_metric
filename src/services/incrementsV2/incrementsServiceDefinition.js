@@ -14,6 +14,9 @@ const IncrementsServiceDefinition = {
   getIncrementsAndStrategy: (towerId) => {
     return `${API_PATH}increments/${towerId}`;
   },
+  getSuggestedIncrement: (groupId, ear, frequency) => {
+    return `${API_PATH}increments/groups/${groupId}/ear/${ear}/frequencies/${frequency}`;
+  },
 };
 
 export default IncrementsServiceDefinition;
