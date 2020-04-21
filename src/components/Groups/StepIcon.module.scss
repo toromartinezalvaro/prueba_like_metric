@@ -1,3 +1,4 @@
+@import '../../assets/styles/variables.scss';
 $circle-size: 50px;
 
 .componentRoot {
@@ -13,22 +14,12 @@ $circle-size: 50px;
 }
 
 .componentActive {
-  background-image: linear-gradient(
-    136deg,
-    rgb(242, 113, 33) 0%,
-    rgb(233, 64, 87) 50%,
-    rgb(138, 35, 135) 100%
-  );
+  background-color: $main-color !important;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
 }
 
 .componentCompleted {
-  background-image: linear-gradient(
-    136deg,
-    rgb(242, 113, 33) 0%,
-    rgb(233, 64, 87) 50%,
-    rgb(138, 35, 135) 100%
-  );
+  background-color: $main-color !important;
 }
 
 .itemIcon {
