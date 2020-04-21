@@ -59,7 +59,7 @@ export const SalesWizard = ({
     try {
       const response = await services.increments2.getSuggestedIncrement(
         groupId,
-        ear,
+        ear / 100,
         frequency,
       );
       onSuggestedIncrementChange(response.data);
