@@ -57,7 +57,7 @@ const Strategies = ({
       startApiLoading();
       const lineSelected = strategies.find((s) => s.id === Number(id));
       const arrayIncrementList = strategies.slice(1).map((s) => s.percentage);
-      await services.strategy.putStrategy({
+      await services.increment2.putStrategy({
         id: groupId,
         strategy: Number(id),
         incrementList: lineSelected.percentage,
@@ -80,7 +80,7 @@ const Strategies = ({
   const resetStrategyHandler = async () => {
     try {
       startApiLoading();
-      await services.increment.resetStrategy(groupId);
+      await services.increment2.resetStrategy(groupId);
       const response = await services.increment2.getIncrementsAndStrategy(
         towerId,
       );

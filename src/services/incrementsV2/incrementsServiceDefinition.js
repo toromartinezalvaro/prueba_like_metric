@@ -2,7 +2,7 @@
  * Created Date: Tuesday March 31st 2020
  * Author: Caraham
  * -----
- * Last Modified: Tuesday, 31st March 2020 2:20:32 pm
+ * Last Modified: Tuesday, 21st April 2020 1:46:47 pm
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2020 Instabuild
@@ -16,6 +16,10 @@ const IncrementsServiceDefinition = {
   },
   getSuggestedIncrement: (groupId, ear, frequency) => {
     return `${API_PATH}increments/groups/${groupId}/ear/${ear}/frequencies/${frequency}`;
+  },
+  putStrategy: `${API_PATH}increments`,
+  resetStrategy: (groupId) => {
+    return `${API_PATH}increments/reset-strategy/${groupId}`;
   },
 };
 
