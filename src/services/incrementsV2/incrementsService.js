@@ -17,4 +17,14 @@ export default class IncrementsServices extends Services {
       IncrementsServiceDefinition.getIncrementsAndStrategy(towerId),
     );
   }
+
+  getSuggestedIncrement(groupId, ear, frequency) {
+    return this.get(
+      IncrementsServiceDefinition.getSuggestedIncrement(
+        groupId,
+        ear,
+        frequency,
+      ),
+    );
+  }
 }
