@@ -44,8 +44,6 @@ const detailWidget = [
     ]}
     key={uuidV4()}
   />,
-  <ProjectedIncrement field key={uuidV4()} />,
-  <EARateWidget key={uuidV4()} />,
 ];
 
 const mainPriceWidgets = [

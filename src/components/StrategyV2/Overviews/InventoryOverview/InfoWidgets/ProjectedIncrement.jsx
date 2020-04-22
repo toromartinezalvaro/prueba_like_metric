@@ -98,6 +98,7 @@ const ProjectedIncrement = ({
                     component={Input}
                     onBlur={blurHandler}
                     disabled={!isReset}
+                    fullWidth
                   />
                 </Form>
               )}
