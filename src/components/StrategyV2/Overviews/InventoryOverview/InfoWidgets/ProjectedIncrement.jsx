@@ -20,6 +20,7 @@ import { startLoading, stopLoading } from '../../../Loader/actions';
 const validationSchema = yup.object().shape({
   projectedIncrement: yup
     .number('El incremento es un dato numerico')
+    .min(0, "El incremento no puede ser negativo")
     .required('Es necesario ingresar un incremento'),
 });
 
