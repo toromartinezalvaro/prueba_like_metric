@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+  Grid,
+  Table,
+  TableHeaderRow,
+  TableSelection,
+} from '@devexpress/dx-react-grid-material-ui';
+import { SelectionState, IntegratedSelection } from '@devexpress/dx-react-grid';
 import { useParams } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -38,14 +45,26 @@ const Strategies = ({
   onFetchedData,
   startApiLoading,
   stopApiLoading,
+  rows,
+  indexSelected,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
+
+  const [columns] = useState([
+    { name: 'strategy', title: '-' },
+    { name: 'AER', title: 'Tasa e.a' },
+    { name: 'frequency', title: 'Frecuencia Inc' },
+    { name: 'frequencyRate', title: 'Tasa Fr' },
+  ]);
 
   const [
     selectStrategyConfirmationDialogOpen,
     setSelectStrategyConfirmationDialogOpen,
   ] = useState(false);
+  const [selection, setSelection] = useState(
+    indexSelected && !isReset ? [indexSelected] : [],
+  );
   const [selectedStrategy, setSelectedStrategy] = useState(null);
   const [
     resetStrategyConfirmationDialogOpen,
@@ -120,30 +139,17 @@ const Strategies = ({
                   setSelectStrategyConfirmationDialogOpen(true);
                 }}
               >
-                <FormControlLabel
-                  value={1}
-                  disabled={!(strategies && strategies.length >= 2) || !isReset}
-                  control={<Radio />}
-                  label="Continua (1)"
-                />
-                <FormControlLabel
-                  value={3}
-                  disabled={!(strategies && strategies.length >= 3) || !isReset}
-                  control={<Radio />}
-                  label="Semi-continua (3)"
-                />
-                <FormControlLabel
-                  value={9}
-                  disabled={!(strategies && strategies.length >= 4) || !isReset}
-                  control={<Radio />}
-                  label="Semi-escalonada (9)"
-                />
-                <FormControlLabel
-                  value={18}
-                  disabled={!(strategies && strategies.length >= 5) || !isReset}
-                  control={<Radio />}
-                  label="Escalonada (18)"
-                />
+                <Grid rows={rows} columns={columns}>
+                  <SelectionState
+                    selection={selection}
+                    onSelectionChange={(s) => {
+                      setSelection(s[0] !== undefined ? [s[0]] : []);
+                    }}
+                  />
+                  <Table />
+                  <TableHeaderRow />
+                  <TableSelection />
+                </Grid>
               </RadioGroup>
             </FormControl>
           </Box>
@@ -197,6 +203,23 @@ Strategies.propTypes = {
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
+  rows: PropTypes.array,
+  indexSelected: PropTypes.number,
+};
+
+const mapStrategyForSelector = (strategy) => {
+  if (!strategy.id || !strategy.EARate) return [];
+  return {
+    strategy: strategy.label[0],
+    AER: `%${Number(strategy.EARate * 100).toFixed(2)}`,
+    frequency: strategy.id,
+    frequencyRate: `%${Number(strategy.percentage * 100).toFixed(2)}`,
+  };
+};
+
+const currentSelected = (strategies, frequency) => {
+  if (!frequency || !strategies) return null;
+  return strategies.findIndex((strategy) => strategy.frequency === frequency);
 };
 
 const mapStateToProps = (state) => {
@@ -205,12 +228,17 @@ const mapStateToProps = (state) => {
   const { strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
+  const strategies = group ? group.strategies : null;
+  const rows = strategies.flatMap(mapStrategyForSelector);
+  const indexSelected = currentSelected(rows, strategy);
 
   return {
     strategy,
     isReset,
-    strategies: group ? group.strategies : null,
+    strategies,
     groupId: group ? group.id : null,
+    rows,
+    indexSelected,
   };
 };
 
