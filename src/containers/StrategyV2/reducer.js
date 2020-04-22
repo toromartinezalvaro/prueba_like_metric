@@ -12,6 +12,7 @@ import {
   CHANGE_SUGGESTED_EA,
   CHANGE_SUMMARY,
   CHANGE_MARKET__LINE,
+  FETCH_DATA__EMPTY,
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
@@ -20,6 +21,7 @@ import { reducer as SalesWizardReducer } from '../../components/StrategyV2/Overv
 
 export const initialState = {
   loading: false,
+  isEmpty: false,
   selectedGroup: 1,
   strategyLines: [],
   groups: {
@@ -243,6 +245,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+      };
+    }
+    case FETCH_DATA__EMPTY: {
+      return {
+        ...state,
+        isEmpty: true,
+        loading: false,
       };
     }
     case FETCH_DATA__INIT: {

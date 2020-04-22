@@ -10,6 +10,7 @@ export const FETCH_DATA__SUCCESS = 'FETCH_DATA__SUCCESS';
 export const FETCH_DATA__INIT = 'FETCH_DATA__INIT';
 export const CHANGE_SUGGESTED_EA = 'CHANGE_SUGGESTED_EA';
 export const CHANGE_SUMMARY = 'CHANGE_SUMMARY';
+export const FETCH_DATA__EMPTY = 'FETCH_DATA__EMPTY';
 
 export const changeStrategy = (strategy) => ({
   type: CHANGE_STRATEGY,
@@ -66,4 +67,8 @@ export const fetchDataInit = (payload) => ({
 
 export const fetchDataStart = () => ({
   type: FETCH_DATA__START,
+});
+
+export const fetchDataEmpty = () => ({
+  type: FETCH_DATA__EMPTY,
 });
