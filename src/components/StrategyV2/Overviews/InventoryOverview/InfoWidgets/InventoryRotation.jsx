@@ -6,18 +6,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Widget, { XS, SM } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
 
-const InventoryRotation = ({
-  totalUnits,
-  salesUnits,
-  saleSpeed,
-  initialFee,
-  mini,
-}) => {
-  const units = totalUnits - salesUnits;
+const InventoryRotation = ({ rotationMonths, initialFee, mini }) => {
   return (
     <Widget title="Rotacion de intentario" size={mini ? XS : SM}>
-      {Numbers.toFixed(units / saleSpeed)}
-      {units / saleSpeed > initialFee && (
+      {Numbers.toFixed(rotationMonths)}
+      {rotationMonths > initialFee && (
         <Tooltip title="La rotacion de inventario supera el plazo de la cuota incial">
           <WarningRoundedIcon fontSize="small" color="secondary" />
         </Tooltip>
@@ -27,9 +20,8 @@ const InventoryRotation = ({
 };
 
 InventoryRotation.propTypes = {
-  totalUnits: PropTypes.number.isRequired,
-  salesUnits: PropTypes.number.isRequired,
-  saleSpeed: PropTypes.number.isRequired,
+  rotationMonths: PropTypes.number.isRequired,
+  initialFee: PropTypes.number.isRequired,
   mini: PropTypes.bool,
 };
 
@@ -38,13 +30,11 @@ InventoryRotation.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { total, sales, inventory, initialFee } = state.strategy.root.groups[
+  const { inventory, initialFee } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
-    totalUnits: total.units,
-    salesUnits: sales.units,
-    saleSpeed: inventory.saleSpeed,
+    rotationMonths: inventory.rotationMonths,
     initialFee,
   };
 };

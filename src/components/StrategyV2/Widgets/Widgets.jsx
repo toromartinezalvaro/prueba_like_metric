@@ -8,7 +8,7 @@ import TotalSalesWidget from './TotalSalesWidget';
 import ProjectedSalesWidget from './ProjectedSalesWidget';
 import Numbers from '../../../helpers/numbers';
 
-const Widgets = ({ totalUnits, salesUnits, salesL0, salesIncrement }) => {
+const Widgets = ({ totalUnits, salesUnits, inventoryUnits, sales }) => {
   return (
     <Grid container justify="space-between" alignItems="stretch" spacing={3}>
       <Grid item xs={12} lg={2}>
@@ -18,7 +18,7 @@ const Widgets = ({ totalUnits, salesUnits, salesL0, salesIncrement }) => {
         <Widget title="Unidades Vendidas">{salesUnits}</Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Disponibles">{totalUnits - salesUnits}</Widget>
+        <Widget title="Unidades Disponibles">{inventoryUnits}</Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
         <TotalSalesWidget />
@@ -26,7 +26,7 @@ const Widgets = ({ totalUnits, salesUnits, salesL0, salesIncrement }) => {
       <Grid item xs={12} lg={2}>
         <Widget title="Ventas realizadas">
           <NumberFormat
-            value={Numbers.toFixed(salesL0 + salesIncrement)}
+            value={Numbers.toFixed(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -43,19 +43,19 @@ const Widgets = ({ totalUnits, salesUnits, salesL0, salesIncrement }) => {
 Widgets.propTypes = {
   totalUnits: PropTypes.number.isRequired,
   salesUnits: PropTypes.number.isRequired,
-  salesL0: PropTypes.number.isRequired,
-  salesIncrement: PropTypes.number.isRequired,
+  inventoryUnits: PropTypes.number.isRequired,
+  sales: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { total, sales } = state.strategy.root.groups[
+  const { inventory, total, sales } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
     totalUnits: total.units,
     salesUnits: sales.units,
-    salesL0: sales.l0,
-    salesIncrement: sales.increment,
+    inventoryUnits: inventory.units,
+    sales: sales.sales,
   };
 };
 
