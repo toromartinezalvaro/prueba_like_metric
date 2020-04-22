@@ -30,9 +30,7 @@ const services = {
 
 const ProjectedIncrement = ({
   groupId,
-  totalIncrement,
-  salesIncrement,
-  appliedIncrement,
+  projectedIncrementP,
   mini,
   field,
   isReset,
@@ -46,8 +44,8 @@ const ProjectedIncrement = ({
   const formRef = useRef();
 
   const projectedIncrement = useMemo(() => {
-    return Numbers.toFixed(totalIncrement - salesIncrement - appliedIncrement);
-  }, [totalIncrement, salesIncrement, appliedIncrement]);
+    return Numbers.toFixed(projectedIncrementP);
+  }, [projectedIncrementP]);
 
   const blurHandler = () => {
     if (formRef.current) {
@@ -58,8 +56,7 @@ const ProjectedIncrement = ({
   const submitHandler = async (values) => {
     try {
       startApiLoading();
-      const increment =
-        Number(values.projectedIncrement) + appliedIncrement + salesIncrement;
+      const increment = Number(values.projectedIncrement);
       await services.increment.putIncrement(towerId, {
         groupId,
         increment: parseFloat(increment),
@@ -129,9 +126,7 @@ const ProjectedIncrement = ({
 
 ProjectedIncrement.propTypes = {
   groupId: PropTypes.number.isRequired,
-  totalIncrement: PropTypes.number.isRequired,
-  salesIncrement: PropTypes.number.isRequired,
-  appliedIncrement: PropTypes.number.isRequired,
+  projectedIncrement: PropTypes.number.isRequired,
   mini: PropTypes.bool,
   field: PropTypes.bool,
   isReset: PropTypes.bool.isRequired,
@@ -147,14 +142,12 @@ ProjectedIncrement.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { total, sales, inventory, id, isReset } = state.strategy.root.groups[
+  const { inventory, id, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
     groupId: id,
-    totalIncrement: total.increment,
-    salesIncrement: sales.increment,
-    appliedIncrement: inventory.appliedIncrement,
+    projectedIncrementP: inventory.projectedIncrement,
     isReset,
   };
 };

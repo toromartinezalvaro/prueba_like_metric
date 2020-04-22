@@ -7,7 +7,11 @@ import Widget, { SM, MD } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 import Numbers from '../../../../helpers/numbers';
 
-const TotalSalesWidget = ({ l0, increment, showPricesWithoutIncrement }) => {
+const TotalSalesWidget = ({
+  salesWhitoutIncrements,
+  sales,
+  showPricesWithoutIncrement,
+}) => {
   return (
     <WidgetGroup
       showGroup={showPricesWithoutIncrement}
@@ -19,7 +23,7 @@ const TotalSalesWidget = ({ l0, increment, showPricesWithoutIncrement }) => {
           size={showPricesWithoutIncrement ? SM : MD}
         >
           <NumberFormat
-            value={Numbers.toFixed(l0 + increment)}
+            value={Numbers.toFixed(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -32,7 +36,7 @@ const TotalSalesWidget = ({ l0, increment, showPricesWithoutIncrement }) => {
           size={SM}
         >
           <NumberFormat
-            value={Numbers.toFixed(l0)}
+            value={Numbers.toFixed(salesWhitoutIncrements)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -44,16 +48,18 @@ const TotalSalesWidget = ({ l0, increment, showPricesWithoutIncrement }) => {
 };
 
 TotalSalesWidget.propTypes = {
-  l0: PropTypes.number.isRequired,
-  increment: PropTypes.number.isRequired,
+  salesWhitoutIncrements: PropTypes.number.isRequired,
+  sales: PropTypes.number.isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const group = state.strategy.root.groups[state.strategy.root.selectedGroup];
+  const { total } = state.strategy.root.groups[
+    state.strategy.root.selectedGroup
+  ];
   return {
-    l0: group.total.l0,
-    increment: group.total.increment,
+    salesWhitoutIncrements: total.salesWhitoutIncrements,
+    sales: total.sales,
     showPricesWithoutIncrement:
       state.strategy.settings.showPricesWithoutIncrement,
   };

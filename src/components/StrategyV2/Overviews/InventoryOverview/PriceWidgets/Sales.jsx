@@ -5,16 +5,8 @@ import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
 
-const Sales = ({
-  l0,
-  totalIncrement,
-  salesIncrement,
-  appliedIncrement,
-  projected,
-}) => {
-  const sales = projected
-    ? l0 + totalIncrement - salesIncrement
-    : l0 + appliedIncrement;
+const Sales = ({ projected, salesProjected, salesToToday }) => {
+  const sales = projected ? salesProjected : salesToToday;
   return (
     <Widget key="DetailInv-IncrementRate" title="Ventas" size={SM}>
       <NumberFormat
@@ -28,10 +20,8 @@ const Sales = ({
 };
 
 Sales.propTypes = {
-  l0: PropTypes.number.isRequired,
-  totalIncrement: PropTypes.number.isRequired,
-  salesIncrement: PropTypes.number.isRequired,
-  appliedIncrement: PropTypes.number.isRequired,
+  salesProjected: PropTypes.number.isRequired,
+  salesToToday: PropTypes.number.isRequired,
   projected: PropTypes.bool,
 };
 
@@ -40,14 +30,12 @@ Sales.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { total, sales, inventory } = state.strategy.root.groups[
+  const { inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
-    l0: inventory.l0,
-    totalIncrement: total.increment,
-    salesIncrement: sales.increment,
-    appliedIncrement: inventory.appliedIncrement,
+    salesProjected: inventory.salesProjected,
+    salesToToday: inventory.salesToToday,
   };
 };
 

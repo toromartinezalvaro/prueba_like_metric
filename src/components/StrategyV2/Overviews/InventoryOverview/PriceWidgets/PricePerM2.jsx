@@ -6,24 +6,17 @@ import Widget, { SM } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
 
 const PricePerM2 = ({
-  l0,
-  totalUnits,
-  totalIncrement,
-  salesUnits,
-  salesIncrement,
-  averageArea,
-  appliedIncrement,
   projected,
+  baseValuePerM2Projected,
+  baseValuePerM2ToToday,
 }) => {
-  const sales = projected
-    ? l0 + totalIncrement - salesIncrement
-    : l0 + appliedIncrement;
-  const units = totalUnits - salesUnits;
-  const averagePrice = sales / units;
+  const pricePerM2 = projected
+    ? baseValuePerM2Projected
+    : baseValuePerM2ToToday;
   return (
     <Widget key="DetailInv-M2Price" title="Valor m²" size={SM}>
       <NumberFormat
-        value={Numbers.toFixed(averagePrice / averageArea)}
+        value={Numbers.toFixed(pricePerM2)}
         displayType="text"
         prefix="$"
         thousandSeparator
@@ -33,28 +26,18 @@ const PricePerM2 = ({
 };
 
 PricePerM2.propTypes = {
-  l0: PropTypes.number.isRequired,
-  totalUnits: PropTypes.number.isRequired,
-  totalIncrement: PropTypes.number.isRequired,
-  salesUnits: PropTypes.number.isRequired,
-  salesIncrement: PropTypes.number.isRequired,
-  averageArea: PropTypes.number.isRequired,
-  appliedIncrement: PropTypes.number.isRequired,
   projected: PropTypes.bool.isRequired,
+  baseValuePerM2Projected: PropTypes.number.isRequired,
+  baseValuePerM2ToToday: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { total, sales, inventory } = state.strategy.root.groups[
+  const { inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
-    l0: inventory.l0,
-    totalUnits: total.units,
-    totalIncrement: total.increment,
-    salesUnits: sales.units,
-    salesIncrement: sales.increment,
-    averageArea: inventory.averageArea,
-    appliedIncrement: inventory.appliedIncrement,
+    baseValuePerM2Projected: inventory.baseValuePerM2Projected,
+    baseValuePerM2ToToday: inventory.baseValuePerM2ToToday,
   };
 };
 
