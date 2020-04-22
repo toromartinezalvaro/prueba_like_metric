@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  Grid,
-  Table,
-  TableHeaderRow,
-  TableSelection,
-} from '@devexpress/dx-react-grid-material-ui';
-import { SelectionState, IntegratedSelection } from '@devexpress/dx-react-grid';
 import { useParams } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Radio from '@material-ui/core/Radio';
+import TableContainer from '@material-ui/core/TableContainer';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
 import { useSnackbar } from 'notistack';
 import {
@@ -29,6 +26,7 @@ import IncrementServices from '../../../../../../services/increments/IncrementsS
 import Increment2Services from '../../../../../../services/incrementsV2/incrementsService';
 import ConfirmDialog from './ConfirmDialog';
 import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
+import Styles from './Strategies.module.scss';
 
 const services = {
   strategy: new StrategyServices(),
@@ -46,25 +44,14 @@ const Strategies = ({
   startApiLoading,
   stopApiLoading,
   rows,
-  indexSelected,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
-
-  const [columns] = useState([
-    { name: 'strategy', title: '-' },
-    { name: 'AER', title: 'Tasa e.a' },
-    { name: 'frequency', title: 'Frecuencia Inc' },
-    { name: 'frequencyRate', title: 'Tasa Fr' },
-  ]);
 
   const [
     selectStrategyConfirmationDialogOpen,
     setSelectStrategyConfirmationDialogOpen,
   ] = useState(false);
-  const [selection, setSelection] = useState(
-    indexSelected && !isReset ? [indexSelected] : [],
-  );
   const [selectedStrategy, setSelectedStrategy] = useState(null);
   const [
     resetStrategyConfirmationDialogOpen,
@@ -122,37 +109,48 @@ const Strategies = ({
     <>
       <Paper>
         <Box p={3}>
-          <Box mb={2}>
-            <Typography variant="h5">Estrategias</Typography>
-          </Box>
-          <Box mb={2}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">
-                Seleccione una estrategia (Frecuencia de incremento):
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-label="estrategia"
-                value={isReset ? null : strategy}
-                onChange={(event) => {
-                  setSelectedStrategy(event.target.value);
-                  setSelectStrategyConfirmationDialogOpen(true);
-                }}
-              >
-                <Grid rows={rows} columns={columns}>
-                  <SelectionState
-                    selection={selection}
-                    onSelectionChange={(s) => {
-                      setSelection(s[0] !== undefined ? [s[0]] : []);
-                    }}
-                  />
-                  <Table />
-                  <TableHeaderRow />
-                  <TableSelection />
-                </Grid>
-              </RadioGroup>
-            </FormControl>
-          </Box>
+          <Typography variant="h5">Estrategias</Typography>
+        </Box>
+        <RadioGroup
+          row
+          aria-label="estrategia"
+          value={isReset ? null : strategy}
+          onChange={(event) => {
+            setSelectedStrategy(event.target.value);
+            setSelectStrategyConfirmationDialogOpen(true);
+          }}
+        >
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="checkbox" />
+                  <TableCell>Estrategia</TableCell>
+                  <TableCell>Tasa e.a</TableCell>
+                  <TableCell>Frecuencia Inc</TableCell>
+                  <TableCell>Tasa Fr</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row, index) => (
+                  <TableRow key={`strategy-${index}`}>
+                    <TableCell classes={{ root: Styles.radioButtonCell }}>
+                      <FormControlLabel
+                        value={row.frequency}
+                        control={<Radio />}
+                      />
+                    </TableCell>
+                    <TableCell>{row.strategy}</TableCell>
+                    <TableCell>{row.AER}</TableCell>
+                    <TableCell>{row.frequency}</TableCell>
+                    <TableCell>{row.frequencyRate}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </RadioGroup>
+        <Box p={3}>
           <Button
             color="secondary"
             variant="contained"
@@ -204,22 +202,16 @@ Strategies.propTypes = {
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
   rows: PropTypes.array,
-  indexSelected: PropTypes.number,
 };
 
 const mapStrategyForSelector = (strategy) => {
-  if (!strategy.id || !strategy.EARate) return [];
+  if (!strategy.id) return [];
   return {
     strategy: strategy.label[0],
-    AER: `%${Number(strategy.EARate * 100).toFixed(2)}`,
+    AER: `${Number(strategy.EARate * 100).toFixed(2)}%`,
     frequency: strategy.id,
-    frequencyRate: `%${Number(strategy.percentage * 100).toFixed(2)}`,
+    frequencyRate: `${Number(strategy.percentage * 100).toFixed(2)}%`,
   };
-};
-
-const currentSelected = (strategies, frequency) => {
-  if (!frequency || !strategies) return null;
-  return strategies.findIndex((strategy) => strategy.frequency === frequency);
 };
 
 const mapStateToProps = (state) => {
@@ -230,7 +222,6 @@ const mapStateToProps = (state) => {
   ];
   const strategies = group ? group.strategies : null;
   const rows = strategies.flatMap(mapStrategyForSelector);
-  const indexSelected = currentSelected(rows, strategy);
 
   return {
     strategy,
@@ -238,7 +229,6 @@ const mapStateToProps = (state) => {
     strategies,
     groupId: group ? group.id : null,
     rows,
-    indexSelected,
   };
 };
 
