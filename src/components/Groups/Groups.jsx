@@ -86,7 +86,6 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
       );
     });
   };
-
   const generateFieldGroup = () => {
     const groupArray = groupList;
     const validation = groupArray.find(
@@ -104,7 +103,6 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
       setGroupList(currentGroup);
     }
   };
-
   return (
     <React.Fragment>
       <div className={styles.container}>

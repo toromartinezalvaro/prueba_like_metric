@@ -13,4 +13,16 @@ export default class groupService extends Services {
   deleteGroup(data) {
     return this.delete(groupServiceDefinition.groupBase(), data);
   }
+
+  getAllItems() {
+    return this.get(groupServiceDefinition.itemBase());
+  }
+
+  createItem(data) {
+    return this.post(groupServiceDefinition.itemBase(), data);
+  }
+
+  deleteItem(data) {
+    return this.delete(groupServiceDefinition.itemBase(), data);
+  }
 }

@@ -1,0 +1,54 @@
+@import '../../assets/styles/variables.scss';
+.wrapContainer {
+  display: grid !important;
+  grid-template-columns: 1fr 15em !important;
+  width: 35vw !important;
+  padding: 0 0 2% 0;
+}
+
+.title {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.PUC {
+  grid-column: 1;
+}
+.NAME {
+  grid-column: 2;
+}
+
+.cont {
+  width: 100% !important;
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  align-content: center !important;
+  padding: 2% !important;
+}
+
+.contPUC {
+  width: 100% !important;
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  align-content: center !important;
+  padding: 2% !important;
+}
+
+.field {
+  text-align: center !important;
+}
+
+.expansionDetail {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.fabButtonContainer {
+  margin-top: -4% !important;
+}
+
+.fabButton {
+  font-size: 14px !important;
+}

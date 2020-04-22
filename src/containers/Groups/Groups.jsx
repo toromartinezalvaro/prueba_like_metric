@@ -15,6 +15,7 @@ class Groups extends Component {
       activeStep: 0,
       steps: ['Grupos', 'Items'],
       groups: [],
+      items: [],
     };
   }
 
@@ -25,6 +26,17 @@ class Groups extends Component {
         const groups = response.data;
         this.setState({
           groups,
+        });
+      })
+      .catch(() =>
+        this.props.spawnMessage('Error al conectar con el servicio', 'error'),
+      );
+    this.services
+      .getAllItems()
+      .then((response) => {
+        const items = response.data;
+        this.setState({
+          items,
         });
       })
       .catch(() =>
@@ -57,13 +69,38 @@ class Groups extends Component {
   };
 
   deleteGroup = (groupToDelete) => {
-    console.log('PREPARE TO SEND', groupToDelete);
     this.services
       .deleteGroup(groupToDelete)
       .then(() => this.props.spawnMessage('Grupo borrado con exito', 'success'))
       .catch(() =>
         this.props.spawnMessage(
-          'Ha ocurrido un error al editar el grupo',
+          'Ha ocurrido un error al borrar el grupo',
+          'error',
+        ),
+      );
+  };
+
+  createOrUpdateItem = (item) => {
+    this.services
+      .createItem(item)
+      .then(() => {
+        this.props.spawnMessage('Cambio realizado con éxito', 'success');
+      })
+      .catch(() =>
+        this.props.spawnMessage(
+          'Ha ocurrido un error al hacer el cambio',
+          'error',
+        ),
+      );
+  };
+
+  deleteItem = (item) => {
+    this.services
+      .deleteItem(item)
+      .then(() => this.props.spawnMessage('Item borrado con exito', 'success'))
+      .catch(() =>
+        this.props.spawnMessage(
+          'Ha ocurrido un error al borrar el item',
           'error',
         ),
       );
@@ -80,7 +117,14 @@ class Groups extends Component {
           />
         );
       case 1:
-        return <Items />;
+        return (
+          <Items
+            groups={this.state.groups}
+            items={this.state.items}
+            createOrUpdateItem={this.createOrUpdateItem}
+            deleteItem={this.deleteItem}
+          />
+        );
       default:
         return 'NO DISPONIBLE';
     }
