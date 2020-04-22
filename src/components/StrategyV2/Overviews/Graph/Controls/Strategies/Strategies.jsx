@@ -228,7 +228,7 @@ const mapStateToProps = (state) => {
   const { strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
-  const strategies = group ? group.strategies : null;
+  const strategies = group ? group.strategies : [];
   const rows = strategies.flatMap(mapStrategyForSelector);
   const indexSelected = currentSelected(rows, strategy);
 
