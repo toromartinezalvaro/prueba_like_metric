@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Step, Stepper, StepLabel, Card, CardContent } from '@material-ui/core';
+import {
+  Step,
+  Stepper,
+  StepLabel,
+  Card,
+  CardContent,
+  CircularProgress,
+} from '@material-ui/core';
 import Group from '../../components/Groups/Groups';
 import Items from '../../components/Groups/Items';
 import Services from '../../services/group/groupService';
 import StepIcon from '../../components/Groups/StepIcon';
+import style from './Group.module.scss';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 class Groups extends Component {
@@ -12,6 +20,7 @@ class Groups extends Component {
     super(props);
     this.services = new Services();
     this.state = {
+      isLoaded: false,
       activeStep: 0,
       steps: ['Grupos', 'Items'],
       groups: [],
@@ -37,6 +46,7 @@ class Groups extends Component {
         const items = response.data;
         this.setState({
           items,
+          isLoaded: true,
         });
       })
       .catch(() =>
@@ -132,23 +142,37 @@ class Groups extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Stepper alternativeLabel nonLinear activeStep={this.state.activeStep}>
-          {this.state.steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel
-                onClick={this.handleStep(index)}
-                StepIconComponent={StepIcon}
-              >
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <Card>
-          <CardContent>{this.stepsContent(this.state.activeStep)}</CardContent>
-        </Card>
-      </React.Fragment>
+      <>
+        {this.state.isLoaded ? (
+          <>
+            <Stepper
+              alternativeLabel
+              nonLinear
+              activeStep={this.state.activeStep}
+            >
+              {this.state.steps.map((label, index) => (
+                <Step key={label}>
+                  <StepLabel
+                    onClick={this.handleStep(index)}
+                    StepIconComponent={StepIcon}
+                  >
+                    {label}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <Card>
+              <CardContent>
+                {this.stepsContent(this.state.activeStep)}
+              </CardContent>
+            </Card>
+          </>
+        ) : (
+          <div className={style.loader}>
+            <CircularProgress />
+          </div>
+        )}
+      </>
     );
   }
 

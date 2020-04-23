@@ -1,5 +1,5 @@
 @import '../../assets/styles/variables.scss';
-$tableWidth: 40%;
+$tableWidth: 65%;
 .col1 {
   display: flex;
   flex-direction: column;
@@ -51,4 +51,14 @@ $tableWidth: 40%;
   align-content: center !important;
   text-align: center;
   padding: 1% !important;
+}
+
+.loader {
+  width: 100vw !important;
+  margin: 25% 0 0 50% !important;
+}
+
+.container {
+  width: 76% !important;
+  margin-left: 9% !important;
 }

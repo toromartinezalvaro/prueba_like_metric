@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Card,
-  Fab,
-  Icon,
   ExpansionPanelDetails,
   ExpansionPanel,
   ExpansionPanelSummary,
@@ -13,10 +10,10 @@ import ItemAction from './ItemAction';
 import styles from './Items.module.scss';
 
 const Items = ({ groups, items, createOrUpdateItem, deleteItem }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState('No open');
   const [itemsLoaded, setItemsLoaded] = useState(items);
   const handleChangePanel = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+    setExpanded(isExpanded ? panel : 'No open');
   };
   const itemsByGroup = (contractCategoryId) => {
     const item = itemsLoaded.filter(

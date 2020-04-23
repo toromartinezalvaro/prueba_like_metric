@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, TextField, Fab, Icon, Card } from '@material-ui/core';
+import { Button, TextField, Paper, Icon, Fab } from '@material-ui/core';
+import {
+  Grid,
+  Table,
+  TableHeaderRow,
+} from '@devexpress/dx-react-grid-material-ui';
+
 import styles from './Groups.module.scss';
 
 const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
   const [group, setGroup] = useState(undefined);
   const [groupList, setGroupList] = useState([]);
+  const [columns] = useState([{ name: 'groups', title: 'Grupos' }]);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   useEffect(() => {
     const lockedGroups = groups.map((groupItem) => {
-      return { ...groupItem, disabled: true };
+      return { ...groupItem, disabled: true, hoverMouse: false };
     });
     setGroupList(lockedGroups);
   }, [groups]);
@@ -56,9 +63,17 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     groupListItemToEdit[index] = selectedItemToEdited;
     setGroupList(groupListItemToEdit);
   };
+
+  const hoverMouseAction = (index, visible) => {
+    const added = [...(group || groupList)];
+    const selectedGroup = added[index];
+    added[index] = { ...selectedGroup, hoverMouse: visible };
+    setGroupList(added);
+  };
+
   const displayGroupList = () => {
     return groupList.map((groupItem, index) => {
-      return (
+      const groupComponent = (
         <div className={styles.listContainer} key={index}>
           <TextField
             label="Nombre del grupo"
@@ -66,24 +81,39 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
             defaultValue={groupItem.categoryName}
             disabled={groupItem.disabled}
             onChange={changeGroupItem(index)}
+            onMouseEnter={() => hoverMouseAction(index, true)}
+            onMouseLeave={() => hoverMouseAction(index, false)}
           />
-          <Button
-            color="primary"
-            onClick={
-              groupItem.disabled
-                ? editFieldToGroup(groupItem.categoryName, index)
-                : addFieldToGroup(index)
-            }
-          >
-            <Icon
-              className={groupItem.disabled ? 'fas fa-pen' : 'fas fa-check'}
-            />
-          </Button>
-          <Button color="secondary" onClick={deleteFieldFromGroup(index)}>
-            <Icon className="fas fa-times" />
-          </Button>
+          {groupItem.hoverMouse && (
+            <>
+              <Button
+                color="primary"
+                onMouseEnter={() => hoverMouseAction(index, true)}
+                onMouseLeave={() => hoverMouseAction(index, false)}
+                onClick={
+                  groupItem.disabled
+                    ? editFieldToGroup(groupItem.categoryName, index)
+                    : addFieldToGroup(index)
+                }
+              >
+                <Icon
+                  className={groupItem.disabled ? 'fas fa-pen' : 'fas fa-check'}
+                />
+              </Button>
+              <Button
+                onMouseEnter={() => hoverMouseAction(index, true)}
+                onMouseLeave={() => hoverMouseAction(index, false)}
+                color="secondary"
+                onClick={deleteFieldFromGroup(index)}
+              >
+                <Icon className="fas fa-times" />
+              </Button>
+            </>
+          )}
         </div>
       );
+      const object = { groups: groupComponent };
+      return object;
     });
   };
   const generateFieldGroup = () => {
@@ -106,10 +136,12 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
   return (
     <React.Fragment>
       <div className={styles.container}>
-        <Card classes={{ root: styles.header }}>
-          <h2>Grupos</h2>
-        </Card>
-        <Card classes={{ root: styles.col1 }}>{displayGroupList()}</Card>
+        <Paper classes={{ root: styles.container }}>
+          <Grid rows={displayGroupList()} columns={columns}>
+            <Table />
+            <TableHeaderRow />
+          </Grid>
+        </Paper>
         <div className={styles.actionsContainer}>
           <Fab
             color="primary"

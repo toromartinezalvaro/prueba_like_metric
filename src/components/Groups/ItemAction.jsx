@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Fab, Icon, TextField, Button } from '@material-ui/core';
+import { Card, Fab, Icon, TextField, Button, Paper } from '@material-ui/core';
+import {
+  Grid,
+  Table,
+  TableHeaderRow,
+} from '@devexpress/dx-react-grid-material-ui';
 import PropTypes from 'prop-types';
 import styles from './Items.module.scss';
 
@@ -11,12 +16,20 @@ const ItemAction = ({
   setGlobalItemList,
 }) => {
   const [item, setItem] = useState(undefined);
+  const [columns] = useState([
+    { name: 'itemsId', title: 'ID' },
+    { name: 'itemsName', title: 'NOMBRE' },
+  ]);
   const [itemList, setItemList] = useState([]);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     const itemLocked = items.map((singleItem) => {
-      return { ...singleItem, disabled: true };
+      return {
+        ...singleItem,
+        hoverMouse: false,
+        disabled: true,
+      };
     });
     setItemList(itemLocked);
   }, [items]);
@@ -98,43 +111,79 @@ const ItemAction = ({
       setItemList(currentItem);
     }
   };
+  const hoverMouseAction = (id, index, visible) => {
+    const itemListItemToEdit = [...itemList];
+    let selectedItemToEdited = itemListItemToEdit.find(
+      (element) => element.id === id,
+    );
+    selectedItemToEdited = {
+      ...selectedItemToEdited,
+      mouseHover: visible,
+    };
+    itemListItemToEdit[index] = selectedItemToEdited;
+    setItemList(itemListItemToEdit);
+  };
   const displayNames = () => {
     return itemList.map((itemValue, index) => {
-      return (
+      const names = (
         <div className={styles.cont} key={index}>
           <TextField
             defaultValue={itemValue.name}
             classes={{ root: styles.field }}
             onChange={changeItem('name', index)}
             disabled={itemValue.disabled}
-          />
-          <Button
-            color="primary"
-            onClick={
-              itemValue.disabled
-                ? editFieldToItem(itemValue.categoryName, index)
-                : addFieldToItem(index)
+            onMouseEnter={() =>
+              hoverMouseAction(itemValue.categoryName, index, true)
             }
-            size="small"
-          >
-            <Icon
-              className={itemValue.disabled ? 'fas fa-pen' : 'fas fa-check'}
-            />
-          </Button>
-          <Button
-            color="secondary"
-            onClick={deleteFieldFromItem(index)}
-            size="small"
-          >
-            <Icon className="fas fa-times" />
-          </Button>
+            onMouseLeave={() =>
+              hoverMouseAction(itemValue.categoryName, index, false)
+            }
+          />
+          {itemValue.mouseHover && (
+            <>
+              <Button
+                color="primary"
+                onMouseEnter={() =>
+                  hoverMouseAction(itemValue.categoryName, index, true)
+                }
+                onMouseLeave={() =>
+                  hoverMouseAction(itemValue.categoryName, index, false)
+                }
+                onClick={
+                  itemValue.disabled
+                    ? editFieldToItem(itemValue.categoryName, index)
+                    : addFieldToItem(index)
+                }
+                size="small"
+              >
+                <Icon
+                  className={itemValue.disabled ? 'fas fa-pen' : 'fas fa-check'}
+                />
+              </Button>
+              <Button
+                onMouseEnter={() =>
+                  hoverMouseAction(itemValue.categoryName, index, true)
+                }
+                onMouseLeave={() =>
+                  hoverMouseAction(itemValue.categoryName, index, false)
+                }
+                color="secondary"
+                onClick={deleteFieldFromItem(index)}
+                size="small"
+              >
+                <Icon className="fas fa-times" />
+              </Button>
+            </>
+          )}
         </div>
       );
+      const itemNames = { itemsName: names };
+      return itemNames;
     });
   };
   const displayIds = () => {
     return itemList.map((itemValue, index) => {
-      return (
+      const ids = (
         <div className={styles.contPUC} key={index}>
           <TextField
             defaultValue={itemValue.PUC}
@@ -143,31 +192,39 @@ const ItemAction = ({
             }}
             type="number"
             classes={{ root: styles.field }}
+            onMouseEnter={() =>
+              hoverMouseAction(itemValue.categoryName, index, true)
+            }
+            onMouseLeave={() =>
+              hoverMouseAction(itemValue.categoryName, index, false)
+            }
             onChange={changeItemPUC(index)}
             disabled={itemValue.disabled}
           />
         </div>
       );
+      const itemsIdRow = { itemsId: ids };
+      return itemsIdRow;
     });
   };
+  const displayRows = () => {
+    const ids = displayIds();
+    const rows = displayNames();
+    const data = itemList.forEach((item, index) => {
+      const { itemsName } = rows[index];
+      ids[index] = { ...ids[index], itemsName };
+    });
+    return ids;
+  };
+
   return (
     <div>
-      <Card classes={{ root: styles.wrapContainer }} elevation={2}>
-        <div className={styles.PUC}>
-          <div className={styles.header}>
-            <h5 className={styles.title}>ID</h5>
-            <hr />
-          </div>
-          {displayIds()}
-        </div>
-        <div className={styles.NAME}>
-          <div className={styles.header}>
-            <h5 className={styles.title}>NOMBRE</h5>
-            <hr />
-          </div>
-          {displayNames()}
-        </div>
-      </Card>
+      <Paper classes={{ root: styles.wrapContainer }}>
+        <Grid rows={displayRows()} columns={columns}>
+          <Table />
+          <TableHeaderRow />
+        </Grid>
+      </Paper>
       <div className={styles.actionsContainer}>
         <Fab
           color="primary"
