@@ -20,7 +20,7 @@ import { startLoading, stopLoading } from '../../../Loader/actions';
 const validationSchema = yup.object().shape({
   projectedIncrement: yup
     .number('El incremento es un dato numerico')
-    .min(0, "El incremento no puede ser negativo")
+    .min(0, 'El incremento no puede ser negativo')
     .required('Es necesario ingresar un incremento'),
 });
 
@@ -55,24 +55,26 @@ const ProjectedIncrement = ({
   };
 
   const submitHandler = async (values) => {
-    try {
-      startApiLoading();
-      const increment = Number(values.projectedIncrement);
-      await services.increment.putIncrement(towerId, {
-        groupId,
-        increment: parseFloat(increment),
-      });
-      const response = await services.increment2.getIncrementsAndStrategy(
-        towerId,
-      );
-      onFetchedData({
-        strategyLines: generateDataset(response.data.increments),
-        groups: response.data.summary.increments,
-      });
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    if (values.projectedIncrement !== projectedIncrement) {
+      try {
+        startApiLoading();
+        const increment = Number(values.projectedIncrement);
+        await services.increment.putIncrement(towerId, {
+          groupId,
+          increment: parseFloat(increment),
+        });
+        const response = await services.increment2.getIncrementsAndStrategy(
+          towerId,
+        );
+        onFetchedData({
+          strategyLines: generateDataset(response.data.increments),
+          groups: response.data.summary.increments,
+        });
+      } catch (error) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      }
+      stopApiLoading();
     }
-    stopApiLoading();
   };
 
   return (

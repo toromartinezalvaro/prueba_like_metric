@@ -31,23 +31,26 @@ const AveragePrice = ({
   };
 
   const submitHandler = async (values) => {
-    try {
-      startApiLoading();
-      const marketPrice = await services.putMarketAveragePrice(groupId, {
-        averagePrice: Number(values.averagePrice),
-        length: lenghtMarket,
-      });
+    if (values.averagePrice !== averagePrice) {
+      try {
+        startApiLoading();
+        const marketPrice = await services.putMarketAveragePrice(groupId, {
+          averagePrice: Number(values.averagePrice),
+          length: lenghtMarket,
+        });
 
-      const incrementsFixed = marketPrice.data.increments.map(
-        (increment) => increment && increment.toFixed(2),
-      );
-      onChangeMarketGraph(incrementsFixed);
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        const incrementsFixed = marketPrice.data.increments.map(
+          (increment) => increment && increment.toFixed(2),
+        );
+        onChangeMarketGraph(incrementsFixed);
+      } catch (error) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      }
+      onChangeMarketAveragePrice(Number(values.averagePrice));
+      stopApiLoading();
     }
-    onChangeMarketAveragePrice(Number(values.averagePrice));
-    stopApiLoading();
   };
+
   return (
     <Formik
       enableReinitialize

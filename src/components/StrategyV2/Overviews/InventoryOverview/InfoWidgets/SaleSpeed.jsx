@@ -44,22 +44,24 @@ const SaleSpeed = ({
   };
 
   const submitHandler = async (values) => {
-    try {
-      startApiLoading();
-      await services.increments.putSalesSpeeds(groupId, {
-        salesSpeed: Number(values.saleSpeed),
-      });
-      const response = await services.increments2.getIncrementsAndStrategy(
-        towerId,
-      );
-      onFetchedData({
-        strategyLines: generateDataset(response.data.increments),
-        groups: response.data.summary.increments,
-      });
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    if (values.saleSpeed !== saleSpeed) {
+      try {
+        startApiLoading();
+        await services.increments.putSalesSpeeds(groupId, {
+          salesSpeed: Number(values.saleSpeed),
+        });
+        const response = await services.increments2.getIncrementsAndStrategy(
+          towerId,
+        );
+        onFetchedData({
+          strategyLines: generateDataset(response.data.increments),
+          groups: response.data.summary.increments,
+        });
+      } catch (error) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      }
+      stopApiLoading();
     }
-    stopApiLoading();
   };
 
   return (

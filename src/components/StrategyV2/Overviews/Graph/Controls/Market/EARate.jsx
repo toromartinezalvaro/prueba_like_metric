@@ -34,23 +34,25 @@ const EARateInput = ({
   };
 
   const submitHandler = async (values) => {
-    try {
-      startApiLoading();
-      const percentage = Number(values.EARate / 100);
-      await services.increments.putMarketAnualEffectiveIncrement(groupId, {
-        anualEffectiveIncrement: percentage,
-      });
-      const response = await services.increments2.getIncrementsAndStrategy(
-        towerId,
-      );
-      onFetchedData({
-        strategyLines: generateDataset(response.data.increments),
-        groups: response.data.summary.increments,
-      });
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    const percentage = Number(values.EARate / 100);
+    if (percentage !== EARate) {
+      try {
+        startApiLoading();
+        await services.increments.putMarketAnualEffectiveIncrement(groupId, {
+          anualEffectiveIncrement: percentage,
+        });
+        const response = await services.increments2.getIncrementsAndStrategy(
+          towerId,
+        );
+        onFetchedData({
+          strategyLines: generateDataset(response.data.increments),
+          groups: response.data.summary.increments,
+        });
+      } catch (error) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      }
+      stopApiLoading();
     }
-    stopApiLoading();
   };
 
   return (
