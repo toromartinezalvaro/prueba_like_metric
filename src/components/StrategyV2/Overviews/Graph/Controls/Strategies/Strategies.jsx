@@ -116,8 +116,10 @@ const Strategies = ({
           aria-label="estrategia"
           value={isReset ? null : strategy}
           onChange={(event) => {
-            setSelectedStrategy(event.target.value);
-            setSelectStrategyConfirmationDialogOpen(true);
+            if (isReset || !strategy) {
+              setSelectedStrategy(event.target.value);
+              setSelectStrategyConfirmationDialogOpen(true);
+            }
           }}
         >
           <TableContainer>
@@ -136,6 +138,7 @@ const Strategies = ({
                   <TableRow key={`strategy-${index}`}>
                     <TableCell classes={{ root: Styles.radioButtonCell }}>
                       <FormControlLabel
+                        disabled={strategy && !isReset}
                         value={row.frequency}
                         control={<Radio />}
                       />
