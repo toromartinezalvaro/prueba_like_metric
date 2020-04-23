@@ -134,7 +134,7 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     }
   };
   return (
-    <React.Fragment>
+    <>
       <div className={styles.container}>
         <Paper classes={{ root: styles.container }}>
           <Grid rows={displayGroupList()} columns={columns}>
@@ -153,7 +153,7 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
           </Fab>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
