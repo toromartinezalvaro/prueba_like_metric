@@ -9,7 +9,7 @@ import Numbers from '../../../../../helpers/numbers';
 const InventoryRotation = ({ rotationMonths, initialFee, mini }) => {
   return (
     <Widget title="Rotacion de inventario" size={mini ? XS : SM}>
-      {Numbers.toFixed(rotationMonths)}
+      {rotationMonths}
       {rotationMonths > initialFee && (
         <Tooltip title="La rotacion de inventario supera el plazo de la cuota incial">
           <WarningRoundedIcon fontSize="small" color="secondary" />

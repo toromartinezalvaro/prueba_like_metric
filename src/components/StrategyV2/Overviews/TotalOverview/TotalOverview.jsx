@@ -35,7 +35,7 @@ const TotalOverView = ({
           title="Rotacion de inventario"
           size={SM}
         >
-          {Numbers.toFixed(rotationMonths)}
+          {rotationMonths}
         </Widget>,
         <Widget key="Total-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
