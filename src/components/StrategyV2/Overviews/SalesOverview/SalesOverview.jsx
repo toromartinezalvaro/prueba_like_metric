@@ -30,7 +30,7 @@ const SalesOverview = ({
         </Widget>,
         <Widget
           key="Sales-InventoryRotation"
-          title="Rotacion de intentario"
+          title="Rotacion de inventario"
           size={SM}
         >
           {Numbers.toFixed(rotationMonths)}
