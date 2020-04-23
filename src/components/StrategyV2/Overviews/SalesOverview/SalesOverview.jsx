@@ -33,7 +33,7 @@ const SalesOverview = ({
           title="Rotacion de inventario"
           size={SM}
         >
-          {Numbers.toFixed(rotationMonths)}
+          {rotationMonths}
         </Widget>,
         <Widget key="Sales-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
