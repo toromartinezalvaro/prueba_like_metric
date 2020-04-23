@@ -25,10 +25,14 @@ const ItemAction = ({
 
   useEffect(() => {
     const itemLocked = items.map((singleItem) => {
+      const disabledCheked = Object.prototype.hasOwnProperty.call(
+        singleItem,
+        'disabled',
+      );
       return {
         ...singleItem,
         hoverMouse: false,
-        disabled: true,
+        disabled: !disabledCheked,
       };
     });
     setItemList(itemLocked);
@@ -58,7 +62,7 @@ const ItemAction = ({
   const addFieldToItem = (index) => () => {
     const added = [...itemList];
     const selectedItem = added[index];
-    added[index] = { ...selectedItem, disabled: true };
+    added[index] = { ...selectedItem, disabled: false };
     createOrUpdateItem(added[index]);
     setButtonDisabled(false);
     setItemList(added);
@@ -103,19 +107,22 @@ const ItemAction = ({
       setButtonDisabled(true);
     } else {
       const index = itemList.length === 0 ? 0 : itemList.length;
-      const currentItem = [
-        ...itemArray,
-        { index, PUC: null, name: null, disabled: false, contractCategoryId },
-      ];
+      const newItem = {
+        index,
+        PUC: null,
+        name: null,
+        disabled: false,
+        contractCategoryId,
+      };
+      const currentItem = [...itemArray, newItem];
       setButtonDisabled(true);
       setItemList(currentItem);
+      setGlobalItemList(newItem);
     }
   };
   const hoverMouseAction = (id, index, visible) => {
     const itemListItemToEdit = [...itemList];
-    let selectedItemToEdited = itemListItemToEdit.find(
-      (element) => element.id === id,
-    );
+    let selectedItemToEdited = itemListItemToEdit[index];
     selectedItemToEdited = {
       ...selectedItemToEdited,
       mouseHover: visible,
