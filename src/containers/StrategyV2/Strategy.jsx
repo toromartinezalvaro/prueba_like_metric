@@ -9,6 +9,8 @@ import Widgets from '../../components/StrategyV2/Widgets';
 import Overviews from '../../components/StrategyV2/Overviews';
 import APILoader from '../../components/StrategyV2/Loader';
 import Loader from '../../components/UI2/Loader';
+import Message from '../../components/StrategyV2/Message/Message';
+
 import { fetchDataInit, fetchDataStart, fetchDataEmpty } from './actions';
 import IncrementServices from '../../services/incrementsV2/incrementsService';
 import generateDataset from './helpers/dataset';
@@ -29,12 +31,9 @@ const Strategy = ({
       try {
         onFetchedDataStart();
         const response = await services.getIncrementsAndStrategy(towerId);
-        console.log(response, response.data.length === 0, response.data);
         if (response.data.length === 0) {
-          console.log('Aqui');
           onFetchedDataEmpty();
         } else {
-          console.log('Alla');
           onFetchedData({
             strategyLines: generateDataset(response.data.increments),
             groups: response.data.summary.increments,
@@ -50,7 +49,7 @@ const Strategy = ({
   return (
     <Loader isLoading={loading}>
       {isEmpty ? (
-        <div></div>
+        <Message />
       ) : (
         <div>
           <Box mb={2}>
