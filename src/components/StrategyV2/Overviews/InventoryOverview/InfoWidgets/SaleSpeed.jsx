@@ -18,16 +18,29 @@ const services = {
   increments2: new Increment2Services(),
 };
 
-const validationSchema = yup.object().shape({
-  saleSpeed: yup
-    .number()
-    .min(0, 'La velocidad debe ser mayor a 0')
-    .max(98, 'La velocidad debe ser menor a 98'),
-});
+const validationSchema = (rotationMonths, units) => {
+  let numberToValidation = units / rotationMonths;
+  if (rotationMonths > 98) {
+    numberToValidation = units / 98;
+  }
+
+  console.log(numberToValidation, rotationMonths, units);
+  return yup.object().shape({
+    saleSpeed: yup
+      .number()
+      .min(
+        numberToValidation,
+        `La velocidad debe ser mayor a ${numberToValidation}`,
+      )
+      .max(units, `La velocidad debe ser menor o igual a ${units}`),
+  });
+};
 
 const SaleSpeed = ({
   groupId,
   saleSpeed,
+  units,
+  rotationMonths,
   field,
   onFetchedData,
   startApiLoading,
@@ -73,7 +86,7 @@ const SaleSpeed = ({
           }}
           innerRef={formRef}
           onSubmit={submitHandler}
-          validationSchema={validationSchema}
+          validationSchema={validationSchema(rotationMonths, units)}
         >
           {() => (
             <Form>
@@ -98,6 +111,8 @@ const SaleSpeed = ({
 SaleSpeed.propTypes = {
   groupId: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
+  units: PropTypes.number.isRequired,
+  rotationMonths: PropTypes.number.isRequired,
   field: PropTypes.bool,
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
@@ -109,12 +124,14 @@ SaleSpeed.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { id, inventory } = state.strategy.root.groups[
+  const { id, inventory, initialFee } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
     groupId: id,
     saleSpeed: inventory.saleSpeed,
+    units: inventory.units,
+    rotationMonths: initialFee,
   };
 };
 
