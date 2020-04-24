@@ -16,6 +16,7 @@ import Icon from '@material-ui/core/Icon';
 import NumberFormat from 'react-number-format';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Numbers from '../../../../helpers/numbers';
+import BillingContent from './BillingContent';
 import style from '../ViewContractInformation.module.scss';
 
 const ViewBillingAndFinancials = ({ contractDataView, events }) => {
@@ -68,64 +69,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                   classes={{ root: style.expandContainer }}
                 >
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <div className={style.cardContainer}>
-                      <h3 className={style.tittlePayment}>
-                        Forma de pago N°{i + 1}
-                      </h3>
-                      <div className={style.containerPaymentInformation}>
-                        <div className={style.resumeLabel2}>
-                          <h4 className={style.ivaTitle}>
-                            Valor antes del IVA total:
-                          </h4>
-                          <NumberFormat
-                            className={style.resumeValue}
-                            value={(
-                              Number(billing.amount) *
-                              Number(billing.paymentNumber)
-                            ).toFixed(0)}
-                            displayType="text"
-                            thousandSeparator
-                            decimalSeparator={false}
-                            prefix="$"
-                          />
-                        </div>
-                        <div className={style.resumeLabel3}>
-                          <h4 className={style.ivaTitle}>
-                            Valor de IVA total:
-                          </h4>
-                          <NumberFormat
-                            className={style.resumeValue}
-                            value={(
-                              Number(billing.amount) *
-                              (Number(billing.iva) / 100) *
-                              Number(billing.paymentNumber)
-                            ).toFixed(0)}
-                            displayType="text"
-                            decimalSeparator={false}
-                            thousandSeparator
-                            prefix="$"
-                          />
-                        </div>
-                        <div className={style.resumeLabel}>
-                          <h4 className={style.ivaTitle}>
-                            Valor despues de IVA total:
-                          </h4>
-                          <NumberFormat
-                            className={style.resumeValue}
-                            value={(
-                              (Number(billing.amount) +
-                                Number(billing.amount) *
-                                  (Number(billing.iva) / 100)) *
-                              Number(billing.paymentNumber)
-                            ).toFixed(0)}
-                            displayType="text"
-                            decimalSeparator={false}
-                            thousandSeparator
-                            prefix="$"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    <BillingContent billing={billing} i={i} />
                   </ExpansionPanelSummary>
                   <Card className={style.cardContainer}>
                     <div className={style.subContainer}>
