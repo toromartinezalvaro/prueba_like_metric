@@ -29,6 +29,7 @@ const DeleteAction = ({ open, setClose, confirmClose }) => {
             className={style.deleteButton}
             startIcon={<Icon className="fas fa-trash-alt" />}
             onClick={contractToClose}
+            color="secondary"
           >
             Cerrar contrato
           </Button>
