@@ -133,22 +133,23 @@ class Attachment extends Component {
     return this.state.imgObject.map((url, i) => {
       return (
         url.type === 'URL' && (
-          <Card key={i}>
-            <div className={styles.CardAttachUrl}>
-              <CardContent>
-                <div className={styles.attachmentUrl}>
+          <Card classes={{ root: styles.cardModify }} key={i}>
+            <CardContent>
+              <div className={styles.attachmentUrl}>
+                <div className={styles.urlcontainer}>
                   <a href={url.path}>{url.path}</a>
+                </div>
+                <div className={styles.btncont}>
                   <Button
                     variant="contained"
                     color="secondary"
                     onClick={this.urlRemove(i)}
-                    className={styles.buttons}
                   >
                     X
                   </Button>
                 </div>
-              </CardContent>
-            </div>
+              </div>
+            </CardContent>
           </Card>
         )
       );
