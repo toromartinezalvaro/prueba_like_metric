@@ -7,7 +7,11 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Resizable } from 're-resizable';
 import { Link } from 'react-router-dom';
-import { DashboardRoutes, UserRoutes } from '../../routes/local/routes';
+import {
+  DashboardRoutes,
+  UserRoutes,
+  GroupsRoutes,
+} from '../../routes/local/routes';
 import style from './SideMenu.module.scss';
 import Icon from '../../assets/icons/Icon';
 import agent from '../../config/config';
@@ -121,6 +125,29 @@ const UserSideMenu = (props) => {
                       null,
                       'Admin compañías',
                     )}
+                </div>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            <ExpansionPanel
+              classes={{ root: style.expansionPanel }}
+              defaultExpanded
+            >
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                classes={{ root: style.expansionPanelSummary }}
+              >
+                Grupos
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails
+                classes={{ root: style.expansionPanelDetails }}
+              >
+                <div className={style.linkContainer}>
+                  {itemForSidebar(
+                    style.MenuItem,
+                    GroupsRoutes.base,
+                    null,
+                    'Grupos / Items',
+                  )}
                 </div>
               </ExpansionPanelDetails>
             </ExpansionPanel>
