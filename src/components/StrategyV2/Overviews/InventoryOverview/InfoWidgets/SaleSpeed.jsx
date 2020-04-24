@@ -22,7 +22,7 @@ const validationSchema = yup.object().shape({
   saleSpeed: yup
     .number()
     .min(0, 'La velocidad debe ser mayor a 0')
-    .max(99, 'La velocidad debe ser menor a 99'),
+    .max(98, 'La velocidad debe ser menor a 98'),
 });
 
 const SaleSpeed = ({
