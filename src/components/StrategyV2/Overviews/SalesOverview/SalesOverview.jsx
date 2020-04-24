@@ -37,7 +37,7 @@ const SalesOverview = ({
         </Widget>,
         <Widget key="Sales-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(increment)}
+            value={Math.round(increment)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -50,7 +50,7 @@ const SalesOverview = ({
       priceWidgets={[
         <Widget key="Sales-Sales" title="Ventas" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(sales)}
+            value={Math.round(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -58,7 +58,7 @@ const SalesOverview = ({
         </Widget>,
         <Widget key="Sales-AverageSales" title="Precio promedio" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(averagePrice)}
+            value={Math.round(averagePrice)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -66,7 +66,7 @@ const SalesOverview = ({
         </Widget>,
         <Widget key="Sales-M2Price" title="Valor m²" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(pricePerM2)}
+            value={Math.round(pricePerM2)}
             displayType="text"
             prefix="$"
             thousandSeparator

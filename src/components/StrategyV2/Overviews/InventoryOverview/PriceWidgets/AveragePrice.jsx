@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
-import Numbers from '../../../../../helpers/numbers';
 
 const AveragePrice = ({ baseValueProjected, baseValueToToday, projected }) => {
   const averagePrice = projected ? baseValueProjected : baseValueToToday;
@@ -11,7 +10,7 @@ const AveragePrice = ({ baseValueProjected, baseValueToToday, projected }) => {
   return (
     <Widget key="DetailInv-AverageSales" title="Precio promedio" size={SM}>
       <NumberFormat
-        value={Numbers.toFixed(averagePrice)}
+        value={Math.round(averagePrice)}
         displayType="text"
         prefix="$"
         thousandSeparator
