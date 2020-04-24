@@ -41,7 +41,7 @@ const Widget = ({ title, subtitle, children, size }) => {
       <Box p={size === XS ? 1 : 0}>
         <Grid container>
           <Grid item xs={cols}>
-            <Box pt={padding} px={padding}>
+            <Box pt={padding} px={padding} overflow="auto">
               <Typography
                 variant={headerVariant.content}
                 component="div"
