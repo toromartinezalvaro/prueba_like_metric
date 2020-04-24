@@ -5,10 +5,16 @@
  */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardContent } from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+} from '@material-ui/core';
 import moment from 'moment';
 import Icon from '@material-ui/core/Icon';
 import NumberFormat from 'react-number-format';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Numbers from '../../../../helpers/numbers';
 import style from '../ViewContractInformation.module.scss';
 
@@ -31,106 +37,9 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
       <Card className={style.card}>
         <CardContent>
           <div className={style.containerForBillings}>
-            {contractDataView.billings.map((billing, i) => {
-              return (
-                <Card className={style.cardContainer} key={billing.id}>
-                  <h3>Forma de pago N°{i + 1}</h3>
-                  <div className={style.subContainer}>
-                    <div className="leftInformation">
-                      <Card className={style.leftTitle}>
-                        <span className={style.labelForTitle}>
-                          CICLO DE PAGO
-                        </span>
-                        <p className={style.information}>{billing.cycle}</p>
-                      </Card>
-                      <Card className={style.leftTitle}>
-                        <span className={style.labelForTitle}>Evento</span>
-                        <p className={style.information}>
-                          {billing.eventId === 0 || billing.eventId === null
-                            ? 'Evento elegido manualmente'
-                            : events.find(
-                                (element) => element.id === billing.eventId,
-                              )}
-                        </p>
-                      </Card>
-                      <Card className={style.leftTitle}>
-                        <span className={style.cont}>
-                          <span className={style.labelForTitle}>
-                            VALOR DE CUENTA
-                          </span>
-                          <NumberFormat
-                            value={billing.amount.toFixed(0)}
-                            displayType={'text'}
-                            className={style.informationAmount}
-                            thousandSeparator={true}
-                            decimalSeparator={false}
-                            prefix={'$'}
-                          />
-                        </span>
-                      </Card>
-                      <Card className={style.leftTitle}>
-                        <span className={style.cont}>
-                          <span className={style.labelForTitle}>
-                            VALOR DE CUENTA CON IVA
-                          </span>
-                          <NumberFormat
-                            value={(
-                              (billing.amount +
-                                billing.amount * (billing.iva / 100)) *
-                              Number(billing.paymentNumber)
-                            ).toFixed(0)}
-                            displayType={'text'}
-                            className={style.informationAmount}
-                            thousandSeparator={true}
-                            decimalSeparator={false}
-                            prefix={'$'}
-                          />
-                        </span>
-                      </Card>
-                    </div>
-                    <div className="rightInformation">
-                      <Card className={style.rightTitle}>
-                        <span className={style.labelForTitle}>
-                          FECHA INICIAL DE COBRO
-                        </span>
-                        <p className={style.information}>
-                          {billing.lastBillingDate
-                            ? moment(Number(billing.initalBillingDate)).format(
-                                'DD/MM/YYYY',
-                              )
-                            : 'FECHA CALENDARIO'}
-                        </p>
-                      </Card>
-                      <Card className={style.rightTitle}>
-                        <span className={style.labelForTitle}>
-                          FECHA FINAL DE COBRO
-                        </span>
-                        <p className={style.information}>
-                          {moment(Number(billing.lastBillingDate)).format(
-                            'DD/MM/YYYY',
-                          )}
-                        </p>
-                      </Card>
-                      <Card className={style.rightTitle}>
-                        <span className={style.labelForTitle}>DESCRIPCIÓN</span>
-                        <p className={style.information}>
-                          {billing.description}
-                        </p>
-                      </Card>
-                      <Card className={style.rightTitle}>
-                        <span className={style.labelForTitle}>IVA</span>
-                        <p className={style.information}>
-                          {billing.iva ? billing.iva : 0}%
-                        </p>
-                      </Card>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
             <div className={style.cardForm}>
               <div className={style.Totalbills}>
-                <h4 sclassName={style.textTotal}> Valor Total Sin IVA:</h4>
+                <h4 className={style.textTotal}> Valor Total Sin IVA:</h4>
                 <NumberFormat
                   value={totalBillsWithouIVA.toFixed(0)}
                   displayType="text"
@@ -141,7 +50,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                 />
               </div>
               <div className={style.Totalbills}>
-                <h4 sclassName={style.textTotal}> Valor Total mas IVA:</h4>
+                <h4 className={style.textTotal}> Valor Total mas IVA:</h4>
                 <NumberFormat
                   value={totalBills.toFixed(0)}
                   displayType="text"
@@ -152,6 +61,169 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                 />
               </div>
             </div>
+            {contractDataView.billings.map((billing, i) => {
+              return (
+                <ExpansionPanel
+                  key={billing.id}
+                  classes={{ root: style.expandContainer }}
+                >
+                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <div className={style.cardContainer}>
+                      <h3 className={style.tittlePayment}>
+                        Forma de pago N°{i + 1}
+                      </h3>
+                      <div className={style.containerPaymentInformation}>
+                        <div className={style.resumeLabel2}>
+                          <h4 className={style.ivaTitle}>
+                            Valor antes del IVA total:
+                          </h4>
+                          <NumberFormat
+                            className={style.resumeValue}
+                            value={(
+                              Number(billing.amount) *
+                              Number(billing.paymentNumber)
+                            ).toFixed(0)}
+                            displayType="text"
+                            thousandSeparator
+                            decimalSeparator={false}
+                            prefix="$"
+                          />
+                        </div>
+                        <div className={style.resumeLabel3}>
+                          <h4 className={style.ivaTitle}>
+                            Valor de IVA total:
+                          </h4>
+                          <NumberFormat
+                            className={style.resumeValue}
+                            value={(
+                              Number(billing.amount) *
+                              (Number(billing.iva) / 100) *
+                              Number(billing.paymentNumber)
+                            ).toFixed(0)}
+                            displayType="text"
+                            decimalSeparator={false}
+                            thousandSeparator
+                            prefix="$"
+                          />
+                        </div>
+                        <div className={style.resumeLabel}>
+                          <h4 className={style.ivaTitle}>
+                            Valor despues de IVA total:
+                          </h4>
+                          <NumberFormat
+                            className={style.resumeValue}
+                            value={(
+                              (Number(billing.amount) +
+                                Number(billing.amount) *
+                                  (Number(billing.iva) / 100)) *
+                              Number(billing.paymentNumber)
+                            ).toFixed(0)}
+                            displayType="text"
+                            decimalSeparator={false}
+                            thousandSeparator
+                            prefix="$"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </ExpansionPanelSummary>
+                  <Card className={style.cardContainer}>
+                    <div className={style.subContainer}>
+                      <div className="leftInformation">
+                        <Card className={style.leftTitle}>
+                          <span className={style.labelForTitle}>
+                            CICLO DE PAGO
+                          </span>
+                          <p className={style.information}>{billing.cycle}</p>
+                        </Card>
+                        <Card className={style.leftTitle}>
+                          <span className={style.labelForTitle}>Evento</span>
+                          <p className={style.information}>
+                            {billing.eventId === 0 || billing.eventId === null
+                              ? 'Evento elegido manualmente'
+                              : events.find(
+                                  (element) => element.id === billing.eventId,
+                                )}
+                          </p>
+                        </Card>
+                        <Card className={style.leftTitle}>
+                          <span className={style.cont}>
+                            <span className={style.labelForTitle}>
+                              VALOR DE CUENTA
+                            </span>
+                            <NumberFormat
+                              value={billing.amount.toFixed(0)}
+                              displayType={'text'}
+                              className={style.informationAmount}
+                              thousandSeparator={true}
+                              decimalSeparator={false}
+                              prefix={'$'}
+                            />
+                          </span>
+                        </Card>
+                        <Card className={style.leftTitle}>
+                          <span className={style.cont}>
+                            <span className={style.labelForTitle}>
+                              VALOR DE CUENTA CON IVA
+                            </span>
+                            <NumberFormat
+                              value={(
+                                (billing.amount +
+                                  billing.amount * (billing.iva / 100)) *
+                                Number(billing.paymentNumber)
+                              ).toFixed(0)}
+                              displayType={'text'}
+                              className={style.informationAmount}
+                              thousandSeparator={true}
+                              decimalSeparator={false}
+                              prefix={'$'}
+                            />
+                          </span>
+                        </Card>
+                      </div>
+                      <div className="rightInformation">
+                        <Card className={style.rightTitle}>
+                          <span className={style.labelForTitle}>
+                            FECHA INICIAL DE COBRO
+                          </span>
+                          <p className={style.information}>
+                            {billing.lastBillingDate
+                              ? moment(
+                                  Number(billing.initalBillingDate),
+                                ).format('DD/MM/YYYY')
+                              : 'FECHA CALENDARIO'}
+                          </p>
+                        </Card>
+                        <Card className={style.rightTitle}>
+                          <span className={style.labelForTitle}>
+                            FECHA FINAL DE COBRO
+                          </span>
+                          <p className={style.information}>
+                            {moment(Number(billing.lastBillingDate)).format(
+                              'DD/MM/YYYY',
+                            )}
+                          </p>
+                        </Card>
+                        <Card className={style.rightTitle}>
+                          <span className={style.labelForTitle}>
+                            DESCRIPCIÓN
+                          </span>
+                          <p className={style.information}>
+                            {billing.description}
+                          </p>
+                        </Card>
+                        <Card className={style.rightTitle}>
+                          <span className={style.labelForTitle}>IVA</span>
+                          <p className={style.information}>
+                            {billing.iva ? billing.iva : 0}%
+                          </p>
+                        </Card>
+                      </div>
+                    </div>
+                  </Card>
+                </ExpansionPanel>
+              );
+            })}
           </div>
         </CardContent>
       </Card>

@@ -25,11 +25,16 @@ $blue-billing: #d9e9ff;
   grid-auto-rows: row dense;
 }
 
+.tittlePayment {
+  margin: 2% 0 3% -5% !important;
+}
 .containerPaymentInformation {
   display: grid !important;
-  grid-template-columns: 11em 19.5em 17em 19em;
+  grid-template-columns: 20em 17em 20em;
   column-gap: 0.5em;
-  margin: 0 0 3% 0 !important;
+  font-size: 16px;
+  margin: -5% 0 0 -5% !important;
+  width: 10vw !important;
 }
 
 .resumeLabel {
@@ -42,7 +47,7 @@ $blue-billing: #d9e9ff;
 
 .resumeLabel2 {
   display: grid;
-  grid-template-columns: 14em 2.7em;
+  grid-template-columns: 14em 4em;
   align-items: center !important;
   align-self: center;
 }
@@ -124,6 +129,10 @@ $blue-billing: #d9e9ff;
   flex: 1;
   margin-right: 2%;
   width: 10% !important;
+}
+
+.expandContainer {
+  padding: 0 !important;
 }
 
 .columnFullRigth {
@@ -337,4 +346,10 @@ $blue-billing: #d9e9ff;
 .picker {
   margin-top: -2% !important;
   margin-left: -7% !important;
+}
+.cardContainer {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  margin-bottom: 5% !important;
 }

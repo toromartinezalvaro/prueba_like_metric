@@ -16,7 +16,10 @@ import {
   CardContent,
   MenuItem,
   InputAdornment,
+  ExpansionPanel,
+  ExpansionPanelSummary,
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import moment from 'moment';
@@ -406,17 +409,16 @@ const BillingFinancials = ({
       totalBillsNoIva += Number(billing.amount) * Number(billing.paymentNumber);
 
       return (
-        <Card key={billing.id} className={styles.cardForm}>
-          <CardContent>
-            <div className={styles.gridContainer}>
+        <ExpansionPanel
+          key={billing.id}
+          classes={{ root: styles.expandContainer }}
+        >
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <div className={styles.cardContainer}>
+              <h3 className={styles.tittlePayment}>Forma de pago N°{i + 1}</h3>
               <div className={styles.containerPaymentInformation}>
-                <h3 className={styles.tittlePayment}>
-                  Forma de pago N°{i + 1}
-                </h3>
                 <div className={styles.resumeLabel2}>
-                  <h4 sclassName={styles.ivaTitle}>
-                    Valor antes del IVA total:
-                  </h4>
+                  <h4>Valor antes del IVA total:</h4>
                   <NumberFormat
                     className={styles.resumeValue}
                     value={(
@@ -429,7 +431,7 @@ const BillingFinancials = ({
                   />
                 </div>
                 <div className={styles.resumeLabel3}>
-                  <h4 sclassName={styles.ivaTitle}>Valor de IVA total:</h4>
+                  <h4>Valor de IVA total:</h4>
                   <NumberFormat
                     className={styles.resumeValue}
                     value={(
@@ -444,9 +446,7 @@ const BillingFinancials = ({
                   />
                 </div>
                 <div className={styles.resumeLabel}>
-                  <h4 sclassName={styles.ivaTitle}>
-                    Valor despues de IVA total:
-                  </h4>
+                  <h4>Valor despues de IVA total:</h4>
                   <NumberFormat
                     className={styles.resumeValue}
                     value={(
@@ -461,303 +461,310 @@ const BillingFinancials = ({
                   />
                 </div>
               </div>
-              <div className={styles.paymentProjection}>
-                <h4 className={styles.tittleForProjection}>
-                  Proyección de pago:
-                </h4>
-                <Select
-                  className={styles.Select}
-                  maxMenuHeight={150}
-                  inputId="react-select-single"
-                  isDisabled={billing.isLocked}
-                  TextFieldProps={{
-                    label: 'ciclo de cobro',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single',
-                      shrink: true,
-                    },
-                  }}
-                  placeholder="ciclo de cobro"
-                  components={Option}
-                  options={suggestions}
-                  defaultValue={{
-                    label: billing.cycle,
-                    value: billing.cycle,
-                  }}
-                  onChange={changeCardValue('cycle', billing.id, false, true)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') document.getElementById('2').focus();
-                  }}
-                />
-              </div>
-              <div className={styles.amountSection}>
-                <div className={styles.informationColumns}>
-                  <div className={styles.col1}>
-                    <TextField
-                      required
-                      autoComplete="off"
-                      disabled={billing.isLocked}
-                      className={styles.textField}
-                      label={`Valor antes de IVA ${billing.cycle}`}
-                      margin="normal"
-                      variant="outlined"
-                      placeholder={billing.amount}
-                      value={billing.amount !== 0 ? billing.amount : ''}
-                      onBlur={changeCardValue('amount', billing.id)}
-                      id={2}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter')
-                          document.getElementById('3').focus();
-                      }}
-                      InputProps={{
-                        inputComponent: NumberFormatCustom,
-                        startAdornment: (
-                          <InputAdornment position="start">$</InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
-                  <div className={styles.col2}>
-                    <TextField
-                      autoComplete="off"
-                      required
-                      disabled={billing.isLocked}
-                      className={styles.textFieldIvaLarge}
-                      label="Valor IVA %"
-                      margin="normal"
-                      variant="outlined"
-                      value={billing.iva !== 0 ? billing.iva : ''}
-                      placeholder={billing.iva}
-                      id="3"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter')
-                          document.getElementById('sel4').focus();
-                      }}
-                      onChange={changeCardValue('iva', billing.id)}
-                    />
-                  </div>
-                  <div className={styles.col3}>
-                    <div className={styles.amountLabel}>
-                      <h4 sclassName={styles.ivaTitle}>
-                        Valor de IVA {billing.cycle}
-                      </h4>
-                      <NumberFormat
-                        className={styles.amountValue}
-                        value={(
-                          Number(billing.amount) *
-                          (Number(billing.iva) / 100)
-                        ).toFixed(0)}
-                        displayType="text"
-                        decimalSeparator={false}
-                        thousandSeparator
-                        prefix="$"
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.col4}>
-                    <div className={styles.amountLabel}>
-                      <h4 sclassName={styles.ivaTitle}>
-                        Valor despues de IVA {billing.cycle}
-                      </h4>
-                      <NumberFormat
-                        className={styles.amountValueCol4}
-                        value={(
-                          Number(billing.amount) +
-                          Number(billing.amount) * (Number(billing.iva) / 100)
-                        ).toFixed(0)}
-                        displayType="text"
-                        thousandSeparator
-                        prefix="$"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h4>Fecha inicial</h4>
-              <div className={styles.datesSection}>
-                <div className={styles.event}>
+            </div>
+          </ExpansionPanelSummary>
+          <Card className={styles.cardForm}>
+            <CardContent>
+              <div className={styles.gridContainer}>
+                <div className={styles.paymentProjection}>
+                  <h4 className={styles.tittleForProjection}>
+                    Proyección de pago:
+                  </h4>
                   <Select
-                    className={styles.SelectDate}
+                    className={styles.Select}
                     maxMenuHeight={150}
-                    inputId="sel4"
+                    inputId="react-select-single"
                     isDisabled={billing.isLocked}
                     TextFieldProps={{
-                      label: 'Fecha inicial',
+                      label: 'ciclo de cobro',
                       InputLabelProps: {
                         htmlFor: 'react-select-single',
                         shrink: true,
                       },
                     }}
-                    placeholder="Fecha inicial"
+                    placeholder="ciclo de cobro"
                     components={Option}
-                    value={events.find((option) => {
-                      if (option.eventLabel) {
-                        return option.eventLabel === billing.eventLabel;
-                      }
-                      return option.eventId === billing.eventId;
-                    })}
-                    options={events}
-                    onChange={changeCardValue(
-                      'eventId',
-                      billing.id,
-                      false,
-                      true,
-                    )}
-                  />
-                  <Events
-                    towerId={towerId}
-                    isLocked={billing.isLocked}
-                    defaultDate={defaultDate}
-                    currentEvent={createdEvent}
-                    eventIsUnique={billing.eventIsUnique}
+                    options={suggestions}
+                    defaultValue={{
+                      label: billing.cycle,
+                      value: billing.cycle,
+                    }}
+                    onChange={changeCardValue('cycle', billing.id, false, true)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter')
+                        document.getElementById('2').focus();
+                    }}
                   />
                 </div>
-                <div className={styles.dateInitial}>
-                  <TextField
-                    required
-                    autoComplete="off"
-                    disabled={billing.eventIsUnique || billing.isLocked}
-                    className={styles.textFieldDisplace}
-                    label={
-                      billing.displacement !== 0
-                        ? `Desplazamiento Mensual`
-                        : 'Desplazamiento Mensual (0)'
-                    }
-                    margin="normal"
-                    variant="outlined"
-                    placeholder={billing.displacement}
-                    value={
-                      billing.displacement !== 0 ? billing.displacement : ''
-                    }
-                    onChange={changeCardValue('displacement', billing.id)}
-                  />
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      autoOk
-                      className={styles.picker}
-                      disabled={!billing.eventIsUnique || billing.isLocked}
-                      disableToolbar
-                      variant="inline"
-                      format="dd/MM/yyyy"
-                      margin="normal"
-                      id="date-picker-inline"
-                      label="Fecha Inicial"
-                      defaultValue={Number(todayDate)}
-                      value={Number(
-                        billing.initalBillingDate
-                          ? billing.initalBillingDate
-                          : billing.lastBillingDate,
-                      )}
+                <div className={styles.amountSection}>
+                  <div className={styles.informationColumns}>
+                    <div className={styles.col1}>
+                      <TextField
+                        required
+                        autoComplete="off"
+                        disabled={billing.isLocked}
+                        className={styles.textField}
+                        label={`Valor antes de IVA ${billing.cycle}`}
+                        margin="normal"
+                        variant="outlined"
+                        placeholder={billing.amount}
+                        value={billing.amount !== 0 ? billing.amount : ''}
+                        onBlur={changeCardValue('amount', billing.id)}
+                        id={2}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter')
+                            document.getElementById('3').focus();
+                        }}
+                        InputProps={{
+                          inputComponent: NumberFormatCustom,
+                          startAdornment: (
+                            <InputAdornment position="start">$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    </div>
+                    <div className={styles.col2}>
+                      <TextField
+                        autoComplete="off"
+                        required
+                        disabled={billing.isLocked}
+                        className={styles.textFieldIvaLarge}
+                        label="Valor IVA %"
+                        margin="normal"
+                        variant="outlined"
+                        value={billing.iva !== 0 ? billing.iva : ''}
+                        placeholder={billing.iva}
+                        id="3"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter')
+                            document.getElementById('sel4').focus();
+                        }}
+                        onChange={changeCardValue('iva', billing.id)}
+                      />
+                    </div>
+                    <div className={styles.col3}>
+                      <div className={styles.amountLabel}>
+                        <h4 sclassName={styles.ivaTitle}>
+                          Valor de IVA {billing.cycle}
+                        </h4>
+                        <NumberFormat
+                          className={styles.amountValue}
+                          value={(
+                            Number(billing.amount) *
+                            (Number(billing.iva) / 100)
+                          ).toFixed(0)}
+                          displayType="text"
+                          decimalSeparator={false}
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </div>
+                    </div>
+                    <div className={styles.col4}>
+                      <div className={styles.amountLabel}>
+                        <h4 sclassName={styles.ivaTitle}>
+                          Valor despues de IVA {billing.cycle}
+                        </h4>
+                        <NumberFormat
+                          className={styles.amountValueCol4}
+                          value={(
+                            Number(billing.amount) +
+                            Number(billing.amount) * (Number(billing.iva) / 100)
+                          ).toFixed(0)}
+                          displayType="text"
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h4>Fecha inicial</h4>
+                <div className={styles.datesSection}>
+                  <div className={styles.event}>
+                    <Select
+                      className={styles.SelectDate}
+                      maxMenuHeight={150}
+                      inputId="sel4"
+                      isDisabled={billing.isLocked}
+                      TextFieldProps={{
+                        label: 'Fecha inicial',
+                        InputLabelProps: {
+                          htmlFor: 'react-select-single',
+                          shrink: true,
+                        },
+                      }}
+                      placeholder="Fecha inicial"
+                      components={Option}
+                      value={events.find((option) => {
+                        if (option.eventLabel) {
+                          return option.eventLabel === billing.eventLabel;
+                        }
+                        return option.eventId === billing.eventId;
+                      })}
+                      options={events}
                       onChange={changeCardValue(
-                        'initalBillingDate',
+                        'eventId',
                         billing.id,
+                        false,
                         true,
                       )}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
                     />
-                  </MuiPickersUtilsProvider>
-                </div>
-                <div className={styles.lastDate}>
-                  <TextField
-                    required
-                    autoComplete="off"
-                    disabled={
-                      billing.cycle === 'Pago Único' || billing.isLocked
-                    }
-                    className={styles.textFieldDisplace}
-                    label={
-                      billing.paymentNumber === 1
-                        ? 'Numero de pagos (1)'
-                        : 'Numero de pagos'
-                    }
-                    margin="normal"
-                    variant="outlined"
-                    placeholder={billing.paymentNumber}
-                    value={
-                      billing.paymentNumber !== 1 ? billing.paymentNumber : ''
-                    }
-                    onChange={changeCardValue('paymentNumber', billing.id)}
-                  />
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      disabled={true}
-                      autoOk
-                      className={styles.picker}
-                      disableToolbar
-                      variant="inline"
-                      format="dd/MM/yyyy"
-                      margin="normal"
-                      id="date-picker-inline"
-                      label="Fecha Final"
-                      value={Number(moment(Number(billing.lastBillingDate)))}
-                      onChange={changeCardValue(
-                        'lastBillingDate',
-                        billing.id,
-                        true,
-                      )}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
+                    <Events
+                      towerId={towerId}
+                      isLocked={billing.isLocked}
+                      defaultDate={defaultDate}
+                      currentEvent={createdEvent}
+                      eventIsUnique={billing.eventIsUnique}
                     />
-                  </MuiPickersUtilsProvider>
-                </div>
-              </div>
-              <div className={styles.cardFormMulti}>
-                <div className={styles.column}>
-                  <div className={styles.leftPick}>
+                  </div>
+                  <div className={styles.dateInitial}>
                     <TextField
+                      required
                       autoComplete="off"
-                      disabled={billing.isLocked}
-                      multiline
-                      rows={5}
-                      className={styles.multiline}
-                      label="Descripción"
+                      disabled={billing.eventIsUnique || billing.isLocked}
+                      className={styles.textFieldDisplace}
+                      label={
+                        billing.displacement !== 0
+                          ? `Desplazamiento Mensual`
+                          : 'Desplazamiento Mensual (0)'
+                      }
                       margin="normal"
                       variant="outlined"
-                      defaultValue={billing.description}
-                      onChange={changeCardValue('description', billing.id)}
+                      placeholder={billing.displacement}
+                      value={
+                        billing.displacement !== 0 ? billing.displacement : ''
+                      }
+                      onChange={changeCardValue('displacement', billing.id)}
                     />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        autoOk
+                        className={styles.picker}
+                        disabled={!billing.eventIsUnique || billing.isLocked}
+                        disableToolbar
+                        variant="inline"
+                        format="dd/MM/yyyy"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Fecha Inicial"
+                        defaultValue={Number(todayDate)}
+                        value={Number(
+                          billing.initalBillingDate
+                            ? billing.initalBillingDate
+                            : billing.lastBillingDate,
+                        )}
+                        onChange={changeCardValue(
+                          'initalBillingDate',
+                          billing.id,
+                          true,
+                        )}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
                   </div>
-                  <div className={styles.actions}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      disabled={billing.isLocked}
-                      className={styles.buttonRemove}
-                      startIcon={<Icon className="fas fa-ban" />}
-                      onClick={removeElement(billing.id)}
-                    >
-                      Remover
-                    </Button>
-                    {billing.isLocked ? (
+                  <div className={styles.lastDate}>
+                    <TextField
+                      required
+                      autoComplete="off"
+                      disabled={
+                        billing.cycle === 'Pago Único' || billing.isLocked
+                      }
+                      className={styles.textFieldDisplace}
+                      label={
+                        billing.paymentNumber === 1
+                          ? 'Numero de pagos (1)'
+                          : 'Numero de pagos'
+                      }
+                      margin="normal"
+                      variant="outlined"
+                      placeholder={billing.paymentNumber}
+                      value={
+                        billing.paymentNumber !== 1 ? billing.paymentNumber : ''
+                      }
+                      onChange={changeCardValue('paymentNumber', billing.id)}
+                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        disabled={true}
+                        autoOk
+                        className={styles.picker}
+                        disableToolbar
+                        variant="inline"
+                        format="dd/MM/yyyy"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Fecha Final"
+                        value={Number(moment(Number(billing.lastBillingDate)))}
+                        onChange={changeCardValue(
+                          'lastBillingDate',
+                          billing.id,
+                          true,
+                        )}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </div>
+                </div>
+                <div className={styles.cardFormMulti}>
+                  <div className={styles.column}>
+                    <div className={styles.leftPick}>
+                      <TextField
+                        autoComplete="off"
+                        disabled={billing.isLocked}
+                        multiline
+                        rows={5}
+                        className={styles.multiline}
+                        label="Descripción"
+                        margin="normal"
+                        variant="outlined"
+                        defaultValue={billing.description}
+                        onChange={changeCardValue('description', billing.id)}
+                      />
+                    </div>
+                    <div className={styles.actions}>
                       <Button
                         variant="contained"
-                        color="primary"
-                        className={styles.button}
-                        startIcon={<Icon className="fas fa-pencil-alt" />}
-                        onClick={changeCardValue(false, billing.id)}
+                        color="secondary"
+                        disabled={billing.isLocked}
+                        className={styles.buttonRemove}
+                        startIcon={<Icon className="fas fa-ban" />}
+                        onClick={removeElement(billing.id)}
                       >
-                        Editar
+                        Remover
                       </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={styles.button}
-                        startIcon={<AddIcon />}
-                        onClick={changeCardValue(true, billing.id)}
-                      >
-                        Guardar
-                      </Button>
-                    )}
+                      {billing.isLocked ? (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={styles.button}
+                          startIcon={<Icon className="fas fa-pencil-alt" />}
+                          onClick={changeCardValue(false, billing.id)}
+                        >
+                          Editar
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={styles.button}
+                          startIcon={<AddIcon />}
+                          onClick={changeCardValue(true, billing.id)}
+                        >
+                          Guardar
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </ExpansionPanel>
       );
     });
   };
