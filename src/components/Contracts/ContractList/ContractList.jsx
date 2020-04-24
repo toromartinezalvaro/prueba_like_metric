@@ -202,10 +202,6 @@ class ContractList extends Component {
     });
   };
 
-  test = (cell) => () => {
-    console.log(cell);
-  };
-
   TableCell = ({ tableRow, ...restProps }) => {
     return (
       <Table.Cell
