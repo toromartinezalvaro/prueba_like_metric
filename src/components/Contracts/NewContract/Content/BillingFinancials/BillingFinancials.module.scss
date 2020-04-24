@@ -21,7 +21,7 @@ $blue-billing: #d9e9ff;
 
 .informationColumns {
   display: grid;
-  grid-template-columns: 20em 10em 13em 18em;
+  grid-template-columns: 20em 12em 13em 18em;
   grid-auto-rows: row dense;
 }
 
@@ -63,11 +63,14 @@ $blue-billing: #d9e9ff;
 .col1 {
   grid-column: 1;
   grid-row: 1;
+  width: 100% !important;
 }
 
 .col2 {
   grid-row: 1;
   grid-column: 2;
+  width: 85%;
+  margin-left: 15% !important;
 }
 .col3 {
   grid-row: 1;
@@ -135,7 +138,7 @@ $blue-billing: #d9e9ff;
 }
 
 .textField {
-  width: 20vw !important;
+  width: 100% !important;
   z-index: 0 !important;
   margin-right: 3% !important;
 }
