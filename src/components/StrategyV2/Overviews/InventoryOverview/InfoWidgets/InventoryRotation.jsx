@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import Tooltip from '@material-ui/core/Tooltip';
 import Widget, { XS, SM } from '../../../Shared/Widget';
-import Numbers from '../../../../../helpers/numbers';
 
 const InventoryRotation = ({ rotationMonths, initialFee, mini }) => {
   return (
