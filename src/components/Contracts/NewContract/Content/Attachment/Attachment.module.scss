@@ -76,6 +76,7 @@
   display: flex !important;
   flex: 1;
   flex-direction: row;
+  width: 100% !important;
 }
 
 .cardModify {
@@ -84,7 +85,6 @@
 .attachmentUrl {
   display: grid !important;
   grid-template-columns: 10em 2em !important;
-  width: 100% !important;
   column-gap: 3em !important;
   align-content: center !important;
   width: 100% !important;

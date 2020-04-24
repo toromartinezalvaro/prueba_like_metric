@@ -32,7 +32,10 @@ class Attachment extends Component {
   }
 
   uploadImage = (e) => {
-    if (this.state.imgObject.length >= 1) {
+    const checker = this.state.imgObject.find(
+      (image) => image.type === 'IMAGE',
+    );
+    if (checker) {
       this.props.spawnMessage('Solo se puede agregar un archivo', 'error');
     } else {
       const imageFormObject = new FormData();
