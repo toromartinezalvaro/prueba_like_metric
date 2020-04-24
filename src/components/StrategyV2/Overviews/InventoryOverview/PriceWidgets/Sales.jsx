@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
-import Numbers from '../../../../../helpers/numbers';
 
 const Sales = ({ projected, salesProjected, salesToToday }) => {
   const sales = projected ? salesProjected : salesToToday;
   return (
     <Widget key="DetailInv-IncrementRate" title="Ventas" size={SM}>
       <NumberFormat
-        value={Numbers.toFixed(sales)}
+        value={Math.round(sales)}
         displayType="text"
         prefix="$"
         thousandSeparator

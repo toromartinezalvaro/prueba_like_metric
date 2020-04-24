@@ -39,7 +39,7 @@ const TotalOverView = ({
         </Widget>,
         <Widget key="Total-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(increment)}
+            value={Math.round(increment)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -69,7 +69,7 @@ const TotalOverView = ({
       priceWidgets={[
         <Widget key="Total-Sales" title="Ventas" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(sales)}
+            value={Math.round(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -77,7 +77,7 @@ const TotalOverView = ({
         </Widget>,
         <Widget key="Total-AverageSales" title="Precio promedio" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(averagePrice)}
+            value={Math.round(averagePrice)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -85,7 +85,7 @@ const TotalOverView = ({
         </Widget>,
         <Widget key="Total-M2Price" title="Valor m²" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(pricePerM2)}
+            value={Math.round(pricePerM2)}
             displayType="text"
             prefix="$"
             thousandSeparator

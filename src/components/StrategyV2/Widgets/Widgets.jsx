@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Widget from '../Shared/Widget';
 import TotalSalesWidget from './TotalSalesWidget';
 import ProjectedSalesWidget from './ProjectedSalesWidget';
-import Numbers from '../../../helpers/numbers';
 
 const Widgets = ({ totalUnits, salesUnits, inventoryUnits, sales }) => {
   return (
@@ -26,7 +25,7 @@ const Widgets = ({ totalUnits, salesUnits, inventoryUnits, sales }) => {
       <Grid item xs={12} lg={2}>
         <Widget title="Ventas realizadas">
           <NumberFormat
-            value={Numbers.toFixed(sales)}
+            value={Math.round(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator

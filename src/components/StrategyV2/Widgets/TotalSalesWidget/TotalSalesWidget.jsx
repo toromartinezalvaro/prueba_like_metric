@@ -5,7 +5,6 @@ import uuidV4 from 'uuid/v4';
 import NumberFormat from 'react-number-format';
 import Widget, { SM, MD } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
-import Numbers from '../../../../helpers/numbers';
 
 const TotalSalesWidget = ({
   salesWhitoutIncrements,
@@ -23,7 +22,7 @@ const TotalSalesWidget = ({
           size={showPricesWithoutIncrement ? SM : MD}
         >
           <NumberFormat
-            value={Numbers.toFixed(sales)}
+            value={Math.round(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -36,7 +35,7 @@ const TotalSalesWidget = ({
           size={SM}
         >
           <NumberFormat
-            value={Numbers.toFixed(salesWhitoutIncrements)}
+            value={Math.round(salesWhitoutIncrements)}
             displayType="text"
             prefix="$"
             thousandSeparator

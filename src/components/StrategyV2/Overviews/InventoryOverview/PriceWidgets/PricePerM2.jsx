@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
-import Numbers from '../../../../../helpers/numbers';
 
 const PricePerM2 = ({
   projected,
@@ -16,7 +15,7 @@ const PricePerM2 = ({
   return (
     <Widget key="DetailInv-M2Price" title="Valor m²" size={SM}>
       <NumberFormat
-        value={Numbers.toFixed(pricePerM2)}
+        value={Math.round(pricePerM2)}
         displayType="text"
         prefix="$"
         thousandSeparator
