@@ -16,7 +16,12 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import StrategySelect from './StrategySelect';
 import Input, { PERCENTAGE } from '../../../../Shared/Input';
-import { closeSalesWizardDialog, changeSuggestedIncrement } from './actions';
+import {
+  closeSalesWizardDialog,
+  changeSuggestedIncrement,
+  setCalculated,
+  setNotCalculated,
+} from './actions';
 import {
   changeIncrement,
   fetchDataSuccess,
@@ -38,6 +43,7 @@ export const SalesWizard = ({
   salesUnits,
   saleSpeed,
   open,
+  calculated,
   suggestedIncrement,
   closeHandler,
   onSuggestedIncrementChange,
@@ -45,9 +51,12 @@ export const SalesWizard = ({
   startApiLoading,
   stopApiLoading,
   onFetchedData,
+  onCalculatedClicked,
+  onCalculatedReset,
 }) => {
   useEffect(() => {
     onSuggestedIncrementChange(0);
+    onCalculatedReset()
   }, [open]);
 
   const { towerId } = useParams();
@@ -62,6 +71,7 @@ export const SalesWizard = ({
         ear / 100,
         frequency,
       );
+      onCalculatedClicked();
       onSuggestedIncrementChange(response.data);
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' });
@@ -101,9 +111,7 @@ export const SalesWizard = ({
         <Box mb={2}>
           <Grid container justify="space-between" mb={2}>
             <Grid item>
-              <Typography>
-                Meses de retencion: {Math.ceil(units / saleSpeed)}
-              </Typography>
+              <Typography>Meses de retencion: {rotationMonths}</Typography>
             </Grid>
             <Grid item>
               <Typography>
@@ -160,7 +168,11 @@ export const SalesWizard = ({
         <Button color="primary" onClick={closeHandler}>
           Cerrar
         </Button>
-        <Button color="primary" onClick={handleApplyIncrement}>
+        <Button
+          color="primary"
+          onClick={handleApplyIncrement}
+          disabled={!calculated}
+        >
           Aplicar
         </Button>
       </DialogActions>
@@ -175,12 +187,15 @@ SalesWizard.propTypes = {
   saleSpeed: PropTypes.number.isRequired,
   closeHandler: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  calculated: PropTypes.bool.isRequired,
   suggestedIncrement: PropTypes.number.isRequired,
   onSuggestedIncrementChange: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
   changeIncrementHandler: PropTypes.func.isRequired,
   onFetchedData: PropTypes.func.isRequired,
+  onCalculatedClicked: PropTypes.func.isRequired,
+  onCalculatedReset: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -193,6 +208,7 @@ const mapStateToProps = (state) => {
     salesUnits: sales.units,
     saleSpeed: inventory.saleSpeed,
     open: state.strategy.salesWizard.open,
+    calculated: state.strategy.salesWizard.calculated,
     suggestedIncrement: state.strategy.salesWizard.suggestedIncrement,
   };
 };
@@ -204,6 +220,8 @@ const mapDispatchToProps = {
   startApiLoading: startLoading,
   stopApiLoading: stopLoading,
   onFetchedData: fetchDataSuccess,
+  onCalculatedClicked: setCalculated,
+  onCalculatedReset: setNotCalculated,
 };
 
 export default connect(
