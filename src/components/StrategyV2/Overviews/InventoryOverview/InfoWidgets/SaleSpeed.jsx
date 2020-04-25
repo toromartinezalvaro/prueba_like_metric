@@ -56,7 +56,7 @@ const SaleSpeed = ({
   };
 
   const submitHandler = async (values) => {
-    if (values.saleSpeed !== saleSpeed) {
+    if (values.saleSpeed && values.saleSpeed !== saleSpeed) {
       try {
         startApiLoading();
         await services.increments.putSalesSpeeds(groupId, {
@@ -86,6 +86,7 @@ const SaleSpeed = ({
           innerRef={formRef}
           onSubmit={submitHandler}
           validationSchema={validationSchema(rotationMonths, units)}
+          enableReinitialize
         >
           {() => (
             <Form>
