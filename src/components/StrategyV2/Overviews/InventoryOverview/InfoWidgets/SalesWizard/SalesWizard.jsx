@@ -36,7 +36,7 @@ export const SalesWizard = ({
   groupId,
   totalUnits,
   salesUnits,
-  saleSpeed,
+  rotationMonths,
   open,
   suggestedIncrement,
   closeHandler,
@@ -102,7 +102,7 @@ export const SalesWizard = ({
           <Grid container justify="space-between" mb={2}>
             <Grid item>
               <Typography>
-                Meses de retencion: {Math.ceil(units / saleSpeed)}
+                Meses de retencion: {rotationMonths}
               </Typography>
             </Grid>
             <Grid item>
@@ -172,7 +172,7 @@ SalesWizard.propTypes = {
   groupId: PropTypes.number.isRequired,
   totalUnits: PropTypes.number.isRequired,
   salesUnits: PropTypes.number.isRequired,
-  saleSpeed: PropTypes.number.isRequired,
+  rotationMonths: PropTypes.number.isRequired,
   closeHandler: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   suggestedIncrement: PropTypes.number.isRequired,
@@ -191,7 +191,7 @@ const mapStateToProps = (state) => {
     groupId: id,
     totalUnits: total.units,
     salesUnits: sales.units,
-    saleSpeed: inventory.saleSpeed,
+    rotationMonths: inventory.rotationMonths,
     open: state.strategy.salesWizard.open,
     suggestedIncrement: state.strategy.salesWizard.suggestedIncrement,
   };
