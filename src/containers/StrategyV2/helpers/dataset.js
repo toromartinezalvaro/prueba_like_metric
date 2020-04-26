@@ -46,6 +46,7 @@ const makeArrayDataSets = (line, i) => {
       fill: GRAPH_BASE[i].fill,
       lineTension: 0.05,
       percentage: line.percentage,
+      EARate: line.ear,
     };
   }
   return null;

@@ -5,12 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import {
-  Dialog,
-  DialogContentText,
-  Button,
-  Icon,
-} from '@material-ui/core';
+import { Dialog, DialogContentText, Button, Icon } from '@material-ui/core';
 import ExpandBillingFinancials from './Expand/BillingFinancials/BillingFinancials';
 import ExpandGeneralInfo from './Expand/GeneralInfo/GeneralInfo';
 import ExpandLifeCycle from './Expand/LifeCycle/LifeCycle';
@@ -67,6 +62,8 @@ const NewContract = ({
   businessPartnerOpen,
   categoryopen,
   itemOpen,
+  eraseImg,
+  sendUrl,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -94,94 +91,98 @@ const NewContract = ({
       fullWidth={true}
       maxWidth="lg"
     >
-        <DialogContentText>
-          <div className={styles.title}>
-            <div className={`${styles.circleIcon}  ${styles.circleColorTitle}`}>
-              <Icon className={`${styles.icon} fas fa-plus`} />
-            </div>
-            <h2 className={styles.title}>Agregar Contrato</h2>
+      <DialogContentText>
+        <div className={styles.title}>
+          <div className={`${styles.circleIcon}  ${styles.circleColorTitle}`}>
+            <Icon className={`${styles.icon} fas fa-plus`} />
           </div>
+          <h2 className={styles.title}>
+            {isEditable ? 'Editar Contrato' : 'Agregar Contrato'}
+          </h2>
+        </div>
 
-          <ExpandGeneralInfo
-            handleOpenCategory={handleOpenCategory}
-            handleCloseCategory={handleCloseCategory}
-            handleOpenBusinessPatner={handleOpenBusinessPatner}
-            handleCloseItem={handleCloseItem}
-            itemProp={itemProp}
-            currentGroupId={currentGroupId}
-            changeForSearchItem={changeForSearchItem}
-            handleOpenItem={handleOpenItem}
-            searchCategory={searchCategory}
-            searchItem={searchItem}
-            searchBusinessPartner={searchBusinessPartner}
-            categories={categories}
-            items={items}
-            changeItemIsLocked={changeItemIsLocked}
-            partners={partners}
-            itemIsLocked={itemIsLocked}
-            editable={editable}
-            disableEditable={disableEditable}
-            categoryProp={categoryProp}
-            changeForSearchCategory={changeForSearchCategory}
-            changeForSearchPartner={changeForSearchPartner}
-            partnerProp={partnerProp}
-            sendGeneralInfo={sendGeneralInfo}
-            dataIfEdit={dataIfEdit}
-            sendContractNumber={sendContractNumber}
-            alreadyCreated={alreadyCreated}
-            errors={errors}
-            noError={noError}
+        <ExpandGeneralInfo
+          handleOpenCategory={handleOpenCategory}
+          handleCloseCategory={handleCloseCategory}
+          handleOpenBusinessPatner={handleOpenBusinessPatner}
+          handleCloseItem={handleCloseItem}
+          itemProp={itemProp}
+          currentGroupId={currentGroupId}
+          changeForSearchItem={changeForSearchItem}
+          handleOpenItem={handleOpenItem}
+          searchCategory={searchCategory}
+          searchItem={searchItem}
+          searchBusinessPartner={searchBusinessPartner}
+          categories={categories}
+          items={items}
+          changeItemIsLocked={changeItemIsLocked}
+          partners={partners}
+          itemIsLocked={itemIsLocked}
+          editable={editable}
+          disableEditable={disableEditable}
+          categoryProp={categoryProp}
+          changeForSearchCategory={changeForSearchCategory}
+          changeForSearchPartner={changeForSearchPartner}
+          partnerProp={partnerProp}
+          sendGeneralInfo={sendGeneralInfo}
+          dataIfEdit={dataIfEdit}
+          sendContractNumber={sendContractNumber}
+          alreadyCreated={alreadyCreated}
+          errors={errors}
+          noError={noError}
+        />
+        <br />
+        <ExpandBillingFinancials
+          towerId={towerId}
+          sendBillings={sendBillings}
+          events={events}
+          currentEvent={currentEvent}
+          watchingContract={watchingContract}
+          dataIfEdit={dataIfEdit}
+          sendToDelete={sendToDelete}
+        />
+        <br />
+        <ExpandAttachment
+          sendAttachments={sendAttachments}
+          dataIfEdit={dataIfEdit}
+          eraseImg={eraseImg}
+          sendUrl={sendUrl}
+        />
+        <br />
+        {
+          <DeleteAction
+            confirmClose={confirmClose}
+            setClose={setClose}
+            open={open}
           />
-          <br />
-          <ExpandBillingFinancials
-            towerId={towerId}
-            sendBillings={sendBillings}
-            events={events}
-            currentEvent={currentEvent}
-            watchingContract={watchingContract}
-            dataIfEdit={dataIfEdit}
-            sendToDelete={sendToDelete}
-          />
-          <br />
-          <ExpandAttachment
-            sendAttachments={sendAttachments}
-            dataIfEdit={dataIfEdit}
-          />
-          <br />
-          {
-            <DeleteAction
-              confirmClose={confirmClose}
-              setClose={setClose}
-              open={open}
-            />
-          }
-          <div className={styles.actionContainer}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={styles.button}
-              startIcon={
-                isEditable ? (
-                  <Icon className="fa fa-edit" />
-                ) : (
-                  <Icon className="fas fa-file-signature" />
-                )
-              }
-              onClick={isEditable ? editContract : addContract}
-            >
-              {isEditable ? 'Editar Contrato' : 'Crear Contrato'}
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={`${styles.button} ${styles.buttonMargin}`}
-              startIcon={<Icon className="fas fa-ban" />}
-              onClick={() => setOpen(true)}
-            >
-              Cerrar
-            </Button>
-          </div>
-        </DialogContentText>
+        }
+        <div className={styles.actionContainer}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={styles.button}
+            startIcon={
+              isEditable ? (
+                <Icon className="fa fa-edit" />
+              ) : (
+                <Icon className="fas fa-file-signature" />
+              )
+            }
+            onClick={isEditable ? editContract : addContract}
+          >
+            {isEditable ? 'Editar Contrato' : 'Crear Contrato'}
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={`${styles.button} ${styles.buttonMargin}`}
+            startIcon={<Icon className="fas fa-ban" />}
+            onClick={() => setOpen(true)}
+          >
+            Cerrar
+          </Button>
+        </div>
+      </DialogContentText>
     </Dialog>
   );
 };

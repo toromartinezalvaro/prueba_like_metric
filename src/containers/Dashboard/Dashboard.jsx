@@ -5,6 +5,8 @@ import {
   ProjectRoutes,
   UserRoutes,
   ContractFlowRoutes,
+  GroupsRoutes,
+  Group,
 } from '../../routes/local/routes';
 import DashboardLayout from '../../HOC/Layouts/Dashboard/Dashboard';
 import Building from '../Building/Building';
@@ -38,6 +40,7 @@ import Pairing from '../Pairing';
 import Quotations from '../Quotations';
 import Strategy from '../StrategyV2';
 import Companies from '../Companies/Companies';
+import Groups from '../Groups/Groups';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -260,6 +263,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Quotations}
+        />
+        <PrivateRoute
+          path={match.url + Group.base}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Groups}
         />
       </DashboardLayout>
     );

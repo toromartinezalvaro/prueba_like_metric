@@ -5,11 +5,15 @@ import { useParams } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Radio from '@material-ui/core/Radio';
+import TableContainer from '@material-ui/core/TableContainer';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
 import { useSnackbar } from 'notistack';
 import {
@@ -22,6 +26,7 @@ import IncrementServices from '../../../../../../services/increments/IncrementsS
 import Increment2Services from '../../../../../../services/incrementsV2/incrementsService';
 import ConfirmDialog from './ConfirmDialog';
 import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
+import Styles from './Strategies.module.scss';
 
 const services = {
   strategy: new StrategyServices(),
@@ -38,6 +43,7 @@ const Strategies = ({
   onFetchedData,
   startApiLoading,
   stopApiLoading,
+  rows,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -57,7 +63,7 @@ const Strategies = ({
       startApiLoading();
       const lineSelected = strategies.find((s) => s.id === Number(id));
       const arrayIncrementList = strategies.slice(1).map((s) => s.percentage);
-      await services.strategy.putStrategy({
+      await services.increment2.putStrategy({
         id: groupId,
         strategy: Number(id),
         incrementList: lineSelected.percentage,
@@ -80,7 +86,7 @@ const Strategies = ({
   const resetStrategyHandler = async () => {
     try {
       startApiLoading();
-      await services.increment.resetStrategy(groupId);
+      await services.increment2.resetStrategy(groupId);
       const response = await services.increment2.getIncrementsAndStrategy(
         towerId,
       );
@@ -103,50 +109,51 @@ const Strategies = ({
     <>
       <Paper>
         <Box p={3}>
-          <Box mb={2}>
-            <Typography variant="h5">Estrategias</Typography>
-          </Box>
-          <Box mb={2}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">
-                Seleccione una estrategia (Frecuencia de incremento):
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-label="estrategia"
-                value={isReset ? null : strategy}
-                onChange={(event) => {
-                  setSelectedStrategy(event.target.value);
-                  setSelectStrategyConfirmationDialogOpen(true);
-                }}
-              >
-                <FormControlLabel
-                  value={1}
-                  disabled={!(strategies && strategies.length >= 2) || !isReset}
-                  control={<Radio />}
-                  label="Continua (1)"
-                />
-                <FormControlLabel
-                  value={3}
-                  disabled={!(strategies && strategies.length >= 3) || !isReset}
-                  control={<Radio />}
-                  label="Semi-continua (3)"
-                />
-                <FormControlLabel
-                  value={9}
-                  disabled={!(strategies && strategies.length >= 4) || !isReset}
-                  control={<Radio />}
-                  label="Semi-escalonada (9)"
-                />
-                <FormControlLabel
-                  value={18}
-                  disabled={!(strategies && strategies.length >= 5) || !isReset}
-                  control={<Radio />}
-                  label="Escalonada (18)"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Box>
+          <Typography variant="h5">Estrategias</Typography>
+        </Box>
+        <RadioGroup
+          row
+          aria-label="estrategia"
+          value={isReset ? null : strategy}
+          onChange={(event) => {
+            if (isReset || !strategy) {
+              setSelectedStrategy(event.target.value);
+              setSelectStrategyConfirmationDialogOpen(true);
+            }
+          }}
+        >
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="checkbox" />
+                  <TableCell>Estrategia</TableCell>
+                  <TableCell>Tasa e.a</TableCell>
+                  <TableCell>Frecuencia Inc</TableCell>
+                  <TableCell>Tasa Fr</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row, index) => (
+                  <TableRow key={`strategy-${index}`}>
+                    <TableCell classes={{ root: Styles.radioButtonCell }}>
+                      <FormControlLabel
+                        disabled={strategy && !isReset}
+                        value={row.frequency}
+                        control={<Radio />}
+                      />
+                    </TableCell>
+                    <TableCell>{row.strategy}</TableCell>
+                    <TableCell>{row.AER}</TableCell>
+                    <TableCell>{row.frequency}</TableCell>
+                    <TableCell>{row.frequencyRate}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </RadioGroup>
+        <Box p={3}>
           <Button
             color="secondary"
             variant="contained"
@@ -197,6 +204,17 @@ Strategies.propTypes = {
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
+  rows: PropTypes.array,
+};
+
+const mapStrategyForSelector = (strategy) => {
+  if (!strategy.id) return [];
+  return {
+    strategy: strategy.label[0],
+    AER: `${Number(strategy.EARate * 100).toFixed(2)}%`,
+    frequency: strategy.id,
+    frequencyRate: `${Number(strategy.percentage * 100).toFixed(2)}%`,
+  };
 };
 
 const mapStateToProps = (state) => {
@@ -205,12 +223,15 @@ const mapStateToProps = (state) => {
   const { strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
+  const strategies = group ? group.strategies : [];
+  const rows = strategies.flatMap(mapStrategyForSelector);
 
   return {
     strategy,
     isReset,
-    strategies: group ? group.strategies : null,
+    strategies,
     groupId: group ? group.id : null,
+    rows,
   };
 };
 

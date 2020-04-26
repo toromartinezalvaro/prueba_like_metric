@@ -4,6 +4,7 @@ import commonStyles from '../../assets/styles/variables.scss';
 import ContractFlowService from '../../services/contractFlow/contractFlowService';
 import TablesContractFlow from '../../components/ContractFlow2/TablesContractFlow';
 import styles from './ContractFlow.module.scss';
+import { CircularProgress } from '@material-ui/core';
 
 const ContractFlow = (props) => {
   const [data, setData] = useState([]);
@@ -15,7 +16,7 @@ const ContractFlow = (props) => {
       try {
         const res = await service.getContractsInformation(TOWER_ID);
         setData(res.data);
-        setLoading(!loading)
+        setLoading(!loading);
       } catch (error) {
         console.log(error);
       }
@@ -24,12 +25,7 @@ const ContractFlow = (props) => {
   }, []);
   return loading ? (
     <div className={styles.Loader} key="loader">
-      <Loader
-        type="ThreeDots"
-        color={commonStyles.mainColor}
-        height="100"
-        width="100"
-      />
+      <CircularProgress />
     </div>
   ) : (
     <React.Fragment>

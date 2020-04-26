@@ -44,7 +44,11 @@ const ExpandGeneralInfo = ({
   noError,
 }) => {
   return (
-    <ExpansionPanel className={styles.expansionPanel} mb={4} expanded={true}>
+    <ExpansionPanel
+      classes={{ root: styles.expansionPanel }}
+      mb={4}
+      expanded={true}
+    >
       <ExpansionPanelSummary aria-controls="generalInformationContent">
         <Typography className={styles.heading}>
           <div className={`${styles.circleIcon}  ${styles.circleColorGeneral}`}>

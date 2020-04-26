@@ -44,28 +44,23 @@ const detailWidget = [
     ]}
     key={uuidV4()}
   />,
-  <ProjectedIncrement field key={uuidV4()} />,
-  <EARateWidget key={uuidV4()} />,
 ];
 
 const mainPriceWidgets = [
-  <Sales key={uuidV4()} />,
-  <AveragePrice key={uuidV4()} />,
-  <PricePerM2 key={uuidV4()} />,
+  <Sales key={uuidV4()} projected />,
+  <AveragePrice key={uuidV4()} projected />,
+  <PricePerM2 key={uuidV4()} projected />,
 ];
 
 const detailsPriceWidgets = [<PriceDetailsGroup key={uuidV4()} />];
 
 const InventoryOverview = ({
-  totalUnits,
-  salesUnits,
+  units,
   averageArea,
   strategy,
   view,
   onViewChange,
 }) => {
-  const units = totalUnits - salesUnits;
-
   const changeViewHandler = () => {
     if (view === MAIN_VIEW) {
       onViewChange(DETAILS_VIEW);
@@ -107,8 +102,7 @@ const InventoryOverview = ({
 };
 
 InventoryOverview.propTypes = {
-  totalUnits: PropTypes.number.isRequired,
-  salesUnits: PropTypes.number.isRequired,
+  units: PropTypes.number.isRequired,
   averageArea: PropTypes.number.isRequired,
   strategy: PropTypes.number.isRequired,
   view: PropTypes.oneOf([MAIN_VIEW, DETAILS_VIEW]),
@@ -116,12 +110,11 @@ InventoryOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { total, sales, inventory, strategy } = state.strategy.root.groups[
+  const { inventory, strategy } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
-    totalUnits: total.units,
-    salesUnits: sales.units,
+    units: inventory.units,
     averageArea: inventory.averageArea,
     strategy,
     view: state.strategy.overviews.view,

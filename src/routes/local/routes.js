@@ -125,6 +125,10 @@ export const Quotation = {
   array: [DashboardRoutes.base + DashboardRoutes.quotations.value],
 };
 
+export const Group = {
+  base: '/groups',
+};
+
 export const UserRoutes = {
   base: DashboardRoutes.base + DashboardRoutes.user,
   slideProjectsOnly: DashboardRoutes.base + ProjectRoutes.base,
@@ -133,4 +137,8 @@ export const UserRoutes = {
   create: '/create',
   assignProjects: '/assignProjects',
   assignCompanies: '/assignCompanies',
+};
+
+export const GroupsRoutes = {
+  base: DashboardRoutes.base + Group.base,
 };

@@ -96,6 +96,10 @@
   width: 22vw !important;
 }
 
+.SelectSimpleForLabel_control {
+  height: 20px !important;
+}
+
 .columnFullLeft {
   display: flex;
   flex-direction: column;
@@ -273,4 +277,36 @@
     width: 15%;
     margin-left: 29%;
   }
+}
+.gridContainerDescription {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: flex-start;
+  align-content: center !important;
+  flex-wrap: wrap;
+  align-self: center !important;
+  width: 120vh !important;
+  position: relative;
+  left: 12%;
+  margin: 0 0 0 -10%;
+}
+.labelWordLength {
+  margin: 0 0 0 1%;
+}
+
+.noCaracteres {
+  color: $red-color;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.normalCaracter {
+  color: $main-color;
+  font-size: 16px;
+}
+
+.optionMenu {
+  z-index: 999999999;
+  height: 2vh !important;
 }

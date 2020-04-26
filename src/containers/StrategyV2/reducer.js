@@ -12,13 +12,16 @@ import {
   CHANGE_SUGGESTED_EA,
   CHANGE_SUMMARY,
   CHANGE_MARKET__LINE,
+  FETCH_DATA__EMPTY,
 } from './actions';
 import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings';
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
 import { reducer as APILoaderReducer } from '../../components/StrategyV2/Loader';
+import { reducer as SalesWizardReducer } from '../../components/StrategyV2/Overviews/InventoryOverview/InfoWidgets/SalesWizard';
 
 export const initialState = {
   loading: false,
+  isEmpty: false,
   selectedGroup: 1,
   strategyLines: [],
   groups: {
@@ -26,8 +29,12 @@ export const initialState = {
       id: 568,
       name: '',
       total: {
-        l0: 1000,
+        salesWhitoutIncrements: 1000,
         units: 10,
+        sales: 0,
+        averagePrice: 0,
+        rotationMonths: 0,
+        pricePerM2: 0,
         averageArea: 4,
         increment: 56.2,
         saleSpeed: 1,
@@ -35,21 +42,34 @@ export const initialState = {
         incrementRate: 0,
       },
       sales: {
-        l0: 500,
+        salesWhitoutIncrements: 500,
         units: 5,
+        sales: 0,
+        averagePrice: 0,
+        rotationMonths: 0,
+        pricePerM2: 0,
         averageArea: 4,
         increment: 10.1,
         saleSpeed: 1,
         EARate: 0,
       },
       inventory: {
-        l0: 500,
+        salesWhitoutIncrements: 500,
+        units: 0,
         averageArea: 4,
         saleSpeed: 1,
         EARate: 0.1269,
         appliedIncrement: 25.5,
         suggestedEffectiveAnnualInterestRate: 0,
         suggestedIncrement: 0,
+        rotationMonths: 0,
+        projectedIncrement: 0,
+        salesProjected: 0,
+        baseValueProjected: 0,
+        baseValuePerM2Projected: 0,
+        salesToToday: 0,
+        baseValueToToday: 0,
+        baseValuePerM2ToToday: 0,
       },
       strategy: 3,
       market: {
@@ -225,6 +245,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        isEmpty: false,
+      };
+    }
+    case FETCH_DATA__EMPTY: {
+      return {
+        ...state,
+        isEmpty: true,
+        loading: false,
       };
     }
     case FETCH_DATA__INIT: {
@@ -260,4 +288,5 @@ export default combineReducers({
   settings: SettingsReducer,
   overviews: OverviewReducer,
   api: APILoaderReducer,
+  salesWizard: SalesWizardReducer,
 });

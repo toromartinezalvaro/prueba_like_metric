@@ -62,20 +62,40 @@
 }
 
 .buttons {
-  margin-left: 2% !important;
+  margin-left: 5% !important;
 }
 
 .attachment {
-  display: flex !important;
-  flex: 1;
-  flex-direction: row;
-  width: 65vw;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 2%;
+  width: 100% !important;
 }
 
 .CardAttach {
   display: flex !important;
   flex: 1;
   flex-direction: row;
+  width: 100% !important;
+}
+
+.cardModify {
+  margin-bottom: 2% !important;
+}
+.attachmentUrl {
+  display: grid !important;
+  grid-template-columns: 10em 2em !important;
+  column-gap: 3em !important;
+  align-content: center !important;
+  width: 100% !important;
+}
+
+.urlcontainer {
+  justify-content: center;
+}
+
+.btncont {
+  columns: 2;
 }
 
 .inputs {
@@ -87,8 +107,7 @@
   width: 65vw !important;
 }
 
-
-@media(max-width: 1440px) { 
+@media (max-width: 1440px) {
   .cardAttachment {
     margin-left: 15vw !important;
   }

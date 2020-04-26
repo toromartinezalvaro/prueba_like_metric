@@ -13,24 +13,23 @@
   justify-content: center !important;
   align-content: space-between !important;
   position: relative;
-  left: 35%;
-  overflow-y: scroll;
 }
 
 .container {
-  background-color: $main-color !important;
-  color: $defaultWhite-color !important;
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-  align-content: space-between !important;
-  border-radius: 5px !important;
+  width: 90% !important;
+  height: 80% !important;
+  margin-left: 7% !important;
 }
 
+.header {
+  width: 10vw !important;
+  align-self: center;
+}
 .header,
 .content {
-  margin: 10px !important;
+  margin: 10px 12px 10px -5px !important;
 }
 
 .dataContainer {
@@ -40,6 +39,9 @@
   justify-content: center !important;
   align-content: space-between !important;
   border-radius: 5px !important;
+  text-align: center !important;
+  align-self: center !important;
+  margin-left: -2% !important;
 }
 
 .wrapperInternal:hover {
@@ -48,10 +50,10 @@
 }
 
 .Loader {
+  width: 100% !important;
   align-self: center !important;
-  position: relative;
-  left: 45% !important;
-  overflow-x: hidden;
+  align-items: center;
+  margin: 25vh 0 0 32vw !important;
 }
 
 .noContractBody {
@@ -63,20 +65,23 @@
 
 .header,
 .content {
-  width: 8vw;
+  width: 9vw;
+  align-self: center;
   margin-top: 1% !important;
 }
 
+.header {
+  align-self: center;
+  text-align: center;
+}
+
+.status,
 .title {
   width: 14vw;
   margin-top: 2%;
   text-align: center;
+  align-self: center;
 }
-
-.container,
-.dataContainer {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: 100px 100px 100px 100px 100px 100px;
-  grid-template-rows: 150px 150px;
+.grid {
+  width: 100% !important;
 }

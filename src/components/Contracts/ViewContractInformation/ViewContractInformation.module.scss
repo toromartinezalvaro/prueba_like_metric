@@ -127,18 +127,59 @@
   margin-right: 2% !important;
 }
 
-.deleteButton,
-.ViewContractInformation_deleteButton__FcTkr {
-  background-color: #d50000 !important;
-  color: $defaultWhite-color !important;
-}
-
 .Totalbills {
   display: grid;
-  grid-template-columns: 12% 0.5%;
+  grid-template-columns: 50% 0.5%;
 }
 
 .totalAmount {
   position: relative;
   top: 30%;
+}
+
+.containerPaymentInformation {
+  display: grid !important;
+  grid-template-columns: 18em 16em 18em;
+  column-gap: 0.5em;
+  font-size: 12px;
+  margin: -5% 0 0 -5% !important;
+  width: 10vw !important;
+}
+
+.tittlePayment {
+  margin: 2% 0 2% -5% !important;
+}
+
+.resumeLabel {
+  display: grid;
+  grid-template-columns: 14em 5em;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeLabel2 {
+  display: grid;
+  grid-template-columns: 15em 1px;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeLabel3 {
+  display: grid;
+  grid-template-columns: 12em 1px;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeValue {
+  margin-top: -3% !important;
+  justify-self: center;
+}
+.expandContainer {
+  padding: 0 !important;
+}
+.cardForm {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0 0 0 5%;
 }

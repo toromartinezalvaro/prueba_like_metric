@@ -5,12 +5,10 @@ import uuidV4 from 'uuid/v4';
 import NumberFormat from 'react-number-format';
 import Widget, { SM, MD } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
-import Numbers from '../../../../helpers/numbers';
 
 const ProjectedSalesWidget = ({
-  totalIncrement,
-  salesIncrement,
-  l0,
+  salesWhitoutIncrements,
+  salesProjected,
   showPricesWithoutIncrement,
 }) => {
   return (
@@ -24,7 +22,7 @@ const ProjectedSalesWidget = ({
           size={showPricesWithoutIncrement ? SM : MD}
         >
           <NumberFormat
-            value={Numbers.toFixed(l0 + totalIncrement - salesIncrement)}
+            value={Math.round(salesProjected)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -37,7 +35,7 @@ const ProjectedSalesWidget = ({
           size={SM}
         >
           <NumberFormat
-            value={Numbers.toFixed(l0)}
+            value={Math.round(salesWhitoutIncrements)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -49,20 +47,18 @@ const ProjectedSalesWidget = ({
 };
 
 ProjectedSalesWidget.propTypes = {
-  totalIncrement: PropTypes.number.isRequired,
-  salesIncrement: PropTypes.number.isRequired,
-  l0: PropTypes.number.isRequired,
+  salesProjected: PropTypes.number.isRequired,
+  salesWhitoutIncrements: PropTypes.number.isRequired,
   showPricesWithoutIncrement: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { total, sales, inventory } = state.strategy.root.groups[
+  const { inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
-    totalIncrement: total.increment,
-    salesIncrement: sales.increment,
-    l0: inventory.l0,
+    salesProjected: inventory.salesProjected,
+    salesWhitoutIncrements: inventory.salesWhitoutIncrements,
     showPricesWithoutIncrement:
       state.strategy.settings.showPricesWithoutIncrement,
   };

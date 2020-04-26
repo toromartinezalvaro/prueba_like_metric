@@ -8,15 +8,16 @@ import Widget, { SM } from '../../Shared/Widget';
 import Numbers from '../../../../helpers/numbers';
 
 const SalesOverview = ({
-  l0,
   increment,
+  sales,
+  averagePrice,
+  rotationMonths,
+  pricePerM2,
   units,
   averageArea,
   saleSpeed,
   EARate,
 }) => {
-  const sales = l0 + increment;
-  const averagePrice = sales / units;
   return (
     <Overview
       title={<Typography variant="h5">Detalles de lo vendido</Typography>}
@@ -29,14 +30,14 @@ const SalesOverview = ({
         </Widget>,
         <Widget
           key="Sales-InventoryRotation"
-          title="Rotacion de intentario"
+          title="Rotacion de inventario"
           size={SM}
         >
-          {Numbers.toFixed(units / saleSpeed)}
+          {rotationMonths}
         </Widget>,
         <Widget key="Sales-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(increment)}
+            value={Math.round(increment)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -49,7 +50,7 @@ const SalesOverview = ({
       priceWidgets={[
         <Widget key="Sales-Sales" title="Ventas" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(sales)}
+            value={Math.round(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -57,7 +58,7 @@ const SalesOverview = ({
         </Widget>,
         <Widget key="Sales-AverageSales" title="Precio promedio" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(averagePrice)}
+            value={Math.round(averagePrice)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -65,7 +66,7 @@ const SalesOverview = ({
         </Widget>,
         <Widget key="Sales-M2Price" title="Valor m²" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(averagePrice / averageArea)}
+            value={Math.round(pricePerM2)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -77,8 +78,11 @@ const SalesOverview = ({
 };
 
 SalesOverview.propTypes = {
-  l0: PropTypes.number.isRequired,
   increment: PropTypes.number.isRequired,
+  sales: PropTypes.number.isRequired,
+  averagePrice: PropTypes.number.isRequired,
+  rotationMonths: PropTypes.number.isRequired,
+  pricePerM2: PropTypes.number.isRequired,
   units: PropTypes.number.isRequired,
   averageArea: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
@@ -90,8 +94,11 @@ const mapStateToProps = (state) => {
     state.strategy.root.selectedGroup
   ];
   return {
-    l0: sales.l0,
     increment: sales.increment,
+    sales: sales.sales,
+    averagePrice: sales.averagePrice,
+    rotationMonths: sales.rotationMonths,
+    pricePerM2: sales.pricePerM2,
     units: sales.units,
     averageArea: sales.averageArea,
     saleSpeed: sales.saleSpeed,

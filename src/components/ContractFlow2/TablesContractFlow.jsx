@@ -28,7 +28,7 @@ const TablesContractFlow = ({ billings }) => {
   ]);
 
   const [tableColumnExtensions, setTableColumnExtensions] = useState([
-    { columnName: 'contract', width: 210 },
+    { columnName: 'contract', width: 300 },
     { columnName: 'acumulated', width: 110 },
     { columnName: 'projected', width: 110 },
     { columnName: 'total', width: 110 },
@@ -44,6 +44,7 @@ const TablesContractFlow = ({ billings }) => {
         thousandSeparator
         displayType={'text'}
         isNumericString
+        decimalSeparator={false}
         prefix="$"
       />
     );
@@ -99,7 +100,7 @@ const TablesContractFlow = ({ billings }) => {
       const indexOfColumn = `date${index - 1}`;
       const valueOfColumn = columnsData[indexOfColumn][0].props.value;
       const dateIsLessThanCurrent =
-        numericIndexOfColumn <= numericIndexOfCurrentDate;
+        numericIndexOfColumn < numericIndexOfCurrentDate;
       if (dateIsLessThanCurrent) {
         valueTotal += valueOfColumn;
       }
@@ -124,7 +125,7 @@ const TablesContractFlow = ({ billings }) => {
       const indexOfColumn = `date${index - 1}`;
       const valueOfColumn = columnsData[indexOfColumn][0].props.value;
       const dateIsBiggerThanCurrent =
-        numericIndexOfColumn > numericIndexOfCurrentDate;
+        numericIndexOfColumn >= numericIndexOfCurrentDate;
       if (dateIsBiggerThanCurrent) {
         valueTotal += valueOfColumn;
       }

@@ -9,17 +9,17 @@ import WidgetGroup from '../../Shared/WidgetGroup';
 import Numbers from '../../../../helpers/numbers';
 
 const TotalOverView = ({
-  l0,
   increment,
+  sales,
+  averagePrice,
+  rotationMonths,
+  pricePerM2,
   units,
   averageArea,
   saleSpeed,
   EARate,
   incrementRate,
 }) => {
-  const sales = l0 + increment;
-  const averagePrice = sales / units;
-
   return (
     <Overview
       title={<Typography variant="h5">Detalle del Total</Typography>}
@@ -32,14 +32,14 @@ const TotalOverView = ({
         </Widget>,
         <Widget
           key="Total-InventoryRotation"
-          title="Rotacion de intentario"
+          title="Rotacion de inventario"
           size={SM}
         >
-          {Numbers.toFixed(units / saleSpeed)}
+          {rotationMonths}
         </Widget>,
         <Widget key="Total-Increment" title="Incremento en pesos" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(increment)}
+            value={Math.round(increment)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -69,7 +69,7 @@ const TotalOverView = ({
       priceWidgets={[
         <Widget key="Total-Sales" title="Ventas" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(sales)}
+            value={Math.round(sales)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -77,7 +77,7 @@ const TotalOverView = ({
         </Widget>,
         <Widget key="Total-AverageSales" title="Precio promedio" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(averagePrice)}
+            value={Math.round(averagePrice)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -85,7 +85,7 @@ const TotalOverView = ({
         </Widget>,
         <Widget key="Total-M2Price" title="Valor m²" size={SM}>
           <NumberFormat
-            value={Numbers.toFixed(averagePrice / averageArea)}
+            value={Math.round(pricePerM2)}
             displayType="text"
             prefix="$"
             thousandSeparator
@@ -97,8 +97,11 @@ const TotalOverView = ({
 };
 
 TotalOverView.propTypes = {
-  l0: PropTypes.number.isRequired,
   increment: PropTypes.number.isRequired,
+  sales: PropTypes.number.isRequired,
+  averagePrice: PropTypes.number.isRequired,
+  rotationMonths: PropTypes.number.isRequired,
+  pricePerM2: PropTypes.number.isRequired,
   units: PropTypes.number.isRequired,
   averageArea: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
@@ -111,8 +114,11 @@ const mapStateToProps = (state) => {
     state.strategy.root.selectedGroup
   ];
   return {
-    l0: total.l0,
     increment: total.increment,
+    sales: total.sales,
+    averagePrice: total.averagePrice,
+    rotationMonths: total.rotationMonths,
+    pricePerM2: total.pricePerM2,
     units: total.units,
     averageArea: total.averageArea,
     saleSpeed: total.saleSpeed,

@@ -21,26 +21,81 @@ $blue-billing: #d9e9ff;
 
 .informationColumns {
   display: grid;
-  grid-template-columns: 20em 10em 13em 18em;
+  grid-template-columns: 20em 12em 13em 18em;
   grid-auto-rows: row dense;
+}
+
+.tittlePayment {
+  margin: 2% 0 3% -5% !important;
+}
+.containerPaymentInformation {
+  display: grid !important;
+  grid-template-columns: 20em 17em 20em;
+  column-gap: 0.5em;
+  font-size: 16px;
+  margin: -5% 0 0 -5% !important;
+  width: 10vw !important;
+}
+
+.resumeLabel {
+  display: grid;
+  grid-template-columns: 15em 2.5em;
+  column-gap: 0.5em;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeLabel2 {
+  display: grid;
+  grid-template-columns: 14em 4em;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeLabel3 {
+  display: grid;
+  grid-template-columns: 9em 4.5em;
+  column-gap: 1em;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeValue {
+  margin-top: -3% !important;
+  justify-self: center;
 }
 
 .col1 {
   grid-column: 1;
   grid-row: 1;
+  width: 100% !important;
 }
 
 .col2 {
   grid-row: 1;
   grid-column: 2;
+  width: 85%;
+  margin-left: 15% !important;
 }
 .col3 {
   grid-row: 1;
   grid-column: 3;
 }
 .col4 {
+  padding-top: 1.5%;
   grid-row: 1;
   grid-column: 4;
+}
+
+.column2 {
+  display: grid;
+  column-gap: 1em;
+  grid-template-columns: 14em 2em;
+}
+.column1 {
+  display: grid;
+  column-gap: 1em;
+  grid-template-columns: 13em 2em;
 }
 
 .textFieldIvaLarge {
@@ -52,11 +107,17 @@ $blue-billing: #d9e9ff;
   display: flex;
   flex-direction: column;
   align-items: center !important;
-  margin-top: -5%;
+  margin-top: -6%;
 }
 
 .amountValue {
-  margin-top: -6% !important;
+  margin-top: -7% !important;
+  margin-left: 1%;
+  justify-self: center;
+}
+
+.amountValueCol4 {
+  margin-top: -5% !important;
   margin-left: 1%;
   justify-self: center;
 }
@@ -68,6 +129,10 @@ $blue-billing: #d9e9ff;
   flex: 1;
   margin-right: 2%;
   width: 10% !important;
+}
+
+.expandContainer {
+  padding: 0 !important;
 }
 
 .columnFullRigth {
@@ -82,7 +147,7 @@ $blue-billing: #d9e9ff;
 }
 
 .textField {
-  width: 20vw !important;
+  width: 100% !important;
   z-index: 0 !important;
   margin-right: 3% !important;
 }
@@ -141,14 +206,12 @@ $blue-billing: #d9e9ff;
 }
 
 .amount {
-  margin-top: -1%;
-  margin-left: 1%;
+  margin-top: -2%;
   justify-self: center;
 }
 
 .TotalAmount {
-  margin-top: 2.5% !important;
-  margin-left: 1%;
+  align-self: center;
   justify-self: center;
 }
 
@@ -167,9 +230,9 @@ $blue-billing: #d9e9ff;
 }
 
 .Totalbills {
-  display: flex;
-  flex-direction: row;
-  width: 62vw;
+  display: grid;
+  grid-template-columns: repeat(2, 19em);
+  column-gap: 1em;
   background-color: $blue-billing;
   padding-left: 3%;
   margin-left: 1.5%;
@@ -209,10 +272,6 @@ $blue-billing: #d9e9ff;
   margin-right: 15%;
 }
 
-.tittlePayment {
-  margin-right: 5%;
-}
-
 .tittleForProjection {
   margin-top: 0% !important;
   margin-left: -2%;
@@ -226,14 +285,18 @@ $blue-billing: #d9e9ff;
 }
 
 .amountSection {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 20em 15em 16em 16em;
+  column-gap: 0.5em;
+  align-content: center;
+  align-items: center;
 }
 .amountIva {
   display: flex;
   flex-direction: column;
-  width: 25vw;
-  margin-left: 0px;
+  margin-top: -5%;
+  align-self: center;
+  align-content: center;
 }
 .amountIvaTotal {
   display: flex;
@@ -283,4 +346,10 @@ $blue-billing: #d9e9ff;
 .picker {
   margin-top: -2% !important;
   margin-left: -7% !important;
+}
+.cardContainer {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  margin-bottom: 5% !important;
 }
