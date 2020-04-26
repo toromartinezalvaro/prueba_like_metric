@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import { useSnackbar } from 'notistack';
@@ -24,6 +24,7 @@ const Strategy = ({
   isEmpty,
 }) => {
   const { towerId } = useParams();
+  const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Strategy = ({
       }
     }
     fetch();
-  }, [towerId]);
+  }, [towerId, location]);
 
   return (
     <Loader isLoading={loading}>

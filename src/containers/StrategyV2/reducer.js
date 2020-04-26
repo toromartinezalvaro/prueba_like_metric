@@ -245,6 +245,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        isEmpty: false,
       };
     }
     case FETCH_DATA__EMPTY: {
