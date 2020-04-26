@@ -5,9 +5,23 @@
  */
 
 import React, { Component } from 'react';
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Paper,
+  CircularProgress,
+} from '@material-ui/core';
 import Loader from 'react-loader-spinner';
 import moment from 'moment';
+import {
+  Grid,
+  TableSelection,
+  TableHeaderRow,
+  Table,
+  VirtualTable,
+} from '@devexpress/dx-react-grid-material-ui';
+import { SelectionState } from '@devexpress/dx-react-grid';
 import ContractService from '../../../services/contract/contractService';
 import newContract from '../NewContract/NewContract';
 import ViewContractInformation from '../ViewContractInformation/ViewContractInformation';
@@ -30,6 +44,12 @@ class ContractList extends Component {
       isLoading: true,
       contractAvailable: true,
       events: [],
+      columns: [
+        { name: 'title', title: 'Titulo' },
+        { name: 'partner', title: 'Socio' },
+        { name: 'group', title: 'Grupo' },
+        { name: 'status', title: 'Estado' },
+      ],
     };
     this.services = new ContractService();
     this.service = new ContractFlowService();
@@ -171,42 +191,33 @@ class ContractList extends Component {
       const group = allGroups.map((element) => {
         return element.value === contract.groupId && element.label;
       });
-      return (
-        <div
-          className={style.wrapperInternal}
-          key={contract.id}
-          value={contract.id}
-          onClick={this.editContractOpened(contract.id)}
-        >
-          <div className={style.dataContainer}>
-            <div className={style.content}>{contract.title}</div>
-            <div className={style.content}>{partner}</div>
-            <div className={style.content}>{group}</div>
-            <div className={style.content}>{status}</div>
-          </div>
-        </div>
-      );
+
+      return {
+        id: contract.id,
+        title: contract.title,
+        partner,
+        group,
+        status,
+      };
     });
+  };
+
+  TableCell = ({ tableRow, ...restProps }) => {
+    return (
+      <Table.Cell
+        {...restProps}
+        onClick={this.editContractOpened(tableRow.row.id)}
+      />
+    );
   };
 
   render() {
     return (
       <div className={style.wrapper}>
         <div className={style.grid}>
-          <div className={style.container}>
-            <div className={style.header}>Titulo</div>
-            <div className={style.header}>Socio de Negocios</div>
-            <div className={style.header}>Grupo</div>
-            <div className={style.header}>Estado</div>
-          </div>
           {this.state.isLoading ? (
             <div className={style.Loader} key="loader">
-              <Loader
-                type="ThreeDots"
-                color={commonStyles.mainColor}
-                height="100"
-                width="100"
-              />
+              <CircularProgress />
             </div>
           ) : this.state.contractAvailable ? (
             <EmptyContentMessageView
@@ -214,7 +225,12 @@ class ContractList extends Component {
               message="Es fácil, debes hacer click en el botón superior y llenar el formulario"
             />
           ) : (
-            <div>{this.displayData()}</div>
+            <Paper classes={{ root: style.container }}>
+              <Grid rows={this.displayData()} columns={this.state.columns}>
+                <VirtualTable cellComponent={this.TableCell} />
+                <TableHeaderRow />
+              </Grid>
+            </Paper>
           )}
         </div>
         {this.state.openDataView && (

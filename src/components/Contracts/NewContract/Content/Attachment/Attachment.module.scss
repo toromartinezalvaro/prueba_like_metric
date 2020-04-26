@@ -62,31 +62,40 @@
 }
 
 .buttons {
-  margin-left: 2% !important;
+  margin-left: 5% !important;
 }
 
 .attachment {
-  display: flex !important;
-  flex-direction: row;
-  width: 80vw;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 2%;
+  width: 100% !important;
 }
 
 .CardAttach {
   display: flex !important;
   flex: 1;
   flex-direction: row;
+  width: 100% !important;
 }
 
-.CardAttachUrl {
-  display: grid !important;
-  grid-template-columns: repeat(3, 4em) !important;
-  column-gap: 5em !important;
+.cardModify {
+  margin-bottom: 2% !important;
 }
-
 .attachmentUrl {
-  display: flex !important;
-  flex-direction: row !important;
-  width: 5vw !important;
+  display: grid !important;
+  grid-template-columns: 10em 2em !important;
+  column-gap: 3em !important;
+  align-content: center !important;
+  width: 100% !important;
+}
+
+.urlcontainer {
+  justify-content: center;
+}
+
+.btncont {
+  columns: 2;
 }
 
 .inputs {

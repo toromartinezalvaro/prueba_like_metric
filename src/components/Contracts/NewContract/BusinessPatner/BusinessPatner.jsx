@@ -5,15 +5,18 @@
  */
 
 import React, { Fragment, useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
+import {
+  TextField,
+  Icon,
+  Typography,
+  MenuItem,
+  Button,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import Icon from '@material-ui/core/Icon';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import styles from './BusinessPatner.module.scss';
+import withDefaultLayout from '../../../../HOC/Layouts/Default/withDefaultLayout';
 
 const BusinessPatner = ({
   handleCloseBusinessPatner,
@@ -21,6 +24,7 @@ const BusinessPatner = ({
   updatePartner,
   informationToEdit,
   editable,
+  spawnMessage,
 }) => {
   const [partner, setPartner] = useState({
     patnerName: '',
@@ -43,6 +47,9 @@ const BusinessPatner = ({
   }, []);
 
   const [isShow, setShow] = useState(false);
+  const [regex] = useState(
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+  );
 
   const onChangeInformation = (name) => (e) => {
     setPartner({ ...partner, [name]: e.target.value });
@@ -59,8 +66,12 @@ const BusinessPatner = ({
   };
 
   const sendPartner = () => {
-    newBusinessPartner(partner);
-    handleCloseBusinessPatner();
+    if (regex.test(partner.patnerEmail) || partner.patnerEmail === '') {
+      newBusinessPartner(partner);
+      handleCloseBusinessPatner();
+    } else {
+      spawnMessage('Debe ingresar un email válido', 'error');
+    }
   };
 
   const Option = (props) => {
@@ -220,6 +231,7 @@ const BusinessPatner = ({
             label="Telefono"
             margin="normal"
             variant="outlined"
+            type="Number"
             value={partner.patnerPhone}
             onChange={onChangeInformation('patnerPhone')}
             InputLabelProps={{
@@ -301,4 +313,4 @@ BusinessPatner.propTypes = {
   editable: PropTypes.bool,
 };
 
-export default BusinessPatner;
+export default withDefaultLayout(BusinessPatner);

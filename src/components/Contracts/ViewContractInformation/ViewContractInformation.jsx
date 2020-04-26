@@ -94,6 +94,7 @@ class ViewContractInformation extends Component {
                 <Button
                   variant="contained"
                   className={style.deleteButton}
+                  color="secondary"
                   startIcon={<Icon className="fas fa-trash-alt" />}
                   onClick={this.setOpenDeleteAction}
                 >
@@ -101,7 +102,7 @@ class ViewContractInformation extends Component {
                 </Button>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="default"
                   className={`${style.button} ${style.buttonMargin}`}
                   startIcon={<Icon className="fas fa-ban" />}
                   onClick={this.props.closeViewModal}

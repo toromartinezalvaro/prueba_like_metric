@@ -687,7 +687,7 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('description', true);
-    } else if (requiredInformation.description.length >= 250) {
+    } else if (requiredInformation.description.length > 250) {
       this.props.spawnMessage(
         'La descripción solo puede tener 250 caracteres',
         'error',
