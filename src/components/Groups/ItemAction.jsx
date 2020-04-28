@@ -217,7 +217,7 @@ const ItemAction = ({
   const displayRows = () => {
     const ids = displayIds();
     const rows = displayNames();
-    const data = itemList.forEach((item, index) => {
+    const data = itemList.forEach((_item, index) => {
       const { itemsName } = rows[index];
       ids[index] = { ...ids[index], itemsName };
     });

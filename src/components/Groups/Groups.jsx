@@ -37,6 +37,7 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     createOrUpdateGroup(added[index]);
     setButtonDisabled(false);
     setGroupList(added);
+    setGroup(undefined);
   };
   const deleteFieldFromGroup = (index) => () => {
     const groupListWithoutItemDeleted = [...groupList];
@@ -53,6 +54,11 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     } else {
       setButtonDisabled(false);
     }
+  };
+  const disableFieldEdit = (index) => () => {
+    const listInstance = [...groupList];
+    listInstance[index] = { ...listInstance[index], disabled: true };
+    setGroupList(listInstance);
   };
   const editFieldToGroup = (groupName, index) => () => {
     const groupListItemToEdit = [...groupList];
@@ -81,6 +87,8 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
             defaultValue={groupItem.categoryName}
             disabled={groupItem.disabled}
             onChange={changeGroupItem(index)}
+            classes={{ root: styles.texfieldOptions }}
+            fullWidth
             onMouseEnter={() => hoverMouseAction(index, true)}
             onMouseLeave={() => hoverMouseAction(index, false)}
           />
@@ -104,7 +112,11 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
                 onMouseEnter={() => hoverMouseAction(index, true)}
                 onMouseLeave={() => hoverMouseAction(index, false)}
                 color="secondary"
-                onClick={deleteFieldFromGroup(index)}
+                onClick={
+                  groupItem.disabled
+                    ? deleteFieldFromGroup(index)
+                    : disableFieldEdit(index)
+                }
               >
                 <Icon className="fas fa-times" />
               </Button>
@@ -127,7 +139,7 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
       const index = groupList.length === 0 ? 0 : groupList.length;
       const currentGroup = [
         ...groupArray,
-        { index, name: null, disabled: false },
+        { index, categoryName: null, disabled: false },
       ];
       setButtonDisabled(true);
       setGroupList(currentGroup);

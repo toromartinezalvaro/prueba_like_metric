@@ -23,6 +23,7 @@ $tableWidth: 65%;
 
 .actionsContainer {
   width: $tableWidth;
+  margin-right: 27% !important;
   padding: 1% !important;
 }
 
@@ -59,6 +60,10 @@ $tableWidth: 65%;
 }
 
 .container {
-  width: 76% !important;
-  margin-left: 9% !important;
+  width: 90% !important;
+  margin-left: 4% !important;
+}
+
+.textfieldOptions {
+  width: 100% !important;
 }

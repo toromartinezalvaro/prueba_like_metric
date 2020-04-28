@@ -64,8 +64,9 @@ class Groups extends Component {
     if (group.categoryName) {
       this.services
         .createGroup(group)
-        .then(() => {
+        .then((response) => {
           this.props.spawnMessage('Cambio realizado con éxito', 'success');
+          this.setState({ groups: [...this.state.groups, response.data] });
         })
         .catch(() =>
           this.props.spawnMessage(
@@ -93,8 +94,9 @@ class Groups extends Component {
   createOrUpdateItem = (item) => {
     this.services
       .createItem(item)
-      .then(() => {
+      .then((response) => {
         this.props.spawnMessage('Cambio realizado con éxito', 'success');
+        this.setState({ items: [...this.state.items, response.data] });
       })
       .catch(() =>
         this.props.spawnMessage(
