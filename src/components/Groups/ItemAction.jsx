@@ -24,7 +24,6 @@ const ItemAction = ({
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
-    console.log(items);
     const itemLocked = items.map((singleItem) => {
       const disabledCheked = Object.prototype.hasOwnProperty.call(
         singleItem,
