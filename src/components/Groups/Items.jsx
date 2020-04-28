@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ExpansionPanelDetails,
   ExpansionPanel,
@@ -12,6 +12,9 @@ import styles from './Items.module.scss';
 const Items = ({ groups, items, createOrUpdateItem, deleteItem }) => {
   const [expanded, setExpanded] = useState('No open');
   const [itemsLoaded, setItemsLoaded] = useState(items);
+  useEffect(() => {
+    setItemsLoaded(items);
+  }, [items]);
   const handleChangePanel = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : 'No open');
   };
@@ -24,14 +27,11 @@ const Items = ({ groups, items, createOrUpdateItem, deleteItem }) => {
 
   const setGlobalItemList = (item, deleteCheck) => {
     if (deleteCheck) {
-      const index = items.findIndex(
-        (element) => element.contractCategoryId === item[0].contractCategoryId,
-      );
-      const lastItem = [...items];
-      lastItem[index] = item;
-      setItemsLoaded(lastItem);
+      setItemsLoaded(item);
     } else {
-      const lastItem = [...itemsLoaded];
+      const lastItem = itemsLoaded.map((singleValue) => {
+        return { ...singleValue, disabled: true };
+      });
       lastItem.push(item);
       setItemsLoaded(lastItem);
     }

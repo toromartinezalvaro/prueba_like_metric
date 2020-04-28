@@ -71,11 +71,11 @@ const ItemAction = ({
 
   const deleteFieldFromItem = (index) => () => {
     const itemListWithoutItemDeleted = [...itemList];
-    deleteItem({ id: itemListWithoutItemDeleted[index].id });
     const indexToDelete = itemListWithoutItemDeleted.filter(
-      (itemValue, i) => i !== index,
+      (itemValue, i) => itemValue.PUC !== itemListWithoutItemDeleted[index].PUC,
     );
     setItemList(indexToDelete);
+    deleteItem({ id: itemListWithoutItemDeleted[index].id }, indexToDelete);
     setGlobalItemList(indexToDelete, true);
     const validation = indexToDelete.find(
       (itemValue) =>
