@@ -41,10 +41,10 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
   };
   const deleteFieldFromGroup = (index) => () => {
     const groupListWithoutItemDeleted = [...groupList];
-    deleteGroup({ id: groupListWithoutItemDeleted[index].id });
     const indexToDelete = groupListWithoutItemDeleted.filter(
       (groupItem, i) => i !== index,
     );
+    deleteGroup({ id: groupListWithoutItemDeleted[index].id }, indexToDelete);
     setGroupList(indexToDelete);
     const validation = indexToDelete.find(
       (item) => item.disabled === false || item.disabled === undefined,

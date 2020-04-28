@@ -29,7 +29,9 @@ const Items = ({ groups, items, createOrUpdateItem, deleteItem }) => {
     if (deleteCheck) {
       setItemsLoaded(item);
     } else {
-      const lastItem = [...itemsLoaded];
+      const lastItem = itemsLoaded.map((singleValue) => {
+        return { ...singleValue, disabled: true };
+      });
       lastItem.push(item);
       setItemsLoaded(lastItem);
     }

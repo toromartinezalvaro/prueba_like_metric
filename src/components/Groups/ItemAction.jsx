@@ -24,6 +24,7 @@ const ItemAction = ({
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
+    console.log(items);
     const itemLocked = items.map((singleItem) => {
       const disabledCheked = Object.prototype.hasOwnProperty.call(
         singleItem,
@@ -32,7 +33,7 @@ const ItemAction = ({
       return {
         ...singleItem,
         hoverMouse: false,
-        disabled: true,
+        disabled: !disabledCheked,
       };
     });
     setItemList(itemLocked);
@@ -71,11 +72,11 @@ const ItemAction = ({
 
   const deleteFieldFromItem = (index) => () => {
     const itemListWithoutItemDeleted = [...itemList];
-    deleteItem({ id: itemListWithoutItemDeleted[index].id });
     const indexToDelete = itemListWithoutItemDeleted.filter(
       (itemValue, i) => itemValue.PUC !== itemListWithoutItemDeleted[index].PUC,
     );
     setItemList(indexToDelete);
+    deleteItem({ id: itemListWithoutItemDeleted[index].id }, indexToDelete);
     setGlobalItemList(indexToDelete, true);
     const validation = indexToDelete.find(
       (itemValue) =>

@@ -93,6 +93,11 @@
 
 .SelectSimpleForLabel {
   margin-bottom: 5%;
+  width: 27.9vw !important;
+}
+
+.SelectSimpleForLabelPartner {
+  margin-bottom: 5%;
   width: 22vw !important;
 }
 
@@ -113,6 +118,12 @@
   display: flex;
   flex-direction: column;
   width: 25% !important;
+}
+
+.selectColumnNoButtons {
+  display: flex;
+  flex-direction: column;
+  width: 10% !important;
 }
 
 .buttonColumn {
@@ -286,7 +297,7 @@
   align-content: center !important;
   flex-wrap: wrap;
   align-self: center !important;
-  width: 120vh !important;
+  width: 123vh !important;
   position: relative;
   left: 12%;
   margin: 0 0 0 -10%;

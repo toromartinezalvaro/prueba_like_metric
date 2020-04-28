@@ -239,13 +239,13 @@ const GeneralInfo = ({
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
               <Select
-                className={styles.SelectSimpleForLabel}
+                className={styles.SelectSimpleForLabelPartner}
                 required
                 maxMenuHeight={250}
                 inputId="select1"
                 autoWidth={false}
                 autoComplete="off"
-                classes={{ root: styles.SelectSimpleForLabel }}
+                classes={{ root: styles.SelectSimpleForLabelPartner }}
                 TextFieldProps={{
                   label: 'Socio de negocios',
                   InputLabelProps: {
@@ -331,29 +331,6 @@ const GeneralInfo = ({
               />
               {<div className={styles.errorFieldGroup}>{errors.group}</div>}
             </div>
-            {agent.isAuthorized([Role.Admin, Role.Super]) && (
-              <div className={styles.buttonColumn}>
-                <Fab
-                  color="primary"
-                  size="small"
-                  aria-label="add"
-                  className={styles.fab}
-                  onClick={handleOpenCategory}
-                >
-                  <AddIcon />
-                </Fab>
-                <Fab
-                  color="secondary"
-                  mx={2}
-                  size="small"
-                  aria-label="edit"
-                  className={styles.fab}
-                  onClick={searchForCategory}
-                >
-                  <EditIcon />
-                </Fab>
-              </div>
-            )}
           </div>
         </div>
 
@@ -406,7 +383,7 @@ const GeneralInfo = ({
           />
 
           <div className={styles.gridSubContainerRigth}>
-            <div className={styles.selectColumn}>
+            <div className={styles.selectColumnNoButtons}>
               <FormControl>
                 <Select
                   isDisabled={dataIfEdit ? false : isLockedEdit}
@@ -440,31 +417,6 @@ const GeneralInfo = ({
                 {<div className={styles.errorField}>{errors.item}</div>}
               </FormControl>
             </div>
-            {agent.isAuthorized([Role.Admin, Role.Super]) && (
-              <div className={styles.buttonColumnForItem}>
-                <Fab
-                  disabled={isLockedEdit}
-                  color="primary"
-                  size="small"
-                  aria-label="add"
-                  className={styles.fab}
-                  onClick={handleOpenItem}
-                >
-                  <AddIcon />
-                </Fab>
-                <Fab
-                  disabled={isLockedEdit}
-                  color="secondary"
-                  mx={2}
-                  size="small"
-                  aria-label="edit"
-                  className={styles.fab}
-                  onClick={searchForItem}
-                >
-                  <EditIcon />
-                </Fab>
-              </div>
-            )}
           </div>
         </div>
       </div>
