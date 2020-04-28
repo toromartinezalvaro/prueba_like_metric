@@ -32,7 +32,7 @@ const ItemAction = ({
       return {
         ...singleItem,
         hoverMouse: false,
-        disabled: !disabledCheked,
+        disabled: true,
       };
     });
     setItemList(itemLocked);
@@ -73,7 +73,7 @@ const ItemAction = ({
     const itemListWithoutItemDeleted = [...itemList];
     deleteItem({ id: itemListWithoutItemDeleted[index].id });
     const indexToDelete = itemListWithoutItemDeleted.filter(
-      (itemValue, i) => i !== index,
+      (itemValue, i) => itemValue.PUC !== itemListWithoutItemDeleted[index].PUC,
     );
     setItemList(indexToDelete);
     setGlobalItemList(indexToDelete, true);
