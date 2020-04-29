@@ -280,6 +280,7 @@ class Area extends Component {
 
   updateAreaType = () => {
     this.setState({ modalIsLoading: true });
+
     this.services
       .putArea(this.state.areaTypeId, {
         id: this.state.areaTypeId,
@@ -477,6 +478,7 @@ class Area extends Component {
           towerId={this.props.match.params.towerId}
           areaTypeId={this.state.areaTypeId}
           disableSold={this.state.disableSold}
+          updateInformation={this.updateTableInformation}
         />
       </LoadableContainer>
     );

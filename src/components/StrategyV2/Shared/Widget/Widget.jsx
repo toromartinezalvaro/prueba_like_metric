@@ -35,7 +35,7 @@ const VARIANTS = {
 
 const Widget = ({ title, subtitle, children, size }) => {
   const { padding, headerVariant } = VARIANTS[size];
-  const cols = size === XS ? 6 : 12;
+  const cols = 12;
   return (
     <Paper classes={{ root: Styles.container }}>
       <Box p={size === XS ? 1 : 0}>

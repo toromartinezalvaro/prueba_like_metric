@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -41,9 +42,17 @@ const schema = Yup.object().shape({
   ),
 });
 
-const Prices = ({ open, areaTypeId, towerId, handleClose, disableSold }) => {
+const Prices = ({
+  open,
+  areaTypeId,
+  towerId,
+  handleClose,
+  disableSold,
+  updateInformation,
+}) => {
   const formRef = useRef();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     async function fetch() {
@@ -53,7 +62,7 @@ const Prices = ({ open, areaTypeId, towerId, handleClose, disableSold }) => {
         dispatch(fetchAreasSuccess(res.data));
       } catch (error) {
         dispatch(fetchAreasFailure());
-        console.error(error);
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
       }
     }
     if (open && areaTypeId) {
@@ -67,8 +76,14 @@ const Prices = ({ open, areaTypeId, towerId, handleClose, disableSold }) => {
     }
   };
 
-  const handleSubmit = (values) => {
-    services.updateAreaType(areaTypeId, values);
+  const handleSubmit = async (values) => {
+    try {
+      dispatch(fetchAreasStart());
+      await services.updateAreaType(areaTypeId, values);
+      await updateInformation();
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    }
     handleClose();
   };
 
@@ -181,6 +196,7 @@ Prices.propTypes = {
   towerId: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired,
   disableSold: PropTypes.bool,
+  updateInformation: PropTypes.func.isRequired,
 };
 
 Prices.defaultProps = {

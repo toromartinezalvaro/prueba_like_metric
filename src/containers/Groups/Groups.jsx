@@ -28,7 +28,7 @@ class Groups extends Component {
     };
   }
 
-  componentDidMount() {
+  getGroups = () => {
     this.services
       .getAllGroup()
       .then((response) => {
@@ -40,6 +40,9 @@ class Groups extends Component {
       .catch(() =>
         this.props.spawnMessage('Error al conectar con el servicio', 'error'),
       );
+  };
+
+  getItems = () => {
     this.services
       .getAllItems()
       .then((response) => {
@@ -52,6 +55,11 @@ class Groups extends Component {
       .catch(() =>
         this.props.spawnMessage('Error al conectar con el servicio', 'error'),
       );
+  };
+
+  componentDidMount() {
+    this.getGroups();
+    this.getItems();
   }
 
   handleStep = (activeStep) => () => {
@@ -61,11 +69,17 @@ class Groups extends Component {
   };
 
   createOrUpdateGroup = (group) => {
-    if (group.categoryName) {
+    if (group.categoryName && group.categoryName !== '') {
       this.services
         .createGroup(group)
-        .then(() => {
-          this.props.spawnMessage('Cambio realizado con éxito', 'success');
+        .then((response) => {
+          if (response.data.error) {
+            this.props.spawnMessage(response.data.error, 'error');
+            this.setState({ groups: [...this.state.groups] });
+          } else {
+            this.props.spawnMessage('Cambio realizado con éxito', 'success');
+            this.setState({ groups: [...this.state.groups, response.data] });
+          }
         })
         .catch(() =>
           this.props.spawnMessage(
@@ -78,10 +92,13 @@ class Groups extends Component {
     }
   };
 
-  deleteGroup = (groupToDelete) => {
+  deleteGroup = (groupToDelete, groups) => {
     this.services
       .deleteGroup(groupToDelete)
-      .then(() => this.props.spawnMessage('Grupo borrado con exito', 'success'))
+      .then(() => {
+        this.props.spawnMessage('Grupo borrado con exito', 'success');
+        this.setState({ groups });
+      })
       .catch(() =>
         this.props.spawnMessage(
           'Ha ocurrido un error al borrar el grupo',
@@ -91,23 +108,34 @@ class Groups extends Component {
   };
 
   createOrUpdateItem = (item) => {
-    this.services
-      .createItem(item)
-      .then(() => {
-        this.props.spawnMessage('Cambio realizado con éxito', 'success');
-      })
-      .catch(() =>
-        this.props.spawnMessage(
-          'Ha ocurrido un error al hacer el cambio',
-          'error',
-        ),
-      );
+    const checkRepeat = this.state.items.find(
+      (element) => element.PUC === item.PUC || element.name === item.name,
+    );
+    if (checkRepeat) {
+      this.props.spawnMessage('Este item ya existe', 'error');
+    } else {
+      this.services
+        .createItem(item)
+        .then((response) => {
+          this.props.spawnMessage('Cambio realizado con éxito', 'success');
+          this.setState({ items: [...this.state.items, response.data] });
+        })
+        .catch(() =>
+          this.props.spawnMessage(
+            'Ha ocurrido un error al hacer el cambio',
+            'error',
+          ),
+        );
+    }
   };
 
   deleteItem = (item) => {
     this.services
       .deleteItem(item)
-      .then(() => this.props.spawnMessage('Item borrado con exito', 'success'))
+      .then(() => {
+        this.props.spawnMessage('Item borrado con exito', 'success');
+        this.getItems();
+      })
       .catch(() =>
         this.props.spawnMessage(
           'Ha ocurrido un error al borrar el item',
