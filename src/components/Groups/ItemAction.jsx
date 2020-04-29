@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Fab, Icon, TextField, Button, Paper } from '@material-ui/core';
+import { Fab, Icon, TextField, Button, Paper } from '@material-ui/core';
 import {
   Grid,
   Table,
@@ -7,6 +7,7 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import PropTypes from 'prop-types';
 import styles from './Items.module.scss';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
 const ItemAction = ({
   items,
@@ -14,8 +15,8 @@ const ItemAction = ({
   deleteItem,
   contractCategoryId,
   setGlobalItemList,
+  spawnMessage,
 }) => {
-  const [item, setItem] = useState(undefined);
   const [columns] = useState([
     { name: 'itemsId', title: 'ID' },
     { name: 'itemsName', title: 'NOMBRE' },
@@ -27,7 +28,7 @@ const ItemAction = ({
     const itemLocked = items.map((singleItem) => {
       const disabledCheked = Object.prototype.hasOwnProperty.call(
         singleItem,
-        'disabled',
+        'new',
       );
       return {
         ...singleItem,
@@ -62,19 +63,23 @@ const ItemAction = ({
   const addFieldToItem = (index) => () => {
     const added = [...itemList];
     const selectedItem = added[index];
-    added[index] = { ...selectedItem, disabled: false };
-    createOrUpdateItem(added[index]);
-    setButtonDisabled(false);
-    setItemList(added);
-    setGlobalItemList(added[index]);
+    const checkEmpty =
+      (selectedItem.name !== '' || selectedItem.PUC !== '') &&
+      (selectedItem.name || selectedItem.PUC);
+    if (checkEmpty) {
+      added[index] = { ...selectedItem, disabled: false };
+      createOrUpdateItem(added[index]);
+      setButtonDisabled(false);
+    } else {
+      spawnMessage('El item no debe contener espacios vacíos', 'error');
+    }
   };
 
   const deleteFieldFromItem = (index) => () => {
     const itemListWithoutItemDeleted = [...itemList];
     const indexToDelete = itemListWithoutItemDeleted.filter(
-      (itemValue, i) => itemValue.PUC !== itemListWithoutItemDeleted[index].PUC,
+      (itemValue) => itemValue.PUC !== itemListWithoutItemDeleted[index].PUC,
     );
-    setItemList(indexToDelete);
     deleteItem({ id: itemListWithoutItemDeleted[index].id }, indexToDelete);
     setGlobalItemList(indexToDelete, true);
     const validation = indexToDelete.find(
@@ -112,9 +117,11 @@ const ItemAction = ({
         PUC: null,
         name: null,
         disabled: false,
+        new: true,
         contractCategoryId,
       };
-      const currentItem = [...itemArray, newItem];
+      const currentItem = [...itemArray];
+      currentItem.push(newItem);
       setButtonDisabled(true);
       setItemList(currentItem);
       setGlobalItemList(newItem);
@@ -253,6 +260,7 @@ ItemAction.propTypes = {
   deleteItem: PropTypes.func,
   contractCategoryId: PropTypes.number,
   setGlobalItemList: PropTypes.func,
+  spawnMessage: PropTypes.func,
 };
 
-export default ItemAction;
+export default withDefaultLayout(ItemAction);
