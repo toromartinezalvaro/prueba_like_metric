@@ -62,6 +62,12 @@ class Groups extends Component {
     this.getItems();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.items !== this.state.items) {
+      this.setState({ items: this.state.items });
+    }
+  }
+
   handleStep = (activeStep) => () => {
     this.setState({
       activeStep,
@@ -117,8 +123,13 @@ class Groups extends Component {
       this.services
         .createItem(item)
         .then((response) => {
-          this.props.spawnMessage('Cambio realizado con éxito', 'success');
-          this.setState({ items: [...this.state.items, response.data] });
+          if (response.data.error) {
+            this.props.spawnMessage(response.data.error, 'error');
+            this.setState({ items: this.state.items });
+          } else {
+            this.props.spawnMessage('Cambio realizado con éxito', 'success');
+            this.setState({ items: [...this.state.items, response.data] });
+          }
         })
         .catch(() =>
           this.props.spawnMessage(

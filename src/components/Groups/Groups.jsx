@@ -41,12 +41,18 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
   };
   const deleteFieldFromGroup = (index) => () => {
     const groupListWithoutItemDeleted = [...groupList];
-    const indexToDelete = groupListWithoutItemDeleted.filter(
-      (groupItem, i) => i !== index,
+    const finder = groupListWithoutItemDeleted.find(
+      (groupItem, i) => i === index,
     );
-    deleteGroup({ id: groupListWithoutItemDeleted[index].id }, indexToDelete);
-    setGroupList(indexToDelete);
-    const validation = indexToDelete.find(
+    const groupListWithDeletedItem = groupListWithoutItemDeleted.filter(
+      (groupItem) => groupItem !== finder,
+    );
+    deleteGroup(
+      { id: groupListWithoutItemDeleted[index].id },
+      groupListWithDeletedItem,
+    );
+    setGroupList(groupListWithDeletedItem);
+    const validation = groupListWithDeletedItem.find(
       (item) => item.disabled === false || item.disabled === undefined,
     );
     if (validation) {
@@ -69,14 +75,12 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     groupListItemToEdit[index] = selectedItemToEdited;
     setGroupList(groupListItemToEdit);
   };
-
   const hoverMouseAction = (index, visible) => {
     const added = [...(group || groupList)];
     const selectedGroup = added[index];
     added[index] = { ...selectedGroup, hoverMouse: visible };
     setGroupList(added);
   };
-
   const displayGroupList = () => {
     return groupList.map((groupItem, index) => {
       const groupComponent = (

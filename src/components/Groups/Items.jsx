@@ -24,7 +24,6 @@ const Items = ({ groups, items, createOrUpdateItem, deleteItem }) => {
     );
     return item;
   };
-
   const setGlobalItemList = (item, deleteCheck) => {
     if (deleteCheck) {
       setItemsLoaded(item);
