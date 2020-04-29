@@ -62,12 +62,6 @@ class Groups extends Component {
     this.getItems();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.items !== this.state.items) {
-      this.setState({ items: this.state.items });
-    }
-  }
-
   handleStep = (activeStep) => () => {
     this.setState({
       activeStep,
