@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Step,
-  Stepper,
-  StepLabel,
-  Card,
-  CardContent,
-  CircularProgress,
-} from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Step from '@material-ui/core/Step';
+import Stepper from '@material-ui/core/Stepper';
+import StepLabel from '@material-ui/core/StepLabel';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Group from '../../components/Groups/Groups';
 import Items from '../../components/Groups/Items';
 import Services from '../../services/group/groupService';
@@ -69,41 +67,24 @@ class Groups extends Component {
   };
 
   createOrUpdateGroup = (group) => {
-    if (group.categoryName && group.categoryName !== '') {
-      this.services
-        .createGroup(group)
-        .then((response) => {
-          if (response.data.error) {
-            this.props.spawnMessage(response.data.error, 'error');
-          } else {
-            this.props.spawnMessage('Cambio realizado con éxito', 'success');
-            this.setState({ groups: [...this.state.groups, response.data] });
-          }
-        })
-        .catch(() =>
-          this.props.spawnMessage(
-            'Ha ocurrido un error al hacer el cambio',
-            'error',
-          ),
-        );
+    if (group.categoryName && group.categoryName !== '' && group.index) {
+      const groups = [...this.state.groups];
+      groups[group.index] = group;
+      this.setState({ groups });
+    } else if (group.categoryName && group.categoryName !== '' && group.id) {
+      const groups = [...this.state.groups];
+      const index = groups.findIndex((list) => list.id === group.id);
+      groups[index] = group;
+      this.setState({ groups });
     } else {
       this.props.spawnMessage('Debe agregar un nombre al grupo', 'error');
     }
   };
 
-  deleteGroup = (groupToDelete, groups) => {
-    this.services
-      .deleteGroup(groupToDelete)
-      .then(() => {
-        this.props.spawnMessage('Grupo borrado con exito', 'success');
-        this.setState({ groups });
-      })
-      .catch(() =>
-        this.props.spawnMessage(
-          'Ha ocurrido un error al borrar el grupo',
-          'error',
-        ),
-      );
+  deleteGroup = (groupToDelete) => {
+    this.setState((prevState) => ({
+      groups: prevState.groups.filter((list) => list.id !== groupToDelete),
+    }));
   };
 
   createOrUpdateItem = (item) => {
@@ -147,6 +128,13 @@ class Groups extends Component {
       );
   };
 
+  generateFieldGroup = () => {
+    const group = { categoryName: null, index: this.state.groups.length };
+    this.setState((prevState) => ({
+      groups: [...prevState.groups, group],
+    }));
+  };
+
   stepsContent = (step) => {
     switch (step) {
       case 0:
@@ -155,6 +143,7 @@ class Groups extends Component {
             groups={this.state.groups}
             createOrUpdateGroup={this.createOrUpdateGroup}
             deleteGroup={this.deleteGroup}
+            generateFieldGroup={this.generateFieldGroup}
           />
         );
       case 1:

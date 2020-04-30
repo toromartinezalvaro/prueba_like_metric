@@ -12,7 +12,12 @@ import TableRow from '@material-ui/core/TableRow';
 import GroupItem from './Item';
 import styles from './Groups.module.scss';
 
-const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
+const Group = ({
+  groups,
+  createOrUpdateGroup,
+  deleteGroup,
+  generateFieldGroup,
+}) => {
   return (
     <div className={styles.container}>
       <Paper classes={{ root: styles.container }}>
@@ -24,16 +29,17 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.id}>
-                  {groupList.map((group) => (
-                    <TableRow key={group.id}>
-                      <TableCell align="right">
-                        <GroupItem group={group} />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  <TableCell align="right">{row.groups}</TableCell>
+              {groups.map((group) => (
+                <TableRow key={group.id}>
+                  <TableRow key={group.id}>
+                    <TableCell align="center">
+                      <GroupItem
+                        group={group}
+                        deleteGroup={deleteGroup}
+                        createOrUpdateGroup={createOrUpdateGroup}
+                      />
+                    </TableCell>
+                  </TableRow>
                 </TableRow>
               ))}
             </TableBody>
@@ -44,7 +50,6 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
         <Fab
           color="primary"
           classes={{ root: styles.fabButtonContainer }}
-          disabled={buttonDisabled}
           onClick={generateFieldGroup}
         >
           <Icon className={`fas fa-plus ${styles.fabButton}`} />
@@ -58,6 +63,7 @@ Group.propTypes = {
   groups: PropTypes.array,
   createOrUpdateGroup: PropTypes.func,
   deleteGroup: PropTypes.func,
+  generateFieldGroup: PropTypes.func,
 };
 
 export default Group;
