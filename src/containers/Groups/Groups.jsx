@@ -75,7 +75,6 @@ class Groups extends Component {
         .then((response) => {
           if (response.data.error) {
             this.props.spawnMessage(response.data.error, 'error');
-            this.setState({ groups: [...this.state.groups] });
           } else {
             this.props.spawnMessage('Cambio realizado con éxito', 'success');
             this.setState({ groups: [...this.state.groups, response.data] });
@@ -119,7 +118,6 @@ class Groups extends Component {
         .then((response) => {
           if (response.data.error) {
             this.props.spawnMessage(response.data.error, 'error');
-            this.setState({ items: this.state.items });
           } else {
             this.props.spawnMessage('Cambio realizado con éxito', 'success');
             this.setState({ items: [...this.state.items, response.data] });
