@@ -91,7 +91,7 @@ class Groups extends Component {
     }
   };
 
-     = (groupToDelete, groups) => {
+  deleteGroup = (groupToDelete, groups) => {
     this.services
       .deleteGroup(groupToDelete)
       .then(() => {
