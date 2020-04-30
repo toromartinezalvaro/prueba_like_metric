@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, TextField, Paper, Icon, Fab } from '@material-ui/core';
 import {
+  Button,
+  TextField,
+  Paper,
+  Icon,
+  Fab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@material-ui/core';
+/* import {
   Grid,
   Table,
   TableHeaderRow,
-} from '@devexpress/dx-react-grid-material-ui';
+} from '@devexpress/dx-react-grid-material-ui'; */
 
 import styles from './Groups.module.scss';
 
@@ -14,12 +26,15 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
   const [groupList, setGroupList] = useState([]);
   const [columns] = useState([{ name: 'groups', title: 'Grupos' }]);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [rows, setRows] = useState([]);
+
   useEffect(() => {
     const lockedGroups = groups.map((groupItem) => {
       return { ...groupItem, disabled: true, hoverMouse: false };
     });
     setGroupList(lockedGroups);
   }, [groups]);
+
   const changeGroupItem = (index) => (element) => {
     const groupTemp = [...groupList];
     const selectedGroup = groupTemp[index];
@@ -30,6 +45,7 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     groupTemp[index] = currentGroup;
     setGroup(groupTemp);
   };
+
   const addFieldToGroup = (index) => () => {
     const added = [...(group || groupList)];
     const selectedGroup = added[index];
@@ -39,28 +55,23 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     setGroupList(added);
     setGroup(undefined);
   };
-  const deleteFieldFromGroup = (index) => () => {
-    const groupListWithoutItemDeleted = [...groupList];
-    const finder = groupListWithoutItemDeleted.find(
-      (groupItem, i) => i === index,
-    );
-    const groupListWithDeletedItem = groupListWithoutItemDeleted.filter(
-      (groupItem) => groupItem !== finder,
-    );
-    deleteGroup(
-      { id: groupListWithoutItemDeleted[index].id },
-      groupListWithDeletedItem,
-    );
-    setGroupList(groupListWithDeletedItem);
-    const validation = groupListWithDeletedItem.find(
+
+  const deleteFieldFromGroup = (id) => () => {
+    setGroupList((prevState) => {
+      const checker = prevState.filter((list) => list.id !== id);
+      console.log(checker);
+      return checker;
+    });
+    /* const validation = groupListWithDeletedItem.find(
       (item) => item.disabled === false || item.disabled === undefined,
     );
     if (validation) {
       setButtonDisabled(true);
     } else {
       setButtonDisabled(false);
-    }
+    } */
   };
+
   const disableFieldEdit = (index) => () => {
     const listInstance = [...groupList];
     listInstance[index] = { ...listInstance[index], disabled: true };
@@ -81,8 +92,8 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     added[index] = { ...selectedGroup, hoverMouse: visible };
     setGroupList(added);
   };
-  const displayGroupList = () => {
-    return groupList.map((groupItem, index) => {
+  const displayGroupList = (group) => {
+    return group.map((groupItem, index) => {
       const groupComponent = (
         <div className={styles.listContainer} key={index}>
           <TextField
@@ -118,8 +129,8 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
                 color="secondary"
                 onClick={
                   groupItem.disabled
-                    ? deleteFieldFromGroup(index)
-                    : disableFieldEdit(index)
+                    ? deleteFieldFromGroup(groupItem.id)
+                    : disableFieldEdit(groupItem.id)
                 }
               >
                 <Icon className="fas fa-times" />
@@ -132,6 +143,9 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
       return object;
     });
   };
+  useEffect(() => {
+    setRows(displayGroupList(groupList));
+  }, [groupList]);
   const generateFieldGroup = () => {
     const groupArray = groupList;
     const validation = groupArray.find(
@@ -153,10 +167,26 @@ const Group = ({ groups, createOrUpdateGroup, deleteGroup }) => {
     <>
       <div className={styles.container}>
         <Paper classes={{ root: styles.container }}>
-          <Grid rows={displayGroupList()} columns={columns}>
+          {/* <Grid rows={rows} columns={columns}>
             <Table />
             <TableHeaderRow />
-          </Grid>
+          </Grid> */}
+          <TableContainer component={Paper}>
+            <Table className={styles.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">GRUPOS</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell align="right">{row.groups}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Paper>
         <div className={styles.actionsContainer}>
           <Fab
