@@ -23,7 +23,6 @@ const ItemAction = ({
   ]);
   const [itemList, setItemList] = useState([]);
   const [buttonDisabled, setButtonDisabled] = useState(false);
-
   useEffect(() => {
     const itemLocked = items.map((singleItem) => {
       const disabledCheked = Object.prototype.hasOwnProperty.call(
@@ -38,7 +37,6 @@ const ItemAction = ({
     });
     setItemList(itemLocked);
   }, [items]);
-
   const changeItem = (name, index) => (element) => {
     const itemTemp = [...itemList];
     const selectedItem = itemList[index];
@@ -49,7 +47,6 @@ const ItemAction = ({
     itemTemp[index] = currentItem;
     setItemList(itemTemp);
   };
-
   const changeItemPUC = (index) => (element) => {
     const itemTemp = [...itemList];
     const selectedItem = itemList[index];
@@ -74,13 +71,14 @@ const ItemAction = ({
       spawnMessage('El item no debe contener espacios vacíos', 'error');
     }
   };
-
-  const deleteFieldFromItem = (index) => () => {
+  const deleteFieldFromItem = (index, isReadyForDelete) => () => {
     const itemListWithoutItemDeleted = [...itemList];
     const indexToDelete = itemListWithoutItemDeleted.filter(
       (itemValue) => itemValue.PUC !== itemListWithoutItemDeleted[index].PUC,
     );
-    deleteItem({ id: itemListWithoutItemDeleted[index].id }, indexToDelete);
+    if (isReadyForDelete) {
+      deleteItem({ id: itemListWithoutItemDeleted[index].id }, indexToDelete);
+    }
     setGlobalItemList(indexToDelete, true);
     const validation = indexToDelete.find(
       (itemValue) =>
@@ -92,7 +90,6 @@ const ItemAction = ({
       setButtonDisabled(false);
     }
   };
-
   const editFieldToItem = (id, index) => () => {
     const itemListItemToEdit = [...itemList];
     let selectedItemToEdited = itemListItemToEdit.find(
@@ -182,7 +179,7 @@ const ItemAction = ({
                   hoverMouseAction(itemValue.categoryName, index, false)
                 }
                 color="secondary"
-                onClick={deleteFieldFromItem(index)}
+                onClick={deleteFieldFromItem(index, itemValue.disabled)}
                 size="small"
               >
                 <Icon className="fas fa-times" />

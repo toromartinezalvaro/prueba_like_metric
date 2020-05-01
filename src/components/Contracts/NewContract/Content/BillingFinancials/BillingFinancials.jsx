@@ -414,7 +414,7 @@ const BillingFinancials = ({
           key={billing.id}
           classes={{ root: styles.expandContainer }}
         >
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon className={styles.iconExpand}/>}>
             <BillingFinancialsContent billing={billing} i={i} />
           </ExpansionPanelSummary>
           <Card className={styles.cardForm}>
