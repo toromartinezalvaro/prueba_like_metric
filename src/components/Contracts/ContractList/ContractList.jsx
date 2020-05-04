@@ -220,10 +220,12 @@ class ContractList extends Component {
               <CircularProgress />
             </div>
           ) : this.state.contractAvailable ? (
-            <EmptyContentMessageView
-              title="Vamos a crear contratos 📏!"
-              message="Es fácil, debes hacer click en el botón superior y llenar el formulario"
-            />
+            <Paper classes={{ root: style.containerOnBoarding }}>
+              <EmptyContentMessageView
+                title="Vamos a crear contratos 📏!"
+                message="Es fácil, debes hacer click en el botón superior y llenar el formulario"
+              />
+            </Paper>
           ) : (
             <Paper classes={{ root: style.container }}>
               <Grid rows={this.displayData()} columns={this.state.columns}>
