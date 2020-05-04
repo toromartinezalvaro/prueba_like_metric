@@ -40,7 +40,7 @@ import Pairing from '../Pairing';
 import Quotations from '../Quotations';
 import Strategy from '../StrategyV2';
 import Companies from '../Companies/Companies';
-import Groups from '../Groups/Groups';
+import Groups from '../Groups';
 
 class Dashboard extends Component {
   constructor(props) {
