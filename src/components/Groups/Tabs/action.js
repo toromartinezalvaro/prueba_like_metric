@@ -7,6 +7,8 @@ export const GROUPS_UPDATE_FIELD_TAB = 'GROUPS_UPDATE_FIELD_TAB';
 export const GROUPS_DELETE_FIELD_TAB = 'GROUPS_DELETE_FIELD_TAB';
 export const GROUPS_UPDATE_FIELD_ITEM = 'GROUPS_UPDATE_FIELD_ITEM';
 export const GROUPS_DELETE_FIELD_ITEM = '  GROUPS_DELETE_FIELD_ITEM';
+export const GROUPS_SET_COMPANY_ID = 'GROUPS_SET_COMPANY_ID';
+export const GROUPS_SET_COMPANIES_IDS = 'GROUPS_SET_COMPANIES_IDS';
 
 export const setGroups = (groups) => ({
   type: GROUPS_SET_GROUPS,
@@ -50,4 +52,14 @@ export const updateFieldItem = (itemsUpdated) => ({
 export const deleteFieldItem = (itemsUpdated) => ({
   type: GROUPS_DELETE_FIELD_ITEM,
   payload: itemsUpdated,
+});
+
+export const setCompanyId = (companyId) => ({
+  type: GROUPS_SET_COMPANY_ID,
+  payload: companyId,
+});
+
+export const setCompanies = (companies) => ({
+  type: GROUPS_SET_COMPANIES_IDS,
+  payload: companies,
 });

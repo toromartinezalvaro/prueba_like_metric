@@ -2,8 +2,8 @@ import groupServiceDefinition from './groupServiceDefinition';
 import Services from '../services';
 
 export default class groupService extends Services {
-  getAllGroup() {
-    return this.get(groupServiceDefinition.groupBase());
+  getAllGroup(data) {
+    return this.get(groupServiceDefinition.groupBaseGet(data));
   }
 
   createGroup(data) {
@@ -24,5 +24,9 @@ export default class groupService extends Services {
 
   deleteItem(data) {
     return this.delete(groupServiceDefinition.itemBase(), data);
+  }
+
+  getCompanies() {
+    return this.get(groupServiceDefinition.companyBase());
   }
 }

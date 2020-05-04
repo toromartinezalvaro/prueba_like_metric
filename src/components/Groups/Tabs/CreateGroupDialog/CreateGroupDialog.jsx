@@ -26,16 +26,18 @@ const CreateGroupDialog = ({
   onStartApi,
   onFailApi,
   onAddOneGroup,
+  companyId,
 }) => {
   const formRef = useRef();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const submitHandler = async (values) => {
+  const submitHandler = async (contractCategory) => {
     onStartApi();
+    const values = { ...contractCategory, companyId };
     try {
       const response = await services.createGroup(values);
-      onAddOneGroup(values);
+      onAddOneGroup(response.data);
       onCloseCreateDialog();
     } catch (error) {
       onFailApi();
@@ -95,11 +97,13 @@ CreateGroupDialog.propTypes = {
   onStartApi: PropTypes.func.isRequired,
   onFailApi: PropTypes.func.isRequired,
   onAddOneGroup: PropTypes.func.isRequired,
+  companyId: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   openCreateGroupDialog: state.groups.createGroupDialog.open,
   loadingField: state.groups.createGroupDialog.loading,
+  companyId: state.groups.groupTabs.companyId,
 });
 
 const mapDispatchToProps = {

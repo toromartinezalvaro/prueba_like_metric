@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffct } from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import MuiTabs from '@material-ui/core/Tabs';
@@ -13,6 +13,7 @@ import { openCreateDialog } from './CreateGroupDialog/action';
 import { changeSelectedTab } from './action';
 import TabPanel from './TabPanel';
 import ItemContainer from './ItemContainer';
+import CompanySelector from './CompanySelector';
 
 import style from './Tabs.module.scss';
 
@@ -28,6 +29,7 @@ const Tabs = ({
 
   return (
     <>
+      <CompanySelector />
       <Paper square className={style.root}>
         <MuiTabs
           value={tabNumber}
