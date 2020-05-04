@@ -8,7 +8,11 @@ import Services from '../../services/group/groupService';
 import GroupsErrorMessage from '../../components/Groups/ErrorMessage';
 import Tabs from '../../components/Groups/Tabs';
 import { startApiFetch, successApiFetch, failApiFetch } from './actions';
-import { setGroups, setItems } from '../../components/Groups/Tabs/action';
+import {
+  setGroups,
+  setItems,
+  setCompanies,
+} from '../../components/Groups/Tabs/action';
 
 const services = new Services();
 
@@ -16,26 +20,26 @@ const Groups = ({
   apiLoading,
   onStartApiFetch,
   onApiFetchSuccess,
+  onSetCompanies,
   onApiFetchFail,
   apiError,
   onSetGroups,
   onSetItems,
+  groups,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     async function fetch() {
       try {
         onStartApiFetch();
-        const responseGroups = await services.getAllGroup();
-        const responseItems = await services.getAllItems();
-        onSetGroups(
+        const response = await services.getCompanies();
+        onSetCompanies(
           _.orderBy(
-            responseGroups.data,
-            [(group) => group.categoryName.toLowerCase()],
+            response.data,
+            [(company) => company.name.toLowerCase()],
             ['asc'],
           ),
         );
-        onSetItems(responseItems.data);
         onApiFetchSuccess();
       } catch (error) {
         onApiFetchFail();
@@ -43,7 +47,7 @@ const Groups = ({
       }
     }
     fetch();
-  }, []);
+  }, [groups]);
   return (
     <Loader isLoading={apiLoading}>
       {apiError ? <GroupsErrorMessage /> : <Tabs />}
@@ -58,11 +62,13 @@ Groups.propTypes = {
   onApiFetchFail: PropTypes.func.isRequired,
   onSetGroups: PropTypes.func.isRequired,
   onSetItems: PropTypes.func.isRequired,
+  onSetCompanies: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   apiLoading: state.groups.root.loading,
   apiError: state.groups.root.error,
+  groups: state.groups.groupTabs.groups,
 });
 const mapDispatchToProps = {
   onStartApiFetch: startApiFetch,
@@ -70,6 +76,7 @@ const mapDispatchToProps = {
   onApiFetchFail: failApiFetch,
   onSetGroups: setGroups,
   onSetItems: setItems,
+  onSetCompanies: setCompanies,
 };
 
 export default connect(
