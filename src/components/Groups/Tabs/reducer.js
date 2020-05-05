@@ -17,7 +17,7 @@ const initialState = {
   items: [],
   tabNumber: 0,
   companies: [],
-  companyId: 0,
+  companyId: null,
 };
 
 export default (state = initialState, { type, payload }) => {
