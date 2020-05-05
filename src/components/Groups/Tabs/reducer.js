@@ -10,6 +10,7 @@ import {
   GROUPS_DELETE_FIELD_ITEM,
   GROUPS_SET_COMPANY_ID,
   GROUPS_SET_COMPANIES_IDS,
+  GROUPS_SET_EXPANDED_GROUP,
 } from './action';
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   tabNumber: 0,
   companies: [],
   companyId: null,
+  expandedGroup: null,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -41,9 +43,11 @@ export default (state = initialState, { type, payload }) => {
     case GROUPS_DELETE_FIELD_ITEM:
       return { ...state, items: payload };
     case GROUPS_SET_COMPANY_ID:
-      return { ...state, companyId: payload };
+      return { ...state, companyId: payload, expandedGroup: null };
     case GROUPS_SET_COMPANIES_IDS:
       return { ...state, companies: payload };
+    case GROUPS_SET_EXPANDED_GROUP:
+      return { ...state, expandedGroup: payload };
     default:
       return state;
   }

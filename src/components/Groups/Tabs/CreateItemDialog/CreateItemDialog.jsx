@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -6,10 +6,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import Services from '../../../../services/group/groupService';
@@ -26,25 +22,20 @@ const CreateItemDialog = ({
   onStartApi,
   onFailApi,
   onAddOneItem,
-  groups,
+  expandedGroup,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
-
-  const groupOptions = () => {
-    return groups.map((group) => {
-      return (
-        <MenuItem value={group.id} key={group.id}>
-          {group.categoryName}
-        </MenuItem>
-      );
-    });
-  };
-
   const [item, setItem] = useState({
     name: '',
     PUC: '',
     contractCategoryId: '',
   });
+
+  useEffect(() => {
+    setItem((prevState) => {
+      return { ...prevState, contractCategoryId: expandedGroup };
+    });
+  }, [expandedGroup]);
 
   const handleChangeText = (name) => (element) => {
     const newItem = { ...item, [name]: element.target.value };
@@ -80,15 +71,6 @@ const CreateItemDialog = ({
       <DialogTitle>Crear Item</DialogTitle>
       <DialogContent>
         <Loader isLoading={loadingField}>
-          <FormControl variant="filled" fullWidth>
-            <InputLabel>Seleccione el grupo a agregar item</InputLabel>
-            <Select
-              value={item.contractCategoryId}
-              onChange={handleChangeText('contractCategoryId')}
-            >
-              {groupOptions()}
-            </Select>
-          </FormControl>
           <TextField
             label="Id"
             fullWidth
@@ -124,14 +106,13 @@ CreateItemDialog.propTypes = {
   onStartApi: PropTypes.func.isRequired,
   onFailApi: PropTypes.func.isRequired,
   onAddOneItem: PropTypes.func.isRequired,
-  groupId: PropTypes.number,
-  groups: PropTypes.array.isRequired,
+  expandedGroup: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   openCreateItemDialog: state.groups.createItemDialog.open,
   loadingField: state.groups.createItemDialog.loading,
-  groups: state.groups.groupTabs.groups,
+  expandedGroup: state.groups.groupTabs.expandedGroup,
 });
 
 const mapDispatchToProps = {
