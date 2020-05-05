@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack';
 import Services from '../../../../../services/group/groupService';
 import { updateFieldItem, deleteFieldItem } from '../../action';
 import { startApiFetch, failApiFetch, successApiFetch } from '../action';
+import { setOpen } from '../CantDeleteDialog/action';
 
 const services = new Services();
 
@@ -21,6 +22,7 @@ export const Item = ({
   items,
   index,
   currentItem,
+  onSetOpenCantDelete,
 }) => {
   const [disabled, setDisabled] = useState(true);
 
@@ -93,8 +95,13 @@ export const Item = ({
         setDisabled((prevstate) => !prevstate);
         onSuccessApi();
       } catch (error) {
-        onFailApi();
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        if (error.response.data.message === 'itemAssociate') {
+          onSetOpenCantDelete('item');
+          onSuccessApi();
+        } else {
+          onFailApi();
+          enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        }
       }
     } else {
       setDisabled((prevstate) => !prevstate);
@@ -159,6 +166,7 @@ Item.propTypes = {
   items: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
   currentItem: PropTypes.object.isRequired,
+  onSetOpenCantDelete: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -171,6 +179,7 @@ const mapDispatchToprops = {
   onFailApi: failApiFetch,
   onSuccessApi: successApiFetch,
   onDeleteField: deleteFieldItem,
+  onSetOpenCantDelete: setOpen,
 };
 
 export default connect(

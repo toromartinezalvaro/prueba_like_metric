@@ -14,6 +14,7 @@ import { changeSelectedTab } from './action';
 import TabPanel from './TabPanel';
 import ItemContainer from './ItemContainer';
 import CompanySelector from './CompanySelector';
+import CantDeleteDialog from './ItemPanel/CantDeleteDialog';
 
 import style from './Tabs.module.scss';
 
@@ -63,6 +64,7 @@ const Tabs = ({
         )}
       </Paper>
       <CreateGroupDialog />
+      <CantDeleteDialog />
     </>
   );
 };
