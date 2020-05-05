@@ -56,7 +56,7 @@ export const CompanySelector = ({
         <Box alignContent="center">
           Estás en los grupos e items de la compañía
         </Box>
-        <Box classes={{ root: style.rootBoxSelect }}>
+        <Box className={style.rootBoxSelect}>
           <FormControl>
             <InputLabel>Compañías</InputLabel>
             <Select
