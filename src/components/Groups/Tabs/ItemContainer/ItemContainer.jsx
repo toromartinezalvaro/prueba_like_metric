@@ -42,10 +42,7 @@ export const ItemContainer = ({
             key={index}
           >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <h5>
-                {group.categoryName}
-                {group.id}
-              </h5>
+              <h5>{group.categoryName}</h5>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails classes={{ root: styles.expansionDetail }}>
               <Paper>
