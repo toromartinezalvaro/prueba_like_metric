@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -21,10 +21,11 @@ export const Item = ({
   onDeleteField,
   items,
   index,
-  currentItem,
   onSetOpenCantDelete,
+  ItemsFiltered,
 }) => {
   const [disabled, setDisabled] = useState(true);
+  const [currentItem, setCurrentItem] = useState(ItemsFiltered[index]);
 
   const [visible, setVisible] = useState(false);
 
@@ -48,7 +49,7 @@ export const Item = ({
     } else {
       onStartApi();
       try {
-        const updatedItems = [...items];
+        const updatedItems = [...ItemsFiltered];
         let fieldToUpdate = {};
         if (itemName && itemPUC) {
           fieldToUpdate = {
@@ -67,9 +68,9 @@ export const Item = ({
             PUC: itemPUC,
           };
         }
-        const response = await services.createItem(fieldToUpdate);
         updatedItems[index] = fieldToUpdate;
         onUpdateField(updatedItems);
+        const response = await services.createItem(fieldToUpdate);
         setDisabled((prevstate) => !prevstate);
         onSuccessApi();
         setItemName('');
@@ -109,6 +110,7 @@ export const Item = ({
   };
   return (
     <>
+      {console.log('currentItem', currentItem)}
       <TableCell component="th" scope="row">
         <TextField
           defaultValue={currentItem.PUC}

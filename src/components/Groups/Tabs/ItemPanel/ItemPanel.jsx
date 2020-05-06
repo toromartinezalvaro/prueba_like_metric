@@ -34,9 +34,11 @@ const ItemPanel = ({
   return ItemsFiltered.map((currentItem, index) => {
     return (
       <TableRow key={index}>
-        <Loader isLoading={loadingField}>
-          <Item currentItem={currentItem} index={index} />
-        </Loader>
+          <Item
+            currentItem={currentItem}
+            index={index}
+            ItemsFiltered={ItemsFiltered}
+          />
       </TableRow>
     );
   });
