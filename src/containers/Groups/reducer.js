@@ -10,6 +10,7 @@ import { reducer as createItemDialogReducer } from '../../components/Groups/Tabs
 import { reducer as groupTabsReducer } from '../../components/Groups/Tabs';
 import { reducer as groupTabPanelReducer } from '../../components/Groups/Tabs/TabPanel';
 import { reducer as groupItemPanelReducer } from '../../components/Groups/Tabs/ItemPanel';
+import { reducer as groupCantDeleteReducer } from '../../components/Groups/Tabs/ItemPanel/CantDeleteDialog';
 
 const initialState = {
   loading: false,
@@ -36,4 +37,5 @@ export default combineReducers({
   groupTabs: groupTabsReducer,
   groupTabPanel: groupTabPanelReducer,
   groupItemPanel: groupItemPanelReducer,
+  groupCantDelete: groupCantDeleteReducer,
 });

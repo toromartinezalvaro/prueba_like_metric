@@ -14,6 +14,7 @@ import { changeSelectedTab } from './action';
 import TabPanel from './TabPanel';
 import ItemContainer from './ItemContainer';
 import CompanySelector from './CompanySelector';
+import CantDeleteDialog from './ItemPanel/CantDeleteDialog';
 
 import style from './Tabs.module.scss';
 
@@ -22,6 +23,7 @@ const Tabs = ({
   groups,
   onSelectedGroup,
   tabNumber,
+  companyId,
 }) => {
   const changeValue = (event, newEvent) => {
     onSelectedGroup(newEvent);
@@ -55,12 +57,14 @@ const Tabs = ({
             onClick={() => {
               onOpenCreateGroupDialog();
             }}
+            disabled={!companyId}
           >
             <AddIcon />
           </Fab>
         )}
       </Paper>
       <CreateGroupDialog />
+      <CantDeleteDialog />
     </>
   );
 };
@@ -70,11 +74,13 @@ Tabs.propTypes = {
   groups: PropTypes.array.isRequired,
   onSelectedGroup: PropTypes.func.isRequired,
   tabNumber: PropTypes.number.isRequired,
+  companyId: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   groups: state.groups.groupTabs.groups,
   tabNumber: state.groups.groupTabs.tabNumber,
+  companyId: state.groups.groupTabs.companyId,
 });
 
 const mapDispatchToProps = {

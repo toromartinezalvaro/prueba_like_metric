@@ -10,6 +10,7 @@ import Services from '../../../../services/group/groupService';
 import Loader from '../../../UI2/Loader/Loader';
 import { updateFieldTab, deleteFieldTab } from '../action';
 import { startApiFetch, failApiFetch, successApiFetch } from './action';
+import { setOpen } from '../ItemPanel/CantDeleteDialog/action';
 import style from './TabPanel.module.scss';
 
 const services = new Services();
@@ -24,6 +25,7 @@ const TabPanel = ({
   onFailApi,
   onSuccessApi,
   onDeleteField,
+  onSetOpenCantDelete,
 }) => {
   const [disabled, setDisabled] = useState(true);
 
@@ -72,8 +74,13 @@ const TabPanel = ({
         setDisabled((prevstate) => !prevstate);
         onSuccessApi();
       } catch (error) {
-        onFailApi();
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        if (error.response.data.message === 'groupAssociate') {
+          onSetOpenCantDelete('grupo');
+          onSuccessApi();
+        } else {
+          onFailApi();
+          enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        }
       }
     } else {
       setDisabled((prevstate) => !prevstate);
@@ -139,6 +146,7 @@ TabPanel.propTypes = {
   onFailApi: PropTypes.func.isRequired,
   onSuccessApi: PropTypes.func.isRequired,
   onDeleteField: PropTypes.func.isRequired,
+  onSetOpenCantDelete: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -154,6 +162,7 @@ const mapDispatchToProps = {
   onFailApi: failApiFetch,
   onSuccessApi: successApiFetch,
   onDeleteField: deleteFieldTab,
+  onSetOpenCantDelete: setOpen,
 };
 
 export default connect(

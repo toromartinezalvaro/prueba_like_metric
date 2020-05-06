@@ -16,13 +16,19 @@ import { connect } from 'react-redux';
 import ItemPanel from '../ItemPanel';
 import styles from './ItemContainer.module.scss';
 import { openCreateItemDialog } from '../CreateItemDialog/action';
+import { setGroupExpanded } from '../action';
 import CreateItemDialog from '../CreateItemDialog';
 
-export const ItemContainer = ({ groups, onOpenCreateItemDialog }) => {
+export const ItemContainer = ({
+  groups,
+  onOpenCreateItemDialog,
+  onSetGroupExpanded,
+}) => {
   const [expanded, setExpanded] = useState('No open');
 
-  const handleChangePanel = (panel) => (event, isExpanded) => {
+  const handleChangePanel = (panel, groupId) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : 'No open');
+    onSetGroupExpanded(groupId);
   };
 
   return (
@@ -31,7 +37,7 @@ export const ItemContainer = ({ groups, onOpenCreateItemDialog }) => {
         return (
           <ExpansionPanel
             expanded={expanded === `panel${index}`}
-            onChange={handleChangePanel(`panel${index}`)}
+            onChange={handleChangePanel(`panel${index}`, group.id)}
             classes={{ root: styles.expansionHeader }}
             key={index}
           >
@@ -48,7 +54,7 @@ export const ItemContainer = ({ groups, onOpenCreateItemDialog }) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <ItemPanel groupId={group.id} />
+                    <ItemPanel />
                   </TableBody>
                 </Table>
                 <Fab
@@ -72,6 +78,7 @@ export const ItemContainer = ({ groups, onOpenCreateItemDialog }) => {
 ItemContainer.propTypes = {
   groups: PropTypes.array.isRequired,
   onOpenCreateItemDialog: PropTypes.bool.isRequired,
+  onSetGroupExpanded: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -80,6 +87,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   onOpenCreateItemDialog: openCreateItemDialog,
+  onSetGroupExpanded: setGroupExpanded,
 };
 
 export default connect(

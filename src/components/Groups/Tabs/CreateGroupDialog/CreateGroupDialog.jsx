@@ -36,9 +36,16 @@ const CreateGroupDialog = ({
     onStartApi();
     const values = { ...contractCategory, companyId };
     try {
-      const response = await services.createGroup(values);
-      onAddOneGroup(response.data);
-      onCloseCreateDialog();
+      if (values.categoryName && values.categoryName !== '') {
+        const response = await services.createGroup(values);
+        onAddOneGroup(response.data);
+        onCloseCreateDialog();
+      } else {
+        onFailApi();
+        enqueueSnackbar('Debe llenar el campo nombre del grupo', {
+          variant: 'error',
+        });
+      }
     } catch (error) {
       onFailApi();
       enqueueSnackbar(error.response.data.message, { variant: 'error' });

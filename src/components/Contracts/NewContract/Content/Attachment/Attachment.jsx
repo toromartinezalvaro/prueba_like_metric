@@ -55,6 +55,7 @@ class Attachment extends Component {
         imgObject: [...this.state.imgObject, attach],
       });
       this.props.sendAttachments(imageFormObject);
+      e.target.value = null;
     }
   };
 
