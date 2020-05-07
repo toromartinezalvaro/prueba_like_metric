@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import PropTypes from 'prop-types';
+import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import Services from '../../../../../services/group/groupService';
@@ -25,6 +26,8 @@ export const Item = ({
   onSetOpenCantDelete,
   itemsFiltered,
 }) => {
+  const formRef = useRef();
+
   const [disabled, setDisabled] = useState(true);
 
   const [visible, setVisible] = useState(false);
@@ -112,52 +115,71 @@ export const Item = ({
   };
   return (
     <>
-      {console.log('currentItem', currentItem)}
       <TableCell component="th" scope="row">
-        <TextField
-          defaultValue={currentItem.PUC}
-          name="PUC"
-          margin="dense"
-          disabled={disabled}
-          onChange={handleChangeItemPUC}
-          fullWidth
-          className={currentItem.PUC}
-          onMouseEnter={() => setVisible((prevState) => !prevState)}
-          onMouseLeave={() => setVisible((prevState) => !prevState)}
-        />
+        <Formik
+          enableReinitialize
+          innerRef={formRef}
+          initialValues={{ PUC: '' }}
+        >
+          {() => (
+            <Form>
+              <TextField
+                defaultValue={currentItem.PUC}
+                name="PUC"
+                margin="dense"
+                disabled={disabled}
+                onChange={handleChangeItemPUC}
+                fullWidth
+                className={currentItem.PUC}
+                onMouseEnter={() => setVisible((prevState) => !prevState)}
+                onMouseLeave={() => setVisible((prevState) => !prevState)}
+              />
+            </Form>
+          )}
+        </Formik>
       </TableCell>
       <TableCell component="th" scope="row">
-        <TextField
-          defaultValue={currentItem.name}
-          name="name"
-          margin="dense"
-          className={currentItem.name}
-          onChange={handleChangeItemName}
-          disabled={disabled}
-          onMouseEnter={() => setVisible((prevState) => !prevState)}
-          onMouseLeave={() => setVisible((prevState) => !prevState)}
-        />
-        {visible && (
-          <>
-            <Button
-              onClick={handleChangeForEdit}
-              onMouseEnter={() => setVisible((prevState) => !prevState)}
-              onMouseLeave={() => setVisible((prevState) => !prevState)}
-            >
-              <Icon
-                className={disabled ? 'fas fa-pen' : 'fas fa-check'}
-                color="primary"
+        <Formik
+          enableReinitialize
+          innerRef={formRef}
+          initialValues={{ name: '' }}
+        >
+          {() => (
+            <Form>
+              <TextField
+                defaultValue={currentItem.name}
+                name="name"
+                margin="dense"
+                className={currentItem.name}
+                onChange={handleChangeItemName}
+                disabled={disabled}
+                onMouseEnter={() => setVisible((prevState) => !prevState)}
+                onMouseLeave={() => setVisible((prevState) => !prevState)}
               />
-            </Button>
-            <Button
-              onClick={handleDeleteField}
-              onMouseEnter={() => setVisible((prevState) => !prevState)}
-              onMouseLeave={() => setVisible((prevState) => !prevState)}
-            >
-              <Icon className="fas fa-times" color="secondary" />
-            </Button>
-          </>
-        )}
+              {visible && (
+                <>
+                  <Button
+                    onClick={handleChangeForEdit}
+                    onMouseEnter={() => setVisible((prevState) => !prevState)}
+                    onMouseLeave={() => setVisible((prevState) => !prevState)}
+                  >
+                    <Icon
+                      className={disabled ? 'fas fa-pen' : 'fas fa-check'}
+                      color="primary"
+                    />
+                  </Button>
+                  <Button
+                    onClick={handleDeleteField}
+                    onMouseEnter={() => setVisible((prevState) => !prevState)}
+                    onMouseLeave={() => setVisible((prevState) => !prevState)}
+                  >
+                    <Icon className="fas fa-times" color="secondary" />
+                  </Button>
+                </>
+              )}
+            </Form>
+          )}
+        </Formik>
       </TableCell>
     </>
   );
@@ -183,7 +205,7 @@ const mapStateToProps = (state) => {
     ];
   return {
     items: state.groups.groupTabs.items,
-    currentItem: current,
+    currentItem: state.groups.groupItemField.currentItem,
     index: state.groups.groupItemField.index,
     itemsFiltered: state.groups.groupItemField.itemsFiltered,
   };

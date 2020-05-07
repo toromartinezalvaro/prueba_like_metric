@@ -19,7 +19,6 @@ const ItemPanel = ({
   const [ItemsFiltered, setItemsFilteredState] = useState([]);
 
   useEffect(() => {
-    onStartApi();
     const filter = items.filter(
       (element) => element.contractCategoryId === groupId,
     );
@@ -30,7 +29,6 @@ const ItemPanel = ({
         ['asc'],
       ),
     );
-    onSuccessApi();
   }, [groupId, items]);
 
   return ItemsFiltered.map((currentItem, index) => {
