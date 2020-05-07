@@ -20,7 +20,7 @@ const PendingRequests = ({ loading, requests, selectHandler }) => {
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Badge badgeContent={requests.length} color="secondary">
-          <Typography> Areas adicionales pendientes</Typography>
+          <Typography> Áreas adicionales pendientes</Typography>
         </Badge>
       </ExpansionPanelSummary>
 

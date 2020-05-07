@@ -17,7 +17,7 @@ const ResolvedRequests = ({ loading, requests }) => {
   return (
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>Areas adicionales resueltas</Typography>
+        <Typography>Áreas adicionales resueltas</Typography>
       </ExpansionPanelSummary>
 
       <ExpansionPanelDetails
