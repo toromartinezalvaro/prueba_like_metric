@@ -3,40 +3,41 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import TableRow from '@material-ui/core/TableRow';
 import { connect } from 'react-redux';
-import Loader from '../../../UI2/Loader/Loader';
 import { startApiFetch, successApiFetch } from './action';
+import { setCurrentItem, setIndex, setItemsFiltered } from './Item/action';
 import Item from './Item';
 
 const ItemPanel = ({
   items,
   groupId,
-  loadingField,
   onStartApi,
   onSuccessApi,
+  onSetCurrentItem,
+  onSetIndex,
+  onSetItemsFiltered,
 }) => {
-  const [ItemsFiltered, setItemsFiltered] = useState([]);
+  const [ItemsFiltered, setItemsFilteredState] = useState([]);
 
   useEffect(() => {
-    onStartApi();
     const filter = items.filter(
       (element) => element.contractCategoryId === groupId,
     );
-    setItemsFiltered(
+    setItemsFilteredState(
       _.orderBy(
         filter,
         [(itemFilter) => itemFilter.name.toLowerCase()],
         ['asc'],
       ),
     );
-    onSuccessApi();
   }, [groupId, items]);
 
   return ItemsFiltered.map((currentItem, index) => {
+    onSetCurrentItem(currentItem);
+    onSetIndex(index);
+    onSetItemsFiltered(ItemsFiltered);
     return (
       <TableRow key={index}>
-        <Loader isLoading={loadingField}>
-          <Item currentItem={currentItem} index={index} />
-        </Loader>
+        <Item />
       </TableRow>
     );
   });
@@ -45,13 +46,14 @@ const ItemPanel = ({
 ItemPanel.propTypes = {
   items: PropTypes.array.isRequired,
   groupId: PropTypes.number,
-  loadingField: PropTypes.bool.isRequired,
+  onSetCurrentItem: PropTypes.func.isRequired,
+  onSetIndex: PropTypes.func.isRequired,
+  onSetItemsFiltered: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   groups: state.groups.groupTabs.groups,
   items: state.groups.groupTabs.items,
-  loadingField: state.groups.groupItemPanel.loading,
   groupId: state.groups.groupTabs.expandedGroup,
   onStartApi: PropTypes.func.isRequired,
   onSuccessApi: PropTypes.func.isRequired,
@@ -60,6 +62,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToprops = {
   onStartApi: startApiFetch,
   onSuccessApi: successApiFetch,
+  onSetCurrentItem: setCurrentItem,
+  onSetIndex: setIndex,
+  onSetItemsFiltered: setItemsFiltered,
 };
 export default connect(
   mapStateToProps,

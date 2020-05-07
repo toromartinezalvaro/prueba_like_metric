@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import PropTypes from 'prop-types';
+import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import Services from '../../../../../services/group/groupService';
@@ -14,6 +15,7 @@ import { setOpen } from '../CantDeleteDialog/action';
 const services = new Services();
 
 export const Item = ({
+  currentItem,
   onUpdateField,
   onStartApi,
   onFailApi,
@@ -21,9 +23,11 @@ export const Item = ({
   onDeleteField,
   items,
   index,
-  currentItem,
   onSetOpenCantDelete,
+  itemsFiltered,
 }) => {
+  const formRef = useRef();
+
   const [disabled, setDisabled] = useState(true);
 
   const [visible, setVisible] = useState(false);
@@ -46,9 +50,8 @@ export const Item = ({
     if (disabled) {
       setDisabled((prevstate) => !prevstate);
     } else {
-      onStartApi();
       try {
-        const updatedItems = [...items];
+        const updatedItems = [...itemsFiltered];
         let fieldToUpdate = {};
         if (itemName && itemPUC) {
           fieldToUpdate = {
@@ -67,11 +70,14 @@ export const Item = ({
             PUC: itemPUC,
           };
         }
+        const itemSelected = items.findIndex(
+          (element) => element.id === fieldToUpdate.id,
+        );
         const response = await services.createItem(fieldToUpdate);
-        updatedItems[index] = fieldToUpdate;
-        onUpdateField(updatedItems);
+        const afterArray = [...items];
+        afterArray[itemSelected] = fieldToUpdate;
+        onUpdateField(afterArray);
         setDisabled((prevstate) => !prevstate);
-        onSuccessApi();
         setItemName('');
         setItemPUC('');
       } catch (error) {
@@ -85,7 +91,7 @@ export const Item = ({
     if (disabled) {
       onStartApi();
       try {
-        const itemsBeforeDelete = [...items];
+        const itemsBeforeDelete = [...itemsFiltered];
         const fieldToDelete = itemsBeforeDelete[index].id;
         const response = await services.deleteItem({ id: fieldToDelete });
         const itemsAfterDelete = itemsBeforeDelete.filter(
@@ -110,48 +116,70 @@ export const Item = ({
   return (
     <>
       <TableCell component="th" scope="row">
-        <TextField
-          defaultValue={currentItem.PUC}
-          name="PUC"
-          margin="dense"
-          disabled={disabled}
-          onChange={handleChangeItemPUC}
-          fullWidth
-          onMouseEnter={() => setVisible((prevState) => !prevState)}
-          onMouseLeave={() => setVisible((prevState) => !prevState)}
-        />
+        <Formik
+          enableReinitialize
+          innerRef={formRef}
+          initialValues={{ PUC: '' }}
+        >
+          {() => (
+            <Form>
+              <TextField
+                defaultValue={currentItem.PUC}
+                name="PUC"
+                margin="dense"
+                disabled={disabled}
+                onChange={handleChangeItemPUC}
+                fullWidth
+                className={currentItem.PUC}
+                onMouseEnter={() => setVisible((prevState) => !prevState)}
+                onMouseLeave={() => setVisible((prevState) => !prevState)}
+              />
+            </Form>
+          )}
+        </Formik>
       </TableCell>
       <TableCell component="th" scope="row">
-        <TextField
-          defaultValue={currentItem.name}
-          name="name"
-          margin="dense"
-          onChange={handleChangeItemName}
-          disabled={disabled}
-          onMouseEnter={() => setVisible((prevState) => !prevState)}
-          onMouseLeave={() => setVisible((prevState) => !prevState)}
-        />
-        {visible && (
-          <>
-            <Button
-              onClick={handleChangeForEdit}
-              onMouseEnter={() => setVisible((prevState) => !prevState)}
-              onMouseLeave={() => setVisible((prevState) => !prevState)}
-            >
-              <Icon
-                className={disabled ? 'fas fa-pen' : 'fas fa-check'}
-                color="primary"
+        <Formik
+          enableReinitialize
+          innerRef={formRef}
+          initialValues={{ name: '' }}
+        >
+          {() => (
+            <Form>
+              <TextField
+                defaultValue={currentItem.name}
+                name="name"
+                margin="dense"
+                className={currentItem.name}
+                onChange={handleChangeItemName}
+                disabled={disabled}
+                onMouseEnter={() => setVisible((prevState) => !prevState)}
+                onMouseLeave={() => setVisible((prevState) => !prevState)}
               />
-            </Button>
-            <Button
-              onClick={handleDeleteField}
-              onMouseEnter={() => setVisible((prevState) => !prevState)}
-              onMouseLeave={() => setVisible((prevState) => !prevState)}
-            >
-              <Icon className="fas fa-times" color="secondary" />
-            </Button>
-          </>
-        )}
+              {visible && (
+                <>
+                  <Button
+                    onClick={handleChangeForEdit}
+                    onMouseEnter={() => setVisible((prevState) => !prevState)}
+                    onMouseLeave={() => setVisible((prevState) => !prevState)}
+                  >
+                    <Icon
+                      className={disabled ? 'fas fa-pen' : 'fas fa-check'}
+                      color="primary"
+                    />
+                  </Button>
+                  <Button
+                    onClick={handleDeleteField}
+                    onMouseEnter={() => setVisible((prevState) => !prevState)}
+                    onMouseLeave={() => setVisible((prevState) => !prevState)}
+                  >
+                    <Icon className="fas fa-times" color="secondary" />
+                  </Button>
+                </>
+              )}
+            </Form>
+          )}
+        </Formik>
       </TableCell>
     </>
   );
@@ -167,11 +195,21 @@ Item.propTypes = {
   index: PropTypes.number.isRequired,
   currentItem: PropTypes.object.isRequired,
   onSetOpenCantDelete: PropTypes.func.isRequired,
+  itemsFiltered: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  items: state.groups.groupTabs.items,
-});
+const mapStateToProps = (state) => {
+  const current =
+    state.groups.groupItemField.itemsFiltered[
+      state.groups.groupItemField.index
+    ];
+  return {
+    items: state.groups.groupTabs.items,
+    currentItem: state.groups.groupItemField.currentItem,
+    index: state.groups.groupItemField.index,
+    itemsFiltered: state.groups.groupItemField.itemsFiltered,
+  };
+};
 
 const mapDispatchToprops = {
   onUpdateField: updateFieldItem,

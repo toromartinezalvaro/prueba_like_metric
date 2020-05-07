@@ -11,6 +11,7 @@ import { reducer as groupTabsReducer } from '../../components/Groups/Tabs';
 import { reducer as groupTabPanelReducer } from '../../components/Groups/Tabs/TabPanel';
 import { reducer as groupItemPanelReducer } from '../../components/Groups/Tabs/ItemPanel';
 import { reducer as groupCantDeleteReducer } from '../../components/Groups/Tabs/ItemPanel/CantDeleteDialog';
+import { reducer as groupItemFieldReducer } from '../../components/Groups/Tabs/ItemPanel/Item';
 
 const initialState = {
   loading: false,
@@ -38,4 +39,5 @@ export default combineReducers({
   groupTabPanel: groupTabPanelReducer,
   groupItemPanel: groupItemPanelReducer,
   groupCantDelete: groupCantDeleteReducer,
+  groupItemField: groupItemFieldReducer,
 });
