@@ -285,7 +285,7 @@ class SalesRoom extends Component {
       let increment = next.priceSold - price;
       if (
         next.groupId === this.state.groupId &&
-        next.status !== Status.Available &&
+        next.status === Status.Sold &&
         next.id !== this.state.id
       ) {
         current += increment;
@@ -323,9 +323,7 @@ class SalesRoom extends Component {
           priceSold:
             this.state.selectedProperty.status !==
             SalesRoomEnum.status.AVAILABLE
-              ? this.state.selectedProperty.priceWithIncrement -
-                this.state.selectedProperty.discount +
-                this.state.discountApplied
+              ? this.state.selectedProperty.priceWithIncrement
               : null,
           discount:
             this.state.selectedProperty.status !==
@@ -501,9 +499,11 @@ class SalesRoom extends Component {
                 response={this.state.response}
                 buttonsStyles={this.buttonsStyles}
                 makeCells={this.makeCells}
-                agent={agent.isAuthorized([Role.Admin, Role.Super])
-                  ? 'super'
-                  : 'staff'}
+                agent={
+                  agent.isAuthorized([Role.Admin, Role.Super])
+                    ? 'super'
+                    : 'staff'
+                }
               />
               <PropertiesTable
                 properties={this.state.properties}

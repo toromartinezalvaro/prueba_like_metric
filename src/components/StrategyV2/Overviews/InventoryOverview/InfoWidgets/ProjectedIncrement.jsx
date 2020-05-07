@@ -110,6 +110,7 @@ const ProjectedIncrement = ({
               size="small"
               color="primary"
               onClick={openSalesWizardDialog}
+              disabled={!isReset}
             >
               Abrir asistente
             </Button>
