@@ -45,7 +45,9 @@ const SalesRoomModal = ({
     tradeDiscount,
     price,
     addedAdditionalAreas,
+    adminAdditionalAreas,
   } = property;
+
   const [quotationOpen, setQuotationOpen] = useState(false);
   const [fixedPrice, setFixed] = useState(
     priceSold !== null
@@ -53,11 +55,16 @@ const SalesRoomModal = ({
       : priceWithIncrement.toFixed(2),
   );
 
-  const [additionalPrices, setAdditionalPrices] = useState(
-    addedAdditionalAreas.reduce((c, n) => {
+  const reduceAdditionalAreas = (array) => {
+    return array.reduce((c, n) => {
       c += n.unitPrice;
       return c;
-    }, 0),
+    }, 0);
+  };
+
+  const [additionalPrices, setAdditionalPrices] = useState(
+    reduceAdditionalAreas(addedAdditionalAreas) +
+      reduceAdditionalAreas(adminAdditionalAreas),
   );
   const [currentState, setCurrentState] = useState(status);
   const [currentDiscount, setCurrentDiscount] = useState(discount || 0);
@@ -167,17 +174,7 @@ const SalesRoomModal = ({
               <span className={Styles.title}>Valor Apartamento</span>
               <div>
                 <NumberFormat
-                  value={
-                    /* priceSold
-                      ? (
-                          priceWithIncrement +
-                          discount -
-                          additionalPrices
-                        ).toFixed(2)
-                      : */ (
-                      Number(priceWithIncrement) + Number(discount)
-                    ).toFixed(2)
-                  }
+                  value={Number(priceWithIncrement).toFixed(2)}
                   displayType="text"
                   thousandSeparator
                   prefix="$"
