@@ -4,15 +4,18 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import PropTypes from 'prop-types';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import Services from '../../../../../services/group/groupService';
 import { updateFieldItem, deleteFieldItem } from '../../action';
 import { startApiFetch, failApiFetch, successApiFetch } from '../action';
+import withFormikField from '../../../../../HOC/widthFormikField';
 import { setOpen } from '../CantDeleteDialog/action';
 
 const services = new Services();
+
+const FormikTextField = withFormikField(TextField);
 
 export const Item = ({
   currentItem,
@@ -41,6 +44,12 @@ export const Item = ({
     setItemName(editableItem);
   };
 
+  const submit = () => {
+    if (formRef.current) {
+      formRef.current.handleSubmit();
+    }
+  };
+
   const handleChangeItemPUC = (element) => {
     const editableItem = element.target.value;
     setItemName(editableItem);
@@ -50,6 +59,7 @@ export const Item = ({
     if (disabled) {
       setDisabled((prevstate) => !prevstate);
     } else {
+      submit();
       try {
         const updatedItems = [...itemsFiltered];
         let fieldToUpdate = {};
@@ -119,18 +129,18 @@ export const Item = ({
         <Formik
           enableReinitialize
           innerRef={formRef}
-          initialValues={{ PUC: '' }}
+          initialValues={{ PUC: currentItem.PUC }}
         >
           {() => (
-            <Form>
-              <TextField
-                defaultValue={currentItem.PUC}
+            <Form id={currentItem.PUC}>
+              <Field
                 name="PUC"
                 margin="dense"
                 disabled={disabled}
                 onChange={handleChangeItemPUC}
                 fullWidth
                 className={currentItem.PUC}
+                component={FormikTextField}
                 onMouseEnter={() => setVisible((prevState) => !prevState)}
                 onMouseLeave={() => setVisible((prevState) => !prevState)}
               />
@@ -142,17 +152,17 @@ export const Item = ({
         <Formik
           enableReinitialize
           innerRef={formRef}
-          initialValues={{ name: '' }}
+          initialValues={{ name: currentItem.name }}
         >
           {() => (
             <Form>
-              <TextField
-                defaultValue={currentItem.name}
+              <Field
                 name="name"
                 margin="dense"
                 className={currentItem.name}
                 onChange={handleChangeItemName}
                 disabled={disabled}
+                component={FormikTextField}
                 onMouseEnter={() => setVisible((prevState) => !prevState)}
                 onMouseLeave={() => setVisible((prevState) => !prevState)}
               />
@@ -205,8 +215,6 @@ const mapStateToProps = (state) => {
     ];
   return {
     items: state.groups.groupTabs.items,
-    currentItem: state.groups.groupItemField.currentItem,
-    index: state.groups.groupItemField.index,
     itemsFiltered: state.groups.groupItemField.itemsFiltered,
   };
 };
