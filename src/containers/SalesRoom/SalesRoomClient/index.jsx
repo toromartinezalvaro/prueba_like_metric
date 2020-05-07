@@ -323,9 +323,7 @@ class SalesRoom extends Component {
           priceSold:
             this.state.selectedProperty.status !==
             SalesRoomEnum.status.AVAILABLE
-              ? this.state.selectedProperty.priceWithIncrement -
-                this.state.selectedProperty.discount +
-                this.state.discountApplied
+              ? this.state.selectedProperty.priceWithIncrement
               : null,
           discount:
             this.state.selectedProperty.status !==
