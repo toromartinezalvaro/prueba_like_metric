@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -50,6 +50,11 @@ export const Item = ({
     }
   };
 
+  useEffect(() => {
+    setItemName(currentItem.name);
+    setItemPUC(currentItem.PUC);
+  }, [currentItem]);
+
   const handleChangeItemPUC = (element) => {
     const editableItem = element.target.value;
     setItemName(editableItem);
@@ -59,7 +64,6 @@ export const Item = ({
     if (disabled) {
       setDisabled((prevstate) => !prevstate);
     } else {
-      submit();
       try {
         const updatedItems = [...itemsFiltered];
         let fieldToUpdate = {};
@@ -88,8 +92,6 @@ export const Item = ({
         afterArray[itemSelected] = fieldToUpdate;
         onUpdateField(afterArray);
         setDisabled((prevstate) => !prevstate);
-        setItemName('');
-        setItemPUC('');
       } catch (error) {
         onFailApi();
         enqueueSnackbar(error.response.data.message, { variant: 'error' });
@@ -129,7 +131,7 @@ export const Item = ({
         <Formik
           enableReinitialize
           innerRef={formRef}
-          initialValues={{ PUC: currentItem.PUC }}
+          initialValues={{ PUC: itemPUC }}
         >
           {() => (
             <Form id={currentItem.PUC}>
@@ -152,7 +154,7 @@ export const Item = ({
         <Formik
           enableReinitialize
           innerRef={formRef}
-          initialValues={{ name: currentItem.name }}
+          initialValues={{ name: itemName }}
         >
           {() => (
             <Form>
