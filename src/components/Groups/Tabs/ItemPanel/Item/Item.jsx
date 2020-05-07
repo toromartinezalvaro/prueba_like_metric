@@ -14,6 +14,7 @@ import { setOpen } from '../CantDeleteDialog/action';
 const services = new Services();
 
 export const Item = ({
+  currentItem,
   onUpdateField,
   onStartApi,
   onFailApi,
@@ -22,10 +23,9 @@ export const Item = ({
   items,
   index,
   onSetOpenCantDelete,
-  ItemsFiltered,
+  itemsFiltered,
 }) => {
   const [disabled, setDisabled] = useState(true);
-  const [currentItem, setCurrentItem] = useState(ItemsFiltered[index]);
 
   const [visible, setVisible] = useState(false);
 
@@ -47,9 +47,8 @@ export const Item = ({
     if (disabled) {
       setDisabled((prevstate) => !prevstate);
     } else {
-      onStartApi();
       try {
-        const updatedItems = [...ItemsFiltered];
+        const updatedItems = [...itemsFiltered];
         let fieldToUpdate = {};
         if (itemName && itemPUC) {
           fieldToUpdate = {
@@ -68,11 +67,14 @@ export const Item = ({
             PUC: itemPUC,
           };
         }
-        updatedItems[index] = fieldToUpdate;
-        onUpdateField(updatedItems);
+        const itemSelected = items.findIndex(
+          (element) => element.id === fieldToUpdate.id,
+        );
         const response = await services.createItem(fieldToUpdate);
+        const afterArray = [...items];
+        afterArray[itemSelected] = fieldToUpdate;
+        onUpdateField(afterArray);
         setDisabled((prevstate) => !prevstate);
-        onSuccessApi();
         setItemName('');
         setItemPUC('');
       } catch (error) {
@@ -86,7 +88,7 @@ export const Item = ({
     if (disabled) {
       onStartApi();
       try {
-        const itemsBeforeDelete = [...items];
+        const itemsBeforeDelete = [...itemsFiltered];
         const fieldToDelete = itemsBeforeDelete[index].id;
         const response = await services.deleteItem({ id: fieldToDelete });
         const itemsAfterDelete = itemsBeforeDelete.filter(
@@ -119,6 +121,7 @@ export const Item = ({
           disabled={disabled}
           onChange={handleChangeItemPUC}
           fullWidth
+          className={currentItem.PUC}
           onMouseEnter={() => setVisible((prevState) => !prevState)}
           onMouseLeave={() => setVisible((prevState) => !prevState)}
         />
@@ -128,6 +131,7 @@ export const Item = ({
           defaultValue={currentItem.name}
           name="name"
           margin="dense"
+          className={currentItem.name}
           onChange={handleChangeItemName}
           disabled={disabled}
           onMouseEnter={() => setVisible((prevState) => !prevState)}
@@ -169,11 +173,21 @@ Item.propTypes = {
   index: PropTypes.number.isRequired,
   currentItem: PropTypes.object.isRequired,
   onSetOpenCantDelete: PropTypes.func.isRequired,
+  itemsFiltered: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  items: state.groups.groupTabs.items,
-});
+const mapStateToProps = (state) => {
+  const current =
+    state.groups.groupItemField.itemsFiltered[
+      state.groups.groupItemField.index
+    ];
+  return {
+    items: state.groups.groupTabs.items,
+    currentItem: current,
+    index: state.groups.groupItemField.index,
+    itemsFiltered: state.groups.groupItemField.itemsFiltered,
+  };
+};
 
 const mapDispatchToprops = {
   onUpdateField: updateFieldItem,
