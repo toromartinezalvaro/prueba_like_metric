@@ -15,6 +15,7 @@ import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import commonStyles from '../../assets/styles/variables.scss';
 import LoadableContainer from '../../components/UI/Loader';
 import Prices2 from '../../components/Area/Prices2';
+import Imports from '../../components/Area/Imports';
 
 class Area extends Component {
   constructor(props) {
@@ -405,6 +406,7 @@ class Area extends Component {
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <Fragment>
+          <Imports />
           <Card>
             <CardHeader>
               <p>Areas</p>
