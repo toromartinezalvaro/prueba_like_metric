@@ -23,7 +23,7 @@ export default (state = initialState, { type, payload }) => {
     case UPLOAD_DIALOG_API_FETCH_START:
       return { ...state, loading: true };
     case UPLOAD_DIALOG_API_FETCH_END:
-      return { ...state, file: false };
+      return { ...state, loading: false };
     default:
       return state;
   }

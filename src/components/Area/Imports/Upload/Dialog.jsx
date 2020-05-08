@@ -53,6 +53,11 @@ function Dialog({
     onSelectFile(event.target.files[0]);
   };
 
+  const closeHandler = () => {
+    onCloseHandler();
+    onSelectFile(null);
+  };
+
   return (
     <MuiDialog open={open}>
       <DialogTitle>Cargar plantilla</DialogTitle>
@@ -81,14 +86,14 @@ function Dialog({
         </Loader>
       </DialogContent>
       <DialogActions>
-        <Button size="small" color="primary" onClick={onCloseHandler}>
+        <Button size="small" color="primary" onClick={closeHandler}>
           Cancelar
         </Button>
         <Button
           size="small"
           color="primary"
           onClick={onFileUpload}
-          disabled={file === null}
+          disabled={file === null || loading}
         >
           Cargar
         </Button>
