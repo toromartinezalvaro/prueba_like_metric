@@ -44,6 +44,11 @@ export const Item = ({
     setItemName(editableItem);
   };
 
+  const handleChangeItemPUC = (element) => {
+    const editableItem = element.target.value;
+    setItemPUC(editableItem);
+  };
+
   const submit = () => {
     if (formRef.current) {
       formRef.current.handleSubmit();
@@ -54,11 +59,6 @@ export const Item = ({
     setItemName(currentItem.name);
     setItemPUC(currentItem.PUC);
   }, [currentItem]);
-
-  const handleChangeItemPUC = (element) => {
-    const editableItem = element.target.value;
-    setItemName(editableItem);
-  };
 
   const handleChangeForEdit = async () => {
     if (disabled) {
@@ -101,17 +101,16 @@ export const Item = ({
 
   const handleDeleteField = async () => {
     if (disabled) {
-      onStartApi();
       try {
+        const itemList = [...items];
         const itemsBeforeDelete = [...itemsFiltered];
         const fieldToDelete = itemsBeforeDelete[index].id;
         const response = await services.deleteItem({ id: fieldToDelete });
-        const itemsAfterDelete = itemsBeforeDelete.filter(
+        const itemsAfterDelete = itemList.filter(
           (element) => element.id !== fieldToDelete,
         );
         onDeleteField(itemsAfterDelete);
         setDisabled((prevstate) => !prevstate);
-        onSuccessApi();
       } catch (error) {
         if (error.response.data.message === 'itemAssociate') {
           onSetOpenCantDelete('item');
