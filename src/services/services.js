@@ -19,9 +19,9 @@ class Services {
     return this.axiosPromise(() => this.axios.put(url, data, config));
   }
 
-  get(url, data, config) {
+  get(url, config) {
     console.log('url 🐒 get', url, this.axios.defaults.headers);
-    return this.axiosPromise(() => this.axios.get(url, data, config));
+    return this.axiosPromise(() => this.axios.get(url, config));
   }
 
   download(url, data, config) {

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import Button from '@material-ui/core/Button';
 import MuiDialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,17 +10,24 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ImportServices from '../../../../services/imports';
+import { closeDialog } from './actions';
 
 const services = new ImportServices();
 
-export default function Dialog() {
+function Dialog({ open, onCloseHandler }) {
+  const { enqueueSnackbar } = useSnackbar();
   const { towerId } = useParams();
   const [file, setFile] = useState(null);
 
   const onFileUpload = async () => {
-    const formData = new FormData();
-    formData.append('file', file);
-    services.postSchema(towerId, formData);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      await services.postSchema(towerId, formData);
+      enqueueSnackbar('Plantilla cargada correctamente', { variant: 'success' });
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+    }
   };
 
   const onChangeHandler = (event) => {
@@ -25,14 +35,14 @@ export default function Dialog() {
   };
 
   return (
-    <MuiDialog >
+    <MuiDialog open={open}>
       <DialogTitle>Cargar plantilla</DialogTitle>
       <DialogContent>
         <DialogContentText>Agregue la plantilla ya completa.</DialogContentText>
         <input
           name="file"
           accept="xlsx/*"
-          style={{ display: 'none' }}
+          hidden
           id="raised-button-file"
           type="file"
           onChange={onChangeHandler}
@@ -50,7 +60,7 @@ export default function Dialog() {
         </label>
       </DialogContent>
       <DialogActions>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={onCloseHandler}>
           Cancelar
         </Button>
         <Button
@@ -65,3 +75,21 @@ export default function Dialog() {
     </MuiDialog>
   );
 }
+
+const mapStateToProps = (state) => ({
+  open: state.areas.open,
+});
+
+const mapDispatchToProps = {
+  onCloseHandler: closeDialog,
+};
+
+Dialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onCloseHandler: PropTypes.func.isRequired,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Dialog);
