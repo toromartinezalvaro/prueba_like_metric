@@ -17,6 +17,8 @@ import CompanySelector from './CompanySelector';
 import CantDeleteDialog from './ItemPanel/CantDeleteDialog';
 
 import style from './Tabs.module.scss';
+import CreateItemDialog from './CreateItemDialog';
+
 
 const Tabs = ({
   onOpenCreateGroupDialog,
@@ -64,6 +66,7 @@ const Tabs = ({
         )}
       </Paper>
       <CreateGroupDialog />
+      <CreateItemDialog />
       <CantDeleteDialog />
     </>
   );

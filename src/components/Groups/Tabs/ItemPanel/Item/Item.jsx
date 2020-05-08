@@ -12,6 +12,7 @@ import { updateFieldItem, deleteFieldItem } from '../../action';
 import { startApiFetch, failApiFetch, successApiFetch } from '../action';
 import withFormikField from '../../../../../HOC/widthFormikField';
 import { setOpen } from '../CantDeleteDialog/action';
+import PreventDelete from './PreventDelete';
 
 const services = new Services();
 
@@ -35,6 +36,10 @@ export const Item = ({
 
   const [visible, setVisible] = useState(false);
 
+  const [open, setOpenModal] = useState(false);
+
+  const [selectedValue, setSelectedValue] = useState(false);
+
   const { enqueueSnackbar } = useSnackbar();
 
   const [itemName, setItemName] = useState('');
@@ -44,21 +49,15 @@ export const Item = ({
     setItemName(editableItem);
   };
 
-  const submit = () => {
-    if (formRef.current) {
-      formRef.current.handleSubmit();
-    }
+  const handleChangeItemPUC = (element) => {
+    const editableItem = element.target.value;
+    setItemPUC(editableItem);
   };
 
   useEffect(() => {
     setItemName(currentItem.name);
     setItemPUC(currentItem.PUC);
   }, [currentItem]);
-
-  const handleChangeItemPUC = (element) => {
-    const editableItem = element.target.value;
-    setItemName(editableItem);
-  };
 
   const handleChangeForEdit = async () => {
     if (disabled) {
@@ -99,32 +98,44 @@ export const Item = ({
     }
   };
 
-  const handleDeleteField = async () => {
+  const prepareToDelete = () => {
+    setOpenModal(true);
+  };
+
+  const handleDeleteField = async (readyForDelete = false) => {
     if (disabled) {
-      onStartApi();
-      try {
-        const itemsBeforeDelete = [...itemsFiltered];
-        const fieldToDelete = itemsBeforeDelete[index].id;
-        const response = await services.deleteItem({ id: fieldToDelete });
-        const itemsAfterDelete = itemsBeforeDelete.filter(
-          (element) => element.id !== fieldToDelete,
-        );
-        onDeleteField(itemsAfterDelete);
-        setDisabled((prevstate) => !prevstate);
-        onSuccessApi();
-      } catch (error) {
-        if (error.response.data.message === 'itemAssociate') {
-          onSetOpenCantDelete('item');
-          onSuccessApi();
-        } else {
-          onFailApi();
-          enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      if (readyForDelete) {
+        try {
+          const itemList = [...items];
+          const itemsBeforeDelete = [...itemsFiltered];
+          const fieldToDelete = itemsBeforeDelete[index].id;
+          const response = await services.deleteItem({ id: fieldToDelete });
+          const itemsAfterDelete = itemList.filter(
+            (element) => element.id !== fieldToDelete,
+          );
+          onDeleteField(itemsAfterDelete);
+          setDisabled((prevstate) => !prevstate);
+        } catch (error) {
+          if (error.response.data.message === 'itemAssociate') {
+            onSetOpenCantDelete('item');
+            onSuccessApi();
+          } else {
+            onFailApi();
+            enqueueSnackbar(error.response.data.message, { variant: 'error' });
+          }
         }
       }
     } else {
       setDisabled((prevstate) => !prevstate);
     }
   };
+
+  const handleClose = (value) => {
+    setOpenModal(false);
+    setSelectedValue(value);
+    handleDeleteField(value);
+  };
+
   return (
     <>
       <TableCell component="th" scope="row">
@@ -181,7 +192,7 @@ export const Item = ({
                     />
                   </Button>
                   <Button
-                    onClick={handleDeleteField}
+                    onClick={disabled ? prepareToDelete : handleDeleteField}
                     onMouseEnter={() => setVisible((prevState) => !prevState)}
                     onMouseLeave={() => setVisible((prevState) => !prevState)}
                   >
@@ -193,6 +204,11 @@ export const Item = ({
           )}
         </Formik>
       </TableCell>
+      <PreventDelete
+        selectedValue={selectedValue}
+        open={open}
+        onClose={handleClose}
+      />
     </>
   );
 };
@@ -211,10 +227,6 @@ Item.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const current =
-    state.groups.groupItemField.itemsFiltered[
-      state.groups.groupItemField.index
-    ];
   return {
     items: state.groups.groupTabs.items,
     itemsFiltered: state.groups.groupItemField.itemsFiltered,

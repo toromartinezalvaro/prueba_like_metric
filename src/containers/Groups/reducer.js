@@ -18,7 +18,7 @@ const initialState = {
   error: false,
 };
 
-const reducer = (state = initialState, { type, payload }) => {
+const reducer = (state = initialState, { type }) => {
   switch (type) {
     case GROUPS_FETCH_API_START:
       return { ...state, loading: true };

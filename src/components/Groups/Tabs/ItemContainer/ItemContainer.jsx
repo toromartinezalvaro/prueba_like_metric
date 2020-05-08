@@ -17,7 +17,6 @@ import ItemPanel from '../ItemPanel';
 import styles from './ItemContainer.module.scss';
 import { openCreateItemDialog } from '../CreateItemDialog/action';
 import { setGroupExpanded } from '../action';
-import CreateItemDialog from '../CreateItemDialog';
 
 export const ItemContainer = ({
   groups,
@@ -65,7 +64,6 @@ export const ItemContainer = ({
                 >
                   <AddIcon />
                 </Fab>
-                <CreateItemDialog />
               </Paper>
             </ExpansionPanelDetails>
           </ExpansionPanel>
