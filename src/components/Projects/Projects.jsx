@@ -12,7 +12,7 @@ import Icon from '../../assets/icons/Icon';
 import unique from './helper/index';
 
 const ProjectItems = (props) => {
-  const [company, setCompany] = useState('');
+  const [company, setCompany] = useState('all');
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
@@ -27,7 +27,11 @@ const ProjectItems = (props) => {
   }, [props.projects]);
 
   const companyOptions = (companiesForOptions) => {
-    return companiesForOptions.map((element, index) => (
+    return _.orderBy(
+      companiesForOptions,
+      [(company) => company.name.toLowerCase()],
+      ['asc'],
+    ).map((element, index) => (
       <MenuItem value={element.id} key={index}>
         {element.name}
       </MenuItem>
@@ -136,7 +140,9 @@ const ProjectItems = (props) => {
             value={company}
             onChange={handleChangeCompanyFilter}
           >
-            <MenuItem value="all">Todas las compañías</MenuItem>
+            <MenuItem value="all" selected>
+              Todas las compañías
+            </MenuItem>
             {companyOptions(companies)}
           </Select>
         </FormControl>
