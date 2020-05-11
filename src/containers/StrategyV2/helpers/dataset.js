@@ -32,7 +32,7 @@ const GRAPH_BASE = [
   },
 ];
 
-const makeArrayDataSets = (line, i) => {
+const makeArrayDataSets = (line) => {
   const base = GRAPH_BASE.find((item) => item.id === line.id);
   const incrementsFixed = line.increments.map(
     (increment) => increment && increment.toFixed(2),

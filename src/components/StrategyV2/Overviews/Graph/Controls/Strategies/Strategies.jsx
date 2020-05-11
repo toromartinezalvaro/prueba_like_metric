@@ -139,7 +139,7 @@ const Strategies = ({
                     <TableCell classes={{ root: Styles.radioButtonCell }}>
                       <FormControlLabel
                         disabled={strategy && !isReset}
-                        value={row.frequency}
+                        value={row.frequencyId}
                         control={<Radio />}
                       />
                     </TableCell>
@@ -213,6 +213,7 @@ const mapStrategyForSelector = (strategy) => {
     strategy: strategy.label[0],
     AER: `${Number(strategy.EARate * 100).toFixed(2)}%`,
     frequency: `${strategy.id} (${strategy.soldInCurrentStrategy})`,
+    frequencyId: strategy.id,
     frequencyRate: `${Number(strategy.percentage * 100).toFixed(2)}%`,
   };
 };
