@@ -51,6 +51,17 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                 />
               </div>
               <div className={style.Totalbills}>
+                <h4 className={style.textTotal}> Valor de IVA total:</h4>
+                <NumberFormat
+                  value={(totalBills - totalBillsWithouIVA).toFixed(0)}
+                  displayType="text"
+                  className={style.totalAmount}
+                  thousandSeparator
+                  decimalSeparator={false}
+                  prefix="$"
+                />
+              </div>
+              <div className={style.Totalbills}>
                 <h4 className={style.textTotal}> Valor Total mas IVA:</h4>
                 <NumberFormat
                   value={totalBills.toFixed(0)}
