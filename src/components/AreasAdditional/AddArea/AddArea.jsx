@@ -95,7 +95,7 @@ const AddArea = (props) => {
 
   const onChangePrice = (event) => {
     const errorTemp = error;
-    if (event.floatValue >= 0) {
+    if (event.floatValue >= 0 || event.floatValue === undefined) {
       setErrorMessagePrice('');
       errorTemp.price = false;
       setError(errorTemp);
@@ -107,11 +107,18 @@ const AddArea = (props) => {
   };
 
   const onBlurPrice = (event) => {
-    const priceFloat = parseFloat(event.target.value.replace(/,/g, ''));
+    const errorTemp = error;
+    const priceFloat = parseFloat(event.target.value);
     if (priceFloat >= 0) {
       setPrice(priceFloat);
+      setErrorMessagePrice('');
+      errorTemp.price = false;
+      setError(errorTemp);
     } else {
       setPrice(null);
+      setErrorMessagePrice('Debe ser mayor a 0');
+      errorTemp.price = true;
+      setError(errorTemp);
     }
   };
 
@@ -196,7 +203,7 @@ const AddArea = (props) => {
                     color="primary"
                   />
                 }
-                label="Completar automaticamente las nomenclaturas"
+                label="Completar automáticamente las nomenclaturas"
               />
               <FormControlLabel
                 control={
@@ -207,12 +214,13 @@ const AddArea = (props) => {
                     color="primary"
                   />
                 }
-                label="Completar automaticamente los precios"
+                label="Completar automáticamente los precios"
               />
               {isChecked.price && (
                 <TextField
+                  autoFocus
                   key={`price-add`}
-                  value={price}
+                  defaultValue={price}
                   error={error.price}
                   helperText={errorMessagePrice}
                   typeOfTextField={'number'}
@@ -223,7 +231,7 @@ const AddArea = (props) => {
                     ),
                   }}
                   onChange={onChangePrice}
-                  onBlur={(e) => onBlurPrice(e)}
+                  onBlur={onBlurPrice}
                 />
               )}
             </div>
