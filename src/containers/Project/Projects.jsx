@@ -342,6 +342,7 @@ export default class Projects extends Component {
         {projects.length > 0 && (
           <ProjectItems
             projects={projects}
+            companies={companies}
             openProject={this.openProjectHandler}
             createProject={this.createProjectHandler}
             removeProject={this.removeProjectHandler}
