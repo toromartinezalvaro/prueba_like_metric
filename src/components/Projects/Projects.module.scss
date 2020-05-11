@@ -1,20 +1,21 @@
 @import '../../assets/styles/variables.scss';
 
 .ItemContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  border-radius: 4px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: $softGray-color;
-  background: $main-color;
-  flex-basis: 140px;
-  max-width: 260px;
-  min-width: 188px;
-  width: 25%;
-  margin: 12px;
-  transition: box-shadow 0.3s ease-in-out 0s, background-color 0.6s ease-in 0s;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  border-radius: 4px !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: $softGray-color !important;
+  background: $main-color !important;
+  flex-basis: 140px !important;
+  max-width: 260px !important;
+  min-width: 188px !important;
+  width: 25% !important;
+  margin: 12px !important;
+  transition: box-shadow 0.3s ease-in-out 0s, background-color 0.6s ease-in 0s !important;
+  z-index: 0 !important;
 
   &:focus {
     outline: auto 5px;
@@ -37,6 +38,7 @@
   flex-direction: column;
   flex: 1;
   padding: 0px 5px;
+  z-index: 9999 !important;
   color: $defaultWhite-color;
 }
 
@@ -90,4 +92,22 @@
   display: flex;
   align-content: center;
   justify-content: flex-start;
+}
+
+.header {
+  margin: 0 0 0 1%;
+}
+
+.buttonHeader {
+  margin: 1% !important;
+}
+
+.rootSelect {
+  width: 16vw !important;
+  margin: 0.3% 0 0 0 !important;
+  font-size: 15px !important;
+}
+
+.headerContainer {
+  margin: 2% !important;
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CircularProgress } from '@material-ui/core';
 import CompanyServices from '../../services/companies/index';
 import CompaniesSelector from '../../components/Companies/CompanieSelector';
 import AssignedCompanies from '../../components/Companies/AssignedCompanies';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
-import { CircularProgress } from '@material-ui/core';
 import commonStyles from '../../assets/styles/variables.scss';
 import styles from './Companies.module.scss';
 
