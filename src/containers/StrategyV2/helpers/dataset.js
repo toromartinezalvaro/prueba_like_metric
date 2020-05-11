@@ -33,23 +33,22 @@ const GRAPH_BASE = [
 ];
 
 const makeArrayDataSets = (line, i) => {
-  if (GRAPH_BASE) {
-    const incrementsFixed = line.increments.map(
-      (increment) => increment && increment.toFixed(2),
-    );
-    return {
-      id: GRAPH_BASE[i].id,
-      data: [...incrementsFixed],
-      label: GRAPH_BASE[i].label,
-      borderColor: GRAPH_BASE[i].borderColor,
-      backgroundColor: GRAPH_BASE[i].backgroundColor,
-      fill: GRAPH_BASE[i].fill,
-      lineTension: 0.05,
-      percentage: line.percentage,
-      EARate: line.ear,
-    };
-  }
-  return null;
+  const base = GRAPH_BASE.find((item) => item.id === line.id);
+  const incrementsFixed = line.increments.map(
+    (increment) => increment && increment.toFixed(2),
+  );
+  return {
+    id: base.id,
+    data: [...incrementsFixed],
+    label: base.label,
+    borderColor: base.borderColor,
+    backgroundColor: base.backgroundColor,
+    fill: base.fill,
+    lineTension: 0.05,
+    percentage: line.percentage,
+    EARate: line.ear,
+    soldInCurrentStrategy: line.soldInCurrentStrategy,
+  };
 };
 
 const generateDataset = (increments) => {
