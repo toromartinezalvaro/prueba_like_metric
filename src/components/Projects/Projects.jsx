@@ -40,8 +40,8 @@ const ProjectItems = (props) => {
 
   const itemFromProject = (project) => {
     return (
-      <div
-        className={styles.ItemContainer}
+      <Card
+        classes={{ root: styles.ItemContainer }}
         key={project.id}
         onClick={(event) => {
           event.stopPropagation();
@@ -83,7 +83,7 @@ const ProjectItems = (props) => {
             <p>{project.name}</p>
           </div>
         </div>
-      </div>
+      </Card>
     );
   };
 
