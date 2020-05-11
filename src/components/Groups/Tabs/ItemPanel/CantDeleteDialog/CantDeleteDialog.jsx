@@ -13,7 +13,7 @@ const CantDeleteDialog = ({ open, onSetClose, field }) => {
   const MESSAGE_FOR_ITEM_HEADER =
     'Ha ocurrido un error al tratar de eliminar el item';
   const MESSAGE_FOR_GROUP_HEADER =
-    'Ha ocurrido un error al tratar de eliminar el groupo';
+    'Ha ocurrido un error al tratar de eliminar el grupo';
   const MESSAGE_FOR_ITEM = `El item que intentas borrar está asignado a un contrato.
      Te recomendamos edites el contrato y retires la asignación del item, una vez hecho esto
      podrás borrar el item.`;

@@ -20,7 +20,7 @@ const PreventDelete = ({ open, selectedValue, onClose }) => {
         <DialogTitle>ATENCIÓN</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {`¿Está seguro que desea elemininar?`}
+            {`¿Está seguro que desea eliminar?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

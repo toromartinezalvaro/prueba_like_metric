@@ -124,20 +124,21 @@ class Pairing extends Component {
                   width="100"
                 />
               </div>
-            ) : null}
-            <div className={Styles.container}>
-              <div className={Styles.summary}>
-                <SummaryTable properties={this.state.properties} />
+            ) : (
+              <div className={Styles.container}>
+                <div className={Styles.summary}>
+                  <SummaryTable properties={this.state.properties} />
+                </div>
+                <div className={Styles.pairing}>
+                  <PairingTable
+                    properties={this.state.properties}
+                    areas={this.state.areas}
+                    addAreaHandler={this.handleAddArea}
+                    removeAreaHandler={this.handleRemoveArea}
+                  />
+                </div>
               </div>
-              <div className={Styles.pairing}>
-                <PairingTable
-                  properties={this.state.properties}
-                  areas={this.state.areas}
-                  addAreaHandler={this.handleAddArea}
-                  removeAreaHandler={this.handleRemoveArea}
-                />
-              </div>
-            </div>
+            )}
           </CardBody>
         </Card>
       </Loading>

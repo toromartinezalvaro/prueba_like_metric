@@ -114,7 +114,7 @@ export const Item = ({
             (element) => element.id !== fieldToDelete,
           );
           onDeleteField(itemsAfterDelete);
-          setDisabled((prevstate) => !prevstate);
+          setDisabled(true);
         } catch (error) {
           if (error.response.data.message === 'itemAssociate') {
             onSetOpenCantDelete('item');
