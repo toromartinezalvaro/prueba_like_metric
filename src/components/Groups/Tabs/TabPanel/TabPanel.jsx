@@ -49,7 +49,6 @@ const TabPanel = ({
     if (disabled) {
       setDisabled((prevstate) => !prevstate);
     } else {
-      onStartApi();
       try {
         const updatedGroups = [...groups];
         const fieldToUpdate = { ...updatedGroups[index], categoryName: name };
@@ -68,7 +67,6 @@ const TabPanel = ({
   const handleDeleteField = async (readyForDelete = false) => {
     if (disabled) {
       if (readyForDelete) {
-        onStartApi();
         try {
           const groupsBeforeDelete = [...groups];
           const fieldToDelete = groupsBeforeDelete[index].id;
