@@ -34,10 +34,10 @@ export default class AreaServices extends Services {
     return this.get(AreaServiceDefinitions.areasPrices(towerId, areaTypeId));
   }
 
-  updateAreaType(id, values) {
-    return this.put(AreaServiceDefinitions.updateAreaType(id), values);
+  updateAreaType(id, data) {
+    return this.put(AreaServiceDefinitions.updateAreaType(id), data);
   }
-  
+
   isDisable(towerId) {
     return this.get(AreaServiceDefinitions.getSalesRequestHistory(towerId));
   }

@@ -77,9 +77,11 @@ const Prices = ({
   };
 
   const handleSubmit = async (values) => {
+    const objectValues = values;
     try {
       dispatch(fetchAreasStart());
-      await services.updateAreaType(areaTypeId, values);
+      objectValues.towerId = towerId;
+      await services.updateAreaType(areaTypeId, objectValues);
       await updateInformation();
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' });
