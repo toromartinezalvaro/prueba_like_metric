@@ -13,6 +13,7 @@ import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import commonStyles from '../../assets/styles/variables.scss';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import LoadableContainer from '../../components/UI/Loader';
 import Prices2 from '../../components/Area/Prices2';
 
@@ -323,6 +324,7 @@ class Area extends Component {
           currentErrorMessage: errorHelper.message,
           modalIsLoading: false,
         });
+        this.props.spawnMessage(error.response, 'error');
       });
     this.setState({ currentErrorMessage: '' });
   };
@@ -485,4 +487,4 @@ class Area extends Component {
   }
 }
 
-export default Area;
+export default withDefaultLayout(Area);
