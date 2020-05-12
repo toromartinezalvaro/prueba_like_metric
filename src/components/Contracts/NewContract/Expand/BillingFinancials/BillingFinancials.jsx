@@ -55,6 +55,19 @@ const ExpandBillingFinancials = ({
             </div>
             <div className={styles.col3}>
               <div className={styles.displayValue}>
+                Valor de IVA total :
+                <NumberFormat
+                  value={Number(AmountWithIva - AmountWithoutIva).toFixed(0)}
+                  displayType="text"
+                  className={styles.totalAmount}
+                  decimalSeparator={false}
+                  thousandSeparator
+                  prefix="$"
+                />
+              </div>
+            </div>
+            <div className={styles.col4}>
+              <div className={styles.displayValue}>
                 Valor despues de IVA total:
                 <NumberFormat
                   value={Number(AmountWithIva).toFixed(0)}

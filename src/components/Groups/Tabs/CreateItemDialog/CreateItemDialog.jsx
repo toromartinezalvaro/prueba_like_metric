@@ -38,7 +38,11 @@ const CreateItemDialog = ({
   }, [expandedGroup]);
 
   const handleChangeText = (name) => (element) => {
-    const newItem = { ...item, [name]: element.target.value };
+    const newItem = {
+      ...item,
+      contractCategoryId: expandedGroup,
+      [name]: element.target.value,
+    };
     setItem(newItem);
   };
 

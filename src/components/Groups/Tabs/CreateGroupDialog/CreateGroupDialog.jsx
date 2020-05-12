@@ -13,7 +13,7 @@ import Services from '../../../../services/group/groupService';
 import { closeCreateDialog, apiStart, apiFail } from './action';
 import withFormikField from '../../../../HOC/widthFormikField';
 import Loader from '../../../UI2/Loader/Loader';
-import { addOneGroup } from '../action';
+import { addOneGroup, setCompanyId } from '../action';
 
 const services = new Services();
 
@@ -27,6 +27,7 @@ const CreateGroupDialog = ({
   onFailApi,
   onAddOneGroup,
   companyId,
+  onSetCompanyId,
 }) => {
   const formRef = useRef();
 
@@ -38,6 +39,7 @@ const CreateGroupDialog = ({
     try {
       if (values.categoryName && values.categoryName !== '') {
         const response = await services.createGroup(values);
+        onSetCompanyId(companyId);
         onAddOneGroup(response.data);
         onCloseCreateDialog();
       } else {
@@ -105,6 +107,7 @@ CreateGroupDialog.propTypes = {
   onFailApi: PropTypes.func.isRequired,
   onAddOneGroup: PropTypes.func.isRequired,
   companyId: PropTypes.number.isRequired,
+  onSetCompanyId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -118,6 +121,7 @@ const mapDispatchToProps = {
   onStartApi: apiStart,
   onFailApi: apiFail,
   onAddOneGroup: addOneGroup,
+  onSetCompanyId: setCompanyId,
 };
 export default connect(
   mapStateToProps,

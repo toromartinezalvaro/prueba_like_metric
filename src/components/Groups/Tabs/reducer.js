@@ -43,7 +43,7 @@ export default (state = initialState, { type, payload }) => {
     case GROUPS_DELETE_FIELD_ITEM:
       return { ...state, items: payload };
     case GROUPS_SET_COMPANY_ID:
-      return { ...state, companyId: payload, expandedGroup: null };
+      return { ...state, companyId: payload };
     case GROUPS_SET_COMPANIES_IDS:
       return { ...state, companies: payload };
     case GROUPS_SET_EXPANDED_GROUP:

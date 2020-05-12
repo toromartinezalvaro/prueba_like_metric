@@ -414,7 +414,9 @@ const BillingFinancials = ({
           key={billing.id}
           classes={{ root: styles.expandContainer }}
         >
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon className={styles.iconExpand}/>}>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon className={styles.iconExpand} />}
+          >
             <BillingFinancialsContent billing={billing} i={i} />
           </ExpansionPanelSummary>
           <Card className={styles.cardForm}>
@@ -726,32 +728,7 @@ const BillingFinancials = ({
   return (
     <Fragment>
       {displayComponent()}
-      <div className={styles.cardForm}>
-        <div className={styles.Totalbills}>
-          <div className={styles.column1}>
-            <h4 sclassName={styles.textTotal}>Valor antes del IVA total:</h4>
-            <NumberFormat
-              value={Number(totalBillsNoIva).toFixed(0)}
-              displayType="text"
-              className={styles.TotalAmount}
-              decimalSeparator={false}
-              thousandSeparator
-              prefix="$"
-            />
-          </div>
-          <div className={styles.column2}>
-            <h4 sclassName={styles.textTotal}>Valor despues de IVA total:</h4>
-            <NumberFormat
-              value={Number(totalBills).toFixed(0)}
-              displayType="text"
-              className={styles.TotalAmount}
-              decimalSeparator={false}
-              thousandSeparator
-              prefix="$"
-            />
-          </div>
-        </div>
-      </div>
+
       {displayOnHeader(
         Number(totalBillsNoIva).toFixed(0),
         Number(totalBills).toFixed(0),

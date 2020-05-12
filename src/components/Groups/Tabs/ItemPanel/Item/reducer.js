@@ -1,4 +1,9 @@
-import { SET_CURRENT_ITEM, SET_INDEX, SET_ITEMS_FILTERED } from './action';
+import {
+  SET_CURRENT_ITEM,
+  SET_INDEX,
+  SET_ITEMS_FILTERED,
+
+} from './action';
 
 const initialState = {
   currentItem: {},
@@ -14,7 +19,6 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, index: payload };
     case SET_ITEMS_FILTERED:
       return { ...state, itemsFiltered: payload };
-
     default:
       return state;
   }

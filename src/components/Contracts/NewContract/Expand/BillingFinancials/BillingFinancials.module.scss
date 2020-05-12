@@ -14,8 +14,7 @@
 
 .titleExpand {
   display: grid;
-  grid-template-columns: 13em 22em 23em;
-  column-gap: 2em;
+  grid-template-columns: 13em 20em 16em 23em;
 }
 
 .totalAmount {
@@ -27,8 +26,13 @@
   margin-left: 8px;
 }
 
-.col2,
 .col3 {
+  margin-top: 4%;
+  margin-left: 8px;
+}
+
+.col2,
+.col4 {
   margin-top: 3%;
   margin-left: 8px;
 }

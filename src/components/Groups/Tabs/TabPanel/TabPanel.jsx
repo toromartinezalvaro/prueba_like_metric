@@ -11,6 +11,7 @@ import Loader from '../../../UI2/Loader/Loader';
 import { updateFieldTab, deleteFieldTab } from '../action';
 import { startApiFetch, failApiFetch, successApiFetch } from './action';
 import { setOpen } from '../ItemPanel/CantDeleteDialog/action';
+import PreventDelete from '../ItemPanel/Item/PreventDelete';
 import style from './TabPanel.module.scss';
 
 const services = new Services();
@@ -33,6 +34,10 @@ const TabPanel = ({
 
   const [visible, setVisible] = useState(false);
 
+  const [open, setOpenModal] = useState(false);
+
+  const [selectedValue, setSelectedValue] = useState(false);
+
   const { enqueueSnackbar } = useSnackbar();
 
   const handleChangeGroupName = (element) => {
@@ -44,7 +49,6 @@ const TabPanel = ({
     if (disabled) {
       setDisabled((prevstate) => !prevstate);
     } else {
-      onStartApi();
       try {
         const updatedGroups = [...groups];
         const fieldToUpdate = { ...updatedGroups[index], categoryName: name };
@@ -60,31 +64,42 @@ const TabPanel = ({
     }
   };
 
-  const handleDeleteField = async () => {
+  const handleDeleteField = async (readyForDelete = false) => {
     if (disabled) {
-      onStartApi();
-      try {
-        const groupsBeforeDelete = [...groups];
-        const fieldToDelete = groupsBeforeDelete[index].id;
-        const response = await services.deleteGroup({ id: fieldToDelete });
-        const groupsAfterDelete = groupsBeforeDelete.filter(
-          (element) => element.id !== fieldToDelete,
-        );
-        onDeleteField(groupsAfterDelete);
-        setDisabled((prevstate) => !prevstate);
-        onSuccessApi();
-      } catch (error) {
-        if (error.response.data.message === 'groupAssociate') {
-          onSetOpenCantDelete('grupo');
+      if (readyForDelete) {
+        try {
+          const groupsBeforeDelete = [...groups];
+          const fieldToDelete = groupsBeforeDelete[index].id;
+          const response = await services.deleteGroup({ id: fieldToDelete });
+          const groupsAfterDelete = groupsBeforeDelete.filter(
+            (element) => element.id !== fieldToDelete,
+          );
+          onDeleteField(groupsAfterDelete);
+          setDisabled((prevstate) => !prevstate);
           onSuccessApi();
-        } else {
-          onFailApi();
-          enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        } catch (error) {
+          if (error.response.data.message === 'groupAssociate') {
+            onSetOpenCantDelete('grupo');
+            onSuccessApi();
+          } else {
+            onFailApi();
+            enqueueSnackbar(error.response.data.message, { variant: 'error' });
+          }
         }
       }
     } else {
       setDisabled((prevstate) => !prevstate);
     }
+  };
+
+  const prepareToDelete = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = (value) => {
+    setOpenModal(false);
+    setSelectedValue(value);
+    handleDeleteField(value);
   };
 
   return (
@@ -121,7 +136,7 @@ const TabPanel = ({
                 />
               </Button>
               <Button
-                onClick={handleDeleteField}
+                onClick={disabled ? prepareToDelete : handleDeleteField}
                 onMouseEnter={() => setVisible((prevState) => !prevState)}
                 onMouseLeave={() => setVisible((prevState) => !prevState)}
               >
@@ -131,6 +146,11 @@ const TabPanel = ({
           )}
         </div>
       </Box>
+      <PreventDelete
+        selectedValue={selectedValue}
+        open={open}
+        onClose={handleClose}
+      />
     </div>
   );
 };

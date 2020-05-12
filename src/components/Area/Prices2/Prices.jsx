@@ -77,9 +77,11 @@ const Prices = ({
   };
 
   const handleSubmit = async (values) => {
+    const objectValues = values;
     try {
       dispatch(fetchAreasStart());
-      await services.updateAreaType(areaTypeId, values);
+      objectValues.towerId = towerId;
+      await services.updateAreaType(areaTypeId, objectValues);
       await updateInformation();
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' });
@@ -94,7 +96,7 @@ const Prices = ({
         <Loader isLoading={state.loading} variant="circular">
           {state.error ? (
             <DialogContentText>
-              Ha ocurrido un error obteniendo la informacion del tipo de area.
+              Ha ocurrido un error obteniendo la información del tipo de área.
             </DialogContentText>
           ) : (
             <Formik
@@ -128,7 +130,7 @@ const Prices = ({
                     </Box>
                     {values.areas.length === 0 && (
                       <DialogContentText>
-                        Este tipo de area no tiene medidas distintas a 0.
+                        Este tipo de área no tiene medidas distintas a 0.
                       </DialogContentText>
                     )}
                     {values.areas.length > 0 && (

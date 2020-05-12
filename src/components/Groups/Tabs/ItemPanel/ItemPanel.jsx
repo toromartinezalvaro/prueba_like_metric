@@ -37,7 +37,7 @@ const ItemPanel = ({
     onSetItemsFiltered(ItemsFiltered);
     return (
       <TableRow key={index}>
-        <Item />
+        <Item currentItem={currentItem} index={index} />
       </TableRow>
     );
   });

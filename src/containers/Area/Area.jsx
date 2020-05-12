@@ -14,7 +14,9 @@ import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import commonStyles from '../../assets/styles/variables.scss';
 import LoadableContainer from '../../components/UI/Loader';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import Prices2 from '../../components/Area/Prices2';
+import Imports from '../../components/Area/Imports';
 
 class Area extends Component {
   constructor(props) {
@@ -42,6 +44,10 @@ class Area extends Component {
     anySold: false,
     isAreaTypeDialogOpen: false,
     disableSold: false,
+  };
+
+  errorDispatch = (error) => {
+    this.props.spawnMessage(error, 'error', 'ERROR');
   };
 
   modalContent = () => {
@@ -318,9 +324,8 @@ class Area extends Component {
         this.setState({ modalIsLoading: false });
       })
       .catch((error) => {
-        const errorHelper = errorHandling(error);
+        this.errorDispatch(error.response.data.message);
         this.setState({
-          currentErrorMessage: errorHelper.message,
           modalIsLoading: false,
         });
       });
@@ -405,6 +410,7 @@ class Area extends Component {
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <Fragment>
+          <Imports />
           <Card>
             <CardHeader>
               <p>Areas</p>
@@ -485,4 +491,4 @@ class Area extends Component {
   }
 }
 
-export default Area;
+export default withDefaultLayout(Area);
