@@ -45,8 +45,9 @@ const CreateItemDialog = ({
             },
           });
         }}
+        type="tel"
+        allowNegative={false}
         decimalSeparator={false}
-        thousandSeparator
       />
     );
   }
@@ -98,7 +99,7 @@ const CreateItemDialog = ({
           <TextField
             label="Id"
             fullWidth
-            onChange={handleChangeText('PUC')}
+            onBlur={handleChangeText('PUC')}
             type="number"
             InputLabelProps={{
               shrink: true,
