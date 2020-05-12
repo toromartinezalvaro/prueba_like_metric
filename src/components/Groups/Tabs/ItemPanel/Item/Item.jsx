@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
+import NumberFormat from 'react-number-format';
 import Services from '../../../../../services/group/groupService';
 import { updateFieldItem, deleteFieldItem } from '../../action';
 import { startApiFetch, failApiFetch, successApiFetch } from '../action';
@@ -43,7 +44,29 @@ export const Item = ({
   const { enqueueSnackbar } = useSnackbar();
 
   const [itemName, setItemName] = useState('');
+
   const [itemPUC, setItemPUC] = useState('');
+
+  function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={inputRef}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              value: values.value,
+            },
+          });
+        }}
+        type="tel"
+        allowNegative={false}
+        decimalSeparator={false}
+      />
+    );
+  }
+
   const handleChangeItemName = (element) => {
     const editableItem = element.target.value;
     setItemName(editableItem);
@@ -150,12 +173,15 @@ export const Item = ({
                 name="PUC"
                 margin="dense"
                 disabled={disabled}
-                onChange={handleChangeItemPUC}
+                onBlur={handleChangeItemPUC}
                 fullWidth
                 className={currentItem.PUC}
                 component={FormikTextField}
                 onMouseEnter={() => setVisible((prevState) => !prevState)}
                 onMouseLeave={() => setVisible((prevState) => !prevState)}
+                InputProps={{
+                  inputComponent: NumberFormatCustom,
+                }}
               />
             </Form>
           )}
