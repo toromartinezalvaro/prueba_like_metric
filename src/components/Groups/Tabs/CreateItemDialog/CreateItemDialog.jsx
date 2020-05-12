@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
+import NumberFormat from 'react-number-format';
 import Services from '../../../../services/group/groupService';
 import { closeCreateItemDialog, apiStart, apiFail } from './action';
 import Loader from '../../../UI2/Loader/Loader';
@@ -30,6 +31,26 @@ const CreateItemDialog = ({
     PUC: '',
     contractCategoryId: '',
   });
+
+  function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={inputRef}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              value: values.value,
+            },
+          });
+        }}
+        type="tel"
+        allowNegative={false}
+        decimalSeparator={false}
+      />
+    );
+  }
 
   useEffect(() => {
     setItem((prevState) => {
@@ -78,10 +99,13 @@ const CreateItemDialog = ({
           <TextField
             label="Id"
             fullWidth
-            onChange={handleChangeText('PUC')}
+            onBlur={handleChangeText('PUC')}
             type="number"
             InputLabelProps={{
               shrink: true,
+            }}
+            InputProps={{
+              inputComponent: NumberFormatCustom,
             }}
           />
           <TextField

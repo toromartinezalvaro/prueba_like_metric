@@ -8,6 +8,7 @@ import errorHandling from '../../services/commons/errorHelper';
 import SchemeServices from '../../services/schema/SchemaServices';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import LoadableContainer from '../../components/UI/Loader';
+import Schema2 from '../../components/Building/Schema2';
 
 class Building extends Component {
   constructor(props) {
@@ -271,6 +272,7 @@ class Building extends Component {
             sold={this.state.sold}
             disableSold={this.state.disableSold}
           />
+          {/* <Schema2 /> */}
           {!this.state.disable ? null : (
             <Naming
               isLoading={this.state.isLoadingSchemas}

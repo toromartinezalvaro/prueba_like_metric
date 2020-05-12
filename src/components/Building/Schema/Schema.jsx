@@ -114,6 +114,9 @@ const Schema = (props) => {
               >
                 Editar
               </Button>
+            </div>
+          ) : (
+            <div>
               <Button
                 className={styles.CancelButton}
                 onClick={() => {
@@ -123,9 +126,6 @@ const Schema = (props) => {
               >
                 Cancelar
               </Button>
-            </div>
-          ) : (
-            <div>
               <Button
                 onClick={() => {
                   save();

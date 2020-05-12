@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import NumberFormat from 'react-number-format';
 import Button from '@material-ui/core/Button';
@@ -37,6 +38,13 @@ const services = {
   increments2: new Increment2Services(),
 };
 
+const validationSchema = yup.object().shape({
+  ear: yup
+    .number()
+    .typeError('Es necesario ingresar un numero como tasa')
+    .required('Es obligatorio ingresar un tasa'),
+});
+
 export const SalesWizard = ({
   groupId,
   totalUnits,
@@ -56,7 +64,7 @@ export const SalesWizard = ({
 }) => {
   useEffect(() => {
     onSuggestedIncrementChange(0);
-    onCalculatedReset()
+    onCalculatedReset();
   }, [open]);
 
   const { towerId } = useParams();
@@ -111,13 +119,11 @@ export const SalesWizard = ({
         <Box mb={2}>
           <Grid container justify="space-between" mb={2}>
             <Grid item>
-              <Typography>
-                Meses de retencion: {rotationMonths}
-              </Typography>
+              <Typography>Rotación de inventario: {rotationMonths}</Typography>
             </Grid>
             <Grid item>
               <Typography>
-                Incremento sugerido:{' '}
+                Incremento sugerido:
                 <NumberFormat
                   value={Numbers.toFixed(suggestedIncrement)}
                   displayType="text"
@@ -130,12 +136,13 @@ export const SalesWizard = ({
         </Box>
         <Formik
           initialValues={{
-            ear: 0,
+            ear: null,
             frequency: 1,
           }}
           onSubmit={handleSubmit}
+          validationSchema={validationSchema}
         >
-          {() => (
+          {({ isValid }) => (
             <Form>
               <Box mb={2}>
                 <Field
@@ -159,6 +166,7 @@ export const SalesWizard = ({
                 fullWidth
                 variant="contained"
                 color="primary"
+                disabled={!isValid}
               >
                 Calcular
               </Button>
