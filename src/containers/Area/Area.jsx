@@ -15,7 +15,6 @@ import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import commonStyles from '../../assets/styles/variables.scss';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import LoadableContainer from '../../components/UI/Loader';
-import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import Prices2 from '../../components/Area/Prices2';
 import Imports from '../../components/Area/Imports';
 
@@ -329,7 +328,7 @@ class Area extends Component {
         this.setState({
           modalIsLoading: false,
         });
-        this.props.spawnMessage(error.response, 'error');
+        this.props.spawnMessage(error.response.data.message, 'error');
       });
     this.setState({ currentErrorMessage: '' });
   };
