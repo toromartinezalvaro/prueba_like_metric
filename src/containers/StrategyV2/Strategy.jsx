@@ -64,7 +64,7 @@ const Strategy = ({
           </Box>
           <Box>
             <Overviews />
-          </Box>{' '}
+          </Box>
         </div>
       )}
     </Loader>
