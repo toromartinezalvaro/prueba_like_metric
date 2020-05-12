@@ -70,7 +70,7 @@ const SaleRequestTable = ({
       </ExpansionPanel>
       <ExpansionPanel>
         <ExpansionPanelSummary>
-          <Typography>Solicitudes de venta resultas</Typography>
+          <Typography>Solicitudes de venta resueltas</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <TableContainer component={Paper}>

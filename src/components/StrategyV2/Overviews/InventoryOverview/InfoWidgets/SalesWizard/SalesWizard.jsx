@@ -56,7 +56,7 @@ export const SalesWizard = ({
 }) => {
   useEffect(() => {
     onSuggestedIncrementChange(0);
-    onCalculatedReset()
+    onCalculatedReset();
   }, [open]);
 
   const { towerId } = useParams();
@@ -111,13 +111,11 @@ export const SalesWizard = ({
         <Box mb={2}>
           <Grid container justify="space-between" mb={2}>
             <Grid item>
-              <Typography>
-                Meses de retencion: {rotationMonths}
-              </Typography>
+              <Typography>Rotación de inventario: {rotationMonths}</Typography>
             </Grid>
             <Grid item>
               <Typography>
-                Incremento sugerido:{' '}
+                Incremento sugerido:
                 <NumberFormat
                   value={Numbers.toFixed(suggestedIncrement)}
                   displayType="text"

@@ -45,7 +45,10 @@ const defaultClient = {
 const validationSchema = yup.object().shape({
   identityDocument: yup
     .string()
-    .matches(/^[a-zA-Z0-9-]*$/)
+    .matches(
+      /^[a-zA-Z0-9-]*$/,
+      'El documento solo puede contener números y letras',
+    )
     .required('Debe ingresar un documento de identidad'),
   name: yup.string().required('Debe ingresar un nombre'),
   email: yup
