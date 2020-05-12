@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import NumberFormat from 'react-number-format';
 import Button from '@material-ui/core/Button';
@@ -36,6 +37,13 @@ const services = {
   increments: new IncrementServices(),
   increments2: new Increment2Services(),
 };
+
+const validationSchema = yup.object().shape({
+  ear: yup
+    .number()
+    .typeError('Es necesario ingresar un numero como tasa')
+    .required('Es obligatorio ingresar un tasa'),
+});
 
 export const SalesWizard = ({
   groupId,
@@ -128,12 +136,13 @@ export const SalesWizard = ({
         </Box>
         <Formik
           initialValues={{
-            ear: 0,
+            ear: null,
             frequency: 1,
           }}
           onSubmit={handleSubmit}
+          validationSchema={validationSchema}
         >
-          {() => (
+          {({ isValid }) => (
             <Form>
               <Box mb={2}>
                 <Field
@@ -157,6 +166,7 @@ export const SalesWizard = ({
                 fullWidth
                 variant="contained"
                 color="primary"
+                disabled={!isValid}
               >
                 Calcular
               </Button>
