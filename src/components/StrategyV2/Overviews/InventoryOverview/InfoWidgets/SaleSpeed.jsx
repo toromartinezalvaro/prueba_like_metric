@@ -56,7 +56,7 @@ const SaleSpeed = ({
   };
 
   const submitHandler = async (values) => {
-    if (values.saleSpeed && values.saleSpeed !== saleSpeed) {
+    if (values.saleSpeed && Number(values.saleSpeed) !== saleSpeed) {
       try {
         startApiLoading();
         await services.increments.putSalesSpeeds(groupId, {
