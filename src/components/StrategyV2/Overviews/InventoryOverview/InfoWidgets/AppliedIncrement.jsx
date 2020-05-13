@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
-import Widget, { XS } from '../../../Shared/Widget';
+import Widget, { SM, XS } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
 
-const AppliedIncrement = ({ appliedIncrement }) => {
+const AppliedIncrement = ({ appliedIncrement, mini }) => {
   return (
-    <Widget title="Incremento aplicado en Inv" size={XS}>
+    <Widget title="Incremento aplicado en Inv" size={mini ? XS : SM}>
       <NumberFormat
         value={Numbers.toFixed(appliedIncrement)}
         displayType="text"
@@ -20,6 +20,11 @@ const AppliedIncrement = ({ appliedIncrement }) => {
 
 AppliedIncrement.propTypes = {
   appliedIncrement: PropTypes.number.isRequired,
+  mini: PropTypes.bool,
+};
+
+AppliedIncrement.defaultProps = {
+  mini: false,
 };
 
 const mapStateToProps = (state) => ({

@@ -26,7 +26,7 @@ const mainInfoWidgets = [
   <WidgetGroup
     showGroup
     widgets={[
-      <AppliedIncrement key={uuidV4()} />,
+      <AppliedIncrement key={uuidV4()} mini />,
       <ProjectedIncrement mini key={uuidV4()} />,
     ]}
     key={uuidV4()}

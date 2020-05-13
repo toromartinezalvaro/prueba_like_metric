@@ -1,5 +1,4 @@
 import React from 'react';
-import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
