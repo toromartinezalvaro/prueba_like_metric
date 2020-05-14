@@ -1,6 +1,7 @@
 import React, { useState, useContext, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Resizable } from 're-resizable';
+import { animateScroll as scroll } from 'react-scroll';
 import {
   DashboardRoutes,
   ContractRoutes,
@@ -85,6 +86,10 @@ const SideMenu = ({
         )}
       </div>
     );
+  };
+
+  const scrollToBottom = () => {
+    scroll.scrollTo(500);
   };
 
   return (
@@ -332,6 +337,7 @@ const SideMenu = ({
                   validation={Contracts.array.some((url) =>
                     window.location.pathname.includes(url),
                   )}
+                  scrollToBottom={scrollToBottom}
                   icon="fas fa-file-signature"
                   display={!!agent.isAuthorized([Role.Admin, Role.Super])}
                   items={[

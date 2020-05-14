@@ -7,15 +7,20 @@ import Icon from '@material-ui/core/Icon';
 import style from '../SideMenu.module.scss';
 
 const Section = (props) => {
-  const { items, title, validation, display, icon } = props;
+  const { items, title, validation, display, icon, scrollToBottom } = props;
   const [expanded, setExpanded] = useState(validation);
+
+  const onExpanded = () => {
+    setExpanded(!expanded);
+    if (expanded && title === 'Contratos') scrollToBottom();
+  };
 
   return (
     <Fragment>
       {display && (
         <ExpansionPanel
           classes={{ root: style.expansionPanel }}
-          onClick={() => setExpanded(!expanded)}
+          onClick={onExpanded}
           expanded={expanded}
         >
           <ExpansionPanelSummary

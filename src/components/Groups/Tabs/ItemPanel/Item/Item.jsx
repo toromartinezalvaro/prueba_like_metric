@@ -14,6 +14,7 @@ import { startApiFetch, failApiFetch, successApiFetch } from '../action';
 import withFormikField from '../../../../../HOC/widthFormikField';
 import { setOpen } from '../CantDeleteDialog/action';
 import PreventDelete from './PreventDelete';
+import style from './Item.module.scss';
 
 const services = new Services();
 
@@ -194,7 +195,7 @@ export const Item = ({
           initialValues={{ name: itemName }}
         >
           {() => (
-            <Form>
+            <Form className={style.cellSize}>
               <Field
                 name="name"
                 margin="dense"
