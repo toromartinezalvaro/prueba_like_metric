@@ -11,8 +11,7 @@ import { MAIN_VIEW, DETAILS_VIEW } from '../reducer';
 import Numbers from '../../../../helpers/numbers';
 import SaleSpeed from './InfoWidgets/SaleSpeed';
 import InventoryRotation from './InfoWidgets/InventoryRotation';
-import AppliedIncrement from './InfoWidgets/AppliedIncrement';
-import ProjectedIncrement from './InfoWidgets/ProjectedIncrement';
+import TotalIncrement from './InfoWidgets/TotalIncrement';
 import EARateWidget from './InfoWidgets/EARate';
 import InitialFee from './InfoWidgets/InitialFee';
 import Sales from './PriceWidgets/Sales';
@@ -23,14 +22,7 @@ import PriceDetailsGroup from './PriceWidgets/DetailsGroup';
 const mainInfoWidgets = [
   <SaleSpeed key={uuidV4()} />,
   <InventoryRotation key={uuidV4()} />,
-  <WidgetGroup
-    showGroup
-    widgets={[
-      <AppliedIncrement key={uuidV4()} mini />,
-      <ProjectedIncrement mini key={uuidV4()} />,
-    ]}
-    key={uuidV4()}
-  />,
+  <TotalIncrement key={uuidV4()} />,
   <EARateWidget key={uuidV4()} />,
 ];
 
