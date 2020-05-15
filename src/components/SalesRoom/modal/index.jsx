@@ -57,8 +57,7 @@ const SalesRoomModal = ({
 
   const reduceAdditionalAreas = (array) => {
     return array.reduce((c, n) => {
-      c += n.unitPrice;
-      return c;
+      return c + n.unitPrice;
     }, 0);
   };
 
@@ -92,10 +91,8 @@ const SalesRoomModal = ({
   };
   const setAdditionalPricesHandler = () => {
     setAdditionalPrices(
-      addedAdditionalAreas.reduce((c, n) => {
-        c += n.unitPrice;
-        return c;
-      }, 0),
+      reduceAdditionalAreas(addedAdditionalAreas) +
+        reduceAdditionalAreas(adminAdditionalAreas),
     );
   };
 

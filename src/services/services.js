@@ -40,21 +40,20 @@ class Services {
 
   renewToken(refreshToken, promise, resolve, reject) {
     this.axios
-      .post(UserServices.renewToken, { refreshToken })
+      .post(UserServices.renewToken, { refreshToken }, { timeout: 1000 * 80 })
       .then((response) => {
         if (response.data.token) {
           agent.saveUser(response.data);
           this.axiosPromise(promise, 2, false)
             .then(resolve)
             .catch(reject);
-
-          return;
         }
-        throw new Error('401');
       })
       .catch((error) => {
-        agent.logout();
-        window.location.reload();
+        if (error.response && error.response.status === 401) {
+          agent.logout();
+          window.location.reload();
+        }
         reject(error);
       });
   }
@@ -80,6 +79,7 @@ class Services {
               );
               return;
             }
+
             agent.logout();
             window.location.reload();
             reject(error);
