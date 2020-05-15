@@ -15,15 +15,12 @@ const Controls = () => {
             <AppliedIncrement />
           </Grid>
           <Grid item lg={4}>
-            <ProjectedIncrement />
+            <ProjectedIncrement field />
           </Grid>
           <Grid item lg={4}>
             <TotalIncrement />
           </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <ProjectedIncrement field />
       </Grid>
       <Grid item xs={12}>
         <Strategies />
