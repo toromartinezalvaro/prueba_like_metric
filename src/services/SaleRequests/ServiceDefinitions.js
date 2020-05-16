@@ -27,6 +27,10 @@ const ServiceDefinitions = {
   rejectDesistRequest: (desistId) => {
     return `${API_PATH}sale-requests/desist-requests/${desistId}`;
   },
+
+  getPropertySuggestedPrice: (propertyId) => {
+    return `${API_PATH}sale-requests/price-property/suggestions/${propertyId}`;
+  },
 };
 
 export default ServiceDefinitions;
