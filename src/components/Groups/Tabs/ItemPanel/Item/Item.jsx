@@ -117,7 +117,7 @@ export const Item = ({
         setDisabled((prevstate) => !prevstate);
       } catch (error) {
         onFailApi();
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
     }
   };
@@ -140,12 +140,12 @@ export const Item = ({
           onDeleteField(itemsAfterDelete);
           setDisabled(true);
         } catch (error) {
-          if (error.response.data.message === 'itemAssociate') {
+          if (error.message === 'itemAssociate') {
             onSetOpenCantDelete('item');
             onSuccessApi();
           } else {
             onFailApi();
-            enqueueSnackbar(error.response.data.message, { variant: 'error' });
+            enqueueSnackbar(error.message, { variant: 'error' });
           }
         }
       }

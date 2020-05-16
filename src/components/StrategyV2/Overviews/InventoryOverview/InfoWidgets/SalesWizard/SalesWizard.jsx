@@ -82,7 +82,7 @@ export const SalesWizard = ({
       onCalculatedClicked();
       onSuggestedIncrementChange(response.data);
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
 
@@ -103,7 +103,7 @@ export const SalesWizard = ({
       });
       changeIncrementHandler(suggestedIncrement);
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
     stopApiLoading();
   };

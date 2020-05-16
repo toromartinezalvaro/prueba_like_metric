@@ -36,7 +36,7 @@ export const CompanySelector = ({
       );
       onSetItems(responseItems.data);
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
   const options = () =>

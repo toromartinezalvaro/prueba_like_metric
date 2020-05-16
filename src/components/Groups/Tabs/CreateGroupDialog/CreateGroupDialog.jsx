@@ -50,7 +50,7 @@ const CreateGroupDialog = ({
       }
     } catch (error) {
       onFailApi();
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
 

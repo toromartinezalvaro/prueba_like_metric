@@ -70,7 +70,7 @@ const SaleSpeed = ({
           groups: response.data.summary.increments,
         });
       } catch (error) {
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
       stopApiLoading();
     }

@@ -46,7 +46,7 @@ export default function Dialog() {
     try {
       const response = await services.putSchema(towerId, values);
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
 

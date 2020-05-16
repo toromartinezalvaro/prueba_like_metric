@@ -67,7 +67,7 @@ const TabPanel = ({
         onSuccessApi();
       } catch (error) {
         onFailApi();
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
     }
   };
@@ -86,12 +86,12 @@ const TabPanel = ({
           setDisabled((prevstate) => !prevstate);
           onSuccessApi();
         } catch (error) {
-          if (error.response.data.message === 'groupAssociate') {
+          if (error.message === 'groupAssociate') {
             onSetOpenCantDelete('grupo');
             onSuccessApi();
           } else {
             onFailApi();
-            enqueueSnackbar(error.response.data.message, { variant: 'error' });
+            enqueueSnackbar(error.message, { variant: 'error' });
           }
         }
       }

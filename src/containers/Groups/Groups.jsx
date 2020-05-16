@@ -43,7 +43,7 @@ const Groups = ({
         onApiFetchSuccess();
       } catch (error) {
         onApiFetchFail();
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
     }
     fetch();

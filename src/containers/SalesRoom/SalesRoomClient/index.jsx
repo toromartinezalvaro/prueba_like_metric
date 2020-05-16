@@ -4,6 +4,7 @@ import ReactTooltip from 'react-tooltip';
 import moment from 'moment';
 import ReactDOMServer from 'react-dom/server';
 import NumberFormat from 'react-number-format';
+import { withSnackbar } from 'notistack';
 import {
   Dialog,
   DialogTitle,
@@ -356,8 +357,11 @@ class SalesRoom extends Component {
         });
         this.updateAdditionalAreas();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log('---->', { error: error.message });
+        this.props.enqueueSnackbar(error.message, {
+          variant: 'error',
+        });
         this.updateAdditionalAreas();
         this.setState({ isLoadingModal: false });
       });
@@ -588,4 +592,4 @@ class SalesRoom extends Component {
   }
 }
 
-export default withDefaultLayout(SalesRoom);
+export default withDefaultLayout(withSnackbar(SalesRoom));

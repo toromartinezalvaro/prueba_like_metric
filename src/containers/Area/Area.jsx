@@ -331,11 +331,11 @@ class Area extends Component {
         this.setState({ modalIsLoading: false });
       })
       .catch((error) => {
-        this.errorDispatch(error.response.data.message);
+        this.errorDispatch(error.message);
         this.setState({
           modalIsLoading: false,
         });
-        this.props.spawnMessage(error.response.data.message, 'error');
+        this.props.spawnMessage(error.message, 'error');
       });
     this.setState({ currentErrorMessage: '' });
   };

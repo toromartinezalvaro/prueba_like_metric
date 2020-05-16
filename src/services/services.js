@@ -94,7 +94,10 @@ class Services {
               .then(resolve)
               .catch(reject);
           } else {
-            reject(error);
+            const errorObject = error.response
+              ? error.response.data
+              : { message: 'Ha ocurrido un error' };
+            reject(errorObject);
           }
         });
     });

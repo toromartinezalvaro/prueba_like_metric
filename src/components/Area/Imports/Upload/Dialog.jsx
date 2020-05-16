@@ -44,7 +44,7 @@ function Dialog({
         variant: 'success',
       });
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
     onApiFetchEnd();
   };

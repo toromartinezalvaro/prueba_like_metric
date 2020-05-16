@@ -35,7 +35,7 @@ const QualitativePrimes = ({
         setRatings(orderedRatings);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
 
     services
@@ -46,7 +46,7 @@ const QualitativePrimes = ({
         descriptors2.current = orderedDescriptors;
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
 
     services
@@ -61,7 +61,7 @@ const QualitativePrimes = ({
         setPropertiesRatings(response.data.propertiesRatings);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
 
     return () => {};
@@ -79,7 +79,7 @@ const QualitativePrimes = ({
         setRatings(tempRatings);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -95,7 +95,7 @@ const QualitativePrimes = ({
         }
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -107,7 +107,7 @@ const QualitativePrimes = ({
         setRatings(tempRatings);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -120,7 +120,7 @@ const QualitativePrimes = ({
         setDescriptors(tempDescriptors);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -136,7 +136,7 @@ const QualitativePrimes = ({
         }
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -161,7 +161,7 @@ const QualitativePrimes = ({
         setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -180,7 +180,7 @@ const QualitativePrimes = ({
         setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -208,7 +208,7 @@ const QualitativePrimes = ({
         setPropertiesRatings(tempPropertiesRatings);
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
@@ -221,7 +221,7 @@ const QualitativePrimes = ({
         alertHandler('Las primas se actualizaron correctamente', 'success');
       })
       .catch((error) => {
-        alertHandler(error.response.data.message, 'error');
+        alertHandler(error.message, 'error');
       });
   };
 
