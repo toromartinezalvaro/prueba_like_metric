@@ -38,7 +38,9 @@ class Services {
     return this.axiosPromise(() => this.axios.delete(url, newConfig));
   }
 
-  renewToken(refreshToken, promise, resolve, reject) {
+  renewToken(promise, resolve, reject) {
+    agent.reloadCurrentUser();
+    const { refreshToken } = agent.currentUser;
     this.axios
       .post(UserServices.renewToken, { refreshToken }, { timeout: 1000 * 80 })
       .then((response) => {
@@ -71,12 +73,7 @@ class Services {
               agent.currentUser.refreshToken &&
               isAuthorizationEnabled
             ) {
-              this.renewToken(
-                agent.currentUser.refreshToken,
-                promise,
-                resolve,
-                reject,
-              );
+              this.renewToken(promise, resolve, reject);
               return;
             }
 
