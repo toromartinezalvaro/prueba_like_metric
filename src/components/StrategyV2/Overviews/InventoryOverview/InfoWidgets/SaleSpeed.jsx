@@ -12,6 +12,7 @@ import IncrementServices from '../../../../../services/increments/IncrementsServ
 import Increment2Services from '../../../../../services/incrementsV2/incrementsService';
 import generateDataset from '../../../../../containers/StrategyV2/helpers/dataset';
 import { startLoading, stopLoading } from '../../../Loader/actions';
+import { Numbers } from '../../../../../helpers';
 
 const services = {
   increments: new IncrementServices(),
@@ -29,7 +30,7 @@ const validationSchema = (rotationMonths, units) => {
       .number()
       .min(
         numberToValidation,
-        `La velocidad debe ser mayor a ${numberToValidation}`,
+        `La velocidad debe ser mayor a ${Numbers.toFixed(numberToValidation)}`,
       )
       .max(units, `La velocidad debe ser menor o igual a ${units}`),
   });
@@ -44,6 +45,8 @@ const SaleSpeed = ({
   onFetchedData,
   startApiLoading,
   stopApiLoading,
+  strategy,
+  isReset,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -97,6 +100,7 @@ const SaleSpeed = ({
                 mask={NUMBER}
                 onBlur={blurHandler}
                 component={Input}
+                disabled={strategy && !isReset}
               />
             </Form>
           )}
@@ -117,6 +121,8 @@ SaleSpeed.propTypes = {
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
+  isReset: PropTypes.bool,
+  strategy: PropTypes.number,
 };
 
 SaleSpeed.defaultProps = {
@@ -124,14 +130,21 @@ SaleSpeed.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { id, inventory, initialFee } = state.strategy.root.groups[
-    state.strategy.root.selectedGroup
-  ];
+  const {
+    id,
+    inventory,
+    initialFee,
+    isReset,
+    strategy,
+  } = state.strategy.root.groups[state.strategy.root.selectedGroup];
+
   return {
     groupId: id,
     saleSpeed: inventory.saleSpeed,
     units: inventory.units,
     rotationMonths: initialFee,
+    strategy,
+    isReset,
   };
 };
 
