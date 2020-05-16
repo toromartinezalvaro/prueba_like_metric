@@ -29,6 +29,10 @@ class SaleRequestsServices extends Services {
   rejectDesistRequest(desistId) {
     return this.put(ServiceDefinitions.rejectDesistRequest(desistId));
   }
+
+  getPropertySuggestedPrice(propertyId) {
+    return this.get(ServiceDefinitions.getPropertySuggestedPrice(propertyId));
+  }
 }
 
 export default SaleRequestsServices;

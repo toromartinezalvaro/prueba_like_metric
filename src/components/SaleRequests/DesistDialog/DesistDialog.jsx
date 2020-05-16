@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSnackbar } from 'notistack';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -23,18 +24,25 @@ const DesistDialog = ({
   updatePriceProperty,
   propertyId,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const formRef = useRef(null);
 
   const [isDisabled, setDisabled] = useState(false);
   const [property, setProperty] = useState(null);
+  const [suggestedPrice, setSuggestedPrice] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await services.getPropertyInfo(propertyId);
         setProperty(response.data);
+        const res = await saleRequestServices.getPropertySuggestedPrice(
+          propertyId,
+        );
+
+        setSuggestedPrice(res.data);
       } catch (error) {
-        console.error(error);
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
       }
     }
     if (open) {
@@ -65,36 +73,31 @@ const DesistDialog = ({
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} maxWidth="lg" fullWidth>
       <DialogTitle>Cambiar precio</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Agregue el precio manualmente del apartamento
+          Agregue el precio manualmente del apartamento:{' '}
+          {property && <span>{property.name}</span>}
         </DialogContentText>
-        {property && <span>{property.name}</span>}
+
         {property && <AreasDetails property={property} />}
         <Box my={2}>
           <Typography variant="caption">
             * Esta propiedad pertenece al {property && property.group}
           </Typography>
         </Box>
-        <ManualPrice ref={formRef} onSubmit={onSubmitHandler} />
+        <ManualPrice
+          ref={formRef}
+          onSubmit={onSubmitHandler}
+          suggestedPrice={suggestedPrice}
+        />
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleReject}
-          variant="contained"
-          color="secondary"
-          disabled={isDisabled}
-        >
+        <Button onClick={handleReject} color="secondary" disabled={isDisabled}>
           Rechazar
         </Button>
-        <Button
-          onClick={submit}
-          variant="contained"
-          color="primary"
-          disabled={isDisabled}
-        >
+        <Button onClick={submit} color="primary" disabled={isDisabled}>
           Actualizar
         </Button>
         <Button onClick={closeHandler} color="primary">
