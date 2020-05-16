@@ -26,8 +26,6 @@ const validationSchema = (rotationMonths, units) => {
     numberToValidation = units / 98;
   }
 
-  console.log({ numberToValidation, units, rotationMonths });
-
   return yup.object().shape({
     saleSpeed: yup
       .number()
