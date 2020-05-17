@@ -182,7 +182,7 @@ const TablesContractFlow = ({ billings }) => {
               } else {
                 prices = {
                   ...prices,
-                  [currentCell.name]: Number(singleValue.value),
+                  [currentCell.name]: Number(singleValue.value).toFixed(0),
                 };
               }
             } else {

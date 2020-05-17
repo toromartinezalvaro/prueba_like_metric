@@ -62,7 +62,7 @@ const Prices = ({
         dispatch(fetchAreasSuccess(res.data));
       } catch (error) {
         dispatch(fetchAreasFailure());
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
     }
     if (open && areaTypeId) {
@@ -84,7 +84,7 @@ const Prices = ({
       await services.updateAreaType(areaTypeId, objectValues);
       await updateInformation();
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
     handleClose();
   };

@@ -42,22 +42,19 @@ class Agent {
   }
 
   reloadCurrentUser() {
-    if (this.user === null || this.token === null) {
-      try {
-        const user = JSON.parse(window.localStorage.getItem(jwtKey));
-        if (user && user.token) {
-          this.user = user;
-          this.setToken(user.token);
-        } else {
-          this.logout();
-        }
-        return user;
-      } catch {
+    try {
+      const user = JSON.parse(window.localStorage.getItem(jwtKey));
+      if (user && user.token) {
+        this.user = user;
+        this.setToken(user.token);
+      } else {
         this.logout();
-        return null;
       }
+      return user;
+    } catch {
+      this.logout();
+      return null;
     }
-    return this.user;
   }
 
   logout() {

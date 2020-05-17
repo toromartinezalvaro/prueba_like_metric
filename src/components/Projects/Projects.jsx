@@ -133,7 +133,7 @@ const ProjectItems = (props) => {
         >
           Administración de Grupos
         </Button>
-        <FormControl variant="outlined" classes={{ root: styles.rootSelect }}>
+        <FormControl variant="filled" classes={{ root: styles.rootSelect }}>
           <InputLabel>Seleccione una compañía</InputLabel>
           <Select
             classes={{ root: styles.rootSelect }}

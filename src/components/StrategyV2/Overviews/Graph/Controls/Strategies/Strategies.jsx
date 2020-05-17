@@ -78,7 +78,7 @@ const Strategies = ({
       });
       onChangeStrategy(Number(id));
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
     stopApiLoading();
   };
@@ -96,7 +96,7 @@ const Strategies = ({
       });
       onChangeStrategy(null);
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
     stopApiLoading();
   };

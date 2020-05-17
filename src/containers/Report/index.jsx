@@ -28,7 +28,7 @@ class ReportContainer extends Component {
         if (error.response === undefined) {
           this.props.spawnMessage('Error de conexión', 'error');
         } else {
-          this.props.spawnMessage(error.response.data.message, 'error');
+          this.props.spawnMessage(error.message, 'error');
         }
       });
   }

@@ -184,45 +184,52 @@ class Area extends Component {
       .getAreas(towerId)
       .then((response) => {
         let currentState = {};
-        if (this.state.calculateTotals === true) {
-          const types = [];
-          response.data.propertiesAreas.forEach((arrayAreas) => {
-            if (arrayAreas !== undefined) {
-              arrayAreas.forEach((area) => {
-                if (!types.find((type) => area.type === type.id)) {
-                  types.push({ id: area.type, total: 0 });
-                }
-                if (types !== undefined) {
-                  const index = types.findIndex((obj) => obj.id === area.type);
-                  if (types[index] !== undefined) {
-                    types[index].total += area.measure;
+        const data = response ? response.data : null;
+        if (data) {
+          if (this.state.calculateTotals === true) {
+            const types = [];
+            data.propertiesAreas.forEach((arrayAreas) => {
+              if (arrayAreas !== undefined) {
+                arrayAreas.forEach((area) => {
+                  if (!types.find((type) => area.type === type.id)) {
+                    types.push({ id: area.type, total: 0 });
                   }
-                }
-                return types;
-              });
-              currentState = { ...currentState, calculateTotals: false, types };
-            }
-          });
-        }
-        const showFloating = response.data.propertiesAreas.find(
-          (arrayAreas) => {
+                  if (types !== undefined) {
+                    const index = types.findIndex(
+                      (obj) => obj.id === area.type,
+                    );
+                    if (types[index] !== undefined) {
+                      types[index].total += area.measure;
+                    }
+                  }
+                  return types;
+                });
+                currentState = {
+                  ...currentState,
+                  calculateTotals: false,
+                  types,
+                };
+              }
+            });
+          }
+          const showFloating = data.propertiesAreas.find((arrayAreas) => {
             const anyArea = arrayAreas.find((area) => {
               return area !== null && area.measure !== 0;
             });
             return anyArea !== undefined;
-          },
-        );
-        if (showFloating !== undefined) {
-          currentState = { ...currentState, showFloatingButton: true };
+          });
+          if (showFloating !== undefined) {
+            currentState = { ...currentState, showFloatingButton: true };
+          }
         }
 
         this.setState({
           ...currentState,
-          areaTypes: response.data.areaTypes,
-          properties: response.data.properties,
+          areaTypes: data.areaTypes,
+          properties: data.properties,
           isLoading: false,
-          data: response.data.propertiesAreas,
-          anySold: response.data.anySold,
+          data: data.propertiesAreas,
+          anySold: data.anySold,
         });
       })
       .catch((error) => {
@@ -324,11 +331,11 @@ class Area extends Component {
         this.setState({ modalIsLoading: false });
       })
       .catch((error) => {
-        this.errorDispatch(error.response.data.message);
+        this.errorDispatch(error.message);
         this.setState({
           modalIsLoading: false,
         });
-        this.props.spawnMessage(error.response.data.message, 'error');
+        this.props.spawnMessage(error.message, 'error');
       });
     this.setState({ currentErrorMessage: '' });
   };

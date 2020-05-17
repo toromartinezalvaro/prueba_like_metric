@@ -47,7 +47,7 @@ const Dialog = ({
       closeHandler();
     } catch (error) {
       dispatch(fetchQuotationFailure());
-      spawnMessage(error.response.data.message, 'error');
+      spawnMessage(error.message, 'error');
     }
   };
 
@@ -62,7 +62,7 @@ const Dialog = ({
     } catch (error) {
       dispatch(fetchQuotationFailure());
       spawnMessage(
-        `Hubo un problema cancelando la cotización ${error.response.data.message}`,
+        `Hubo un problema cancelando la cotización ${error.message}`,
         'error',
       );
     }
@@ -81,7 +81,7 @@ const Dialog = ({
           dispatch(fetchQuotationSuccess(response.data));
         }
       } catch (error) {
-        spawnMessage(error.response.data.message, 'error');
+        spawnMessage(error.message, 'error');
         dispatch(fetchQuotationFailure());
       }
     }

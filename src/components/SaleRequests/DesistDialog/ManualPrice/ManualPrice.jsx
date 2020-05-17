@@ -9,10 +9,11 @@ const validationSchema = yup.object().shape({
   price: yup.number('El valor debe ser un numero'),
 });
 
-const ManualPrice = forwardRef(({ onSubmit }, ref) => {
+const ManualPrice = forwardRef(({ suggestedPrice, onSubmit }, ref) => {
   return (
     <Formik
-      initialValues={{ price: '' }}
+      enableReinitialize
+      initialValues={{ price: suggestedPrice }}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
       innerRef={ref}
@@ -36,6 +37,7 @@ const ManualPrice = forwardRef(({ onSubmit }, ref) => {
 ManualPrice.displayName = 'ManualPrice';
 
 ManualPrice.propTypes = {
+  suggestedPrice: PropTypes.number.isRequired,
   onSubmit: PropTypes.func,
   isHidden: PropTypes.bool,
 };

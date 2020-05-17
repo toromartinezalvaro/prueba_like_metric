@@ -117,7 +117,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
       );
     } catch (error) {
       dispatch(clientRequestFailure());
-      makeAlert(error.response.data.message, 'error');
+      makeAlert(error.message, 'error');
     }
   };
 
@@ -135,7 +135,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
       dispatch(fetchAddToTowerSuccess());
     } catch (error) {
       dispatch(fetchAddToTowerFailure());
-      makeAlert(error.response.data.message, 'error');
+      makeAlert(error.message, 'error');
     }
   };
 

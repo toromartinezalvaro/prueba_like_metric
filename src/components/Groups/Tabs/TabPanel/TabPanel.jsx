@@ -27,6 +27,7 @@ const TabPanel = ({
   onSuccessApi,
   onDeleteField,
   onSetOpenCantDelete,
+  companyId,
 }) => {
   const [disabled, setDisabled] = useState(true);
 
@@ -45,13 +46,20 @@ const TabPanel = ({
     setGroupName(newGroupName);
   };
 
-  const handleChangeForEdit = async () => {
+  const handleChangeForEdit = (groupInfo) => async () => {
     if (disabled) {
       setDisabled((prevstate) => !prevstate);
     } else {
       try {
+        const indexOfGroup = groups.findIndex(
+          (element) => element.id === groupInfo.id,
+        );
         const updatedGroups = [...groups];
-        const fieldToUpdate = { ...updatedGroups[index], categoryName: name };
+        const fieldToUpdate = {
+          ...updatedGroups[indexOfGroup],
+          categoryName: name,
+          companyId,
+        };
         const response = await services.createGroup(fieldToUpdate);
         updatedGroups[index] = fieldToUpdate;
         onUpdateField(updatedGroups);
@@ -59,7 +67,7 @@ const TabPanel = ({
         onSuccessApi();
       } catch (error) {
         onFailApi();
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
     }
   };
@@ -78,12 +86,12 @@ const TabPanel = ({
           setDisabled((prevstate) => !prevstate);
           onSuccessApi();
         } catch (error) {
-          if (error.response.data.message === 'groupAssociate') {
+          if (error.message === 'groupAssociate') {
             onSetOpenCantDelete('grupo');
             onSuccessApi();
           } else {
             onFailApi();
-            enqueueSnackbar(error.response.data.message, { variant: 'error' });
+            enqueueSnackbar(error.message, { variant: 'error' });
           }
         }
       }
@@ -126,7 +134,7 @@ const TabPanel = ({
           {visible && (
             <>
               <Button
-                onClick={handleChangeForEdit}
+                onClick={handleChangeForEdit(group)}
                 onMouseEnter={() => setVisible((prevState) => !prevState)}
                 onMouseLeave={() => setVisible((prevState) => !prevState)}
               >
@@ -173,6 +181,7 @@ const mapStateToProps = (state) => {
   return {
     loadingField: state.groups.groupTabPanel.loading,
     groups: state.groups.groupTabs.groups,
+    companyId: state.groups.groupTabs.companyId,
   };
 };
 

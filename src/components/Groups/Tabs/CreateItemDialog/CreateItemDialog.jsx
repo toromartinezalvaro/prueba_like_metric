@@ -87,7 +87,7 @@ const CreateItemDialog = ({
       }
     } catch (error) {
       onFailApi();
-      enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
 
@@ -98,6 +98,7 @@ const CreateItemDialog = ({
         <Loader isLoading={loadingField}>
           <TextField
             label="Id"
+            value={item.PUC}
             fullWidth
             onBlur={handleChangeText('PUC')}
             type="number"
@@ -110,6 +111,7 @@ const CreateItemDialog = ({
           />
           <TextField
             label="Nombre"
+            value={item.name}
             fullWidth
             onChange={handleChangeText('name')}
           />

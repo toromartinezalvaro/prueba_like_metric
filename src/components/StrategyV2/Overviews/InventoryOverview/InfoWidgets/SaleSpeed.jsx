@@ -12,6 +12,7 @@ import IncrementServices from '../../../../../services/increments/IncrementsServ
 import Increment2Services from '../../../../../services/incrementsV2/incrementsService';
 import generateDataset from '../../../../../containers/StrategyV2/helpers/dataset';
 import { startLoading, stopLoading } from '../../../Loader/actions';
+import { Numbers } from '../../../../../helpers';
 
 const services = {
   increments: new IncrementServices(),
@@ -19,7 +20,8 @@ const services = {
 };
 
 const validationSchema = (rotationMonths, units) => {
-  let numberToValidation = units / rotationMonths;
+  let numberToValidation = Numbers.cleanNumber(units / rotationMonths);
+
   if (rotationMonths > 98) {
     numberToValidation = units / 98;
   }
@@ -31,7 +33,12 @@ const validationSchema = (rotationMonths, units) => {
         numberToValidation,
         `La velocidad debe ser mayor a ${numberToValidation}`,
       )
-      .max(units, `La velocidad debe ser menor o igual a ${units}`),
+      .max(
+        units,
+        `La velocidad debe ser menor o igual a ${Numbers.toFixed(
+          numberToValidation,
+        )}`,
+      ),
   });
 };
 
@@ -44,6 +51,8 @@ const SaleSpeed = ({
   onFetchedData,
   startApiLoading,
   stopApiLoading,
+  strategy,
+  isReset,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -56,7 +65,7 @@ const SaleSpeed = ({
   };
 
   const submitHandler = async (values) => {
-    if (values.saleSpeed && values.saleSpeed !== saleSpeed) {
+    if (values.saleSpeed && Number(values.saleSpeed) !== saleSpeed) {
       try {
         startApiLoading();
         await services.increments.putSalesSpeeds(groupId, {
@@ -70,7 +79,7 @@ const SaleSpeed = ({
           groups: response.data.summary.increments,
         });
       } catch (error) {
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
       stopApiLoading();
     }
@@ -97,6 +106,7 @@ const SaleSpeed = ({
                 mask={NUMBER}
                 onBlur={blurHandler}
                 component={Input}
+                disabled={strategy && !isReset}
               />
             </Form>
           )}
@@ -117,6 +127,8 @@ SaleSpeed.propTypes = {
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
+  isReset: PropTypes.bool,
+  strategy: PropTypes.number,
 };
 
 SaleSpeed.defaultProps = {
@@ -124,14 +136,21 @@ SaleSpeed.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  const { id, inventory, initialFee } = state.strategy.root.groups[
-    state.strategy.root.selectedGroup
-  ];
+  const {
+    id,
+    inventory,
+    initialFee,
+    isReset,
+    strategy,
+  } = state.strategy.root.groups[state.strategy.root.selectedGroup];
+
   return {
     groupId: id,
     saleSpeed: inventory.saleSpeed,
     units: inventory.units,
     rotationMonths: initialFee,
+    strategy,
+    isReset,
   };
 };
 

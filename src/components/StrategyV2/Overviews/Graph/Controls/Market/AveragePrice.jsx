@@ -44,7 +44,7 @@ const AveragePrice = ({
         );
         onChangeMarketGraph(incrementsFixed);
       } catch (error) {
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
       onChangeMarketAveragePrice(Number(values.averagePrice));
       stopApiLoading();

@@ -14,6 +14,7 @@ import { startApiFetch, failApiFetch, successApiFetch } from '../action';
 import withFormikField from '../../../../../HOC/widthFormikField';
 import { setOpen } from '../CantDeleteDialog/action';
 import PreventDelete from './PreventDelete';
+import style from './Item.module.scss';
 
 const services = new Services();
 
@@ -116,7 +117,7 @@ export const Item = ({
         setDisabled((prevstate) => !prevstate);
       } catch (error) {
         onFailApi();
-        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
     }
   };
@@ -139,12 +140,12 @@ export const Item = ({
           onDeleteField(itemsAfterDelete);
           setDisabled(true);
         } catch (error) {
-          if (error.response.data.message === 'itemAssociate') {
+          if (error.message === 'itemAssociate') {
             onSetOpenCantDelete('item');
             onSuccessApi();
           } else {
             onFailApi();
-            enqueueSnackbar(error.response.data.message, { variant: 'error' });
+            enqueueSnackbar(error.message, { variant: 'error' });
           }
         }
       }
@@ -194,7 +195,7 @@ export const Item = ({
           initialValues={{ name: itemName }}
         >
           {() => (
-            <Form>
+            <Form className={style.cellSize}>
               <Field
                 name="name"
                 margin="dense"

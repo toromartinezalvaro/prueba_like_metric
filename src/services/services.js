@@ -38,23 +38,24 @@ class Services {
     return this.axiosPromise(() => this.axios.delete(url, newConfig));
   }
 
-  renewToken(refreshToken, promise, resolve, reject) {
+  renewToken(promise, resolve, reject) {
+    agent.reloadCurrentUser();
+    const { refreshToken } = agent.currentUser;
     this.axios
-      .post(UserServices.renewToken, { refreshToken })
+      .post(UserServices.renewToken, { refreshToken }, { timeout: 1000 * 80 })
       .then((response) => {
         if (response.data.token) {
           agent.saveUser(response.data);
           this.axiosPromise(promise, 2, false)
             .then(resolve)
             .catch(reject);
-
-          return;
         }
-        throw new Error('401');
       })
       .catch((error) => {
-        agent.logout();
-        window.location.reload();
+        if (error.response && error.response.status === 401) {
+          agent.logout();
+          window.location.reload();
+        }
         reject(error);
       });
   }
@@ -72,14 +73,10 @@ class Services {
               agent.currentUser.refreshToken &&
               isAuthorizationEnabled
             ) {
-              this.renewToken(
-                agent.currentUser.refreshToken,
-                promise,
-                resolve,
-                reject,
-              );
+              this.renewToken(promise, resolve, reject);
               return;
             }
+
             agent.logout();
             window.location.reload();
             reject(error);
@@ -94,7 +91,10 @@ class Services {
               .then(resolve)
               .catch(reject);
           } else {
-            reject(error);
+            const errorObject = error.response
+              ? error.response.data
+              : { message: 'Ha ocurrido un error' };
+            reject(errorObject);
           }
         });
     });

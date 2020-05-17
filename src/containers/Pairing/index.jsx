@@ -47,7 +47,7 @@ class Pairing extends Component {
         if (error.response === undefined) {
           this.props.spawnMessage('Error de conexión', 'error');
         } else {
-          this.props.spawnMessage(error.response.data.message, 'error');
+          this.props.spawnMessage(error.message, 'error');
         }
       });
   }
@@ -74,7 +74,7 @@ class Pairing extends Component {
         if (error.response === undefined) {
           this.props.spawnMessage('Error de conexión', 'error');
         } else {
-          this.props.spawnMessage(error.response.data.message, 'error');
+          this.props.spawnMessage(error.message, 'error');
         }
       });
   };
@@ -88,7 +88,7 @@ class Pairing extends Component {
         this.props.spawnMessage('Se agrego el area correctamente', 'success');
       })
       .catch((error) => {
-        this.props.spawnMessage(error.response.data.message, 'error');
+        this.props.spawnMessage(error.message, 'error');
         this.setState({ loadingPropertiesData: false });
       });
   };
@@ -102,7 +102,7 @@ class Pairing extends Component {
         this.props.spawnMessage('Se elimino correctemente el area', 'success');
       })
       .catch((error) => {
-        this.props.spawnMessage(error.response.data.message, 'error');
+        this.props.spawnMessage(error.message, 'error');
         this.setState({ loadingPropertiesData: false });
       });
   };
