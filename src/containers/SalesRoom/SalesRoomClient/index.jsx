@@ -183,7 +183,7 @@ class SalesRoom extends Component {
             {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
             {active === 'priceWithIncrements' && (
               <NumberFormat
-                value={parseFloat(property.priceWithIncrement).toFixed(2)}
+                value={parseFloat(property.priceWithIncrement).toFixed(0)}
                 displayType={'text'}
                 thousandSeparator={true}
                 prefix={'$'}
@@ -191,7 +191,7 @@ class SalesRoom extends Component {
             )}
             {active === 'price' && (
               <NumberFormat
-                value={parseFloat(property.price).toFixed(2)}
+                value={parseFloat(property.price).toFixed(0)}
                 displayType={'text'}
                 thousandSeparator={true}
                 prefix={'$'}
@@ -214,7 +214,7 @@ class SalesRoom extends Component {
             {active === 'mts2' && parseFloat(property.mts2).toFixed(2)}
             {active === 'priceWithIncrements' && (
               <NumberFormat
-                value={parseFloat(property.priceWithIncrement).toFixed(2)}
+                value={parseFloat(property.priceWithIncrement).toFixed(0)}
                 displayType={'text'}
                 thousandSeparator={true}
                 prefix={'$'}
@@ -222,7 +222,7 @@ class SalesRoom extends Component {
             )}
             {active === 'price' && (
               <NumberFormat
-                value={parseFloat(property.price).toFixed(2)}
+                value={parseFloat(property.price).toFixed(0)}
                 displayType={'text'}
                 thousandSeparator={true}
                 prefix={'$'}
