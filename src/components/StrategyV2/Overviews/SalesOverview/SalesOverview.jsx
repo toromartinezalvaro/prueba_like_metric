@@ -35,7 +35,7 @@ const SalesOverview = ({
         >
           {rotationMonths}
         </Widget>,
-        <Widget key="Sales-Increment" title="Incremento en pesos" size={SM}>
+        <Widget key="Sales-Increment" title="Incremento ventas" size={SM}>
           <NumberFormat
             value={Math.round(increment)}
             displayType="text"
