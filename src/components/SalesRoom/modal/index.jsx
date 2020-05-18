@@ -82,7 +82,6 @@ const SalesRoomModal = ({
   };
 
   const getFinalTradePrice = () => {
-    alert(JSON.stringify({ currentDiscount, currentTradeDiscount }));
     return (
       fixedPrice -
       currentDiscount -
