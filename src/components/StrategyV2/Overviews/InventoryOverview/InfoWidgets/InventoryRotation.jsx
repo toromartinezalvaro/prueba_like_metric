@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import Tooltip from '@material-ui/core/Tooltip';
 import Widget, { XS, SM } from '../../../Shared/Widget';
+import { MAIN_VIEW } from '../../reducer';
 
 const InventoryRotation = ({ rotationMonths, initialFee, mini }) => {
   return (
@@ -33,7 +34,10 @@ const mapStateToProps = (state) => {
     state.strategy.root.selectedGroup
   ];
   return {
-    rotationMonths: inventory.rotationMonths,
+    rotationMonths:
+      state.strategy.overviews.view === MAIN_VIEW
+        ? inventory.rotationMonths
+        : inventory.futureRotationMonths,
     initialFee,
   };
 };
