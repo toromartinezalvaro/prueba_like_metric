@@ -31,7 +31,7 @@ const validationSchema = (rotationMonths, units) => {
       .number()
       .min(
         numberToValidation,
-        `La velocidad debe ser mayor a ${numberToValidation}`,
+        `La velocidad debe ser mayor a ${Numbers.toFixed(numberToValidation)}`,
       )
       .max(
         units,
