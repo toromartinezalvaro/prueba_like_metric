@@ -431,8 +431,7 @@ class SalesRoom extends Component {
 
   deleteAdditionalArea = (area) => {
     this.setState((prevState) => {
-      const tempProperty = { ...prevState.selectedProperty };
-      //tempProperty.priceWithIncrement -= area.price;
+      const tempProperty = { ...prevState.selectedProperty };     
       const tempAdditionalAreas = [...prevState.additionalAreas, area];
       tempProperty.addedAdditionalAreas = tempProperty.addedAdditionalAreas.filter(
         (additionalArea) => additionalArea.id !== area.id,
