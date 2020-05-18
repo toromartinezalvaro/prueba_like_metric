@@ -207,7 +207,7 @@ export const Item = ({
                 onMouseLeave={() => setVisible((prevState) => !prevState)}
               />
               {visible && (
-                <>
+                <div className={style.actionsContainer}>
                   <Button
                     onClick={handleChangeForEdit}
                     onMouseEnter={() => setVisible((prevState) => !prevState)}
@@ -225,7 +225,7 @@ export const Item = ({
                   >
                     <Icon className="fas fa-times" color="secondary" />
                   </Button>
-                </>
+                </div>
               )}
             </Form>
           )}

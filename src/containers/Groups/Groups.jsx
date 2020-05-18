@@ -31,7 +31,6 @@ const Groups = ({
   useEffect(() => {
     async function fetch() {
       try {
-        onStartApiFetch();
         const response = await services.getCompanies();
         onSetCompanies(
           _.orderBy(
