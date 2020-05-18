@@ -13,6 +13,7 @@ import Increment2Services from '../../../../../services/incrementsV2/incrementsS
 import generateDataset from '../../../../../containers/StrategyV2/helpers/dataset';
 import { startLoading, stopLoading } from '../../../Loader/actions';
 import { Numbers } from '../../../../../helpers';
+import { MAIN_VIEW } from '../../reducer';
 
 const services = {
   increments: new IncrementServices(),
@@ -45,6 +46,7 @@ const validationSchema = (rotationMonths, units) => {
 const SaleSpeed = ({
   groupId,
   saleSpeed,
+  futureSaleSpeed,
   units,
   rotationMonths,
   field,
@@ -121,6 +123,7 @@ const SaleSpeed = ({
 SaleSpeed.propTypes = {
   groupId: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number.isRequired,
+  futureSaleSpeed: PropTypes.number.isRequired,
   units: PropTypes.number.isRequired,
   rotationMonths: PropTypes.number.isRequired,
   field: PropTypes.bool,
@@ -146,7 +149,10 @@ const mapStateToProps = (state) => {
 
   return {
     groupId: id,
-    saleSpeed: inventory.saleSpeed,
+    saleSpeed:
+      state.strategy.overviews.view === MAIN_VIEW
+        ? inventory.saleSpeed
+        : inventory.futureSaleSpeed,
     units: inventory.units,
     rotationMonths: initialFee,
     strategy,
