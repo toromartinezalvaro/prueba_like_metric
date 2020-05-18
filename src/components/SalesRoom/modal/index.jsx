@@ -100,6 +100,13 @@ const SalesRoomModal = ({
     setFixed(priceWithIncrement.toFixed(2));
   }, [priceWithIncrement]);
 
+  useEffect(() => {
+    setAdditionalPrices(
+      reduceAdditionalAreas(addedAdditionalAreas) +
+        reduceAdditionalAreas(adminAdditionalAreas),
+    );
+  });
+
   return (
     <>
       <div>
