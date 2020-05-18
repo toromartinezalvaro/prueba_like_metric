@@ -7,7 +7,7 @@ import Numbers from '../../../../../helpers/numbers';
 
 const TotalIncrement = ({ totalIncrement }) => {
   return (
-    <Widget title="Incremento total" size={SM}>
+    <Widget title="Incremento inventario" size={SM}>
       <NumberFormat
         value={Numbers.toFixed(totalIncrement)}
         displayType="text"

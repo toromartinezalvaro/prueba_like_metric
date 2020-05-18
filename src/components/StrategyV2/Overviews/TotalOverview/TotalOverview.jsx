@@ -37,7 +37,7 @@ const TotalOverView = ({
         >
           {rotationMonths}
         </Widget>,
-        <Widget key="Total-Increment" title="Incremento en pesos" size={SM}>
+        <Widget key="Total-Increment" title="Incremento total" size={SM}>
           <NumberFormat
             value={Math.round(increment)}
             displayType="text"
