@@ -18,6 +18,7 @@ import Sales from './PriceWidgets/Sales';
 import AveragePrice from './PriceWidgets/AveragePrice';
 import PricePerM2 from './PriceWidgets/PricePerM2';
 import PriceDetailsGroup from './PriceWidgets/DetailsGroup';
+import EARate from './InfoWidgets/EARate';
 
 const mainInfoWidgets = [
   <SaleSpeed key={uuidV4()} />,
@@ -27,15 +28,25 @@ const mainInfoWidgets = [
 ];
 
 const detailWidget = [
-  <SaleSpeed field key={uuidV4()} />,
   <WidgetGroup
     showGroup
     widgets={[
-      <InventoryRotation mini key={uuidV4()} />,
-      <InitialFee key={uuidV4()} />,
+      <SaleSpeed field key={uuidV4()} />,
+      <InventoryRotation objective key={uuidV4()} />,
+      <EARate objective key={uuidV4()} />,
     ]}
     key={uuidV4()}
   />,
+  <WidgetGroup
+    showGroup
+    widgets={[
+      <SaleSpeed key={uuidV4()} />,
+      <InventoryRotation key={uuidV4()} />,
+      <EARate key={uuidV4()} />,
+    ]}
+    key={uuidV4()}
+  />,
+  <InitialFee key={uuidV4()} />,
 ];
 
 const mainPriceWidgets = [

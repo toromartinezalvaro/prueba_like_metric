@@ -88,7 +88,14 @@ const SaleSpeed = ({
   };
 
   return (
-    <Widget title="Velocidad de ventas" size={SM}>
+    <Widget
+      title={
+        field
+          ? 'Velocidad de ventas objetivo'
+          : 'Velocidad de ventas inventario'
+      }
+      size={SM}
+    >
       {field ? (
         <Formik
           initialValues={{
@@ -103,7 +110,7 @@ const SaleSpeed = ({
             <Form>
               <Field
                 name="saleSpeed"
-                label="Velocidad de ventas"
+                label="Velocidad de ventas objetivo"
                 placeholder="1,3"
                 mask={NUMBER}
                 onBlur={blurHandler}
@@ -114,7 +121,7 @@ const SaleSpeed = ({
           )}
         </Formik>
       ) : (
-        Numbers.toFixed(saleSpeed)
+        Numbers.toFixed(futureSaleSpeed)
       )}
     </Widget>
   );
@@ -149,10 +156,8 @@ const mapStateToProps = (state) => {
 
   return {
     groupId: id,
-    saleSpeed:
-      state.strategy.overviews.view === MAIN_VIEW
-        ? inventory.saleSpeed
-        : inventory.futureSaleSpeed,
+    futureSaleSpeed: inventory.saleSpeed,
+    saleSpeed: inventory.futureSaleSpeed,
     units: inventory.units,
     rotationMonths: initialFee,
     strategy,
