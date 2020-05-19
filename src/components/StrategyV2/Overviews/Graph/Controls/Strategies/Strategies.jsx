@@ -44,6 +44,7 @@ const Strategies = ({
   startApiLoading,
   stopApiLoading,
   rows,
+  baseValueToToday,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -68,6 +69,7 @@ const Strategies = ({
         strategy: Number(id),
         incrementList: lineSelected.percentage,
         arrayIncrementList,
+        baseValueToToday,
       });
       const response = await services.increment2.getIncrementsAndStrategy(
         towerId,
@@ -205,6 +207,7 @@ Strategies.propTypes = {
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
   rows: PropTypes.array,
+  baseValueToToday: PropTypes.number.isRequired,
 };
 
 const mapStrategyForSelector = (strategy) => {
@@ -221,7 +224,7 @@ const mapStrategyForSelector = (strategy) => {
 const mapStateToProps = (state) => {
   const group =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
-  const { strategy, isReset } = state.strategy.root.groups[
+  const { strategy, isReset, inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   const strategies = group ? group.strategies : [];
@@ -233,6 +236,7 @@ const mapStateToProps = (state) => {
     strategies,
     groupId: group ? group.id : null,
     rows,
+    baseValueToToday: inventory.baseValueToToday,
   };
 };
 
