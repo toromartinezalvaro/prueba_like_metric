@@ -32,6 +32,10 @@ const IncrementsServiceDefinition = {
   putFirstSaleHandler: (towerId) => {
     return `${API_PATH}schedules/first-sales/${towerId}`;
   },
+
+  getSalesChecker: (towerId) => {
+    return `${API_PATH}schedules/sale-checker/${towerId}`;
+  },
 };
 
 export default IncrementsServiceDefinition;

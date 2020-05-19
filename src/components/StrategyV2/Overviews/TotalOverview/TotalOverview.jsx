@@ -32,7 +32,7 @@ const TotalOverView = ({
         </Widget>,
         <Widget
           key="Total-InventoryRotation"
-          title="Rotacion de inventario"
+          title="Rotación total de inventario"
           size={SM}
         >
           {rotationMonths}
