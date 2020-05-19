@@ -19,9 +19,23 @@ class Schedule extends Component {
     constructionStartDate: new Date().getTime(),
     maximumCollectionDate: new Date().getTime(),
     firstSale: 0,
+    isAnySold: false,
+  };
+
+  getSalesHistory = () => {
+    this.services
+      .getSalesChecker(this.props.match.params.towerId)
+      .then((response) => {
+        const isAnySold = response.data;
+        this.setState({ isAnySold });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   componentDidMount() {
+    this.getSalesHistory();
     this.services
       .getDates(this.props.match.params.towerId)
       .then((response) => {
@@ -191,6 +205,7 @@ class Schedule extends Component {
           maximumCollectionDateHandler={this.putMaximumCollectionDate}
           averageDeliveryDateHandler={this.putAverageDeliveryDate}
           balancePointDateHandler={this.putBalancePointDate}
+          isAnySold={this.state.isAnySold}
         />
         {/* <StageDates /> */}
         <InitialFees

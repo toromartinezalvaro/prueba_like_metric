@@ -42,6 +42,7 @@ function SalesDateRange({
   constructionStartDateHandler,
   averageDeliveryDateHandler,
   balancePointDateHandler,
+  isAnySold,
 }) {
   return (
     <Card>
@@ -67,6 +68,7 @@ function SalesDateRange({
               clearIcon={null}
               format="dd/MM/yyyy"
               locale={'es'}
+              disabled={isAnySold}
               value={moment(Number(salesStartDate)).toDate()}
               onChange={(date) => {
                 salesStartDateHandler(date.getTime());
