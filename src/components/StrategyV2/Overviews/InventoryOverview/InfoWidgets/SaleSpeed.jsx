@@ -114,7 +114,7 @@ const SaleSpeed = ({
           )}
         </Formik>
       ) : (
-        saleSpeed
+        Numbers.toFixed(saleSpeed)
       )}
     </Widget>
   );

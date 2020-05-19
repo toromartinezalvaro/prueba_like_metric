@@ -28,7 +28,7 @@ const TotalOverView = ({
       )}m² Promedio`}
       infoWidgets={[
         <Widget key="Total-SaleSpeed" title="Velocidad de ventas" size={SM}>
-          {saleSpeed}
+          {Numbers.toFixed(saleSpeed)}
         </Widget>,
         <Widget
           key="Total-InventoryRotation"
