@@ -5,7 +5,7 @@ import Widget, { SM } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
 
 const EARateWidget = ({ EARate, EARateSelected, objective }) => {
-  const currentEARate = objective ? EARate : EARateSelected;
+  const currentEARate = objective ? EARateSelected : EARate;
   return (
     <Widget
       title={
@@ -37,12 +37,11 @@ const mapStateToProps = (state) => {
   const strategyLines =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
   const lines = strategyLines ? strategyLines.strategies : [];
-  const currentStrategy = lines.filter((line) => line.id === strategy);
-  console.log(currentStrategy);
+  const currentStrategy = lines.find((line) => line.id === strategy && line.id);
 
   return {
     EARate: inventory.EARate,
-    EARateSelected: currentStrategy.EArate,
+    EARateSelected: currentStrategy ? currentStrategy.EARate : 0,
   };
 };
 
