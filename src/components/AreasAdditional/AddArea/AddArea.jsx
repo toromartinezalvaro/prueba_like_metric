@@ -8,7 +8,7 @@
  * Copyright (c) 2019 Instabuild
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import NumberFormat from 'react-number-format';
 import {
@@ -30,6 +30,28 @@ import {
 import Styles from './AddArea.module.scss';
 import Button from '../../UI/Button/Button';
 
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="$"
+    />
+  );
+}
+
 const AddArea = (props) => {
   const [open, setOpen] = React.useState(false);
   const [unit, setUnit] = React.useState(null);
@@ -48,6 +70,27 @@ const AddArea = (props) => {
     price: false,
   });
   const [price, setPrice] = React.useState(0);
+
+  useEffect(() => {
+    if (open) {
+      setUnit(null);
+      setError({
+        name: false,
+        quantity: false,
+        unit: false,
+        price: false,
+      });
+      setErrorMessage('');
+      setErrorMessagePrice('');
+      setQuantity(null);
+      setName(null);
+      setChecked({
+        nomenclature: false,
+        price: false,
+      });
+      setPrice(0);
+    }
+  }, [open]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -95,7 +138,9 @@ const AddArea = (props) => {
 
   const onChangePrice = (event) => {
     const errorTemp = error;
-    if (event.floatValue >= 0 || event.floatValue === undefined) {
+    const value = event.target.value;
+    if (value >= 0 || value === undefined) {
+      setPrice(() => value);
       setErrorMessagePrice('');
       errorTemp.price = false;
       setError(errorTemp);
@@ -106,36 +151,22 @@ const AddArea = (props) => {
     }
   };
 
-  const onBlurPrice = (event) => {
-    const errorTemp = error;
-    const priceFloat = parseFloat(event.target.value);
-    if (priceFloat >= 0) {
-      setPrice(priceFloat);
-      setErrorMessagePrice('');
-      errorTemp.price = false;
-      setError(errorTemp);
-    } else {
-      setPrice(null);
-      setErrorMessagePrice('Debe ser mayor a 0');
-      errorTemp.price = true;
-      setError(errorTemp);
-    }
-  };
-
-  function NumberFormatCustom(props) {
-    const { inputRef, onChange, ...other } = props;
-
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={inputRef}
-        onValueChange={(e) => {
-          onChangePrice(e);
-        }}
-        thousandSeparator
-      />
-    );
-  }
+  // const onBlurPrice = (event) => {
+  //   const errorTemp = error;
+  //   const priceFloat = event.floatValue;
+  //   alert(`${priceFloat} ${event.floatValue} ${typeof priceFloat}`);
+  //   if (priceFloat >= 0) {
+  //     setPrice(priceFloat);
+  //     setErrorMessagePrice('');
+  //     errorTemp.price = false;
+  //     setError(errorTemp);
+  //   } else {
+  //     setPrice(null);
+  //     setErrorMessagePrice('Debe ser mayor a 0');
+  //     errorTemp.price = true;
+  //     setError(errorTemp);
+  //   }
+  // };
 
   return (
     <div>
@@ -190,6 +221,7 @@ const AddArea = (props) => {
                 onChange={onChangeQuantity.bind(this)}
                 id="standard-number"
                 label="Cantidad"
+                parseFloat
                 type="number"
                 inputProps={{ min: '0' }}
                 margin="normal"
@@ -218,20 +250,13 @@ const AddArea = (props) => {
               />
               {isChecked.price && (
                 <TextField
-                  autoFocus
-                  key={`price-add`}
-                  defaultValue={price}
+                  value={price}
                   error={error.price}
                   helperText={errorMessagePrice}
-                  typeOfTextField={'number'}
                   InputProps={{
                     inputComponent: NumberFormatCustom,
-                    startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
-                    ),
                   }}
                   onChange={onChangePrice}
-                  onBlur={onBlurPrice}
                 />
               )}
             </div>
