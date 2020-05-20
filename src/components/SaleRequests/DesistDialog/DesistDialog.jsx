@@ -30,6 +30,9 @@ const DesistDialog = ({
   const [isDisabled, setDisabled] = useState(false);
   const [property, setProperty] = useState(null);
   const [suggestedPrice, setSuggestedPrice] = useState(0);
+  const [suggestedPriceBeforeAssign, setSuggestedPriceBeforeAssign] = useState(
+    0,
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -40,7 +43,7 @@ const DesistDialog = ({
           propertyId,
         );
 
-        setSuggestedPrice(res.data);
+        setSuggestedPriceBeforeAssign(res.data);
       } catch (error) {
         enqueueSnackbar(error.response.data.message, { variant: 'error' });
       }
@@ -72,6 +75,10 @@ const DesistDialog = ({
     closeHandler();
   };
 
+  const setPrice = () => {
+    setSuggestedPrice(suggestedPriceBeforeAssign);
+  };
+
   return (
     <Dialog open={open} maxWidth="lg" fullWidth>
       <DialogTitle>Cambiar precio</DialogTitle>
@@ -82,9 +89,17 @@ const DesistDialog = ({
         </DialogContentText>
 
         {property && <AreasDetails property={property} />}
+
         <Box my={2}>
           <Typography variant="caption">
-            * Esta propiedad pertenece al {property && property.group}
+            * Esta propiedad pertenece al ${property && property.group}
+          </Typography>
+        </Box>
+        <Box my={2}>
+          <Typography variant="caption">
+            <Button variant="outlined" color="primary" onClick={setPrice}>
+              Seleccionar precio sugerido con base al incremento actual
+            </Button>
           </Typography>
         </Box>
         <ManualPrice
