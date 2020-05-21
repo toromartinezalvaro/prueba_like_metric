@@ -4,6 +4,7 @@ import _ from 'lodash';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import AreaCell from './AreaCell';
+import styles from './propertyRow.module.scss';
 
 const PropertyRow = ({
   property,
@@ -18,8 +19,24 @@ const PropertyRow = ({
     'nomenclature',
   ]);
 
+  const colorStatus = (status) => {
+    switch (status) {
+      case 'AVAILABLE':
+        return styles.GreenHelper;
+      case 'SOLD':
+        return styles.BlueHelper;
+      default:
+        return styles.YellowHelpe;
+    }
+  };
+
   return (
     <TableRow>
+      <TableCell>
+        <div className={styles.container}>
+          <div className={colorStatus(property.status)} />
+        </div>
+      </TableCell>
       <TableCell>{property.name}</TableCell>
       <TableCell>
         {property.additionalAreas.length === 0 ? 'Libre' : 'Apareado'}
