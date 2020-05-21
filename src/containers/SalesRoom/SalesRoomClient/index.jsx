@@ -291,11 +291,7 @@ class SalesRoom extends Component {
       ) {
         current += increment;
       } else if (next.id === this.state.id) {
-        increment =
-          this.state.priceSold -
-          price -
-          this.state.selectedProperty.discount +
-          this.state.discountApplied;
+        increment = this.state.priceSold - price;
         current += increment;
       }
       return current;
