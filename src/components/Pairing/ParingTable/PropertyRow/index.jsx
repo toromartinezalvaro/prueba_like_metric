@@ -19,19 +19,22 @@ const PropertyRow = ({
     'nomenclature',
   ]);
 
+  const colorStatus = (status) => {
+    switch (status) {
+      case 'AVAILABLE':
+        return styles.GreenHelper;
+      case 'SOLD':
+        return styles.BlueHelper;
+      default:
+        return styles.YellowHelpe;
+    }
+  };
+
   return (
     <TableRow>
       <TableCell>
         <div className={styles.container}>
-          <div
-            className={
-              property.status === 'AVAILABLE'
-                ? styles.GreenHelper
-                : property.status === 'SOLD'
-                ? styles.BlueHelper
-                : styles.YellowHelpe
-            }
-          />
+          <div className={colorStatus(property.status)} />
         </div>
       </TableCell>
       <TableCell>{property.name}</TableCell>
