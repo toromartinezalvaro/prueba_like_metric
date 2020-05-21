@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import NumberFormat from 'react-number-format';
 import styles from './Schema.module.scss';
 import Card, { CardHeader, CardBody, CardFooter } from '../../UI/Card/Card';
 import Input from '../../UI/Input/Input';
@@ -8,6 +9,26 @@ import Modal from '../../UI/Modal/Modal';
 const Schema = (props) => {
   const [hidden, setHidden] = useState(true);
   const [locked, setLock] = useState(false);
+
+  function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={inputRef}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              value: values.value,
+            },
+          });
+        }}
+        type="tel"
+        allowNegative={false}
+        decimalSeparator={false}
+      />
+    );
+  }
 
   const inputValidation = [
     {
@@ -60,6 +81,7 @@ const Schema = (props) => {
               value={props.floors}
               validations={inputValidation}
               disable={props.disable}
+              mask="number"
             />
           </div>
 
@@ -72,6 +94,7 @@ const Schema = (props) => {
               value={props.properties}
               validations={inputValidation}
               disable={props.disable}
+              mask="number"
             />
           </div>
 
@@ -84,6 +107,7 @@ const Schema = (props) => {
               value={props.lowestFloor}
               validations={inputValidation}
               disable={props.disable}
+              mask="number"
             />
           </div>
           <div>
