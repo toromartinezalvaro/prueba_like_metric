@@ -11,13 +11,13 @@ const StrategySelect = ({ field, units, ...rest }) => {
       <InputLabel>Estrategia</InputLabel>
       <Select {...field} {...rest} label="Estrategia">
         <MenuItem value={1}>Continua</MenuItem>
-        <MenuItem value={3} disabled={units < 3}>
+        <MenuItem value={3} disabled={units <= 3}>
           Semi-continua
         </MenuItem>
-        <MenuItem value={9} disabled={units < 9}>
+        <MenuItem value={9} disabled={units <= 9}>
           Semi-escalonada
         </MenuItem>
-        <MenuItem value={18} disabled={units < 18}>
+        <MenuItem value={18} disabled={units <= 18}>
           Esalonada
         </MenuItem>
       </Select>
