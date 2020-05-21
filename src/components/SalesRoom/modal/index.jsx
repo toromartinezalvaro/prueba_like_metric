@@ -114,7 +114,6 @@ const SalesRoomModal = ({
 
   return (
     <>
-      {alert(initialStatus)}
       <div>
         <div className={Styles.status}>
           {(property.clientId === clientId || property.clientId === null) && (
