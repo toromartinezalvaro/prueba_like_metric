@@ -10,6 +10,7 @@ import NumberFormat from 'react-number-format';
 import 'moment/locale/es';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Input from '../../UI/Input/Input';
 import Styles from './styles.module.scss';
@@ -36,6 +37,8 @@ const SalesRoomModal = ({
   deleteAdditionalAreaHandler,
   towerId,
   spawnMessage,
+  optionalDescript,
+  optionalDescription,
 }) => {
   const {
     status,
@@ -46,9 +49,11 @@ const SalesRoomModal = ({
     price,
     addedAdditionalAreas,
     adminAdditionalAreas,
+    optionalDescriptions,
   } = property;
 
   const [quotationOpen, setQuotationOpen] = useState(false);
+  const [optionalTextDescript, setOptionalTextDescript] = useState('');
   const [fixedPrice, setFixed] = useState(
     priceSold !== null
       ? (parseFloat(priceSold) + parseFloat(discount || 0)).toFixed(2)
@@ -101,6 +106,7 @@ const SalesRoomModal = ({
   }, [priceWithIncrement]);
 
   useEffect(() => {
+    setOptionalTextDescript(optionalDescriptions);
     setAdditionalPrices(
       reduceAdditionalAreas(addedAdditionalAreas) +
         reduceAdditionalAreas(adminAdditionalAreas),
@@ -158,6 +164,7 @@ const SalesRoomModal = ({
               >
                 <DateTimePicker
                   value={deadlineDate}
+                  fullWidth
                   onChange={onChangeDeadlineDate}
                   locale="es"
                   minDate={moment().toDate()}
@@ -168,6 +175,17 @@ const SalesRoomModal = ({
                   okLabel="Aceptar"
                 ></DateTimePicker>
               </MuiPickersUtilsProvider>
+            </div>
+            <div className={Styles.DateTimePicker}>
+              <TextField
+                multiline
+                fullWidth
+                placeholder="¿Por qué será opcionado?"
+                rows={3}
+                variant="outlined"
+                value={optionalTextDescript}
+                onChange={optionalDescription}
+              />
             </div>
           </div>
         )}

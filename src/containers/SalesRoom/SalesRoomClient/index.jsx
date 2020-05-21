@@ -63,6 +63,7 @@ class SalesRoom extends Component {
     additionalAreas: [],
     lastSelector: 'priceWithIncrements',
     isLastProperty: false,
+    optionalDescription: '',
   };
 
   propertyHandler = (key, value) => {
@@ -79,7 +80,6 @@ class SalesRoom extends Component {
       .then((properties) => {
         const { data } = properties;
         this.makeArrayOfProperties(data.incrementList);
-
         this.setState({
           isLoading: false,
           clientName: data.client.name,
@@ -121,7 +121,10 @@ class SalesRoom extends Component {
 
   onClickSelector = (property, buttons) => {
     if (this.state.clientName) {
-      const tempProperty = { ...property };
+      const tempProperty = {
+        ...property,
+        optionalDescriptions: property.optionalDescription,
+      };
       tempProperty.addedAdditionalAreas = tempProperty.additionalAreas.filter(
         (additionalArea) => additionalArea.addedFromSalesRoom,
       );
@@ -332,6 +335,7 @@ class SalesRoom extends Component {
             SalesRoomEnum.status.AVAILABLE
               ? this.state.selectedProperty.tradeDiscount
               : null,
+          optionalDescription: this.state.optionalDescription,
           collectedIncrement,
           groupId: this.state.groupId,
           isBadgeIncrement,
@@ -350,6 +354,7 @@ class SalesRoom extends Component {
         this.setState({
           isOpen: false,
           isLoadingModal: false,
+          optionalDescription: '',
         });
         this.updateAdditionalAreas();
       })
@@ -399,6 +404,12 @@ class SalesRoom extends Component {
     });
   };
 
+  optionalDescript = (element) => {
+    const optionalDescription = element.target.value;
+    console.log('texto', optionalDescription);
+    this.setState({ optionalDescription });
+  };
+
   addAdditionalArea = (id) => {
     return this.services
       .getAdditionalArea(id, this.props.match.params.towerId)
@@ -427,7 +438,7 @@ class SalesRoom extends Component {
 
   deleteAdditionalArea = (area) => {
     this.setState((prevState) => {
-      const tempProperty = { ...prevState.selectedProperty };     
+      const tempProperty = { ...prevState.selectedProperty };
       const tempAdditionalAreas = [...prevState.additionalAreas, area];
       tempProperty.addedAdditionalAreas = tempProperty.addedAdditionalAreas.filter(
         (additionalArea) => additionalArea.id !== area.id,
@@ -549,6 +560,8 @@ class SalesRoom extends Component {
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}
                       onChangeDeadlineDate={this.deadlineDateHandler}
+                      optionalDescription={this.optionalDescript}
+                      optionalDescript={this.state.optionalDescription}
                       clientId={this.props.match.params.clientId}
                       additionalAreas={this.state.additionalAreas}
                       addAdditionalAreaHandler={this.addAdditionalArea}
