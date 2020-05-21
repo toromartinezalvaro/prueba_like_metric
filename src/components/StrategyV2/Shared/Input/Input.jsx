@@ -24,7 +24,7 @@ const variants = {
   },
 };
 
-const Input = ({ mask, field, form, ...rest }) => {
+const Input = ({ mask, field, form, errorProp, ...rest }) => {
   const { name } = field;
   const fieldError = getIn(form.errors, name);
   const fieldTouch = getIn(form.touched, name);
@@ -33,7 +33,7 @@ const Input = ({ mask, field, form, ...rest }) => {
     <TextField
       {...field}
       {...rest}
-      error={error}
+      error={error || errorProp}
       helperText={error}
       color="primary"
       InputProps={variants[mask]}
