@@ -107,7 +107,7 @@ const ProjectedIncrement = ({
                   />
                   {projectedIncrement < 0 && (
                     <div className={styles.error}>
-                      El incremento no puede ser negativo.
+                      El valor actual de incremento es negativo.
                     </div>
                   )}
                 </Form>
