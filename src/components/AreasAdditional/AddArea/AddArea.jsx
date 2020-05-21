@@ -151,23 +151,6 @@ const AddArea = (props) => {
     }
   };
 
-  // const onBlurPrice = (event) => {
-  //   const errorTemp = error;
-  //   const priceFloat = event.floatValue;
-  //   alert(`${priceFloat} ${event.floatValue} ${typeof priceFloat}`);
-  //   if (priceFloat >= 0) {
-  //     setPrice(priceFloat);
-  //     setErrorMessagePrice('');
-  //     errorTemp.price = false;
-  //     setError(errorTemp);
-  //   } else {
-  //     setPrice(null);
-  //     setErrorMessagePrice('Debe ser mayor a 0');
-  //     errorTemp.price = true;
-  //     setError(errorTemp);
-  //   }
-  // };
-
   return (
     <div>
       <div className={Styles.Container}>
