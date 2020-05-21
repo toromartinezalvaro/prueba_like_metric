@@ -4,6 +4,7 @@ import _ from 'lodash';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import AreaCell from './AreaCell';
+import styles from './propertyRow.module.scss';
 
 const PropertyRow = ({
   property,
@@ -20,6 +21,19 @@ const PropertyRow = ({
 
   return (
     <TableRow>
+      <TableCell>
+        <div className={styles.container}>
+          <div
+            className={
+              property.status === 'AVAILABLE'
+                ? styles.GreenHelper
+                : property.status === 'SOLD'
+                ? styles.BlueHelper
+                : styles.YellowHelpe
+            }
+          />
+        </div>
+      </TableCell>
       <TableCell>{property.name}</TableCell>
       <TableCell>
         {property.additionalAreas.length === 0 ? 'Libre' : 'Apareado'}

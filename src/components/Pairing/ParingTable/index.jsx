@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import PropertyRow from './PropertyRow';
 import Button from '../../UI2/Button';
 import Styles from './PairingTable.module.scss';
+import squareStyle from './PropertyRow/propertyRow.module.scss';
 
 const PairingTable = ({
   properties,
@@ -34,57 +35,68 @@ const PairingTable = ({
   };
 
   return (
-    <div className={Styles.container}>
-      <div className={Styles.tableContainer}>
-        <Table
-          stickyHeader
-          classes={{
-            root: Styles.tableRoot,
-          }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>Nomenclatura</TableCell>
-              <TableCell>Estado</TableCell>
-              {Array(maxAreasLength)
-                .fill(null)
-                .map((_, headerIndex) => {
-                  return (
-                    <TableCell key={`header-${headerIndex}`}>
-                      Adicional {headerIndex + 1}
-                    </TableCell>
-                  );
-                })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {properties.map((property) => {
-              return (
-                <PropertyRow
-                  key={property.id}
-                  property={property}
-                  maxCols={maxAreasLength}
-                  propertyStatus={property.status}
-                  areas={areas}
-                  addAreaHandler={addArea(property.id)}
-                  removeAreaHandler={removeAreaHandler}
-                />
-              );
-            })}
-          </TableBody>
-        </Table>
+    <>
+      <div className={squareStyle.ContainerSquare}>
+        <div className={squareStyle.GreenHelperSquare} />
+        <div className={squareStyle.Label}>Disponible</div>
+        <div className={squareStyle.YellowHelperSquare} />
+        <div className={squareStyle.Label}>Opcionado</div>
+        <div className={squareStyle.BlueHelperSquare} />
+        <div className={squareStyle.Label}>Vendido</div>
       </div>
-      <div className={Styles.actionContainer}>
-        <Button
-          className={Styles.button}
-          onClick={() => {
-            setMaxAreasLength(maxAreasLength + 1);
-          }}
-        >
-          Agregar area adicional
-        </Button>
+      <div className={Styles.container}>
+        <div className={Styles.tableContainer}>
+          <Table
+            stickyHeader
+            classes={{
+              root: Styles.tableRoot,
+            }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>Estado de apartamento</TableCell>
+                <TableCell>Nomenclatura</TableCell>
+                <TableCell>Estado</TableCell>
+                {Array(maxAreasLength)
+                  .fill(null)
+                  .map((_, headerIndex) => {
+                    return (
+                      <TableCell key={`header-${headerIndex}`}>
+                        Adicional {headerIndex + 1}
+                      </TableCell>
+                    );
+                  })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {properties.map((property) => {
+                return (
+                  <PropertyRow
+                    key={property.id}
+                    property={property}
+                    maxCols={maxAreasLength}
+                    propertyStatus={property.status}
+                    areas={areas}
+                    addAreaHandler={addArea(property.id)}
+                    removeAreaHandler={removeAreaHandler}
+                  />
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+        <div className={Styles.actionContainer}>
+          <Button
+            className={Styles.button}
+            onClick={() => {
+              setMaxAreasLength(maxAreasLength + 1);
+            }}
+          >
+            Agregar area adicional
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
