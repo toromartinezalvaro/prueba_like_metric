@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Card, { CardFooter, CardHeader, CardBody } from '../UI/Card/Card';
 import styles from './Towers.module.scss';
 import Icon from '../../assets/icons/Icon';
@@ -6,7 +7,11 @@ import Button from '../UI/Button/Button';
 
 const towerItems = (props) => {
   const items = (towers) => {
-    return towers.map((tower) => {
+    return _.orderBy(
+      towers,
+      [(tower) => tower.name.toLowerCase()],
+      ['asc'],
+    ).map((tower) => {
       return itemFromTower(tower);
     });
   };

@@ -19,9 +19,6 @@ const Graph = () => {
       <Grid item xs={12}>
         <Controls />
       </Grid>
-      <Grid item xs={12}>
-        <Widgets />
-      </Grid>
     </Grid>
   );
 };
