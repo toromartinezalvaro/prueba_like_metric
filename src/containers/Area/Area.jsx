@@ -44,6 +44,7 @@ class Area extends Component {
     anySold: false,
     isAreaTypeDialogOpen: false,
     disableSold: false,
+    firstColumnInRows: [],
   };
 
   errorDispatch = (error) => {
@@ -175,6 +176,14 @@ class Area extends Component {
     this.disableIfEdit();
   }
 
+  setFirstColumnInside = (data) => {
+    const { propertiesAreas } = data;
+    const firstColumnInRows = propertiesAreas.map((propertyArray) => {
+      return propertyArray[0].propertyId;
+    });
+    this.setState({ ...this.state, firstColumnInRows });
+  };
+
   updateTableInformation = () => {
     const { towerId } = this.props.match.params;
     if (!towerId) {
@@ -185,6 +194,7 @@ class Area extends Component {
       .then((response) => {
         let currentState = {};
         const data = response ? response.data : null;
+        console.log('data', data);
         if (data) {
           if (this.state.calculateTotals === true) {
             const types = [];
@@ -222,6 +232,8 @@ class Area extends Component {
             currentState = { ...currentState, showFloatingButton: true };
           }
         }
+
+        this.setFirstColumnInside(data);
 
         this.setState({
           ...currentState,
@@ -351,29 +363,43 @@ class Area extends Component {
     }
   }
 
+  zerosChecker = (area) => {
+    return this.state.firstColumnInRows.some((id) => id === area.propertyId);
+  };
+
   areaChangeHandler = (rowIndex, cellIndex, value, type) => {
     if (value !== '') {
       const currentData = this.state.data;
       const actualValue = currentData[rowIndex][cellIndex].measure;
       currentData[rowIndex][cellIndex].measure = value;
-      this.services
-        .putAreasByTowerId(
-          this.props.match.params.towerId,
-          currentData[rowIndex][cellIndex],
-        )
-        .then(() => {
-          this.setState({ data: currentData, showFloatingButton: true });
-          this.sumTotalHeader(actualValue, value, type, this.state.types);
-          this.setState({ isLoading: false });
-        })
-        .catch((error) => {
-          const errorHelper = errorHandling(error);
-          this.setState({
-            currentErrorMessage: errorHelper.message,
+      const checker = this.zerosChecker(currentData[rowIndex][cellIndex]);
+      if (checker && currentData[rowIndex][cellIndex].measure === '0') {
+        this.props.spawnMessage(
+          'No puedes ingresar el valor cero (0) en esta área',
+          'error',
+        );
+        currentData[rowIndex][cellIndex].measure = actualValue;
+        this.setState({ data: currentData, showFloatingButton: true });
+      } else {
+        this.services
+          .putAreasByTowerId(
+            this.props.match.params.towerId,
+            currentData[rowIndex][cellIndex],
+          )
+          .then(() => {
+            this.setState({ data: currentData, showFloatingButton: true });
+            this.sumTotalHeader(actualValue, value, type, this.state.types);
+            this.setState({ isLoading: false });
+          })
+          .catch((error) => {
+            const errorHelper = errorHandling(error);
+            this.setState({
+              currentErrorMessage: errorHelper.message,
+            });
+            this.setState({ isLoading: true });
+            this.updateTableInformation();
           });
-          this.setState({ isLoading: true });
-          this.updateTableInformation();
-        });
+      }
       this.setState({ currentErrorMessage: '' });
     }
   };
