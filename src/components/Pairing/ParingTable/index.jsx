@@ -35,17 +35,6 @@ const PairingTable = ({
 
   return (
     <div className={Styles.container}>
-      <div className={Styles.fabContainer}>
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={() => {
-            setMaxAreasLength(maxAreasLength + 1);
-          }}
-        >
-          <AddIcon />
-        </Fab>
-      </div>
       <div className={Styles.tableContainer}>
         <Table
           stickyHeader
