@@ -10,6 +10,7 @@ const AdditionalAreas = ({
   addAdditionalAreaHandler,
   deleteAdditionalAreaHandler,
   setAdditionalPrices,
+  status,
 }) => {
   return (
     <Fragment>
@@ -17,6 +18,7 @@ const AdditionalAreas = ({
       <Table
         property={property}
         deleteAdditionalAreaHandler={deleteAdditionalAreaHandler}
+        status={status}
       />
       <Select
         property={property}

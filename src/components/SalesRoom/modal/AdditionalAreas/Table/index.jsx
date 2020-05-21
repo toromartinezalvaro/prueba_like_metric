@@ -15,7 +15,7 @@ import AdditionalAreaRequestsServices from '../../../../../services/AdditionalAr
 
 const services = new AdditionalAreaRequestsServices();
 
-const Table = ({ property, deleteAdditionalAreaHandler }) => {
+const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
   const [pending, setPending] = useState(false);
   const { towerId } = useParams();
   const getSubtotal = () => {
@@ -57,21 +57,28 @@ const Table = ({ property, deleteAdditionalAreaHandler }) => {
               return (
                 <TableRow key={additionalArea.id}>
                   <TableCell>
-                    <HoverContainer
-                      noHover={
-                        additionalArea.nomenclature ||
-                        additionalArea.areaType.name
-                      }
-                      hover={
-                        <Button
-                          onClick={() => {
-                            handleDesist(additionalArea.id);
-                          }}
-                        >
-                          Desistir
-                        </Button>
-                      }
-                    />
+                    {status === 'SOLD' ? (
+                      <HoverContainer
+                        noHover={
+                          additionalArea.nomenclature ||
+                          additionalArea.areaType.name
+                        }
+                        hover={
+                          <Button
+                            onClick={() => {
+                              handleDesist(additionalArea.id);
+                            }}
+                          >
+                            Desistir
+                          </Button>
+                        }
+                      />
+                    ) : (
+                      <span>
+                        {additionalArea.nomenclature ||
+                          additionalArea.areaType.name}
+                      </span>
+                    )}
                   </TableCell>
                   <TableCell>{additionalArea.areaType.name}</TableCell>
                   <TableCell>
