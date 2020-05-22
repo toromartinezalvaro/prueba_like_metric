@@ -36,8 +36,6 @@ export const Item = ({
 
   const [disabled, setDisabled] = useState(true);
 
-  const [visible, setVisible] = useState(false);
-
   const [open, setOpenModal] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState(false);
