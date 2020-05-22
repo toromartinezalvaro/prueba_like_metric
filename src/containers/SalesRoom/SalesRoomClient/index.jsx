@@ -427,7 +427,7 @@ class SalesRoom extends Component {
 
   deleteAdditionalArea = (area) => {
     this.setState((prevState) => {
-      const tempProperty = { ...prevState.selectedProperty };     
+      const tempProperty = { ...prevState.selectedProperty };
       const tempAdditionalAreas = [...prevState.additionalAreas, area];
       tempProperty.addedAdditionalAreas = tempProperty.addedAdditionalAreas.filter(
         (additionalArea) => additionalArea.id !== area.id,
@@ -454,7 +454,9 @@ class SalesRoom extends Component {
   };
 
   render() {
-    const isStrategyNull = this.state.selectedProperty.isReset;
+    const isStrategyNull =
+      this.state.selectedProperty.isReset ||
+      !this.state.selectedProperty.strategy;
 
     let showModalSelectedProperty = !isStrategyNull;
 
