@@ -26,7 +26,7 @@ const PropertyRow = ({
       case 'SOLD':
         return styles.BlueHelper;
       default:
-        return styles.YellowHelpe;
+        return styles.YellowHelper;
     }
   };
 
