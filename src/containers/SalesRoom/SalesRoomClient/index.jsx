@@ -454,7 +454,9 @@ class SalesRoom extends Component {
   };
 
   render() {
-    const isStrategyNull = this.state.selectedProperty.isReset;
+    const isStrategyNull =
+      this.state.selectedProperty.isReset ||
+      !this.state.selectedProperty.strategy;
 
     let showModalSelectedProperty = !isStrategyNull;
 
