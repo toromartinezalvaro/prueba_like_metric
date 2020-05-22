@@ -28,6 +28,7 @@ export const initialState = {
     1: {
       id: 568,
       name: '',
+      locked: false,
       total: {
         salesWhitoutIncrements: 1000,
         units: 10,
