@@ -207,10 +207,9 @@ class Schedule extends Component {
           balancePointDateHandler={this.putBalancePointDate}
           isAnySold={this.state.isAnySold}
         />
-        {/* <StageDates /> */}
         <InitialFees
           firstSale={this.state.firstSale}
-          endOfSalesDate={this.state.endOfSalesDate}
+          maximumCollectionDate={this.state.maximumCollectionDate}
           firstSaleHandler={this.firstSaleHandler}
         />
       </div>
