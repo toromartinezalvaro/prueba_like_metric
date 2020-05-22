@@ -48,6 +48,11 @@ const SalesRoomModal = ({
     adminAdditionalAreas,
   } = property;
 
+  const [initialStatus, setInitialStatus] = useState(null);
+  useEffect(() => {
+    setInitialStatus(status);
+  }, []);
+
   const [quotationOpen, setQuotationOpen] = useState(false);
   const [fixedPrice, setFixed] = useState(
     priceSold !== null
@@ -171,7 +176,6 @@ const SalesRoomModal = ({
             </div>
           </div>
         )}
-        {console.log(property, fixedPrice, status)}
         {currentState === SalesRoomEnum.status.SOLD && (
           <div>
             <div className={Styles.inputContainer}>
@@ -192,6 +196,7 @@ const SalesRoomModal = ({
                 addAdditionalAreaHandler={addAdditionalAreaHandler}
                 deleteAdditionalAreaHandler={deleteAdditionalAreaHandler}
                 setAdditionalPrices={setAdditionalPricesHandler}
+                status={initialStatus}
               />
             </div>
             <div className={Styles.inputContainer}>
