@@ -11,6 +11,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import NumberFormat from 'react-number-format';
 import reducer, { initialState } from './reducer';
 import {
   fetchAddToTowerStart,
@@ -41,6 +42,27 @@ const defaultClient = {
   phoneNumber: '',
   properties: [],
 };
+
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            value: values.value,
+          },
+        });
+      }}
+      type="tel"
+      allowNegative={false}
+      decimalSeparator={false}
+      format="##########"
+    />
+  );
+}
 
 const validationSchema = yup.object().shape({
   identityDocument: yup
@@ -190,6 +212,9 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                   placeholder="3001234567"
                   label="Número de teléfono"
                   component={Input}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
                 />
                 <Grid container spacing={1} direction="row-reverse">
                   <Grid item>
