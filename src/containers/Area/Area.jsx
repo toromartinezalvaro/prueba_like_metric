@@ -197,7 +197,6 @@ class Area extends Component {
       .then((response) => {
         let currentState = {};
         const data = response ? response.data : null;
-        console.log('data', data);
         if (data) {
           if (this.state.calculateTotals === true) {
             const types = [];
