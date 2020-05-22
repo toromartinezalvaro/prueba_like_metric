@@ -121,30 +121,36 @@ class SalesRoom extends Component {
 
   onClickSelector = (property, buttons) => {
     if (this.state.clientName) {
-      const tempProperty = { ...property };
-      tempProperty.addedAdditionalAreas = tempProperty.additionalAreas.filter(
-        (additionalArea) => additionalArea.addedFromSalesRoom,
-      );
-      tempProperty.adminAdditionalAreas = tempProperty.additionalAreas.filter(
-        (additionalArea) => !additionalArea.addedFromSalesRoom,
-      );
-      const group = this.state.response.properties.find(
-        (g) => g[0].groupId === tempProperty.groupId,
-      );
-      const availableProperties = group.filter(
-        (p) => p.status === Status.Available,
-      );
-      this.setState({
-        id: property.id,
-        groupId: property.groupId,
-        isOpen: true,
-        rightButton: buttons.rightButton,
-        leftButton: buttons.leftButton,
-        priceSold: property.priceWithIncrement,
-        selectedProperty: tempProperty,
-        discountApplied: property.discount,
-        isLastProperty: availableProperties.length === 1,
-      });
+      try {
+        const tempProperty = { ...property };
+        tempProperty.addedAdditionalAreas = tempProperty.additionalAreas.filter(
+          (additionalArea) => additionalArea.addedFromSalesRoom,
+        );
+        tempProperty.adminAdditionalAreas = tempProperty.additionalAreas.filter(
+          (additionalArea) => !additionalArea.addedFromSalesRoom,
+        );
+        const group = this.state.response.properties.find(
+          (g) => g[0].groupId === tempProperty.groupId,
+        );
+        const availableProperties = group.filter(
+          (p) => p.status === Status.Available,
+        );
+        this.setState({
+          id: property.id,
+          groupId: property.groupId,
+          isOpen: true,
+          rightButton: buttons.rightButton,
+          leftButton: buttons.leftButton,
+          priceSold: property.priceWithIncrement,
+          selectedProperty: tempProperty,
+          discountApplied: property.discount,
+          isLastProperty: availableProperties.length === 1,
+        });
+      } catch (error) {
+        this.props.enqueueSnackbar(error.message, {
+          variant: 'error',
+        });
+      }
     }
   };
 

@@ -179,7 +179,10 @@ class Area extends Component {
   setFirstColumnInside = (data) => {
     const { propertiesAreas } = data;
     const firstColumnInRows = propertiesAreas.map((propertyArray) => {
-      return propertyArray[0].propertyId;
+      if (propertyArray[0]) {
+        return propertyArray[0].propertyId;
+      }
+      return [];
     });
     this.setState({ ...this.state, firstColumnInRows });
   };
@@ -194,7 +197,6 @@ class Area extends Component {
       .then((response) => {
         let currentState = {};
         const data = response ? response.data : null;
-        console.log('data', data);
         if (data) {
           if (this.state.calculateTotals === true) {
             const types = [];
