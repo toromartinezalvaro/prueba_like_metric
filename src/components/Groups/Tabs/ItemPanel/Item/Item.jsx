@@ -178,8 +178,6 @@ export const Item = ({
                 fullWidth
                 className={currentItem.PUC}
                 component={FormikTextField}
-                onMouseEnter={() => setVisible((prevState) => !prevState)}
-                onMouseLeave={() => setVisible((prevState) => !prevState)}
                 InputProps={{
                   inputComponent: NumberFormatCustom,
                 }}
@@ -203,30 +201,20 @@ export const Item = ({
                 onChange={handleChangeItemName}
                 disabled={disabled}
                 component={FormikTextField}
-                onMouseEnter={() => setVisible((prevState) => !prevState)}
-                onMouseLeave={() => setVisible((prevState) => !prevState)}
               />
-              {visible && (
-                <div className={style.actionsContainer}>
-                  <Button
-                    onClick={handleChangeForEdit}
-                    onMouseEnter={() => setVisible((prevState) => !prevState)}
-                    onMouseLeave={() => setVisible((prevState) => !prevState)}
-                  >
-                    <Icon
-                      className={disabled ? 'fas fa-pen' : 'fas fa-check'}
-                      color="primary"
-                    />
-                  </Button>
-                  <Button
-                    onClick={disabled ? prepareToDelete : handleDeleteField}
-                    onMouseEnter={() => setVisible((prevState) => !prevState)}
-                    onMouseLeave={() => setVisible((prevState) => !prevState)}
-                  >
-                    <Icon className="fas fa-times" color="secondary" />
-                  </Button>
-                </div>
-              )}
+              <div className={style.actionsContainer}>
+                <Button onClick={handleChangeForEdit}>
+                  <Icon
+                    className={disabled ? 'fas fa-pen' : 'fas fa-check'}
+                    color="primary"
+                  />
+                </Button>
+                <Button
+                  onClick={disabled ? prepareToDelete : handleDeleteField}
+                >
+                  <Icon className="fas fa-times" color="secondary" />
+                </Button>
+              </div>
             </Form>
           )}
         </Formik>
