@@ -13,4 +13,8 @@ export default class ClientsServices extends Services {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   }
+
+  getTowerInfo(towerId) {
+    return this.get(definitions.getTowerInfo(towerId));
+  }
 }
