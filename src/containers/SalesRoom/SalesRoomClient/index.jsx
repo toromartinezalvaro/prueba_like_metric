@@ -406,7 +406,6 @@ class SalesRoom extends Component {
 
   optionalDescript = (element) => {
     const optionalDescription = element.target.value;
-    console.log('texto', optionalDescription);
     this.setState({ optionalDescription });
   };
 
