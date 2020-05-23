@@ -123,6 +123,21 @@ const Strategies = ({
         <Box p={3}>
           <Typography variant="h5">Estrategias</Typography>
         </Box>
+        {locked && isReset && (
+          <Box p={3}>
+            <Typography variant="overline" component="span">
+              * No se puede seleccionar la estrategia sin resolver los casos de
+              desistimiento pendientes
+            </Typography>{' '}
+            <Link
+              component="button"
+              onClick={redirectToSalesRequest}
+              variant="overline"
+            >
+              Ir a solicitudes
+            </Link>
+          </Box>
+        )}
         <RadioGroup
           row
           aria-label="estrategia"
@@ -150,7 +165,7 @@ const Strategies = ({
                   <TableRow key={`strategy-${index}`}>
                     <TableCell classes={{ root: Styles.radioButtonCell }}>
                       <FormControlLabel
-                        disabled={strategy && !isReset}
+                        disabled={(strategy && !isReset) || locked}
                         value={row.frequencyId}
                         control={<Radio />}
                       />
@@ -173,25 +188,10 @@ const Strategies = ({
               setResetStrategyConfirmationDialogOpen(true);
             }}
             fullWidth
-            disabled={isReset || locked}
+            disabled={isReset}
           >
             Reiniciar estrategia
           </Button>
-          {locked && (
-            <>
-              <Typography variant="overline" component="span">
-                * No se puede reiniciar la estrategia sin resolver los casos de
-                desistimiento pendientes
-              </Typography>{' '}
-              <Link
-                component="button"
-                onClick={redirectToSalesRequest}
-                variant="overline"
-              >
-                Ir a solicitudes
-              </Link>
-            </>
-          )}
         </Box>
       </Paper>
       <ConfirmDialog

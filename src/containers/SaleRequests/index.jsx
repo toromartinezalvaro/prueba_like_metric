@@ -28,24 +28,7 @@ class SalesRequests extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    this.services
-      .getSaleRequest(this.props.match.params.id)
-      .then((response) => {
-        this.setState({
-          modalState: true,
-          saleRequest: response.data,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-        console.error(error);
-      });
-    this.services
-      .getSaleRequests(this.props.match.params.towerId)
-      .then((response) => {
-        this.setState({ saleRequests: response.data, loading: false });
-      });
+    this.getRequests();
   }
 
   getRequests = () => {
@@ -115,19 +98,28 @@ class SalesRequests extends Component {
       propertyId,
       values,
     );
+
+    this.reloadSaleRequestByPropertyId(
+      approvedRequest.data.property.id,
+      approvedRequest.data,
+    );
+    return false;
+  };
+
+  reloadSaleRequestByPropertyId = (propertyId, resolved) => {
     const tempSaleRequests = this.state.saleRequests;
     tempSaleRequests.pending.splice(
       tempSaleRequests.pending.findIndex(
-        (request) => request.property.id === approvedRequest.data.property.id,
+        (request) => request.property.id === propertyId,
       ),
       1,
     );
-    tempSaleRequests.resolved.push(approvedRequest.data);
+
+    tempSaleRequests.resolved.push(resolved);
     this.setState({
       desistDialogOpen: false,
       saleRequests: tempSaleRequests,
     });
-    return false;
   };
 
   render() {
@@ -152,6 +144,7 @@ class SalesRequests extends Component {
             desistRequestId={this.state.desistRequestId}
             propertyId={this.state.propertyId}
             updatePriceProperty={this.updatePriceProperty}
+            reloadSaleRequestByPropertyId={this.reloadSaleRequestByPropertyId}
             closeHandler={() => {
               this.setState({ desistDialogOpen: false });
             }}
