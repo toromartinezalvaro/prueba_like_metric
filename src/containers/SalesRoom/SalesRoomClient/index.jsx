@@ -37,8 +37,9 @@ import withDefaultLayout from '../../../HOC/Layouts/Default/withDefaultLayout';
 class SalesRoom extends Component {
   constructor(props) {
     super(props);
-    this.services = new SalesRoomService(this);
+    this.services = new SalesRoomService();
     this.makeArrayOfProperties = this.makeArrayOfProperties.bind(this);
+    this.isModalShowingStatesContent = false;
   }
 
   state = {
@@ -63,12 +64,15 @@ class SalesRoom extends Component {
     additionalAreas: [],
     lastSelector: 'priceWithIncrements',
     isLastProperty: false,
+    isSavingErrorActive: false,
   };
 
   propertyHandler = (key, value) => {
     const temp = { ...this.state.selectedProperty };
+    let additionalState = {};
+    if (key === 'status') additionalState = { isSavingErrorActive: false };
     temp[key] = value;
-    this.setState({ selectedProperty: temp });
+    this.setState({ selectedProperty: temp, ...additionalState });
   };
 
   componentDidMount() {
@@ -135,6 +139,10 @@ class SalesRoom extends Component {
         const availableProperties = group.filter(
           (p) => p.status === Status.Available,
         );
+
+        const lastProperty =
+          availableProperties.length === 1 ? availableProperties[0] : null;
+
         this.setState({
           id: property.id,
           groupId: property.groupId,
@@ -144,7 +152,8 @@ class SalesRoom extends Component {
           priceSold: property.priceWithIncrement,
           selectedProperty: tempProperty,
           discountApplied: property.discount,
-          isLastProperty: availableProperties.length === 1,
+          isLastProperty:
+            lastProperty != null && tempProperty.id === lastProperty.id,
         });
       } catch (error) {
         this.props.enqueueSnackbar(error.message, {
@@ -305,6 +314,14 @@ class SalesRoom extends Component {
   }
 
   save = () => {
+    if (
+      this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE &&
+      !this.modalRenderValidation()
+    ) {
+      this.setState({ isSavingErrorActive: true });
+      return;
+    }
+
     const collectedIncrement = this.calculateCollectedIncrement(
       this.state.rightButton.label,
     );
@@ -353,6 +370,8 @@ class SalesRoom extends Component {
         if (incrementList) {
           this.makeArrayOfProperties(incrementList, this.state.lastSelector);
         }
+
+        this.isModalShowingStatesContent = false;
         this.setState({
           isOpen: false,
           isLoadingModal: false,
@@ -360,26 +379,24 @@ class SalesRoom extends Component {
         this.updateAdditionalAreas();
       })
       .catch((error) => {
-        console.log('---->', { error: error.message });
         this.props.enqueueSnackbar(error.message, {
           variant: 'error',
         });
         this.updateAdditionalAreas();
         this.setState({ isLoadingModal: false });
       });
-
-    return true;
   };
 
   cancel = () => {
-    this.setState({ isOpen: false });
+    this.isModalShowingStatesContent = false;
+    this.setState({ isOpen: false, isSavingErrorActive: false });
     this.updateAdditionalAreas();
   };
 
   createNullMatrix = (m, n) => {
     return Array(m)
-      .fill()
-      .map(() => Array(n).fill());
+      .fill(null)
+      .map(() => Array(n).fill(null));
   };
 
   isThereOneAvailableProperty = (selectedProperty, propertiesMatrix) => {
@@ -459,7 +476,7 @@ class SalesRoom extends Component {
       });
   };
 
-  render() {
+  modalRenderValidation = () => {
     const isStrategyNull =
       this.state.selectedProperty.isReset ||
       !this.state.selectedProperty.strategy;
@@ -480,6 +497,30 @@ class SalesRoom extends Component {
     }
 
     if (isStrategyNull && this.state.isLastProperty) {
+      showModalSelectedProperty = true;
+    }
+
+    return showModalSelectedProperty;
+  };
+
+  clientValidation = () => {
+    return (
+      this.state.selectedProperty.clientId ===
+        this.props.match.params.clientId ||
+      this.state.selectedProperty.clientId === null
+    );
+  };
+
+  updateInitialStatus = () => {
+    this.isModalShowingStatesContent = true;
+  };
+
+  render() {
+    let showModalSelectedProperty = this.modalRenderValidation();
+    if (
+      this.state.selectedProperty.status === SalesRoomEnum.status.SOLD ||
+      this.isModalShowingStatesContent
+    ) {
       showModalSelectedProperty = true;
     }
 
@@ -532,26 +573,23 @@ class SalesRoom extends Component {
                 </div>
               </DialogTitle>
               <DialogContent>
-                {isStrategyNull &&
-                  !this.state.isLastProperty &&
+                {!showModalSelectedProperty &&
                   'Debe escoger una estrategia para poder vender los apartamentos de este grupo 📈'}
+                {showModalSelectedProperty && this.state.isLoadingModal && (
+                  <div style={{ justifyContent: 'center', display: 'flex' }}>
+                    <Loader
+                      type="ThreeDots"
+                      color={variables.mainColor}
+                      height="100"
+                      width="100"
+                    />
+                  </div>
+                )}
+
                 {showModalSelectedProperty &&
-                  (this.state.isLoadingModal ? (
-                    <div style={{ justifyContent: 'center', display: 'flex' }}>
-                      <Loader
-                        type="ThreeDots"
-                        color={variables.mainColor}
-                        height="100"
-                        width="100"
-                      />
-                    </div>
-                  ) : this.state.selectedProperty.clientId ===
-                      this.props.match.params.clientId ||
-                    this.state.selectedProperty.clientId === null ? (
+                  !this.state.isLoadingModal &&
+                  (this.clientValidation() ? (
                     <SalesRoomModal
-                      isDisabled={
-                        this.state.selectedProperty.requestStatus === 'D'
-                      }
                       isLast={this.state.isLastProperty}
                       property={this.state.selectedProperty}
                       onChange={this.propertyHandler}
@@ -564,6 +602,8 @@ class SalesRoom extends Component {
                       towerId={this.props.match.params.towerId}
                       spawnMessage={this.props.spawnMessage}
                       clientId={this.props.match.params.clientId}
+                      isSavingErrorActive={this.state.isSavingErrorActive}
+                      updateInitialStatus={this.updateInitialStatus}
                     />
                   ) : (
                     'El apartamento seleccionado no le pertenece a este cliente'
