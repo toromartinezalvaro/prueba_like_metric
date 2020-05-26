@@ -83,7 +83,9 @@ class Services {
           } else if (
             retry >= 1 &&
             retry < 5 &&
-            ((error.response && error.response.status !== 404) ||
+            ((error.response &&
+              error.response.status !== 404 &&
+              error.response.status !== 400) ||
               !error.response)
           ) {
             const newRetry = retry - 1;

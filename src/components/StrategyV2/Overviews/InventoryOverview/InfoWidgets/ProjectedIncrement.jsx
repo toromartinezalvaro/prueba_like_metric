@@ -16,6 +16,7 @@ import IncrementsServices from '../../../../../services/increments/IncrementsSer
 import Increment2Services from '../../../../../services/incrementsV2/incrementsService';
 import generateDataset from '../../../../../containers/StrategyV2/helpers/dataset';
 import { startLoading, stopLoading } from '../../../Loader/actions';
+import styles from './styles.module.scss';
 
 const validationSchema = yup.object().shape({
   projectedIncrement: yup
@@ -101,8 +102,14 @@ const ProjectedIncrement = ({
                     component={Input}
                     onBlur={blurHandler}
                     disabled={!isReset}
+                    errorProp={projectedIncrement < 0}
                     fullWidth
                   />
+                  {projectedIncrement < 0 && (
+                    <div className={styles.error}>
+                      El valor actual de incremento es negativo.
+                    </div>
+                  )}
                 </Form>
               )}
             </Formik>

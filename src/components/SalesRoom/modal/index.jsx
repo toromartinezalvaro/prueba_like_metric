@@ -5,6 +5,7 @@ import {
   RadioButton,
   ReversedRadioButton,
 } from 'react-radio-buttons';
+import { Typography } from '@material-ui/core';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import 'moment/locale/es';
@@ -18,14 +19,13 @@ import StyleVariables from '../../../assets/styles/variables.scss';
 import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
 import AdditionalAreas from './AdditionalAreas';
 import QuotationDialog from '../../Quotations/Dialog';
-import Status from '../../../helpers/status';
+import RequestStatus from '../../../helpers/requestStatus';
 
 // Internal constants definitions
 const DISCOUNT = 'DISCOUNT';
 const INCREMENT = 'INCREMENT';
 
 const SalesRoomModal = ({
-  isDisabled,
   isLast,
   property,
   onChange,
@@ -39,6 +39,8 @@ const SalesRoomModal = ({
   spawnMessage,
   optionalDescript,
   optionalDescription,
+  isSavingErrorActive,
+  updateInitialStatus,
 }) => {
   const {
     status,
@@ -51,6 +53,12 @@ const SalesRoomModal = ({
     adminAdditionalAreas,
     optionalDescriptions,
   } = property;
+
+  const [initialStatus, setInitialStatus] = useState(null);
+  useEffect(() => {
+    setInitialStatus(status);
+    updateInitialStatus();
+  }, []);
 
   const [quotationOpen, setQuotationOpen] = useState(false);
   const [optionalTextDescript, setOptionalTextDescript] = useState('');
@@ -113,10 +121,36 @@ const SalesRoomModal = ({
     );
   });
 
+  const requestStatusValidation = (status) => {
+    switch (status) {
+      case SalesRoomEnum.status.AVAILABLE:
+        return false;
+      case SalesRoomEnum.status.OPTIONAL:
+        return (
+          property.requestStatus === RequestStatus.DISMISSED ||
+          (isLast && currentState !== SalesRoomEnum.status.AVAILABLE)
+        );
+      case SalesRoomEnum.status.SOLD:
+        return (
+          property.requestStatus === RequestStatus.DISMISSED ||
+          (isLast && currentState !== SalesRoomEnum.status.AVAILABLE)
+        );
+      default:
+        return true;
+    }
+  };
+
   return (
     <>
       <div>
         <div className={Styles.status}>
+          {isSavingErrorActive && (
+            <Typography variant="subtitle1" color="error" align="center">
+              {
+                '* No es posible realizar esta acción, el grupo actual no tiene estrategias'
+              }
+            </Typography>
+          )}
           {(property.clientId === clientId || property.clientId === null) && (
             <RadioGroup
               value={currentState}
@@ -128,23 +162,23 @@ const SalesRoomModal = ({
             >
               <RadioButton
                 value={SalesRoomEnum.status.AVAILABLE}
-                disabled={isDisabled}
+                disabled={requestStatusValidation(
+                  SalesRoomEnum.status.AVAILABLE,
+                )}
               >
                 Disponible
               </RadioButton>
               <RadioButton
                 value={SalesRoomEnum.status.OPTIONAL}
-                disabled={
-                  isDisabled || (isLast && currentState !== Status.Available)
-                }
+                disabled={requestStatusValidation(
+                  SalesRoomEnum.status.OPTIONAL,
+                )}
               >
                 Opcionado
               </RadioButton>
               <RadioButton
                 value={SalesRoomEnum.status.SOLD}
-                disabled={
-                  isDisabled || (isLast && currentState !== Status.Available)
-                }
+                disabled={requestStatusValidation(SalesRoomEnum.status.SOLD)}
               >
                 Vendido
               </RadioButton>
@@ -189,7 +223,6 @@ const SalesRoomModal = ({
             </div>
           </div>
         )}
-        {console.log(property, fixedPrice, status)}
         {currentState === SalesRoomEnum.status.SOLD && (
           <div>
             <div className={Styles.inputContainer}>
@@ -210,6 +243,7 @@ const SalesRoomModal = ({
                 addAdditionalAreaHandler={addAdditionalAreaHandler}
                 deleteAdditionalAreaHandler={deleteAdditionalAreaHandler}
                 setAdditionalPrices={setAdditionalPricesHandler}
+                status={initialStatus}
               />
             </div>
             <div className={Styles.inputContainer}>
@@ -387,12 +421,14 @@ SalesRoomModal.propTypes = {
     priceSold: PropTypes.number,
     discount: PropTypes.number,
     tradeDiscount: PropTypes.number,
+    requestStatus: PropTypes.string,
   }).isRequired,
   onChange: PropTypes.func,
   clientId: PropTypes.string,
   additionalAreas: PropTypes.array.isRequired,
   addAdditionalAreaHandler: PropTypes.func.isRequired,
   deleteAdditionalAreaHandler: PropTypes.func.isRequired,
+  updateInitialStatus: PropTypes.func.isRequired,
 };
 
 SalesRoomModal.defaultProps = {

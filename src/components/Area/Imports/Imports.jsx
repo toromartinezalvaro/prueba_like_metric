@@ -14,13 +14,23 @@ function Imports({ openDialogHandler }) {
   const { towerId } = useParams();
 
   const downloadTemplate = async () => {
-    const response = await services.getSchemaTemplate(towerId);
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Plantilla_Esquema.xlsx');
-    document.body.appendChild(link);
-    link.click();
+    try {
+      let name = 'Plantilla_Esquema.xlsx';
+      const response = await services.getSchemaTemplate(towerId);
+      const towerRequest = await services.getTowerInfo(towerId);
+      if (towerRequest.data.name && towerRequest.data.project) {
+        const { data } = towerRequest;
+        name = `Plantilla ${data.name} del proyecto ${data.project}.xlsx`;
+      }
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', name);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

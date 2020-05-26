@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +15,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 import { useSnackbar } from 'notistack';
 import {
   changeStrategy,
@@ -26,6 +27,7 @@ import IncrementServices from '../../../../../../services/increments/IncrementsS
 import Increment2Services from '../../../../../../services/incrementsV2/incrementsService';
 import ConfirmDialog from './ConfirmDialog';
 import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
+import { DashboardRoutes } from '../../../../../../routes/local/routes';
 import Styles from './Strategies.module.scss';
 
 const services = {
@@ -35,6 +37,7 @@ const services = {
 };
 
 const Strategies = ({
+  locked,
   strategy,
   onChangeStrategy,
   isReset,
@@ -46,6 +49,7 @@ const Strategies = ({
   rows,
   baseValueToToday,
 }) => {
+  const history = useHistory();
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -107,12 +111,33 @@ const Strategies = ({
     changeStrategyHandler(selectedStrategy);
   };
 
+  const redirectToSalesRequest = () => {
+    history.push(
+      `${DashboardRoutes.base}${DashboardRoutes.saleRequests.value}${towerId}`,
+    );
+  };
+
   return (
     <>
       <Paper>
         <Box p={3}>
           <Typography variant="h5">Estrategias</Typography>
         </Box>
+        {locked && isReset && (
+          <Box p={3}>
+            <Typography variant="overline" component="span">
+              * No se puede seleccionar la estrategia sin resolver los casos de
+              desistimiento pendientes
+            </Typography>{' '}
+            <Link
+              component="button"
+              onClick={redirectToSalesRequest}
+              variant="overline"
+            >
+              Ir a solicitudes
+            </Link>
+          </Box>
+        )}
         <RadioGroup
           row
           aria-label="estrategia"
@@ -140,7 +165,7 @@ const Strategies = ({
                   <TableRow key={`strategy-${index}`}>
                     <TableCell classes={{ root: Styles.radioButtonCell }}>
                       <FormControlLabel
-                        disabled={strategy && !isReset}
+                        disabled={(strategy && !isReset) || locked}
                         value={row.frequencyId}
                         control={<Radio />}
                       />
@@ -198,6 +223,7 @@ const Strategies = ({
 };
 
 Strategies.propTypes = {
+  locked: PropTypes.bool.isRequired,
   strategies: PropTypes.array.isRequired,
   isReset: PropTypes.bool.isRequired,
   strategy: PropTypes.number.isRequired,
@@ -224,7 +250,7 @@ const mapStrategyForSelector = (strategy) => {
 const mapStateToProps = (state) => {
   const group =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
-  const { strategy, isReset, inventory } = state.strategy.root.groups[
+  const { strategy, isReset, inventory, locked } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   const strategies = group ? group.strategies : [];
@@ -232,6 +258,7 @@ const mapStateToProps = (state) => {
 
   return {
     strategy,
+    locked,
     isReset,
     strategies,
     groupId: group ? group.id : null,

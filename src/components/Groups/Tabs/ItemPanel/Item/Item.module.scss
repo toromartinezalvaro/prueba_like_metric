@@ -1,11 +1,13 @@
 .cellSize {
-  width: 15vw !important;
+  width: 100% !important;
   display: flex !important;
   flex-direction: row !important;
 }
 
 .actionsContainer {
-  width: 100% !important;
+  display: flex;
+  flex-direction: row;
+  width: 25% !important;
   text-align: center;
   animation: fadein 2s;
   -moz-animation: fadein 2s;

@@ -15,6 +15,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import NumberFormat from 'react-number-format';
 import Loader from '../../../UI2/Loader';
 import SchemaServices from '../../../../services/schema/SchemaServices';
 import withFormikField from '../../../../HOC/widthFormikField';
@@ -50,6 +51,26 @@ export default function Dialog() {
     }
   };
 
+  function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={inputRef}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              value: values.value,
+            },
+          });
+        }}
+        type="tel"
+        allowNegative={false}
+        decimalSeparator={false}
+      />
+    );
+  }
+
   return (
     <MuiDialog open>
       <DialogTitle>Editar esquema</DialogTitle>
@@ -71,6 +92,9 @@ export default function Dialog() {
                       label="Pisos vendibles"
                       fullWidth
                       component={Input}
+                      InputProps={{
+                        inputComponent: NumberFormatCustom,
+                      }}
                     />
                   </Grid>
                   <Grid xs={4}>
@@ -81,6 +105,9 @@ export default function Dialog() {
                         label="Apartamentos"
                         fullWidth
                         component={Input}
+                        InputProps={{
+                          inputComponent: NumberFormatCustom,
+                        }}
                       />
                     </Box>
                   </Grid>
@@ -91,6 +118,9 @@ export default function Dialog() {
                       label="Piso mas bajo vendible"
                       fullWidth
                       component={Input}
+                      InputProps={{
+                        inputComponent: NumberFormatCustom,
+                      }}
                     />
                   </Grid>
                 </Grid>

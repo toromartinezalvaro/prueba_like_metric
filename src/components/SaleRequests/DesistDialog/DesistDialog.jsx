@@ -23,6 +23,7 @@ const DesistDialog = ({
   closeHandler,
   updatePriceProperty,
   propertyId,
+  reloadSaleRequestByPropertyId,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const formRef = useRef(null);
@@ -71,7 +72,10 @@ const DesistDialog = ({
   };
 
   const handleReject = async () => {
-    await saleRequestServices.rejectDesistRequest(desistRequestId);
+    const result = await saleRequestServices.rejectDesistRequest(
+      desistRequestId,
+    );
+    reloadSaleRequestByPropertyId(propertyId, result.data);
     closeHandler();
   };
 
@@ -92,7 +96,7 @@ const DesistDialog = ({
 
         <Box my={2}>
           <Typography variant="caption">
-            * Esta propiedad pertenece al ${property && property.group}
+            * Esta propiedad pertenece al Tipo ${property && property.group}
           </Typography>
         </Box>
         <Box my={2}>
@@ -129,6 +133,7 @@ DesistDialog.propTypes = {
   propertyId: PropTypes.number.isRequired,
   closeHandler: PropTypes.func.isRequired,
   updatePriceProperty: PropTypes.func.isRequired,
+  reloadSaleRequestByPropertyId: PropTypes.func.isRequired,
 };
 
 DesistDialog.defaultProps = {
