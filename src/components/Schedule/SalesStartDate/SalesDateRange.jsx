@@ -221,6 +221,7 @@ SalesDateRange.propTypes = {
   constructionStartDateHandler: PropTypes.func,
   averageDeliveryDateHandler: PropTypes.func,
   balancePointDateHandler: PropTypes.func,
+  isAnySold: PropTypes.bool,
 };
 
 SalesDateRange.defaultProps = {
