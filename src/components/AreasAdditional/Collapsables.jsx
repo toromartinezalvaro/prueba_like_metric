@@ -36,9 +36,15 @@ const COLUMNS_MT2 = [
   { label: 'Area', dataKey: 'measure', width: 200 },
   { label: 'PrecioXMT2', dataKey: 'price', width: 200 },
   { label: 'Precio', dataKey: 'total', width: 200 },
+  { label: 'Estado', dataKey: 'additionalStatus', width: 200 },
 ];
 
 const COLUMNS_UNIT = [
+  {
+    label: 'Estado',
+    dataKey: 'additionalStatus',
+    width: 200,
+  },
   { label: 'Nomenclatura', dataKey: 'nomenclature', width: 200 },
   { label: 'Precio', dataKey: 'price', width: 200 },
 ];
@@ -105,7 +111,11 @@ const Collapsables = (props) => {
 
     if (areaType.unit === 'UNT') {
       data = data.map((property) => {
-        return { nomenclature: property.nomenclature, price: property.price };
+        return {
+          nomenclature: property.nomenclature,
+          price: property.price,
+          additionalStatus: property.status,
+        };
       });
       columns = COLUMNS_UNIT;
     }
@@ -152,6 +162,12 @@ const Collapsables = (props) => {
             </DialogActions>
           </Dialog>
           <div className={Styles.Container}>
+            <div className={Styles.ContainerSquare}>
+              <div className={Styles.GreenHelperSquare} />
+              <div className={Styles.Label}>Disponible</div>
+              <div className={Styles.BlueHelperSquare} />
+              <div className={Styles.Label}>Vendido</div>
+            </div>
             <div className={Styles.stats}>
               <div className={Styles.stat}>
                 <span className={Styles.label}>Unidades:</span>
