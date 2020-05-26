@@ -163,7 +163,6 @@ class AreasAdditional extends Component {
     this.services
       .getAreas(this.props.match.params.towerId)
       .then((areas) => {
-        console.log('DATA --> ', areas.data);
         const sortedAreas = areas.data.map((areaType) => {
           const tempAreaType = { ...areaType };
           tempAreaType.additionalAreas.sort((a, b) =>
