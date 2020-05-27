@@ -19,7 +19,7 @@ class Schedule extends Component {
     constructionStartDate: new Date().getTime(),
     maximumCollectionDate: new Date().getTime(),
     firstSale: 0,
-    isAnySold: false,
+    isAnySold: true,
   };
 
   getSalesHistory = () => {
