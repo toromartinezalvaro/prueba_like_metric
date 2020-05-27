@@ -122,6 +122,19 @@ const Matrix = (
     }
   };
 
+  const additionalStatus = (area) => {
+    if (area.property) {
+      switch (area.property.status) {
+        case 'SOLD':
+          return <div className={Styles.Sold}></div>;
+        default:
+          return <div className={Styles.Available}></div>;
+      }
+    } else {
+      return <div className={Styles.Available}></div>;
+    }
+  };
+
   const data = areaType.additionalAreas.map((area, j) => {
     return {
       nomenclature: (
@@ -200,6 +213,7 @@ const Matrix = (
           />
         </span>
       ),
+      status: additionalStatus(area),
     };
   });
 

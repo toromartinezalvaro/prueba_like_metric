@@ -7,6 +7,9 @@
  * -----
  * Copyright (c) 2019 Instabuild
  */
+@import '../../../assets/styles/variables';
+$width: 25px;
+$height: 25px;
 
 .TextField {
   width: 80%;
@@ -28,4 +31,24 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.Available {
+  margin-left: 30% !important;
+  width: $width;
+  height: $height;
+  margin-right: 4px;
+  background-color: $green-color;
+
+  border-radius: 5%;
+}
+
+.Sold {
+  margin-left: 30% !important;
+  width: $width;
+  height: $height;
+  margin-right: 4px;
+  background-color: $main-color;
+
+  border-radius: 5%;
 }

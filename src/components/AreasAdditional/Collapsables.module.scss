@@ -9,6 +9,9 @@
  */
 @import '../../assets/styles/variables.scss';
 
+$width: 25px;
+$height: 25px;
+
 .Container {
   display: flex;
   flex-direction: column;
@@ -27,4 +30,26 @@
 
 .MuiFormControl {
   width: 200px !important;
+}
+
+.ContainerSquare {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2%;
+}
+.GreenHelperSquare {
+  width: $width;
+  height: $height;
+  margin-right: 4px;
+  background-color: $green-color;
+}
+.BlueHelperSquare {
+  width: $width;
+  height: $height;
+  margin-right: 4px;
+  background-color: $main-color;
+}
+.Label {
+  margin-right: 2%;
 }
