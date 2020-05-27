@@ -385,7 +385,7 @@ const TablesContractFlow = ({ billings }) => {
           };
           const { initialNumber } = billingsForDates();
           const { finalNumber } = billingsForDates();
-          const group = bill.group;
+          const { group } = bill;
           const item = bill.items.map((value) => value.item);
           const contracts = deepInformation(
             bill,
