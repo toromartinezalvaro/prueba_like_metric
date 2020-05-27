@@ -5,15 +5,7 @@ import General from './General';
 import Styles from './styles.module.scss';
 import ConsolidatedSalesReport from './ConsolidatedSalesReport';
 
-const Report = ({
-  data,
-  pricesReportData,
-  unitsReportData,
-  groupsPricesData,
-  groupsAdditionalsData,
-  groupsUnitsData,
-  groupsAdditionalsUnitsData,
-}) => {
+const Report = ({ data, pricesReportData, unitsReportData }) => {
   return (
     <>
       <Card>
@@ -29,10 +21,6 @@ const Report = ({
       <ConsolidatedSalesReport
         pricesReportData={pricesReportData}
         unitsReportData={unitsReportData}
-        groupsPricesData={groupsPricesData}
-        groupsAdditionalsData={groupsAdditionalsData}
-        groupsUnitsData={groupsUnitsData}
-        groupsAdditionalsUnitsData={groupsAdditionalsUnitsData}
       />
     </>
   );

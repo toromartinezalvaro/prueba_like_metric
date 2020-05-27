@@ -16,9 +16,6 @@ class ReportContainer extends Component {
     isLoading: false,
     pricesReportData: [],
     unitsReportData: [],
-    groupsPricesData: [],
-    groupsAdditionalsData: [],
-    groupsUnitsData: [],
   };
 
   componentDidMount() {
@@ -30,10 +27,6 @@ class ReportContainer extends Component {
           reportData: response.data.report,
           pricesReportData: response.data.pricesRows,
           unitsReportData: response.data.unitsRows,
-          groupsPricesData: response.data.groupsPricesRows,
-          groupsAdditionalsData: response.data.groupsAdditionalsRows,
-          groupsUnitsData: response.data.groupsUnitsRows,
-          groupsAdditionalsUnitsData: response.data.groupsAdditionalsUnitsRows,
           isLoading: false,
         });
       })
@@ -54,11 +47,7 @@ class ReportContainer extends Component {
           <Report
             data={this.state.reportData}
             pricesReportData={this.state.pricesReportData}
-            unitsReportData={this.state.unitsReportData}
-            groupsPricesData={this.state.groupsPricesData}
-            groupsAdditionalsData={this.state.groupsAdditionalsData}
-            groupsUnitsData={this.state.groupsUnitsData}
-            groupsAdditionalsUnitsData={this.state.groupsAdditionalsUnitsData}
+            unitsReportData={this.state.unitsReportData}           
           />
         ) : null}
       </LoadableContainer>

@@ -2,33 +2,32 @@
  * Created Date: Wednesday May 27th 2020
  * Author: Caraham
  * -----
- * Last Modified: Wednesday, 27th May 2020 5:53:14 am
+ * Last Modified: Wednesday, 27th May 2020 11:56:00 am
  * Modified By: the developer formerly known as Caraham
  * -----
  * Copyright (c) 2020 Instabuild
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Grid,
   Table,
   TableHeaderRow,
-  TableRowDetail,
+  TableTreeColumn,
 } from '@devexpress/dx-react-grid-material-ui';
 
-import { RowDetailState } from '@devexpress/dx-react-grid';
+import {
+  TreeDataState,
+  RowDetailState,
+  CustomTreeData,
+} from '@devexpress/dx-react-grid';
 
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import styles from './styles.module.scss';
 
-const ConsolidatedSalesReport = ({
-  pricesReportData,
-  unitsReportData,
-  groupsPricesData,
-  groupsAdditionalsData,
-  groupsUnitsData,
-  groupsAdditionalsUnitsData,
-}) => {
+const getChildRows = (row, rootRows) => (row ? row.childs : rootRows);
+
+const ConsolidatedSalesReport = ({ pricesReportData, unitsReportData }) => {
   const priceRows = pricesReportData;
   const unitsRows = unitsReportData;
 
@@ -45,49 +44,6 @@ const ConsolidatedSalesReport = ({
     { name: 'inventory', title: 'Inventario' },
     { name: 'total', title: 'Total Ventas' },
   ];
-  const groupsColumns = [
-    { name: 'group' },
-    { name: 'toCut' },
-    { name: 'inventory' },
-    { name: 'total' },
-  ];
-
-  const RowDetailPrices = ({ row }) => {
-    if (row.pesos === 'Ventas (Sin Adicionales)') {
-      return (
-        <div>
-          <Grid rows={groupsPricesData} columns={groupsColumns}>
-            <Table />
-          </Grid>
-        </div>
-      );
-    }
-    return (
-      <div>
-        <Grid rows={groupsAdditionalsData} columns={groupsColumns}>
-          <Table />
-        </Grid>
-      </div>
-    );
-  };
-  const RowDetailUnits = ({ row }) => {
-    if (row.pesos === 'Ventas (Sin Adicionales)') {
-      return (
-        <div>
-          <Grid rows={groupsUnitsData} columns={groupsColumns}>
-            <Table />
-          </Grid>
-        </div>
-      );
-    }
-    return (
-      <div>
-        <Grid rows={groupsAdditionalsUnitsData} columns={groupsColumns}>
-          <Table />
-        </Grid>
-      </div>
-    );
-  };
 
   return (
     <Card>
@@ -97,17 +53,19 @@ const ConsolidatedSalesReport = ({
       <CardBody>
         <div className={styles.grid}>
           <Grid rows={priceRows} columns={priceColumns}>
-            <RowDetailState />
+            <TreeDataState />
+            <CustomTreeData getChildRows={getChildRows} />
             <Table />
             <TableHeaderRow />
-            <TableRowDetail contentComponent={RowDetailPrices} />
+            <TableTreeColumn for="pesos" />
           </Grid>
         </div>
         <Grid rows={unitsRows} columns={unitsColumns}>
-          <RowDetailState />
+          <TreeDataState />
+          <CustomTreeData getChildRows={getChildRows} />
           <Table />
           <TableHeaderRow />
-          <TableRowDetail contentComponent={RowDetailUnits} />
+          <TableTreeColumn for="pesos" />
         </Grid>
       </CardBody>
     </Card>
