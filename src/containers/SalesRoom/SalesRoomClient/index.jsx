@@ -64,6 +64,7 @@ class SalesRoom extends Component {
     additionalAreas: [],
     lastSelector: 'priceWithIncrements',
     isLastProperty: false,
+    optionalDescription: '',
     isSavingErrorActive: false,
   };
 
@@ -83,7 +84,6 @@ class SalesRoom extends Component {
       .then((properties) => {
         const { data } = properties;
         this.makeArrayOfProperties(data.incrementList);
-
         this.setState({
           isLoading: false,
           clientName: data.client.name,
@@ -355,6 +355,7 @@ class SalesRoom extends Component {
             SalesRoomEnum.status.AVAILABLE
               ? this.state.selectedProperty.tradeDiscount
               : null,
+          optionalDescription: this.state.optionalDescription,
           collectedIncrement,
           groupId: this.state.groupId,
           isBadgeIncrement,
@@ -375,6 +376,7 @@ class SalesRoom extends Component {
         this.setState({
           isOpen: false,
           isLoadingModal: false,
+          optionalDescription: '',
         });
         this.updateAdditionalAreas();
       })
@@ -420,6 +422,11 @@ class SalesRoom extends Component {
     this.setState({
       deadlineDate: value,
     });
+  };
+
+  optionalDescript = (element) => {
+    const optionalDescription = element.target.value;
+    this.setState({ optionalDescription });
   };
 
   addAdditionalArea = (id) => {
@@ -595,6 +602,8 @@ class SalesRoom extends Component {
                       onChange={this.propertyHandler}
                       deadlineDate={this.state.deadlineDate}
                       onChangeDeadlineDate={this.deadlineDateHandler}
+                      optionalDescription={this.optionalDescript}
+                      optionalDescript={this.state.optionalDescription}
                       clientId={this.props.match.params.clientId}
                       additionalAreas={this.state.additionalAreas}
                       addAdditionalAreaHandler={this.addAdditionalArea}
