@@ -3,19 +3,38 @@ import PropTypes from 'prop-types';
 import Card, { CardHeader, CardBody } from '../UI/Card/Card';
 import General from './General';
 import Styles from './styles.module.scss';
+import ConsolidatedSalesReport from './ConsolidatedSalesReport';
 
-const Report = ({ data }) => {
+const Report = ({
+  data,
+  pricesReportData,
+  unitsReportData,
+  groupsPricesData,
+  groupsAdditionalsData,
+  groupsUnitsData,
+  groupsAdditionalsUnitsData,
+}) => {
   return (
-    <Card>
-      <CardHeader>
-        <span>Reporte</span>
-      </CardHeader>
-      <CardBody>
-        <div className={Styles.container}>
-          <General data={data} />
-        </div>
-      </CardBody>
-    </Card>
+    <>
+      <Card>
+        <CardHeader>
+          <span>Reporte</span>
+        </CardHeader>
+        <CardBody>
+          <div className={Styles.container}>
+            <General data={data} />
+          </div>
+        </CardBody>
+      </Card>
+      <ConsolidatedSalesReport
+        pricesReportData={pricesReportData}
+        unitsReportData={unitsReportData}
+        groupsPricesData={groupsPricesData}
+        groupsAdditionalsData={groupsAdditionalsData}
+        groupsUnitsData={groupsUnitsData}
+        groupsAdditionalsUnitsData={groupsAdditionalsUnitsData}
+      />
+    </>
   );
 };
 

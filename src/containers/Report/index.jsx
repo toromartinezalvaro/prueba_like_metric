@@ -14,6 +14,11 @@ class ReportContainer extends Component {
   state = {
     reportData: [],
     isLoading: false,
+    pricesReportData: [],
+    unitsReportData: [],
+    groupsPricesData: [],
+    groupsAdditionalsData: [],
+    groupsUnitsData: [],
   };
 
   componentDidMount() {
@@ -21,7 +26,16 @@ class ReportContainer extends Component {
     this.services
       .getReport(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ reportData: response.data, isLoading: false });
+        this.setState({
+          reportData: response.data.report,
+          pricesReportData: response.data.pricesRows,
+          unitsReportData: response.data.unitsRows,
+          groupsPricesData: response.data.groupsPricesRows,
+          groupsAdditionalsData: response.data.groupsAdditionalsRows,
+          groupsUnitsData: response.data.groupsUnitsRows,
+          groupsAdditionalsUnitsData: response.data.groupsAdditionalsUnitsRows,
+          isLoading: false,
+        });
       })
       .catch((error) => {
         this.setState({ isLoading: false });
@@ -37,7 +51,15 @@ class ReportContainer extends Component {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.reportData.length > 0 ? (
-          <Report data={this.state.reportData} />
+          <Report
+            data={this.state.reportData}
+            pricesReportData={this.state.pricesReportData}
+            unitsReportData={this.state.unitsReportData}
+            groupsPricesData={this.state.groupsPricesData}
+            groupsAdditionalsData={this.state.groupsAdditionalsData}
+            groupsUnitsData={this.state.groupsUnitsData}
+            groupsAdditionalsUnitsData={this.state.groupsAdditionalsUnitsData}
+          />
         ) : null}
       </LoadableContainer>
     );
