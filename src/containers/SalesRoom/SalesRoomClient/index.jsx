@@ -133,9 +133,9 @@ class SalesRoom extends Component {
         tempProperty.adminAdditionalAreas = tempProperty.additionalAreas.filter(
           (additionalArea) => !additionalArea.addedFromSalesRoom,
         );
-        const group = this.state.response.properties.find(
-          (g) => g[0].groupId === tempProperty.groupId,
-        );
+        const group = this.state.response.properties.find((g) => {
+          return g[0] ? g[0].groupId === tempProperty.groupId : false;
+        });
         const availableProperties = group.filter(
           (p) => p.status === Status.Available,
         );
