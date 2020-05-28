@@ -27,6 +27,7 @@ function Dialog({
   onSelectFile,
   onApiFetchStart,
   onApiFetchEnd,
+  companyId,
 }) {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -35,7 +36,7 @@ function Dialog({
     try {
       const formData = new FormData();
       formData.append('file', file);
-      await services.postSchema(formData);
+      await services.postSchema(formData, companyId);
       onCloseHandler();
       onSelectFile(null);
       enqueueSnackbar('Plantilla cargada correctamente', {
@@ -121,6 +122,7 @@ Dialog.propTypes = {
   onSelectFile: PropTypes.func.isRequired,
   onApiFetchStart: PropTypes.func.isRequired,
   onApiFetchEnd: PropTypes.func.isRequired,
+  companyId: PropTypes.string,
 };
 
 export default connect(

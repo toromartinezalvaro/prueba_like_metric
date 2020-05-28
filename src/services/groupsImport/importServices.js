@@ -8,8 +8,8 @@ export default class ClientsServices extends Services {
     });
   }
 
-  postSchema(towerId, form) {
-    return this.post(definitions.postSchema(), form, {
+  postSchema(form, companyId) {
+    return this.post(definitions.postSchema(companyId), form, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   }

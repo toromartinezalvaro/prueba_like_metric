@@ -53,7 +53,7 @@ function Imports({ openDialogHandler, company }) {
           </Button>
         </Grid>
       </Grid>
-      <UploadDialog />
+      <UploadDialog  companyId={companyId} />
     </>
   );
 }
