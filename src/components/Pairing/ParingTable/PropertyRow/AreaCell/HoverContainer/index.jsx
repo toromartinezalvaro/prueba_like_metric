@@ -20,23 +20,29 @@ const HoverContainer = ({
     <div className={Styles.container}>
       <div className={Styles.noHover}>{children}</div>
       <div className={Styles.hover}>
-        {option === options.EDIT && (
-          <Button
-            className={Styles.button}
-            onClick={updateHandler}
-            disabled={status === stateType.Sold.code}
-          >
-            <i className="fas fa-edit"></i>
-          </Button>
-        )}
-        {option === options.DELETE && (
-          <Button
-            className={Styles.button}
-            onClick={removeAreaHandler}
-            disabled={status === stateType.Sold.code}
-          >
-            <i className="fas fa-trash-alt"></i>
-          </Button>
+        {status !== 'SOLD' ? (
+          <>
+            {option === options.EDIT && (
+              <Button
+                className={Styles.button}
+                onClick={updateHandler}
+                disabled={status === stateType.Sold.code}
+              >
+                <i className="fas fa-edit"></i>
+              </Button>
+            )}
+            {option === options.DELETE && (
+              <Button
+                className={Styles.button}
+                onClick={removeAreaHandler}
+                disabled={status === stateType.Sold.code}
+              >
+                <i className="fas fa-trash-alt"></i>
+              </Button>
+            )}
+          </>
+        ) : (
+          <span>No disponible</span>
         )}
       </div>
     </div>
