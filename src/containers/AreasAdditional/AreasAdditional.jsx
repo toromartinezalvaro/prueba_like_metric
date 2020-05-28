@@ -209,10 +209,7 @@ class AreasAdditional extends Component {
               updateAreaTypeHandler={this.updateAreaTypeHandler}
               disableSold={this.state.disableSold}
             ></Collapsables>
-            <AddArea
-              addAreaHandler={this.addAreaHandler}
-              disableSold={this.state.disableSold}
-            ></AddArea>
+            <AddArea addAreaHandler={this.addAreaHandler}></AddArea>
           </CardBody>
         </Card>
       </LoadableContainer>

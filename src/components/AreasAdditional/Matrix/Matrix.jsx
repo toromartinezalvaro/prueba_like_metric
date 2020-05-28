@@ -143,7 +143,7 @@ const Matrix = (
               input: Styles.ContainerTexField,
             },
           }}
-          disabled={disableSold}
+          disabled={area.property !== null && area.property.status === 'SOLD'}
         />
       ),
       measure: (
@@ -162,7 +162,7 @@ const Matrix = (
               input: Styles.ContainerTexField,
             },
           }}
-          disabled={disableSold}
+          disabled={area.property !== null && area.property.status === 'SOLD'}
         />
       ),
       price: (
@@ -185,7 +185,7 @@ const Matrix = (
             }
             actualValueHandler={(value) => actualValueHandler(value)}
             areaType={areaType}
-            disabled={disableSold}
+            disabled={area.property !== null && area.property.status === 'SOLD'}
           />
         </div>
       ),
@@ -196,7 +196,7 @@ const Matrix = (
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
-            disabled={disableSold}
+            disabled={area.property !== null && area.property.status === 'SOLD'}
           />
         </span>
       ),
