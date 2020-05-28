@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-
+import { withSnackbar } from 'notistack';
 import NumberFormat from 'react-number-format';
 import Loader from 'react-loader-spinner';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
@@ -182,7 +182,7 @@ class Area extends Component {
         this.setState({ inputMethod: response.data.inputMethod });
       })
       .catch((error) => {
-        alert(error.message);
+        this.props.enqueueSnackbar(error.message, { variant: 'error' });
       });
     this.updateTableInformation();
     this.setState({ isLoading: true });
@@ -459,7 +459,7 @@ class Area extends Component {
         this.setState({ inputMethod });
       })
       .catch((error) => {
-        alert(error);
+        this.props.enqueueSnackbar(error.message, { variant: 'error' });
       });
   };
 
@@ -560,4 +560,4 @@ class Area extends Component {
   }
 }
 
-export default withDefaultLayout(Area);
+export default withSnackbar(withDefaultLayout(Area));
