@@ -297,7 +297,9 @@ class SalesRoom extends Component {
       properties = this.findGroup(groups);
     }
     return properties.reduce((current, next) => {
-      const { price } = next;
+      let { price, manualPrice } = next;
+      // console.log(next);
+      price = price === 0 && manualPrice > 0 ? manualPrice : price;
       let increment = next.priceSold - price;
       if (
         next.groupId === this.state.groupId &&
@@ -325,6 +327,7 @@ class SalesRoom extends Component {
     const collectedIncrement = this.calculateCollectedIncrement(
       this.state.rightButton.label,
     );
+    // return;
     let isBadgeIncrement = false;
     if (
       Math.trunc(collectedIncrement) > this.state.selectedProperty.increment
