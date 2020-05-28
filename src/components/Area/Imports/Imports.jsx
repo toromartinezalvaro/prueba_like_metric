@@ -10,7 +10,7 @@ import UploadDialog, { actions } from './Upload';
 
 const services = new ImportServices();
 
-function Imports({ openDialogHandler }) {
+function Imports({ disabled, openDialogHandler }) {
   const { towerId } = useParams();
 
   const downloadTemplate = async () => {
@@ -42,6 +42,7 @@ function Imports({ openDialogHandler }) {
             color="primary"
             variant="contained"
             disableElevation
+            disabled={disabled}
           >
             Descargar plantilla
           </Button>
@@ -52,6 +53,7 @@ function Imports({ openDialogHandler }) {
             color="primary"
             variant="contained"
             disableElevation
+            disabled={disabled}
           >
             Cargar plantilla
           </Button>
@@ -69,6 +71,7 @@ const mapDispatchToProps = {
 };
 
 Imports.propTypes = {
+  disabled: PropTypes.bool.isRequired,
   openDialogHandler: PropTypes.func.isRequired,
 };
 

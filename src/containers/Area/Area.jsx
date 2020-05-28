@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+
 import NumberFormat from 'react-number-format';
 import Loader from 'react-loader-spinner';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
@@ -17,6 +18,7 @@ import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import LoadableContainer from '../../components/UI/Loader';
 import Prices2 from '../../components/Area/Prices2';
 import Imports from '../../components/Area/Imports';
+import InputMethodDialog from '../../components/Area/InputMethod/Dialog';
 
 class Area extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class Area extends Component {
   }
 
   state = {
+    inputMethod: null,
     areaTypeId: null,
     areaType: '',
     areaMeasurementUnit: 'MT2',
@@ -112,7 +115,9 @@ class Area extends Component {
       return (
         <div
           onClick={() => {
-            this.handleOpenAreaTypeModal(areaType);
+            if (this.state.inputMethod === 'MANUAL') {
+              this.handleOpenAreaTypeModal(areaType);
+            }
           }}
         >
           <EditableHeader
@@ -171,6 +176,14 @@ class Area extends Component {
   };
 
   componentDidMount() {
+    this.services
+      .getInputMethod(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ inputMethod: response.data.inputMethod });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
     this.updateTableInformation();
     this.setState({ isLoading: true });
     this.disableIfEdit();
@@ -439,70 +452,90 @@ class Area extends Component {
     });
   };
 
+  handleInputMethodChange = (inputMethod) => {
+    this.services
+      .putInputMethod(this.props.match.params.towerId, inputMethod)
+      .then(() => {
+        this.setState({ inputMethod });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
-        <Fragment>
-          <Imports />
-          <Card>
-            <CardHeader>
-              <p>Areas</p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                intersect={'Areas'}
-                headers={[
-                  ...this.processHeaders(
-                    this.state.areaTypes,
-                    this.state.types,
-                  ),
-                  <IconButton
-                    disabled={this.state.disableSold}
-                    onClick={() => {
-                      this.toggleAreaTypeModal();
-                    }}
-                  />,
-                ]}
-                columns={this.state.properties}
-                data={[
-                  ...(this.state.data && this.inputsForData(this.state.data)),
-                ]}
-                width={{ width: '125px' }}
-              />
-            </CardBody>
-          </Card>
-          {this.state.hidden ? null : (
-            <Modal
-              title={
-                this.state.editingAreaType
-                  ? 'Editar tipo de area'
-                  : 'Agregar nuevo tipo de area'
-              }
-              hidden={this.state.hidden}
-              onConfirm={
-                this.state.editingAreaType
-                  ? this.updateAreaType
-                  : this.addAreaType
-              }
-              onCancel={this.toggleAreaTypeModal}
-            >
-              {this.modalContent()}
-            </Modal>
-          )}
-          {this.state.hideDeleteModal ? null : (
-            <Modal
-              title={'Eliminar tipo de area'}
-              hidden={this.state.hideDeleteModal}
-              onConfirm={this.deleteAreaType}
-              onCancel={this.toggleDeleteModal}
-            >
-              Deseas eliminar este tipo de area?
-            </Modal>
-          )}
-        </Fragment>
+        {this.state.inputMethod === null ? (
+          <InputMethodDialog
+            changeInputMethodHandler={this.handleInputMethodChange}
+            disabled={this.state.disableSold}
+          />
+        ) : (
+          <Fragment>
+            {this.state.inputMethod === 'IMPORT' && (
+              <Imports disabled={this.state.areaTypes.length === 0} />
+            )}
+            <Card>
+              <CardHeader>
+                <p>Areas</p>
+              </CardHeader>
+              <CardBody>
+                <Table
+                  intersect={'Areas'}
+                  headers={[
+                    ...this.processHeaders(
+                      this.state.areaTypes,
+                      this.state.types,
+                    ),
+                    <IconButton
+                      disabled={this.state.disableSold}
+                      onClick={() => {
+                        this.toggleAreaTypeModal();
+                      }}
+                    />,
+                  ]}
+                  columns={this.state.properties}
+                  data={[
+                    ...(this.state.data && this.inputsForData(this.state.data)),
+                  ]}
+                  width={{ width: '125px' }}
+                />
+              </CardBody>
+            </Card>
+            {this.state.hidden ? null : (
+              <Modal
+                title={
+                  this.state.editingAreaType
+                    ? 'Editar tipo de area'
+                    : 'Agregar nuevo tipo de area'
+                }
+                hidden={this.state.hidden}
+                onConfirm={
+                  this.state.editingAreaType
+                    ? this.updateAreaType
+                    : this.addAreaType
+                }
+                onCancel={this.toggleAreaTypeModal}
+              >
+                {this.modalContent()}
+              </Modal>
+            )}
+            {this.state.hideDeleteModal ? null : (
+              <Modal
+                title={'Eliminar tipo de area'}
+                hidden={this.state.hideDeleteModal}
+                onConfirm={this.deleteAreaType}
+                onCancel={this.toggleDeleteModal}
+              >
+                Deseas eliminar este tipo de area?
+              </Modal>
+            )}
+          </Fragment>
+        )}
         {this.state.showFloatingButton ? (
           <FloatingButton
             route="prime"
