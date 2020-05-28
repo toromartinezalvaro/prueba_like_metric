@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Loader from 'react-loader-spinner';
+import { CircularProgress } from '@material-ui/core';
 import commonStyles from '../../assets/styles/variables.scss';
 import ContractFlowService from '../../services/contractFlow/contractFlowService';
 import TablesContractFlow from '../../components/ContractFlow2/TablesContractFlow';
 import styles from './ContractFlow.module.scss';
-import { CircularProgress } from '@material-ui/core';
 
 const ContractFlow = (props) => {
   const [data, setData] = useState([]);
@@ -31,6 +31,7 @@ const ContractFlow = (props) => {
     <React.Fragment>
       <h1>FLUJO DE CAJA</h1>
       <div className={styles.container}>
+        {console.log(data)}
         <TablesContractFlow billings={data} />
       </div>
     </React.Fragment>
