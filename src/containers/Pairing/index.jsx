@@ -131,7 +131,7 @@ class Pairing extends Component {
             <span>Apareamiento</span>
           </CardHeader>
           <CardBody>
-            {this.state.loadingPropertiesData ? (
+            {this.state.loadingPropertiesData && (
               <div className={Styles.loaderContainer}>
                 <Loader
                   type="ThreeDots"
@@ -140,22 +140,21 @@ class Pairing extends Component {
                   width="100"
                 />
               </div>
-            ) : (
-              <div className={Styles.container}>
-                <div className={Styles.summary}>
-                  <SummaryTable properties={this.state.properties} />
-                </div>
-                <div className={Styles.pairing}>
-                  <PairingTable
-                    properties={this.state.properties}
-                    areas={this.state.areas}
-                    addAreaHandler={this.handleAddArea}
-                    removeAreaHandler={this.handleRemoveArea}
-                    edition={this.state.allowEdition}
-                  />
-                </div>
-              </div>
             )}
+            <div className={Styles.container}>
+              <div className={Styles.summary}>
+                <SummaryTable properties={this.state.properties} />
+              </div>
+              <div className={Styles.pairing}>
+                <PairingTable
+                  properties={this.state.properties}
+                  areas={this.state.areas}
+                  addAreaHandler={this.handleAddArea}
+                  removeAreaHandler={this.handleRemoveArea}
+                  edition={this.state.allowEdition}
+                />
+              </div>
+            </div>
           </CardBody>
         </Card>
       </Loading>
