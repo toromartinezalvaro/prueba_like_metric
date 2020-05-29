@@ -8,7 +8,7 @@ import ConsolidatedSalesReport from './ConsolidatedSalesReport';
 const Report = ({ data, pricesReportData, unitsReportData }) => {
   return (
     <>
-      <Card>
+      {/* <Card>
         <CardHeader>
           <span>Reporte</span>
         </CardHeader>
@@ -17,7 +17,7 @@ const Report = ({ data, pricesReportData, unitsReportData }) => {
             <General data={data} />
           </div>
         </CardBody>
-      </Card>
+      </Card> */}
       <ConsolidatedSalesReport
         pricesReportData={pricesReportData}
         unitsReportData={unitsReportData}
