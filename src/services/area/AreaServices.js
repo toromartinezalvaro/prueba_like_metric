@@ -41,4 +41,10 @@ export default class AreaServices extends Services {
   isDisable(towerId) {
     return this.get(AreaServiceDefinitions.getSalesRequestHistory(towerId));
   }
+
+  putInputMethod(towerId, inputMethod) {
+    return this.put(AreaServiceDefinitions.putInputMethod(towerId), {
+      inputMethod,
+    });
+  }
 }

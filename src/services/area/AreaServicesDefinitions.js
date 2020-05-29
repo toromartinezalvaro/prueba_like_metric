@@ -22,6 +22,9 @@ const AreaServiceDefinitions = {
   getSalesRequestHistory: (towerId) => {
     return `${API_PATH}sale-requests/sales-request-history/${towerId}`;
   },
+  putInputMethod: (towerId) => {
+    return `${API_PATH}areasv2/towers/${towerId}/input-methods/`;
+  },
 };
 
 export default AreaServiceDefinitions;
