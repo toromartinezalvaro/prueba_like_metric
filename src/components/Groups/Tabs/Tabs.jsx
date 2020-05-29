@@ -1,4 +1,4 @@
-import React, { useEffct } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import MuiTabs from '@material-ui/core/Tabs';
