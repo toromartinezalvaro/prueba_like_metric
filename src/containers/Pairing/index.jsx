@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Loader from 'react-loader-spinner';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import PairingServices from '../../services/pairing';
 import Loading from '../../components/UI/Loader';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
@@ -26,6 +28,7 @@ class Pairing extends Component {
     areas: [],
     loadingContainer: false,
     loadingPropertiesData: false,
+    allowEdition: false,
   };
 
   componentDidMount() {
@@ -107,9 +110,22 @@ class Pairing extends Component {
       });
   };
 
+  allowSoldPropertyEdition = () => {
+    this.setState({ allowEdition: true });
+  };
+
   render() {
     return (
       <Loading isLoading={this.state.loadingContainer}>
+        <Box mb={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.allowSoldPropertyEdition}
+          >
+            Habilitar edicion de apartamentos vendidos
+          </Button>
+        </Box>
         <Card>
           <CardHeader>
             <span>Apareamiento</span>
@@ -135,6 +151,7 @@ class Pairing extends Component {
                     areas={this.state.areas}
                     addAreaHandler={this.handleAddArea}
                     removeAreaHandler={this.handleRemoveArea}
+                    edition={this.state.allowEdition}
                   />
                 </div>
               </div>

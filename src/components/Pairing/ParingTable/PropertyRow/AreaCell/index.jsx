@@ -5,7 +5,14 @@ import HoverContainer, { options } from './HoverContainer';
 import AreaForm from './AreaForm';
 import Styles from './AreaCell.module.scss';
 
-const AreaCell = ({ areas, area, addAreaHandler, removeAreaHandler, status }) => {
+const AreaCell = ({
+  areas,
+  area,
+  addAreaHandler,
+  removeAreaHandler,
+  status,
+  edition,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   return (
     <TableCell>
@@ -20,6 +27,7 @@ const AreaCell = ({ areas, area, addAreaHandler, removeAreaHandler, status }) =>
         ) : (
           <HoverContainer
             status={status}
+            edition={edition}
             updateHandler={() => {
               setIsEditing(true);
             }}
@@ -65,6 +73,7 @@ AreaCell.propTypes = {
   }),
   addAreaHandler: PropTypes.func.isRequired,
   removeAreaHandler: PropTypes.func.isRequired,
+  edition: PropTypes.bool.isRequired,
 };
 
 export default AreaCell;
