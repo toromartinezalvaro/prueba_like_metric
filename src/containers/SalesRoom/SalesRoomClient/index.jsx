@@ -293,11 +293,7 @@ class SalesRoom extends Component {
       ) {
         current += increment;
       } else if (next.id === this.state.id) {
-        increment =
-          this.state.priceSold -
-          price -
-          this.state.selectedProperty.discount +
-          this.state.discountApplied;
+        increment = this.state.priceSold - price;
         current += increment;
       }
       return current;
@@ -433,7 +429,7 @@ class SalesRoom extends Component {
 
   deleteAdditionalArea = (area) => {
     this.setState((prevState) => {
-      const tempProperty = { ...prevState.selectedProperty };     
+      const tempProperty = { ...prevState.selectedProperty };
       const tempAdditionalAreas = [...prevState.additionalAreas, area];
       tempProperty.addedAdditionalAreas = tempProperty.addedAdditionalAreas.filter(
         (additionalArea) => additionalArea.id !== area.id,
