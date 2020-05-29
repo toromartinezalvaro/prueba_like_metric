@@ -176,14 +176,6 @@ class Area extends Component {
   };
 
   componentDidMount() {
-    this.services
-      .getInputMethod(this.props.match.params.towerId)
-      .then((response) => {
-        this.setState({ inputMethod: response.data.inputMethod });
-      })
-      .catch((error) => {
-        this.props.enqueueSnackbar(error.message, { variant: 'error' });
-      });
     this.updateTableInformation();
     this.setState({ isLoading: true });
     this.disableIfEdit();
@@ -257,6 +249,7 @@ class Area extends Component {
           isLoading: false,
           data: data.propertiesAreas,
           anySold: data.anySold,
+          inputMethod: data.inputMethod,
         });
       })
       .catch((error) => {
@@ -472,7 +465,7 @@ class Area extends Component {
         {this.state.inputMethod === null ? (
           <InputMethodDialog
             changeInputMethodHandler={this.handleInputMethodChange}
-            disabled={this.state.disableSold}
+            disabled={this.state.inputMethod !== null}
           />
         ) : (
           <Fragment>

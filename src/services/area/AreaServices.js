@@ -42,10 +42,6 @@ export default class AreaServices extends Services {
     return this.get(AreaServiceDefinitions.getSalesRequestHistory(towerId));
   }
 
-  getInputMethod(towerId) {
-    return this.get(AreaServiceDefinitions.getInputMethod(towerId));
-  }
-
   putInputMethod(towerId, inputMethod) {
     return this.put(AreaServiceDefinitions.putInputMethod(towerId), {
       inputMethod,
