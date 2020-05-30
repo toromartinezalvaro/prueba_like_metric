@@ -13,6 +13,7 @@ const PropertyRow = ({
   addAreaHandler,
   removeAreaHandler,
   propertyStatus,
+  edition,
 }) => {
   const sortedAreas = _.sortBy(property.additionalAreas, [
     'areaType.name',
@@ -54,6 +55,7 @@ const PropertyRow = ({
               status={propertyStatus}
               addAreaHandler={addAreaHandler}
               removeAreaHandler={removeAreaHandler}
+              edition={edition}
             />
           );
         })}
@@ -92,6 +94,7 @@ PropertyRow.propTypes = {
   maxCols: PropTypes.number.isRequired,
   addAreaHandler: PropTypes.func.isRequired,
   removeAreaHandler: PropTypes.func.isRequired,
+  edition: PropTypes.bool.isRequired,
 };
 
 export default PropertyRow;

@@ -15,18 +15,19 @@ const HoverContainer = ({
   removeAreaHandler,
   option,
   status,
+  edition,
 }) => {
   return (
     <div className={Styles.container}>
       <div className={Styles.noHover}>{children}</div>
       <div className={Styles.hover}>
-        {status !== 'SOLD' ? (
+        {status !== 'SOLD' || edition ? (
           <>
             {option === options.EDIT && (
               <Button
                 className={Styles.button}
                 onClick={updateHandler}
-                disabled={status === stateType.Sold.code}
+                disabled={status === stateType.Sold.code && !edition}
               >
                 <i className="fas fa-edit"></i>
               </Button>
@@ -35,7 +36,7 @@ const HoverContainer = ({
               <Button
                 className={Styles.button}
                 onClick={removeAreaHandler}
-                disabled={status === stateType.Sold.code}
+                disabled={status === stateType.Sold.code && !edition}
               >
                 <i className="fas fa-trash-alt"></i>
               </Button>
@@ -55,6 +56,7 @@ HoverContainer.propTypes = {
   option: PropTypes.oneOf(Object.values(options)),
   removeAreaHandler: PropTypes.func.isRequired,
   status: PropTypes.string,
+  edition: PropTypes.bool.isRequired,
 };
 
 export default HoverContainer;

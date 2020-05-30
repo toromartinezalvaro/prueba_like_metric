@@ -17,6 +17,7 @@ const PairingTable = ({
   areas,
   addAreaHandler,
   removeAreaHandler,
+  edition,
 }) => {
   const getMaxAreas = () => {
     return properties.reduce((current, next) => {
@@ -79,6 +80,7 @@ const PairingTable = ({
                     areas={areas}
                     addAreaHandler={addArea(property.id)}
                     removeAreaHandler={removeAreaHandler}
+                    edition={edition}
                   />
                 );
               })}
@@ -125,6 +127,7 @@ PairingTable.propTypes = {
   ).isRequired,
   addAreaHandler: PropTypes.func.isRequired,
   removeAreaHandler: PropTypes.func.isRequired,
+  edition: PropTypes.bool.isRequired,
 };
 
 export default PairingTable;
