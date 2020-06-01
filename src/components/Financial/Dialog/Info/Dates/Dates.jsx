@@ -1,9 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-const ExtraFees = () => {
+const ExtraFees = ({ endOfSalesDate, months }) => {
+  const today = moment();
+  const endDate = moment(endOfSalesDate, 'x');
+  const diffDate = endDate.diff(today, 'months');
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -12,7 +17,7 @@ const ExtraFees = () => {
             <Typography>Fecha hoy</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>{moment().format('MMM-YY')}</Typography>
+            <Typography>{today.format('MMM-YY')}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -23,7 +28,7 @@ const ExtraFees = () => {
             <Typography>Fecha Fin de construcción</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>{moment().format('MMM-YY')}</Typography>
+            <Typography>{endDate.format('MMM-YY')}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -34,7 +39,7 @@ const ExtraFees = () => {
             <Typography>Meses para entrega</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>9</Typography>
+            <Typography>{diffDate}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -45,7 +50,7 @@ const ExtraFees = () => {
             <Typography>Plazo Pago CI</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>36 Meses</Typography>
+            <Typography>{months} Meses</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -56,7 +61,7 @@ const ExtraFees = () => {
             <Typography>Meses Disfrute CI</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>27</Typography>
+            <Typography>{months - diffDate}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -64,4 +69,19 @@ const ExtraFees = () => {
   );
 };
 
-export default ExtraFees;
+const mapStateToProps = (state) => ({
+  endOfSalesDate: state.financial.dialog.info.dates.endOfSalesDate,
+  months: state.financial.dialog.info.initialFee.months,
+});
+
+const mapDispatchToProps = {};
+
+ExtraFees.propTypes = {
+  endOfSalesDate: PropTypes.number.isRequired,
+  months: PropTypes.number.isRequired,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExtraFees);

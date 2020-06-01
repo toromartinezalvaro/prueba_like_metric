@@ -5,7 +5,7 @@ import FinancialInfo, { Title as FinancialInfoTitle } from './FinancialInfo';
 import InitialFee, { Title as InitialFeeTitle } from './InitialFee';
 import ExtraFees, { Title as ExtraFeesTitle } from './ExtraFees';
 import BankCredit, { Title as BankCreditTitle } from './BankCredit';
-// import Dates, { Title as DatesTitle } from './Dates';
+import Dates, { Title as DatesTitle } from './Dates';
 
 const Info = () => {
   return (
@@ -30,11 +30,11 @@ const Info = () => {
           <BankCredit />
         </Step>
       </Grid>
-      {/* <Grid item xs={12}>
+      <Grid item xs={12}>
         <Step title={<DatesTitle />}>
           <Dates />
         </Step>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 };
