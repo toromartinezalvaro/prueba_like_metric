@@ -92,19 +92,25 @@ const TablesContractFlow = ({ billings }) => {
     });
     let valueTotal = 0;
     const NUMBER_OF_NO_NUMERIC_VALUES = 2;
+    console.log('VALOR DE FECHA:', currentDate);
     const lengthOfColumns =
       Object.keys(columnsData).length - NUMBER_OF_NO_NUMERIC_VALUES;
     [...Array(lengthOfColumns)].reduce((a, current, index) => {
-      const numericIndexOfCurrentDate = Number(currentDate.name.slice(4));
-      const numericIndexOfColumn = index - 1;
-      const indexOfColumn = `date${index - 1}`;
-      const valueOfColumn = columnsData[indexOfColumn][0].props.value;
-      const dateIsLessThanCurrent =
-        numericIndexOfColumn < numericIndexOfCurrentDate;
-      if (dateIsLessThanCurrent) {
-        valueTotal += valueOfColumn;
+      if (currentDate) {
+        const numericIndexOfCurrentDate = Number(currentDate.name.slice(4));
+        const numericIndexOfColumn = index - 1;
+        const indexOfColumn = `date${index - 1}`;
+        const valueOfColumn = columnsData[indexOfColumn][0].props.value;
+        const dateIsLessThanCurrent =
+          numericIndexOfColumn < numericIndexOfCurrentDate;
+        if (dateIsLessThanCurrent) {
+          valueTotal += Number(valueOfColumn);
+        }
+      } else {
+        valueTotal = 0;
       }
     });
+
     return parseInt(valueTotal, 10);
   };
 
@@ -112,9 +118,10 @@ const TablesContractFlow = ({ billings }) => {
     const currentDateFormated = moment(Number(new Date().getTime())).format(
       'MMM YYYY',
     );
-    const currentDate = columnLabels.find((column) => {
+    let currentDate = columnLabels.find((column) => {
       return column.title === currentDateFormated;
     });
+    currentDate = currentDate || { name: 'date0', data: currentDateFormated };
     let valueTotal = 0;
     const NUMBER_OF_NO_NUMERIC_VALUES = 2;
     const lengthOfColumns =
@@ -127,7 +134,7 @@ const TablesContractFlow = ({ billings }) => {
       const dateIsBiggerThanCurrent =
         numericIndexOfColumn >= numericIndexOfCurrentDate;
       if (dateIsBiggerThanCurrent) {
-        valueTotal += valueOfColumn;
+        valueTotal += Number(valueOfColumn);
       }
     });
     return valueTotal;
