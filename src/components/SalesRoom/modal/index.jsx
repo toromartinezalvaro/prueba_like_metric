@@ -19,6 +19,7 @@ import StyleVariables from '../../../assets/styles/variables.scss';
 import SalesRoomEnum from '../../../containers/SalesRoom/SalesRoom.enum';
 import AdditionalAreas from './AdditionalAreas';
 import QuotationDialog from '../../Quotations/Dialog';
+import FinancialDialog from '../../Financial/Dialog';
 import RequestStatus from '../../../helpers/requestStatus';
 
 // Internal constants definitions
@@ -410,6 +411,7 @@ const SalesRoomModal = ({
         towerId={towerId}
         spawnMessage={spawnMessage}
       />
+      <FinancialDialog propertyPrice={getTradePrice()} m2={property.mts2} />
     </>
   );
 };
