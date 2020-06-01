@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
@@ -21,7 +22,7 @@ const SaleRequestTable = ({
   return (
     <>
       <ExpansionPanel>
-        <ExpansionPanelSummary>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Solicitudes de venta pendientes</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
@@ -69,7 +70,7 @@ const SaleRequestTable = ({
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel>
-        <ExpansionPanelSummary>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Solicitudes de venta resueltas</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
