@@ -54,14 +54,6 @@ const Steps = ({
 
   return (
     <Formik
-      // initialValues={{
-      //   propertyValue: 252281164.69731,
-      //   separationValue: 2000000,
-      //   monthlyRate: 0.009488793,
-      //   termLimit: 36,
-      //   initialFeeBasePercentage: 0.3,
-      //   additionalFees: [],
-      // }}
       enableReinitialize
       initialValues={{
         propertyValue: propertyPrice,
