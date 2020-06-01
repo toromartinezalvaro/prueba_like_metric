@@ -411,7 +411,7 @@ const SalesRoomModal = ({
         towerId={towerId}
         spawnMessage={spawnMessage}
       />
-      <FinancialDialog />
+      <FinancialDialog propertyPrice={getTradePrice()} m2={property.mts2} />
     </>
   );
 };

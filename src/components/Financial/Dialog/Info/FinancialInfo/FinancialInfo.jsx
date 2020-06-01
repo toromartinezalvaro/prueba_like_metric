@@ -6,13 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Numbers from '../../../../../helpers/numbers';
 
-const FinancialInfo = ({
-  propertyValue,
-  m2,
-  m2Price,
-  financing,
-  paidPrice,
-}) => {
+const FinancialInfo = ({ propertyPrice, m2, financing, paidPrice }) => {
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -23,7 +17,7 @@ const FinancialInfo = ({
           <Grid item xs={6}>
             <Typography>
               <NumberFormat
-                value={Numbers.toFixed(propertyValue)}
+                value={Numbers.toFixed(propertyPrice)}
                 displayType="text"
                 prefix="$"
                 thousandSeparator
@@ -59,7 +53,7 @@ const FinancialInfo = ({
           <Grid item xs={6}>
             <Typography>
               <NumberFormat
-                value={Numbers.toFixed(m2Price)}
+                value={Numbers.toFixed(propertyPrice / m2)}
                 displayType="text"
                 prefix="$ "
                 suffix=" /m²"
@@ -110,20 +104,14 @@ const FinancialInfo = ({
 };
 
 const mapStateToProps = (state) => {
-  const {
-    propertyValue,
-    m2,
-    m2Price,
-    financing,
-    paidPrice,
-  } = state.financial.dialog.info.info;
-  return { propertyValue, m2, m2Price, financing, paidPrice };
+  const { propertyPrice, m2 } = state.financial.dialog.root;
+  const { financing, paidPrice } = state.financial.dialog.info.info;
+  return { propertyPrice, m2, financing, paidPrice };
 };
 
 FinancialInfo.propTypes = {
-  propertyValue: PropTypes.number.isRequired,
+  propertyPrice: PropTypes.number.isRequired,
   m2: PropTypes.number.isRequired,
-  m2Price: PropTypes.number.isRequired,
   financing: PropTypes.number.isRequired,
   paidPrice: PropTypes.number.isRequired,
 };

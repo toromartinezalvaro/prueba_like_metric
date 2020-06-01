@@ -19,9 +19,8 @@ import Services from '../../../../services/financing';
 
 const services = new Services();
 
-// TODO: RECIBIR LA INFO DEL APARTAMENTO
-// TODO: AGREGAR STATE PARA OPEN DEL MODAL
 const Steps = ({
+  propertyPrice,
   setFinancialInfo,
   setInitialFeeInfo,
   setExtraFeesInfo,
@@ -32,13 +31,14 @@ const Steps = ({
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
-    // TODO: NO REMPLAZAR LOS VALUES DIRECTAMENTE
-    values.monthlyRate /= 100;
-    values.initialFeeBasePercentage /= 100;
+    const body = {
+      ...values,
+      monthlyRate: (1 + values.monthlyRate / 100) ** (1 / 12) - 1,
+      initialFeeBasePercentage: values.initialFeeBasePercentage / 100,
+    };
 
-    values.monthlyRate = (1 + values.monthlyRate) ** (1 / 12) - 1;
     try {
-      const response = await services.getFinancingInfo(towerId, values);
+      const response = await services.getFinancingInfo(towerId, body);
       setFinancialInfo({
         financing: response.data.financialValue,
         paidPrice: response.data.valueToPay,
@@ -62,8 +62,9 @@ const Steps = ({
       //   initialFeeBasePercentage: 0.3,
       //   additionalFees: [],
       // }}
+      enableReinitialize
       initialValues={{
-        propertyValue: 0,
+        propertyValue: propertyPrice,
         separationValue: 0,
         monthlyRate: 0,
         termLimit: 0,
@@ -108,7 +109,9 @@ const Steps = ({
   );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  propertyPrice: state.financial.dialog.root.propertyPrice,
+});
 
 const mapDispatchToProps = {
   setFinancialInfo: FinancialInfoActions.setFinancialInfo,
@@ -119,6 +122,7 @@ const mapDispatchToProps = {
 };
 
 Steps.propTypes = {
+  propertyPrice: PropTypes.number.isRequired,
   setFinancialInfo: PropTypes.func.isRequired,
   setInitialFeeInfo: PropTypes.func.isRequired,
   setExtraFeesInfo: PropTypes.func.isRequired,
