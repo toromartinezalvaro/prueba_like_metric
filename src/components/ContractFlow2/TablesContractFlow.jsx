@@ -92,7 +92,6 @@ const TablesContractFlow = ({ billings }) => {
     });
     let valueTotal = 0;
     const NUMBER_OF_NO_NUMERIC_VALUES = 2;
-    console.log('VALOR DE FECHA:', currentDate);
     const lengthOfColumns =
       Object.keys(columnsData).length - NUMBER_OF_NO_NUMERIC_VALUES;
     [...Array(lengthOfColumns)].reduce((a, current, index) => {
