@@ -1,8 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import NumberFormat from 'react-number-format';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Numbers from '../../../../../helpers/numbers';
 
-const FinancialInfo = () => {
+const FinancialInfo = ({
+  propertyValue,
+  m2,
+  m2Price,
+  financing,
+  paidPrice,
+}) => {
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -11,7 +21,14 @@ const FinancialInfo = () => {
             <Typography>Valor Apto</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>$ 252,281,165</Typography>
+            <Typography>
+              <NumberFormat
+                value={Numbers.toFixed(propertyValue)}
+                displayType="text"
+                prefix="$"
+                thousandSeparator
+              />
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -22,7 +39,33 @@ const FinancialInfo = () => {
             <Typography>m² Vendibles</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>62.6 m²</Typography>
+            <Typography>
+              <NumberFormat
+                value={Numbers.toFixed(m2)}
+                displayType="text"
+                suffix=" m²"
+                thousandSeparator
+              />
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Grid container>
+          <Grid item xs={6}>
+            <Typography>Valor m²</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography>
+              <NumberFormat
+                value={Numbers.toFixed(m2Price)}
+                displayType="text"
+                prefix="$ "
+                suffix=" /m²"
+                thousandSeparator
+              />
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -33,7 +76,14 @@ const FinancialInfo = () => {
             <Typography>Valor Financiación</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>$ 78,611,307</Typography>
+            <Typography>
+              <NumberFormat
+                value={Numbers.toFixed(financing)}
+                displayType="text"
+                prefix="$ "
+                thousandSeparator
+              />
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -44,7 +94,14 @@ const FinancialInfo = () => {
             <Typography>Valor a Pagar</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>$ 330,892,472</Typography>
+            <Typography>
+              <NumberFormat
+                value={Numbers.toFixed(paidPrice)}
+                displayType="text"
+                prefix="$ "
+                thousandSeparator
+              />
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -52,4 +109,23 @@ const FinancialInfo = () => {
   );
 };
 
-export default FinancialInfo;
+const mapStateToProps = (state) => {
+  const {
+    propertyValue,
+    m2,
+    m2Price,
+    financing,
+    paidPrice,
+  } = state.financial.dialog.info.info;
+  return { propertyValue, m2, m2Price, financing, paidPrice };
+};
+
+FinancialInfo.propTypes = {
+  propertyValue: PropTypes.number.isRequired,
+  m2: PropTypes.number.isRequired,
+  m2Price: PropTypes.number.isRequired,
+  financing: PropTypes.number.isRequired,
+  paidPrice: PropTypes.number.isRequired,
+};
+
+export default connect(mapStateToProps)(FinancialInfo);
