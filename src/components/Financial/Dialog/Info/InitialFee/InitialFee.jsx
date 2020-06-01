@@ -74,14 +74,7 @@ const InitialFee = ({
             <Typography>Plazo Cuota Inicial</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>
-              <NumberFormat
-                value={Numbers.toFixed(months)}
-                displayType="text"
-                suffix=" Meses"
-                thousandSeparator
-              />
-            </Typography>
+            <Typography>{months}</Typography>
           </Grid>
         </Grid>
       </Grid>

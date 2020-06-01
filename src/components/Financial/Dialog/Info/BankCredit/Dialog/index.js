@@ -1,5 +1,6 @@
 import component from './Dialog';
 import reducer from './reducer';
+import * as actions from './actions';
 
-export { reducer };
+export { reducer, actions };
 export default component;

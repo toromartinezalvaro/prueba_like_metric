@@ -47,7 +47,7 @@ const Dialog = ({
                     <NumberFormat
                       value={Numbers.toFixed(totalPaymentCredit)}
                       displayType="text"
-                      prefix="$"
+                      prefix="$ "
                       thousandSeparator
                     />
                   }
@@ -55,29 +55,11 @@ const Dialog = ({
               </Grid>
 
               <Grid item xs={12}>
-                <Item
-                  left="Años"
-                  right={
-                    <NumberFormat
-                      value={Numbers.toFixed(totalYears)}
-                      displayType="text"
-                      thousandSeparator
-                    />
-                  }
-                />
+                <Item left="Años" right={totalYears} />
               </Grid>
 
               <Grid item xs={12}>
-                <Item
-                  left="Meses"
-                  right={
-                    <NumberFormat
-                      value={Numbers.toFixed(months)}
-                      displayType="text"
-                      thousandSeparator
-                    />
-                  }
-                />
+                <Item left="Meses" right={months} />
               </Grid>
 
               <Grid item xs={12}>
@@ -85,7 +67,7 @@ const Dialog = ({
                   left="Tasa ea"
                   right={
                     <NumberFormat
-                      value={Numbers.toFixed(anualEffectiveRate)}
+                      value={Numbers.toFixed(anualEffectiveRate * 100)}
                       displayType="text"
                       suffix="%"
                       thousandSeparator
@@ -99,7 +81,7 @@ const Dialog = ({
                   left="Tasa em"
                   right={
                     <NumberFormat
-                      value={Numbers.toFixed(monthlyRate)}
+                      value={Numbers.toFixed(monthlyRate * 100)}
                       displayType="text"
                       suffix="%"
                       thousandSeparator
