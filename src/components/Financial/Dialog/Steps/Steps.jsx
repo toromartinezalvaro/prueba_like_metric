@@ -15,6 +15,7 @@ import { actions as InitialFeeActions } from '../Info/InitialFee';
 import { actions as ExtraFeeActions } from '../Info/ExtraFees';
 import { actions as BankActions } from '../Info/BankCredit';
 import { actions as BankDialogActions } from '../Info/BankCredit/Dialog';
+import { actions as DateActions } from '../Info/Dates';
 import Services from '../../../../services/financing';
 
 const services = new Services();
@@ -26,6 +27,7 @@ const Steps = ({
   setExtraFeesInfo,
   setBankInfo,
   setFinancialBankDialogInfo,
+  setEndOfSales,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -39,6 +41,8 @@ const Steps = ({
 
     try {
       const response = await services.getFinancingInfo(towerId, body);
+      const dateResponse = await services.getTowerDates(towerId);
+      setEndOfSales(dateResponse.data.schedule.endOfSalesDate);
       setFinancialInfo({
         financing: response.data.financialValue,
         paidPrice: response.data.valueToPay,
@@ -111,6 +115,7 @@ const mapDispatchToProps = {
   setExtraFeesInfo: ExtraFeeActions.setExtraFeesInfo,
   setBankInfo: BankActions.setBankInfo,
   setFinancialBankDialogInfo: BankDialogActions.setFinancialBankDialogInfo,
+  setEndOfSales: DateActions.setInfoDateData,
 };
 
 Steps.propTypes = {
@@ -120,6 +125,7 @@ Steps.propTypes = {
   setExtraFeesInfo: PropTypes.func.isRequired,
   setBankInfo: PropTypes.func.isRequired,
   setFinancialBankDialogInfo: PropTypes.func.isRequired,
+  setEndOfSales: PropTypes.func.isRequired,
 };
 
 export default connect(

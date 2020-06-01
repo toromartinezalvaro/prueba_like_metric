@@ -51,7 +51,14 @@ const Dialog = ({
 
   return (
     <>
-      <Button onClick={openHandler}>Generar pagos</Button>
+      <Button
+        onClick={openHandler}
+        variant="outlined"
+        color="primary"
+        fullWidth
+      >
+        Generar pagos
+      </Button>
       <MuiDialog open={open} fullScreen TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
