@@ -9,6 +9,7 @@
  */
 
 import React, { useState } from 'react';
+import _ from 'lodash';
 import NumberFormat from 'react-number-format';
 import { InputAdornment } from '@material-ui/core';
 import Styles from './Matrix.module.scss';
@@ -217,7 +218,11 @@ const Matrix = (
     };
   });
 
-  return data;
+  return _.orderBy(
+    data,
+    [(dataFiltered) => dataFiltered.nomenclature.props.value],
+    ['asc'],
+  );
 };
 
 export default Matrix;
