@@ -1,4 +1,10 @@
-import React, { useState, useReducer, useEffect, useContext } from 'react';
+import React, {
+  useState,
+  useReducer,
+  useEffect,
+  useContext,
+  useRef,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
@@ -87,6 +93,7 @@ const validationSchema = yup.object().shape({
 
 const FormDialog = ({ client, open, onCloseHandler }) => {
   const history = useHistory();
+  const formRef = useRef();
   const {
     towerId,
     dispatch: containerDispatcher,
@@ -161,6 +168,12 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
     }
   };
 
+  const blurHandler = () => {
+    if (formRef.current) {
+      formRef.current.handleSubmit();
+    }
+  };
+
   function gotoSalesroom() {
     history.push(
       `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`,
@@ -212,6 +225,7 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                   placeholder="3001234567"
                   label="Número de teléfono"
                   component={Input}
+                  onBlur={blurHandler}
                   InputProps={{
                     inputComponent: NumberFormatCustom,
                   }}
