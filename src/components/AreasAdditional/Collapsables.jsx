@@ -91,8 +91,9 @@ const Collapsables = (props) => {
     setUnit(event.target.value);
   };
 
-  const onChangeName = (event) => {
+  const onChangeName = (event, unitFromForm) => {
     setName(event.target.value);
+    setUnit(unitFromForm);
   };
 
   return props.data.map((areaType, i) => {
