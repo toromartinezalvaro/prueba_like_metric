@@ -1,0 +1,86 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
+@import '../../../assets/styles/variables.scss';
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+.dialogExpand {
+  overflow-x: hidden !important;
+  overflow: hidden;
+}
+
+.actionContainer {
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.heading {
+  display: flex;
+  direction: row;
+  align-content: center !important;
+  justify-content: center !important;
+}
+
+.titleExpand {
+  margin-top: 4%;
+  margin-left: 8px;
+}
+
+.expansion-panel {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border: none;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+}
+
+.circleColorGeneral {
+  background-color: $softGreen-color;
+}
+
+.circleColorCicle {
+  background-color: $softRed-color;
+}
+
+.circleColorFinantials {
+  background-color: $softMain-color;
+}
+
+.circleColorPeople {
+  background-color: $yellow-color;
+}
+
+.circleColorAtachment {
+  background-color: $gray-color;
+}
+
+.circleColorPersonalized {
+  background-color: $softGreenColor;
+}
+
+.circleColorTitle {
+  background-color: $main-color;
+  margin-top: 15px;
+  margin-right: 5px;
+}
+
+.buttonMargin {
+  margin-left: 5px !important;
+}

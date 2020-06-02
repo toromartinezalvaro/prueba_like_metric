@@ -1,0 +1,136 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
+@import '../../../../assets/styles/variables.scss';
+
+.actionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+}
+
+.gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center !important;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 125vh !important;
+}
+
+.gridSubContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 100vh !important;
+}
+.columnFullRigth {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 2%;
+  width: 50% !important;
+}
+
+.columnFullLeft {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-right: 2%;
+  width: 50% !important;
+}
+
+.Select {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.buttonColumn {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+}
+
+.titleExpand {
+  margin-top: 1%;
+  margin-left: 8px;
+}
+
+.titleExpandTitle {
+  margin-left: 8px;
+  color: $grayBlack-color;
+}
+
+.heading {
+  display: flex;
+  direction: row;
+}
+
+.headingTitle {
+  display: flex;
+  direction: row;
+  justify-content: center;
+  align-items: center;
+  color: $grayBlack-color;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+}
+
+.circleColorGeneral {
+  background-color: $softGreen-color;
+}
+
+.circleColorPeople {
+  background-color: $yellow-color;
+}
+
+.circleColorForTitle {
+  background-color: $softMain-color;
+}
+
+.buttonMargin {
+  margin-left: 5px !important;
+}
+.circleColorFinantials {
+  background-color: $softMain-color;
+}
+
+.textField {
+  z-index: 0 !important;
+}
+
+.itemMenu {
+  background-color: $defaultWhite-color !important;
+  z-index: 9999999 !important;
+}
+
+@media(max-width: 1440px) {
+  .gridContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100vh !important;
+  }
+}

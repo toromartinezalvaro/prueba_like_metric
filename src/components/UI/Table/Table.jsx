@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import styles from './Table.module.scss';
 
-class table extends Component {
+class  table extends Component {
   constructor(props) {
     super(props);
     this.wrapperTop = React.createRef();
@@ -17,6 +18,7 @@ class table extends Component {
     width: 0,
     heightViewPort: 0,
     height: 0,
+    columnsStyle: styles.Columns,
   };
 
   componentDidUpdate() {
@@ -41,6 +43,14 @@ class table extends Component {
     }
     if (this.state.height !== this.wrapperBottom.current.offsetHeight) {
       this.setState({ height: this.wrapperBottom.current.offsetHeight });
+    }
+    if (
+      this.props.columnsMinWidth &&
+      this.state.columnsStyle !== styles.ColumnsMinWidth
+    ) {
+      this.setState({
+        columnsStyle: styles.ColumnsMinWidth,
+      });
     }
   }
 
@@ -80,7 +90,7 @@ class table extends Component {
     return (
       <Fragment>
         <div>
-          {this.state.heightViewPort * 0.25 < this.state.height ? (
+          {this.state.heightViewPort * 0.5 < this.state.height ? (
             <div
               className={styles.wrapper1}
               ref={this.wrapperTop}
@@ -125,10 +135,10 @@ class table extends Component {
                 ))}
               </div>
 
-              <div className={styles.Columns} style={this.props.style}>
-                {this.props.columns.map((element) => (
+              <div className={this.state.columnsStyle} style={this.props.style}>
+                {this.props.columns.map((element, i) => (
                   <div
-                    key={`${styles.Element + element}-columns`}
+                    key={`${styles.Element + i}-columns`}
                     className={styles.Element}
                   >
                     {element}

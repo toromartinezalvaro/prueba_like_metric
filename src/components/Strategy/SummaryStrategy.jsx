@@ -10,7 +10,7 @@ const SummaryStrategy = (props) => {
   let incrementPercentage = 0;
   return (
     <div className={styles.Container}>
-      <h2>Resumen</h2>
+      <h2 className={styles.h2}>Resumen</h2>
       <div>
         <div className={styles.ContainerFlex}>
           <h4 className={styles.gridItem}>Tipo</h4>
@@ -33,7 +33,9 @@ const SummaryStrategy = (props) => {
                 <p className={styles.gridItem}>{group.units}</p>
                 <p className={styles.gridItem}>
                   <NumberFormat
-                    value={group.averageValue.toFixed(2)}
+                    value={
+                      group.averageValue ? group.averageValue.toFixed(2) : 0
+                    }
                     displayType={'text'}
                     thousandSeparator={true}
                     prefix={'$'}
@@ -44,17 +46,21 @@ const SummaryStrategy = (props) => {
                 </p>
                 <p className={styles.gridItem}>{group.futureSalesSpeed}</p>
                 <p className={styles.gridItem}>
-                  {group.strategy !== null ? group.strategy : 0}
+                  {group.strategy !== null && !group.isReset
+                    ? group.strategy
+                    : 0}
                 </p>
                 <p className={styles.gridItem}>
-                  {(group.percentage * 100).toFixed(2)}%
+                  {!group.isReset
+                    ? `${(group.percentage * 100).toFixed(2)}%`
+                    : '0%'}
                 </p>
                 <p className={styles.gridItem}>
                   {group.strategy !== null
                     ? props.helper.find(
                         (strategy) => strategy.id === group.strategy,
                       ).label
-                    : 'Sin estrategia'}{' '}
+                    : 'Sin estrategia'}
                 </p>
               </Fragment>
             );

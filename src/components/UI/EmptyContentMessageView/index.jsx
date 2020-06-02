@@ -9,6 +9,7 @@ const EmptyContentMessageView = ({
   title,
   message,
   buttonsContent,
+  disableSold,
   ...rest
 }) => {
   const buttonsFromText = (buttonContent) => (
@@ -19,11 +20,19 @@ const EmptyContentMessageView = ({
     </Link>
   );
 
+  const deadButton = (buttonContent) => (
+    <Button>
+      {buttonContent.title} <Icon name="fa-angle-double-right" />
+    </Button>
+  );
+
   return (
     <div className={styles.Container} {...rest}>
       <h2>{title}</h2>
       <h3>{message}</h3>
-      {buttonsContent.map(buttonsFromText)}
+      {disableSold
+        ? buttonsContent.map(deadButton)
+        : buttonsContent.map(buttonsFromText)}
     </div>
   );
 };
@@ -35,7 +44,7 @@ EmptyContentMessageView.propTypes = {
 };
 
 EmptyContentMessageView.defaultProps = {
-  buttonsContent: [{ title: '', url: '' }],
+  buttonsContent: [],
 };
 
 export default EmptyContentMessageView;

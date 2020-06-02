@@ -1,53 +1,70 @@
-@import "../../assets/styles/variables.scss";
+@import '../../assets/styles/variables.scss';
 
 .ItemContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  border-radius: 3px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: $blackBorder-color;
-  background: $main-color;
-  height: 140px;
-  max-width: 260px;
-  min-width: 188px;
-  width: 25%;
-  margin: 12px;
-  transition: box-shadow 0.3s ease-in-out 0s, background-color 0.6s ease-in 0s;
-
-  .DescriptionItem {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 0px 5px;
-    color: $defaultWhite-color;
-  }
-
-  .Item {
-    display: flex;
-    flex-direction: column;
-    color: inherit;
-    height: 30%;
-    background: $defaultWhite-color;
-    padding: 3px 5px;
-  }
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  border-radius: 4px !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: $softGray-color !important;
+  background: $main-color !important;
+  flex-basis: 140px !important;
+  max-width: 260px !important;
+  min-width: 188px !important;
+  width: 25% !important;
+  margin: 12px !important;
+  transition: box-shadow 0.3s ease-in-out 0s, background-color 0.6s ease-in 0s !important;
+  z-index: 0 !important;
 
   &:focus {
     outline: auto 5px;
   }
 
-  &:hover{
-    box-shadow: rgb(179, 186, 197) 0px 4px 8px 0px, rgb(179, 186, 197) 0px 0px 1px 0px;
+  &:hover {
+    box-shadow: rgb(179, 186, 197) 0px 4px 8px 0px,
+      rgb(179, 186, 197) 0px 0px 1px 0px;
     text-decoration: none;
   }
 }
 
-.Projects {
-  width: 100%;
+.noBlue {
+  text-decoration: none;
+  color: inherit;
+}
+
+.DescriptionItem {
   display: flex;
-  flex-flow: row wrap;
-  overflow: hidden;
+  flex-direction: column;
+  flex: 1;
+  padding: 0px 5px;
+  z-index: 9999 !important;
+  color: $defaultWhite-color;
+}
+
+.Item {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  height: 30%;
+  background: $defaultWhite-color;
+  padding: 3px 5px;
+}
+
+.Buttons {
+  display: flex;
+  flex-direction: row;
+  color: inherit;
+  align-items: center;
+  justify-content: flex-end;
+  height: 30%;
+}
+
+.Projects {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
 }
 
 .Remove {
@@ -75,4 +92,22 @@
   display: flex;
   align-content: center;
   justify-content: flex-start;
+}
+
+.header {
+  margin: 0 0 0 1%;
+}
+
+.buttonHeader {
+  margin: 1% !important;
+}
+
+.rootSelect {
+  width: 16vw !important;
+  margin: 0.3% 0 0 0 !important;
+  font-size: 15px !important;
+}
+
+.headerContainer {
+  margin: 2% !important;
 }

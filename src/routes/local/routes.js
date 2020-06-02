@@ -3,6 +3,10 @@ export const DashboardRoutes = {
   towers: { value: '/towers/', withIndicator: '/towers/:projectId' },
   building: { value: '/building/', withIndicator: '/building/:towerId' },
   areas: { value: '/areas/', withIndicator: '/areas/:towerId' },
+  areasAdditional: {
+    value: '/areas-additional/',
+    withIndicator: '/areas-additional/:towerId',
+  },
   prime: { value: '/prime/', withIndicator: '/prime/:towerId' },
   user: '/user',
   summary: { value: '/summary/', withIndicator: '/summary/:towerId' },
@@ -15,22 +19,114 @@ export const DashboardRoutes = {
   clustering: { value: '/clustering/', withIndicator: '/clustering/:towerId' },
   increments: { value: '/increments/', withIndicator: '/increments/:towerId' },
   strategy: { value: '/strategy/', withIndicator: '/strategy/:towerId' },
+  strategy1: { value: '/strategy1/', withIndicator: '/strategy1/:towerId' },
   salesRoom: { value: '/salesRoom/', withIndicator: '/salesRoom/:towerId' },
+  salesRoomClient: {
+    value: '/salesRoom/',
+    withIndicator: '/salesRoom/:towerId/:clientId',
+  },
   clients: { value: '/clients/', withIndicator: '/clients/:towerId' },
+  clients2: { value: '/clients2/', withIndicator: '/clients2/:towerId' },
   futureSalesSpeed: {
     value: '/futureSalesSpeed/',
     withIndicator: '/futureSalesSpeed/:towerId',
   },
   schedule: { value: '/schedule/', withIndicator: '/schedule/:towerId' },
   report: { value: '/report/', withIndicator: '/report/:towerId' },
+  contracts: { value: '/contract/', withIndicator: '/contract/:towerId' },
+  contractsFlow: {
+    value: '/contract-flow/',
+    withIndicator: '/contract-flow/:towerId',
+  },
+  cashFlow: { value: '/cash-flow/', withIndicator: '/cash-flow/:towerId' },
+  saleRequests: {
+    value: '/sale-requests/',
+    withIndicator: '/sale-requests/:towerId',
+  },
+  saleRequestsWithId: {
+    value: '/sale-requests/',
+    withIndicator: '/sale-requests/:towerId/:id',
+  },
+  pairing: {
+    value: '/pairing/',
+    withIndicator: '/pairing/:towerId',
+  },
+  quotations: {
+    value: '/quotations/',
+    withIndicator: '/quotations/:towerId',
+  },
 };
 
 export const ContractRoutes = {
-  base: 'dashboard',
+  base: DashboardRoutes.contracts,
+};
+
+export const ContractFlowRoutes = {
+  base: DashboardRoutes.contractsFlow,
 };
 
 export const ProjectRoutes = {
   base: '/projects',
+};
+
+export const AreasAndPrices = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.building.value,
+    DashboardRoutes.base + DashboardRoutes.areas.value,
+    DashboardRoutes.base + DashboardRoutes.areasAdditional.value,
+    DashboardRoutes.base + DashboardRoutes.pairing.value,
+    DashboardRoutes.base + DashboardRoutes.prime.value,
+    DashboardRoutes.base + DashboardRoutes.clustering.value,
+  ],
+};
+
+export const InitialData = {
+  array: [DashboardRoutes.base + DashboardRoutes.schedule.value],
+};
+
+export const Increments = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.increments.value,
+    DashboardRoutes.base + DashboardRoutes.strategy.value,
+  ],
+};
+
+export const SalesSpeed = {
+  array: [DashboardRoutes.base + DashboardRoutes.futureSalesSpeed.value],
+};
+
+export const SalesRoom = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.clients.value,
+    DashboardRoutes.base + DashboardRoutes.saleRequests.value,
+  ],
+};
+
+export const Reports = {
+  array: [
+    DashboardRoutes.base + DashboardRoutes.summary.value,
+    DashboardRoutes.base + DashboardRoutes.rackAreas.value,
+    DashboardRoutes.base + DashboardRoutes.detailAdmin.value,
+    DashboardRoutes.base + DashboardRoutes.detail.value,
+    DashboardRoutes.base + DashboardRoutes.report.value,
+    DashboardRoutes.base + DashboardRoutes.cashFlow.value,
+  ],
+};
+
+export const Contracts = {
+  array: [DashboardRoutes.base + ContractRoutes.base.value],
+};
+
+export const ContractFlow = {
+  array: [DashboardRoutes.base + ContractFlowRoutes.base.value],
+};
+
+export const Quotation = {
+  array: [DashboardRoutes.base + DashboardRoutes.quotations.value],
+};
+
+export const Group = {
+  base: '/groups',
 };
 
 export const UserRoutes = {
@@ -40,4 +136,9 @@ export const UserRoutes = {
   profile: '/profile',
   create: '/create',
   assignProjects: '/assignProjects',
+  assignCompanies: '/assignCompanies',
+};
+
+export const GroupsRoutes = {
+  base: DashboardRoutes.base + Group.base,
 };

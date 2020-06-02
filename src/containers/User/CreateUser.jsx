@@ -52,7 +52,7 @@ class CreateUser extends Component {
         this.setState({ isLoading: false });
       })
       .catch((error) => {
-        this.props.spawnMessage(error.response.data.message, 'error');
+        this.props.spawnMessage(error.message, 'error');
         this.setState({
           isLoading: false,
         });

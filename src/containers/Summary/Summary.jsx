@@ -85,27 +85,22 @@ class Summary extends Component {
       return null;
     }
     return summary.rack.map((row) =>
-      row.map((value) => {
-        const wrappedValue = value || {}
-        return (
-          <SummaryCell
-            data-tip={wrappedValue.name}
-            key={key}
-            k={key}
-            style={{
-              backgroundColor: getHeat(
-                summary.min,
-                summary.max,
-                summary.avg,
-                wrappedValue,
-                key,
-              ),
-            }}
-          >
-            {wrappedValue}
-          </SummaryCell>
-        );
-      }),
+      row.map((value) => (
+        <SummaryCell
+          k={key}
+          style={{
+            backgroundColor: getHeat(
+              summary.min,
+              summary.max,
+              summary.avg,
+              value,
+              key,
+            ),
+          }}
+        >
+          {value}
+        </SummaryCell>
+      )),
     );
   };
 

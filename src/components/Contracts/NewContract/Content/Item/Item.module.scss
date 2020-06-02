@@ -1,0 +1,88 @@
+@import '../../../../../assets/styles/variables.scss';
+.textField {
+  width: 30vw !important;
+}
+.multiline {
+  width: 100vw;
+}
+
+.leftInputs {
+  width: 33vw !important;
+}
+
+.selects {
+  width: 100%;
+}
+
+.selectForced {
+  width: 25vw !important;
+}
+
+.leftEntry {
+  position: relative;
+  top: -55% !important;
+}
+.buttonMargin {
+  margin-left: 5px !important;
+}
+
+.gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center !important;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 125vh !important;
+}
+
+.gridSubContainer {
+  display: flex;
+  direction: row;
+  justify-content: center;
+  align-self: center !important;
+}
+
+.actionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.heading {
+  display: flex;
+  direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleExpand {
+  margin-left: 8px;
+  color: $grayBlack-color;
+}
+
+.circleColorGeneral {
+  background-color: $green-color;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+}
+
+@media(max-width: 1440px) {
+  .gridContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100vh !important;
+  }
+}

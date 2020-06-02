@@ -1,0 +1,29 @@
+@import '../../../../assets/styles/variables.scss';
+
+.actionContainer {
+  margin-top: 5%;
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.button {
+  margin-left: 2% !important;
+  margin-right: 2% !important;
+}
+.Container {
+  text-align: center;
+  margin-top: 20px;
+  width: 100%;
+  h3 {
+    font-weight: normal;
+  }
+}
+
+.Alert {
+  color: #d50000 !important;
+}
+
+.icon {
+  font-size: 7em !important;
+}

@@ -9,32 +9,33 @@ const groupTable = ({
   onTypeChange,
   towerClusterConfig,
   loading,
+  locked,
   ...rest
 }) => {
-  const getPropertyNames = data => {
-    return data.map(property => property.name);
+  const getPropertyNames = (data) => {
+    return data.map((property) => property.name);
   };
 
-  const getRows = data => {
+  const getRows = (data) => {
     return data.map((property, index) => parseToRow(property, index));
   };
 
   const parseToRow = (property, index) => {
-    console.log(property.group === null);
     let value = null;
     if (property.group !== null) value = property.group.id;
     return [
-      <Cell>{property.area}</Cell>,
-      <Cell>{property.price}</Cell>,
-      <Cell>{property.areaGroup}</Cell>,
-      <Cell>{property.priceGroup}</Cell>,
+      <Cell locked={locked}>{property.area}</Cell>,
+      <Cell locked={locked}>{property.price}</Cell>,
+      <Cell locked={locked}>{property.areaGroup}</Cell>,
+      <Cell locked={locked}>{property.priceGroup}</Cell>,
       <GroupSelect
+        locked={locked}
         value={value}
-        onChange={event => {
+        onChange={(event) => {
           onTypeChange(property.id, event.target.value);
         }}
         groups={towerClusterConfig.groups}
-      />
+      />,
     ];
   };
 
@@ -51,7 +52,7 @@ const groupTable = ({
             'Precio',
             'Tipo por area',
             'Tipo por precio',
-            'Tipo'
+            'Tipo',
           ]}
           columns={getPropertyNames(data)}
           data={getRows(data)}

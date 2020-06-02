@@ -8,6 +8,7 @@ import errorHandling from '../../services/commons/errorHelper';
 import SchemeServices from '../../services/schema/SchemaServices';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import LoadableContainer from '../../components/UI/Loader';
+import Schema2 from '../../components/Building/Schema2';
 
 class Building extends Component {
   constructor(props) {
@@ -33,9 +34,12 @@ class Building extends Component {
       salesStartDate: new Date().getTime(),
       endOfSalesDate: new Date().getTime(),
     },
+    sold: false,
+    disableSold: false,
   };
 
   componentDidMount() {
+    this.disableIfEdit();
     this.updateNames();
     this.setState({ isLoading: true });
   }
@@ -44,6 +48,17 @@ class Building extends Component {
     this.setState({
       [target.name]: target.value,
     });
+  };
+
+  disableIfEdit = () => {
+    this.services
+      .isDisable(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ disableSold: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   updateNames = (isLoadingSchemas = false) => {
@@ -131,7 +146,7 @@ class Building extends Component {
         lowestFloor: parseInt(this.state.lowestFloor, 10),
       })
       .then(() => {
-        this.setState({ floors: [], disable: true, names: [] });
+        this.setState({ floors: 0, disable: true, names: [], sold: true });
         this.updateNames(true);
         this.setState({ isLoadingSchemas: false });
       })
@@ -155,9 +170,13 @@ class Building extends Component {
         lowestFloor: parseInt(this.state.lowestFloor, 10),
       })
       .then(() => {
-        this.setState({ floors: [], disable: true, names: [] });
+        this.setState({
+          floors: 0,
+          disable: true,
+          names: [],
+          isLoadingSchemas: false,
+        });
         this.updateNames(true);
-        this.setState({ isLoadingSchemas: false });
       })
       .catch((error) => {
         const errorHelper = errorHandling(error);
@@ -254,7 +273,10 @@ class Building extends Component {
             updateStratum={this.updateStratum}
             disableWarning={this.state.disableWarning}
             toggleWarning={this.toggleWarning}
+            sold={this.state.sold}
+            disableSold={this.state.disableSold}
           />
+          {/* <Schema2 /> */}
           {!this.state.disable ? null : (
             <Naming
               isLoading={this.state.isLoadingSchemas}
@@ -274,9 +296,9 @@ class Building extends Component {
               onPropertyEmpty={this.propertyDelete}
               editMode={this.toggleEditMode}
               names={this.state.names}
+              disableSold={this.state.disableSold}
             />
           )}
-          {console.log('names', this.state.names)}
         </div>
         {this.state.showFloatingButton ? (
           <FloatingButton

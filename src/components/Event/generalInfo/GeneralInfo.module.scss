@@ -1,0 +1,125 @@
+@import '../../../assets/styles/variables.scss';
+.heading {
+  display: flex;
+  direction: row;
+}
+
+.titleExpand {
+  margin-top: 1%;
+  margin-left: 8px;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+}
+
+.circleColorGeneral {
+  background-color: $softGreen-color;
+  font-size: 8px !important;
+}
+
+.circleColorGeneralBlue {
+  background-color: $main-color;
+  font-size: 8px !important;
+}
+
+.cardForm {
+  margin-bottom: 2%;
+}
+
+.actionContainer {
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center;
+}
+
+.rigthInformation {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: -2%;
+  width: 50% !important;
+  margin-top: 2%;
+}
+
+.leftInformation {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-right: 2%;
+  width: 50% !important;
+  margin-bottom: 2%;
+}
+
+.item {
+  margin-top: 1% !important;
+  margin-bottom: 1% !important;
+  z-index: 0;
+}
+
+.itemText {
+  margin-top: 1% !important;
+  margin-bottom: 1% !important;
+  z-index: 0;
+}
+
+.displacement {
+  width: 35% !important;
+  z-index: 0;
+}
+
+.gridSubContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.itemSelect {
+  margin-top: 1% !important;
+  margin-bottom: 1% !important;
+}
+
+.buttonColumn {
+  margin-top: 0.5% !important;
+  margin-left: 1% !important;
+}
+
+.buttonSubColumn {
+  margin-top: 5% !important;
+  margin-left: 1% !important;
+}
+
+.subColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectRight,
+.selectLeft {
+  width: 16vh !important;
+}
+
+.rigthPick {
+  margin-top: 12px;
+  margin-left: 12px;
+}
+
+.leftPick {
+  margin-left: 5px;
+  margin-top: 12px;
+}

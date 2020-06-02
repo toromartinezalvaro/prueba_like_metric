@@ -1,0 +1,185 @@
+@import '../../../assets/styles/variables.scss';
+.container {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+}
+
+.containerForBillings {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-around !important;
+}
+
+.subContainer {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+  width: 100%;
+}
+
+.generalTitle {
+  display: flex;
+  flex-direction: row;
+  margin-left: 7% !important ;
+  margin-bottom: -3%;
+}
+
+.card {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  padding-bottom: -2% !important;
+  background-color: $white-background !important;
+}
+
+.cardContainer {
+  width: 85%;
+  height: 85%;
+  margin-left: 7%;
+  margin-bottom: 5% !important;
+}
+
+.leftInformation {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 45% !important;
+}
+
+.rightInformation {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 50% !important;
+}
+
+.leftTitle,
+.rightTitle {
+  margin-bottom: 7%;
+  padding: 5% !important;
+  width: 100%;
+  text-align: center !important;
+  &:hover {
+    -webkit-box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+    -moz-box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+    box-shadow: -2px 3px 34px -1px rgba(133, 133, 133, 1) !important;
+  }
+}
+
+.actionContainer {
+  margin-top: 5%;
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.labelForTitle {
+  font-weight: bold;
+  margin-bottom: 2% !important;
+}
+
+.cont {
+  display: flex;
+  flex-direction: column;
+}
+
+.information {
+  margin-top: 2% !important;
+  max-width: 300px !important;
+}
+
+.informationAmount {
+  margin-top: 2% !important;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+  margin-top: 2%;
+  margin-right: 1%;
+}
+
+.circleColorGeneral {
+  background-color: $softGreen-color;
+}
+
+.circleColorFinantials {
+  background-color: $softRed-color;
+}
+
+.prefixForTitle {
+  font-size: 14px !important;
+  margin-right: 3%;
+}
+
+.labelForTitle {
+  color: $main-color;
+  font-weight: bold;
+}
+
+.button {
+  margin-left: 2% !important;
+  margin-right: 2% !important;
+}
+
+.Totalbills {
+  display: grid;
+  grid-template-columns: 60% 10%;
+}
+
+.totalAmount {
+  position: relative;
+  top: 30%;
+}
+
+.containerPaymentInformation {
+  display: grid !important;
+  grid-template-columns: 18em 16em 18em;
+  column-gap: 0.5em;
+  font-size: 12px;
+  margin: -5% 0 0 -5% !important;
+  width: 10vw !important;
+}
+
+.tittlePayment {
+  margin: 2% 0 2% -5% !important;
+}
+
+.resumeLabel {
+  display: grid;
+  grid-template-columns: 14em 5em;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeLabel2 {
+  display: grid;
+  grid-template-columns: 15em 1px;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeLabel3 {
+  display: grid;
+  grid-template-columns: 12em 1px;
+  align-items: center !important;
+  align-self: center;
+}
+
+.resumeValue {
+  margin-top: -3% !important;
+  justify-self: center;
+}
+.expandContainer {
+  padding: 0 !important;
+}
+.cardForm {
+  display: grid;
+  grid-template-columns: repeat(3, 2fr);
+  margin: 0 0 0 5%;
+}

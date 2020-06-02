@@ -31,7 +31,6 @@ class LineChart extends React.Component {
     },
   };
   render() {
-    console.log('group p.. ', this.props.currentGroup);
     return (
       <div className={styles.Container}>
         <Line

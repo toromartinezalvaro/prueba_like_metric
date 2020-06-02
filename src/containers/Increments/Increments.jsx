@@ -3,12 +3,12 @@ import Loader from 'react-loader-spinner';
 import commonStyles from '../../assets/styles/variables.scss';
 import Modal from '../../components/UI/Modal/Modal';
 import IncrementsTable from '../../components/Increments/IncrementTable';
-import IncrementsMarket from '../../components/Increments/IncrementsMarket/IncrementsMarket';
 import IncrementsChart from '../../components/Increments/IncrementsChart/IncrementsChart';
 import IncrementsServices from '../../services/increments/IncrementsServices';
 import LoadableContainer from '../../components/UI/Loader';
 import Styles from './Increments.module.scss';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
+import SimpleSnackbar from '../../components/UI2/ToastAlert/ToastAlert';
 
 class Increments extends Component {
   constructor(props) {
@@ -17,6 +17,9 @@ class Increments extends Component {
   }
 
   state = {
+    schedule: {
+      endOfSalesDate: new Date().getTime(),
+    },
     market: { averagePrice: 0, anualEffectiveIncrement: 0 },
     increments: [],
     graphData: [],
@@ -26,6 +29,27 @@ class Increments extends Component {
     hidden: true,
     loadingAPI: false,
     isShowBadgeAlert: false,
+    alert: {
+      opened: false,
+      message: '',
+    },
+  };
+
+  resetStrategy = (groupId) => {
+    this.setState({ loadingAPI: true });
+    this.services.resetStrategy(groupId).then(() => {
+      const tempIncrements = this.state.increments;
+      const group = tempIncrements.find((g) => groupId === g.id);
+      group.isReset = true;
+      this.setState({ loadingAPI: false, increments: tempIncrements });
+    });
+  };
+
+  toastAlert = (message) => {
+    this.setState({ alert: { opened: true, message } });
+    setTimeout(() => {
+      this.setState({ alert: { opened: false, message } });
+    }, 500);
   };
 
   componentDidMount() {
@@ -36,12 +60,31 @@ class Increments extends Component {
     this.updateIncrements();
   }
 
+  futureSalesSpeedHandler = (id, value) => {
+    this.setState({ loadingAPI: true });
+
+    this.services
+      .putFutureSalesSpeeds(id, value)
+      .then(() => {
+        this.updateIncrements();
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ loadingAPI: false });
+        this.toastAlert(error);
+      });
+  };
+
   updateIncrements = () => {
     this.services
       .getIncrementsSummary(this.props.match.params.towerId)
       .then((response) => {
+        const filteredIncrements = response.data.increments.filter(
+          (increment) => increment.total.units > 0,
+        );
         this.setState({
-          increments: response.data.increments,
+          schedule: response.data.schedule,
+          increments: filteredIncrements,
           market: response.data.market,
           isLoading: false,
           loadingAPI: false,
@@ -50,7 +93,7 @@ class Increments extends Component {
       })
       .catch((error) => {
         this.setState({ isLoading: false, loadingAPI: false });
-        console.error(error);
+        this.toastAlert(error);
       });
   };
 
@@ -63,7 +106,7 @@ class Increments extends Component {
       })
       .catch((error) => {
         this.setState({ loadingAPI: false });
-        console.error(error);
+        this.toastAlert(error);
       });
   };
 
@@ -75,14 +118,18 @@ class Increments extends Component {
     this.setState({ loadingAPI: true });
     this.services
       .putSuggestedEffectiveAnnualInterestRate(id, {
-        effectiveAnnualInterestRate,
+        effectiveAnnualInterestRate: parseFloat(effectiveAnnualInterestRate),
       })
       .then((response) => {
         this.updateIncrements();
       })
       .catch((error) => {
         this.setState({ loadingAPI: false });
-        console.error(error);
+        if (error.response === undefined) {
+          this.props.spawnMessage('Error de conexión', 'error');
+        } else {
+          this.props.spawnMessage(error.message, 'error');
+        }
       });
   };
 
@@ -94,14 +141,18 @@ class Increments extends Component {
       this.services
         .putIncrement(this.props.match.params.towerId, {
           groupId: id,
-          increment,
+          increment: parseFloat(increment),
         })
         .then((response) => {
           this.updateIncrements();
         })
         .catch((error) => {
           this.setState({ loadingAPI: false });
-          console.error(error);
+          if (error.response === undefined) {
+            this.props.spawnMessage('Error de conexión', 'error');
+          } else {
+            this.props.spawnMessage(error.message, 'error');
+          }
         });
     }
   };
@@ -129,7 +180,7 @@ class Increments extends Component {
         this.setState({ graphData: response.data, loadingAPI: false });
       })
       .catch((error) => {
-        console.error(error);
+        this.toastAlert(error);
         this.setState({ loadingAPI: false });
       });
   };
@@ -144,6 +195,7 @@ class Increments extends Component {
         this.setState({ loadingAPI: false });
       })
       .catch((error) => {
+        this.toastAlert(error);
         this.setState({ loadingAPI: false });
       });
   };
@@ -158,6 +210,7 @@ class Increments extends Component {
         this.setState({ loadingAPI: false });
       })
       .catch((error) => {
+        this.toastAlert(error);
         this.setState({ loadingAPI: false });
       });
   };
@@ -171,7 +224,7 @@ class Increments extends Component {
       })
       .catch((error) => {
         this.setState({ loadingAPI: false });
-        console.error(error);
+        this.toastAlert(error);
       });
   };
 
@@ -201,21 +254,13 @@ class Increments extends Component {
           putSuggestedEffectiveAnnualInterestRate={
             this.putSuggestedEffectiveAnnualInterestRate
           }
+          futureSalesSpeedHandler={this.futureSalesSpeedHandler}
+          resetStrategy={this.resetStrategy}
           towerId={this.props.match.params.towerId}
+          endOfSalesDate={this.state.schedule.endOfSalesDate}
           {...this.props}
         />
-        <IncrementsMarket
-          putMarketAveragePrice={this.putMarketAveragePrice}
-          putMarketAnnualEffectiveIncrement={
-            this.putMarketAnnualEffectiveIncrement
-          }
-          marketData={this.state.market}
-        />
-        <IncrementsChart
-          salesStartDate={new Date().getTime()}
-          data={this.state.graphData}
-          getData={this.getPeriodsIncrements}
-        />
+
         {this.state.hidden ? null : (
           <Modal
             title="Error de incremento"
@@ -227,6 +272,11 @@ class Increments extends Component {
             el que esta actualmente o el recaudado
           </Modal>
         )}
+
+        <SimpleSnackbar
+          message={this.state.alert.message}
+          opened={this.state.alert.opened}
+        />
       </LoadableContainer>
     );
   }

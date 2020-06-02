@@ -1,35 +1,55 @@
 import React from 'react';
+import _ from 'lodash';
 import Card, { CardFooter, CardHeader, CardBody } from '../UI/Card/Card';
 import styles from './Towers.module.scss';
 import Icon from '../../assets/icons/Icon';
 import Button from '../UI/Button/Button';
 
-const towerItems = props => {
-  var items = towers => {
-    return towers.map(tower => {
+const towerItems = (props) => {
+  const items = (towers) => {
+    return _.orderBy(
+      towers,
+      [(tower) => tower.name.toLowerCase()],
+      ['asc'],
+    ).map((tower) => {
       return itemFromTower(tower);
     });
   };
 
-  var itemFromTower = tower => {
+  const itemFromTower = (tower) => {
     return (
       <div
         className={styles.ItemContainer}
         key={tower.id}
-        onClick={event => {
+        onClick={(event) => {
           event.stopPropagation();
-          props.openTower(tower);
+          if (window.event.ctrlKey) {
+            props.openTowerCtrl(tower);
+          } else {
+            props.openTower(tower);
+          }
         }}
       >
         <div className={styles.DescriptionItem}>
-          <div
-            className={styles.Remove}
-            onClick={event => {
-              event.stopPropagation();
-              props.removeTower(tower.id);
-            }}
-          >
-            <Icon name="fa-trash-alt" />
+          <div className={styles.Buttons}>
+            <div
+              className={styles.Remove}
+              onClick={(event) => {
+                event.stopPropagation();
+                props.editTower(tower.id);
+              }}
+            >
+              <i className={`fas fa-edit ${styles.actions}`}></i>
+            </div>
+            <div
+              className={styles.Remove}
+              onClick={(event) => {
+                event.stopPropagation();
+                props.removeTower(tower.id);
+              }}
+            >
+              <Icon name="fa-trash-alt" className={styles.actions} />
+            </div>
           </div>
           <div className={styles.Description}>
             <p>{tower.description}</p>

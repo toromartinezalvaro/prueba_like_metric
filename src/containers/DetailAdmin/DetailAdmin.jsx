@@ -78,10 +78,8 @@ export default class Detail extends Component {
         properties: data,
         property: data[0],
         totals: data[0].totals,
-        areas: data[0].areas.filter(({ areaType }) => areaType.unit === 'MT2'),
-        additional: data[0].areas.filter(
-          ({ areaType }) => areaType.unit === 'UNT',
-        ),
+        areas: data[0].areas,
+        additional: data[0].additionalAreas,
       });
       this.assignTableData();
     }
@@ -120,16 +118,27 @@ export default class Detail extends Component {
 
   printAdditional = (data) => {
     return data.map((aditional) => {
-      return (
+      return aditional.areaType.unit === 'MT2' ? (
         <Additional
-          Title={aditional.areaType.name}
-          Title1="Cantidad"
-          Title2="Precio"
-          Title3="Adicionales"
+          Title={`${aditional.areaType.name} - ${aditional.areaType.unit}`}
+          Title1="Nomenclatura"
+          Title2="Area"
+          Title3="Precio"
+          Title4="Total"
           key={aditional.id}
-          Value1={aditional.measure}
+          Value1={aditional.nomenclature}
+          Value2={aditional.measure}
+          Value3={this.formatPrice(aditional.price)}
+          Value4={this.formatPrice(aditional.price * aditional.measure)}
+        />
+      ) : (
+        <Additional
+          Title={`${aditional.areaType.name} - ${aditional.areaType.unit}`}
+          Title1="Nomenclatura"
+          Title2="Precio"
+          key={aditional.id}
+          Value1={aditional.nomenclature}
           Value2={this.formatPrice(aditional.price)}
-          Value3={this.formatPrice(aditional.unitPrice)}
         />
       );
     });
@@ -171,9 +180,7 @@ export default class Detail extends Component {
             areas2: property.areas.filter(
               ({ areaType }) => areaType.unit === 'MT2',
             ),
-            additional2: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'UNT',
-            ),
+            additional2: property.additionalAreas,
             areasTable2: this.mapAreasForCells(areas),
           });
         }
@@ -191,9 +198,7 @@ export default class Detail extends Component {
             areas: property.areas.filter(
               ({ areaType }) => areaType.unit === 'MT2',
             ),
-            additional: property.areas.filter(
-              ({ areaType }) => areaType.unit === 'UNT',
-            ),
+            additional: property.additionalAreas,
             id: property.id,
             areasTable: this.mapAreasForCells(areas),
           });

@@ -1,0 +1,323 @@
+/*
+ * Created by Jcatman on Fri Nov 01 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
+@import '../../../../../assets/styles/variables.scss';
+
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+.gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center !important;
+  align-items: flex-start;
+  align-content: center !important;
+  flex-wrap: wrap;
+  align-self: center !important;
+  width: 120vh !important;
+  position: relative;
+  left: 12%;
+}
+
+.errorField {
+  top: -5% !important;
+  margin-top: -5%;
+  color: red;
+}
+
+.errorFieldGroup {
+  margin-top: -4%;
+  margin-left: 8%;
+  margin-bottom: 15%;
+  color: red;
+}
+
+.gridSubContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 8%;
+  margin-bottom: -5%;
+  width: 100vh !important;
+}
+.gridSubContainerlabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 2%;
+  margin-bottom: 4%;
+  width: 100vh !important;
+}
+.gridSubContainerRigth {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 165% !important;
+}
+.columnFullRigth {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 2%;
+  width: 50% !important;
+  position: relative;
+  left: 1%;
+}
+
+.columnLeft {
+  display: flex;
+  flex-direction: column;
+  width: 50% !important;
+  margin-right: 5%;
+}
+
+.SelectSimple {
+  margin-top: 6%;
+  margin-bottom: 5%;
+  width: 28vw !important;
+}
+
+.SelectSimpleForLabel {
+  margin-bottom: 5%;
+  width: 27.9vw !important;
+}
+
+.SelectSimpleForLabelPartner {
+  margin-bottom: 5%;
+  width: 22vw !important;
+}
+
+.SelectSimpleForLabel_control {
+  height: 20px !important;
+}
+
+.columnFullLeft {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-right: 7% !important;
+  width: 5% !important;
+}
+
+.selectColumn {
+  display: flex;
+  flex-direction: column;
+  width: 25% !important;
+}
+
+.selectColumnNoButtons {
+  display: flex;
+  flex-direction: column;
+  width: 10% !important;
+}
+
+.buttonColumn {
+  display: flex;
+  flex-direction: row;
+  width: 15% !important;
+  margin-left: 26%;
+}
+
+.buttonColumnForItem {
+  display: flex;
+  flex-direction: row;
+  width: 15% !important;
+  margin-left: 27%;
+}
+
+.multiline {
+  width: 100% !important;
+  z-index: 0 !important;
+}
+
+.actionContainer {
+  display: flex !important;
+  direction: row !important;
+  justify-content: center !important;
+}
+
+.heading {
+  display: flex;
+  direction: row;
+  align-content: center !important;
+  justify-content: center !important;
+}
+
+.titleExpand {
+  margin-top: 4%;
+  margin-left: 8px;
+}
+
+.expansion-panel {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border: none;
+}
+
+.circleIcon {
+  display: flex;
+  justify-content: center;
+  direction: row;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $defaultWhite-color;
+}
+
+.circleColorGeneral {
+  background-color: $softGreen-color;
+}
+
+.circleColorCicle {
+  background-color: $softRed-color;
+}
+
+.circleColorFinantials {
+  background-color: $softMain-color;
+}
+
+.circleColorPeople {
+  background-color: $yellow-color;
+}
+
+.circleColorAtachment {
+  background-color: $gray-color;
+}
+
+.circleColorPersonalized {
+  background-color: $softGreenColor;
+}
+
+.circleColorTitle {
+  background-color: $main-color;
+  margin-top: 15px;
+  margin-right: 5px;
+}
+
+.buttonMargin {
+  margin-left: 5px !important;
+}
+
+.dialogExpand {
+  height: 80vh !important;
+}
+
+.options {
+  background-color: $defaultWhite-color;
+  z-index: 999999 !important;
+}
+
+.textField,
+.leftInputs {
+  z-index: 0 !important;
+  width: 28vw !important;
+}
+
+.error:focus {
+  background-color: red !important;
+}
+
+@media (min-width: 1340px) {
+  .gridContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: flex-start;
+    align-content: center !important;
+    flex-wrap: wrap;
+    align-self: center !important;
+    width: 125vh !important;
+    margin-left: 6% !important;
+    position: relative;
+    left: -4% !important;
+  }
+  .buttonColumn {
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    margin-left: 19%;
+  }
+  .buttonColumnForItem {
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    margin-left: 22%;
+  }
+}
+
+@media (max-width: 1340px) {
+  .gridContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: flex-start;
+    align-content: center !important;
+    flex-wrap: wrap;
+    align-self: center !important;
+    width: 125vh !important;
+    margin-left: 6% !important;
+    position: relative;
+    left: 2% !important;
+  }
+  .buttonColumn {
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    margin-left: 27%;
+  }
+  .buttonColumnForItem {
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    margin-left: 29%;
+  }
+}
+.gridContainerDescription {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: flex-start;
+  align-content: center !important;
+  flex-wrap: wrap;
+  align-self: center !important;
+  width: 123vh !important;
+  position: relative;
+  left: 12%;
+  margin: 0 0 0 -10%;
+}
+.labelWordLength {
+  margin: 0 0 0 1%;
+}
+
+.noCaracteres {
+  color: $red-color;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.normalCaracter {
+  color: $main-color;
+  font-size: 16px;
+}
+
+.optionMenu {
+  z-index: 999999999;
+  height: 2vh !important;
+}

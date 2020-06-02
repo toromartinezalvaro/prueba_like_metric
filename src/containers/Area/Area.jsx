@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { withSnackbar } from 'notistack';
 import NumberFormat from 'react-number-format';
 import Loader from 'react-loader-spinner';
 import Card, { CardHeader, CardBody } from '../../components/UI/Card/Card';
@@ -13,7 +14,11 @@ import errorHandling from '../../services/commons/errorHelper';
 import Error from '../../components/UI/Error/Error';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import commonStyles from '../../assets/styles/variables.scss';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import LoadableContainer from '../../components/UI/Loader';
+import Prices2 from '../../components/Area/Prices2';
+import Imports from '../../components/Area/Imports';
+import InputMethodDialog from '../../components/Area/InputMethod/Dialog';
 
 class Area extends Component {
   constructor(props) {
@@ -22,6 +27,7 @@ class Area extends Component {
   }
 
   state = {
+    inputMethod: null,
     areaTypeId: null,
     areaType: '',
     areaMeasurementUnit: 'MT2',
@@ -38,10 +44,17 @@ class Area extends Component {
     calculateTotals: true,
     modalIsLoading: false,
     isLoading: false,
+    anySold: false,
+    isAreaTypeDialogOpen: false,
+    disableSold: false,
+    firstColumnInRows: [],
+  };
+
+  errorDispatch = (error) => {
+    this.props.spawnMessage(error, 'error', 'ERROR');
   };
 
   modalContent = () => {
-    console.log('modalContent ====> ', this.state.areaType);
     if (this.state.editingAreaType) {
       return (
         <Fragment>
@@ -61,6 +74,7 @@ class Area extends Component {
             services={this.services}
             towerId={this.props.match.params.towerId}
             isLoading={this.state.modalIsLoading}
+            anySold={this.state.anySold}
           />
         </Fragment>
       );
@@ -82,14 +96,7 @@ class Area extends Component {
           onChange={this.areaTypeHandler}
           value={this.state.areaType}
         />
-        <select
-          onChange={this.measurementUnitHandler}
-          placeholder={'Tipo de medida'}
-          value={this.state.areaMeasurementUnit}
-        >
-          <option value={'MT2'}>MT2</option>
-          <option value={'UNT'}>Unidad</option>
-        </select>
+        <span>MT2</span>
       </div>
     );
   };
@@ -107,8 +114,10 @@ class Area extends Component {
       }
       return (
         <div
-          onDoubleClick={() => {
-            this.toggleAreaTypeModal(areaType);
+          onClick={() => {
+            if (this.state.inputMethod === 'MANUAL') {
+              this.handleOpenAreaTypeModal(areaType);
+            }
           }}
         >
           <EditableHeader
@@ -155,10 +164,33 @@ class Area extends Component {
     }
   };
 
+  disableIfEdit = () => {
+    this.services
+      .isDisable(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ disableSold: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   componentDidMount() {
     this.updateTableInformation();
     this.setState({ isLoading: true });
+    this.disableIfEdit();
   }
+
+  setFirstColumnInside = (data) => {
+    const { propertiesAreas } = data;
+    const firstColumnInRows = propertiesAreas.map((propertyArray) => {
+      if (propertyArray[0]) {
+        return propertyArray[0].propertyId;
+      }
+      return [];
+    });
+    this.setState({ ...this.state, firstColumnInRows });
+  };
 
   updateTableInformation = () => {
     const { towerId } = this.props.match.params;
@@ -169,44 +201,55 @@ class Area extends Component {
       .getAreas(towerId)
       .then((response) => {
         let currentState = {};
-        if (this.state.calculateTotals === true) {
-          const types = [];
-          response.data.propertiesAreas.forEach((arrayAreas) => {
-            if (arrayAreas !== undefined) {
-              arrayAreas.forEach((area) => {
-                if (!types.find((type) => area.type === type.id)) {
-                  types.push({ id: area.type, total: 0 });
-                }
-                if (types !== undefined) {
-                  const index = types.findIndex((obj) => obj.id === area.type);
-                  if (types[index] !== undefined) {
-                    types[index].total += area.measure;
+        const data = response ? response.data : null;
+        if (data) {
+          if (this.state.calculateTotals === true) {
+            const types = [];
+            data.propertiesAreas.forEach((arrayAreas) => {
+              if (arrayAreas !== undefined) {
+                arrayAreas.forEach((area) => {
+                  if (!types.find((type) => area.type === type.id)) {
+                    types.push({ id: area.type, total: 0 });
                   }
-                }
-                return types;
-              });
-              currentState = { ...currentState, calculateTotals: false, types };
-            }
-          });
-        }
-        const showFloating = response.data.propertiesAreas.find(
-          (arrayAreas) => {
+                  if (types !== undefined) {
+                    const index = types.findIndex(
+                      (obj) => obj.id === area.type,
+                    );
+                    if (types[index] !== undefined) {
+                      types[index].total += area.measure;
+                    }
+                  }
+                  return types;
+                });
+                currentState = {
+                  ...currentState,
+                  calculateTotals: false,
+                  types,
+                };
+              }
+            });
+          }
+          const showFloating = data.propertiesAreas.find((arrayAreas) => {
             const anyArea = arrayAreas.find((area) => {
               return area !== null && area.measure !== 0;
             });
             return anyArea !== undefined;
-          },
-        );
-        if (showFloating !== undefined) {
-          currentState = { ...currentState, showFloatingButton: true };
+          });
+          if (showFloating !== undefined) {
+            currentState = { ...currentState, showFloatingButton: true };
+          }
         }
+
+        this.setFirstColumnInside(data);
 
         this.setState({
           ...currentState,
-          areaTypes: response.data.areaTypes,
-          properties: response.data.properties,
+          areaTypes: data.areaTypes,
+          properties: data.properties,
           isLoading: false,
-          data: response.data.propertiesAreas,
+          data: data.propertiesAreas,
+          anySold: data.anySold,
+          inputMethod: data.inputMethod,
         });
       })
       .catch((error) => {
@@ -226,14 +269,15 @@ class Area extends Component {
     this.setState({ areaMeasurementUnit: event.target.value });
   };
 
+  handleOpenAreaTypeModal = (areaType) => {
+    this.setState({
+      isAreaTypeDialogOpen: true,
+      areaTypeId: areaType.id,
+    });
+  };
+
   toggleAreaTypeModal = (areaType) => {
-    console.log(
-      `🌞 this is how areaType is comming ${JSON.stringify(areaType)}`,
-    );
     if (areaType === undefined) {
-      console.log(
-        `⚠ So this is the current state ${JSON.stringify(this.state.areaType)}`,
-      );
       this.setState((prevState) => ({
         hidden: !prevState.hidden,
         areaType: '',
@@ -248,8 +292,6 @@ class Area extends Component {
         areaMeasurementUnit: areaType.measurementUnit,
         editingAreaType: true,
       }));
-
-      console.log(`🌞 ====> ${JSON.stringify(areaType)}`);
     }
   };
 
@@ -271,6 +313,7 @@ class Area extends Component {
 
   updateAreaType = () => {
     this.setState({ modalIsLoading: true });
+
     this.services
       .putArea(this.state.areaTypeId, {
         id: this.state.areaTypeId,
@@ -279,7 +322,6 @@ class Area extends Component {
         towerId: this.props.match.params.towerId,
       })
       .then((data) => {
-        console.log(data);
         this.toggleAreaTypeModal();
         this.updateTableInformation();
         this.setState({ modalIsLoading: false });
@@ -295,7 +337,6 @@ class Area extends Component {
   };
 
   addAreaType = () => {
-    console.log('addAreaType :D');
     this.setState({ modalIsLoading: true });
     this.services
       .postArea({
@@ -304,18 +345,17 @@ class Area extends Component {
         towerId: this.props.match.params.towerId,
       })
       .then((data) => {
-        console.log(data);
         this.setState({ calculateTotals: true });
         this.toggleAreaTypeModal();
         this.updateTableInformation();
         this.setState({ modalIsLoading: false });
       })
       .catch((error) => {
-        const errorHelper = errorHandling(error);
+        this.errorDispatch(error.message);
         this.setState({
-          currentErrorMessage: errorHelper.message,
           modalIsLoading: false,
         });
+        this.props.spawnMessage(error.message, 'error');
       });
     this.setState({ currentErrorMessage: '' });
   };
@@ -323,8 +363,6 @@ class Area extends Component {
   sumTotalHeader(actualValue, value, type, arrayTotals) {
     const index = arrayTotals.findIndex((obj) => obj.id === type);
     if (arrayTotals[index] !== undefined) {
-      console.log('actualValue', actualValue);
-
       if (actualValue > parseFloat(value)) {
         arrayTotals[index].total -= actualValue - parseFloat(value);
       } else {
@@ -333,29 +371,43 @@ class Area extends Component {
     }
   }
 
+  zerosChecker = (area) => {
+    return this.state.firstColumnInRows.some((id) => id === area.propertyId);
+  };
+
   areaChangeHandler = (rowIndex, cellIndex, value, type) => {
     if (value !== '') {
       const currentData = this.state.data;
       const actualValue = currentData[rowIndex][cellIndex].measure;
       currentData[rowIndex][cellIndex].measure = value;
-      this.services
-        .putAreasByTowerId(
-          this.props.match.params.towerId,
-          currentData[rowIndex][cellIndex],
-        )
-        .then(() => {
-          this.setState({ data: currentData, showFloatingButton: true });
-          this.sumTotalHeader(actualValue, value, type, this.state.types);
-          this.setState({ isLoading: false });
-        })
-        .catch((error) => {
-          const errorHelper = errorHandling(error);
-          this.setState({
-            currentErrorMessage: errorHelper.message,
+      const checker = this.zerosChecker(currentData[rowIndex][cellIndex]);
+      if (checker && currentData[rowIndex][cellIndex].measure === '0') {
+        this.props.spawnMessage(
+          'No puedes ingresar el valor cero (0) en esta área',
+          'error',
+        );
+        currentData[rowIndex][cellIndex].measure = actualValue;
+        this.setState({ data: currentData, showFloatingButton: true });
+      } else {
+        this.services
+          .putAreasByTowerId(
+            this.props.match.params.towerId,
+            currentData[rowIndex][cellIndex],
+          )
+          .then(() => {
+            this.setState({ data: currentData, showFloatingButton: true });
+            this.sumTotalHeader(actualValue, value, type, this.state.types);
+            this.setState({ isLoading: false });
+          })
+          .catch((error) => {
+            const errorHelper = errorHandling(error);
+            this.setState({
+              currentErrorMessage: errorHelper.message,
+            });
+            this.setState({ isLoading: true });
+            this.updateTableInformation();
           });
-          this.setState({ isLoading: true });
-          this.updateTableInformation();
-        });
+      }
       this.setState({ currentErrorMessage: '' });
     }
   };
@@ -363,7 +415,6 @@ class Area extends Component {
   inputsForData = (data) => {
     return data.map((row, rowIndex) => {
       return row.map((e2, cellIndex) => {
-        console.log('state in', this.rowIndex);
         return (
           <Input
             updateWithProp
@@ -372,12 +423,12 @@ class Area extends Component {
             validations={[
               {
                 fn: (value) => {
-                  console.log(value);
                   return value !== null;
                 },
-                message: 'No puede estar vacío',
+                message: 'No puede estar vac�o',
               },
             ]}
+            disable={this.state.anySold}
             zeroDefault={true}
             onChange={(target) => {
               this.areaChangeHandler(
@@ -394,64 +445,90 @@ class Area extends Component {
     });
   };
 
+  handleInputMethodChange = (inputMethod) => {
+    this.services
+      .putInputMethod(this.props.match.params.towerId, inputMethod)
+      .then(() => {
+        this.setState({ inputMethod });
+      })
+      .catch((error) => {
+        this.props.enqueueSnackbar(error.message, { variant: 'error' });
+      });
+  };
+
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
-        <Fragment>
-          <Card>
-            <CardHeader>
-              <p>Areas</p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                intersect={'Areas'}
-                headers={[
-                  ...this.processHeaders(
-                    this.state.areaTypes,
-                    this.state.types,
-                  ),
-                  <IconButton
-                    onClick={() => {
-                      this.toggleAreaTypeModal();
-                    }}
-                  />,
-                ]}
-                columns={this.state.properties}
-                data={[
-                  ...(this.state.data && this.inputsForData(this.state.data)),
-                ]}
-                width={{ width: '125px' }}
-              />
-            </CardBody>
-          </Card>
-          {this.state.hidden ? null : (
-            <Modal
-              title={'Agregar nuevo tipo de area'}
-              hidden={this.state.hidden}
-              onConfirm={
-                this.state.editingAreaType
-                  ? this.updateAreaType
-                  : this.addAreaType
-              }
-              onCancel={this.toggleAreaTypeModal}
-            >
-              {this.modalContent()}
-            </Modal>
-          )}
-          {this.state.hideDeleteModal ? null : (
-            <Modal
-              title={'Eliminar tipo de area'}
-              hidden={this.state.hideDeleteModal}
-              onConfirm={this.deleteAreaType}
-              onCancel={this.toggleDeleteModal}
-            >
-              Deseas eliminar este tipo de area?
-            </Modal>
-          )}
-        </Fragment>
+        {this.state.inputMethod === null ? (
+          <InputMethodDialog
+            changeInputMethodHandler={this.handleInputMethodChange}
+            disabled={this.state.inputMethod !== null}
+          />
+        ) : (
+          <Fragment>
+            {this.state.inputMethod === 'IMPORT' && (
+              <Imports disabled={this.state.areaTypes.length === 0} />
+            )}
+            <Card>
+              <CardHeader>
+                <p>Areas</p>
+              </CardHeader>
+              <CardBody>
+                <Table
+                  intersect={'Areas'}
+                  headers={[
+                    ...this.processHeaders(
+                      this.state.areaTypes,
+                      this.state.types,
+                    ),
+                    <IconButton
+                      disabled={this.state.disableSold}
+                      onClick={() => {
+                        this.toggleAreaTypeModal();
+                      }}
+                    />,
+                  ]}
+                  columns={this.state.properties}
+                  data={[
+                    ...(this.state.data && this.inputsForData(this.state.data)),
+                  ]}
+                  width={{ width: '125px' }}
+                />
+              </CardBody>
+            </Card>
+            {this.state.hidden ? null : (
+              <Modal
+                title={
+                  this.state.editingAreaType
+                    ? 'Editar tipo de area'
+                    : 'Agregar nuevo tipo de area'
+                }
+                hidden={this.state.hidden}
+                onConfirm={
+                  this.state.editingAreaType
+                    ? this.updateAreaType
+                    : this.addAreaType
+                }
+                onCancel={this.toggleAreaTypeModal}
+              >
+                {this.modalContent()}
+              </Modal>
+            )}
+            {this.state.hideDeleteModal ? null : (
+              <Modal
+                title={'Eliminar tipo de area'}
+                hidden={this.state.hideDeleteModal}
+                onConfirm={this.deleteAreaType}
+                onCancel={this.toggleDeleteModal}
+              >
+                Deseas eliminar este tipo de area?
+              </Modal>
+            )}
+          </Fragment>
+        )}
         {this.state.showFloatingButton ? (
           <FloatingButton
             route="prime"
@@ -461,9 +538,19 @@ class Area extends Component {
             Primas
           </FloatingButton>
         ) : null}
+        <Prices2
+          open={this.state.isAreaTypeDialogOpen}
+          handleClose={() => {
+            this.setState({ isAreaTypeDialogOpen: false });
+          }}
+          towerId={this.props.match.params.towerId}
+          areaTypeId={this.state.areaTypeId}
+          disableSold={this.state.disableSold}
+          updateInformation={this.updateTableInformation}
+        />
       </LoadableContainer>
     );
   }
 }
 
-export default Area;
+export default withSnackbar(withDefaultLayout(Area));

@@ -5,21 +5,25 @@
   flex-direction: column;
   flex-basis: 5rem;
   flex-shrink: 0;
-  background: $softGray-color;
+  color: #2d3436 !important;
+  background: #fff;
   height: 100%;
   flex: 0.8;
   justify-content: flex-start;
-  align-items: center;
   overflow: hidden;
   transition: all 0.2s ease;
+  -webkit-box-shadow: 6px 3px 11px -4.5px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 6px 3px 11px -4.5px rgba(0, 0, 0, 0.1);
+  box-shadow: 6px 3px 11px -4.5px rgba(0, 0, 0, 0.1);
+  border: red;
   &:hover,
   .collapseAndExpandRow {
-    -webkit-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
-    box-shadow: 14px 6px 22px -9px rgba(0, 0, 0, 0.3);
-    border-left-color: $main-color;
+    -webkit-box-shadow: 6px 3px 11px -4.5px $main-color;
+    -moz-box-shadow: 6px 3px 11px -4.5px $main-color;
+    box-shadow: 6px 3px 11px -4.5px $main-color;
   }
   z-index: 5;
+  overflow-y: scroll;
 }
 
 .ZeroWidth {
@@ -28,19 +32,56 @@
 
 .OriginalWidth {
   width: 240px;
+  overflow-y: auto;
+}
+
+.title {
+  padding: 15px;
+  font-weight: bold;
+  text-align: left;
+  font-size: 20px;
+  color: #f5f5f5;
+  background-color: $main-color !important;
+  -webkit-box-shadow: 0px 12px 33px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 12px 33px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 0px 12px 33px -10px rgba(0, 0, 0, 0.57);
+}
+
+.towerName {
+  opacity: 1 !important;
+}
+
+.collapseHeader {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+}
+
+.iconLabel {
+  font-size: 19px !important;
+  margin-top: 1.5% !important;
+  margin-right: 3.5% !important;
+  padding-right: 5% !important;
+}
+
+.lineSpace {
+  margin: 0.05% !important;
+  opacity: 0.15 !important;
 }
 
 .IconsContainer {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  margin-top: 3vh;
-  margin-left: 16%;
   z-index: 3;
 }
 
 .Description {
-  color: inherit;
+  color: #2d3436;
+  margin-left: 0.5%;
+}
+
+.DescriptionActive {
+  color: $main-color;
+  background-color: #f5f5f5;
+  margin-left: 0.5%;
 }
 
 .Start {
@@ -55,27 +96,28 @@
 .MenuItem {
   display: flex;
   justify-content: center !important;
-  width: 100% !important;
+  width: 100vw !important;
+  font-size: 13px !important;
   z-index: 3;
+  color: #2d3436;
+  background-color: #fff;
+  width: 100vw !important;
   a:link,
   a:visited {
+    padding: 15px 16px;
     flex: 1;
     border: none;
-    color: $black-color;
-    padding: 10px 2px;
     transition-duration: 0.4s;
     text-decoration: none;
-    font-size: 16px;
     cursor: pointer;
+    color: #2d3436;
   }
   a:focus {
     color: $main-color;
-    background-color: $softGrayBackground-color;
   }
   a:hover,
   a:active {
-    background-color: $softGrayBackground-color;
-    border-radius: 2px;
+    border-left: 5px solid $softGray-color;
   }
 }
 
@@ -83,24 +125,24 @@
   display: flex;
   justify-content: center;
   width: 100%;
-
+  background-color: #f5f5f5 !important;
+  font-size: 15px !important;
   a:link,
   a:visited {
     flex: 1;
     border: none;
-    background-color: $softGrayBackground-color;
     color: $main-color;
+    border-left: 5px solid $softGray-color;
     padding: 10px 2px;
     transition-duration: 0.4s;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
   }
 
   a:hover,
   a:active {
-    background-color: $softGrayBackground-color;
-    border-radius: 2px;
+    border-left: 5px solid $softGray-color;
   }
 }
 
@@ -129,4 +171,51 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   background: $red-color;
   top: -10px;
+}
+
+.header {
+  text-align: left;
+  font-weight: bold;
+  font-size: 13px;
+  margin: 15px 0;
+  padding-left: 15px !important;
+  opacity: 0.45;
+}
+
+.expansionPanel {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.expansionPanelActive {
+  color: $main-color !important;
+}
+
+.expansionPanel:before {
+  background-color: transparent !important;
+}
+
+.expansionPanelSummary {
+  margin: 0 !important;
+  padding: 0 10px !important;
+  box-sizing: content-box;
+  font-size: 16px;
+  &:hover {
+    background-color: rgb(245, 245, 245) !important;
+  }
+}
+
+.expansionPanelDetails {
+  padding: 0 !important;
+  margin-bottom: 15px;
+  background-color: $itemNoActive !important;
+}
+
+.linkContainer {
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  height: 100vh;
 }

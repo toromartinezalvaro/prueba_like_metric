@@ -5,6 +5,8 @@ import Modal from '../../components/UI/Modal/Modal';
 import Input from '../../components/UI/Input/Input';
 import { DashboardRoutes } from '../../routes/local/routes';
 import LoadableContainer from '../../components/UI/Loader';
+import Agent from '../../config/config';
+import { Role } from '../../helpers';
 
 export default class Towers extends Component {
   constructor(props) {
@@ -21,18 +23,38 @@ export default class Towers extends Component {
     alertIsHidden: true,
     isLoading: false,
     alertAccept: () => {},
+    currentEditingTower: null,
   };
 
   componentDidMount() {
     this.loadCurrentTowers();
   }
 
+  mainComponentUrl =
+    Agent.currentUser.userType === Role.User
+      ? DashboardRoutes.clients.value
+      : DashboardRoutes.schedule.value;
+
   openTowerHandler = (tower) => {
     tower = { ...tower, projectId: this.props.match.params.projectId };
     this.props.changeTower(tower);
-    this.props.history.push(
-      DashboardRoutes.base + DashboardRoutes.schedule.value + tower.id,
-    );
+    const mainComponentUrl =
+      Agent.currentUser.userType === Role.User
+        ? DashboardRoutes.clients.value
+        : DashboardRoutes.schedule.value;
+    const urlToGo = DashboardRoutes.base + mainComponentUrl + tower.id;
+    this.props.history.push(urlToGo);
+  };
+
+  openTowerCtrl = (tower) => {
+    tower = { ...tower, projectId: this.props.match.params.projectId };
+    this.props.changeTower(tower);
+    const mainComponentUrl =
+      Agent.currentUser.userType === Role.User
+        ? DashboardRoutes.clients.value
+        : DashboardRoutes.schedule.value;
+    const urlToGo = DashboardRoutes.base + mainComponentUrl + tower.id;
+    window.open(urlToGo, '_blank');
   };
 
   createTowerHandler = () => {
@@ -146,32 +168,84 @@ export default class Towers extends Component {
     });
   };
 
+  onChangeTower = (name) => (target) => {
+    this.setState((prevState) => {
+      const currentEditingTower = {
+        ...prevState.currentEditingTower,
+        [name]: target.value,
+      };
+      return { currentEditingTower };
+    });
+  };
+
+  onEditTower = () => {
+    const { id, name, description } = this.state.currentEditingTower;
+    this.services
+      .updateTower(id, { name, description })
+      .then((response) => {
+        const tower = { ...response.data[1] };
+        tower.id = id;
+        this.setState((prevState) => {
+          const { towers } = prevState;
+          const index = towers.findIndex((o) => o.id === id);
+          towers[index] = tower;
+          return {
+            towers,
+            currentEditingProject: null,
+            modalIsHidden: true,
+          };
+        });
+      })
+      .catch((error) => {
+        this.setState({ currentEditingTower: null, modalIsHidden: true });
+        console.error(error);
+      });
+  };
+
   createModal = () => {
     return (
       <Modal
-        title={'Crear Torre'}
+        title={this.state.currentEditingTower ? 'Editar torre' : 'Crear torre'}
         hidden={this.state.modalIsHidden}
-        onConfirm={this.onCreate}
+        onConfirm={
+          this.state.currentEditingTower ? this.onEditTower : this.onCreate
+        }
         onCancel={this.cancel}
       >
         <div>
           <label>Nombre</label>
           <Input
             name="newTitleTower"
-            onChange={this.onChange}
+            onChange={
+              this.state.currentEditingTower
+                ? this.onChangeTower('name')
+                : this.onChange
+            }
             validations={[]}
             style={{ width: '75px' }}
-            value={this.state.newTitleTower}
+            value={
+              this.state.currentEditingTower
+                ? this.state.currentEditingTower.name
+                : this.state.newTitleTower
+            }
           />
         </div>
         <div>
           <label>Descripción</label>
           <Input
             name="newDescriptionTower"
-            onChange={this.onChange}
+            onChange={
+              this.state.currentEditingTower
+                ? this.onChangeTower('description')
+                : this.onChange
+            }
             validations={[]}
             style={{ width: '75px' }}
-            value={this.state.newDescriptionTower}
+            value={
+              this.state.currentEditingTower
+                ? this.state.currentEditingTower.description
+                : this.state.newDescriptionTower
+            }
           />
         </div>
       </Modal>
@@ -191,6 +265,15 @@ export default class Towers extends Component {
     );
   }
 
+  editTower = (id) => {
+    const { towers } = this.state;
+    const currentEditingTower = towers.find((tower) => tower.id === id);
+    this.setState({
+      currentEditingTower,
+      modalIsHidden: !currentEditingTower,
+    });
+  };
+
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
@@ -199,10 +282,15 @@ export default class Towers extends Component {
             towers={this.state.towers}
             openTower={this.openTowerHandler}
             createTower={this.createTowerHandler}
+            editTower={this.editTower}
             removeTower={this.removetowerHandler}
+            mainComponentUrl={this.mainComponentUrl}
+            baseRoute={DashboardRoutes.base}
+            openTowerCtrl={this.openTowerCtrl}
           />
         )}
-        {!this.state.modalIsHidden && this.createModal()}
+        {(!this.state.modalIsHidden || this.state.currentEditingTower) &&
+          this.createModal()}
         {!this.state.alertIsHidden && this.createAlert()}
       </LoadableContainer>
     );

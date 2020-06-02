@@ -19,9 +19,9 @@ class Services {
     return this.axiosPromise(() => this.axios.put(url, data, config));
   }
 
-  get(url, data, config) {
+  get(url, config) {
     console.log('url 🐒 get', url, this.axios.defaults.headers);
-    return this.axiosPromise(() => this.axios.get(url, data, config));
+    return this.axiosPromise(() => this.axios.get(url, config));
   }
 
   download(url, data, config) {
@@ -38,23 +38,24 @@ class Services {
     return this.axiosPromise(() => this.axios.delete(url, newConfig));
   }
 
-  renewToken(refreshToken, promise, resolve, reject) {
+  renewToken(promise, resolve, reject) {
+    agent.reloadCurrentUser();
+    const { refreshToken } = agent.currentUser;
     this.axios
-      .post(UserServices.renewToken, { refreshToken })
+      .post(UserServices.renewToken, { refreshToken }, { timeout: 1000 * 80 })
       .then((response) => {
         if (response.data.token) {
           agent.saveUser(response.data);
           this.axiosPromise(promise, 2, false)
             .then(resolve)
             .catch(reject);
-
-          return;
         }
-        throw new Error('401');
       })
       .catch((error) => {
-        agent.logout();
-        window.location.reload();
+        if (error.response && error.response.status === 401) {
+          agent.logout();
+          window.location.reload();
+        }
         reject(error);
       });
   }
@@ -67,25 +68,35 @@ class Services {
         })
         .catch((error) => {
           if (error.response && error.response.status === 401) {
-            if (agent.currentUser && agent.currentUser.refreshToken && isAuthorizationEnabled) {
-              this.renewToken(
-                agent.currentUser.refreshToken,
-                promise,
-                resolve,
-                reject,
-              );
+            if (
+              agent.currentUser &&
+              agent.currentUser.refreshToken &&
+              isAuthorizationEnabled
+            ) {
+              this.renewToken(promise, resolve, reject);
               return;
             }
+
             agent.logout();
             window.location.reload();
             reject(error);
-          } else if (retry >= 1 && retry < 5) {
+          } else if (
+            retry >= 1 &&
+            retry < 5 &&
+            ((error.response &&
+              error.response.status !== 404 &&
+              error.response.status !== 400) ||
+              !error.response)
+          ) {
             const newRetry = retry - 1;
             this.axiosPromise(promise, newRetry)
               .then(resolve)
               .catch(reject);
           } else {
-            reject(error);
+            const errorObject = error.response
+              ? error.response.data
+              : { message: 'Ha ocurrido un error' };
+            reject(errorObject);
           }
         });
     });

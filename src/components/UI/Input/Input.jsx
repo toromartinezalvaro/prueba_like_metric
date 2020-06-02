@@ -22,7 +22,7 @@ const Input = (props) => {
 
   const validation = (value) => {
     setErrorMessages('');
-    return props.validations.reduce((current, next) => {
+    return (props.validations || []).reduce((current, next) => {
       const val = next.fn(cleanValue(value));
       if (!val) {
         return setErrorMessages(next.message);
@@ -30,9 +30,9 @@ const Input = (props) => {
       if (val !== true) {
         if (val.floor === props.floor && val.location === props.location) {
           return true;
-        } else {
+        } 
           return setErrorMessages(next.message);
-        }
+        
       }
       return current && val;
     }, true);
@@ -96,7 +96,7 @@ const Input = (props) => {
     }
     if (props.mask === 'currency') {
       return cleanCurrencyMask(value);
-    } else if (props.mask === 'percentage') {
+    } if (props.mask === 'percentage') {
       return cleanPercentageMask(value);
     } else {
       return value;

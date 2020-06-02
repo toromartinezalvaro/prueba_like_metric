@@ -13,6 +13,9 @@ function Totals({
   putSalesSpeed,
   validations,
   blockIncrements,
+  inventoryUnits,
+  salesIncrement,
+  isReset,
 }) {
   const {
     date,
@@ -23,6 +26,7 @@ function Totals({
     l0,
     increment,
     estimatedSales,
+    averageSalesPerMT2,
     incrementRate,
     retentionMonths,
     ear,
@@ -74,28 +78,24 @@ function Totals({
         />
       </div>
       <div className={Styles['total-increment-goal']}>
-        {blockIncrements ? (
-          <span>No se puede incrementar con 1 unidad</span>
-        ) : (
-          <Input
-            mask="currency"
-            validations={[
-              {
-                fn: (value) => value !== '.',
-                message: 'Debe ingresar un numero',
-              },
-            ]}
-            value={increment && increment.toFixed(2)}
-            onChange={(target) => {
-              putIncrement(target.value);
-            }}
-            updateWithProp
-          />
-        )}
+        <NumberFormat
+          value={increment.toFixed(2)}
+          displayType="text"
+          thousandSeparator={true}
+          prefix="$"
+        />
       </div>
       <div className={Styles['total-sales-future']}>
         <NumberFormat
           value={estimatedSales && estimatedSales.toFixed(2)}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
+        />
+      </div>
+      <div className={Styles['total-sales-average']}>
+        <NumberFormat
+          value={averageSalesPerMT2 && averageSalesPerMT2.toFixed(2)}
           displayType={'text'}
           thousandSeparator={true}
           prefix={'$'}
@@ -110,23 +110,11 @@ function Totals({
         />
       </div>
       <div className={Styles['total-analysis-inverse']} />
-      <div className={Styles['total-retention-months']}>
-        <Input
-          validations={validations}
-          value={retentionMonths}
-          onChange={(target) => {
-            putSalesSpeed(target.value);
-          }}
-        />
-      </div>
-      <div className={Styles['total-ear']}>
-        <NumberFormat
-          value={(ear * 100).toFixed(2)}
-          displayType={'text'}
-          thousandSeparator={true}
-          suffix={'%'}
-        />
-      </div>
+      <div className={Styles['total-inventory-base-price-mt2']} />
+      <div className={Styles['total-inventory-base-price']} />
+      <div className={Styles['total-sales-speed']} />
+      <div className={Styles['total-retention-months']}></div>
+      <div className={Styles['total-ear']}></div>
     </div>
   );
 }

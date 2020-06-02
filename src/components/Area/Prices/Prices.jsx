@@ -1,15 +1,16 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import _ from 'lodash';
+import { Formik, Form, Field } from 'formik';
+import Loader from 'react-loader-spinner';
 import Table from '../../UI/Table/Table';
 import Input from '../../UI/Input/Input';
 import errorHandling from '../../../services/commons/errorHelper';
-import Error from '../../../components/UI/Error/Error';
-import Loader from 'react-loader-spinner';
+import Error from '../../UI/Error/Error';
 import commonStyles from '../../../assets/styles/variables.scss';
 import styles from './Prices.module.scss';
 
-const Prices = props => {
-  const { areaTypeId, measurementUnit, services, towerId } = props;
+const Prices = (props) => {
+  const { areaTypeId, measurementUnit, services, towerId, anySold } = props;
   const [areas, setAreas] = useState([]);
   const [prices, setPrices] = useState([]);
   const [currentErrorMessage, setCurrentErrorMessage] = useState();
@@ -18,12 +19,12 @@ const Prices = props => {
   const updateAreaPrice = (id, price) => {
     services
       .putAreaPrice(id, {
-        price: price,
+        price,
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -31,12 +32,12 @@ const Prices = props => {
   const updateAreaTypePrice = (id, price) => {
     services
       .putAreaTypePrice(id, {
-        price: price,
+        price,
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -45,36 +46,26 @@ const Prices = props => {
     setLoading(true);
     services
       .getPrices(towerId, areaTypeId)
-      .then(res => {
+      .then((res) => {
         setLoading(false);
         if (res.data.length > 0) {
-          res.data = _.sortBy(res.data, o => o.measure);
+          res.data = _.sortBy(res.data, (o) => o.measure);
           if (res.data[0].areaType.unit === 'UNT') {
             setPrices([res.data[0].price]);
           } else {
             const areas = [];
-            const prices = res.data.map(area => {
+            const prices = res.data.map((area) => {
               areas.push(area.measure);
-              return [
-                <Input
-                  mask="currency"
-                  onChange={target => {
-                    updateAreaPrice(area.id, target.value);
-                  }}
-                  validations={[]}
-                  style={{ width: '75px' }}
-                  value={area.price}
-                />,
-              ];
+              return [<Field name="price" />];
             });
             setAreas(areas);
             setPrices(prices);
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         setLoading(false);
-        let errorHelper = errorHandling(error);
+        const errorHelper = errorHandling(error);
         setCurrentErrorMessage(errorHelper.message);
       });
     setCurrentErrorMessage('');
@@ -86,7 +77,6 @@ const Prices = props => {
         {currentErrorMessage !== '' ? (
           <Error message={currentErrorMessage} />
         ) : null}
-        {console.log('Ooooh ', isLoading, props.isLoading)}
         {prices.length === 0 && !isLoading && !props.isLoading ? (
           <div>No se han ingresado areas</div>
         ) : isLoading || props.isLoading ? (
@@ -99,21 +89,25 @@ const Prices = props => {
             />
           </div>
         ) : measurementUnit === 'MT2' ? (
-          <Table
-            intersect={'Areas'}
-            headers={['Precio']}
-            columns={areas}
-            data={prices}
-            maxHeight={{ maxHeight: '36vh' }}
-          />
+          <Formik>
+            <Form>
+              <Table
+                intersect={'Areas'}
+                headers={['Precio']}
+                columns={areas}
+                data={prices}
+                maxHeight={{ maxHeight: '36vh' }}
+              />
+              <button type="submit">Enviar</button>
+            </Form>
+          </Formik>
         ) : (
           <div style={{ display: 'flex' }}>
             <div>Precio: </div>
             <div>
-              {console.log('prices', prices)}
               <Input
                 mask="currency"
-                onChange={target => {
+                onChange={(target) => {
                   updateAreaTypePrice(areaTypeId, target.value);
                 }}
                 value={prices[0]}

@@ -2,8 +2,18 @@ import IncrementsServicesDefinition from './IncrementsServicesDefinition';
 import Services from '../services';
 
 export default class IncrementsServices extends Services {
+  getMarket(towerId) {
+    return this.get(IncrementsServicesDefinition.getMarket(towerId));
+  }
+
   putIncrements(towerId) {
     return this.put(IncrementsServicesDefinition.putIncrements(towerId));
+  }
+
+  putFutureSalesSpeeds(id, futureSalesSpeed) {
+    return this.put(IncrementsServicesDefinition.putFutureSalesSpeeds(id), {
+      futureSalesSpeed,
+    });
   }
 
   getIncrements(towerId) {
@@ -44,16 +54,16 @@ export default class IncrementsServices extends Services {
     );
   }
 
-  putMarketAveragePrice(towerId, body) {
+  putMarketAveragePrice(groupId, body) {
     return this.put(
-      IncrementsServicesDefinition.putMarketAveragePrice(towerId),
+      IncrementsServicesDefinition.putMarketAveragePrice(groupId),
       body,
     );
   }
 
-  putMarketAnualEffectiveIncrement(towerId, body) {
+  putMarketAnualEffectiveIncrement(groupId, body) {
     return this.put(
-      IncrementsServicesDefinition.putMarketAnualEffectiveIncrement(towerId),
+      IncrementsServicesDefinition.putMarketAnualEffectiveIncrement(groupId),
       body,
     );
   }

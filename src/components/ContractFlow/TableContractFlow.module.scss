@@ -1,0 +1,31 @@
+/*
+ * Created by Jcatman on Fri Dec 20 2019
+ *
+ * Copyright (c) 2019 Instabuild
+ */
+
+.dates {
+  display: flex;
+  flex-direction: row !important;
+  position: relative;
+  left: 50%;
+}
+
+.initialDate {
+  display: flex;
+  flex-direction: row !important;
+  margin-left: 5%;
+  align-content: center;
+}
+
+.finalDate {
+  display: flex;
+  flex-direction: row !important;
+  margin-left: 5%;
+}
+
+.date {
+  position: relative;
+  left: 2%;
+  top: 35% !important;
+}

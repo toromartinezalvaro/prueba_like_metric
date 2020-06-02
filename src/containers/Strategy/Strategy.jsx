@@ -8,17 +8,21 @@ import Card from '../../components/UI/Card/Card';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
 import SummaryStrategy from '../../components/Strategy/SummaryStrategy';
+import MarketAndSelectStrategy from '../../components/Strategy/MarketAndSelectStrategy';
 import styles from '../../assets/styles/variables.scss';
 import { DashboardRoutes } from '../../routes/local/routes';
 import LoadableContainer from '../../components/UI/Loader';
+import IncrementsServices from '../../services/increments/IncrementsServices';
 
 export default class Strategy extends Component {
   constructor(props) {
     super(props);
     this.services = new StrategyServices(this);
+    this.incrementServices = new IncrementsServices(this);
   }
 
   state = {
+    market: { averagePrice: 0, anualEffectiveIncrement: 0 },
     groupActive: { type: '', strategies: [] },
     currentGroup: {},
     groups: [],
@@ -73,7 +77,7 @@ export default class Strategy extends Component {
     if (groupFilter !== undefined) {
       if (groupFilter.strategies.length > 0) {
         this.setState({ dataGraph: groupFilter.strategies });
-        let dataGraph = groupFilter.strategies;
+        const dataGraph = groupFilter.strategies;
         console.log('dataGraph', dataGraph);
         if (dataGraph[0] !== undefined) {
           let lengths;
@@ -82,11 +86,11 @@ export default class Strategy extends Component {
           } else {
             lengths = [dataGraph[0].increments.length];
           }
-          console.log(lengths);
+          const initialMonth = groupFilter.initialMonth || Date.now();
           return Array(_.max(lengths))
             .fill(null)
             .map((_, index) => {
-              return moment(Number(this.state.salesStartDate))
+              return moment(Number(initialMonth))
                 .add(index, 'months')
                 .format('MM/YY');
             });
@@ -95,6 +99,14 @@ export default class Strategy extends Component {
         return null;
       }
     }
+  };
+
+  selectStrategy = (index, strategySelected) => {
+    this.setState({
+      hidden: false,
+      strategySelected,
+      index,
+    });
   };
 
   makeArrayDataSets = (dataGraph) => {
@@ -133,11 +145,11 @@ export default class Strategy extends Component {
           );
           const labels = this.makeArrayLabels(groupFilter);
           const arrayDataSets = this.makeArrayDataSets(groupFilter.strategies);
-          this.setState({
+          return this.setState({
             isLoading: false,
             groupActive: strategies.data.increments[0],
             currentGroup: arrayDataSets,
-            labels: labels,
+            labels,
             groups: strategies.data.increments,
             strategyActive: strategies.data.increments[0].strategy,
           });
@@ -148,7 +160,11 @@ export default class Strategy extends Component {
           isLoading: false,
         }),
       );
-    console.log('this.state.groups', this.state.groups);
+    this.incrementServices
+      .getMarket(this.props.match.params.towerId)
+      .then((response) => {
+        this.setState({ market: response.data });
+      });
   }
 
   handleClick(type) {
@@ -162,13 +178,13 @@ export default class Strategy extends Component {
     if (arrayDataSets.length !== 0) {
       this.setState({
         currentGroup: arrayDataSets,
-        labels: labels,
-        groupActive: groupActive,
+        labels,
+        groupActive,
         strategyActive: groupActive.strategy,
       });
     } else {
       this.setState({
-        groupActive: groupActive,
+        groupActive,
       });
     }
   }
@@ -195,9 +211,12 @@ export default class Strategy extends Component {
         return this.services.getStrategies(this.props.match.params.towerId);
       })
       .then((strategies) => {
+        const tempGroupActive = this.state.groupActive;
+        tempGroupActive.isReset = false;
         this.setState({
           hidden: true,
           strategyActive: this.state.strategySelected,
+          groupActive: tempGroupActive,
           groups: strategies.data.increments,
         });
       })
@@ -207,6 +226,70 @@ export default class Strategy extends Component {
   cancel = () => {
     this.setState({ hidden: true });
     return true;
+  };
+
+  putMarketAveragePrice = (groupId, averagePrice) => {
+    this.setState({ isLoading: true });
+    this.incrementServices
+      .putMarketAveragePrice(groupId, {
+        averagePrice,
+        length: this.state.labels.length - 1,
+      })
+      .then((res) => {
+        this.changeMarketAveragePrice(averagePrice);
+        this.setState((prevState) => {
+          const tempGroupActive = { ...prevState.groupActive };
+          const market = res.data[0];
+          tempGroupActive.strategies[0] = market;
+          const arrayDataSets = this.makeArrayDataSets(
+            tempGroupActive.strategies,
+          );
+          return { isLoading: false, currentGroup: arrayDataSets };
+        });
+      })
+      .catch((error) => {
+        this.setState({ isLoading: false });
+      });
+  };
+
+  changeMarketAveragePrice = (averagePrice) => {
+    this.setState((prevState) => {
+      const tempGroupActive = { ...prevState.groupActive };
+      tempGroupActive.marketDefinitions.averagePrice = averagePrice;
+      return { groupActive: tempGroupActive };
+    });
+  };
+
+  changeMarketAnnualEffectiveIncrement = (anualEffectiveIncrement) => {
+    this.setState((prevState) => {
+      const tempGroupActive = { ...prevState.groupActive };
+      tempGroupActive.marketDefinitions.anualEffectiveIncrement = anualEffectiveIncrement;
+      return { groupActive: tempGroupActive };
+    });
+  };
+
+  putMarketAnnualEffectiveIncrement = (groupId, anualEffectiveIncrement) => {
+    this.setState({ isLoading: true });
+    this.incrementServices
+      .putMarketAnualEffectiveIncrement(groupId, {
+        anualEffectiveIncrement,
+        length: this.state.labels.length - 1,
+      })
+      .then((res) => {
+        this.changeMarketAnnualEffectiveIncrement(anualEffectiveIncrement);
+        this.setState((prevState) => {
+          const tempGroupActive = { ...prevState.groupActive };
+          const market = res.data[0];
+          tempGroupActive.strategies[0] = market;
+          const arrayDataSets = this.makeArrayDataSets(
+            tempGroupActive.strategies,
+          );
+          return { isLoading: false, currentGroup: arrayDataSets };
+        });
+      })
+      .catch((error) => {
+        this.setState({ isLoading: false });
+      });
   };
 
   render() {
@@ -237,46 +320,24 @@ export default class Strategy extends Component {
                   currentGroup={[...this.state.currentGroup]}
                   labels={this.state.labels}
                 />
-                <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                  <h4>
-                    Selecciona la estrategia para el{' '}
-                    {this.state.groupActive.type}
-                  </h4>
-                  {this.state.groupActive.strategies.map((group, index) => {
-                    if (index !== 0) {
-                      let styleButton = {
-                        backgroundColor: styles.grayColor,
-                      };
-                      if (
-                        this.state.strategyActive ===
-                        this.state.dataHelper[index].id
-                      ) {
-                        styleButton = {
-                          backgroundColor: this.state.dataHelper[index]
-                            .borderColor,
-                        };
-                      }
-                      return (
-                        <Button
-                          onClick={() => {
-                            this.setState({
-                              hidden: false,
-                              strategySelected: this.state.dataHelper[index].id,
-                              index: index,
-                            });
-                          }}
-                          style={styleButton}
-                        >
-                          {this.state.dataHelper[index].label}
-                        </Button>
-                      );
-                    }
-                  })}
-                  <SummaryStrategy
-                    groups={this.state.groups}
-                    helper={this.state.dataHelper}
-                  />
-                </div>
+                <MarketAndSelectStrategy
+                  dataHelper={this.state.dataHelper}
+                  groupActive={this.state.groupActive}
+                  strategyActive={this.state.strategyActive}
+                  selectStrategy={this.selectStrategy}
+                  putMarketAveragePrice={this.putMarketAveragePrice}
+                  putMarketAnnualEffectiveIncrement={
+                    this.putMarketAnnualEffectiveIncrement
+                  }
+                  changeMarketAnnualEffectiveIncrement={
+                    this.changeMarketAnnualEffectiveIncrement
+                  }
+                  changeMarketAveragePrice={this.changeMarketAveragePrice}
+                />
+                <SummaryStrategy
+                  groups={this.state.groups}
+                  helper={this.state.dataHelper}
+                />
               </div>
             ) : null
           ) : (
@@ -287,10 +348,8 @@ export default class Strategy extends Component {
               </h4>
               <Link
                 to={
-                  DashboardRoutes.base +
-                  '/clustering' +
-                  '/' +
-                  this.props.match.params.towerId
+                  `${DashboardRoutes.base}/clustering` +
+                  `/${this.props.match.params.towerId}`
                 }
               >
                 <Button>
@@ -299,10 +358,8 @@ export default class Strategy extends Component {
               </Link>
               <Link
                 to={
-                  DashboardRoutes.base +
-                  '/increments' +
-                  '/' +
-                  this.props.match.params.towerId
+                  `${DashboardRoutes.base}/increments` +
+                  `/${this.props.match.params.towerId}`
                 }
               >
                 <Button>

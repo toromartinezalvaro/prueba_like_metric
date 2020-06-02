@@ -1,0 +1,37 @@
+/*
+ * Created on Mon Oct 28 2019
+ *
+ * Copyright (c) 2019 Your Company
+ */
+
+@import '../../../assets/styles/variables.scss';
+
+.TitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ConfirmButton {
+  background: $softGreenColor;
+}
+
+.CancelButton {
+  background: $redButton-color !important;
+}
+
+.rejectBadge {
+  border-radius: 50%;
+  background-color: red;
+  padding: 2px;
+  height: 14px;
+  width: 14px;
+  display: block;
+  font-size: 12px;
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
+.rejectedLabel {
+  color: red;
+}

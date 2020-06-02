@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import NumberFormat from 'react-number-format';
 import styles from './Schema.module.scss';
 import Card, { CardHeader, CardBody, CardFooter } from '../../UI/Card/Card';
 import Input from '../../UI/Input/Input';
@@ -7,6 +8,27 @@ import Modal from '../../UI/Modal/Modal';
 
 const Schema = (props) => {
   const [hidden, setHidden] = useState(true);
+  const [locked, setLock] = useState(false);
+
+  function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={inputRef}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              value: values.value,
+            },
+          });
+        }}
+        type="tel"
+        allowNegative={false}
+        decimalSeparator={false}
+      />
+    );
+  }
 
   const inputValidation = [
     {
@@ -27,10 +49,11 @@ const Schema = (props) => {
   const save = () => {
     if (props.update) {
       props.updateSchema();
+      setHidden(true);
+      setLock(true);
     } else {
       props.saveSchema();
     }
-    setHidden(true);
   };
 
   const toggleWarning = () => {
@@ -58,6 +81,7 @@ const Schema = (props) => {
               value={props.floors}
               validations={inputValidation}
               disable={props.disable}
+              mask="number"
             />
           </div>
 
@@ -70,6 +94,7 @@ const Schema = (props) => {
               value={props.properties}
               validations={inputValidation}
               disable={props.disable}
+              mask="number"
             />
           </div>
 
@@ -82,6 +107,7 @@ const Schema = (props) => {
               value={props.lowestFloor}
               validations={inputValidation}
               disable={props.disable}
+              mask="number"
             />
           </div>
           <div>
@@ -102,14 +128,17 @@ const Schema = (props) => {
       <CardFooter>
         <div className={styles.Actions}>
           {props.disable ? (
-            <Button
-              onClick={() => {
-                props.editMode();
-                toggleWarning();
-              }}
-            >
-              Editar
-            </Button>
+            <div>
+              <Button
+                onClick={() => {
+                  props.editMode();
+                  toggleWarning();
+                }}
+                isDisabled={props.disableSold}
+              >
+                Editar
+              </Button>
+            </div>
           ) : (
             <div>
               <Button
@@ -117,12 +146,13 @@ const Schema = (props) => {
                 onClick={() => {
                   props.editMode();
                 }}
+                isDisabled={props.disableSold}
               >
                 Cancelar
               </Button>
               <Button
                 onClick={() => {
-                  setHidden(false);
+                  save();
                 }}
               >
                 Guardar
@@ -148,10 +178,10 @@ const Schema = (props) => {
           )}
         </div>
 
-        {hidden ? null : (
+        {props.sold && (
           <Modal
             title={'Actualizar nomenclatura'}
-            hidden={hidden}
+            hidden={props.sold}
             onConfirm={save}
             onCancel={cancel}
           >

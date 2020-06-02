@@ -4,8 +4,8 @@
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas: 'inv-header' 'inv-date' 'inv-units' 'inv-area' 'inv-price' 'inv-price-m2' 'inv-sales-l0' 'inv-increment-goal' 'inv-sales-future' 'inv-increment-base' 'inv-analysis-inverse' 'inv-retention-months' 'inv-ear' 'inv-sales-wizard' 'inv-inventory-retention' 'inv-ear-suggestion' 'inv-increment-goal-suggestion';
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'inv-header' 'inv-date' 'inv-units' 'inv-area' 'inv-price' 'inv-price-m2' 'inv-sales-l0' 'inv-increment-goal' 'inv-sales-future' 'inv-sales-average' 'inv-increment-base' 'inv-analysis-inverse' 'inv-inventory-base-price-mt2' 'inv-inventory-base-price' 'inv-speed-sales' 'inv-retention-months' 'inv-ear' 'inv-sales-wizard' 'inv-inventory-retention' 'inv-ear-suggestion' 'inv-increment-goal-suggestion';
   grid-area: inventory;
 
   & * {
@@ -13,6 +13,25 @@
     align-items: center;
   }
 }
+
+.Badge {
+  margin-left: 5px;
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: $white-color;
+  overflow: hidden;
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 2px 5px 0 $black-color;
+  background: $main-color;
+  top: 4px;
+  cursor: pointer;
+}
+
+
 
 .inv-header {
   background-color: #f3f3f3;
@@ -59,6 +78,10 @@
   grid-area: inv-sales-future;
 }
 
+.inv-sales-average {
+  grid-area: inv-sales-average;
+}
+
 .inv-increment-base {
   grid-area: inv-increment-base;
   color: $gray-color;
@@ -70,7 +93,20 @@
   grid-area: inv-analysis-inverse;
 }
 
+.inv-inventory-base-price-mt2 {
+  grid-area: inv-inventory-base-price-mt2;
+}
+
+.inv-inventory-base-price {
+  grid-area: inv-inventory-base-price;
+}
+
+.inv-speed-sales {
+  grid-area: inv-speed-sales;
+}
+
 .inv-retention-months {
+  display: block;
   grid-area: inv-retention-months;
 }
 

@@ -1,8 +1,18 @@
 import { API_PATH } from '../../config/config';
 
 const ClientsServiceDefinitions = {
-  getEnums: towerId => `${API_PATH}clients/enumerators/${towerId}`,
-  postClient: () => `${API_PATH}clients/`,
+  searchClients: (towerId, query) =>
+    `${API_PATH}clients/tower/${towerId}/suggestions/?query=${query}`,
+  postClient: (towerId) => `${API_PATH}clients/tower/${towerId}`,
+  putClient: (identityDocument, towerId) =>
+    `${API_PATH}clients/client/${identityDocument}/tower/${towerId}`,
+  addClient: (towerId) => `${API_PATH}clients/tower/${towerId}`,
+  getClients: (towerId) => `${API_PATH}clients/tower/${towerId}`,
+  getClient: (text, type, towerId) =>
+    `${API_PATH}clients/tower/${towerId}/${text}?type=${type}`,
+  getPropertyInfo: (propertyId) => `${API_PATH}v2/properties/${propertyId}`,
+  addClientToTower: (identityDocument, towerId) =>
+    `${API_PATH}clients/tower-clients/client/${identityDocument}/tower/${towerId}`,
 };
 
 export default ClientsServiceDefinitions;

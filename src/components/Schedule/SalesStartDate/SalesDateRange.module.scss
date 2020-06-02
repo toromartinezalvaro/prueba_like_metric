@@ -1,12 +1,31 @@
+@import '../../../assets/styles/variables.scss';
+
 .wrapper {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   .container {
     text-align: center;
-    margin: 0 20px;
+    margin: 10px;
     .label {
       font-weight: 700;
       margin-bottom: 5px;
     }
   }
+}
+
+.Badge {
+  margin-left: 5px;
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: $white-color;
+  overflow: hidden;
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 2px 5px 0 $black-color;
+  background: $gray-color;
+  top: 4px;
 }

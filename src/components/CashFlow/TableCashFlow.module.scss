@@ -1,0 +1,25 @@
+@import '../../assets/styles/variables.scss';
+
+.Cell {
+  height: inherit;
+  justify-content: center;
+  display: flex;
+  align-items: flex-end;
+  font-weight: bold;
+  border-bottom: 1px solid $blackBorder-color;
+}
+
+.CellRigth {
+  border-right: 1px solid $blackBorder-color;
+}
+.HeaderCell {
+  height: inherit;
+  width: inherit;
+  background-color: $softYellow-color;
+}
+
+.AccordionContainer {
+  box-sizing: border-box;
+  padding: 25px;
+  overflow: auto;
+}

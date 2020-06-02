@@ -4,16 +4,25 @@ import SideMenu from '../../../components/Sidebar/SideMenu';
 import CollapseAndExpand from '../../../components/CollapseAndExpand/CollapseAndExpand';
 import UserSideMenu from '../../../components/Sidebar/UserSideMenu';
 import styles from './Dashboard.module.scss';
-import { UserRoutes } from '../../../routes/local/routes';
+import {
+  UserRoutes,
+  ContractRoutes,
+  GroupsRoutes,
+} from '../../../routes/local/routes';
 
 const Dashboard = (props) => {
-  const [resizableWidth, setResizableWidth] = useState(200);
+  const [resizableWidth, setResizableWidth] = useState(250);
   const [isHidenArrow, setIsHidenArrow] = useState(false);
   const [isMenuHidden, setHideMenu] = useState(false);
+  const [showContent, setShowContent] = useState(true);
 
   const onChangeSize = (expandibleValue) => {
     setResizableWidth(expandibleValue);
-    setHideMenu(expandibleValue <= 0);
+    setHideMenu(expandibleValue <= 17);
+  };
+
+  const onChangeShowContent = (value) => {
+    setShowContent(value);
   };
 
   const onHideArrow = (arrowValue) => {
@@ -27,11 +36,20 @@ const Dashboard = (props) => {
     return false;
   };
 
+  const userValidation =
+    props.location.pathname.includes(UserRoutes.base) ||
+    props.location.pathname.includes(GroupsRoutes.base);
+
+  const projectValidation =
+    props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
+    props.location.pathname.includes(UserRoutes.base) ||
+    props.location.pathname.includes(GroupsRoutes.base);
+
   return (
     <div className={styles.Dashboard}>
       <nav className={styles.Navigation}>
         <Sidebar />
-        {props.location.pathname.includes(UserRoutes.base) && (
+        {userValidation && (
           <Fragment>
             <UserSideMenu
               onHideArrow={onHideArrow}
@@ -42,8 +60,7 @@ const Dashboard = (props) => {
             />
           </Fragment>
         )}
-        {props.location.pathname.includes(UserRoutes.slideProjectsOnly) ||
-        props.location.pathname.includes(UserRoutes.base) ? null : (
+        {!projectValidation && (
           <Fragment>
             <SideMenu
               onHideArrow={onHideArrow}
@@ -51,6 +68,8 @@ const Dashboard = (props) => {
               resizableWidth={resizableWidth}
               tower={props.tower}
               onChange={onChangeSize}
+              showContent={showContent}
+              onChangeShowContent={onChangeShowContent}
             />
           </Fragment>
         )}
@@ -60,6 +79,7 @@ const Dashboard = (props) => {
             isHidenArrow={isHidenArrow}
             onChange={onChangeSize}
             isMenuHidden={isMenuHidden}
+            onChangeShowContent={onChangeShowContent}
           />
         </div>
       </nav>

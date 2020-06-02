@@ -1,4 +1,4 @@
-@import '../../../../assets/styles//variables.scss';
+@import '../../../../assets/styles/variables.scss';
 .title {
   font-size: 20px;
   font-weight: 700;
@@ -20,4 +20,11 @@
   .definition {
     font-weight: 700;
   }
+}
+.ConfirmButton {
+  background: $softGreenColor;
+}
+
+.CancelButton {
+  background: $redButton-color !important;
 }

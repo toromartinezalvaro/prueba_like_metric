@@ -1,82 +1,90 @@
-import React, { Component } from 'react';
-import ClientForm from '../../components/Client/ClientForm/ClientForm';
-import ClientsServices from '../../services/client/ClientsServices';
+import React, { useReducer, useState, useEffect } from 'react';
+import {
+  fetchClientsSuccess,
+  fetchClientsFailure,
+  fetchClientsStart,
+  createClient,
+  updateClient,
+  addClient,
+} from './actions';
+import reducer, { initialState } from './reducer';
+import ClientSearch from '../../components/Client2/Search';
+import ClientList from '../../components/Client2/List';
+import ClientFormDialog from '../../components/Client2/FormDialog';
+import ClientDetailsDialog from '../../components/Client2/DetailsDialog';
+import Services from '../../services/client/ClientsServices';
+import ContainerContext from './context';
+import Styles from './Client.module.scss';
+import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 
-class Client extends Component {
-  constructor(props) {
-    super(props);
-    this.services = new ClientsServices(this);
-  }
+const services = new Services();
+const Client = (props) => {
+  const [isOpen, setIsOpen] = useState({ form: false, detail: false });
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [clients, dispatch] = useReducer(reducer, initialState);
 
-  state = {
-    client: {
-      gender: null,
-      clientType: null,
-      identityDocument: null,
-      socialReason: null,
-      name: null,
-      surname: null,
-      phoneNumber: null,
-      mobileNumber: null,
-      email: null,
-      city: null,
-      module: null,
-    },
-    modules: [],
-    genders: {},
-    clientTypes: {},
-  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        dispatch(fetchClientsStart());
+        const res = await services.getClients(props.match.params.towerId);
+        dispatch(fetchClientsSuccess(res.data));
+      } catch (error) {
+        dispatch(fetchClientsFailure());
+      }
+    }
+    fetchData();
+    return () => null;
+  }, []);
 
-  componentDidMount() {
-    this.services.getEnums(this.props.match.params.towerId).then(response => {
-      const { genders, clientTypes, modules } = response.data;
-      this.setState({ genders, clientTypes, modules });
-    });
-  }
-
-  genderHandler = value => {
-    const tempClient = this.state.client;
-    tempClient.gender = value;
-    this.setState({ client: tempClient });
-  };
-
-  clientTypeHandler = value => {
-    const tempClient = this.state.client;
-    tempClient.clientType = value;
-    this.setState({ client: tempClient });
-  };
-
-  clientHandler = target => {
-    console.log(target);
-    const tempClient = this.state.client;
-    tempClient[target.name] = target.value;
-    this.setState({ client: tempClient });
-  };
-
-  saveClient = () => {
-    this.services
-      .postClient(this.state.client)
-      .then(results => {
-        console.log('OK');
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
-
-  render() {
-    return (
-      <ClientForm
-        genderHandler={this.genderHandler}
-        clientTypeHandler={this.clientTypeHandler}
-        modules={this.state.modules}
-        genders={this.state.genders}
-        clientTypes={this.state.clientTypes}
-        clientHandler={this.clientHandler}
-        saveClient={this.saveClient}
+  return (
+    <ContainerContext.Provider
+      value={{
+        towerId: props.match.params.towerId,
+        history: props.history,
+        dispatch,
+        createClient,
+        updateClient,
+        addClient,
+        makeAlert: props.spawnMessage,
+        isOpen,
+        setIsOpen,
+        setSelectedClient,
+      }}
+    >
+      <div className={Styles.container}>
+        <div>
+          <ClientSearch
+            onSelectHandler={(client) => {
+              if (client !== null) {
+                setIsOpen({ ...isOpen, form: true });
+                setSelectedClient(client);
+              }
+            }}
+          />
+        </div>
+        <div className={Styles.list}>
+          <ClientList clients={clients.list} isLoading={clients.isLoading} />
+        </div>
+      </div>
+      <ClientFormDialog
+        open={isOpen.form}
+        client={selectedClient}
+        onCloseHandler={() => {
+          setIsOpen({ ...isOpen, form: false });
+          setSelectedClient(null);
+        }}
       />
-    );
-  }
-}
+      <ClientDetailsDialog
+        client={selectedClient}
+        open={isOpen.detail}
+        towerId={props.match.params.towerId}
+        handleClose={() => {
+          setIsOpen({ ...isOpen, detail: false });
+        }}
+      />
+    </ContainerContext.Provider>
+  );
+};
 
-export default Client;
+export default withDefaultLayout(Client);

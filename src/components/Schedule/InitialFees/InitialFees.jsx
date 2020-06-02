@@ -5,7 +5,7 @@ import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Input from '../../UI/Input/Input';
 import Styles from './InitialFees.module.scss';
 
-function InitialFees({ firstSale, endOfSalesDate, firstSaleHandler }) {
+function InitialFees({ firstSale, maximumCollectionDate, firstSaleHandler }) {
   return (
     <Card>
       <CardHeader>
@@ -13,22 +13,23 @@ function InitialFees({ firstSale, endOfSalesDate, firstSaleHandler }) {
       </CardHeader>
       <CardBody>
         <div className={Styles.Container}>
-            <span className={Styles.Item}>Plazo primer comprador:</span>
-            <Input
-              className={Styles.Item}
-              validations={[]}
-              value={firstSale}
-              onChange={(target) => {
-                firstSaleHandler(target.value);
-              }}
-            />
+          <span className={Styles.Item}>Plazo primer comprador:</span>
+          <Input
+            className={Styles.Item}
+            validations={[]}
+            value={firstSale}
+            onChange={(target) => {
+              firstSaleHandler(target.value);
+            }}
+          />
+          <span className={Styles.Item}>Plazo hoy:</span>
 
-          <span className={Styles.Item}>Plazo hoy:</span>{' '}
-          <span className={`${Styles.Item  } ${  Styles.Deadline}`}>{moment(Number(endOfSalesDate)).diff(moment(), 'month')}</span>
+          <span className={`${Styles.Item} ${Styles.Deadline}`}>
+            {moment(Number(maximumCollectionDate))
+              .startOf('month')
+              .diff(moment().startOf('month'), 'months')}
+          </span>
         </div>
-        {/* <div>
-          <span>Plazo ultima venta:</span> <span>0</span>
-        </div> */}
       </CardBody>
     </Card>
   );
@@ -38,6 +39,7 @@ InitialFees.propTypes = {
   firstSale: PropTypes.number,
   salesStartDate: PropTypes.number,
   firstSaleHandler: PropTypes.func,
+  maximumCollectionDate: PropTypes.number,
 };
 
 InitialFees.defaultProps = {

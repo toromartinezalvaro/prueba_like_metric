@@ -2,6 +2,11 @@
   margin-bottom: 25px;
 }
 
+.title {
+  font-weight: 700;
+  margin-right: 45%;
+}
+
 .inputContainer {
   display: flex;
   align-items: center;
@@ -44,4 +49,10 @@
   .input {
     text-align: end;
   }
+}
+
+.DateTimePicker {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0px;
 }

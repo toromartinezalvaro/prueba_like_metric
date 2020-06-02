@@ -1,0 +1,54 @@
+/*
+ * Created Date: Wednesday November 13th 2019
+ * Author: Caraham
+ * -----
+ * Last Modified: Friday, 13th December 2019 10:50:08 am
+ * Modified By: the developer formerly known as Caraham
+ * -----
+ * Copyright (c) 2019 Instabuild
+ */
+@import '../../../assets/styles/variables';
+$width: 25px;
+$height: 25px;
+
+.TextField {
+  width: 80%;
+  height: 80%;
+}
+
+.ContainerTexField {
+  height: 1em !important;
+}
+
+.Price {
+  display: flex;
+  height: inherit;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.Available {
+  margin-left: 30% !important;
+  width: $width;
+  height: $height;
+  margin-right: 4px;
+  background-color: $green-color;
+
+  border-radius: 5%;
+}
+
+.Sold {
+  margin-left: 30% !important;
+  width: $width;
+  height: $height;
+  margin-right: 4px;
+  background-color: $main-color;
+
+  border-radius: 5%;
+}

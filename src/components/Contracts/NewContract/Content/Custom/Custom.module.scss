@@ -1,0 +1,35 @@
+/*
+ * Created on Thu Oct 31 2019
+ *
+ * Copyright (c) 2019 JCATMAN INSTABUILD
+ */
+
+@import '../../../../../assets/styles/variables.scss';
+.textField {
+  width: 30vw !important;
+}
+.multiline {
+  width: 100vw;
+}
+
+.leftInputs {
+  width: 33vw !important;
+}
+
+.selects {
+  width: 100%;
+}
+
+.selectForced {
+  width: 25vw !important;
+}
+
+.buttons {
+  position: relative;
+  left: 25% !important;
+}
+
+.leftEntry {
+  position: relative;
+  top: -55% !important;
+}

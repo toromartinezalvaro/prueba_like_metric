@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import {
   DashboardRoutes,
+  ContractRoutes,
   ProjectRoutes,
   UserRoutes,
+  ContractFlowRoutes,
+  GroupsRoutes,
+  Group,
 } from '../../routes/local/routes';
 import DashboardLayout from '../../HOC/Layouts/Dashboard/Dashboard';
 import Building from '../Building/Building';
@@ -11,6 +14,7 @@ import Projects from '../Project/Projects';
 import Towers from '../Towers/Towers';
 import { CreateUser, UserSettings, AssignTowerToUsers } from '../User';
 import Areas from '../Area/Area';
+import AreasAdditional from '../AreasAdditional/AreasAdditional';
 import Prime from '../Prime/Prime';
 import DetailAdmin from '../DetailAdmin/DetailAdmin';
 import Detail from '../Detail/Detail';
@@ -21,12 +25,22 @@ import Clustering from '../Clustering/Clustering';
 import Increments from '../Increments/Increments';
 import PrivateRoute from '../../config/PrivateRoute';
 import { Role } from '../../helpers';
-import Strategy from '../Strategy/Strategy';
-import SalesRoom from '../SalesRoom/SalesRoom';
-import Client from '../Client/Client';
+import Strategy1 from '../Strategy/Strategy';
+import SalesRoomClient from '../SalesRoom/SalesRoomClient';
+import Client from '../Client';
+import Client2 from '../Client/Client23';
 import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
+import Contracts from '../Contract/Contracts';
+import ContractFlow from '../ContractFlow2/ContractFlow';
+import CashFlow from '../CashFlow';
+import SaleRequests from '../SaleRequests';
+import Pairing from '../Pairing';
+import Quotations from '../Quotations';
+import Strategy from '../StrategyV2';
+import Companies from '../Companies/Companies';
+import Groups from '../Groups';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -40,8 +54,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const towerId = this.props.location.pathname.split('/')[3];
-    console.log("towerId", towerId)
-    //TODO: Remove it for projects and towers
+    console.log('towerId', towerId);
+    // TODO: Remove it for projects and towers
     if (towerId && this.state.tower === null) {
       this.services
         .getTower(towerId)
@@ -101,6 +115,11 @@ class Dashboard extends Component {
           component={Areas}
         />
         <PrivateRoute
+          path={match.url + DashboardRoutes.areasAdditional.withIndicator}
+          exact
+          component={AreasAdditional}
+        />
+        <PrivateRoute
           path={match.url + DashboardRoutes.user}
           exact
           component={UserSettings}
@@ -149,9 +168,20 @@ class Dashboard extends Component {
           component={AssignTowerToUsers}
         />
         <PrivateRoute
+          path={match.url + DashboardRoutes.user + UserRoutes.assignCompanies}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Companies}
+        />
+        <PrivateRoute
           path={match.url + DashboardRoutes.strategy.withIndicator}
           exact
           component={Strategy}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.strategy1.withIndicator}
+          exact
+          component={Strategy1}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.increments.withIndicator}
@@ -160,15 +190,19 @@ class Dashboard extends Component {
           component={Increments}
         />
         <PrivateRoute
-          path={match.url + DashboardRoutes.salesRoom.withIndicator}
+          path={match.url + DashboardRoutes.salesRoomClient.withIndicator}
           exact
-          component={SalesRoom}
+          component={SalesRoomClient}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.clients.withIndicator}
-          roles={[Role.Admin, Role.Super]}
           exact
           component={Client}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.clients2.withIndicator}
+          exact
+          component={Client2}
         />
         <PrivateRoute
           path={match.url + DashboardRoutes.futureSalesSpeed.withIndicator}
@@ -187,6 +221,54 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Report}
+        />
+        <PrivateRoute
+          path={match.url + ContractRoutes.base.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Contracts}
+        />
+        <PrivateRoute
+          path={match.url + ContractFlowRoutes.base.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={ContractFlow}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.cashFlow.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={CashFlow}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.saleRequests.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={SaleRequests}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.saleRequestsWithId.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={SaleRequests}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.pairing.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Pairing}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.quotations.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Quotations}
+        />
+        <PrivateRoute
+          path={match.url + Group.base}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Groups}
         />
       </DashboardLayout>
     );

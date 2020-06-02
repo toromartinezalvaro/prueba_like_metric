@@ -1,0 +1,39 @@
+.container {
+  position: relative;
+
+  background-color: #fff;
+  // Fix table
+  line-height: 1;
+
+  padding: 5px;
+
+  margin: 5px;
+
+  border-radius: 4px;
+
+  .actions {
+    font-size: 8px;
+    margin-top: 5px;
+    opacity: 0.25;
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 1;
+
+    .button {
+      padding: 0;
+      border-radius: 9999px;
+      height: 15px;
+      width: 15px;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .input {
+    margin-bottom: 5px;
+  }
+}
