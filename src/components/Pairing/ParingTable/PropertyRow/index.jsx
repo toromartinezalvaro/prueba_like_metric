@@ -40,7 +40,11 @@ const PropertyRow = ({
       </TableCell>
       <TableCell>{property.name}</TableCell>
       <TableCell>
-        {property.additionalAreas.length === 0 ? 'Libre' : 'Apareado'}
+        {property.additionalAreas.length === 0 ? (
+          <span className={styles.noAreasSelected}>Libre</span>
+        ) : (
+          'Apareado'
+        )}
       </TableCell>
       {Array(maxCols)
         .fill(null)
