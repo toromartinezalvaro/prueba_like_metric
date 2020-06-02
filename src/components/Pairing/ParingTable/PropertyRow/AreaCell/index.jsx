@@ -40,7 +40,7 @@ const AreaCell = ({
             <span>
               {area
                 ? `${area.areaType.name} - ${area.nomenclature}`
-                : 'Sin area'}
+                : <span className={Styles.noAreasSelected}>Sin area</span>}
             </span>
           </HoverContainer>
         )}

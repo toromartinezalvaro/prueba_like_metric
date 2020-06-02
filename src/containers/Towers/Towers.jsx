@@ -200,6 +200,7 @@ export default class Towers extends Component {
         this.setState({ currentEditingTower: null, modalIsHidden: true });
         console.error(error);
       });
+    this.setState({ currentEditingTower: null });
   };
 
   createModal = () => {
