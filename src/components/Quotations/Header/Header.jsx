@@ -6,7 +6,7 @@ import PropertyInfo from './PropertyInfo';
 import ClientInfo from './ClientInfo';
 import Styles from './Header.module.scss';
 
-const Header = ({ quotation }) => {
+const Header = ({ quotation, quotationData }) => {
   return (
     <>
       <div className={Styles.container}>
@@ -32,7 +32,7 @@ const Header = ({ quotation }) => {
         <div className={Styles.client}>
           <ClientInfo client={quotation.client} />
         </div>
-        <PropertyInfo />
+        <PropertyInfo quotationData={quotationData} />
       </div>
     </>
   );
@@ -55,6 +55,7 @@ Header.propTypes = {
       email: PropTypes.string,
     }),
   }),
+  quotationData: PropTypes.object,
 };
 
 export default Header;
