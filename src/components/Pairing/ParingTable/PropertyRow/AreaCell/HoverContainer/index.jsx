@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../../../../UI2/Button';
 import stateType from './stateType.enum';
 import Styles from './HoverContainer.module.scss';
+import RemoveDialog from './removeDialog';
 
 export const options = {
   EDIT: 'e',
@@ -17,6 +18,14 @@ const HoverContainer = ({
   status,
   edition,
 }) => {
+  const [open, setOpen] = useState(false);
+  const removeArea = () => {
+    removeAreaHandler();
+    setOpen(false);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={Styles.container}>
       <div className={Styles.noHover}>{children}</div>
@@ -35,7 +44,9 @@ const HoverContainer = ({
             {option === options.DELETE && (
               <Button
                 className={Styles.button}
-                onClick={removeAreaHandler}
+                onClick={() => {
+                  setOpen(true);
+                }}
                 disabled={status === stateType.Sold.code && !edition}
               >
                 <i className="fas fa-trash-alt"></i>
@@ -46,6 +57,11 @@ const HoverContainer = ({
           <span>No disponible</span>
         )}
       </div>
+      <RemoveDialog
+        isOpen={open}
+        removeArea={removeArea}
+        handleClose={handleClose}
+      />
     </div>
   );
 };
