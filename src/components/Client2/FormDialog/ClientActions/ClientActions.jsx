@@ -30,7 +30,7 @@ const ClientActions = ({ client }) => {
               color="primary"
               onClick={() => {
                 setIsOpen({ ...isOpen, detail: true });
-                setSelectedClient(client);
+                setSelectedClient(client, client.associated);
               }}
               fullWidth
             >
@@ -48,7 +48,7 @@ const ClientActions = ({ client }) => {
                 <Tooltip title="El cliente debe estar asociado a la torre">
                   <span>
                     <Button
-                      disabled={!client.associated}
+                      disabled={client.associated}
                       onClick={gotoSalesroom}
                       color="primary"
                       variant="outlined"
