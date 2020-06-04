@@ -288,7 +288,9 @@ class SalesRoom extends Component {
   }
 
   findGroup = (properties) =>
-    properties.find((group) => group[0].groupId === this.state.groupId);
+    properties.find((group) =>
+      group[0] ? group[0].groupId === this.state.groupId : false,
+    );
 
   calculateCollectedIncrement(status) {
     const groups = this.state.response.properties;
