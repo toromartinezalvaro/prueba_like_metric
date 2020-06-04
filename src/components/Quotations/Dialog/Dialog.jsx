@@ -33,6 +33,7 @@ const Dialog = ({
   quotationData,
   spawnMessage,
   towerId,
+  additionalData,
 }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
 
@@ -77,6 +78,7 @@ const Dialog = ({
           quotationData,
           towerId,
         );
+
         if (active) {
           dispatch(fetchQuotationSuccess(response.data));
         }
@@ -146,7 +148,10 @@ const Dialog = ({
                   reserveHandler: handleReservePercentageChange,
                 }}
               >
-                <Header quotation={store.quotation} />
+                <Header
+                  quotation={store.quotation}
+                  quotationData={quotationData.additionalData}
+                />
                 <MonthlyPayments quotation={store.quotation} />
               </Context.Provider>
             </>
@@ -167,6 +172,7 @@ Dialog.propTypes = {
   }),
   spawnMessage: PropTypes.number,
   towerId: PropTypes.string.isRequired,
+  additionalData: PropTypes.object,
 };
 
 export default memo(Dialog);
