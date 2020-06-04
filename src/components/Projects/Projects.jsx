@@ -16,7 +16,9 @@ const ProjectItems = (props) => {
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
-    const companiesId = props.projects.map((element) => element.companyId);
+    const companiesId = props.projects.flatMap(
+      (element) => element.companyId || [],
+    );
     const userCompaniesFiltered = companiesId.filter(unique);
     const companiesForSelect = userCompaniesFiltered.flatMap((current) => {
       return props.companies.find((element) => {
