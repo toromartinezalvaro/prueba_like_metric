@@ -102,9 +102,9 @@ function Dialog({
 }
 
 const mapStateToProps = (state) => ({
-  open: state.areas.open,
-  file: state.areas.file,
-  loading: state.areas.loading,
+  open: state.groups.groupImportUpload.open,
+  file: state.groups.groupImportUpload.file,
+  loading: state.groups.groupImportUpload.loading,
 });
 
 const mapDispatchToProps = {

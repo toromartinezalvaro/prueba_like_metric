@@ -14,6 +14,11 @@ function Imports({ openDialogHandler, company }) {
   useEffect(() => {
     setCompanyId(company);
   }, [company]);
+
+  const openDialog = () => {
+    openDialogHandler();
+  };
+
   const downloadTemplate = async () => {
     try {
       const name = 'Plantilla_Grupos.xlsx';
@@ -38,22 +43,24 @@ function Imports({ openDialogHandler, company }) {
             color="primary"
             variant="contained"
             disableElevation
+            disabled={company === null}
           >
             Descargar plantilla
           </Button>
         </Grid>
         <Grid item>
           <Button
-            onClick={openDialogHandler}
+            onClick={openDialog}
             color="primary"
             variant="contained"
             disableElevation
+            disabled={company === null}
           >
             Cargar plantilla
           </Button>
         </Grid>
       </Grid>
-      <UploadDialog  companyId={companyId} />
+      <UploadDialog companyId={companyId} />
     </>
   );
 }
