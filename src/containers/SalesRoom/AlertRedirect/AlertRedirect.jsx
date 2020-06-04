@@ -8,10 +8,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const AlertRedirect = (open, message, route, handleClose) => {
+const AlertRedirect = ({ open, message, route, handleClose }) => {
   const history = useHistory();
   const gotoUrl = (URL) => () => {
-    history.pushState(URL);
+    history.push(URL);
   };
   return (
     <>
