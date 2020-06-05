@@ -69,7 +69,7 @@ const PropertyInfo = ({ quotationData }) => {
       </div>
       <div className={Styles.rate}>
         <PercentageInput
-          defaultValue={(initialFeePercentage * 100).toFixed(2)}
+          placeholder={(initialFeePercentage * 100).toFixed(2)}
           onChange={(event) => {
             initialFeeHandler(event.target.value);
           }}
@@ -91,7 +91,7 @@ const PropertyInfo = ({ quotationData }) => {
       </div>
       <div className={Styles.rate}>
         <PercentageInput
-          defaultValue={(reservePercentage * 100).toFixed(2)}
+          placeholder={(reservePercentage * 100).toFixed(2)}
           onChange={(event) => {
             reserveHandler(event.target.value);
           }}
