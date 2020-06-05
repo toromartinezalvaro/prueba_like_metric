@@ -58,7 +58,7 @@ const Info = ({ open, client, towerId, handleClose }) => {
             )}
           </DialogContent>
           <DialogActions>
-            <Button isDisabled={client} onClick={gotoSalesroom}>
+            <Button isDisabled={!client.associated} onClick={gotoSalesroom}>
               Ir a Sala de ventas
             </Button>
             <Button
@@ -77,6 +77,7 @@ const Info = ({ open, client, towerId, handleClose }) => {
 
 Info.propTypes = {
   client: PropTypes.shape({
+    associated: PropTypes.bool,
     id: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,

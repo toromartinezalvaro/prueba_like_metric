@@ -109,7 +109,11 @@ const Collapsables = (props) => {
     );
     data = _.orderBy(
       data,
-      [(dataFiltered) => dataFiltered.nomenclature.props.value],
+      [
+        (dataFiltered) =>
+          Number(dataFiltered.nomenclature.props.value) ||
+          dataFiltered.nomenclature.props.value,
+      ],
       ['asc'],
     );
 
@@ -125,7 +129,11 @@ const Collapsables = (props) => {
       });
       data = _.orderBy(
         data,
-        [(dataFiltered) => dataFiltered.nomenclature.props.value],
+        [
+          (dataFiltered) =>
+            Number(dataFiltered.nomenclature.props.value) ||
+            dataFiltered.nomenclature.props.value,
+        ],
         ['asc'],
       );
       columns = COLUMNS_UNIT;
@@ -223,7 +231,11 @@ const Collapsables = (props) => {
               columns={columns}
               data={_.orderBy(
                 data,
-                [(dataFiltered) => dataFiltered.nomenclature],
+                [
+                  (dataFiltered) =>
+                    Number(dataFiltered.nomenclature) ||
+                    dataFiltered.nomenclature,
+                ],
                 ['asc'],
               )}
             ></Table2>
