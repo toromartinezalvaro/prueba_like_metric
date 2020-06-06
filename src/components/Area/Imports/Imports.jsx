@@ -10,7 +10,7 @@ import UploadDialog, { actions } from './Upload';
 
 const services = new ImportServices();
 
-function Imports({ disabled, openDialogHandler }) {
+function Imports({ disabled, openDialogHandler, updateInformation }) {
   const { towerId } = useParams();
 
   const downloadTemplate = async () => {
@@ -59,7 +59,7 @@ function Imports({ disabled, openDialogHandler }) {
           </Button>
         </Grid>
       </Grid>
-      <UploadDialog />
+      <UploadDialog updateInformation={updateInformation} />
     </>
   );
 }
@@ -71,6 +71,7 @@ const mapDispatchToProps = {
 };
 
 Imports.propTypes = {
+  updateInformation: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   openDialogHandler: PropTypes.func.isRequired,
 };
