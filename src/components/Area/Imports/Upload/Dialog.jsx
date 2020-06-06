@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -21,6 +21,7 @@ import Loader from '../../../UI2/Loader';
 const services = new ImportServices();
 
 function Dialog({
+  updateInformation,
   open,
   file,
   loading,
@@ -37,7 +38,8 @@ function Dialog({
     try {
       const formData = new FormData();
       formData.append('file', file);
-      await services.postSchema(towerId, formData);
+      const res = await services.postSchema(towerId, formData);
+      updateInformation(res);
       onCloseHandler();
       onSelectFile(null);
       enqueueSnackbar('Plantilla cargada correctamente', {
@@ -116,6 +118,7 @@ const mapDispatchToProps = {
 };
 
 Dialog.propTypes = {
+  updateInformation: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   file: PropTypes.any.isRequired,
   loading: PropTypes.bool.isRequired,

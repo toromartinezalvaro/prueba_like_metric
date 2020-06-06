@@ -192,6 +192,58 @@ class Area extends Component {
     this.setState({ ...this.state, firstColumnInRows });
   };
 
+  updateStateOfTable = (response) => {
+    let currentState = {};
+    const data = response ? response.data : null;
+    if (data) {
+      if (this.state.calculateTotals === true) {
+        const types = [];
+        data.propertiesAreas.forEach((arrayAreas) => {
+          if (arrayAreas !== undefined) {
+            arrayAreas.forEach((area) => {
+              if (!types.find((type) => area.type === type.id)) {
+                types.push({ id: area.type, total: 0 });
+              }
+              if (types !== undefined) {
+                const index = types.findIndex((obj) => obj.id === area.type);
+                if (types[index] !== undefined) {
+                  types[index].total += area.measure;
+                }
+              }
+              return types;
+            });
+            currentState = {
+              ...currentState,
+              calculateTotals: false,
+              types,
+            };
+          }
+        });
+      }
+      const showFloating = data.propertiesAreas.find((arrayAreas) => {
+        const anyArea = arrayAreas.find((area) => {
+          return area !== null && area.measure !== 0;
+        });
+        return anyArea !== undefined;
+      });
+      if (showFloating !== undefined) {
+        currentState = { ...currentState, showFloatingButton: true };
+      }
+    }
+
+    this.setFirstColumnInside(data);
+
+    this.setState({
+      ...currentState,
+      areaTypes: data.areaTypes,
+      properties: data.properties,
+      isLoading: false,
+      data: data.propertiesAreas,
+      anySold: data.anySold,
+      inputMethod: data.inputMethod,
+    });
+  };
+
   updateTableInformation = () => {
     const { towerId } = this.props.match.params;
     if (!towerId) {
@@ -200,57 +252,7 @@ class Area extends Component {
     this.services
       .getAreas(towerId)
       .then((response) => {
-        let currentState = {};
-        const data = response ? response.data : null;
-        if (data) {
-          if (this.state.calculateTotals === true) {
-            const types = [];
-            data.propertiesAreas.forEach((arrayAreas) => {
-              if (arrayAreas !== undefined) {
-                arrayAreas.forEach((area) => {
-                  if (!types.find((type) => area.type === type.id)) {
-                    types.push({ id: area.type, total: 0 });
-                  }
-                  if (types !== undefined) {
-                    const index = types.findIndex(
-                      (obj) => obj.id === area.type,
-                    );
-                    if (types[index] !== undefined) {
-                      types[index].total += area.measure;
-                    }
-                  }
-                  return types;
-                });
-                currentState = {
-                  ...currentState,
-                  calculateTotals: false,
-                  types,
-                };
-              }
-            });
-          }
-          const showFloating = data.propertiesAreas.find((arrayAreas) => {
-            const anyArea = arrayAreas.find((area) => {
-              return area !== null && area.measure !== 0;
-            });
-            return anyArea !== undefined;
-          });
-          if (showFloating !== undefined) {
-            currentState = { ...currentState, showFloatingButton: true };
-          }
-        }
-
-        this.setFirstColumnInside(data);
-
-        this.setState({
-          ...currentState,
-          areaTypes: data.areaTypes,
-          properties: data.properties,
-          isLoading: false,
-          data: data.propertiesAreas,
-          anySold: data.anySold,
-          inputMethod: data.inputMethod,
-        });
+        this.updateStateOfTable(response);
       })
       .catch((error) => {
         const errorHelper = errorHandling(error);
@@ -470,7 +472,10 @@ class Area extends Component {
         ) : (
           <Fragment>
             {this.state.inputMethod === 'IMPORT' && (
-              <Imports disabled={this.state.areaTypes.length === 0} />
+              <Imports
+                disabled={this.state.areaTypes.length === 0}
+                updateInformation={this.updateStateOfTable}
+              />
             )}
             <Card>
               <CardHeader>
