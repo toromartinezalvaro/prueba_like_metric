@@ -50,18 +50,10 @@ const defaultClient = {
 };
 
 function NumberFormatCustom(props) {
-  const { inputRef, onChange, ...other } = props;
+  const { ...other } = props;
   return (
     <NumberFormat
       {...other}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            value: values.value,
-          },
-        });
-      }}
       type="tel"
       allowNegative={false}
       decimalSeparator={false}
@@ -168,12 +160,6 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
     }
   };
 
-  const blurHandler = () => {
-    if (formRef.current) {
-      formRef.current.handleSubmit();
-    }
-  };
-
   function gotoSalesroom() {
     history.push(
       `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${state.createdClient}`,
@@ -225,7 +211,6 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                   placeholder="3001234567"
                   label="Número de teléfono"
                   component={Input}
-                  onBlur={blurHandler}
                   InputProps={{
                     inputComponent: NumberFormatCustom,
                   }}
