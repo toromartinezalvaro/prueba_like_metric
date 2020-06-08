@@ -67,7 +67,7 @@ const DesistDialog = ({
       desistRequestId,
       price,
     });
-
+    setSuggestedPrice(0);
     setDisabled(result);
   };
 
@@ -76,6 +76,7 @@ const DesistDialog = ({
       desistRequestId,
     );
     reloadSaleRequestByPropertyId(propertyId, result.data);
+    setSuggestedPrice(0);
     closeHandler();
   };
 
