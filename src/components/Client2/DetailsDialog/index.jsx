@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory } from 'react-router-dom';
 import Button from '../../UI/Button/Button';
 import PropertyCells from './PropertyCells';
 import PropertyDetails from './PropertyDetails';
@@ -13,6 +13,7 @@ import { DashboardRoutes } from '../../../routes/local/routes';
 
 const services = new ClientsServices();
 const Info = ({ open, client, towerId, handleClose }) => {
+  const history = useHistory();
   const [property, setProperty] = useState(null);
 
   const selectProperty = (id) => {
@@ -30,6 +31,12 @@ const Info = ({ open, client, towerId, handleClose }) => {
       selectProperty(null);
     }
   }, [client, open]);
+
+  const gotoSalesroom = () => {
+    history.push(
+      `${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${client.id}`,
+    );
+  };
 
   return (
     <Dialog open={open} fullWidth maxWidth="lg">
@@ -51,11 +58,9 @@ const Info = ({ open, client, towerId, handleClose }) => {
             )}
           </DialogContent>
           <DialogActions>
-            <Link
-              to={`${DashboardRoutes.base}${DashboardRoutes.salesRoom.value}${towerId}/${client.id}`}
-            >
-              <Button>Ir a Sala de ventas</Button>
-            </Link>
+            <Button isDisabled={!client.associated} onClick={gotoSalesroom}>
+              Ir a Sala de ventas
+            </Button>
             <Button
               onClick={() => {
                 handleClose();
@@ -72,6 +77,7 @@ const Info = ({ open, client, towerId, handleClose }) => {
 
 Info.propTypes = {
   client: PropTypes.shape({
+    associated: PropTypes.bool,
     id: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,

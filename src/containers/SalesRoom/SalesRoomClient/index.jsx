@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import _ from 'lodash';
 import Button from '../../../components/UI/Button/Button';
+import { DashboardRoutes } from '../../../routes/local/routes';
 
 import SalesRoomService from '../../../services/salesRoom/salesRoomService';
 import Card, {
@@ -31,6 +32,7 @@ import Status from '../../../helpers/status';
 import LoadableContainer from '../../../components/UI/Loader';
 import SalesRoomModal from '../../../components/SalesRoom/modal';
 import SalesRoomEnum from '../SalesRoom.enum';
+import AlertRedirect from '../AlertRedirect';
 import Styles from './salesRoomClient.module.scss';
 import withDefaultLayout from '../../../HOC/Layouts/Default/withDefaultLayout';
 
@@ -66,6 +68,7 @@ class SalesRoom extends Component {
     isLastProperty: false,
     optionalDescription: '',
     isSavingErrorActive: false,
+    openGrouping: false,
   };
 
   propertyHandler = (key, value) => {
@@ -88,6 +91,13 @@ class SalesRoom extends Component {
           isLoading: false,
           clientName: data.client.name,
         });
+
+        const checker = this.state.data.flatMap((singleData) =>
+          singleData.filter((datas) => datas !== null),
+        );
+        if (checker.length < 1) {
+          this.setState({ openGrouping: true });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -287,8 +297,14 @@ class SalesRoom extends Component {
     }
   }
 
-  findGroup = (properties) =>
-    properties.find((group) => group[0].groupId === this.state.groupId);
+  findGroup = (properties) => {
+    try {
+      const flatGroup = properties.flatMap((group) => group);
+      return [flatGroup.find((group) => group.groupId === this.state.groupId)];
+    } catch (error) {
+      this.props.enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  };
 
   calculateCollectedIncrement(status) {
     const groups = this.state.response.properties;
@@ -315,7 +331,13 @@ class SalesRoom extends Component {
     }, 0);
   }
 
-  save = () => {
+  save = (showModalSelectedProperty) => () => {
+    if (!showModalSelectedProperty) {
+      this.props.history.push(
+        `${DashboardRoutes.base}${DashboardRoutes.strategy.value}${this.props.match.params.towerId}`,
+      );
+      return;
+    }
     if (
       this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE &&
       !this.modalRenderValidation()
@@ -485,6 +507,10 @@ class SalesRoom extends Component {
       });
   };
 
+  handleCloseGroupingRedirect = () => {
+    this.setState({ openGrouping: false });
+  };
+
   modalRenderValidation = () => {
     const isStrategyNull =
       this.state.selectedProperty.isReset ||
@@ -594,7 +620,6 @@ class SalesRoom extends Component {
                     />
                   </div>
                 )}
-
                 {showModalSelectedProperty &&
                   !this.state.isLoadingModal &&
                   (this.clientValidation() ? (
@@ -628,7 +653,7 @@ class SalesRoom extends Component {
                   this.props.match.params.clientId ||
                   this.state.selectedProperty.clientId === null) && (
                   <Button
-                    onClick={this.save}
+                    onClick={this.save(showModalSelectedProperty)}
                     className={Styles.ConfirmButton}
                     isDisabled={
                       this.state.selectedProperty.requestStatus === 'D'
@@ -641,6 +666,12 @@ class SalesRoom extends Component {
             </Dialog>
           </Card>
         )}
+        <AlertRedirect
+          open={this.state.openGrouping}
+          message={'Debes agrupar las áreas antes de vender.'}
+          route={`${DashboardRoutes.base}${DashboardRoutes.clustering.value}${this.props.match.params.towerId}`}
+          handleClose={this.handleCloseGroupingRedirect}
+        />
       </LoadableContainer>
     );
   }

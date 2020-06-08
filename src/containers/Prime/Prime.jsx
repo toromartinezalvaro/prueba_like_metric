@@ -104,9 +104,13 @@ class Prime extends Component {
           validations={[]}
           zeroDefault={true}
           onChange={(target) => {
-            this.priceHandler('ALT', prime.id, parseInt(target.value));
+            this.priceHandler(
+              'ALT',
+              prime.id,
+              parseInt(target.value > 0 ? target.value : 0),
+            );
           }}
-          value={prime.price}
+          value={prime.price >= 0 ? prime.price : 0}
           disable={this.state.disabledProp}
         />,
       ]);
@@ -119,10 +123,14 @@ class Prime extends Component {
               <Input
                 mask="currency"
                 style={{ width: '75px' }}
-                value={prime.price}
+                value={prime.price > 0 ? prime.price : 0}
                 validations={[]}
                 onChange={(target) => {
-                  this.priceHandler('LCT', prime.id, target.value);
+                  this.priceHandler(
+                    'LCT',
+                    prime.id,
+                    target.value ? target.value : 0,
+                  );
                 }}
                 placeholder={prime.name}
                 tooltip={prime.name}
@@ -141,7 +149,9 @@ class Prime extends Component {
   priceHandler(type, id, price) {
     if (type === 'ALT') {
       this.services
-        .putAltitudePrimesById(id, { price: parseInt(price) })
+        .putAltitudePrimesById(id, {
+          price: parseInt(price, 10) > 0 ? parseInt(price, 10) : 0,
+        })
         .then((data) => {
           console.log(data);
           this.setState({ showFloatingButton: true });
@@ -151,7 +161,9 @@ class Prime extends Component {
         });
     } else if (type === 'LCT') {
       this.services
-        .putLocationPrimesById(id, { price: parseInt(price) })
+        .putLocationPrimesById(id, {
+          price: parseInt(price, 10) > 0 ? parseInt(price, 10) : 0,
+        })
         .then((data) => {
           console.log(data);
           this.setState({ showFloatingButton: true });

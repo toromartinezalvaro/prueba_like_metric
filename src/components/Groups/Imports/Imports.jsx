@@ -1,27 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import ImportServices from '../../../services/imports';
+import ImportServices from '../../../services/groupsImport';
 import UploadDialog, { actions } from './Upload';
 
 const services = new ImportServices();
 
-function Imports({ disabled, openDialogHandler, updateInformation }) {
-  const { towerId } = useParams();
+function Imports({ openDialogHandler, company }) {
+  const [companyId, setCompanyId] = useState('');
+  useEffect(() => {
+    setCompanyId(company);
+  }, [company]);
+
+  const openDialog = () => {
+    openDialogHandler();
+  };
 
   const downloadTemplate = async () => {
     try {
-      let name = 'Plantilla_Esquema.xlsx';
-      const response = await services.getSchemaTemplate(towerId);
-      const towerRequest = await services.getTowerInfo(towerId);
-      if (towerRequest.data.name && towerRequest.data.project) {
-        const { data } = towerRequest;
-        name = `Plantilla ${data.name} del proyecto ${data.project}.xlsx`;
-      }
+      const name = 'Plantilla_Grupos.xlsx';
+      const response = await services.getGroupTemplate(companyId);
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -42,24 +43,24 @@ function Imports({ disabled, openDialogHandler, updateInformation }) {
             color="primary"
             variant="contained"
             disableElevation
-            disabled={disabled}
+            disabled={company === null}
           >
             Descargar plantilla
           </Button>
         </Grid>
         <Grid item>
           <Button
-            onClick={openDialogHandler}
+            onClick={openDialog}
             color="primary"
             variant="contained"
             disableElevation
-            disabled={disabled}
+            disabled={company === null}
           >
             Cargar plantilla
           </Button>
         </Grid>
       </Grid>
-      <UploadDialog updateInformation={updateInformation} />
+      <UploadDialog companyId={companyId} />
     </>
   );
 }
@@ -71,9 +72,8 @@ const mapDispatchToProps = {
 };
 
 Imports.propTypes = {
-  updateInformation: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
   openDialogHandler: PropTypes.func.isRequired,
+  company: PropTypes.string,
 };
 
 export default connect(

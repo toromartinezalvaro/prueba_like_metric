@@ -30,7 +30,7 @@ const ClientActions = ({ client }) => {
               color="primary"
               onClick={() => {
                 setIsOpen({ ...isOpen, detail: true });
-                setSelectedClient(client);
+                setSelectedClient(client, client.associated);
               }}
               fullWidth
             >
