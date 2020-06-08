@@ -427,7 +427,11 @@ class Area extends Component {
                 fn: (value) => {
                   return value !== null;
                 },
-                message: 'No puede estar vac�o',
+                message: 'No puede estar vacío',
+                fn: (value) => {
+                  return Number(value) > 0;
+                },
+                message: 'No puede estar vacío',
               },
             ]}
             disable={this.state.anySold}
