@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Widget, { SM } from '../../../Shared/Widget';
+import Widget, { MD } from '../../../Shared/Widget';
+
+import styles from './styles.module.scss';
 
 const InitialFee = ({ initialFee }) => {
   return (
-    <Widget title="Plazo cuota inciial" size={SM}>
-      {initialFee}
-    </Widget>
+    <div className={styles.completeSize}>
+      <Widget title="Plazo cuota incial" size={MD}>
+        {initialFee}
+      </Widget>
+    </div>
   );
 };
 
