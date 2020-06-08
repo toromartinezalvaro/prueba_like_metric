@@ -107,7 +107,7 @@ class Prime extends Component {
             this.priceHandler(
               'ALT',
               prime.id,
-              parseInt(target.value >= 0 ? target.value : 0),
+              parseInt(target.value > 0 ? target.value : 0),
             );
           }}
           value={prime.price >= 0 ? prime.price : 0}
@@ -123,7 +123,7 @@ class Prime extends Component {
               <Input
                 mask="currency"
                 style={{ width: '75px' }}
-                value={prime.price >= 0 ? prime.price : 0}
+                value={prime.price > 0 ? prime.price : 0}
                 validations={[]}
                 onChange={(target) => {
                   this.priceHandler(
@@ -149,7 +149,9 @@ class Prime extends Component {
   priceHandler(type, id, price) {
     if (type === 'ALT') {
       this.services
-        .putAltitudePrimesById(id, { price: parseInt(price) })
+        .putAltitudePrimesById(id, {
+          price: parseInt(price, 10) > 0 ? parseInt(price, 10) : 0,
+        })
         .then((data) => {
           console.log(data);
           this.setState({ showFloatingButton: true });
@@ -159,7 +161,9 @@ class Prime extends Component {
         });
     } else if (type === 'LCT') {
       this.services
-        .putLocationPrimesById(id, { price: parseInt(price) })
+        .putLocationPrimesById(id, {
+          price: parseInt(price, 10) > 0 ? parseInt(price, 10) : 0,
+        })
         .then((data) => {
           console.log(data);
           this.setState({ showFloatingButton: true });
