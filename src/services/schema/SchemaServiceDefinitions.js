@@ -16,7 +16,7 @@ const SchemaServiceDefinitions = {
     return `${API_PATH}pricing/definitions/endOfSalesDate/${towerId}`;
   },
   getSalesRequestHistory: (towerId) => {
-    return `${API_PATH}sale-requests/sales-request-history/${towerId}`;
+    return `${API_PATH}sale-requests/sales-request-history/checker/${towerId}`;
   },
 };
 

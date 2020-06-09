@@ -54,7 +54,8 @@ class Building extends Component {
     this.services
       .isDisable(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ disableSold: response.data });
+        console.log('DATA', response.data);
+        this.setState({ disableSold: response.data, disable: response.data });
       })
       .catch((err) => {
         console.log(err);

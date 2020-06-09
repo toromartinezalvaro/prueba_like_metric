@@ -2,8 +2,8 @@ import CompanyServiceDefinitions from './CompanyServicesDefinitions';
 import Services from '../services';
 
 export default class CompanyServices extends Services {
-  create(company) {
-    return this.post(CompanyServiceDefinitions.create, company);
+  create(name) {
+    return this.post(CompanyServiceDefinitions.create, { name });
   }
 
   createWithProject(name, projectId) {
