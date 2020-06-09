@@ -9,7 +9,7 @@ const TotalIncrement = ({ totalIncrement }) => {
   return (
     <Widget title="Incremento inventario" size={SM}>
       <NumberFormat
-        value={Numbers.toFixed(totalIncrement)}
+        value={Number(totalIncrement).toFixed(0)}
         displayType="text"
         prefix="$"
         thousandSeparator

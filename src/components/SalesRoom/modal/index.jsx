@@ -407,6 +407,7 @@ const SalesRoomModal = ({
           propertyId: property.id,
           clientId,
           propertyPrice: getTradePrice(),
+          additionalData: property,
         }}
         towerId={towerId}
         spawnMessage={spawnMessage}

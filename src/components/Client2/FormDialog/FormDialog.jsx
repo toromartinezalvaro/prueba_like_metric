@@ -1,4 +1,10 @@
-import React, { useState, useReducer, useEffect, useContext } from 'react';
+import React, {
+  useState,
+  useReducer,
+  useEffect,
+  useContext,
+  useRef,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
@@ -44,18 +50,10 @@ const defaultClient = {
 };
 
 function NumberFormatCustom(props) {
-  const { inputRef, onChange, ...other } = props;
+  const { ...other } = props;
   return (
     <NumberFormat
       {...other}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            value: values.value,
-          },
-        });
-      }}
       type="tel"
       allowNegative={false}
       decimalSeparator={false}
@@ -87,6 +85,7 @@ const validationSchema = yup.object().shape({
 
 const FormDialog = ({ client, open, onCloseHandler }) => {
   const history = useHistory();
+  const formRef = useRef();
   const {
     towerId,
     dispatch: containerDispatcher,

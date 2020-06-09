@@ -9,6 +9,7 @@
  */
 
 import React, { useState } from 'react';
+import _ from 'lodash';
 import NumberFormat from 'react-number-format';
 import { InputAdornment } from '@material-ui/core';
 import Styles from './Matrix.module.scss';
@@ -156,7 +157,7 @@ const Matrix = (
               input: Styles.ContainerTexField,
             },
           }}
-          disabled={area.property !== null && area.property.status === 'SOLD'}
+          disabled={area.property && area.property.status === 'SOLD'}
         />
       ),
       measure: (
@@ -175,7 +176,7 @@ const Matrix = (
               input: Styles.ContainerTexField,
             },
           }}
-          disabled={area.property !== null && area.property.status === 'SOLD'}
+          disabled={area.property && area.property.status === 'SOLD'}
         />
       ),
       price: (
@@ -198,7 +199,7 @@ const Matrix = (
             }
             actualValueHandler={(value) => actualValueHandler(value)}
             areaType={areaType}
-            disabled={area.property !== null && area.property.status === 'SOLD'}
+            disabled={area.property && area.property.status === 'SOLD'}
           />
         </div>
       ),
@@ -209,7 +210,7 @@ const Matrix = (
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
-            disabled={area.property !== null && area.property.status === 'SOLD'}
+            disabled={area.property && area.property.status === 'SOLD'}
           />
         </span>
       ),
@@ -217,7 +218,11 @@ const Matrix = (
     };
   });
 
-  return data;
+  return _.orderBy(
+    data,
+    [(dataFiltered) => dataFiltered.nomenclature.props.value],
+    ['asc'],
+  );
 };
 
 export default Matrix;

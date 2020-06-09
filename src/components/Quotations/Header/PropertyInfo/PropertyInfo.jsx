@@ -5,7 +5,7 @@ import DialogContext from '../../Dialog/context';
 import PercentageInput from './PercentageInput';
 import Styles from './PropertyInfo.module.scss';
 
-const PropertyInfo = () => {
+const PropertyInfo = ({ quotationData }) => {
   const {
     quotation: {
       property,
@@ -26,7 +26,7 @@ const PropertyInfo = () => {
   return (
     <div className={Styles.container}>
       <div className={Styles.title}>
-        <span>Apartamento:</span>
+        <span>Apartamento + total de áreas:</span>
       </div>
       <div className={Styles.rate}>
         <span>{property.name}</span>
@@ -41,12 +41,35 @@ const PropertyInfo = () => {
           />
         </b>
       </div>
+      {quotationData.additionalAreas.map((additionalArea) => {
+        return (
+          <>
+            <div className={Styles.title}>
+              <span>{additionalArea.areaType.name}</span>
+            </div>
+            <div className={Styles.rate}>
+              <span>{additionalArea.nomenclature}</span>
+            </div>
+            <div className={Styles.value}>
+              <b>
+                <NumberFormat
+                  value={additionalArea.price.toFixed(2)}
+                  displayType="text"
+                  thousandSeparator
+                  prefix="$"
+                />
+              </b>
+            </div>
+          </>
+        );
+      })}
+
       <div className={Styles.title}>
         <span>Cuota inicial:</span>
       </div>
       <div className={Styles.rate}>
         <PercentageInput
-          value={(initialFeePercentage * 100).toFixed(2)}
+          placeholder={(initialFeePercentage * 100).toFixed(2)}
           onChange={(event) => {
             initialFeeHandler(event.target.value);
           }}
@@ -68,7 +91,7 @@ const PropertyInfo = () => {
       </div>
       <div className={Styles.rate}>
         <PercentageInput
-          value={(reservePercentage * 100).toFixed(2)}
+          placeholder={(reservePercentage * 100).toFixed(2)}
           onChange={(event) => {
             reserveHandler(event.target.value);
           }}
@@ -133,6 +156,7 @@ PropertyInfo.propTypes = {
   initialFeePercentage: PropTypes.number,
   reservePercentage: PropTypes.number,
   periods: PropTypes.number,
+  quotationData: PropTypes.object,
 };
 
 PropertyInfo.defaultProps = {

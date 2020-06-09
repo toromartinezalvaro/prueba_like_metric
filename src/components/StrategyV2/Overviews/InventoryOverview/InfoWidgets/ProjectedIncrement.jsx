@@ -46,7 +46,7 @@ const ProjectedIncrement = ({
   const formRef = useRef();
 
   const projectedIncrement = useMemo(() => {
-    return Numbers.toFixed(projectedIncrementP);
+    return Number(projectedIncrementP).toFixed(0);
   }, [projectedIncrementP]);
 
   const blurHandler = () => {

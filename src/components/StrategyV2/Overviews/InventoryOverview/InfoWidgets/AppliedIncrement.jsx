@@ -9,7 +9,7 @@ const AppliedIncrement = ({ appliedIncrement, mini }) => {
   return (
     <Widget title="Incremento aplicado en Inv" size={mini ? XS : SM}>
       <NumberFormat
-        value={Numbers.toFixed(appliedIncrement)}
+        value={Number(appliedIncrement).toFixed(0)}
         displayType="text"
         prefix="$"
         thousandSeparator
