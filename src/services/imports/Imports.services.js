@@ -8,8 +8,20 @@ export default class ClientsServices extends Services {
     });
   }
 
+  getNomenclatureTemplate(towerId) {
+    return this.get(definitions.getNomenclatureTemplate(towerId), {
+      responseType: 'blob',
+    });
+  }
+
   postSchema(towerId, form) {
     return this.post(definitions.postSchema(towerId), form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  }
+
+  postNomenclature(towerId, form) {
+    return this.post(definitions.postNomenclature(towerId), form, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   }
