@@ -7,7 +7,7 @@ import Table from '../../UI/Table/Table';
 import commonStyles from '../../../assets/styles/variables.scss';
 import Modal from '../../UI/Modal/Modal';
 import LoadableContainer from '../../UI/Loader';
-import Imports from '../Imports'
+import Imports from '../Imports';
 
 const Naming = (props) => {
   const [hidden, setHidden] = useState(true);
@@ -84,7 +84,7 @@ const Naming = (props) => {
         </p>
       </CardHeader>
       <CardBody>
-        <Imports />
+        <Imports updateInformation={props.updateSchema} />
         <LoadableContainer isLoading={props.isLoading}>
           <Table
             intersect="Propiedades"
