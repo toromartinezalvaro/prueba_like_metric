@@ -31,7 +31,10 @@ const ProjectItems = (props) => {
   const companyOptions = (companiesForOptions) => {
     return _.orderBy(
       companiesForOptions,
-      [(company) => company.name.toLowerCase()],
+      [
+        (company) =>
+          company.name ? company.name.toLowerCase() : company.ownerId,
+      ],
       ['asc'],
     ).map((element, index) => (
       <MenuItem value={element.id} key={index}>
