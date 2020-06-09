@@ -38,8 +38,8 @@ function Dialog({
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const res = await services.postNomenclature(towerId, formData);
-      // updateInformation(res);
+      await services.postNomenclature(towerId, formData);
+      updateInformation();
       onCloseHandler();
       onSelectFile(null);
       enqueueSnackbar('Plantilla cargada correctamente', {
