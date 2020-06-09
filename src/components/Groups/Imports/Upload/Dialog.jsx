@@ -1,7 +1,6 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import Button from '@material-ui/core/Button';
 import MuiDialog from '@material-ui/core/Dialog';
@@ -9,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import ImportServices from '../../../../services/imports';
+import ImportServices from '../../../../services/groupsImport';
 import {
   closeDialog,
   changeFile,
@@ -21,7 +20,6 @@ import Loader from '../../../UI2/Loader';
 const services = new ImportServices();
 
 function Dialog({
-  updateInformation,
   open,
   file,
   loading,
@@ -29,17 +27,16 @@ function Dialog({
   onSelectFile,
   onApiFetchStart,
   onApiFetchEnd,
+  companyId,
 }) {
   const { enqueueSnackbar } = useSnackbar();
-  const { towerId } = useParams();
 
   const onFileUpload = async () => {
     onApiFetchStart();
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const res = await services.postSchema(towerId, formData);
-      updateInformation(res);
+      await services.postSchema(formData, companyId);
       onCloseHandler();
       onSelectFile(null);
       enqueueSnackbar('Plantilla cargada correctamente', {
@@ -105,9 +102,9 @@ function Dialog({
 }
 
 const mapStateToProps = (state) => ({
-  open: state.areas.open,
-  file: state.areas.file,
-  loading: state.areas.loading,
+  open: state.groups.groupImportUpload.open,
+  file: state.groups.groupImportUpload.file,
+  loading: state.groups.groupImportUpload.loading,
 });
 
 const mapDispatchToProps = {
@@ -118,7 +115,6 @@ const mapDispatchToProps = {
 };
 
 Dialog.propTypes = {
-  updateInformation: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   file: PropTypes.any.isRequired,
   loading: PropTypes.bool.isRequired,
@@ -126,6 +122,7 @@ Dialog.propTypes = {
   onSelectFile: PropTypes.func.isRequired,
   onApiFetchStart: PropTypes.func.isRequired,
   onApiFetchEnd: PropTypes.func.isRequired,
+  companyId: PropTypes.string,
 };
 
 export default connect(

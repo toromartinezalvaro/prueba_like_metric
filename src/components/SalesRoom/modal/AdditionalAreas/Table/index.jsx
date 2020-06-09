@@ -12,11 +12,14 @@ import HoverContainer from '../../../../UI2/HoverContainer';
 import Button from '../../../../UI2/Button';
 import Styles from './Table.module.scss';
 import AdditionalAreaRequestsServices from '../../../../../services/AdditionalAreaRequests';
+import PreventDelete from '../PreventDelete';
 
 const services = new AdditionalAreaRequestsServices();
 
 const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
   const [pending, setPending] = useState(false);
+  const [openPrevent, setOpenPrevent] = useState(false);
+  const [areaForDelete, setAreaForDelete] = useState('');
   const { towerId } = useParams();
   const getSubtotal = () => {
     const adminSubtotal = property.adminAdditionalAreas.reduce(
@@ -37,6 +40,21 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleCloseDelete = () => {
+    setAreaForDelete('');
+    setOpenPrevent(false);
+  };
+
+  const confirmDelete = (areaToDelete) => {
+    deleteAdditionalAreaHandler(areaToDelete);
+    handleCloseDelete();
+  };
+
+  const tryToDelete = (areaToDelete) => () => {
+    setOpenPrevent(true);
+    setAreaForDelete(areaToDelete);
   };
 
   return (
@@ -111,7 +129,7 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                         <Button
                           onClick={() => {
                             return status === 'AVAILABLE'
-                              ? deleteAdditionalAreaHandler(additionalArea)
+                              ? tryToDelete(additionalArea)
                               : handleDesist(additionalArea.id);
                           }}
                         >
@@ -160,6 +178,12 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
           />
         </div>
       </div>
+      <PreventDelete
+        open={openPrevent}
+        actionDelete={confirmDelete}
+        handleClose={handleCloseDelete}
+        areaForDelete={areaForDelete}
+      />
     </Fragment>
   );
 };

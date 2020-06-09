@@ -1,4 +1,4 @@
-import React, { useEffct } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import MuiTabs from '@material-ui/core/Tabs';
@@ -15,10 +15,10 @@ import TabPanel from './TabPanel';
 import ItemContainer from './ItemContainer';
 import CompanySelector from './CompanySelector';
 import CantDeleteDialog from './ItemPanel/CantDeleteDialog';
+import Imports from '../Imports';
 
 import style from './Tabs.module.scss';
 import CreateItemDialog from './CreateItemDialog';
-
 
 const Tabs = ({
   onOpenCreateGroupDialog,
@@ -34,6 +34,7 @@ const Tabs = ({
   return (
     <>
       <CompanySelector />
+      <Imports company={companyId} />
       <Paper square className={style.root}>
         <MuiTabs
           value={tabNumber}

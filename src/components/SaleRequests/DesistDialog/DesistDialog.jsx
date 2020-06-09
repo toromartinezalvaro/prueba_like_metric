@@ -9,10 +9,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import NumberFormat from 'react-number-format';
 import ManualPrice from './ManualPrice';
 import AreasDetails from '../../shared/Areas';
 import ClientServices from '../../../services/client/ClientsServices';
 import SaleRequestsServices from '../../../services/SaleRequests';
+
+import styles from './styles.module.scss';
 
 const services = new ClientServices();
 const saleRequestServices = new SaleRequestsServices();
@@ -67,7 +70,7 @@ const DesistDialog = ({
       desistRequestId,
       price,
     });
-
+    setSuggestedPrice(0);
     setDisabled(result);
   };
 
@@ -76,11 +79,17 @@ const DesistDialog = ({
       desistRequestId,
     );
     reloadSaleRequestByPropertyId(propertyId, result.data);
+    setSuggestedPrice(0);
     closeHandler();
   };
 
   const setPrice = () => {
     setSuggestedPrice(suggestedPriceBeforeAssign);
+  };
+
+  const handleCloseFunc = () => {
+    closeHandler();
+    setSuggestedPrice(0);
   };
 
   return (
@@ -100,11 +109,28 @@ const DesistDialog = ({
           </Typography>
         </Box>
         <Box my={2}>
-          <Typography variant="caption">
-            <Button variant="outlined" color="primary" onClick={setPrice}>
-              Seleccionar precio sugerido con base al incremento actual
-            </Button>
-          </Typography>
+          <div className={styles.wrapper}>
+            <div className={styles.col1}>
+              <Typography variant="caption">
+                <Button variant="outlined" color="primary" onClick={setPrice}>
+                  Aplicar precio sugerido
+                </Button>
+              </Typography>
+            </div>
+            <div className={styles.col2}>
+              <Typography variant="subtitle1">
+                Valor de sugerido:
+                {
+                  <NumberFormat
+                    value={suggestedPriceBeforeAssign}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    prefix={'$'}
+                  />
+                }
+              </Typography>
+            </div>
+          </div>
         </Box>
         <ManualPrice
           ref={formRef}
@@ -119,7 +145,7 @@ const DesistDialog = ({
         <Button onClick={submit} color="primary" disabled={isDisabled}>
           Actualizar
         </Button>
-        <Button onClick={closeHandler} color="primary">
+        <Button onClick={handleCloseFunc} color="primary">
           Cerrar
         </Button>
       </DialogActions>

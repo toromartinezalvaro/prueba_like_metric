@@ -7,6 +7,17 @@ import Styles from './AreaForm.module.scss';
 const AreaForm = ({ areas, isEditingHandler, addAreaHandler, status }) => {
   const [selectedArea, setSelectedArea] = useState('');
 
+  const saveSelection = () => {
+    isEditingHandler(false);
+    addAreaHandler(selectedArea);
+  };
+
+  const useArea = (e) => {
+    if (e.key === 'Enter') {
+      saveSelection();
+    }
+  };
+
   return (
     <div className={Styles.editingContainer}>
       <div className={Styles.autocompleteContainer}>
@@ -14,15 +25,10 @@ const AreaForm = ({ areas, isEditingHandler, addAreaHandler, status }) => {
           areas={areas}
           selectedArea={selectedArea}
           selectedAreaHandler={setSelectedArea}
+          useArea={useArea}
         />
       </div>
-      <Button
-        disabled={selectedArea === ''}
-        onClick={() => {
-          isEditingHandler(false);
-          addAreaHandler(selectedArea);
-        }}
-      >
+      <Button disabled={selectedArea === ''} onClick={saveSelection}>
         <i className="fas fa-check"></i>
       </Button>
       <Button

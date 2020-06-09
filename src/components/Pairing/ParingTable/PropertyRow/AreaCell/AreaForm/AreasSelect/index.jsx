@@ -6,9 +6,10 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Styles from './AreasSelect.module.scss';
 import { ObjectNaturalSort } from '../../../../../../../helpers/sort';
 
-const AreasSelect = ({ areas, selectedArea, selectedAreaHandler }) => {
+const AreasSelect = ({ areas, selectedArea, selectedAreaHandler, useArea }) => {
+
   return (
-    <div>
+    <div tabIndex={0} onKeyDown={useArea}>
       <Select
         value={selectedArea}
         displayEmpty
@@ -67,6 +68,7 @@ AreasSelect.propTypes = {
   selectedArea: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     .isRequired,
   selectedAreaHandler: PropTypes.func.isRequired,
+  useArea: PropTypes.func,
 };
 
 export default AreasSelect;
