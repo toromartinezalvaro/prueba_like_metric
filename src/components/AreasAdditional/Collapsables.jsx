@@ -91,8 +91,8 @@ const Collapsables = (props) => {
     setUnit(event.target.value);
   };
 
-  const onChangeName = (event, unitFromForm) => {
-    setName(event.target.value);
+  const onChangeName = (eventName, unitFromForm) => {
+    setName(eventName);
     setUnit(unitFromForm);
   };
 
@@ -107,16 +107,6 @@ const Collapsables = (props) => {
       i,
       props.disableSold,
     );
-    data = _.orderBy(
-      data,
-      [
-        (dataFiltered) =>
-          Number(dataFiltered.nomenclature.props.value) ||
-          dataFiltered.nomenclature.props.value,
-      ],
-      ['asc'],
-    );
-
     let columns = COLUMNS_MT2;
 
     if (areaType.unit === 'UNT') {
@@ -127,15 +117,6 @@ const Collapsables = (props) => {
           additionalStatus: property.status,
         };
       });
-      data = _.orderBy(
-        data,
-        [
-          (dataFiltered) =>
-            Number(dataFiltered.nomenclature.props.value) ||
-            dataFiltered.nomenclature.props.value,
-        ],
-        ['asc'],
-      );
       columns = COLUMNS_UNIT;
     }
 
@@ -227,18 +208,7 @@ const Collapsables = (props) => {
               </div>
             </div>
 
-            <Table2
-              columns={columns}
-              data={_.orderBy(
-                data,
-                [
-                  (dataFiltered) =>
-                    Number(dataFiltered.nomenclature) ||
-                    dataFiltered.nomenclature,
-                ],
-                ['asc'],
-              )}
-            ></Table2>
+            <Table2 columns={columns} data={data}></Table2>
           </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
