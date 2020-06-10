@@ -20,6 +20,10 @@ const CreateCompanyModal = ({
   const [currentCompany, setCompany] = React.useState(undefined);
 
   const handleChange = (event) => {
+    setCompany(event);
+  };
+
+  const handleChangeNewCompany = (event) => {
     setCompany(event.target.value);
   };
 
@@ -89,7 +93,7 @@ const CreateCompanyModal = ({
                     className={Styles.TextField}
                     label="Nombre de la empresa"
                     value={currentCompany}
-                    onChange={handleChange}
+                    onChange={handleChangeNewCompany}
                   />
                 </div>
               )}
