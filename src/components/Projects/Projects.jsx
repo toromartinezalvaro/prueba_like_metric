@@ -29,12 +29,14 @@ const ProjectItems = (props) => {
   }, [props.projects]);
 
   const companyOptions = (companiesForOptions) => {
-    const companiesFilter = companiesForOptions.filter(
-      (singleCompany) => singleCompany !== undefined,
-    );
     return _.orderBy(
-      companiesFilter,
-      [(singleCompany) => singleCompany.name.toLowerCase()],
+      companiesForOptions,
+      [
+        (singleCompany) =>
+          singleCompany.name
+            ? singleCompany.name.toLowerCase()
+            : company.ownerId,
+      ],
       ['asc'],
     ).map((element, index) => (
       <MenuItem value={element.id} key={index}>
