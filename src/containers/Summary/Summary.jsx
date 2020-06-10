@@ -74,7 +74,6 @@ class Summary extends Component {
           periods: data.periods,
           isLoading: false,
         });
-        console.log('areas', this.state.areas);
       })
       .catch((error) => {
         this.setState({ isLoading: false });
@@ -151,7 +150,7 @@ class Summary extends Component {
           }
           fees.sum += value.price;
           items++;
-          let newValue = { ...value };
+          const newValue = { ...value };
           newValue.price =
             value.price * (this.state.firstFee / 100) * this.state.periods;
           return newValue;

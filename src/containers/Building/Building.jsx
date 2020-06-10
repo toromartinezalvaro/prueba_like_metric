@@ -298,6 +298,7 @@ class Building extends Component {
               editMode={this.toggleEditMode}
               names={this.state.names}
               disableSold={this.state.disableSold}
+              updateSchema={this.updateNames}
             />
           )}
         </div>
