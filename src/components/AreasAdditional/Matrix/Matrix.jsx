@@ -218,11 +218,7 @@ const Matrix = (
     };
   });
 
-  return _.orderBy(
-    data,
-    [(dataFiltered) => dataFiltered.nomenclature.props.value],
-    ['asc'],
-  );
+  return data;
 };
 
 export default Matrix;

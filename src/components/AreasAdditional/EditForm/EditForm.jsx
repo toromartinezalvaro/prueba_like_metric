@@ -27,7 +27,7 @@ const EditForm = (props) => {
         required
         onChange={(e) => {
           setName(e.target.value);
-          props.onChangeName(e, unit);
+          props.onChangeName(name, unit);
         }}
         value={name}
         id="standard-required"
