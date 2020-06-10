@@ -5,9 +5,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { DialogTitle, TextField } from '@material-ui/core';
 import Select from 'react-select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
 import Card, { CardBody } from '../../UI/Card/Card';
 import Styles from './CreateCompanyModal.module.scss';
-import Button from '../../UI/Button/Button';
 
 const CreateCompanyModal = ({
   isOpen,
@@ -19,8 +19,12 @@ const CreateCompanyModal = ({
 }) => {
   const [currentCompany, setCompany] = React.useState(undefined);
 
-  const handleChange = (currentElement) => {
-    setCompany(currentElement);
+  const handleChange = (event) => {
+    setCompany(event);
+  };
+
+  const handleChangeNewCompany = (event) => {
+    setCompany(event.target.value);
   };
 
   const handlingOnClick = () => {
@@ -89,9 +93,7 @@ const CreateCompanyModal = ({
                     className={Styles.TextField}
                     label="Nombre de la empresa"
                     value={currentCompany}
-                    onChange={(event) => {
-                      handleChange(event.target.value);
-                    }}
+                    onChange={handleChangeNewCompany}
                   />
                 </div>
               )}

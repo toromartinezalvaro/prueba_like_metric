@@ -57,6 +57,7 @@ export default class Projects extends Component {
 
   removeProjectHandler = (id) => {
     const onAccept = () => {
+      const { companies } = this.state;
       this.setState({
         alertIsHidden: true,
       });
@@ -68,7 +69,11 @@ export default class Projects extends Component {
             this.setState({
               projects,
               modalIsHidden: projects.length > 0,
-              companies: response.data.companies,
+              companies: this.state.companies,
+            });
+          } else {
+            this.setState({
+              companies,
             });
           }
         })
@@ -321,7 +326,6 @@ export default class Projects extends Component {
 
   render() {
     const { projectIsMissingCompany, projects, companies } = this.state;
-
     const showCompanyModal =
       projects &&
       companies &&

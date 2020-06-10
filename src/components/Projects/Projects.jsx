@@ -32,8 +32,10 @@ const ProjectItems = (props) => {
     return _.orderBy(
       companiesForOptions,
       [
-        (company) =>
-          company.name ? company.name.toLowerCase() : company.ownerId,
+        (singleCompany) =>
+          singleCompany.name
+            ? singleCompany.name.toLowerCase()
+            : company.ownerId,
       ],
       ['asc'],
     ).map((element, index) => (
