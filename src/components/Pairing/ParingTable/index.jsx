@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import PropertyRow from './PropertyRow';
 import Button from '../../UI2/Button';
+import PreventDelete from './PreventDelete';
 import Styles from './PairingTable.module.scss';
 import squareStyle from './PropertyRow/propertyRow.module.scss';
 
@@ -18,6 +19,7 @@ const PairingTable = ({
   addAreaHandler,
   removeAreaHandler,
   edition,
+  towerId,
 }) => {
   const getMaxAreas = () => {
     return properties.reduce((current, next) => {
@@ -28,11 +30,24 @@ const PairingTable = ({
   };
 
   const [maxAreasLength, setMaxAreasLength] = useState(getMaxAreas());
+  const [openNoArea, setOpenNoArea] = useState(false);
 
   const addArea = (propertyId) => {
     return (areaId) => {
       addAreaHandler(propertyId, areaId);
     };
+  };
+
+  const handleClose = () => {
+    setOpenNoArea(false);
+  };
+
+  const handleOpenNoAreas = () => {
+    if (areas.length <= 0) {
+      setOpenNoArea(true);
+    } else {
+      setMaxAreasLength(maxAreasLength + 1);
+    }
   };
 
   return (
@@ -88,16 +103,16 @@ const PairingTable = ({
           </Table>
         </div>
         <div className={Styles.actionContainer}>
-          <Button
-            className={Styles.button}
-            onClick={() => {
-              setMaxAreasLength(maxAreasLength + 1);
-            }}
-          >
+          <Button className={Styles.button} onClick={handleOpenNoAreas}>
             Agregar area adicional
           </Button>
         </div>
       </div>
+      <PreventDelete
+        open={openNoArea}
+        onClose={handleClose}
+        towerId={towerId}
+      />
     </>
   );
 };
@@ -128,6 +143,7 @@ PairingTable.propTypes = {
   addAreaHandler: PropTypes.func.isRequired,
   removeAreaHandler: PropTypes.func.isRequired,
   edition: PropTypes.bool.isRequired,
+  towerId: PropTypes.string.isRequired,
 };
 
 export default PairingTable;

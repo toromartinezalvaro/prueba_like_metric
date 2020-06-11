@@ -152,6 +152,7 @@ class Pairing extends Component {
                   addAreaHandler={this.handleAddArea}
                   removeAreaHandler={this.handleRemoveArea}
                   edition={this.state.allowEdition}
+                  towerId={this.props.match.params.towerId}
                 />
               </div>
             </div>
