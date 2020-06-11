@@ -72,7 +72,6 @@ const Dialog = ({
   useEffect(() => {
     let active = true;
     async function fetchQuotation() {
-      console.log('DATA',quotationData)
       try {
         dispatch(fetchQuotationStart());
         const response = await services.postTempQuotation(
