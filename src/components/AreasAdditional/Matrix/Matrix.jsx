@@ -139,7 +139,6 @@ const Matrix = (
   };
 
   const data = areaType.additionalAreas.map((area, j) => {
-    console.log('AREATYPES', area);
     return {
       nomenclature: (
         <TextField
