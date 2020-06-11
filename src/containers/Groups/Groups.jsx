@@ -32,9 +32,11 @@ const Groups = ({
     async function fetch() {
       try {
         const response = await services.getCompanies();
+        console.log('RESPONSE', response.data);
+        const companies = response.data.filter((company) => company !== null);
         onSetCompanies(
           _.orderBy(
-            response.data,
+            companies,
             [(company) => company.name.toLowerCase()],
             ['asc'],
           ),
