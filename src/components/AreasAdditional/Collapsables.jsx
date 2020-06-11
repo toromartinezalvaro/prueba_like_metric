@@ -101,13 +101,13 @@ const Collapsables = (props) => {
     setUnit(unitFromForm);
   };
 
-  return props.data.map((types, i) => {
-    let areaType = types;
+  const sortAreas = (areasToSort) => {
+    let areas = areasToSort;
     if (changeUnits) {
-      areaType = {
-        ...types,
+      areas = {
+        ...areasToSort,
         additionalAreas: _.orderBy(
-          types.additionalAreas,
+          areasToSort.additionalAreas,
           [
             (property) =>
               Number(property.nomenclature)
@@ -117,8 +117,13 @@ const Collapsables = (props) => {
           ['asc'],
         ),
       };
+      return areas;
     }
+    return areas;
+  };
 
+  return props.data.map((types, i) => {
+    const areaType = sortAreas(types);
     let data = Matrix(
       areaType,
       actualValue,

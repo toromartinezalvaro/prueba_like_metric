@@ -15,6 +15,7 @@ import { InputAdornment } from '@material-ui/core';
 import Styles from './Matrix.module.scss';
 import Numbers from '../../../helpers/numbers';
 import TextField from './TextField/TextField';
+import stateTypes from './stateType.enum';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -126,12 +127,12 @@ const Matrix = (
   const additionalStatus = (area) => {
     if (area.property) {
       switch (area.property.status) {
-        case 'SOLD':
+        case stateTypes.Sold.code:
           return <div className={Styles.Sold}></div>;
-        case 'AVAILABLE':
-          return <div className={Styles.Available}></div>;
-        default:
+        case stateTypes.Optional.code:
           return <div className={Styles.Option}></div>;
+        default:
+          return <div className={Styles.Available}></div>;
       }
     } else {
       return <div className={Styles.Available}></div>;
