@@ -12,6 +12,9 @@ const Input = ({ error, touched, field, ...rest }) => {
         fullWidth
         variant="outlined"
         helperText={touched && error}
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
     </Box>
   );
