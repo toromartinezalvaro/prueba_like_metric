@@ -119,7 +119,7 @@ const DesistDialog = ({
             </div>
             <div className={styles.col2}>
               <Typography variant="subtitle1">
-                Valor de sugerido:
+                Valor sugerido:
                 {
                   <NumberFormat
                     value={suggestedPriceBeforeAssign}

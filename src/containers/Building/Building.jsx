@@ -128,6 +128,13 @@ class Building extends Component {
     this.setState((prevState) => ({
       disable: !prevState.disable,
     }));
+    if (this.state.disable === false) {
+      this.setState((prevState) => ({
+        floors: prevState.floors,
+        properties: prevState.properties,
+        lowestFloor: prevState.lowestFloor,
+      }));
+    }
   };
 
   toggleWarning = () => {
