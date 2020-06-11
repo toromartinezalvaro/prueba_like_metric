@@ -126,8 +126,16 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                         additionalArea.areaType.name
                       }
                       hover={
-                        <Button onClick={tryToDelete(additionalArea)}>
-                          Eliminar area
+                        <Button
+                          onClick={() => {
+                            return status === 'AVAILABLE'
+                              ? tryToDelete(additionalArea)
+                              : handleDesist(additionalArea.id);
+                          }}
+                        >
+                          {status === 'AVAILABLE'
+                            ? 'Eliminar area'
+                            : 'Desistir'}
                         </Button>
                       }
                     />
