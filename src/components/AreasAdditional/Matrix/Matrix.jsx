@@ -128,8 +128,10 @@ const Matrix = (
       switch (area.property.status) {
         case 'SOLD':
           return <div className={Styles.Sold}></div>;
-        default:
+        case 'AVAILABLE':
           return <div className={Styles.Available}></div>;
+        default:
+          return <div className={Styles.Option}></div>;
       }
     } else {
       return <div className={Styles.Available}></div>;
@@ -137,6 +139,7 @@ const Matrix = (
   };
 
   const data = areaType.additionalAreas.map((area, j) => {
+    console.log('AREATYPES', area);
     return {
       nomenclature: (
         <TextField
