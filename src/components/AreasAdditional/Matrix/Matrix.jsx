@@ -15,7 +15,7 @@ import { InputAdornment } from '@material-ui/core';
 import Styles from './Matrix.module.scss';
 import Numbers from '../../../helpers/numbers';
 import TextField from './TextField/TextField';
-import stateTypes from './stateType.enum';
+import stateTypes from '../../Pairing/ParingTable/PropertyRow/AreaCell/HoverContainer/stateType.enum';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
