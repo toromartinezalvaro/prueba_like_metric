@@ -41,6 +41,22 @@ const PropertyInfo = ({ quotationData }) => {
           />
         </b>
       </div>
+      <div className={Styles.title}>
+        <span>Valor descuento:</span>
+      </div>
+      <div className={Styles.rate}>
+        <span></span>
+      </div>
+      <div className={Styles.value}>
+        <b>
+          <NumberFormat
+            value={Number(quotationData.discount).toFixed(2)}
+            displayType="text"
+            thousandSeparator
+            prefix="$"
+          />
+        </b>
+      </div>
       {quotationData.additionalAreas.map((additionalArea) => {
         return (
           <>
