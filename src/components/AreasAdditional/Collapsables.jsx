@@ -56,6 +56,7 @@ const Collapsables = (props) => {
   const [unit, setUnit] = useState(null);
   const [name, setName] = useState(null);
   const [currentArea, setCurrentArea] = useState(null);
+  const [changeUnits, setUnitsChanged] = useState(false);
 
   const handleChange = (id) => {
     if (id !== activePanel) {
@@ -89,6 +90,10 @@ const Collapsables = (props) => {
 
   const handleChangeModal = (event) => {
     setUnit(event.target.value);
+    setUnitsChanged(true);
+    setTimeout(() => {
+      setUnitsChanged(false);
+    }, 100);
   };
 
   const onChangeName = (eventName, unitFromForm) => {
@@ -96,7 +101,29 @@ const Collapsables = (props) => {
     setUnit(unitFromForm);
   };
 
-  return props.data.map((areaType, i) => {
+  const sortAreas = (areasToSort) => {
+    let areas = areasToSort;
+    if (changeUnits) {
+      areas = {
+        ...areasToSort,
+        additionalAreas: _.orderBy(
+          areasToSort.additionalAreas,
+          [
+            (property) =>
+              Number(property.nomenclature)
+                ? Number(property.nomenclature)
+                : property.nomenclature,
+          ],
+          ['asc'],
+        ),
+      };
+      return areas;
+    }
+    return areas;
+  };
+
+  return props.data.map((types, i) => {
+    const areaType = sortAreas(types);
     let data = Matrix(
       areaType,
       actualValue,

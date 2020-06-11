@@ -90,7 +90,7 @@ class Agent {
 
 // export const API_PATH = Server.development.serverUrl;
 // export const API_PATH = Server.staging.serverUrl;
-export const API_PATH = Server.production.serverUrl;
+ export const API_PATH = Server.production.serverUrl;
 
 const instance = new Agent();
 // export singleton freezed object

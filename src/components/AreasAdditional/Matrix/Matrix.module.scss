@@ -52,3 +52,11 @@ input[type='number']::-webkit-outer-spin-button {
 
   border-radius: 5%;
 }
+
+.Option {
+  margin-left: 30% !important;
+  width: $width;
+  height: $height;
+  margin-right: 4px;
+  background-color: $yellow-color;
+}
