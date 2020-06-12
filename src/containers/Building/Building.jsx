@@ -20,7 +20,7 @@ class Building extends Component {
     floors: 1,
     properties: 1,
     lowestFloor: 1,
-    disable: false,
+    disable: true,
     disableWarning: false,
     update: false,
     names: [],
@@ -34,8 +34,8 @@ class Building extends Component {
       salesStartDate: new Date().getTime(),
       endOfSalesDate: new Date().getTime(),
     },
-    sold: false,
-    disableSold: false,
+    sold: true,
+    disableSold: true,
   };
 
   componentDidMount() {
@@ -54,7 +54,7 @@ class Building extends Component {
     this.services
       .isDisable(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ disableSold: response.data, disable: response.data });
+        this.setState({ disableSold: response.data });
       })
       .catch((err) => {
         console.log(err);

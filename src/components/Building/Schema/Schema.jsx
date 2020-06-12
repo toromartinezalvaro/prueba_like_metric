@@ -10,26 +10,6 @@ const Schema = (props) => {
   const [hidden, setHidden] = useState(true);
   const [locked, setLock] = useState(false);
 
-  function NumberFormatCustom(props) {
-    const { inputRef, onChange, ...other } = props;
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={inputRef}
-        onValueChange={(values) => {
-          onChange({
-            target: {
-              value: values.value,
-            },
-          });
-        }}
-        type="tel"
-        allowNegative={false}
-        decimalSeparator={false}
-      />
-    );
-  }
-
   const inputValidation = [
     {
       fn: (value) => {
