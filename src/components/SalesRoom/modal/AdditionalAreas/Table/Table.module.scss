@@ -14,3 +14,12 @@
     margin-left: auto;
   }
 }
+
+.priceAndAction {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.price {
+  margin-top: 3.5%;
+}

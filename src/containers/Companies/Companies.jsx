@@ -50,7 +50,7 @@ class Companies extends React.Component {
 
   createCompany = (company) => {
     this.service
-      .create(company)
+      .create(company.name)
       .then(() => {
         this.props.spawnMessage(
           'La compañía fué creada exitosamente ',

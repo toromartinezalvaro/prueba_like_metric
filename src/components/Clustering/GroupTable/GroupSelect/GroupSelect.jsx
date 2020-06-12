@@ -1,12 +1,14 @@
 import React from 'react';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const groupSelect = ({ value, onChange, groups, locked, ...rest }) => {
   return (
-    <select value={value} onChange={onChange} disabled={locked}>
+    <Select value={value} onChange={onChange} disabled={locked}>
       {groups.map((group) => {
-        return <option value={group.id}>{group.name}</option>;
+        return <MenuItem value={group.id}>{group.name}</MenuItem>;
       })}
-    </select>
+    </Select>
   );
 };
 
