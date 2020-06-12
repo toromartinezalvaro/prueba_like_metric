@@ -218,7 +218,7 @@ const SalesRoomModal = ({
                 placeholder="¿Por qué será opcionado?"
                 rows={3}
                 variant="outlined"
-                value={optionalTextDescript}
+                defaultValue={optionalDescriptions}
                 onChange={optionalDescription}
               />
             </div>

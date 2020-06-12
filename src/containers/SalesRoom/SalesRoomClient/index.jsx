@@ -620,6 +620,7 @@ class SalesRoom extends Component {
                     />
                   </div>
                 )}
+                {console.log('PROPERTY', this.state.selectedProperty)}
                 {showModalSelectedProperty &&
                   !this.state.isLoadingModal &&
                   (this.clientValidation() ? (
