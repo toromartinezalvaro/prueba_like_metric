@@ -119,27 +119,7 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
             {property.addedAdditionalAreas.map((additionalArea) => {
               return (
                 <TableRow key={additionalArea.id}>
-                  <TableCell>
-                    <HoverContainer
-                      noHover={
-                        additionalArea.nomenclature ||
-                        additionalArea.areaType.name
-                      }
-                      hover={
-                        <Button
-                          onClick={
-                            status === 'AVAILABLE'
-                              ? tryToDelete(additionalArea)
-                              : handleDesist(additionalArea.id)
-                          }
-                        >
-                          {status === 'AVAILABLE'
-                            ? 'Eliminar area'
-                            : 'Desistir'}
-                        </Button>
-                      }
-                    />
-                  </TableCell>
+                  <TableCell></TableCell>
                   <TableCell>{additionalArea.areaType.name}</TableCell>
                   <TableCell>
                     {additionalArea.areaType.unit === 'MT2'
@@ -148,12 +128,24 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                   </TableCell>
                   <TableCell>{additionalArea.areaType.unit}</TableCell>
                   <TableCell>
-                    <NumberFormat
-                      displayType="text"
-                      thousandSeparator
-                      prefix="$"
-                      value={additionalArea.price}
-                    />
+                    <div className={Styles.priceAndAction}>
+                      <NumberFormat
+                        displayType="text"
+                        thousandSeparator
+                        prefix="$"
+                        value={additionalArea.price}
+                        className={Styles.price}
+                      />
+                      <Button
+                        onClick={
+                          status === 'AVAILABLE'
+                            ? tryToDelete(additionalArea)
+                            : handleDesist(additionalArea.id)
+                        }
+                      >
+                        {status === 'AVAILABLE' ? 'X' : 'Desistir'}
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               );

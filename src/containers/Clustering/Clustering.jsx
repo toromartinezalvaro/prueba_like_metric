@@ -9,6 +9,7 @@ import LoadableContainer from '../../components/UI/Loader';
 import EmptyProperties from '../../components/Clustering/EmptyContentMessages/EmptyProperties/EmptyPropeties';
 import EmptyAreasAndPrices from '../../components/Clustering/EmptyContentMessages/EmptyAreasAndPrices/EmptyAreasAndPrices';
 import EmptyPrices from '../../components/Clustering/EmptyContentMessages/EmptyPrices/EmptyPrices';
+import PreventAction from '../../components/Clustering/PreventAction';
 
 class Clustering extends Component {
   constructor(props) {
@@ -30,6 +31,8 @@ class Clustering extends Component {
     isEmptyAreasAndPrices: false,
     message: 0,
     locked: false,
+    openDialog: false,
+    dataAction: null,
   };
 
   componentDidMount() {
@@ -101,6 +104,19 @@ class Clustering extends Component {
       .catch((error) => {});
   };
 
+  handleClose = () => {
+    this.setState({ openDialog: false, dataAction: null });
+  };
+
+  handleAction = (action) => {
+    this.postClusters(action);
+    this.handleClose();
+  };
+
+  handleOpenDialog = (action) => {
+    this.setState({ openDialog: true, dataAction: action });
+  };
+
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
@@ -143,7 +159,7 @@ class Clustering extends Component {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            this.postClusters(true);
+                            this.handleOpenDialog(true);
                           }}
                           disabled={
                             this.state.loadingTable ||
@@ -159,7 +175,7 @@ class Clustering extends Component {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            this.postClusters(false);
+                            this.handleOpenDialog(false);
                           }}
                           disabled={
                             this.state.loadingTable ||
@@ -173,6 +189,14 @@ class Clustering extends Component {
                     </div>
                   )}
                 </div>
+                {
+                  <PreventAction
+                    open={this.state.openDialog}
+                    handleClose={this.handleClose}
+                    action={this.handleAction}
+                    data={this.state.action}
+                  />
+                }
                 {this.state.message === 2 ? (
                   <EmptyPrices
                     towerId={this.props.match.params.towerId}

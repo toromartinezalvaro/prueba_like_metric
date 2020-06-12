@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Table from '../../UI/Table/Table';
 import Cell from './InfoCell/InfoCell';
 import GroupSelect from './GroupSelect/GroupSelect';
+import PreventAction from '../PreventAction';
 
-const groupTable = ({
+const GroupTable = ({
   data,
   onTypeChange,
   towerClusterConfig,
@@ -12,12 +13,30 @@ const groupTable = ({
   locked,
   ...rest
 }) => {
+  const [openActionHandler, setOpenAction] = useState(false);
+  const [actionData, setActionData] = useState({});
+
   const getPropertyNames = (data) => {
     return data.map((property) => property.name);
   };
 
   const getRows = (data) => {
     return data.map((property, index) => parseToRow(property, index));
+  };
+
+  const handleClose = () => {
+    setOpenAction(false);
+    setActionData({});
+  };
+
+  const changeGroupType = (data) => {
+    onTypeChange(data.property, data.event);
+    handleClose();
+  };
+
+  const handleChangeGroup = (property) => (event) => {
+    setOpenAction(true);
+    setActionData({ property: property.id, event: event.target.value });
   };
 
   const parseToRow = (property, index) => {
@@ -31,9 +50,7 @@ const groupTable = ({
       <GroupSelect
         locked={locked}
         value={value}
-        onChange={(event) => {
-          onTypeChange(property.id, event.target.value);
-        }}
+        onChange={handleChangeGroup(property)}
         groups={towerClusterConfig.groups}
       />,
     ];
@@ -58,8 +75,14 @@ const groupTable = ({
           data={getRows(data)}
         />
       </CardBody>
+      <PreventAction
+        open={openActionHandler}
+        handleClose={handleClose}
+        action={changeGroupType}
+        data={actionData}
+      />
     </Card>
   );
 };
 
-export default groupTable;
+export default GroupTable;
