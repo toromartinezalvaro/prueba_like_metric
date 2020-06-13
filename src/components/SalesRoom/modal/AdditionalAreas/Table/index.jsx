@@ -136,14 +136,20 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                         value={additionalArea.price}
                         className={Styles.price}
                       />
+                      {console.log(
+                        property,
+                        property.priceSold,
+                        status,
+                        additionalArea,
+                      )}
                       <Button
                         onClick={
-                          status === 'AVAILABLE'
-                            ? tryToDelete(additionalArea)
-                            : handleDesist(additionalArea.id)
+                          additionalArea.propertyId
+                            ? handleDesist(additionalArea.id)
+                            : tryToDelete(additionalArea)
                         }
                       >
-                        {status === 'AVAILABLE' ? 'X' : 'Desistir'}
+                        {additionalArea.propertyId ? 'Desistir' : 'X'}
                       </Button>
                     </div>
                   </TableCell>
