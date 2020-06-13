@@ -134,6 +134,7 @@ const Schema = (props) => {
                 onClick={() => {
                   save();
                 }}
+                isDisabled={props.disableSold}
               >
                 Guardar
               </Button>

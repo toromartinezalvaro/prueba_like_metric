@@ -9,6 +9,7 @@ import SchemeServices from '../../services/schema/SchemaServices';
 import FloatingButton from '../../components/UI/FloatingButton/FloatingButton';
 import LoadableContainer from '../../components/UI/Loader';
 import Schema2 from '../../components/Building/Schema2';
+import MessageSold from '../../components/Building/MessageSold';
 
 class Building extends Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class Building extends Component {
     this.services
       .isDisable(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ disableSold: response.data });
+        this.setState({ disableSold: response.data, disable: !response.data });
       })
       .catch((err) => {
         console.log(err);
@@ -258,6 +259,7 @@ class Building extends Component {
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <div>
+          {console.log(this.state.showFloatingButton, this.state.disable)}
           <Schema
             floors={this.state.floors}
             properties={this.state.properties}
@@ -310,6 +312,7 @@ class Building extends Component {
             Areas
           </FloatingButton>
         ) : null}
+        {this.state.disableSold && <MessageSold />}
       </LoadableContainer>
     );
   }

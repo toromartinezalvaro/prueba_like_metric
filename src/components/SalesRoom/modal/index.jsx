@@ -129,7 +129,8 @@ const SalesRoomModal = ({
       case SalesRoomEnum.status.OPTIONAL:
         return (
           property.requestStatus === RequestStatus.DISMISSED ||
-          (isLast && currentState !== SalesRoomEnum.status.AVAILABLE)
+          (isLast && currentState !== SalesRoomEnum.status.AVAILABLE) ||
+          currentState === SalesRoomEnum.status.SOLD
         );
       case SalesRoomEnum.status.SOLD:
         return (
