@@ -17,9 +17,14 @@
 
 .priceAndAction {
   display: grid !important;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 80% 20%;
 }
 
 .price {
   margin-top: 3.5%;
+  text-align: center;
+}
+
+.buttonClose {
+  width: 16% !important;
 }

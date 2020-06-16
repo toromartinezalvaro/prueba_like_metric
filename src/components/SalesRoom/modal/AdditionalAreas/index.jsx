@@ -13,7 +13,7 @@ const AdditionalAreas = ({
   status,
 }) => {
   return (
-    <Fragment>
+    <div className={Styles.tableArea}>
       <span className={Styles.title}>Areas Adicionales</span>
       <Table
         property={property}
@@ -26,7 +26,7 @@ const AdditionalAreas = ({
         addAdditionalAreaHandler={addAdditionalAreaHandler}
         setAdditionalPrices={setAdditionalPrices}
       />
-    </Fragment>
+    </div>
   );
 };
 
