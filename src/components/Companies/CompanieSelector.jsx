@@ -53,7 +53,7 @@ const CompanieSelector = ({
           variant="outlined"
           classes={{ root: styles.selectController }}
         >
-          <InputLabel>Seleccione una compañía</InputLabel>
+          <InputLabel className={styles.labelSelect}>Seleccione una compañía</InputLabel>
           <Select onChange={selectCompany}>{CompanieOptions(companies)}</Select>
         </FormControl>
         <div className={styles.actions}>
