@@ -85,7 +85,12 @@ class AreasAdditional extends Component {
         const areasData = areas.data.map((area) => {
           const additionalAreas = _.orderBy(
             area.additionalAreas,
-            [(additionalArea) => additionalArea.nomenclature],
+            [
+              (additionalArea) =>
+                Number(additionalArea.nomenclature)
+                  ? Number(additionalArea.nomenclature)
+                  : additionalArea.nomenclature,
+            ],
             ['asc'],
           );
           return {
