@@ -18,9 +18,9 @@ class Building extends Component {
   }
 
   state = {
-    floors: 1,
-    properties: 1,
-    lowestFloor: 1,
+    floors: 0,
+    properties: 0,
+    lowestFloor: 0,
     disable: true,
     disableWarning: false,
     update: false,
@@ -55,7 +55,10 @@ class Building extends Component {
     this.services
       .isDisable(this.props.match.params.towerId)
       .then((response) => {
-        this.setState({ disableSold: response.data, disable: !response.data });
+        this.setState({
+          disableSold: response.data,
+          disable: !(this.state.floors <= 0),
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -110,7 +113,7 @@ class Building extends Component {
   };
 
   setupShowFloatingButton = (properties) => {
-    if (properties.length <= 0) {
+    if (properties.length <= 0 && properties[0]) {
       return;
     }
 
@@ -259,7 +262,6 @@ class Building extends Component {
           <Error message={this.state.currentErrorMessage} />
         ) : null}
         <div>
-          {console.log(this.state.showFloatingButton, this.state.disable)}
           <Schema
             floors={this.state.floors}
             properties={this.state.properties}

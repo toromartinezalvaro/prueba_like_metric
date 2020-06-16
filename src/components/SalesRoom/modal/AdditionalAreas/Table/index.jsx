@@ -63,18 +63,17 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
         <MUITable>
           <TableHead>
             <TableRow>
-              <TableCell>Nomenclatura</TableCell>
-              <TableCell>Tipo</TableCell>
-              <TableCell>Cantidad</TableCell>
-              <TableCell>Unidad</TableCell>
-              <TableCell>Precio</TableCell>
+              <TableCell align="center">Nomenclatura</TableCell>
+              <TableCell align="center">Tipo</TableCell>
+              <TableCell align="center">Unidad</TableCell>
+              <TableCell align="center">Precio</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {property.adminAdditionalAreas.map((additionalArea) => {
               return (
                 <TableRow key={additionalArea.id}>
-                  <TableCell>
+                  <TableCell component="th" scope="row">
                     {status === 'SOLD' ? (
                       <HoverContainer
                         noHover={
@@ -98,14 +97,15 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                       </span>
                     )}
                   </TableCell>
-                  <TableCell>{additionalArea.areaType.name}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     {additionalArea.areaType.unit === 'MT2'
                       ? additionalArea.measure
                       : '-'}
                   </TableCell>
-                  <TableCell>{additionalArea.areaType.unit}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">
+                    {additionalArea.areaType.unit || '-'}
+                  </TableCell>
+                  <TableCell align="center">
                     <NumberFormat
                       displayType="text"
                       thousandSeparator
@@ -119,15 +119,18 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
             {property.addedAdditionalAreas.map((additionalArea) => {
               return (
                 <TableRow key={additionalArea.id}>
-                  <TableCell></TableCell>
-                  <TableCell>{additionalArea.areaType.name}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">
+                    {additionalArea.areaType.name}
+                  </TableCell>
+                  <TableCell align="center">
                     {additionalArea.areaType.unit === 'MT2'
                       ? additionalArea.measure
                       : '-'}
                   </TableCell>
-                  <TableCell>{additionalArea.areaType.unit}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">
+                    {additionalArea.areaType.unit || '-'}
+                  </TableCell>
+                  <TableCell align="rigth">
                     <div className={Styles.priceAndAction}>
                       <NumberFormat
                         displayType="text"
@@ -136,21 +139,17 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                         value={additionalArea.price}
                         className={Styles.price}
                       />
-                      {console.log(
-                        property,
-                        property.priceSold,
-                        status,
-                        additionalArea,
-                      )}
-                      <Button
-                        onClick={
-                          additionalArea.propertyId
-                            ? handleDesist(additionalArea.id)
-                            : tryToDelete(additionalArea)
-                        }
-                      >
-                        {additionalArea.propertyId ? 'Desistir' : 'X'}
-                      </Button>
+                      <div className={Styles.buttonClose}>
+                        <Button
+                          onClick={
+                            additionalArea.propertyId
+                              ? handleDesist(additionalArea.id)
+                              : tryToDelete(additionalArea)
+                          }
+                        >
+                          {additionalArea.propertyId ? 'Desistir' : 'x'}
+                        </Button>
+                      </div>
                     </div>
                   </TableCell>
                 </TableRow>

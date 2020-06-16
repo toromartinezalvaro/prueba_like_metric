@@ -82,7 +82,23 @@ class AreasAdditional extends Component {
       })
       .then(() => this.services.getAreas(this.props.match.params.towerId))
       .then((areas) => {
-        this.setState({ arrayAreaTypes: areas.data });
+        const areasData = areas.data.map((area) => {
+          const additionalAreas = _.orderBy(
+            area.additionalAreas,
+            [
+              (additionalArea) =>
+                Number(additionalArea.nomenclature)
+                  ? Number(additionalArea.nomenclature)
+                  : additionalArea.nomenclature,
+            ],
+            ['asc'],
+          );
+          return {
+            ...area,
+            additionalAreas,
+          };
+        });
+        this.setState({ arrayAreaTypes: areasData });
         this.props.offLoading();
       })
       .catch((error) => {
