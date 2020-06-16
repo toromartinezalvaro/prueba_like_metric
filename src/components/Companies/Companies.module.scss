@@ -1,4 +1,4 @@
-@import '../../assets/styles/variables.scss';
+@import "../../assets/styles/variables.scss";
 
 .btnStyle {
   color: #fff !important;
@@ -31,6 +31,10 @@
 
 .selectController {
   margin: 2% !important ;
+}
+
+.labelSelect {
+  background-color: $defaultWhite-color;
 }
 
 .titleContainer {

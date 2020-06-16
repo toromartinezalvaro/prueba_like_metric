@@ -13,8 +13,8 @@ import Styles from './Companies.module.scss';
 
 const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
   const [companyParams, setCompanyParams] = useState({
-    name: null,
-    description: null,
+    name: undefined,
+    description: undefined,
   });
   const [emptyField, setEmptyField] = useState(false);
   const changeParam = (name) => (element) => {
@@ -24,24 +24,25 @@ const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
     };
     setCompanyParams(currentNewCompany);
   };
+
+  const closeAction = () => {
+    setCompanyParams({
+      name: undefined,
+      description: undefined,
+    });
+    action();
+  };
+
   const sendCompanyParams = () => {
     if (companyParams.name) {
       createCompanyService(companyParams);
-      action();
+      closeAction();
     } else {
       setEmptyField(true);
     }
   };
   return (
-    <Dialog
-      open={actionOpen}
-      keepMounted
-      fullWidth="sm"
-      maxWidth="sm"
-      onClose={action}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
-    >
+    <Dialog open={actionOpen} fullWidth="sm" maxWidth="sm">
       <DialogTitle>Nueva Compañía</DialogTitle>
       <DialogContent classes={{ root: Styles.dialogContent }}>
         <FormControl className={Styles.dialogContent}>
@@ -49,6 +50,7 @@ const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
             className={Styles.texfieldModal}
             variant="outlined"
             required
+            defaultValue={companyParams.name}
             error={emptyField}
             onChange={changeParam('name')}
             label="Ingrese el nombre de la compañía"
@@ -56,6 +58,7 @@ const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
           <TextField
             className={Styles.texfieldModal}
             multiline
+            defaultValue={companyParams.description}
             rows={3}
             onChange={changeParam('description')}
             variant="outlined"
@@ -64,7 +67,7 @@ const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={action} color="secondary">
+        <Button onClick={closeAction} color="secondary">
           CANCELAR
         </Button>
         <Button onClick={sendCompanyParams} classes={{ root: Styles.btnModal }}>
