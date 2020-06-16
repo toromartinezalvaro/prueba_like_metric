@@ -13,6 +13,8 @@ const ClientsServiceDefinitions = {
   getPropertyInfo: (propertyId) => `${API_PATH}v2/properties/${propertyId}`,
   addClientToTower: (identityDocument, towerId) =>
     `${API_PATH}clients/tower-clients/client/${identityDocument}/tower/${towerId}`,
+  deleteClient: (clientId, towerId) =>
+    `${API_PATH}clients/${clientId}/towers/${towerId}`,
 };
 
 export default ClientsServiceDefinitions;

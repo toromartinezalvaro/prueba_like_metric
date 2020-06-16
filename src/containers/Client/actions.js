@@ -4,6 +4,12 @@ export const FETCH_CLIENTS__FAILURE = 'FCF';
 export const CREATE_CLIENT__SUCCESS = 'CDS';
 export const UPDATE_CLIENT__SUCCESS = 'UDS';
 export const ADD_CLIENT__SUCCESS = 'ADS';
+export const REMOVE_CLIENT = 'RMV';
+
+export const removeClient = (clientId) => ({
+  type: REMOVE_CLIENT,
+  payload: clientId,
+});
 
 export const fetchClientsStart = () => ({
   type: FETCH_CLIENTS__START,

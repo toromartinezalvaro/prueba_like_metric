@@ -42,4 +42,10 @@ export default class ClientsServices extends Services {
       ClientsServicesDefinition.addClientToTower(identityDocument, towerId),
     );
   }
+
+  deleteClient(clientId, towerId) {
+    return this.delete(
+      ClientsServicesDefinition.deleteClient(clientId, towerId),
+    );
+  }
 }
