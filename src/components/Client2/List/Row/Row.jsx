@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
+import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
+import { useSnackbar } from 'notistack';
 import { Link } from 'react-router-dom';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,12 +11,33 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { DashboardRoutes } from '../../../../routes/local/routes';
 import ContainerContext from '../../../../containers/Client/context';
+import ClientServices from '../../../../services/client/ClientsServices';
+import { removeClient } from '../../../../containers/Client/actions';
+
+const services = new ClientServices();
 
 const Row = ({ client }) => {
-  const { towerId, isOpen, setIsOpen, setSelectedClient } = useContext(
-    ContainerContext,
-  );
+  const { enqueueSnackbar } = useSnackbar();
+  const {
+    towerId,
+    isOpen,
+    setIsOpen,
+    setSelectedClient,
+    dispatch,
+  } = useContext(ContainerContext);
   const { identityDocument, name, email, phoneNumber } = client;
+
+  const deleteClient = async (clientId) => {
+    try {
+      await services.deleteClient(clientId, towerId);
+      dispatch(removeClient(clientId));
+      enqueueSnackbar('Cliente eliminado correctamente', {
+        variant: 'success',
+      });
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  };
 
   return (
     <TableRow>
@@ -51,6 +75,13 @@ const Row = ({ client }) => {
             Sala de ventas
           </Button>
         </Link>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={() => deleteClient(client.id)}
+        >
+          Eliminar
+        </Button>
       </TableCell>
     </TableRow>
   );

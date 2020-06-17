@@ -6,6 +6,7 @@ import {
   ADD_CLIENT__SUCCESS,
   CREATE_CLIENT__SUCCESS,
   UPDATE_CLIENT__SUCCESS,
+  REMOVE_CLIENT,
 } from './actions';
 
 export const initialState = {
@@ -38,6 +39,10 @@ const addClient = (clients, client) => {
   return tempClients;
 };
 
+const deleteClient = (clients, client) => {
+  return clients.filter((o) => o.id !== client);
+};
+
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
 
@@ -54,6 +59,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, list: updateClient(state.list, payload) };
     case ADD_CLIENT__SUCCESS:
       return { ...state, list: addClient(state.list, payload) };
+    case REMOVE_CLIENT:
+      return { ...state, list: deleteClient(state.list, payload) };
     default:
       return state;
   }
