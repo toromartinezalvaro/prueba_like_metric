@@ -9,6 +9,7 @@ import Styles from './Widget.module.scss';
 export const XS = 'xs';
 export const SM = 'sm';
 export const MD = 'md';
+export const LG = 'lg';
 
 const VARIANTS = {
   xs: {
@@ -29,6 +30,10 @@ const VARIANTS = {
   },
   md: {
     padding: 3,
+    headerVariant: { content: 'h5', title: 'subtitle1' },
+  },
+  lg: {
+    padding: 5,
     headerVariant: { content: 'h5', title: 'subtitle1' },
   },
 };
@@ -85,7 +90,7 @@ Widget.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   children: PropTypes.node.isRequired,
-  size: PropTypes.oneOf([XS, SM, MD]),
+  size: PropTypes.oneOf([XS, SM, MD, LG]),
 };
 
 Widget.defaultProps = {

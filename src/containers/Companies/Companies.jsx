@@ -163,7 +163,10 @@ class Companies extends React.Component {
               )}
             </div>
             {this.state.projects && (
-              <AssignedCompanies associations={this.state.projects} />
+              <AssignedCompanies
+                associations={this.state.projects}
+                companySelect={this.state.companySelected}
+              />
             )}
           </div>
         )}

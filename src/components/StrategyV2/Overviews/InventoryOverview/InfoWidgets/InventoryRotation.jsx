@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import Tooltip from '@material-ui/core/Tooltip';
-import Widget, { XS, SM } from '../../../Shared/Widget';
+import Widget, { XS, SM, MD } from '../../../Shared/Widget';
 import { MAIN_VIEW } from '../../reducer';
 
 const InventoryRotation = ({
@@ -18,7 +18,7 @@ const InventoryRotation = ({
       title={
         objective ? 'Rotacion de inventario objetivo' : 'Rotacion de inventario'
       }
-      size={mini ? XS : SM}
+      size={mini ? XS : MD}
     >
       {objective ? futureRotationMonths : rotationMonths}
       {rotationMonths > initialFee && (

@@ -9,7 +9,7 @@ import UploadDialog, { actions } from './Upload';
 
 const services = new ImportServices();
 
-function Imports({ openDialogHandler, company }) {
+function Imports({ openDialogHandler, company, companyName }) {
   const [companyId, setCompanyId] = useState('');
   useEffect(() => {
     setCompanyId(company);
@@ -21,7 +21,7 @@ function Imports({ openDialogHandler, company }) {
 
   const downloadTemplate = async () => {
     try {
-      const name = 'Plantilla_Grupos.xlsx';
+      const name = `Plantilla_Grupos_${companyName.name}.xlsx`;
       const response = await services.getGroupTemplate(companyId);
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -65,7 +65,12 @@ function Imports({ openDialogHandler, company }) {
   );
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => {
+  const companyName = state.groups.groupTabs.companies.find(
+    (company) => company.id === state.groups.groupTabs.companyId,
+  );
+  return { companyName };
+};
 
 const mapDispatchToProps = {
   openDialogHandler: actions.openDialog,
@@ -74,6 +79,7 @@ const mapDispatchToProps = {
 Imports.propTypes = {
   openDialogHandler: PropTypes.func.isRequired,
   company: PropTypes.string,
+  companyName: PropTypes.object,
 };
 
 export default connect(
