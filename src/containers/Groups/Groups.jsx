@@ -28,24 +28,24 @@ const Groups = ({
   groups,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
-  useEffect(() => {
-    async function fetch() {
-      try {
-        const response = await services.getCompanies();
-        const companies = response.data.filter((company) => company !== null);
-        onSetCompanies(
-          _.orderBy(
-            companies,
-            [(company) => company.name.toLowerCase()],
-            ['asc'],
-          ),
-        );
-        onApiFetchSuccess();
-      } catch (error) {
-        onApiFetchFail();
-        enqueueSnackbar(error.message, { variant: 'error' });
-      }
+  async function fetch() {
+    try {
+      const response = await services.getCompanies();
+      const companies = response.data.filter((company) => company !== null);
+      onSetCompanies(
+        _.orderBy(
+          companies,
+          [(company) => company.name.toLowerCase()],
+          ['asc'],
+        ),
+      );
+      onApiFetchSuccess();
+    } catch (error) {
+      onApiFetchFail();
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
+  }
+  useEffect(() => {
     fetch();
   }, [groups]);
   return (

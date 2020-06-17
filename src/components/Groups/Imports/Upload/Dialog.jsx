@@ -42,6 +42,7 @@ function Dialog({
       enqueueSnackbar('Plantilla cargada correctamente', {
         variant: 'success',
       });
+      window.location.reload(false);
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
     }

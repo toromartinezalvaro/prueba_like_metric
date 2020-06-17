@@ -425,11 +425,7 @@ class Area extends Component {
             validations={[
               {
                 fn: (value) => {
-                  return value !== null;
-                },
-                message: 'No puede estar vacío',
-                fn: (value) => {
-                  return Number(value) > 0;
+                  return value !== null && value >= 0 && cellIndex !== 0;
                 },
                 message: 'No puede estar vacío',
               },

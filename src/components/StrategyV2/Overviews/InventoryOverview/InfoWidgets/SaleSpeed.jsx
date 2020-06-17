@@ -6,7 +6,7 @@ import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import Input, { NUMBER } from '../../../Shared/Input';
-import Widget, { SM } from '../../../Shared/Widget';
+import Widget, { LG } from '../../../Shared/Widget';
 import { fetchDataSuccess } from '../../../../../containers/StrategyV2/actions';
 import IncrementServices from '../../../../../services/increments/IncrementsServices';
 import Increment2Services from '../../../../../services/incrementsV2/incrementsService';
@@ -96,7 +96,7 @@ const SaleSpeed = ({
           ? 'Velocidad de ventas objetivo'
           : 'Velocidad de ventas inventario'
       }
-      size={SM}
+      size={LG}
     >
       {field ? (
         <Formik
