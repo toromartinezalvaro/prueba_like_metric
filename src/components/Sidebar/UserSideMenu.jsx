@@ -128,29 +128,31 @@ const UserSideMenu = (props) => {
                 </div>
               </ExpansionPanelDetails>
             </ExpansionPanel>
-            <ExpansionPanel
-              classes={{ root: style.expansionPanel }}
-              defaultExpanded
-            >
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
-                classes={{ root: style.expansionPanelSummary }}
+            {agent.isAuthorized([Role.Admin, Role.Super]) && (
+              <ExpansionPanel
+                classes={{ root: style.expansionPanel }}
+                defaultExpanded
               >
-                Grupos
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails
-                classes={{ root: style.expansionPanelDetails }}
-              >
-                <div className={style.linkContainer}>
-                  {itemForSidebar(
-                    style.MenuItem,
-                    GroupsRoutes.base,
-                    null,
-                    'Grupos / Items',
-                  )}
-                </div>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  classes={{ root: style.expansionPanelSummary }}
+                >
+                  Grupos
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails
+                  classes={{ root: style.expansionPanelDetails }}
+                >
+                  <div className={style.linkContainer}>
+                    {itemForSidebar(
+                      style.MenuItem,
+                      GroupsRoutes.base,
+                      null,
+                      'Grupos / Items',
+                    )}
+                  </div>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )}
           </div>
         </div>
       </Resizable>

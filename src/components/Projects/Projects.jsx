@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import styles from './Projects.module.scss';
 import Icon from '../../assets/icons/Icon';
 import unique from './helper/index';
+import agent from '../../config/config';
+import { Role } from '../../helpers/role';
 
 const ProjectItems = (props) => {
   const [company, setCompany] = useState('all');
@@ -127,35 +129,39 @@ const ProjectItems = (props) => {
       
       <div className={styles.headerContainer}>
         <h2 className={styles.header}>Proyectos</h2>
-        <Button
-          variant="contained"
-          color="primary"
-          className={styles.buttonHeader}
-          onClick={props.createProject}
-        >
-          Crear Proyecto
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={styles.buttonHeader}
-          onClick={props.redirectToGroups}
-        >
-          Administración de Grupos
-        </Button>
-        <FormControl variant="filled" classes={{ root: styles.rootSelect }}>
-          <InputLabel>Seleccione una compañía</InputLabel>
-          <Select
-            classes={{ root: styles.rootSelect }}
-            value={company}
-            onChange={handleChangeCompanyFilter}
-          >
-            <MenuItem value="all" selected>
-              Todas las compañías
-            </MenuItem>
-            {companyOptions(companies)}
-          </Select>
-        </FormControl>
+        {agent.isAuthorized([Role.Super, Role.Admin]) && (
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              className={styles.buttonHeader}
+              onClick={props.createProject}
+            >
+              Crear Proyecto
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              className={styles.buttonHeader}
+              onClick={props.redirectToGroups}
+            >
+              Administración de Grupos
+            </Button>
+            <FormControl variant="filled" classes={{ root: styles.rootSelect }}>
+              <InputLabel>Seleccione una compañía</InputLabel>
+              <Select
+                classes={{ root: styles.rootSelect }}
+                value={company}
+                onChange={handleChangeCompanyFilter}
+              >
+                <MenuItem value="all" selected>
+                  Todas las compañías
+                </MenuItem>
+                {companyOptions(companies)}
+              </Select>
+            </FormControl>
+          </>
+        )}
       </div>
       <CardContent>
         <div className={styles.Projects}>{items(props.projects, company)}</div>
