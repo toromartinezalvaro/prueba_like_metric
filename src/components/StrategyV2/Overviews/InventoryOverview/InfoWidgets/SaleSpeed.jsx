@@ -20,12 +20,18 @@ const services = {
   increments2: new Increment2Services(),
 };
 
-const validationSchema = (rotationMonths, units) => {
+const getMinSaleSpeed = (rotationMonths, units) => {
   let numberToValidation = Numbers.cleanNumber(units / rotationMonths);
 
   if (rotationMonths > 98) {
     numberToValidation = units / 98;
   }
+
+  return numberToValidation;
+};
+
+const validationSchema = (rotationMonths, units) => {
+  const numberToValidation = getMinSaleSpeed(rotationMonths, units);
 
   return yup.object().shape({
     saleSpeed: yup
@@ -113,7 +119,7 @@ const SaleSpeed = ({
               <Field
                 name="saleSpeed"
                 label="Velocidad de ventas objetivo"
-                placeholder="1,3"
+                placeholder={getMinSaleSpeed(rotationMonths, units)}
                 mask={NUMBER}
                 onBlur={blurHandler}
                 component={Input}

@@ -1,6 +1,4 @@
 import React, { useContext } from 'react';
-import { connect } from 'react-redux';
-
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 import { useSnackbar } from 'notistack';
@@ -13,6 +11,7 @@ import { DashboardRoutes } from '../../../../routes/local/routes';
 import ContainerContext from '../../../../containers/Client/context';
 import ClientServices from '../../../../services/client/ClientsServices';
 import { removeClient } from '../../../../containers/Client/actions';
+import RemoveDialog from './RemoveDialog';
 
 const services = new ClientServices();
 
@@ -75,13 +74,7 @@ const Row = ({ client }) => {
             Sala de ventas
           </Button>
         </Link>
-        <Button
-          color="secondary"
-          variant="contained"
-          onClick={() => deleteClient(client.id)}
-        >
-          Eliminar
-        </Button>
+        <RemoveDialog acceptHandler={() => deleteClient(client.id)} />
       </TableCell>
     </TableRow>
   );
