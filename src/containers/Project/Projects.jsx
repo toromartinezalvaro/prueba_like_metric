@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Typography from '@material-ui/core/Typography';
 import ProjectServices from '../../services/Projects/ProjectServices';
 import CompanyServices from '../../services/companies';
 import ProjectItems from '../../components/Projects/Projects';
@@ -343,7 +344,7 @@ export default class Projects extends Component {
             companies={companies}
           />
         )}
-        {projects.length > 0 && (
+        {projects.length > 0 ? (
           <ProjectItems
             projects={projects}
             companies={companies}
@@ -356,6 +357,11 @@ export default class Projects extends Component {
             url={this.props.match.url}
             redirectToGroups={this.redirectToGroups}
           />
+        ) : (
+          <Typography variant="h6" align="center">
+            Actualmente no tiene proyectos asociados, comuniquese con el
+            administrador
+          </Typography>
         )}
         {(!this.state.modalIsHidden || this.state.currentEditingProject) &&
           !showCompanyModal &&

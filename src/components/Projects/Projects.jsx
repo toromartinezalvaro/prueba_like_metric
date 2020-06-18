@@ -7,6 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import styles from './Projects.module.scss';
 import Icon from '../../assets/icons/Icon';
 import unique from './helper/index';
@@ -122,6 +123,8 @@ const ProjectItems = (props) => {
 
   return (
     <Card>
+      
+      
       <div className={styles.headerContainer}>
         <h2 className={styles.header}>Proyectos</h2>
         <Button
