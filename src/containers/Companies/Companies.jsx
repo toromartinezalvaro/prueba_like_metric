@@ -166,6 +166,7 @@ class Companies extends React.Component {
               <AssignedCompanies
                 associations={this.state.projects}
                 companySelect={this.state.companySelected}
+                companiesArray={this.state.companies}
               />
             )}
           </div>
