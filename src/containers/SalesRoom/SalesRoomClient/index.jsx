@@ -300,7 +300,7 @@ class SalesRoom extends Component {
   findGroup = (properties) => {
     try {
       const flatGroup = properties.flatMap((group) => group);
-      return [flatGroup.find((group) => group.groupId === this.state.groupId)];
+      return flatGroup.filter((group) => group.groupId === this.state.groupId);
     } catch (error) {
       this.props.enqueueSnackbar(error.message, { variant: 'error' });
     }
