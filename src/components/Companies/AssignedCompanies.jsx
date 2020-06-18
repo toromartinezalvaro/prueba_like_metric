@@ -13,16 +13,21 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import styles from './Companies.module.scss';
 
-const AssignedCompanies = ({ associations, companySelect }) => {
+const AssignedCompanies = ({ associations, companySelect, companiesArray }) => {
   const [companySelected, setCompanySelected] = useState(undefined);
   useEffect(() => {
     setCompanySelected(companySelect);
   }, [companySelect]);
   const ListOfCompanies = () => {
     const { companies, projects } = associations;
-    const companyInfo = companies.find(
+    let companyInfo = companies.find(
       (company) => company.id === companySelected,
     );
+    if (!companyInfo) {
+      companyInfo = companiesArray.find(
+        (company) => company.id === companySelected,
+      );
+    }
     return (
       <ExpansionPanel
         id={companyInfo.id}
@@ -67,6 +72,7 @@ const AssignedCompanies = ({ associations, companySelect }) => {
 AssignedCompanies.propTypes = {
   associations: PropTypes.object,
   companySelect: PropTypes.object,
+  companiesArray: PropTypes.array,
 };
 
 export default AssignedCompanies;

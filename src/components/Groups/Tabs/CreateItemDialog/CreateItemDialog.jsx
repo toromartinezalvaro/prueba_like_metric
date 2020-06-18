@@ -91,6 +91,11 @@ const CreateItemDialog = ({
     }
   };
 
+  const closeFunc = () => {
+    setItem({ name: '', PUC: '', contractCategoryId: '' });
+    onCloseCreateItemDialog();
+  };
+
   return (
     <Dialog open={openCreateItemDialog} fullWidth maxWidth="sm">
       <DialogTitle>Crear Item</DialogTitle>
@@ -118,7 +123,7 @@ const CreateItemDialog = ({
         </Loader>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" onClick={() => onCloseCreateItemDialog()}>
+        <Button color="primary" onClick={closeFunc}>
           Cancelar
         </Button>
         <Button color="primary" onClick={submitHandler}>

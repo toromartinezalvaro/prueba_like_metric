@@ -383,33 +383,24 @@ class Area extends Component {
       const actualValue = currentData[rowIndex][cellIndex].measure;
       currentData[rowIndex][cellIndex].measure = value;
       const checker = this.zerosChecker(currentData[rowIndex][cellIndex]);
-      if (checker && currentData[rowIndex][cellIndex].measure === '0') {
-        this.props.spawnMessage(
-          'No puedes ingresar el valor cero (0) en esta área',
-          'error',
-        );
-        currentData[rowIndex][cellIndex].measure = actualValue;
-        this.setState({ data: currentData, showFloatingButton: true });
-      } else {
-        this.services
-          .putAreasByTowerId(
-            this.props.match.params.towerId,
-            currentData[rowIndex][cellIndex],
-          )
-          .then(() => {
-            this.setState({ data: currentData, showFloatingButton: true });
-            this.sumTotalHeader(actualValue, value, type, this.state.types);
-            this.setState({ isLoading: false });
-          })
-          .catch((error) => {
-            const errorHelper = errorHandling(error);
-            this.setState({
-              currentErrorMessage: errorHelper.message,
-            });
-            this.setState({ isLoading: true });
-            this.updateTableInformation();
+      this.services
+        .putAreasByTowerId(
+          this.props.match.params.towerId,
+          currentData[rowIndex][cellIndex],
+        )
+        .then(() => {
+          this.setState({ data: currentData, showFloatingButton: true });
+          this.sumTotalHeader(actualValue, value, type, this.state.types);
+          this.setState({ isLoading: false });
+        })
+        .catch((error) => {
+          const errorHelper = errorHandling(error);
+          this.setState({
+            currentErrorMessage: errorHelper.message,
           });
-      }
+          this.setState({ isLoading: true });
+          this.updateTableInformation();
+        });
       this.setState({ currentErrorMessage: '' });
     }
   };
@@ -419,15 +410,23 @@ class Area extends Component {
       return row.map((e2, cellIndex) => {
         return (
           <Input
+            key={cellIndex}
             updateWithProp
             mask="number"
             style={{ width: '75px' }}
             validations={[
               {
                 fn: (value) => {
-                  return value !== null && value >= 0 && cellIndex !== 0;
+                  return value !== null;
                 },
                 message: 'No puede estar vacío',
+                fn: (value) => {
+                  if (cellIndex === 0) {
+                    return value > 0;
+                  }
+                  return value !== null;
+                },
+                message: 'Esta área no puede ser 0',
               },
             ]}
             disable={this.state.anySold}
