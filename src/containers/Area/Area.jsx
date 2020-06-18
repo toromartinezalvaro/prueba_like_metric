@@ -422,10 +422,20 @@ class Area extends Component {
             updateWithProp
             mask="number"
             style={{ width: '75px' }}
+            /* 
+            TODO: Check this validation because it blocks the entry of values ​​and always shows "No puede estar vacio" 
+            therefore the previous code is returned and the new one is commented for its revision
+            */
+
             validations={[
               {
                 fn: (value) => {
-                  return value !== null && value >= 0 && cellIndex !== 0;
+                  return value !== null;
+                },
+                message: 'No puede estar vacío',
+                fn: (value) => {
+                  return Number(value) > 0;
+                  /* return value !== null && value >= 0 && cellIndex !== 0; */
                 },
                 message: 'No puede estar vacío',
               },
