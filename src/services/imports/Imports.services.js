@@ -14,6 +14,12 @@ export default class ClientsServices extends Services {
     });
   }
 
+  getCashFlowTemplate(towerId) {
+    return this.get(definitions.getCashFlowTemplate(towerId), {
+      responseType: 'blob',
+    });
+  }
+
   postSchema(towerId, form) {
     return this.post(definitions.postSchema(towerId), form, {
       headers: { 'Content-Type': 'multipart/form-data' },
