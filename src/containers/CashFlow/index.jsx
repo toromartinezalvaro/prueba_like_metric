@@ -8,6 +8,7 @@ import Card, {
   CardBody,
   CardFooter,
 } from '../../components/UI/Card/Card';
+import ExportExcel from '../../components/CashFlow/Imports/Imports';
 
 class ReportContainer extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class ReportContainer extends Component {
             <span>Recaudo Ventas Futuras</span>
           </CardHeader>
           <CardBody>
+            <ExportExcel data={this.state.data} />
             <TableCashFlow data={this.state.data} />
           </CardBody>
         </Card>
