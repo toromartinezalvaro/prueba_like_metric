@@ -43,11 +43,9 @@ const AssociateProject = ({
     <Dialog
       open={actionOn}
       keepMounted
-      fullWidth="sm"
-      maxWidth="sm"
+      fullWidth="md"
+      maxWidth="md"
       onClose={actionModal}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle>Asignación de proyectos</DialogTitle>
       <DialogContent classes={{ root: Styles.dialogContent }}>
@@ -55,7 +53,9 @@ const AssociateProject = ({
           Asignar {project} a la compañía {company}
         </h3>
         <FormControl variant="outlined" className={Styles.dialogContent}>
-          <InputLabel>Seleccione un proyecto</InputLabel>
+          <InputLabel className={Styles.labelSelect}>
+            Seleccione un proyecto
+          </InputLabel>
           <Select onChange={projectSelected}>
             {projectSelector(projects)}
           </Select>
