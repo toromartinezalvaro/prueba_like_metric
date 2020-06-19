@@ -221,8 +221,8 @@ const FormDialog = ({ client, open, onCloseHandler }) => {
                       <Button
                         disabled={!state.createdClient}
                         type="submit"
-                        variant="contained"
-                        color="secondary"
+                        variant="outlined"
+                        color="primary"
                         disableElevation
                         onClick={gotoSalesroom}
                       >

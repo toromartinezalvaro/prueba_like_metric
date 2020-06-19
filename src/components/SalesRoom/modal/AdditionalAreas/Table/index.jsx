@@ -65,6 +65,7 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
             <TableRow>
               <TableCell align="center">Nomenclatura</TableCell>
               <TableCell align="center">Tipo</TableCell>
+              <TableCell align="center">Cantidad</TableCell>
               <TableCell align="center">Unidad</TableCell>
               <TableCell align="center">Precio</TableCell>
             </TableRow>
@@ -119,6 +120,9 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
             {property.addedAdditionalAreas.map((additionalArea) => {
               return (
                 <TableRow key={additionalArea.id}>
+                  <TableCell align="center">
+                    {additionalArea.nomenclature}
+                  </TableCell>
                   <TableCell align="center">
                     {additionalArea.areaType.name}
                   </TableCell>
