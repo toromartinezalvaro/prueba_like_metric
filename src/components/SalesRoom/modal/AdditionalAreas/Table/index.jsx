@@ -17,7 +17,7 @@ import PreventDelete from '../PreventDelete';
 const services = new AdditionalAreaRequestsServices();
 
 const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
-  const [pending, setPending] = useState(false);
+  const [type, setType] = useState('');
   const [openPrevent, setOpenPrevent] = useState(false);
   const [areaForDelete, setAreaForDelete] = useState('');
   const { towerId } = useParams();
@@ -36,7 +36,6 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
   const handleDesist = async (additionalArea) => {
     try {
       await services.postRequest({ additionalArea, tower: towerId });
-      setPending(true);
     } catch (error) {
       console.error(error);
     }
@@ -48,116 +47,137 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
   };
 
   const confirmDelete = (areaToDelete) => {
-    deleteAdditionalAreaHandler(areaToDelete);
+    if (type === 'delete') {
+      deleteAdditionalAreaHandler(areaToDelete);
+    } else if (type === 'desist') {
+      handleDesist(areaToDelete.id);
+    }
     handleCloseDelete();
   };
 
-  const tryToDelete = (areaToDelete) => () => {
+  const tryToDelete = (areaToDelete, typeP) => {
     setOpenPrevent(true);
+    setType(typeP);
     setAreaForDelete(areaToDelete);
   };
 
   return (
     <Fragment>
-      <Badge badgeContent={pending ? 'P' : 0} color="secondary">
-        <MUITable>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Nomenclatura</TableCell>
-              <TableCell align="center">Tipo</TableCell>
-              <TableCell align="center">Unidad</TableCell>
-              <TableCell align="center">Precio</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {property.adminAdditionalAreas.map((additionalArea) => {
-              return (
-                <TableRow key={additionalArea.id}>
-                  <TableCell component="th" scope="row">
-                    {status === 'SOLD' ? (
-                      <HoverContainer
-                        noHover={
-                          additionalArea.nomenclature ||
-                          additionalArea.areaType.name
-                        }
-                        hover={
-                          <Button
-                            onClick={() => {
-                              handleDesist(additionalArea.id);
-                            }}
-                          >
-                            Desistir
-                          </Button>
-                        }
-                      />
-                    ) : (
-                      <span>
-                        {additionalArea.nomenclature ||
-                          additionalArea.areaType.name}
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell align="center">
-                    {additionalArea.areaType.unit === 'MT2'
-                      ? additionalArea.measure
-                      : '-'}
-                  </TableCell>
-                  <TableCell align="center">
-                    {additionalArea.areaType.unit || '-'}
-                  </TableCell>
-                  <TableCell align="center">
-                    <NumberFormat
-                      displayType="text"
-                      thousandSeparator
-                      prefix="$"
-                      value={additionalArea.price}
+      <MUITable>
+        <TableHead>
+          <TableRow>
+            <TableCell align="center">Nomenclatura</TableCell>
+            <TableCell align="center">Tipo</TableCell>
+            <TableCell align="center">Unidad</TableCell>
+            <TableCell align="center">Precio</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {property.adminAdditionalAreas.map((additionalArea) => {
+            console.log(additionalArea);
+            return (
+              <TableRow key={additionalArea.id}>
+                <TableCell component="th" scope="row">
+                  {status === 'SOLD' ? (
+                    <HoverContainer
+                      noHover={
+                        additionalArea.nomenclature ||
+                        additionalArea.areaType.name
+                      }
+                      hover={
+                        <Button
+                          onClick={() => {
+                            tryToDelete(additionalArea, 'desist');
+                          }}
+                        >
+                          Desistir
+                        </Button>
+                      }
                     />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {property.addedAdditionalAreas.map((additionalArea) => {
-              return (
-                <TableRow key={additionalArea.id}>
-                  <TableCell align="center">
-                    {additionalArea.areaType.name}
-                  </TableCell>
-                  <TableCell align="center">
-                    {additionalArea.areaType.unit === 'MT2'
-                      ? additionalArea.measure
-                      : '-'}
-                  </TableCell>
-                  <TableCell align="center">
-                    {additionalArea.areaType.unit || '-'}
-                  </TableCell>
-                  <TableCell align="rigth">
-                    <div className={Styles.priceAndAction}>
-                      <NumberFormat
-                        displayType="text"
-                        thousandSeparator
-                        prefix="$"
-                        value={additionalArea.price}
-                        className={Styles.price}
-                      />
+                  ) : (
+                    <span>
+                      {additionalArea.nomenclature ||
+                        additionalArea.areaType.name}
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell align="center">
+                  {additionalArea.areaType.unit === 'MT2'
+                    ? additionalArea.measure
+                    : '-'}
+                </TableCell>
+                <TableCell align="center">
+                  {additionalArea.areaType.unit || '-'}
+                </TableCell>
+                <TableCell align="center">
+                  <NumberFormat
+                    displayType="text"
+                    thousandSeparator
+                    prefix="$"
+                    value={additionalArea.price}
+                  />
+                  {additionalArea.additionalAreaRequests &&
+                  additionalArea.additionalAreaRequests.some(
+                    (request) =>
+                      request.action === 'D' && request.status === 'P',
+                  ) ? (
+                    <Badge badgeContent={'P'} color="secondary"></Badge>
+                  ) : null}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+          {property.addedAdditionalAreas.map((additionalArea) => {
+            return (
+              <TableRow key={additionalArea.id}>
+                <TableCell align="center">
+                  <HoverContainer
+                    noHover={`${additionalArea.nomenclature} -
+                       ${additionalArea.areaType.name}`}
+                    hover={
                       <div className={Styles.buttonClose}>
                         <Button
-                          onClick={
+                          onClick={() =>
                             additionalArea.propertyId
-                              ? handleDesist(additionalArea.id)
-                              : tryToDelete(additionalArea)
+                              ? tryToDelete(additionalArea, 'desist')
+                              : tryToDelete(additionalArea, 'delete')
                           }
                         >
                           {additionalArea.propertyId ? 'Desistir' : 'x'}
                         </Button>
                       </div>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </MUITable>
-      </Badge>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  {additionalArea.areaType.unit === 'MT2' ? 'MT2' : 'UNIT'}
+                </TableCell>
+                <TableCell align="center">
+                  {additionalArea.areaType.measure || '-'}
+                </TableCell>
+                <TableCell align="rigth">
+                  <div className={Styles.priceAndAction}>
+                    <NumberFormat
+                      displayType="text"
+                      thousandSeparator
+                      prefix="$"
+                      value={additionalArea.price}
+                      className={Styles.price}
+                    />
+                    {additionalArea.additionalAreaRequests &&
+                    additionalArea.additionalAreaRequests.some(
+                      (request) =>
+                        request.action === 'D' && request.status === 'P',
+                    ) ? (
+                      <Badge badgeContent={'P'} color="secondary"></Badge>
+                    ) : null}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </MUITable>
       {property.addedAdditionalAreas.length === 0 &&
         property.adminAdditionalAreas.length === 0 && (
           <div className={Styles.noAdditionalAreasContainer}>
