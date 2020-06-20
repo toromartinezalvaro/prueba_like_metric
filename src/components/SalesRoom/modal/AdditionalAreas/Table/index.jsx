@@ -71,6 +71,7 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
             <TableCell align="center">Cantidad</TableCell>
             <TableCell align="center">Unidad</TableCell>
             <TableCell align="center">Precio</TableCell>
+            <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
