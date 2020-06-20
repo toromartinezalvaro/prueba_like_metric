@@ -75,7 +75,6 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
         </TableHead>
         <TableBody>
           {property.adminAdditionalAreas.map((additionalArea) => {
-            console.log(additionalArea);
             return (
               <TableRow key={additionalArea.id}>
                 <TableCell component="th" scope="row" align="center">
