@@ -12,24 +12,39 @@ class LineChart extends React.Component {
           {
             ticks: {
               // Include a dollar sign in the ticks
-              callback: function(value, i, values) {
+              callback(value, i, values) {
                 const stringValue = value.toString();
                 const index = stringValue.search(/[1-9]/);
-                return (
-                  '$' +
-                  stringValue.substring(0, index) +
-                  stringValue
-                    .substring(index, stringValue.length)
-                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-                );
-                //return '$' + value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, ',');
+                return `$${stringValue.substring(
+                  0,
+                  index,
+                )}${stringValue
+                  .substring(index, stringValue.length)
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
+                // return '$' + value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, ',');
               },
             },
           },
         ],
       },
+
+      tooltips: {
+        callbacks: {
+          label(tooltipItem, data) {
+            const value =
+              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            if (parseInt(value) >= 1000) {
+              return `$${value
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+            }
+            return `$${value}`;
+          },
+        },
+      },
     },
   };
+
   render() {
     return (
       <div className={styles.Container}>
