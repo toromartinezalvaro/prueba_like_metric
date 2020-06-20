@@ -68,6 +68,7 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
           <TableRow>
             <TableCell align="center">Nomenclatura</TableCell>
             <TableCell align="center">Tipo</TableCell>
+            <TableCell align="center">Cantidad</TableCell>
             <TableCell align="center">Unidad</TableCell>
             <TableCell align="center">Precio</TableCell>
           </TableRow>
@@ -77,7 +78,7 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
             console.log(additionalArea);
             return (
               <TableRow key={additionalArea.id}>
-                <TableCell component="th" scope="row">
+                <TableCell component="th" scope="row" align="center">
                   {status === 'SOLD' ? (
                     <HoverContainer
                       noHover={
@@ -102,12 +103,14 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                   )}
                 </TableCell>
                 <TableCell align="center">
-                  {additionalArea.areaType.unit === 'MT2'
-                    ? additionalArea.measure
-                    : '-'}
+                  {additionalArea.areaType.name}
+                </TableCell>
+
+                <TableCell align="center">
+                  {additionalArea.areaType.measure || '-'}
                 </TableCell>
                 <TableCell align="center">
-                  {additionalArea.areaType.unit || '-'}
+                  {additionalArea.areaType.unit === 'MT2' ? 'MT2' : 'UNIT'}
                 </TableCell>
                 <TableCell align="center">
                   <NumberFormat
@@ -116,6 +119,8 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                     prefix="$"
                     value={additionalArea.price}
                   />
+                </TableCell>
+                <TableCell align="center">
                   {additionalArea.additionalAreaRequests &&
                   additionalArea.additionalAreaRequests.some(
                     (request) =>
@@ -132,8 +137,10 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
               <TableRow key={additionalArea.id}>
                 <TableCell align="center">
                   <HoverContainer
-                    noHover={`${additionalArea.nomenclature} -
-                       ${additionalArea.areaType.name}`}
+                    noHover={
+                      additionalArea.nomenclature ||
+                      additionalArea.areaType.name
+                    }
                     hover={
                       <div className={Styles.buttonClose}>
                         <Button
@@ -150,10 +157,14 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                   />
                 </TableCell>
                 <TableCell align="center">
-                  {additionalArea.areaType.unit === 'MT2' ? 'MT2' : 'UNIT'}
+                  {additionalArea.areaType.name}
                 </TableCell>
+
                 <TableCell align="center">
                   {additionalArea.areaType.measure || '-'}
+                </TableCell>
+                <TableCell align="center">
+                  {additionalArea.areaType.unit === 'MT2' ? 'MT2' : 'UNIT'}
                 </TableCell>
                 <TableCell align="rigth">
                   <div className={Styles.priceAndAction}>
@@ -164,14 +175,16 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                       value={additionalArea.price}
                       className={Styles.price}
                     />
-                    {additionalArea.additionalAreaRequests &&
-                    additionalArea.additionalAreaRequests.some(
-                      (request) =>
-                        request.action === 'D' && request.status === 'P',
-                    ) ? (
-                      <Badge badgeContent={'P'} color="secondary"></Badge>
-                    ) : null}
                   </div>
+                </TableCell>
+                <TableCell align="center">
+                  {additionalArea.additionalAreaRequests &&
+                  additionalArea.additionalAreaRequests.some(
+                    (request) =>
+                      request.action === 'D' && request.status === 'P',
+                  ) ? (
+                    <Badge badgeContent={'P'} color="secondary"></Badge>
+                  ) : null}
                 </TableCell>
               </TableRow>
             );
