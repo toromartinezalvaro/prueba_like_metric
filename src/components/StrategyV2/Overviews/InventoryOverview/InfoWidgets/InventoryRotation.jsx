@@ -3,24 +3,37 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import Tooltip from '@material-ui/core/Tooltip';
-import Widget, { XS, SM, MD } from '../../../Shared/Widget';
+import Widget, { XS, SM, MD, Type } from '../../../Shared/Widget';
 import { MAIN_VIEW } from '../../reducer';
 
 const InventoryRotation = ({
   rotationMonths,
   initialFee,
   mini,
-  objective,
+  type,
   futureRotationMonths,
+  salesRotationMonths,
 }) => {
+  let months = 0;
+  let title = '';
+
+  switch (type) {
+    case Type.objetive:
+      months = futureRotationMonths;
+      title = 'Rotación de inventario objetivo';
+      break;
+    case Type.real:
+      months = salesRotationMonths;
+      title = 'Rotación de inventario real';
+      break;
+    default:
+      months = rotationMonths;
+      title = 'Rotación de inventario';
+      break;
+  }
   return (
-    <Widget
-      title={
-        objective ? 'Rotacion de inventario objetivo' : 'Rotacion de inventario'
-      }
-      size={mini ? XS : MD}
-    >
-      {objective ? futureRotationMonths : rotationMonths}
+    <Widget title={title} size={mini ? XS : MD}>
+      {months}
       {rotationMonths > initialFee && (
         <Tooltip title="La rotacion de inventario supera el plazo de la cuota incial">
           <WarningRoundedIcon fontSize="small" color="secondary" />
@@ -34,23 +47,24 @@ InventoryRotation.propTypes = {
   rotationMonths: PropTypes.number.isRequired,
   initialFee: PropTypes.number.isRequired,
   mini: PropTypes.bool,
-  objective: PropTypes.bool,
   futureRotationMonths: PropTypes.number.isRequired,
+  salesRotationMonths: PropTypes.number.isRequired,
+  type: PropTypes.string,
 };
 
 InventoryRotation.defaultProps = {
   mini: false,
-  objective: false,
 };
 
 const mapStateToProps = (state) => {
-  const { inventory, initialFee } = state.strategy.root.groups[
+  const { inventory, initialFee, sales } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
 
   return {
     futureRotationMonths: inventory.futureRotationMonths,
     rotationMonths: inventory.rotationMonths,
+    salesRotationMonths: sales.rotationMonths,
     initialFee,
   };
 };

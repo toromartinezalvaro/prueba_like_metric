@@ -14,6 +14,7 @@ import Message from '../../components/StrategyV2/Message/Message';
 import { fetchDataInit, fetchDataStart, fetchDataEmpty } from './actions';
 import IncrementServices from '../../services/incrementsV2/incrementsService';
 import generateDataset from './helpers/dataset';
+import InventorySalesSepeedModal from '../../components/StrategyV2/Overviews/InventoryOverview/SalesSpeedModal/InventorySalesSepeedModal';
 
 const services = new IncrementServices();
 const Strategy = ({
@@ -64,6 +65,7 @@ const Strategy = ({
           </Box>
           <Box>
             <Overviews />
+            <InventorySalesSepeedModal />
           </Box>
         </div>
       )}
