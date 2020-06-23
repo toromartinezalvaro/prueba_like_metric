@@ -48,7 +48,10 @@ const detailWidget = [
     ]}
     key={uuidV4()}
   />,
-  <InitialFee key={uuidV4()} />,
+  {
+    fullWidth: true,
+    component: <InitialFee key={uuidV4()} />,
+  },
 ];
 
 const mainPriceWidgets = [
@@ -106,17 +109,22 @@ const InventoryOverview = ({
           ? mainInfoWidgets
           : [
               ...detailWidget,
-              <Button
-                key={uuidV4()}
-                onClick={openHandler}
-                size="large"
-                variant="contained"
-                fullWidth
-                disableElevation
-                color={'primary'}
-              >
-                Velocidad de ventas
-              </Button>,
+              {
+                fullWidth: true,
+                component: (
+                  <Button
+                    key={uuidV4()}
+                    onClick={openHandler}
+                    size="large"
+                    variant="contained"
+                    fullWidth
+                    disableElevation
+                    color={'primary'}
+                  >
+                    Velocidad de ventas
+                  </Button>
+                ),
+              },
             ]
       }
       priceWidgets={view === MAIN_VIEW ? mainPriceWidgets : detailsPriceWidgets}

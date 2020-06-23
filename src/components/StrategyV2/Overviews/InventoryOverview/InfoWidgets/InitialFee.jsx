@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Widget, { MD } from '../../../Shared/Widget';
 
-import styles from './styles.module.scss';
-
 const InitialFee = ({ initialFee }) => {
   return (
-    <div className={styles.completeSize}>
+    <div>
       <Widget title="Plazo cuota incial" size={MD}>
         {initialFee}
       </Widget>
