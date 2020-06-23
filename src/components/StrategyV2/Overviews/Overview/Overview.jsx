@@ -15,11 +15,20 @@ const Overview = ({ title, subtitle, infoWidgets, priceWidgets }) => {
 
       <Box mb={3}>
         <Grid container spacing={2}>
-          {infoWidgets.map((infoWidget) => (
-            <Grid key={uuidV4()} item md={6}>
-              {infoWidget}
-            </Grid>
-          ))}
+          {infoWidgets.map((infoWidget) => {
+            let size = 6;
+            let component = infoWidget;
+            if (infoWidget.hasOwnProperty('fullWidth')) {
+              size = 12;
+              // eslint-disable-next-line prefer-destructuring
+              component = infoWidget.component;
+            }
+            return (
+              <Grid key={uuidV4()} item md={size}>
+                {component}
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
 

@@ -15,7 +15,6 @@ import Totals from './IncrementTable/Totals/Totals';
 import Sales from './IncrementTable/Sales/Sales';
 import Inventory from './IncrementTable/Inventory/Inventory';
 import TotalIncrement from './IncrementTable/TotalIncrement/TotalIncrement';
-import SalesWizard from './IncrementTable/SalesWizard';
 
 function IncrementTable({
   data,

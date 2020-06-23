@@ -19,6 +19,8 @@ import AveragePrice from './PriceWidgets/AveragePrice';
 import PricePerM2 from './PriceWidgets/PricePerM2';
 import PriceDetailsGroup from './PriceWidgets/DetailsGroup';
 import EARate from './InfoWidgets/EARate';
+import { openSalesSpeedDialog } from './SalesSpeedModal/actions';
+import { Type } from '../../Shared/Widget';
 
 const mainInfoWidgets = [
   <SaleSpeed key={uuidV4()} />,
@@ -31,9 +33,9 @@ const detailWidget = [
   <WidgetGroup
     showGroup
     widgets={[
-      <SaleSpeed field key={uuidV4()} />,
-      <InventoryRotation objective key={uuidV4()} />,
-      <EARate objective key={uuidV4()} />,
+      <SaleSpeed type={Type.real} key={uuidV4()} />,
+      <InventoryRotation type={Type.real} key={uuidV4()} />,
+      <EARate type={Type.real} key={uuidV4()} />,
     ]}
     key={uuidV4()}
   />,
@@ -46,7 +48,10 @@ const detailWidget = [
     ]}
     key={uuidV4()}
   />,
-  <InitialFee key={uuidV4()} />,
+  {
+    fullWidth: true,
+    component: <InitialFee key={uuidV4()} />,
+  },
 ];
 
 const mainPriceWidgets = [
@@ -63,6 +68,7 @@ const InventoryOverview = ({
   strategy,
   view,
   onViewChange,
+  openHandler,
 }) => {
   const changeViewHandler = () => {
     if (view === MAIN_VIEW) {
@@ -98,7 +104,29 @@ const InventoryOverview = ({
       subtitle={`${units} Unidades de ${Numbers.toFixed(
         averageArea,
       )}m² Promedio`}
-      infoWidgets={view === MAIN_VIEW ? mainInfoWidgets : detailWidget}
+      infoWidgets={
+        view === MAIN_VIEW
+          ? mainInfoWidgets
+          : [
+              ...detailWidget,
+              {
+                fullWidth: true,
+                component: (
+                  <Button
+                    key={uuidV4()}
+                    onClick={openHandler}
+                    size="large"
+                    variant="contained"
+                    fullWidth
+                    disableElevation
+                    color={'primary'}
+                  >
+                    Velocidad de ventas
+                  </Button>
+                ),
+              },
+            ]
+      }
       priceWidgets={view === MAIN_VIEW ? mainPriceWidgets : detailsPriceWidgets}
     />
   );
@@ -110,6 +138,8 @@ InventoryOverview.propTypes = {
   strategy: PropTypes.number.isRequired,
   view: PropTypes.oneOf([MAIN_VIEW, DETAILS_VIEW]),
   onViewChange: PropTypes.func.isRequired,
+  onOpenSalesSpeed: PropTypes.func.isRequired,
+  openHandler: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -126,6 +156,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   onViewChange: changeView,
+  openHandler: openSalesSpeedDialog,
 };
 
 export default connect(

@@ -6,7 +6,7 @@ import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import Input, { NUMBER } from '../../../Shared/Input';
-import Widget, { LG } from '../../../Shared/Widget';
+import Widget, { LG, Type } from '../../../Shared/Widget';
 import { fetchDataSuccess } from '../../../../../containers/StrategyV2/actions';
 import IncrementServices from '../../../../../services/increments/IncrementsServices';
 import Increment2Services from '../../../../../services/incrementsV2/incrementsService';
@@ -57,12 +57,13 @@ const SaleSpeed = ({
   futureSaleSpeed,
   units,
   rotationMonths,
-  field,
+  type,
   onFetchedData,
   startApiLoading,
   stopApiLoading,
   strategy,
   isReset,
+  realSalesSpeed,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -95,16 +96,11 @@ const SaleSpeed = ({
     }
   };
 
-  return (
-    <Widget
-      title={
-        field
-          ? 'Velocidad de ventas objetivo'
-          : 'Velocidad de ventas inventario'
-      }
-      size={LG}
-    >
-      {field ? (
+  let title = '';
+  let component = null;
+  switch (type) {
+    case Type.objetive:
+      component = (
         <Formik
           initialValues={{
             saleSpeed,
@@ -128,9 +124,22 @@ const SaleSpeed = ({
             </Form>
           )}
         </Formik>
-      ) : (
-        Numbers.toFixed(futureSaleSpeed)
-      )}
+      );
+      title = 'Velocidad de ventas objetivo';
+      break;
+    case Type.real:
+      component = Numbers.toFixed(realSalesSpeed);
+      title = 'Velocidad de ventas real';
+      break;
+    default:
+      component = Numbers.toFixed(futureSaleSpeed);
+      title = 'Velocidad de ventas inventario';
+      break;
+  }
+
+  return (
+    <Widget title={title} size={LG}>
+      {component}
     </Widget>
   );
 };
@@ -141,16 +150,13 @@ SaleSpeed.propTypes = {
   futureSaleSpeed: PropTypes.number.isRequired,
   units: PropTypes.number.isRequired,
   rotationMonths: PropTypes.number.isRequired,
-  field: PropTypes.bool,
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
   isReset: PropTypes.bool,
   strategy: PropTypes.number,
-};
-
-SaleSpeed.defaultProps = {
-  field: false,
+  realSalesSpeed: PropTypes.number.isRequired,
+  type: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -160,12 +166,14 @@ const mapStateToProps = (state) => {
     initialFee,
     isReset,
     strategy,
+    sales,
   } = state.strategy.root.groups[state.strategy.root.selectedGroup];
 
   return {
     groupId: id,
     futureSaleSpeed: inventory.saleSpeed,
     saleSpeed: inventory.futureSaleSpeed,
+    realSalesSpeed: sales.saleSpeed,
     units: inventory.units,
     rotationMonths: initialFee,
     strategy,

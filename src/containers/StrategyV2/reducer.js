@@ -18,6 +18,7 @@ import { reducer as SettingsReducer } from '../../components/StrategyV2/Settings
 import { reducer as OverviewReducer } from '../../components/StrategyV2/Overviews';
 import { reducer as APILoaderReducer } from '../../components/StrategyV2/Loader';
 import { reducer as SalesWizardReducer } from '../../components/StrategyV2/Overviews/InventoryOverview/InfoWidgets/SalesWizard';
+import { reducer as SalesSpeedModalReducer } from '../../components/StrategyV2/Overviews/InventoryOverview/SalesSpeedModal';
 
 export const initialState = {
   loading: false,
@@ -290,4 +291,5 @@ export default combineReducers({
   overviews: OverviewReducer,
   api: APILoaderReducer,
   salesWizard: SalesWizardReducer,
+  salesSpeedDialog: SalesSpeedModalReducer,
 });
