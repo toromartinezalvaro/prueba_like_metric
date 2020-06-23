@@ -47,6 +47,7 @@ const defaultClient = {
   email: '',
   phoneNumber: '',
   properties: [],
+  allowDelete: true,
 };
 
 function NumberFormatCustom(props) {

@@ -30,9 +30,14 @@ const Row = ({ client }) => {
     try {
       await services.deleteClient(clientId, towerId);
       dispatch(removeClient(clientId));
-      enqueueSnackbar('Cliente eliminado correctamente', {
-        variant: 'success',
-      });
+      enqueueSnackbar(
+        `Cliente ${
+          client.allowDelete ? 'eliminado' : 'desasociado'
+        } correctamente`,
+        {
+          variant: 'success',
+        },
+      );
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
     }
@@ -74,7 +79,10 @@ const Row = ({ client }) => {
             Sala de ventas
           </Button>
         </Link>
-        <RemoveDialog acceptHandler={() => deleteClient(client.id)} />
+        <RemoveDialog
+          allowDelete={client.allowDelete}
+          acceptHandler={() => deleteClient(client.id)}
+        />
       </TableCell>
     </TableRow>
   );
@@ -88,6 +96,7 @@ Row.propTypes = {
     email: PropTypes.string,
     phoneNumber: PropTypes.string,
     properties: PropTypes.array,
+    allowDelete: PropTypes.bool.isRequired,
   }),
 };
 
@@ -99,6 +108,7 @@ Row.defaultProps = {
     email: '',
     phoneNumber: '',
     properties: [],
+    allowDelete: true,
   },
 };
 
