@@ -115,9 +115,7 @@ class Area extends Component {
       return (
         <div
           onClick={() => {
-            if (this.state.inputMethod === 'MANUAL') {
-              this.handleOpenAreaTypeModal(areaType);
-            }
+            this.handleOpenAreaTypeModal(areaType);
           }}
         >
           <EditableHeader
@@ -547,6 +545,7 @@ class Area extends Component {
           handleClose={() => {
             this.setState({ isAreaTypeDialogOpen: false });
           }}
+          inputMethod={this.state.inputMethod}
           towerId={this.props.match.params.towerId}
           areaTypeId={this.state.areaTypeId}
           disableSold={this.state.disableSold}
