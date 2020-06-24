@@ -24,7 +24,7 @@ const Overview = ({ title, subtitle, infoWidgets, priceWidgets }) => {
               component = infoWidget.component;
             }
             return (
-              <Grid key={uuidV4()} item md={size}>
+              <Grid key={uuidV4()} item xs={12} xl={size}>
                 {component}
               </Grid>
             );
