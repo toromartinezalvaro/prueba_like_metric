@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 
-function RemoveDialog({ acceptHandler }) {
+function RemoveDialog({ allowDelete, acceptHandler }) {
   const [open, setOpen] = useState(false);
 
   const openHandler = () => {
@@ -21,13 +21,16 @@ function RemoveDialog({ acceptHandler }) {
   return (
     <>
       <Button color="secondary" variant="contained" onClick={openHandler}>
-        Desasociar
+        {allowDelete ? 'Eliminar' : 'Desasociar'}
       </Button>
       <Dialog open={open}>
-        <DialogTitle>Desasociar cliente</DialogTitle>
+        <DialogTitle>
+          {allowDelete ? 'Eliminar' : 'Desasociar'} cliente
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Esta seguro que desea desasociar este cliente?
+            Esta seguro que desea {allowDelete ? 'Eliminar' : 'Desasociar'} este
+            cliente?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -44,6 +47,7 @@ function RemoveDialog({ acceptHandler }) {
 }
 
 RemoveDialog.propTypes = {
+  allowDelete: PropTypes.bool.isRequired,
   acceptHandler: PropTypes.func.isRequired,
 };
 
