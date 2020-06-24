@@ -137,11 +137,7 @@ const SaleSpeed = ({
       break;
   }
 
-  return (
-    <Widget title={title} size={LG}>
-      {component}
-    </Widget>
-  );
+  return <Widget title={title}>{component}</Widget>;
 };
 
 SaleSpeed.propTypes = {
