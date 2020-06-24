@@ -49,6 +49,7 @@ const Prices = ({
   handleClose,
   disableSold,
   updateInformation,
+  inputMethod,
 }) => {
   const formRef = useRef();
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -133,7 +134,7 @@ const Prices = ({
                         Este tipo de área no tiene medidas distintas a 0.
                       </DialogContentText>
                     )}
-                    {values.areas.length > 0 && (
+                    {values.areas.length > 0 && inputMethod === 'MANUAL' && (
                       <TableContainer component={Paper}>
                         <Table>
                           <TableHead>
