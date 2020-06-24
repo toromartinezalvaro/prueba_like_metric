@@ -35,8 +35,12 @@ const GroupTable = ({
   };
 
   const handleChangeGroup = (property) => (event) => {
-    setOpenAction(true);
-    setActionData({ property: property.id, event: event.target.value });
+    if (property.group.isReset) {
+      changeGroupType({ property: property.id, event: event.target.value });
+    } else {
+      setOpenAction(true);
+      setActionData({ property: property.id, event: event.target.value });
+    }
   };
 
   const parseToRow = (property, index) => {
