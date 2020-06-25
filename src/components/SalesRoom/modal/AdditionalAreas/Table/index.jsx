@@ -150,7 +150,7 @@ const Table = ({ property, deleteAdditionalAreaHandler, status }) => {
                               : tryToDelete(additionalArea, 'delete')
                           }
                         >
-                          {additionalArea.propertyId ? 'Desistir' : 'x'}
+                          {additionalArea.propertyId ? 'Desistir' : 'Eliminar'}
                         </Button>
                       </div>
                     }
