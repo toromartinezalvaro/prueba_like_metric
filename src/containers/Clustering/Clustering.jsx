@@ -117,6 +117,17 @@ class Clustering extends Component {
     this.setState({ openDialog: true, dataAction: action });
   };
 
+  clusteringChecker = (action) => {
+    const checkClustering = this.state.clusters.some(
+      (property) => property.group.isReset,
+    );
+    if (checkClustering) {
+      this.handleOpenDialog(action);
+    } else {
+      this.handleAction(action);
+    }
+  };
+
   render() {
     return (
       <LoadableContainer isLoading={this.state.isLoading}>
@@ -159,7 +170,7 @@ class Clustering extends Component {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            this.handleOpenDialog(true);
+                            this.clusteringChecker(true);
                           }}
                           disabled={
                             this.state.loadingTable ||
@@ -175,7 +186,7 @@ class Clustering extends Component {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            this.handleOpenDialog(false);
+                            this.clusteringChecker(false);
                           }}
                           disabled={
                             this.state.loadingTable ||
