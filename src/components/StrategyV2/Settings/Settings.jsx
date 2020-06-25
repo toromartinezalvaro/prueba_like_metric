@@ -60,7 +60,6 @@ const Settings = ({
     <Box mb={1}>
       <FormControl classes={{ root: Styles.formControl }}>
         <InputLabel id="group-select">Grupo</InputLabel>
-        {console.log('INNER', selectedGroup)}
         <Select
           labelId="group-select"
           value={selectedGroup}
