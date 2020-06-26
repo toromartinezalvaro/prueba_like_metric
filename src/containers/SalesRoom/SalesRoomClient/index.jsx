@@ -4,6 +4,7 @@ import ReactTooltip from 'react-tooltip';
 import moment from 'moment';
 import ReactDOMServer from 'react-dom/server';
 import NumberFormat from 'react-number-format';
+import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import {
   Dialog,
@@ -35,6 +36,7 @@ import SalesRoomEnum from '../SalesRoom.enum';
 import AlertRedirect from '../AlertRedirect';
 import Styles from './salesRoomClient.module.scss';
 import withDefaultLayout from '../../../HOC/Layouts/Default/withDefaultLayout';
+import { changeGroup } from '../../StrategyV2/actions';
 
 class SalesRoom extends Component {
   constructor(props) {
@@ -333,6 +335,7 @@ class SalesRoom extends Component {
 
   save = (showModalSelectedProperty) => () => {
     if (!showModalSelectedProperty) {
+      this.props.onChangeGroup(Number(this.state.selectedProperty.groupName));
       this.props.history.push(
         `${DashboardRoutes.base}${DashboardRoutes.strategy.value}${this.props.match.params.towerId}`,
       );
@@ -676,5 +679,15 @@ class SalesRoom extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  validGroup: state.strategy.root.selectedGroup,
+});
 
-export default withDefaultLayout(withSnackbar(SalesRoom));
+const mapDispatchToProps = {
+  onChangeGroup: changeGroup,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withDefaultLayout(withSnackbar(SalesRoom)));

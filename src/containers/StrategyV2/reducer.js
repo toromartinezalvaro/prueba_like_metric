@@ -258,10 +258,15 @@ const reducer = (state = initialState, action) => {
       };
     }
     case FETCH_DATA__INIT: {
-      const selectedGroup = Object.keys(payload.groups).sort(
-        new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
-          .compare,
-      )[0];
+      const selectedGroup =
+        state.selectedGroup !== 1
+          ? state.selectedGroup
+          : Object.keys(payload.groups).sort(
+              new Intl.Collator(undefined, {
+                numeric: true,
+                sensitivity: 'base',
+              }).compare,
+            )[0];
       return {
         ...state,
         selectedGroup,
