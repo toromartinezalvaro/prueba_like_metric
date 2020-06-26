@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
+import Button from '@material-ui/core/Button';
 import Input, { NUMBER } from '../../../Shared/Input';
 import Widget, { LG, Type } from '../../../Shared/Widget';
 import { fetchDataSuccess } from '../../../../../containers/StrategyV2/actions';
@@ -64,6 +65,7 @@ const SaleSpeed = ({
   strategy,
   isReset,
   realSalesSpeed,
+  openHandler,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -137,7 +139,29 @@ const SaleSpeed = ({
       break;
   }
 
-  return <Widget title={title}>{component}</Widget>;
+  return (
+    <Widget
+      title={
+        <>
+          {title}
+          {openHandler !== undefined && (
+            <Button
+              colo="primary"
+              variant="outlined"
+              disabled={strategy === null}
+              onClick={openHandler}
+              size="small"
+              fullWidth
+            >
+              Objetivo
+            </Button>
+          )}
+        </>
+      }
+    >
+      {component}
+    </Widget>
+  );
 };
 
 SaleSpeed.propTypes = {
@@ -153,6 +177,7 @@ SaleSpeed.propTypes = {
   strategy: PropTypes.number,
   realSalesSpeed: PropTypes.number.isRequired,
   type: PropTypes.string,
+  openHandler: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
