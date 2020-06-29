@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import uuidV4 from 'uuid/v4';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Overview from '../Overview';
 import WidgetGroup from '../../Shared/WidgetGroup';
 import { changeView } from '../actions';
@@ -19,6 +21,9 @@ import AveragePrice from './PriceWidgets/AveragePrice';
 import PricePerM2 from './PriceWidgets/PricePerM2';
 import PriceDetailsGroup from './PriceWidgets/DetailsGroup';
 import EARate from './InfoWidgets/EARate';
+import RealSoldUnits from './InfoWidgets/RealSoldUnits';
+import AvailableUnits from './InfoWidgets/AvailableUnits';
+import CurrentMonthSales from './InfoWidgets/CurrentMonthSales';
 import { openSalesSpeedDialog } from './SalesSpeedModal/actions';
 import { Type } from '../../Shared/Widget';
 
@@ -27,31 +32,6 @@ const mainInfoWidgets = [
   <InventoryRotation key={uuidV4()} />,
   <TotalIncrement key={uuidV4()} />,
   <EARateWidget key={uuidV4()} />,
-];
-
-const detailWidget = [
-  <WidgetGroup
-    showGroup
-    widgets={[
-      <SaleSpeed type={Type.real} key={uuidV4()} />,
-      <InventoryRotation type={Type.real} key={uuidV4()} />,
-      <EARate type={Type.real} key={uuidV4()} />,
-    ]}
-    key={uuidV4()}
-  />,
-  <WidgetGroup
-    showGroup
-    widgets={[
-      <SaleSpeed key={uuidV4()} />,
-      <InventoryRotation key={uuidV4()} />,
-      <EARate key={uuidV4()} />,
-    ]}
-    key={uuidV4()}
-  />,
-  {
-    fullWidth: true,
-    component: <InitialFee key={uuidV4()} />,
-  },
 ];
 
 const mainPriceWidgets = [
@@ -77,6 +57,41 @@ const InventoryOverview = ({
       onViewChange(MAIN_VIEW);
     }
   };
+
+  const detailWidget = [
+    <WidgetGroup
+      showGroup
+      widgets={[
+        <Typography variant="h6" component="span" key={uuidV4()}>
+          Real
+        </Typography>,
+        <RealSoldUnits key={uuidV4()} />,
+        <SaleSpeed type={Type.real} key={uuidV4()} />,
+        <InventoryRotation type={Type.real} key={uuidV4()} />,
+        <EARate type={Type.real} key={uuidV4()} />,
+        <CurrentMonthSales key={uuidV4()} />,
+      ]}
+      key={uuidV4()}
+    />,
+    <WidgetGroup
+      showGroup
+      widgets={[
+        <Typography key={uuidV4()} variant="h6" component="span">
+          Proyectado
+        </Typography>,
+        <AvailableUnits key={uuidV4()} />,
+        <SaleSpeed
+          type={strategy === null ? Type.objetive : undefined}
+          openHandler={openHandler}
+          key={uuidV4()}
+        />,
+        <InventoryRotation key={uuidV4()} />,
+        <EARate key={uuidV4()} />,
+        <InitialFee key={uuidV4()} />,
+      ]}
+      key={uuidV4()}
+    />,
+  ];
 
   return (
     <Overview
@@ -104,29 +119,7 @@ const InventoryOverview = ({
       subtitle={`${units} Unidades de ${Numbers.toFixed(
         averageArea,
       )}m² Promedio`}
-      infoWidgets={
-        view === MAIN_VIEW
-          ? mainInfoWidgets
-          : [
-              ...detailWidget,
-              {
-                fullWidth: true,
-                component: (
-                  <Button
-                    key={uuidV4()}
-                    onClick={openHandler}
-                    size="large"
-                    variant="contained"
-                    fullWidth
-                    disableElevation
-                    color={'primary'}
-                  >
-                    Velocidad de ventas
-                  </Button>
-                ),
-              },
-            ]
-      }
+      infoWidgets={view === MAIN_VIEW ? mainInfoWidgets : detailWidget}
       priceWidgets={view === MAIN_VIEW ? mainPriceWidgets : detailsPriceWidgets}
     />
   );

@@ -19,6 +19,9 @@ import SaleSpeed from '../InfoWidgets/SaleSpeed';
 import InventoryRotation from '../InfoWidgets/InventoryRotation';
 import InitialFee from '../../../../Financial/Dialog/Info/InitialFee/InitialFee';
 import EARate from '../InfoWidgets/EARate';
+import DateWidget from './Date';
+import UnitsWidget from './Units';
+import AveragePriceWidget from './AveragePrice';
 import Widget, { LG, Type } from '../../../Shared/Widget';
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +90,10 @@ const InventorySalesSepeedModal = ({
                 <WidgetGroup
                   showGroup
                   widgets={[
-                    <SaleSpeed type={Type.objetive} key={uuidV4()} />,
+                    <DateWidget key={uuidV4()} />,
+                    <UnitsWidget key={uuidV4()} />,
+                    <AveragePriceWidget key={uuidV4()} />,
+                    <SaleSpeed key={uuidV4()} />,
                     <InventoryRotation type={Type.objetive} key={uuidV4()} />,
                     <EARate type={Type.objetive} key={uuidV4()} />,
                   ]}
