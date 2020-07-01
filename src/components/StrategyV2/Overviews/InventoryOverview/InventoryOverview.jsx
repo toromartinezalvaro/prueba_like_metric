@@ -49,6 +49,7 @@ const InventoryOverview = ({
   view,
   onViewChange,
   openHandler,
+  isReset,
 }) => {
   const changeViewHandler = () => {
     if (view === MAIN_VIEW) {
@@ -81,11 +82,14 @@ const InventoryOverview = ({
         </Typography>,
         <AvailableUnits key={uuidV4()} />,
         <SaleSpeed
-          type={strategy === null ? Type.objetive : undefined}
+          type={strategy === null || isReset ? Type.objetive : Type.proyected}
           openHandler={openHandler}
           key={uuidV4()}
         />,
-        <InventoryRotation key={uuidV4()} />,
+        <InventoryRotation
+          type={strategy === null || isReset ? Type.objetive : Type.proyected}
+          key={uuidV4()}
+        />,
         <EARate key={uuidV4()} />,
         <InitialFee key={uuidV4()} />,
       ]}
@@ -98,7 +102,7 @@ const InventoryOverview = ({
       title={
         <Tooltip
           title={
-            strategy === null
+            strategy === null || isReset
               ? 'NO hay una estrategia'
               : 'Estrategia seleccionada'
           }
@@ -110,7 +114,7 @@ const InventoryOverview = ({
             variant="contained"
             fullWidth
             disableElevation
-            color={strategy === null ? 'secondary' : 'primary'}
+            color={strategy === null || isReset ? 'secondary' : 'primary'}
           >
             Detalles del Inventario
           </Button>
@@ -133,17 +137,20 @@ InventoryOverview.propTypes = {
   onViewChange: PropTypes.func.isRequired,
   onOpenSalesSpeed: PropTypes.func.isRequired,
   openHandler: PropTypes.func.isRequired,
+  isReset: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
-  const { inventory, strategy } = state.strategy.root.groups[
+  const { inventory, strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
+
   return {
     units: inventory.units,
     averageArea: inventory.averageArea,
     strategy,
     view: state.strategy.overviews.view,
+    isReset,
   };
 };
 
