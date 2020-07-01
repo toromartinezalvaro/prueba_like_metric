@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Sales from './Sales';
@@ -15,7 +16,11 @@ export const DetailsGroup = () => {
           display="block"
           align="center"
         >
-          A hoy
+          A hoy{' '}
+          {moment()
+            .subtract(1, 'month')
+            .endOf('month')
+            .format('D [de] MMMM')}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -34,7 +39,11 @@ export const DetailsGroup = () => {
           display="block"
           align="center"
         >
-          Proyectado
+          Proyectado{' '}
+          {moment()
+            .startOf('month')
+            .format('D [de] MMMM')}{' '}
+          en adelante
         </Typography>
       </Grid>
       <Grid item xs={12}>

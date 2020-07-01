@@ -17,7 +17,7 @@ import { closeSalesSpeedDialog, setSalesSpeedDialogData } from './actions';
 import WidgetGroup from '../../../Shared/WidgetGroup/WidgetGroup';
 import SaleSpeed from '../InfoWidgets/SaleSpeed';
 import InventoryRotation from '../InfoWidgets/InventoryRotation';
-import InitialFee from '../../../../Financial/Dialog/Info/InitialFee/InitialFee';
+import InitialFee from '../InfoWidgets/InitialFee';
 import EARate from '../InfoWidgets/EARate';
 import DateWidget from './Date';
 import UnitsWidget from './Units';
@@ -96,6 +96,7 @@ const InventorySalesSepeedModal = ({
                     <SaleSpeed key={uuidV4()} />,
                     <InventoryRotation type={Type.objetive} key={uuidV4()} />,
                     <EARate type={Type.objetive} key={uuidV4()} />,
+                    <InitialFee key={uuidV4()} />,
                   ]}
                   key={uuidV4()}
                 />
