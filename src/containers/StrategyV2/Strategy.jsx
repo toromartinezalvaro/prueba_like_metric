@@ -23,6 +23,7 @@ const Strategy = ({
   onFetchedDataEmpty,
   loading,
   isEmpty,
+  strategy,
 }) => {
   const { towerId } = useParams();
   const location = useLocation();
@@ -60,9 +61,7 @@ const Strategy = ({
           <Box>
             <Settings />
           </Box>
-          <Box mb={3}>
-            <Widgets />
-          </Box>
+          <Box mb={3}>{strategy !== null && <Widgets />}</Box>
           <Box>
             <Overviews />
             <InventorySalesSepeedModal />
@@ -81,6 +80,8 @@ Strategy.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  strategy:
+    state.strategy.root.groups[state.strategy.root.selectedGroup].strategy,
   validGroup: state.strategy.root.selectedGroup,
   loading: state.strategy.root.loading,
   isEmpty: state.strategy.root.isEmpty,

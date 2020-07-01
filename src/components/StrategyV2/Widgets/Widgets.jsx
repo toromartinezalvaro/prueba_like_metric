@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Grid from '@material-ui/core/Grid';
@@ -14,10 +15,23 @@ const Widgets = ({ totalUnits, salesUnits, inventoryUnits, sales }) => {
         <Widget title="Unidades Totales">{totalUnits}</Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Vendidas">{salesUnits}</Widget>
+        <Widget
+          title={`Unidades Vendidas a ${moment()
+            .subtract(1, 'month')
+            .endOf('month')
+            .format('D [de] MMMM')}`}
+        >
+          {salesUnits}
+        </Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
-        <Widget title="Unidades Disponibles">{inventoryUnits}</Widget>
+        <Widget
+          title={`Unidades Disponibles de ${moment()
+            .startOf('month')
+            .format('D [de] MMMM')} en adelante`}
+        >
+          {inventoryUnits}
+        </Widget>
       </Grid>
       <Grid item xs={12} lg={2}>
         <TotalSalesWidget />
