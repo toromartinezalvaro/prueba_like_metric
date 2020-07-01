@@ -49,6 +49,7 @@ const InventoryOverview = ({
   view,
   onViewChange,
   openHandler,
+  isReset,
 }) => {
   const changeViewHandler = () => {
     if (view === MAIN_VIEW) {
@@ -81,7 +82,7 @@ const InventoryOverview = ({
         </Typography>,
         <AvailableUnits key={uuidV4()} />,
         <SaleSpeed
-          type={strategy === null ? Type.objetive : undefined}
+          type={strategy === null || isReset ? Type.objetive : undefined}
           openHandler={openHandler}
           key={uuidV4()}
         />,
@@ -136,7 +137,7 @@ InventoryOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { inventory, strategy } = state.strategy.root.groups[
+  const { inventory, strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
   return {
@@ -144,6 +145,7 @@ const mapStateToProps = (state) => {
     averageArea: inventory.averageArea,
     strategy,
     view: state.strategy.overviews.view,
+    isReset,
   };
 };
 
