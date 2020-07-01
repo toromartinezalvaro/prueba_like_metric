@@ -24,6 +24,8 @@ const Strategy = ({
   loading,
   isEmpty,
   strategy,
+  view,
+  isReset,
 }) => {
   const { towerId } = useParams();
   const location = useLocation();
@@ -61,7 +63,7 @@ const Strategy = ({
           <Box>
             <Settings />
           </Box>
-          <Box mb={3}>{strategy !== null && <Widgets />}</Box>
+          <Box mb={3}>{view === 'main' || !isReset ? <Widgets /> : null}</Box>
           <Box>
             <Overviews />
             <InventorySalesSepeedModal />
@@ -82,6 +84,9 @@ Strategy.propTypes = {
 const mapStateToProps = (state) => ({
   strategy:
     state.strategy.root.groups[state.strategy.root.selectedGroup].strategy,
+  isReset:
+    state.strategy.root.groups[state.strategy.root.selectedGroup].isReset,
+  view: state.strategy.overviews.view,
   validGroup: state.strategy.root.selectedGroup,
   loading: state.strategy.root.loading,
   isEmpty: state.strategy.root.isEmpty,
