@@ -70,7 +70,10 @@ const InventoryOverview = ({
         <SaleSpeed type={Type.real} key={uuidV4()} />,
         <InventoryRotation type={Type.real} key={uuidV4()} />,
         <EARate type={Type.real} key={uuidV4()} />,
-        <CurrentMonthSales key={uuidV4()} />,
+        <CurrentMonthSales
+          key={uuidV4()}
+          hide={strategy === null || isReset}
+        />,
       ]}
       key={uuidV4()}
     />,
@@ -90,7 +93,7 @@ const InventoryOverview = ({
           type={strategy === null || isReset ? Type.objetive : Type.proyected}
           key={uuidV4()}
         />,
-        <EARate key={uuidV4()} />,
+        <EARate key={uuidV4()} hide={strategy === null || isReset} />,
         <InitialFee key={uuidV4()} />,
       ]}
       key={uuidV4()}
