@@ -22,9 +22,10 @@ CurrentMonthSales.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  sales:
-    state.strategy.root.groups[state.strategy.root.selectedGroup]
-      .averagePricePerMt2WhenStrategyWasSelected,
+  sales: (
+    state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
+      .objective || { averagePrice: 0 }
+  ).averagePrice,
 });
 
 const mapDispatchToProps = {};
