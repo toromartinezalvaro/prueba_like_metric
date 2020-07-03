@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Widget from '../../../Shared/Widget';
 
-const CurrentMonthSales = ({ units }) => {
-  return <Widget title="Unidades vendidas mes actual">{units}</Widget>;
+const CurrentMonthSales = ({ units, hide }) => {
+  return (
+    <>{!hide && <Widget title="Unidades vendidas mes actual">{units}</Widget>}</>
+  );
 };
 
 CurrentMonthSales.propTypes = {

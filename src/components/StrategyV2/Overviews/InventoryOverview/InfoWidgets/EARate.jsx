@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Widget, { SM, Type } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
 
-const EARateWidget = ({ EARate, EARateSelected, salesEARate, type }) => {
+const EARateWidget = ({ EARate, EARateSelected, salesEARate, type, hide }) => {
   let currentEARate = 0;
   let title = '';
 
@@ -23,9 +23,13 @@ const EARateWidget = ({ EARate, EARateSelected, salesEARate, type }) => {
       break;
   }
   return (
-    <Widget title={title} size={SM}>
-      {Numbers.toFixed(currentEARate * 100)}%
-    </Widget>
+    <>
+      {!hide && (
+        <Widget title={title} size={SM}>
+          {Numbers.toFixed(currentEARate * 100)}%
+        </Widget>
+      )}
+    </>
   );
 };
 
