@@ -12,9 +12,10 @@ CurrentMonthSales.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  units:
-    state.strategy.root.groups[state.strategy.root.selectedGroup]
-      .unitsWhenStrategyWasSelected,
+  units: (
+    state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
+      .objective || { units: 0 }
+  ).units,
 });
 
 const mapDispatchToProps = {};
