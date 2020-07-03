@@ -26,7 +26,7 @@ export const DetailsGroup = () => {
           align="center"
         >
           A{' '}
-          {strategy !== null || isReset
+          {isReset
             ? 'hoy'
             : moment()
                 .subtract(1, 'month')
@@ -51,10 +51,10 @@ export const DetailsGroup = () => {
           align="center"
         >
           Proyectado{' '}
-          {moment()
-            .startOf('month')
-            .format('D [de] MMMM')}{' '}
-          en adelante
+          {!isReset &&
+            moment()
+              .startOf('month')
+              .format('D [de] MMMM')}
         </Typography>
       </Grid>
       <Grid item xs={12}>
