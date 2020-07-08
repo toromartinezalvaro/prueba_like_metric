@@ -343,6 +343,7 @@ class SalesRoom extends Component {
     }
     if (
       this.state.selectedProperty.status !== SalesRoomEnum.status.AVAILABLE &&
+      this.state.selectedProperty.addedAdditionalAreas.length === 0 &&
       !this.modalRenderValidation()
     ) {
       this.setState({ isSavingErrorActive: true });
