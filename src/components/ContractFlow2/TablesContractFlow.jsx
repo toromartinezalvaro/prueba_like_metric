@@ -37,6 +37,14 @@ const TablesContractFlow = ({ billings }) => {
     { columnName: 'item', width: 120 },
   ]);
 
+  const numberFormaterText = (currency) => {
+    const number = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(currency);
+    return number;
+  };
+
   const numberFormater = (number) => {
     return (
       <NumberFormat
@@ -155,12 +163,21 @@ const TablesContractFlow = ({ billings }) => {
         : Math.round(moment(initialNumber).diff(finalNumber, 'months', true));
     bigDummie = numberOfDates > bigDummie ? numberOfDates : bigDummie;
     const information = bill.items.map((value, t) => {
+      let totalAtGroup = 0;
+      const subTotalAtItem = value.contracts
+        .map((data) => data.total)
+        .reduce((a, b) => a + b, 0);
+      totalAtGroup += Number(subTotalAtItem);
       return value.contracts.map((val, n) => {
         let prices = {};
         const contract = textFormater(val.title, 'text');
+        const items = `${item[t]} - sub total: ${numberFormaterText(
+          subTotalAtItem,
+        )}`;
+        const groups = `${group} - total: ${numberFormaterText(totalAtGroup)}`;
         let result = {
-          group,
-          item: item[t],
+          group: groups,
+          item: items,
           contract,
         };
 
