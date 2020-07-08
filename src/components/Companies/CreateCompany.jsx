@@ -42,7 +42,7 @@ const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
     }
   };
   return (
-    <Dialog open={actionOpen} fullWidth="md" maxWidth="md">
+    <Dialog open={actionOpen} fullWidth="sm" maxWidth="sm">
       <DialogTitle>Nueva Compañía</DialogTitle>
       <DialogContent classes={{ root: Styles.dialogContent }}>
         <FormControl className={Styles.dialogContent}>
