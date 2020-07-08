@@ -46,6 +46,7 @@ class CreateUser extends Component {
       })
       .then((user) => {
         console.log('user --> ', user);
+        this.props.spawnMessage('Usuario creado correctamente', 'success');
         if (user.email) {
           this.props.history.push(DashboardRoutes.base + ProjectRoutes.base);
         }
