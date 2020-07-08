@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Badge from '@material-ui/core/Badge';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -23,7 +24,9 @@ const SaleRequestTable = ({
     <>
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Solicitudes de venta pendientes</Typography>
+          <Badge badgeContent={saleRequests.pending.length} color="secondary">
+            <Typography>Solicitudes de venta pendientes</Typography>
+          </Badge>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <TableContainer component={Paper}>
