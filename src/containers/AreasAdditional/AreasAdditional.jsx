@@ -82,6 +82,11 @@ class AreasAdditional extends Component {
       })
       .then(() => this.services.getAreas(this.props.match.params.towerId))
       .then((areas) => {
+        console.table({
+          unit,
+          name,
+          id,
+        });
         const areasData = areas.data.map((area) => {
           const additionalAreas = _.orderBy(
             area.additionalAreas,
@@ -151,7 +156,10 @@ class AreasAdditional extends Component {
           console.error(error);
         });
     } else {
-      this.props.spawnMessage('No puede poner una nomenclatura repetiva.', 'error');
+      this.props.spawnMessage(
+        'No puede poner una nomenclatura repetiva.',
+        'error',
+      );
     }
   };
 
