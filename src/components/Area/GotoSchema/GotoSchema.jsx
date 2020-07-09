@@ -17,21 +17,25 @@ const GotoSchema = ({ open, towerId }) => {
     );
   };
   return (
-    <>
-      <Dialog open={open}>
-        <DialogTitle>ATENCIÓN</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {`Debes crear el esquema de la torre para definir las áreas`}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={gotoAdditional} color="primary" autoFocus>
-            Ir a esquemas
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+    <Dialog open={open}>
+      <DialogTitle>ATENCIÓN</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Debes crear el esquema de la torre para definir las áreas
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={gotoAdditional} color="primary" autoFocus>
+          Ir a esquemas
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
+
+GotoSchema.propTypes = {
+  open: PropTypes.bool,
+  towerId: PropTypes.string,
+};
+
 export default GotoSchema;

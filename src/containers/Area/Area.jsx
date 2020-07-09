@@ -462,9 +462,9 @@ class Area extends Component {
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
-        {this.state.properties.length < 1 ? (
+        {this.state.properties.length < 1 && (
           <GotoSchema towerId={this.props.match.params.towerId} open={true} />
-        ) : null}
+        )}
         {this.state.inputMethod === null ? (
           <InputMethodDialog
             changeInputMethodHandler={this.handleInputMethodChange}
