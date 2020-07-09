@@ -129,7 +129,6 @@ function SalesDateRange({
               disableCalendar
             />
             <Input
-              validations={displacementValidationMaximumCollectionDate()}
               value={moment(Number(maximumCollectionDate)).diff(
                 moment(Number(endOfSalesDate)),
                 'month',
