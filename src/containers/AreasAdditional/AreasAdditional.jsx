@@ -108,6 +108,14 @@ class AreasAdditional extends Component {
       });
   };
 
+  repeatedChecker = (indexArea, indexAreaType, nomenclature) => {
+    const areaTypes = this.state.arrayAreaTypes[indexAreaType].additionalAreas;
+    const repeatedArray = areaTypes.filter(
+      (item) => item.nomenclature === nomenclature,
+    );
+    return !(repeatedArray.length > 1);
+  };
+
   addAreaAdditionalHandler = (
     nomenclature,
     measure,
@@ -116,23 +124,38 @@ class AreasAdditional extends Component {
     indexAreaType,
     indexArea,
   ) => {
-    this.services
-      .postAreaAdditional({
-        nomenclature,
-        areaTypeId,
-        towerId: this.props.match.params.towerId,
-        measure,
-        price: `${price}`,
-      })
-      .then((area) => {
-        const areas = this.state.arrayAreaTypes;
-        areas[indexAreaType].additionalAreas[indexArea] = area.data;
-        this.setState({ arrayAreaTypes: areas });
-      })
-      .catch((error) => {
-        this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
-        console.error(error);
-      });
+    const checker = this.repeatedChecker(
+      indexArea,
+      indexAreaType,
+      nomenclature,
+    );
+    if (checker) {
+      this.services
+        .postAreaAdditional({
+          nomenclature,
+          areaTypeId,
+          towerId: this.props.match.params.towerId,
+          measure,
+          price: `${price}`,
+        })
+        .then((area) => {
+          const areas = this.state.arrayAreaTypes;
+          areas[indexAreaType].additionalAreas[indexArea] = area.data;
+          this.setState({ arrayAreaTypes: areas });
+        })
+        .catch((error) => {
+          this.props.spawnMessage(
+            'No se pudo eliminar el tipo de area. Este dato no se guardará',
+            'error',
+          );
+          console.error(error);
+        });
+    } else {
+      this.props.spawnMessage(
+        'No puede poner una nomenclatura repetiva.',
+        'error',
+      );
+    }
   };
 
   updateAreaAdditionalHandler = (nomenclature, measure, price, areaId) => {
