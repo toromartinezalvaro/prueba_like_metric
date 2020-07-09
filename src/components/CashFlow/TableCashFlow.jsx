@@ -37,12 +37,11 @@ const TableCashFlow = (props) => {
     return {
       rows: group.arrayCashFlow.map((row, index) => {
         const tempRow = { type: helperRows[index] };
-        row.forEach(
-          (value, i) =>
-            (tempRow[columns[i + 1].name] = `$${Number(
-              value.toFixed(0),
-            ).toLocaleString('en-US')}`),
-        );
+        row.forEach((value, i) => {
+          tempRow[columns[i + 1].name] = `$${Number(
+            value.toFixed(0),
+          ).toLocaleString('en-US')}`;
+        });
         return tempRow;
       }),
       columns,

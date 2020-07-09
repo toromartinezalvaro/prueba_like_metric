@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Widget from '../../../Shared/Widget';
 
-const CurrentMonthSales = ({ units }) => {
+const Units = ({ units }) => {
   return <Widget title="Inventario">{units}</Widget>;
 };
 
-CurrentMonthSales.propTypes = {
+Units.propTypes = {
   units: PropTypes.number.isRequired,
 };
 
@@ -23,4 +23,4 @@ const mapDispatchToProps = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CurrentMonthSales);
+)(Units);
