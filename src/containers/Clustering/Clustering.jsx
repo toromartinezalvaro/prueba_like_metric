@@ -118,14 +118,14 @@ class Clustering extends Component {
   };
 
   clusteringChecker = (action) => {
-    const checkClustering = this.state.clusters.some(
-      (property) => property.group.isReset,
-    );
-    if (checkClustering) {
-      this.handleOpenDialog(action);
-    } else {
+    // const checkClustering = this.state.clusters.some(
+    //   (property) => property.group.isReset,
+    // );
+    // if (checkClustering) {
+    //   this.handleOpenDialog(action);
+    // } else {
       this.handleAction(action);
-    }
+    // }
   };
 
   render() {
