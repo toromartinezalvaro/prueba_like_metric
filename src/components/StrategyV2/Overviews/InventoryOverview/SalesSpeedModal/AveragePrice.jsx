@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget from '../../../Shared/Widget';
 
-const CurrentMonthSales = ({ sales }) => {
+const AveragePrice = ({ sales }) => {
   return (
     <Widget title="Valor promedio">
       <NumberFormat
@@ -17,7 +17,7 @@ const CurrentMonthSales = ({ sales }) => {
   );
 };
 
-CurrentMonthSales.propTypes = {
+AveragePrice.propTypes = {
   sales: PropTypes.number.isRequired,
 };
 
@@ -33,4 +33,4 @@ const mapDispatchToProps = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CurrentMonthSales);
+)(AveragePrice);

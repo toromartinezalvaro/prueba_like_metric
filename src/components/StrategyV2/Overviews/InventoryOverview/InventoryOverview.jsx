@@ -23,7 +23,6 @@ import PriceDetailsGroup from './PriceWidgets/DetailsGroup';
 import EARate from './InfoWidgets/EARate';
 import RealSoldUnits from './InfoWidgets/RealSoldUnits';
 import AvailableUnits from './InfoWidgets/AvailableUnits';
-import CurrentMonthSales from './InfoWidgets/CurrentMonthSales';
 import { openSalesSpeedDialog } from './SalesSpeedModal/actions';
 import { Type } from '../../Shared/Widget';
 
@@ -70,10 +69,6 @@ const InventoryOverview = ({
         <SaleSpeed type={Type.real} key={uuidV4()} />,
         <InventoryRotation type={Type.real} key={uuidV4()} />,
         <EARate type={Type.real} key={uuidV4()} />,
-        <CurrentMonthSales
-          key={uuidV4()}
-          hide={strategy === null || isReset}
-        />,
       ]}
       key={uuidV4()}
     />,
