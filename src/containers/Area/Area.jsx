@@ -19,6 +19,7 @@ import LoadableContainer from '../../components/UI/Loader';
 import Prices2 from '../../components/Area/Prices2';
 import Imports from '../../components/Area/Imports';
 import InputMethodDialog from '../../components/Area/InputMethod/Dialog';
+import GotoSchema from '../../components/Area/GotoSchema';
 
 class Area extends Component {
   constructor(props) {
@@ -461,6 +462,9 @@ class Area extends Component {
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
+        {this.state.properties.length < 1 && (
+          <GotoSchema towerId={this.props.match.params.towerId} open={true} />
+        )}
         {this.state.inputMethod === null ? (
           <InputMethodDialog
             changeInputMethodHandler={this.handleInputMethodChange}
