@@ -111,7 +111,7 @@ class AreasAdditional extends Component {
   repeatedChecker = (indexArea, indexAreaType, nomenclature) => {
     const areaTypes = this.state.arrayAreaTypes[indexAreaType].additionalAreas;
     const repeatedArray = areaTypes.filter(
-      (item) => item.nomenclature === nomenclature,
+      (item) => item.nomenclature === nomenclature && nomenclature !== '',
     );
     return !(repeatedArray.length > 1);
   };
@@ -152,7 +152,7 @@ class AreasAdditional extends Component {
         });
     } else {
       this.props.spawnMessage(
-        'No puede poner una nomenclatura repetiva.',
+        'No puede poner una nomenclatura repetida.',
         'error',
       );
     }
