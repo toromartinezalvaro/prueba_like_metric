@@ -209,7 +209,7 @@ class Schedule extends Component {
         />
         <InitialFees
           firstSale={this.state.firstSale}
-          maximumCollectionDate={this.state.maximumCollectionDate}
+          salesStartDate={this.state.salesStartDate}
           firstSaleHandler={this.firstSaleHandler}
         />
       </div>
