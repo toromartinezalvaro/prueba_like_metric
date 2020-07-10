@@ -18,17 +18,6 @@ const displacementValidation = () => [
   },
 ];
 
-const displacementValidationMaximumCollectionDate = () => [
-  {
-    fn: (value) => value <= 0,
-    message: 'Debe ser menor 0',
-  },
-  {
-    fn: (value) => value >= -100,
-    message: 'El desplazamiento es demasiado grande',
-  },
-];
-
 function SalesDateRange({
   endOfSalesDate,
   salesStartDate,
