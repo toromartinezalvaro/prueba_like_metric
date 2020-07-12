@@ -4,6 +4,7 @@ import { CircularProgress } from '@material-ui/core';
 import commonStyles from '../../assets/styles/variables.scss';
 import ContractFlowService from '../../services/contractFlow/contractFlowService';
 import TablesContractFlow from '../../components/ContractFlow2/TablesContractFlow';
+import Imports from '../../components/ContractFlow2/Imports';
 import styles from './ContractFlow.module.scss';
 
 const ContractFlow = (props) => {
@@ -30,8 +31,8 @@ const ContractFlow = (props) => {
   ) : (
     <React.Fragment>
       <h1>FLUJO DE CAJA</h1>
+      <Imports towerId={TOWER_ID} />
       <div className={styles.container}>
-        {console.log(data)}
         <TablesContractFlow billings={data} />
       </div>
     </React.Fragment>
