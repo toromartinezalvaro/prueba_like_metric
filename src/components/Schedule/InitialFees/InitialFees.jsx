@@ -5,7 +5,7 @@ import Card, { CardHeader, CardBody } from '../../UI/Card/Card';
 import Input from '../../UI/Input/Input';
 import Styles from './InitialFees.module.scss';
 
-function InitialFees({ firstSale, salesStartDate, firstSaleHandler }) {
+function InitialFees({ firstSale, maximumCollectionDate, firstSaleHandler }) {
   return (
     <Card>
       <CardHeader>
@@ -25,7 +25,7 @@ function InitialFees({ firstSale, salesStartDate, firstSaleHandler }) {
           <span className={Styles.Item}>Plazo hoy:</span>
 
           <span className={`${Styles.Item} ${Styles.Deadline}`}>
-            {moment(Number(salesStartDate))
+            {moment(Number(maximumCollectionDate))
               .startOf('month')
               .diff(moment().startOf('month'), 'months')}
           </span>
@@ -37,8 +37,9 @@ function InitialFees({ firstSale, salesStartDate, firstSaleHandler }) {
 
 InitialFees.propTypes = {
   firstSale: PropTypes.number,
-  firstSaleHandler: PropTypes.func,
   salesStartDate: PropTypes.number,
+  firstSaleHandler: PropTypes.func,
+  maximumCollectionDate: PropTypes.number,
 };
 
 InitialFees.defaultProps = {
