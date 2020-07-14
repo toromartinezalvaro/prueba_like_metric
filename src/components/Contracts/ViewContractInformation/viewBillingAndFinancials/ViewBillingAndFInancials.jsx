@@ -74,9 +74,10 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                 />
               </div>
             </div>
+            {}
             {_.orderBy(
               contractDataView.billings,
-              [(itemFilter) => itemFilter.id],
+              [(itemFilter) => itemFilter.initalBillingDate],
               ['asc'],
             ).map((billing, i) => {
               return (
