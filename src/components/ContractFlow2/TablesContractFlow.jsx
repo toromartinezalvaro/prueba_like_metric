@@ -446,7 +446,6 @@ const TablesContractFlow = ({ billings }) => {
   return (
     <Paper>
       <Grid rows={rows} columns={columns}>
-        {console.log('ITEM', rows)}
         <GroupingState
           grouping={[
             { columnName: 'group', width: 150 },
