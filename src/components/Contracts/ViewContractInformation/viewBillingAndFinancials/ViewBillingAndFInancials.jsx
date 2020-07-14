@@ -5,6 +5,7 @@
  */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import {
   Card,
   CardContent,
@@ -73,7 +74,11 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                 />
               </div>
             </div>
-            {contractDataView.billings.map((billing, i) => {
+            {_.orderBy(
+              contractDataView.billings,
+              [(itemFilter) => itemFilter.id],
+              ['asc'],
+            ).map((billing, i) => {
               return (
                 <ExpansionPanel
                   key={billing.id}

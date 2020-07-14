@@ -820,18 +820,10 @@ class Contracts extends Component {
     this.services
       .deleteSpecificBill(id, this.props.match.params.towerId)
       .then((response) => {
-        this.props.spawnMessage(
-          '¡Se ha borrado la cuenta con éxito!',
-          'success',
-          '¡CORRECTO!',
-        );
+        this.props.spawnMessage('¡Proceso realizado!', 'success', '¡CORRECTO!');
       })
       .catch((error) => {
-        this.props.spawnMessage(
-          '¡Se ha editado con éxito la cuenta!',
-          'success',
-          '¡CORRECTO!',
-        );
+        this.props.spawnMessage('Algo salió mal...', 'error');
       });
   };
 
