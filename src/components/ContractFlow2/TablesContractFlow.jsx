@@ -171,10 +171,8 @@ const TablesContractFlow = ({ billings }) => {
       return value.contracts.map((val, n) => {
         let prices = {};
         const contract = textFormater(val.title, 'text');
-        const items = `${item[t]} - sub total: ${numberFormaterText(
-          subTotalAtItem,
-        )}`;
-        const groups = `${group} - total: ${numberFormaterText(totalAtGroup)}`;
+        const items = item[t];
+        const groups = group;
         let result = {
           group: groups,
           item: items,

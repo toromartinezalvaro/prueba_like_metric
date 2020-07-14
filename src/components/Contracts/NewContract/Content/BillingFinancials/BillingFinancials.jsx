@@ -52,6 +52,7 @@ const BillingFinancials = ({
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
   const [lastDate, setLastDate] = useState(new Date().getTime());
+  const [billings, setBillings] = useState([]);
   const cardValue = {
     id: 0,
     eventId: null,
@@ -70,7 +71,6 @@ const BillingFinancials = ({
     eventLabel: '',
     eventIsUnique: false,
   };
-  const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
   const [month, setMonth] = useState(MonthEnum);
   const [eventId, setEventId] = useState(0);
@@ -355,9 +355,15 @@ const BillingFinancials = ({
         const newValue = { ...dataValue, isLocked: true, eventIsUnique };
         return newValue;
       });
-      setLastId(1);
+      setLastId(data.length);
       const bills = data.length === 0 ? data : withLocked;
-      setBillings(bills);
+      setBillings(
+        _.orderBy(
+          bills,
+          [(itemFilter) => itemFilter.initalBillingDate],
+          ['asc'],
+        ),
+      );
       setLastDate(data[0] ? data[0].initalBillingDate : null);
       setTimeout(() => {
         watchingContract();
