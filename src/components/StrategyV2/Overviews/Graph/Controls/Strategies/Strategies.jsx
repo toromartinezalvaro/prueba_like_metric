@@ -117,6 +117,10 @@ const Strategies = ({
     );
   };
 
+  if (groupId === 0) {
+    return null;
+  }
+
   return (
     <>
       <Paper>

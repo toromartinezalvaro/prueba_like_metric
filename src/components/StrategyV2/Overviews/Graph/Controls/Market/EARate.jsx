@@ -40,6 +40,7 @@ const EARateInput = ({
         startApiLoading();
         await services.increments.putMarketAnualEffectiveIncrement(groupId, {
           anualEffectiveIncrement: percentage,
+          towerId,
         });
         const response = await services.increments2.getIncrementsAndStrategy(
           towerId,

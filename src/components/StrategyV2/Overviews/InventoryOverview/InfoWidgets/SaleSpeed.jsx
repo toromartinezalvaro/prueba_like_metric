@@ -100,6 +100,9 @@ const SaleSpeed = ({
 
   let title = '';
   let component = null;
+  if (groupId === 0) {
+    type = Type.total;
+  }
   switch (type) {
     case Type.objetive:
       component = (
@@ -132,6 +135,10 @@ const SaleSpeed = ({
     case Type.real:
       component = Numbers.toFixed(realSalesSpeed);
       title = 'Velocidad de ventas real';
+      break;
+    case Type.total:
+      component = Numbers.toFixed(saleSpeed);
+      title = 'Velocidad de ventas objetivo';
       break;
     default:
       component = Numbers.toFixed(futureSaleSpeed);
