@@ -256,12 +256,7 @@ const TablesContractFlow = ({ billings }) => {
                       information.schedulesDate.salesStartDate
                   ) {
                     initialNumber.push(
-                      Number(
-                        moment(Number(internalInfo.initalBillingDate)).add(
-                          Number(internalInfo.displacement),
-                          'M',
-                        ),
-                      ),
+                      Number(moment(Number(internalInfo.initalBillingDate))),
                     );
                   } else {
                     initialNumber.push(
