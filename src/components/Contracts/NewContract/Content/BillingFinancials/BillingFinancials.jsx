@@ -609,6 +609,8 @@ const BillingFinancials = ({
                     >
                       <DatePicker
                         autoOk
+                        error={false}
+                        helperText=""
                         className={styles.picker}
                         disabled={!billing.eventIsUnique || billing.isLocked}
                         variant="inline"
@@ -655,6 +657,8 @@ const BillingFinancials = ({
                       <KeyboardDatePicker
                         disabled={true}
                         autoOk
+                        error={false}
+                        helperText=""
                         className={styles.picker}
                         disableToolbar
                         variant="inline"
