@@ -1,5 +1,10 @@
 import React from 'react';
-import { Dialog, DialogContentText, CircularProgress } from '@material-ui/core';
+import {
+  Dialog,
+  DialogContentText,
+  CircularProgress,
+  Typography,
+} from '@material-ui/core';
 import styles from './styles.module.scss';
 
 export default function LoadingContract({ isLoading }) {
@@ -13,7 +18,12 @@ export default function LoadingContract({ isLoading }) {
         paper: styles.dialog,
       }}
     >
-      <CircularProgress />
+      <DialogContentText>
+        <div className={styles.container}>
+          <CircularProgress />
+          <Typography variant="subtitle1">Cargando contrato</Typography>
+        </div>
+      </DialogContentText>
     </Dialog>
   );
 }
