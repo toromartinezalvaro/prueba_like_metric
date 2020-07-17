@@ -15,6 +15,7 @@ import ContractService from '../../services/contract/contractService';
 import Item from '../../components/Contracts/NewContract/Content/Item/Item';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import EventService from '../../services/event/EventServices';
+import LoadingContract from '../../components/Contracts/LoadingContract';
 
 class Contracts extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class Contracts extends Component {
       },
       contractModal: {
         isOpen: false,
+        isLoading: false,
         data: {},
         contractId: null,
         generalInformationData: {
@@ -568,9 +570,14 @@ class Contracts extends Component {
   };
 
   currentEvent = (currentEvent) => {
-    this.setState((prevState) => ({
-      events: [...prevState.events, currentEvent].sort(),
-    }));
+    this.setState((prevState) => {
+      const events = [...prevState.events];
+      events.splice(1, 0, currentEvent);
+      events.join();
+      return {
+        events,
+      };
+    });
   };
 
   sendContractNumber = (contractNumber) => {
@@ -766,6 +773,7 @@ class Contracts extends Component {
 
   editContractOpen = (editable, id) => {
     if (editable) {
+      this.setState({ contractModal: { isLoading: true } });
       this.services
         .getContractById(this.props.match.params.towerId, id)
         .then((response) => {
@@ -781,6 +789,7 @@ class Contracts extends Component {
           this.setState({
             contractModal: {
               isOpen: true,
+              isLoading: false,
               contractId: metaData.generalInformation.id,
               generalInformationData: {
                 title: metaData.generalInformation.title,
@@ -953,6 +962,7 @@ class Contracts extends Component {
           listInformationGroup={this.state.categories}
           deleteContract={this.deleteContract}
         />
+        <LoadingContract isLoading={this.state.contractModal.isLoading} />
         <NewContract
           towerId={this.props.match.params.towerId}
           noError={this.noError}

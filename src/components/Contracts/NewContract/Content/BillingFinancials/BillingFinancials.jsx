@@ -6,6 +6,7 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import esLocale from 'date-fns/locale/es';
 import NumberFormat from 'react-number-format';
 import _ from 'lodash';
 import {
@@ -24,6 +25,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import moment from 'moment';
 import {
+  DatePicker,
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
@@ -75,6 +77,7 @@ const BillingFinancials = ({
   const [month, setMonth] = useState(MonthEnum);
   const [eventId, setEventId] = useState(0);
   const [disabledLastBilling, setDisableLastBilling] = useState(true);
+  moment.locale('es');
 
   let totalBills = 0;
   let totalBillsNoIva = 0;
@@ -198,9 +201,10 @@ const BillingFinancials = ({
         billingsArray[billIndex].initalBillingDate = Number(
           billingsArray[billIndex].initalBillingDate,
         );
-        const newDate = moment(
+        const tempDate = moment(
           Number(billingsArray[billIndex].initalBillingDate),
-        )
+        ).subtract(billingsArray[billIndex].displacement, 'M');
+        const newDate = moment(Number(tempDate))
           .add(Number(element.target.value), 'months')
           .format('x');
         bill = {
@@ -599,12 +603,16 @@ const BillingFinancials = ({
                       }
                       onChange={changeCardValue('displacement', billing.id)}
                     />
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
+                    <MuiPickersUtilsProvider
+                      utils={DateFnsUtils}
+                      locale={esLocale}
+                    >
+                      <DatePicker
                         autoOk
+                        error={false}
+                        helperText=""
                         className={styles.picker}
                         disabled={!billing.eventIsUnique || billing.isLocked}
-                        disableToolbar
                         variant="inline"
                         format="dd/MM/yyyy"
                         margin="normal"
@@ -621,9 +629,6 @@ const BillingFinancials = ({
                           billing.id,
                           true,
                         )}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
                       />
                     </MuiPickersUtilsProvider>
                   </div>
@@ -652,6 +657,8 @@ const BillingFinancials = ({
                       <KeyboardDatePicker
                         disabled={true}
                         autoOk
+                        error={false}
+                        helperText=""
                         className={styles.picker}
                         disableToolbar
                         variant="inline"
