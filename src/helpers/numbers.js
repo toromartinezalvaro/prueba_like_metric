@@ -1,7 +1,7 @@
 export default class Numbers {
-  static toFixed = (number) => {
+  static toFixed = (number, decimal = 2) => {
     if (number && number !== Infinity && !Number.isNaN(number)) {
-      return Number(number).toFixed(2);
+      return Number(number).toFixed(decimal);
     }
     return 0;
   };

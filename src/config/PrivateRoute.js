@@ -12,7 +12,7 @@ const PrivateRoute = ({
   component: Component,
   roles,
   isPrivate = true,
-  changeTower,
+  changeTower = null,
   ...rest
 }) => {
   const { isAuth, activateAuth } = useContext(Context.Shared);

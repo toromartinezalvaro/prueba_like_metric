@@ -33,7 +33,7 @@ import FutureSalesSpeed from '../FutureSalesSpeed/FutureSalesSpeed';
 import Schedule from '../Schedule/Schedule';
 import Report from '../Report';
 import Contracts from '../Contract/Contracts';
-import ContractFlow from '../ContractFlow2/ContractFlow';
+import ContractFlow from '../ContractFlow/ContractFlow';
 import CashFlow from '../CashFlow';
 import SaleRequests from '../SaleRequests';
 import Pairing from '../Pairing';
