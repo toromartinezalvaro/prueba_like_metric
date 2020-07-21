@@ -193,7 +193,11 @@ const BillingFinancials = ({
       bill = { ...billingsArray[billIndex], eventLabel: element.eventLabel };
       bill = { ...billingsArray[billIndex], [name]: element.value };
     } else if (name === true) {
-      bill = { ...billingsArray[billIndex], isLocked: true };
+      if (billingsArray[billIndex].amount > 0) {
+        bill = { ...billingsArray[billIndex], isLocked: true };
+      } else {
+        spawnMessage('No puedes guardar cuentas vacías', 'error');
+      }
     } else if (name === false) {
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
@@ -601,6 +605,9 @@ const BillingFinancials = ({
                       value={
                         billing.displacement !== 0 ? billing.displacement : ''
                       }
+                      inputProps={{
+                        maxLength: 3,
+                      }}
                       onChange={changeCardValue('displacement', billing.id)}
                     />
                     <MuiPickersUtilsProvider
@@ -651,6 +658,9 @@ const BillingFinancials = ({
                       value={
                         billing.paymentNumber !== 1 ? billing.paymentNumber : ''
                       }
+                      inputProps={{
+                        maxLength: 3,
+                      }}
                       onChange={changeCardValue('paymentNumber', billing.id)}
                     />
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
