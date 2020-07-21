@@ -113,7 +113,7 @@ const ViewBillingAndFinancials = ({ contractDataView, events }) => {
                               VALOR DE CUENTA
                             </span>
                             <NumberFormat
-                              value={billing.amount.toFixed(0)}
+                              value={billing.amount.toFixed(0) * Number(billing.paymentNumber)}
                               displayType={'text'}
                               className={style.informationAmount}
                               thousandSeparator={true}
