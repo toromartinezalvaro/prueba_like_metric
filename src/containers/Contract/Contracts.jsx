@@ -637,6 +637,7 @@ class Contracts extends Component {
     const billingsLocked = this.state.billings.some(
       (bill) => bill.isLocked === false,
     );
+    const emptyBill = this.state.billings.some((bill) => !bill.amount);
     const requiredInformation = this.state.generalInformation;
     if (requiredInformation.title === '') {
       this.props.spawnMessage(
@@ -646,6 +647,8 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('title', true);
+    } else if (this.state.billings.length > 0 && emptyBill) {
+      this.props.spawnMessage('No se pueden crear cuentas vacías', 'error');
     } else if (requiredInformation.businessPartnerId === 0) {
       this.props.spawnMessage(
         'Debe seleccionar un socio',
