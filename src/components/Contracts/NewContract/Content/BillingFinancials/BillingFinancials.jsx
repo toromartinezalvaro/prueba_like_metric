@@ -98,7 +98,7 @@ const BillingFinancials = ({
 
     if (elementIsADate) {
       const currentType = SuggestionEnum.find(
-        (e) => e.label === billingsArray[billIndex].cycle,
+        (e) => e.value === billingsArray[billIndex].cycle,
       );
       billingsArray[billIndex].type = currentType.type;
       bill = {
@@ -133,7 +133,7 @@ const BillingFinancials = ({
       if (name === 'cycle') {
         bill = {
           ...billingsArray[billIndex],
-          [name]: element.label,
+          [name]: element.value,
           type: element.type,
           paymentNumber: 1,
         };
@@ -256,7 +256,7 @@ const BillingFinancials = ({
           billingsArray[billIndex].initalBillingDate,
         );
         const currentType = SuggestionEnum.find(
-          (e) => e.label === billingsArray[billIndex].cycle,
+          (e) => e.value === billingsArray[billIndex].cycle,
         );
         billingsArray[billIndex].type = currentType.type;
         if (billingsArray[billIndex].type !== 'quarter') {
@@ -457,7 +457,7 @@ const BillingFinancials = ({
                     options={suggestions}
                     defaultValue={{
                       label: billing.cycle,
-                      value: billing.cycle,
+                      value: billing.value,
                     }}
                     onChange={changeCardValue('cycle', billing.id, false, true)}
                     onKeyDown={(e) => {
