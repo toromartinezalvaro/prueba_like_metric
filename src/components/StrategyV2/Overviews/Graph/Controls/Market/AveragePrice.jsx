@@ -22,6 +22,7 @@ const AveragePrice = ({
   onChangeMarketGraph,
   startApiLoading,
   stopApiLoading,
+  initialMonth,
 }) => {
   const formRef = useRef();
   const { towerId } = useParams();
@@ -41,6 +42,7 @@ const AveragePrice = ({
           averagePrice: Number(values.averagePrice),
           length: lenghtMarket,
           towerId,
+          initialMonth,
         });
 
         const incrementsFixed = marketPrice.data.increments.map(
@@ -89,6 +91,7 @@ AveragePrice.propTypes = {
   lenghtMarket: PropTypes.number,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
+  initialMonth: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -104,7 +107,12 @@ const mapStateToProps = (state) => {
       : 0;
   }
 
-  return { averagePrice: market.averagePrice, groupId: id, lenghtMarket };
+  return {
+    averagePrice: market.averagePrice,
+    groupId: id,
+    lenghtMarket,
+    initialMonth: currentGroup.initialMonth,
+  };
 };
 
 const mapDispatchToProps = {
