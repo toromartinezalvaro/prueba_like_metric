@@ -637,6 +637,7 @@ class Contracts extends Component {
     const billingsLocked = this.state.billings.some(
       (bill) => bill.isLocked === false,
     );
+    console.log("DATOS EN BILLINGS", this.state.billings);
     const emptyBill = this.state.billings.some((bill) => !bill.amount);
     const requiredInformation = this.state.generalInformation;
     if (requiredInformation.title === '') {

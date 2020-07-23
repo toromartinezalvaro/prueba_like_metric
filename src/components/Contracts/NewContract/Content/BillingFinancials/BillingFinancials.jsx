@@ -310,14 +310,21 @@ const BillingFinancials = ({
     sendBillings(billingsArray);
   };
 
-  const removeElement = (id) => () => {
+  const removeElement = (id, i) => () => {
     const billingsArray = [...billings];
-    const billIndex = billings.findIndex((element) => {
-      return element.id === id;
-    });
-    const removed = [billingsArray.splice(billIndex, 1)];
-    setBillings(billingsArray);
-    sendToDelete(id);
+    if (id) {
+      const billIndex = billings.findIndex((element) => {
+        return element.id === id;
+      });
+      const removed = [billingsArray.splice(billIndex, 1)];
+      setBillings(billingsArray);
+      sendToDelete(id);
+    } else {
+      const removed = [billingsArray.splice(i, 1)];
+      setBillings(billingsArray);
+      sendBillings(billingsArray);
+      sendToDelete(id);
+    }
   };
 
   const addBilling = () => {
@@ -712,7 +719,7 @@ const BillingFinancials = ({
                         disabled={billing.isLocked}
                         className={styles.buttonRemove}
                         startIcon={<Icon className="fas fa-ban" />}
-                        onClick={removeElement(billing.id)}
+                        onClick={removeElement(billing.id, i)}
                       >
                         Remover
                       </Button>
