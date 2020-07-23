@@ -197,6 +197,7 @@ const BillingFinancials = ({
         bill = { ...billingsArray[billIndex], isLocked: true };
       } else {
         spawnMessage('No puedes guardar cuentas vacías', 'error');
+        bill = { ...billingsArray[billIndex], isLocked: false };
       }
     } else if (name === false) {
       bill = { ...billingsArray[billIndex], isLocked: false };
