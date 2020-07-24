@@ -108,7 +108,7 @@ class AreasAdditional extends Component {
       });
   };
 
-  repeatedChecker = (indexArea, indexAreaType, nomenclature) => {
+  repeatedChecker = (indexAreaType, nomenclature) => {
     const areaTypes = this.state.arrayAreaTypes[indexAreaType].additionalAreas;
     const repeatedArray = areaTypes.filter(
       (item) => item.nomenclature === nomenclature && nomenclature !== '',
@@ -124,11 +124,7 @@ class AreasAdditional extends Component {
     indexAreaType,
     indexArea,
   ) => {
-    const checker = this.repeatedChecker(
-      indexArea,
-      indexAreaType,
-      nomenclature,
-    );
+    const checker = this.repeatedChecker(indexAreaType, nomenclature);
     if (checker) {
       this.services
         .postAreaAdditional({
@@ -158,18 +154,35 @@ class AreasAdditional extends Component {
     }
   };
 
-  updateAreaAdditionalHandler = (nomenclature, measure, price, areaId) => {
-    this.services
-      .putAreaAdditional({
-        nomenclature,
-        measure,
-        price: `${price}`,
-        areaId,
-      })
-      .catch((error) => {
-        this.props.spawnMessage('No se pudo eliminar el tipo de area', 'error');
-        console.error(error);
-      });
+  updateAreaAdditionalHandler = (
+    nomenclature,
+    measure,
+    price,
+    areaId,
+    indexAreaType,
+  ) => {
+    const checker = this.repeatedChecker(indexAreaType, nomenclature);
+    if (checker) {
+      this.services
+        .putAreaAdditional({
+          nomenclature,
+          measure,
+          price: `${price}`,
+          areaId,
+        })
+        .catch((error) => {
+          this.props.spawnMessage(
+            'No se pudo eliminar el tipo de area',
+            'error',
+          );
+          console.error(error);
+        });
+    } else {
+      this.props.spawnMessage(
+        'No puede poner una nomenclatura repetida.',
+        'error',
+      );
+    }
   };
 
   deleteArea = (id) => {
