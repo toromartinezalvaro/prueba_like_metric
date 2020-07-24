@@ -11,7 +11,7 @@ import { Formik, Form, Field } from 'formik';
 import { useSnackbar } from 'notistack';
 import Services from '../../../../services/group/groupService';
 import { closeCreateDialog, apiStart, apiFail } from './action';
-import withFormikField from '../../../../HOC/widthFormikField';
+import withFormikField from '../../../../HOC/withFormikField';
 import Loader from '../../../UI2/Loader/Loader';
 import { addOneGroup, setCompanyId } from '../action';
 

@@ -18,7 +18,7 @@ import Box from '@material-ui/core/Box';
 import NumberFormat from 'react-number-format';
 import Loader from '../../../UI2/Loader';
 import SchemaServices from '../../../../services/schema/SchemaServices';
-import withFormikField from '../../../../HOC/widthFormikField';
+import withFormikField from '../../../../HOC/withFormikField';
 
 const Input = withFormikField(TextField);
 

@@ -41,6 +41,7 @@ import Quotations from '../Quotations';
 import Strategy from '../StrategyV2';
 import Companies from '../Companies/Companies';
 import Groups from '../Groups';
+import Budget from '../Budget';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -269,6 +270,12 @@ class Dashboard extends Component {
           roles={[Role.Admin, Role.Super]}
           exact
           component={Groups}
+        />
+        <PrivateRoute
+          path={match.url + DashboardRoutes.budget.withIndicator}
+          roles={[Role.Admin, Role.Super]}
+          exact
+          component={Budget}
         />
       </DashboardLayout>
     );
