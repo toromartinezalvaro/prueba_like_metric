@@ -637,7 +637,6 @@ class Contracts extends Component {
     const billingsLocked = this.state.billings.some(
       (bill) => bill.isLocked === false,
     );
-    console.log("DATOS EN BILLINGS", this.state.billings);
     const emptyBill = this.state.billings.some((bill) => !bill.amount);
     const requiredInformation = this.state.generalInformation;
     if (requiredInformation.title === '') {
@@ -649,7 +648,10 @@ class Contracts extends Component {
       );
       this.sendErrorInProp('title', true);
     } else if (this.state.billings.length > 0 && emptyBill) {
-      this.props.spawnMessage('No se pueden crear cuentas vacías', 'error');
+      this.props.spawnMessage(
+        'No se pueden crear contratos con formas de pago vacías',
+        'error',
+      );
     } else if (requiredInformation.businessPartnerId === 0) {
       this.props.spawnMessage(
         'Debe seleccionar un socio',
