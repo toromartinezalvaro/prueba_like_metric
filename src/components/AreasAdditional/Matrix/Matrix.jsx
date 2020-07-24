@@ -55,6 +55,7 @@ const Matrix = (
             area.measure,
             area.price,
             area.id,
+            index,
           );
         } else {
           let measure = 0;
@@ -82,6 +83,7 @@ const Matrix = (
           e.target.value,
           area.price,
           area.id,
+          index,
         );
       } else {
         addAreaAdditionalHandler(
@@ -106,6 +108,7 @@ const Matrix = (
           area.measure,
           e.target.value,
           area.id,
+          index,
         );
       } else {
         let measure = 0;

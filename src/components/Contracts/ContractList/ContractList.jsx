@@ -142,6 +142,7 @@ class ContractList extends Component {
   };
 
   editContractOpened = (id) => () => {
+    this.setState({ isLoading: true });
     this.services
       .getContractById(this.props.towerId, id)
       .then((response) => {
@@ -156,6 +157,7 @@ class ContractList extends Component {
 
         this.setState({
           contractId: contractDataView.generalInformation.id,
+          isLoading: false,
           openDataView: true,
           contractDataView: {
             title: contractDataView.generalInformation.title,

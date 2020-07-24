@@ -6,6 +6,7 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import esLocale from 'date-fns/locale/es';
 import NumberFormat from 'react-number-format';
 import _ from 'lodash';
 import {
@@ -24,6 +25,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import moment from 'moment';
 import {
+  DatePicker,
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
@@ -52,6 +54,7 @@ const BillingFinancials = ({
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
   const [lastDate, setLastDate] = useState(new Date().getTime());
+  const [billings, setBillings] = useState([]);
   const cardValue = {
     id: 0,
     eventId: null,
@@ -70,11 +73,11 @@ const BillingFinancials = ({
     eventLabel: '',
     eventIsUnique: false,
   };
-  const [billings, setBillings] = useState([]);
   const [lastId, setLastId] = useState(0);
   const [month, setMonth] = useState(MonthEnum);
   const [eventId, setEventId] = useState(0);
   const [disabledLastBilling, setDisableLastBilling] = useState(true);
+  moment.locale('es');
 
   let totalBills = 0;
   let totalBillsNoIva = 0;
@@ -95,7 +98,7 @@ const BillingFinancials = ({
 
     if (elementIsADate) {
       const currentType = SuggestionEnum.find(
-        (e) => e.label === billingsArray[billIndex].cycle,
+        (e) => e.value === billingsArray[billIndex].cycle,
       );
       billingsArray[billIndex].type = currentType.type;
       bill = {
@@ -130,7 +133,7 @@ const BillingFinancials = ({
       if (name === 'cycle') {
         bill = {
           ...billingsArray[billIndex],
-          [name]: element.label,
+          [name]: element.value,
           type: element.type,
           paymentNumber: 1,
         };
@@ -147,7 +150,7 @@ const BillingFinancials = ({
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
         const currentType = SuggestionEnum.find(
-          (e) => e.label === billingsArray[billIndex].cycle,
+          (e) => e.value === billingsArray[billIndex].cycle,
         );
         billingsArray[billIndex].type = currentType.type;
         bill = {
@@ -190,7 +193,12 @@ const BillingFinancials = ({
       bill = { ...billingsArray[billIndex], eventLabel: element.eventLabel };
       bill = { ...billingsArray[billIndex], [name]: element.value };
     } else if (name === true) {
-      bill = { ...billingsArray[billIndex], isLocked: true };
+      if (billingsArray[billIndex].amount > 0) {
+        bill = { ...billingsArray[billIndex], isLocked: true };
+      } else {
+        spawnMessage('No puedes guardar cuentas vacías', 'error');
+        bill = { ...billingsArray[billIndex], isLocked: false };
+      }
     } else if (name === false) {
       bill = { ...billingsArray[billIndex], isLocked: false };
     } else {
@@ -198,9 +206,10 @@ const BillingFinancials = ({
         billingsArray[billIndex].initalBillingDate = Number(
           billingsArray[billIndex].initalBillingDate,
         );
-        const newDate = moment(
+        const tempDate = moment(
           Number(billingsArray[billIndex].initalBillingDate),
-        )
+        ).subtract(billingsArray[billIndex].displacement, 'M');
+        const newDate = moment(Number(tempDate))
           .add(Number(element.target.value), 'months')
           .format('x');
         bill = {
@@ -248,7 +257,7 @@ const BillingFinancials = ({
           billingsArray[billIndex].initalBillingDate,
         );
         const currentType = SuggestionEnum.find(
-          (e) => e.label === billingsArray[billIndex].cycle,
+          (e) => e.value === billingsArray[billIndex].cycle,
         );
         billingsArray[billIndex].type = currentType.type;
         if (billingsArray[billIndex].type !== 'quarter') {
@@ -302,14 +311,21 @@ const BillingFinancials = ({
     sendBillings(billingsArray);
   };
 
-  const removeElement = (id) => () => {
+  const removeElement = (id, i) => () => {
     const billingsArray = [...billings];
-    const billIndex = billings.findIndex((element) => {
-      return element.id === id;
-    });
-    const removed = [billingsArray.splice(billIndex, 1)];
-    setBillings(billingsArray);
-    sendToDelete(id);
+    if (id) {
+      const billIndex = billings.findIndex((element) => {
+        return element.id === id;
+      });
+      const removed = [billingsArray.splice(billIndex, 1)];
+      setBillings(billingsArray);
+      sendToDelete(id);
+    } else {
+      const removed = [billingsArray.splice(i, 1)];
+      setBillings(billingsArray);
+      sendBillings(billingsArray);
+      sendToDelete(id);
+    }
   };
 
   const addBilling = () => {
@@ -355,9 +371,15 @@ const BillingFinancials = ({
         const newValue = { ...dataValue, isLocked: true, eventIsUnique };
         return newValue;
       });
-      setLastId(1);
+      setLastId(data.length);
       const bills = data.length === 0 ? data : withLocked;
-      setBillings(bills);
+      setBillings(
+        _.orderBy(
+          bills,
+          [(itemFilter) => itemFilter.initalBillingDate],
+          ['asc'],
+        ),
+      );
       setLastDate(data[0] ? data[0].initalBillingDate : null);
       setTimeout(() => {
         watchingContract();
@@ -443,7 +465,7 @@ const BillingFinancials = ({
                     options={suggestions}
                     defaultValue={{
                       label: billing.cycle,
-                      value: billing.cycle,
+                      value: billing.value,
                     }}
                     onChange={changeCardValue('cycle', billing.id, false, true)}
                     onKeyDown={(e) => {
@@ -591,14 +613,21 @@ const BillingFinancials = ({
                       value={
                         billing.displacement !== 0 ? billing.displacement : ''
                       }
+                      inputProps={{
+                        maxLength: 3,
+                      }}
                       onChange={changeCardValue('displacement', billing.id)}
                     />
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
+                    <MuiPickersUtilsProvider
+                      utils={DateFnsUtils}
+                      locale={esLocale}
+                    >
+                      <DatePicker
                         autoOk
+                        error={false}
+                        helperText=""
                         className={styles.picker}
                         disabled={!billing.eventIsUnique || billing.isLocked}
-                        disableToolbar
                         variant="inline"
                         format="dd/MM/yyyy"
                         margin="normal"
@@ -615,9 +644,6 @@ const BillingFinancials = ({
                           billing.id,
                           true,
                         )}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
                       />
                     </MuiPickersUtilsProvider>
                   </div>
@@ -640,12 +666,17 @@ const BillingFinancials = ({
                       value={
                         billing.paymentNumber !== 1 ? billing.paymentNumber : ''
                       }
+                      inputProps={{
+                        maxLength: 3,
+                      }}
                       onChange={changeCardValue('paymentNumber', billing.id)}
                     />
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         disabled={true}
                         autoOk
+                        error={false}
+                        helperText=""
                         className={styles.picker}
                         disableToolbar
                         variant="inline"
@@ -689,7 +720,7 @@ const BillingFinancials = ({
                         disabled={billing.isLocked}
                         className={styles.buttonRemove}
                         startIcon={<Icon className="fas fa-ban" />}
-                        onClick={removeElement(billing.id)}
+                        onClick={removeElement(billing.id, i)}
                       >
                         Remover
                       </Button>

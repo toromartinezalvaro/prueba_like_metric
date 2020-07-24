@@ -42,6 +42,7 @@ const Strategy = ({
           onFetchedData({
             strategyLines: generateDataset(response.data.increments),
             groups: response.data.summary.increments,
+            selectedGroup: Object.keys(response.data.summary.increments)[0],
           });
         }
       } catch (error) {

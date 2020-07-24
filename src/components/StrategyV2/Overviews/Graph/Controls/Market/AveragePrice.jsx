@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { useSnackbar } from 'notistack';
 import Input, { CURRENCY } from '../../../../Shared/Input';
@@ -21,8 +22,10 @@ const AveragePrice = ({
   onChangeMarketGraph,
   startApiLoading,
   stopApiLoading,
+  initialMonth,
 }) => {
   const formRef = useRef();
+  const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const blurHandler = () => {
     if (formRef.current) {
@@ -34,9 +37,12 @@ const AveragePrice = ({
     if (values.averagePrice !== averagePrice) {
       try {
         startApiLoading();
+
         const marketPrice = await services.putMarketAveragePrice(groupId, {
           averagePrice: Number(values.averagePrice),
           length: lenghtMarket,
+          towerId,
+          initialMonth,
         });
 
         const incrementsFixed = marketPrice.data.increments.map(
@@ -85,6 +91,7 @@ AveragePrice.propTypes = {
   lenghtMarket: PropTypes.number,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
+  initialMonth: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -100,7 +107,12 @@ const mapStateToProps = (state) => {
       : 0;
   }
 
-  return { averagePrice: market.averagePrice, groupId: id, lenghtMarket };
+  return {
+    averagePrice: market.averagePrice,
+    groupId: id,
+    lenghtMarket,
+    initialMonth: currentGroup.initialMonth,
+  };
 };
 
 const mapDispatchToProps = {

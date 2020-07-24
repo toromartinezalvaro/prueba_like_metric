@@ -25,13 +25,7 @@ export const DetailsGroup = () => {
           display="block"
           align="center"
         >
-          A{' '}
-          {isReset
-            ? 'hoy'
-            : moment()
-                .subtract(1, 'month')
-                .endOf('month')
-                .format('D [de] MMMM')}
+          A hoy
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -50,11 +44,7 @@ export const DetailsGroup = () => {
           display="block"
           align="center"
         >
-          Proyectado{' '}
-          {!isReset &&
-            moment()
-              .startOf('month')
-              .format('D [de] MMMM')}
+          Proyectado
         </Typography>
       </Grid>
       <Grid item xs={12}>

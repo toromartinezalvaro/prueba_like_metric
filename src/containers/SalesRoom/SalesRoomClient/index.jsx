@@ -390,6 +390,9 @@ class SalesRoom extends Component {
           deadlineDate: Number(moment(this.state.deadlineDate).format('x')),
           addedAdditionalAreas: this.state.selectedProperty
             .addedAdditionalAreas,
+          propertyCollectedIncrement:
+            this.state.selectedProperty.priceWithIncrement -
+            this.state.selectedProperty.price,
         },
         this.props.match.params.towerId,
         this.props.match.params.clientId,

@@ -15,6 +15,7 @@ import ContractService from '../../services/contract/contractService';
 import Item from '../../components/Contracts/NewContract/Content/Item/Item';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import EventService from '../../services/event/EventServices';
+import LoadingContract from '../../components/Contracts/LoadingContract';
 
 class Contracts extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class Contracts extends Component {
       },
       contractModal: {
         isOpen: false,
+        isLoading: false,
         data: {},
         contractId: null,
         generalInformationData: {
@@ -100,7 +102,7 @@ class Contracts extends Component {
         const categories = response.data.map((category) => {
           return {
             value: category.id,
-            label: category.categoryName,
+            label: `${category.id} - ${category.categoryName}`,
           };
         });
         this.setState({
@@ -568,9 +570,14 @@ class Contracts extends Component {
   };
 
   currentEvent = (currentEvent) => {
-    this.setState((prevState) => ({
-      events: [...prevState.events, currentEvent].sort(),
-    }));
+    this.setState((prevState) => {
+      const events = [...prevState.events];
+      events.splice(1, 0, currentEvent);
+      events.join();
+      return {
+        events,
+      };
+    });
   };
 
   sendContractNumber = (contractNumber) => {
@@ -630,6 +637,7 @@ class Contracts extends Component {
     const billingsLocked = this.state.billings.some(
       (bill) => bill.isLocked === false,
     );
+    const emptyBill = this.state.billings.some((bill) => !bill.amount);
     const requiredInformation = this.state.generalInformation;
     if (requiredInformation.title === '') {
       this.props.spawnMessage(
@@ -639,6 +647,11 @@ class Contracts extends Component {
         10000,
       );
       this.sendErrorInProp('title', true);
+    } else if (this.state.billings.length > 0 && emptyBill) {
+      this.props.spawnMessage(
+        'No se pueden crear contratos con formas de pago vacías',
+        'error',
+      );
     } else if (requiredInformation.businessPartnerId === 0) {
       this.props.spawnMessage(
         'Debe seleccionar un socio',
@@ -766,6 +779,7 @@ class Contracts extends Component {
 
   editContractOpen = (editable, id) => {
     if (editable) {
+      this.setState({ contractModal: { isLoading: true } });
       this.services
         .getContractById(this.props.match.params.towerId, id)
         .then((response) => {
@@ -781,6 +795,7 @@ class Contracts extends Component {
           this.setState({
             contractModal: {
               isOpen: true,
+              isLoading: false,
               contractId: metaData.generalInformation.id,
               generalInformationData: {
                 title: metaData.generalInformation.title,
@@ -820,18 +835,10 @@ class Contracts extends Component {
     this.services
       .deleteSpecificBill(id, this.props.match.params.towerId)
       .then((response) => {
-        this.props.spawnMessage(
-          '¡Se ha borrado la cuenta con éxito!',
-          'success',
-          '¡CORRECTO!',
-        );
+        this.props.spawnMessage('¡Proceso realizado!', 'success', '¡CORRECTO!');
       })
       .catch((error) => {
-        this.props.spawnMessage(
-          '¡Se ha editado con éxito la cuenta!',
-          'success',
-          '¡CORRECTO!',
-        );
+        this.props.spawnMessage('Algo salió mal...', 'error');
       });
   };
 
@@ -961,6 +968,7 @@ class Contracts extends Component {
           listInformationGroup={this.state.categories}
           deleteContract={this.deleteContract}
         />
+        <LoadingContract isLoading={this.state.contractModal.isLoading} />
         <NewContract
           towerId={this.props.match.params.towerId}
           noError={this.noError}

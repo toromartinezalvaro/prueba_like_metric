@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
 import ItemPanel from '../ItemPanel';
 import styles from './ItemContainer.module.scss';
+import Loader from '../../../UI2/Loader/Loader';
 import { openCreateItemDialog } from '../CreateItemDialog/action';
 import { setGroupExpanded } from '../action';
 
@@ -22,6 +23,7 @@ export const ItemContainer = ({
   groups,
   onOpenCreateItemDialog,
   onSetGroupExpanded,
+  itemIsLoading,
 }) => {
   const [expanded, setExpanded] = useState('No open');
 
@@ -44,27 +46,29 @@ export const ItemContainer = ({
               <h5>{group.categoryName}</h5>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails classes={{ root: styles.expansionDetail }}>
-              <Paper>
-                <Table stickyHeader>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="center">Id</TableCell>
-                      <TableCell align="center">Nombre</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <ItemPanel />
-                  </TableBody>
-                </Table>
-                <Fab
-                  color="primary"
-                  onClick={() => {
-                    onOpenCreateItemDialog();
-                  }}
-                >
-                  <AddIcon />
-                </Fab>
-              </Paper>
+              <Loader isLoading={itemIsLoading}>
+                <Paper>
+                  <Table stickyHeader>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Id</TableCell>
+                        <TableCell align="center">Nombre</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <ItemPanel />
+                    </TableBody>
+                  </Table>
+                  <Fab
+                    color="primary"
+                    onClick={() => {
+                      onOpenCreateItemDialog();
+                    }}
+                  >
+                    <AddIcon />
+                  </Fab>
+                </Paper>
+              </Loader>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         );
@@ -77,10 +81,12 @@ ItemContainer.propTypes = {
   groups: PropTypes.array.isRequired,
   onOpenCreateItemDialog: PropTypes.bool.isRequired,
   onSetGroupExpanded: PropTypes.func.isRequired,
+  itemIsLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
   groups: state.groups.groupTabs.groups,
+  itemIsLoading: state.groups.groupItemPanel.loading,
 });
 
 const mapDispatchToProps = {
