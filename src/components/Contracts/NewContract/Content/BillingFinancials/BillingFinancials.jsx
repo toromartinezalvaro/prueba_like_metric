@@ -58,7 +58,7 @@ const BillingFinancials = ({
   const cardValue = {
     id: 0,
     eventId: null,
-    cycle: 'Pago Único',
+    cycle: 0,
     amount: 0,
     description: '',
     displacement: 0,
@@ -405,6 +405,13 @@ const BillingFinancials = ({
     );
   };
 
+  const suggestionLabel = (bill) => {
+    const types = SuggestionEnum.find(
+      (suggestion) => suggestion.value === bill,
+    );
+    return types.label;
+  };
+
   const displayComponent = () => {
     return billings.map((billing, i) => {
       function NumberFormatCustom(props) {
@@ -464,7 +471,7 @@ const BillingFinancials = ({
                     components={Option}
                     options={suggestions}
                     defaultValue={{
-                      label: billing.cycle,
+                      label: suggestionLabel(billing.cycle),
                       value: billing.value,
                     }}
                     onChange={changeCardValue('cycle', billing.id, false, true)}
@@ -523,7 +530,7 @@ const BillingFinancials = ({
                     <div className={styles.col3}>
                       <div className={styles.amountLabel}>
                         <h4 sclassName={styles.ivaTitle}>
-                          Valor de IVA {billing.cycle}
+                          Valor de IVA {suggestionLabel(billing.cycle)}
                         </h4>
                         <NumberFormat
                           className={styles.amountValue}
@@ -541,7 +548,7 @@ const BillingFinancials = ({
                     <div className={styles.col4}>
                       <div className={styles.amountLabel}>
                         <h4 sclassName={styles.ivaTitle}>
-                          Valor despues de IVA {billing.cycle}
+                          Valor despues de IVA {suggestionLabel(billing.cycle)}
                         </h4>
                         <NumberFormat
                           className={styles.amountValueCol4}
