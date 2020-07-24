@@ -150,7 +150,7 @@ const BillingFinancials = ({
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
         const currentType = SuggestionEnum.find(
-          (e) => e.label === billingsArray[billIndex].cycle,
+          (e) => e.value === billingsArray[billIndex].cycle,
         );
         billingsArray[billIndex].type = currentType.type;
         bill = {
