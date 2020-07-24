@@ -9,9 +9,16 @@ import {
   FormControl,
   TextField,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import Styles from './Companies.module.scss';
 
-const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
+const CreateCompany = ({
+  action,
+  actionOpen,
+  createCompanyService,
+  companies,
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [companyParams, setCompanyParams] = useState({
     name: undefined,
     description: undefined,
@@ -35,8 +42,16 @@ const CreateCompany = ({ action, actionOpen, createCompanyService }) => {
 
   const sendCompanyParams = () => {
     if (companyParams.name) {
-      createCompanyService(companyParams);
-      closeAction();
+      const checkRepeated = companies.some(
+        (company) =>
+          company.name.toLowerCase() === companyParams.name.toLowerCase(),
+      );
+      if (checkRepeated) {
+        enqueueSnackbar('Ya existe una compañía con ese nombre.', { variant: 'error' });
+      } else {
+        createCompanyService(companyParams);
+        closeAction();
+      }
     } else {
       setEmptyField(true);
     }
@@ -82,6 +97,7 @@ CreateCompany.propTypes = {
   action: PropTypes.func,
   actionOpen: PropTypes.bool,
   createCompanyService: PropTypes.func,
+  companies: PropTypes.array,
 };
 
 export default CreateCompany;

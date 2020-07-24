@@ -78,6 +78,7 @@ const CompanieSelector = ({
           action={createACompany}
           actionOpen={createCompany}
           createCompanyService={createCompanyService}
+          companies={companies}
         />
       )}
       {actionOn && (

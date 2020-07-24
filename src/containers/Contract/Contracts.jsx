@@ -102,7 +102,7 @@ class Contracts extends Component {
         const categories = response.data.map((category) => {
           return {
             value: category.id,
-            label: category.categoryName,
+            label: `${category.id} - ${category.categoryName}`,
           };
         });
         this.setState({
@@ -648,7 +648,10 @@ class Contracts extends Component {
       );
       this.sendErrorInProp('title', true);
     } else if (this.state.billings.length > 0 && emptyBill) {
-      this.props.spawnMessage('No se pueden crear cuentas vacías', 'error');
+      this.props.spawnMessage(
+        'No se pueden crear contratos con formas de pago vacías',
+        'error',
+      );
     } else if (requiredInformation.businessPartnerId === 0) {
       this.props.spawnMessage(
         'Debe seleccionar un socio',

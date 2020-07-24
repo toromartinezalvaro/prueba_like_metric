@@ -28,12 +28,12 @@ class Area extends Component {
   }
 
   state = {
-    inputMethod: null,
+    properties: [],
     areaTypeId: null,
     areaType: '',
     areaMeasurementUnit: 'MT2',
     areasNames: [],
-    properties: [],
+    inputMethod: null,
     areaTypes: [],
     data: [],
     hidden: true,
@@ -462,10 +462,9 @@ class Area extends Component {
         {this.state.currentErrorMessage !== '' ? (
           <Error message={this.state.currentErrorMessage} />
         ) : null}
-        {this.state.properties.length < 1 && (
+        {this.state.properties.length < 1 ? (
           <GotoSchema towerId={this.props.match.params.towerId} open={true} />
-        )}
-        {this.state.inputMethod === null ? (
+        ) : this.state.inputMethod === null ? (
           <InputMethodDialog
             changeInputMethodHandler={this.handleInputMethodChange}
             disabled={this.state.inputMethod !== null}

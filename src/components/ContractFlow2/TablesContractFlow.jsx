@@ -6,9 +6,11 @@ import {
   Table,
   TableHeaderRow,
   TableTreeColumn,
+  TableFixedColumns,
 } from '@devexpress/dx-react-grid-material-ui';
 import NumberFormat from 'react-number-format';
 import { Numbers } from '../../helpers';
+import styles from './TableContractFlow.module.scss';
 
 const isAContract = (row) => {
   return row && row.group && row.item;
@@ -52,7 +54,17 @@ const makeDynamicColumns = (currentColums, dates) => {
 // };
 
 const numberFormater = (number) => {
-  return (
+  return number === 0 ? (
+    <NumberFormat
+      value={Numbers.toFixed(number, 0)}
+      thousandSeparator
+      displayType={'text'}
+      isNumericString
+      decimalSeparator={false}
+      prefix="$"
+      className={styles.zerosAtTable}
+    />
+  ) : (
     <NumberFormat
       value={Numbers.toFixed(number, 0)}
       thousandSeparator
@@ -124,6 +136,7 @@ const TablesContractFlow = ({ groups }) => {
   ]);
   const [data] = useState(generateRows(groups));
   const [defaultExpandedRowIds] = useState([]);
+  const [leftColumns] = useState(['name', 'accumulated', 'projected', 'total']);
 
   return (
     <Paper>
@@ -133,6 +146,7 @@ const TablesContractFlow = ({ groups }) => {
         <Table columnExtensions={tableColumnExtensions} />
         <TableHeaderRow />
         <TableTreeColumn for="name" />
+        <TableFixedColumns leftColumns={leftColumns} />
       </Grid>
     </Paper>
   );

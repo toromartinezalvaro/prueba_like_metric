@@ -10,6 +10,7 @@ import { useSnackbar } from 'notistack';
 import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
 import { setCompanyId, setGroups, setItems } from '../action';
+import { startApiFetch, successApiFetch } from '../ItemPanel/action';
 import Services from '../../../../services/group/groupService';
 import style from './CompanySelector.module.scss';
 
@@ -21,9 +22,12 @@ export const CompanySelector = ({
   onSetCompanyId,
   onSetGroups,
   onSetItems,
+  onStartApi,
+  onSuccessApi,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const fetch = async (companyId) => {
+    onStartApi();
     try {
       const responseGroups = await services.getAllGroup(companyId);
       const responseItems = await services.getAllItems();
@@ -35,6 +39,7 @@ export const CompanySelector = ({
         ),
       );
       onSetItems(responseItems.data);
+      onSuccessApi();
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
     }
@@ -79,6 +84,8 @@ CompanySelector.propTypes = {
   onSetCompanyId: PropTypes.func.isRequired,
   onSetGroups: PropTypes.func.isRequired,
   onSetItems: PropTypes.func.isRequired,
+  onStartApi: PropTypes.func.isRequired,
+  onSuccessApi: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -90,6 +97,8 @@ const mapDispatchToProps = {
   onSetCompanyId: setCompanyId,
   onSetGroups: setGroups,
   onSetItems: setItems,
+  onStartApi: startApiFetch,
+  onSuccessApi: successApiFetch,
 };
 
 export default connect(
