@@ -78,22 +78,6 @@ const GeneralInfo = ({
     };
   });
 
-  const changeAndSearchCategory = (currentGroup) => {
-    const currentGroupValue = currentGroup.value;
-    setGeneralInformation({
-      ...generalInformation,
-      groupId: currentGroupValue,
-    });
-    sendGeneralInfo(generalInformation);
-    changeForSearchCategory(currentGroup);
-    changeItemIsLocked(currentGroupValue);
-    currentGroupId(currentGroupValue);
-    setIsLocked(false);
-    if (items) {
-      setLockedEdit(false);
-    }
-  };
-
   const changeAndSearchItem = (currentItem) => {
     let currentGeneralInformation = { ...generalInformation };
     const currentItemValue = currentItem.value;
@@ -106,6 +90,25 @@ const GeneralInfo = ({
     setGeneralInformation(currentGeneralInformation);
     sendGeneralInfo(currentGeneralInformation);
     changeForSearchItem(currentItem);
+  };
+
+  const changeAndSearchCategory = (currentGroup) => {
+    const currentGroupValue = currentGroup.value;
+    setGeneralInformation({
+      ...generalInformation,
+      groupId: currentGroupValue,
+      itemId: 0,
+      itemLabel: '',
+    });
+    changeAndSearchItem({ label: '', value: 0 });
+    sendGeneralInfo(generalInformation);
+    changeForSearchCategory(currentGroup);
+    changeItemIsLocked(currentGroupValue);
+    currentGroupId(currentGroupValue);
+    setIsLocked(false);
+    if (items) {
+      setLockedEdit(false);
+    }
   };
 
   useEffect(() => {
@@ -404,7 +407,7 @@ const GeneralInfo = ({
                   placeholder="Seleccione un Item"
                   components={Option}
                   options={items}
-                  value={items.find((option) => {
+                  defaultValue={items.find((option) => {
                     return (
                       option.value === generalInformation.itemId && {
                         label: generalInformation.itemLabel,
