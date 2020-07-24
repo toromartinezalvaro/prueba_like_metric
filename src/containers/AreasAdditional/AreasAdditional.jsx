@@ -109,6 +109,7 @@ class AreasAdditional extends Component {
   };
 
   repeatedChecker = (indexAreaType, nomenclature) => {
+    
     const areaTypes = this.state.arrayAreaTypes[indexAreaType].additionalAreas;
     const repeatedArray = areaTypes.filter(
       (item) => item.nomenclature === nomenclature && nomenclature !== '',
