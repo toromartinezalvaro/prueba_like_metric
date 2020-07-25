@@ -7,12 +7,19 @@ import Grid from '@material-ui/core/Grid';
 import BudgetChart, {
   actions as budgetChartActions,
 } from '../../components/Budget/Chart';
-import BudgetDistribution from '../../components/Budget/Distribution';
+import BudgetDistribution, {
+  actions as budgetDistributionActions,
+} from '../../components/Budget/Distribution';
 import BudgetServices from '../../services/budget';
 
 const services = new BudgetServices();
 
-const Budget = ({ setChartData }) => {
+const Budget = ({
+  setChartData,
+  setDistributionData,
+  units,
+  salesStartDate,
+}) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -20,7 +27,9 @@ const Budget = ({ setChartData }) => {
     async function fetch() {
       try {
         const response = await services.getBudget(towerId);
-        setChartData(response.data);
+        const { chart, ...distribution } = response.data;
+        setChartData(chart);
+        setDistributionData(distribution);
       } catch (error) {
         enqueueSnackbar(error.message, { variant: 'error' });
       }
@@ -30,7 +39,6 @@ const Budget = ({ setChartData }) => {
 
   const putDistribution = async (values) => {
     const distribution = values.distribution.map(Number);
-    alert(distribution);
     if (distribution.reduce((acc, val) => acc + val) !== 94) {
       enqueueSnackbar('Se deben asignar todas las unidades', {
         variant: 'error',
@@ -54,7 +62,11 @@ const Budget = ({ setChartData }) => {
           <BudgetChart />
         </Grid>
         <Grid item xs={12}>
-          <BudgetDistribution units={94} submitHandler={putDistribution} />
+          <BudgetDistribution
+            units={units}
+            salesStartDate={Number(salesStartDate)}
+            submitHandler={putDistribution}
+          />
         </Grid>
       </Grid>
     </div>
@@ -63,12 +75,19 @@ const Budget = ({ setChartData }) => {
 
 Budget.propTypes = {
   setChartData: PropTypes.func.isRequired,
+  setDistributionData: PropTypes.func.isRequired,
+  units: PropTypes.number.isRequired,
+  salesStartDate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  units: state.budget.distribution.units,
+  salesStartDate: state.budget.distribution.salesStartDate,
+});
 
 const mapDispatchToProps = {
   setChartData: budgetChartActions.setBudgetChartData,
+  setDistributionData: budgetDistributionActions.setBudgetDistributionData,
 };
 
 export default connect(
