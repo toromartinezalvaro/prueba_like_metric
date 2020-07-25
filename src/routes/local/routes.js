@@ -55,6 +55,10 @@ export const DashboardRoutes = {
     value: '/quotations/',
     withIndicator: '/quotations/:towerId',
   },
+  budget: {
+    value: '/budget/',
+    withIndicator: '/budget/:towerId',
+  },
 };
 
 export const ContractRoutes = {

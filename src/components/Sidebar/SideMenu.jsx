@@ -323,6 +323,13 @@ const SideMenu = ({
                         null,
                         'Flujo de caja',
                       ),
+                    agent.isAuthorized([Role.Admin, Role.Super]) &&
+                      itemForSlidebar(
+                        style.MenuItem,
+                        DashboardRoutes.base + DashboardRoutes.budget.value,
+                        null,
+                        'Ejecucion presupuestal',
+                      ),
                   ]}
                 />
 

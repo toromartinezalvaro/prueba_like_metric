@@ -11,7 +11,7 @@ import NumberFormat from 'react-number-format';
 import Services from '../../../../../services/group/groupService';
 import { updateFieldItem, deleteFieldItem } from '../../action';
 import { startApiFetch, failApiFetch, successApiFetch } from '../action';
-import withFormikField from '../../../../../HOC/widthFormikField';
+import withFormikField from '../../../../../HOC/withFormikField';
 import { setOpen } from '../CantDeleteDialog/action';
 import PreventDelete from './PreventDelete';
 import style from './Item.module.scss';
