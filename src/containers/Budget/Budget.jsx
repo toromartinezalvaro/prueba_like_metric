@@ -37,14 +37,29 @@ const Budget = ({
     fetch();
   }, []);
 
-  const putDistribution = async (values) => {
-    const distribution = values.distribution.map(Number);
-    if (distribution.reduce((acc, val) => acc + val) !== 94) {
-      enqueueSnackbar('Se deben asignar todas las unidades', {
-        variant: 'error',
-      });
+  const validateDistributionError = (distribution) => {
+    const currentUnits = distribution.reduce((acc, val) => acc + val);
+    console.log({ units, currentUnits });
+    if (currentUnits === units) {
       return false;
     }
+    const errorMessage =
+      currentUnits < units
+        ? `Se deben asignar todas las unidades, faltan ${units - currentUnits}`
+        : `Las unidades no pueden ser mayor a ${units}`;
+    enqueueSnackbar(errorMessage, {
+      variant: 'error',
+    });
+
+    return true;
+  };
+
+  const putDistribution = async (values) => {
+    const distribution = values.distribution.map(Number);
+    if (validateDistributionError(distribution)) {
+      return false;
+    }
+
     try {
       await services.putBudget(towerId, { saleSpeed: 0, distribution });
       enqueueSnackbar('Presupuesto guardado', { variant: 'success' });
