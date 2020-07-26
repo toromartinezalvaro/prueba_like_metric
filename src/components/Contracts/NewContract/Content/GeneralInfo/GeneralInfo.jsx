@@ -78,10 +78,14 @@ const GeneralInfo = ({
     };
   });
 
-  const changeAndSearchItem = (currentItem) => {
-    let currentGeneralInformation = { ...generalInformation };
+  const changeAndSearchItem = (currentItem, generalInfo) => {
+    let currentGeneralInformation =
+      generalInfo && generalInfo.groupId
+        ? { ...generalInfo }
+        : { ...generalInformation };
     const currentItemValue = currentItem.value;
     const currentItemLabel = currentItem.label;
+    console.log({ currentGeneralInformation, generalInfo, generalInformation });
     currentGeneralInformation = {
       ...currentGeneralInformation,
       itemId: currentItemValue,
@@ -94,14 +98,16 @@ const GeneralInfo = ({
 
   const changeAndSearchCategory = (currentGroup) => {
     const currentGroupValue = currentGroup.value;
-    setGeneralInformation({
+    console.log({ currentGroupValue });
+    const currentInformation = {
       ...generalInformation,
       groupId: currentGroupValue,
       itemId: 0,
       itemLabel: '',
-    });
-    changeAndSearchItem({ label: '', value: 0 });
-    sendGeneralInfo(generalInformation);
+    };
+    setGeneralInformation(currentInformation);
+    changeAndSearchItem({ label: '', value: 0 }, currentInformation);
+    sendGeneralInfo(currentInformation);
     changeForSearchCategory(currentGroup);
     changeItemIsLocked(currentGroupValue);
     currentGroupId(currentGroupValue);
@@ -110,6 +116,10 @@ const GeneralInfo = ({
       setLockedEdit(false);
     }
   };
+
+  useEffect(() => {
+    console.log({ generalInformation });
+  }, [generalInformation]);
 
   useEffect(() => {
     if (dataIfEdit) {
@@ -212,7 +222,8 @@ const GeneralInfo = ({
 
   const errorInDescription = () => {
     if (
-      generalInformation.description.length > 250 ||
+      (generalInformation.description &&
+        generalInformation.description.length > 250) ||
       isEmptyDescription ||
       errors.description
     ) {
@@ -302,6 +313,7 @@ const GeneralInfo = ({
           </div>
           <div className={styles.gridSubContainer}>
             <div className={styles.selectColumn}>
+              {console.log({ generalInformation122: generalInformation })}
               <Select
                 className={styles.SelectSimpleForLabel}
                 inputId="select2"

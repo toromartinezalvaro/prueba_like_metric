@@ -97,9 +97,7 @@ const BillingFinancials = ({
     let bill = {};
 
     if (elementIsADate) {
-      const currentType = SuggestionEnum.find(
-        (e) => e.value === billingsArray[billIndex].cycle,
-      );
+      const currentType = SuggestionEnum[billingsArray[billIndex].cycle];
       billingsArray[billIndex].type = currentType.type;
       bill = {
         ...billingsArray[billIndex],
@@ -149,9 +147,7 @@ const BillingFinancials = ({
           paymentNumber: billingsArray[billIndex].paymentNumber,
         };
       } else if (name === 'eventId' && element.eventId !== 0) {
-        const currentType = SuggestionEnum.find(
-          (e) => e.value === billingsArray[billIndex].cycle,
-        );
+        const currentType = SuggestionEnum[billingsArray[billIndex].cycle];
         billingsArray[billIndex].type = currentType.type;
         bill = {
           ...billingsArray[billIndex],
@@ -256,9 +252,7 @@ const BillingFinancials = ({
         billingsArray[billIndex].lastBillingDate = Number(
           billingsArray[billIndex].initalBillingDate,
         );
-        const currentType = SuggestionEnum.find(
-          (e) => e.value === billingsArray[billIndex].cycle,
-        );
+        const currentType = SuggestionEnum[billingsArray[billIndex].cycle];
         billingsArray[billIndex].type = currentType.type;
         if (billingsArray[billIndex].type !== 'quarter') {
           billingsArray[billIndex].lastBillingDate = Number(
@@ -357,10 +351,10 @@ const BillingFinancials = ({
     });
   };
 
-  const suggestions = SuggestionEnum.map((suggestion) => ({
-    value: suggestion.value,
-    label: suggestion.label,
-    type: suggestion.type,
+  const suggestions = Object.keys(SuggestionEnum).map((key) => ({
+    value: SuggestionEnum[key].value,
+    label: SuggestionEnum[key].label,
+    type: SuggestionEnum[key].type,
   }));
 
   useEffect(() => {
@@ -406,9 +400,7 @@ const BillingFinancials = ({
   };
 
   const suggestionLabel = (bill) => {
-    const types = SuggestionEnum.find(
-      (suggestion) => suggestion.value === bill,
-    );
+    const types = SuggestionEnum[bill];
     return types.label;
   };
 
@@ -489,7 +481,9 @@ const BillingFinancials = ({
                         autoComplete="off"
                         disabled={billing.isLocked}
                         className={styles.textField}
-                        label={`Valor antes de IVA ${billing.cycle}`}
+                        label={`Valor antes de IVA ${suggestionLabel(
+                          billing.cycle,
+                        )}`}
                         margin="normal"
                         variant="outlined"
                         placeholder={billing.amount}
@@ -659,7 +653,8 @@ const BillingFinancials = ({
                       required
                       autoComplete="off"
                       disabled={
-                        billing.cycle === 'Pago Único' || billing.isLocked
+                        billing.cycle === SuggestionEnum[0].value ||
+                        billing.isLocked
                       }
                       className={styles.textFieldDisplace}
                       label={

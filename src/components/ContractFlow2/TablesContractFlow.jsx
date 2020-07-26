@@ -45,14 +45,6 @@ const makeDynamicColumns = (currentColums, dates) => {
   return [...currentColums, ...newColumns];
 };
 
-// const numberFormaterText = (currency) => {
-//   const number = new Intl.NumberFormat('en-US', {
-//     style: 'currency',
-//     currency: 'USD',
-//   }).format(currency);
-//   return number;
-// };
-
 const numberFormater = (number) => {
   return number === 0 ? (
     <NumberFormat
@@ -85,13 +77,13 @@ const makeObjectWithDates = (object, group = null, item = null) => {
       };
     },
     {
-      id: object.id,
+      id: Number(object.id),
       name: object.name,
       accumulated: numberFormater(Number(object.accumulated)),
       projected: numberFormater(Number(object.projected)),
       total: numberFormater(Number(object.total)),
-      group,
-      item,
+      group: group ? Number(group) : null,
+      item: item ? Number(item) : null,
     },
   );
 
