@@ -5,9 +5,9 @@ import Box from '@material-ui/core/Box';
 import Counter from './Counter';
 import BudgetGrid from './Grid';
 
-const Distribution = ({ units, saleSpeed, startDate, submitHandler }) => {
+const Distribution = ({ units, saleSpeed, salesStartDate, submitHandler }) => {
   const [length, setLength] = useState(saleSpeed);
-
+  console.log({ salesStartDate });
   return (
     <Paper>
       <Box p={3}>
@@ -15,7 +15,7 @@ const Distribution = ({ units, saleSpeed, startDate, submitHandler }) => {
         <BudgetGrid
           units={units}
           length={length}
-          startDate={startDate}
+          startDate={salesStartDate}
           submitHandler={submitHandler}
         />
       </Box>
@@ -26,14 +26,14 @@ const Distribution = ({ units, saleSpeed, startDate, submitHandler }) => {
 Distribution.propTypes = {
   units: PropTypes.number.isRequired,
   saleSpeed: PropTypes.number,
-  startDate: PropTypes.any, // TODO: Buscar valores de moment
+  salesStartDate: PropTypes.any,
   submitHandler: PropTypes.func,
   distribution: PropTypes.array.isRequired,
 };
 
 Distribution.defaultProps = {
   saleSpeed: 0,
-  startDate: new Date(),
+  salesStartDate: new Date(),
   submitHandler: () => null,
 };
 

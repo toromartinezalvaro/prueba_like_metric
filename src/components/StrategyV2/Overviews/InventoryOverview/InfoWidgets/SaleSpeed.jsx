@@ -100,8 +100,8 @@ const SaleSpeed = ({
 
   let title = '';
   let component = null;
-  if (groupId === 0) {
-    type = Type.total;
+  if (groupId === 0 && type == Type.objetive) {
+    type = null;
   }
   switch (type) {
     case Type.objetive:
@@ -136,13 +136,11 @@ const SaleSpeed = ({
       component = Numbers.toFixed(realSalesSpeed);
       title = 'Velocidad de ventas real';
       break;
-    case Type.total:
-      component = Numbers.toFixed(saleSpeed);
-      title = 'Velocidad de ventas objetivo';
-      break;
     default:
       component = Numbers.toFixed(futureSaleSpeed);
-      title = 'Velocidad de ventas inventario';
+      title = `Velocidad de ventas ${
+        groupId === 0 ? 'objetivo' : 'inventario'
+      }`;
       break;
   }
 
