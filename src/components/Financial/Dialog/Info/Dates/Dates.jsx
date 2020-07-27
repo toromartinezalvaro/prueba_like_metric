@@ -25,7 +25,7 @@ const ExtraFees = ({ endOfSalesDate, months }) => {
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={6}>
-            <Typography>Fecha Fin de construcción</Typography>
+            <Typography>Fecha Promedio de entrega</Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography>{endDate.format('MMM-YY')}</Typography>
@@ -70,7 +70,7 @@ const ExtraFees = ({ endOfSalesDate, months }) => {
 };
 
 const mapStateToProps = (state) => ({
-  endOfSalesDate: state.financial.dialog.info.dates.endOfSalesDate,
+  endOfSalesDate: state.financial.dialog.info.dates.averageDeliveryDate,
   months: state.financial.dialog.info.initialFee.months,
 });
 

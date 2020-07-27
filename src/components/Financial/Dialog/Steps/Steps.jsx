@@ -42,7 +42,7 @@ const Steps = ({
     try {
       const response = await services.getFinancingInfo(towerId, body);
       const dateResponse = await services.getTowerDates(towerId);
-      setEndOfSales(dateResponse.data.schedule.endOfSalesDate);
+      setEndOfSales(dateResponse.data.schedule.averageDeliveryDate);
       setFinancialInfo({
         financing: response.data.financialValue,
         paidPrice: response.data.valueToPay,

@@ -5,6 +5,7 @@ import NumberFormat from 'react-number-format';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Numbers from '../../../../../helpers/numbers';
+import { Divider } from '@material-ui/core';
 
 const FinancialInfo = ({ propertyPrice, m2, financing, paidPrice }) => {
   return (
@@ -63,7 +64,9 @@ const FinancialInfo = ({ propertyPrice, m2, financing, paidPrice }) => {
           </Grid>
         </Grid>
       </Grid>
-
+      <Grid item xs={12}>
+        <Divider light variant="fullWidth" />
+      </Grid>
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={6}>
@@ -91,6 +94,23 @@ const FinancialInfo = ({ propertyPrice, m2, financing, paidPrice }) => {
             <Typography>
               <NumberFormat
                 value={Numbers.toFixed(paidPrice)}
+                displayType="text"
+                prefix="$ "
+                thousandSeparator
+              />
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container>
+          <Grid item xs={6}>
+            <Typography>Valor Mt2</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography>
+              <NumberFormat
+                value={Numbers.toFixed(paidPrice / m2)}
                 displayType="text"
                 prefix="$ "
                 thousandSeparator

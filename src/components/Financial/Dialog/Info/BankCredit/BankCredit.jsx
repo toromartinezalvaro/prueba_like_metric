@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
@@ -8,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Dialog from './Dialog';
 import Numbers from '../../../../../helpers/numbers';
 
-const BankCredit = ({ totalPaymentCredit, monthlyPayment }) => {
+const BankCredit = ({ totalPaymentCredit, monthlyPayment, months }) => {
   return (
     <>
       <Grid container>
@@ -25,6 +26,25 @@ const BankCredit = ({ totalPaymentCredit, monthlyPayment }) => {
                   prefix="$"
                   thousandSeparator
                 />
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography>Fecha cuota final</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography>
+                {console.log({
+                  monthsd: moment().add(months - 1, 'months'),
+                  months,
+                })}
+                {moment()
+                  .add(months - 1, 'months')
+                  .format('MMM YYYY')}
               </Typography>
             </Grid>
           </Grid>
@@ -60,12 +80,15 @@ const mapStateToProps = (state) => {
     totalPaymentCredit,
     monthlyPayment,
   } = state.financial.dialog.info.bank.root;
-  return { totalPaymentCredit, monthlyPayment };
+
+  const { months } = state.financial.dialog.info.initialFee;
+  return { totalPaymentCredit, monthlyPayment, months };
 };
 
 BankCredit.propTypes = {
   totalPaymentCredit: PropTypes.number.isRequired,
   monthlyPayment: PropTypes.number.isRequired,
+  months: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(BankCredit);

@@ -391,6 +391,9 @@ const SalesRoomModal = ({
             </div>
           </div>
         )}
+        <Typography variant="h6" align="center">
+          Generar Cotización
+        </Typography>
         <Button
           fullWidth
           color="primary"
@@ -398,7 +401,7 @@ const SalesRoomModal = ({
             setQuotationOpen(true);
           }}
         >
-          Generar cotizacion
+          Automática
         </Button>
       </div>
       <QuotationDialog

@@ -28,6 +28,7 @@ const validationSchema = yup.object({
 });
 
 const Grid = ({ units, length, startDate, submitHandler }) => {
+  console.log(moment(startDate).format('MMM-YY'));
   return (
     <Formik
       enableReinitialize

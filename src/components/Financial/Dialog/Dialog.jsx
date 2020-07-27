@@ -57,7 +57,7 @@ const Dialog = ({
         color="primary"
         fullWidth
       >
-        Generar pagos
+        Plan de pagos especial
       </Button>
       <MuiDialog open={open} fullScreen TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>

@@ -7,7 +7,6 @@ import BudgetGrid from './Grid';
 
 const Distribution = ({ units, saleSpeed, salesStartDate, submitHandler }) => {
   const [length, setLength] = useState(saleSpeed);
-  console.log({ salesStartDate });
   return (
     <Paper>
       <Box p={3}>
