@@ -11,6 +11,7 @@ import BudgetDistribution, {
   actions as budgetDistributionActions,
 } from '../../components/Budget/Distribution';
 import BudgetServices from '../../services/budget';
+import Execution from '../../components/Budget/Execution';
 
 const services = new BudgetServices();
 
@@ -23,23 +24,23 @@ const Budget = ({
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    async function fetch() {
-      try {
-        const response = await services.getBudget(towerId);
-        const { chart, ...distribution } = response.data;
-        setChartData(chart);
-        setDistributionData(distribution);
-      } catch (error) {
-        enqueueSnackbar(error.message, { variant: 'error' });
-      }
+  const fetch = async () => {
+    try {
+      const response = await services.getBudget(towerId);
+      const { chart, ...distribution } = response.data;
+      setChartData(chart);
+      setDistributionData(distribution);
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
+  };
+
+  useEffect(() => {
     fetch();
   }, []);
 
   const validateDistributionError = (distribution) => {
     const currentUnits = distribution.reduce((acc, val) => acc + val);
-    console.log({ units, currentUnits });
     if (currentUnits === units) {
       return false;
     }
@@ -62,6 +63,7 @@ const Budget = ({
 
     try {
       await services.putBudget(towerId, { saleSpeed: 0, distribution });
+      await fetch();
       enqueueSnackbar('Presupuesto guardado', { variant: 'success' });
       return true;
     } catch (error) {
@@ -73,6 +75,9 @@ const Budget = ({
   return (
     <div>
       <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Execution />
+        </Grid>
         <Grid item xs={12}>
           <BudgetChart />
         </Grid>
