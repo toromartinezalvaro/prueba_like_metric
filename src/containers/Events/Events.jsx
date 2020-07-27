@@ -13,6 +13,7 @@ import Event from '../../components/Event/Event';
 import ScheduleService from '../../services/schedule/ScheduleServices';
 import withDefaultLayout from '../../HOC/Layouts/Default/withDefaultLayout';
 import EventServices from '../../services/event/EventServices';
+import Actions from '../../components/Event/actions';
 
 class Events extends Component {
   constructor(props) {
@@ -42,6 +43,8 @@ class Events extends Component {
         opened: false,
         message: '',
       },
+      openEdit: false,
+      eventInformation: {},
     };
   }
 
@@ -177,13 +180,14 @@ class Events extends Component {
   onChangeText = (e) => {
     const defaultDate = new Date();
     const time = this.state.event.customDate;
-    const times = time === '' ? defaultDate.getTime() : time;
+    const times =
+      time === '' ? moment(defaultDate.getTime()).format('X') : time;
     this.setState({
       event: {
         description:
           time === 'Invalid date'
             ? `${e.target.value}`
-            : `${e.target.value}(${moment(Number(time)).format('MM/DD/YYYY')})`,
+            : `${e.target.value}(${moment(Number(time)).format('DD/MM/YYYY')})`,
         customDate: moment(Number(times)).format('x'),
         scheduleId: null,
       },
@@ -244,6 +248,42 @@ class Events extends Component {
     }
   };
 
+  openEditable = () => {
+    const events = [...this.props.events];
+    const eventInformation = events.find(
+      (event) => event.eventId === this.props.eventSelected.id,
+    );
+    this.setState({
+      openEdit: true,
+      eventInformation,
+    });
+  };
+
+  deleteEventAt = (id) => {
+    this.services
+      .deleteEvent(this.props.towerId, { id })
+      .then((res) => {
+        const events = [...this.props.events];
+        const newEvents = events.filter(
+          (event) => event.eventId !== this.props.eventSelected.id,
+        );
+        this.props.updateEvents(newEvents);
+        this.handleCloseDialog();
+        this.props.spawnMessage('EVENTO EDITADO CON EXITO', 'success');
+      })
+      .catch((error) => {
+        console.log(error);
+        this.props.spawnMessage(
+          'A ocurrido un error. Comprueba tu conexión.',
+          'error',
+        );
+      });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ openEdit: false, eventInformation: {} });
+  };
+
   render() {
     return (
       <div className={styles.events}>
@@ -258,6 +298,27 @@ class Events extends Component {
           <AddIcon />
           Agregar Evento
         </Fab>
+        <Fab
+          variant="contained"
+          color="secondary"
+          size="small"
+          disabled={
+            this.props.eventIsUnique ||
+            this.props.isLocked ||
+            this.props.eventSelected.label ||
+            !this.props.eventSelected.id
+          }
+          className={styles.fab}
+          onClick={this.openEditable}
+        >
+          Editar Evento
+        </Fab>
+        <Actions
+          open={this.state.openEdit}
+          eventInformation={this.state.eventInformation}
+          deleteEventAt={this.deleteEventAt}
+          close={this.handleCloseDialog}
+        />
         <Dialog
           className={styles.dialogExpand}
           scroll="body"

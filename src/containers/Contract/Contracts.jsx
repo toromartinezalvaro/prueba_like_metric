@@ -953,6 +953,10 @@ class Contracts extends Component {
     });
   };
 
+  updateEvents = (eventsArr) => {
+    this.setState({ events: eventsArr });
+  };
+
   render() {
     return (
       <div className={styles.Contracts}>
@@ -1018,6 +1022,7 @@ class Contracts extends Component {
           itemOpen={this.state.itemModal.isOpen}
           eraseImg={this.eraseImg}
           sendUrl={this.sendUrl}
+          updateEvents={this.updateEvents}
         />
         <Dialog
           className={styles.dialogExpand}

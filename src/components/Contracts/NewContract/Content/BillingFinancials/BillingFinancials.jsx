@@ -50,6 +50,7 @@ const BillingFinancials = ({
   sendToDelete,
   spawnMessage,
   displayOnHeader,
+  updateEvents,
 }) => {
   const [todayDate, setTodayDate] = useState(new Date().getTime());
   const [uniqueEvent, setUniqueEvent] = useState(new Date().getTime());
@@ -595,6 +596,12 @@ const BillingFinancials = ({
                       defaultDate={defaultDate}
                       currentEvent={createdEvent}
                       eventIsUnique={billing.eventIsUnique}
+                      eventSelected={{
+                        label: billing.eventLabel,
+                        id: billing.eventId,
+                      }}
+                      events={events}
+                      updateEvents={updateEvents}
                     />
                   </div>
                   <div className={styles.dateInitial}>
