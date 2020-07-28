@@ -22,6 +22,7 @@ const ExpandBillingFinancials = ({
   dataIfEdit,
   watchingContract,
   sendToDelete,
+  updateEvents,
 }) => {
   const [AmountWithoutIva, setAmountWithoutIva] = useState();
   const [AmountWithIva, setAmountWithIva] = useState();
@@ -93,6 +94,7 @@ const ExpandBillingFinancials = ({
             watchingContract={watchingContract}
             sendToDelete={sendToDelete}
             displayOnHeader={displayOnHeader}
+            updateEvents={updateEvents}
           />
         </Typography>
       </ExpansionPanelDetails>

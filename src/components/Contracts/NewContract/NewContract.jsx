@@ -64,6 +64,7 @@ const NewContract = ({
   itemOpen,
   eraseImg,
   sendUrl,
+  updateEvents,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -140,6 +141,7 @@ const NewContract = ({
           watchingContract={watchingContract}
           dataIfEdit={dataIfEdit}
           sendToDelete={sendToDelete}
+          updateEvents={updateEvents}
         />
         <br />
         <ExpandAttachment
