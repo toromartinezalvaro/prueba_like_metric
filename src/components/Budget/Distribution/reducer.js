@@ -4,6 +4,7 @@ const initialState = {
   units: 94,
   salesStartDate: new Date(),
   saleSpeed: 0,
+  currentMonthSales: 0,
 };
 
 export default (state = initialState, { type, payload }) => {

@@ -9,4 +9,8 @@ export default class ClientsServices extends Services {
   putBudget(towerId, data) {
     return this.put(definitions.putBudget(towerId), data);
   }
+
+  putMonthBudget(towerId, month, data) {
+    return this.put(definitions.putMonthBudget(towerId, month), data);
+  }
 }
