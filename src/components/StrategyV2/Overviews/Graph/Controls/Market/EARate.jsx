@@ -15,6 +15,7 @@ import IncrementsV2Services from '../../../../../../services/incrementsV2/increm
 import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
 import { startLoading, stopLoading } from '../../../../Loader/actions';
 import Numbers from '../../../../../../helpers/numbers';
+import validateSelectedGroup from '../../../../Shared/Validator';
 
 const services = {
   increments: new IncrementsServices(),
@@ -103,6 +104,9 @@ EARateInput.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { market, id } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

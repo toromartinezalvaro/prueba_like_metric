@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget from '../../../Shared/Widget';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const AveragePrice = ({ sales }) => {
   return (
@@ -21,12 +22,17 @@ AveragePrice.propTypes = {
   sales: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  sales: (
-    state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
-      .objective || { averagePrice: 0 }
-  ).averagePrice,
-});
+const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
+  return {
+    sales: (
+      state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
+        .objective || { averagePrice: 0 }
+    ).averagePrice,
+  };
+};
 
 const mapDispatchToProps = {};
 

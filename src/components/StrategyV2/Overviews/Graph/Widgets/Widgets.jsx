@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Widget from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const Widgets = ({ percentage, strategy }) => {
   return (
@@ -26,6 +27,9 @@ Widgets.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { strategy, percentage } = state.strategy.root.strategyLines[
     state.strategy.root.selectedGroup
   ];

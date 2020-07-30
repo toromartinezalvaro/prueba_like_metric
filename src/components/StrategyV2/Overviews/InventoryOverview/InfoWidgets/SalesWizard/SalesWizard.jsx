@@ -32,6 +32,7 @@ import IncrementServices from '../../../../../../services/increments/IncrementsS
 import Increment2Services from '../../../../../../services/incrementsV2/incrementsService';
 import Numbers from '../../../../../../helpers/numbers';
 import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
+import validateSelectedGroup from '../../../../Shared/Validator';
 
 const services = {
   increments: new IncrementServices(),
@@ -209,6 +210,9 @@ SalesWizard.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { id, total, sales, inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

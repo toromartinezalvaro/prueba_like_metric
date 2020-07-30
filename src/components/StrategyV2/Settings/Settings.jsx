@@ -24,6 +24,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Styles from './Settings.module.scss';
 import { toggleShowNoIncrement, changeGroup } from './actions';
+import validateSelectedGroup from '../Shared/Validator';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,7 +35,7 @@ const Settings = ({
   selectedGroup,
   showPricesWithoutIncrement,
   // TODO: ! Performance issues, groups are not being evaluated correctly and being re-render
-  groups,
+  groups = [],
   onTogglePrice,
   onChangeGroup,
 }) => {
@@ -118,6 +119,9 @@ Settings.propTypes = {
 };
 
 const mapStateToProps = ({ strategy }) => {
+  if (validateSelectedGroup(strategy.root)) {
+    return {};
+  }
   return {
     selectedGroup: strategy.root.selectedGroup,
     showPricesWithoutIncrement: strategy.settings.showPricesWithoutIncrement,

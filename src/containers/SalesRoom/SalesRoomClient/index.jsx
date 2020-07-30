@@ -37,6 +37,7 @@ import AlertRedirect from '../AlertRedirect';
 import Styles from './salesRoomClient.module.scss';
 import withDefaultLayout from '../../../HOC/Layouts/Default/withDefaultLayout';
 import { changeGroup } from '../../StrategyV2/actions';
+import validateSelectedGroup from '../../../components/StrategyV2/Shared/Validator';
 
 class SalesRoom extends Component {
   constructor(props) {
@@ -335,7 +336,7 @@ class SalesRoom extends Component {
 
   save = (showModalSelectedProperty) => () => {
     if (!showModalSelectedProperty) {
-      this.props.onChangeGroup(Number(this.state.selectedProperty.groupName));
+      this.props.onChangeGroup(this.state.selectedProperty.groupName);
       this.props.history.push(
         `${DashboardRoutes.base}${DashboardRoutes.strategy.value}${this.props.match.params.towerId}`,
       );
@@ -683,9 +684,14 @@ class SalesRoom extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  validGroup: state.strategy.root.selectedGroup,
-});
+const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
+  return {
+    validGroup: state.strategy.root.selectedGroup,
+  };
+};
 
 const mapDispatchToProps = {
   onChangeGroup: changeGroup,

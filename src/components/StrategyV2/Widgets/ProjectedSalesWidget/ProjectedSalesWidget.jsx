@@ -5,6 +5,7 @@ import uuidV4 from 'uuid/v4';
 import NumberFormat from 'react-number-format';
 import Widget, { SM, MD } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
+import validateSelectedGroup from '../../Shared/Validator';
 
 const ProjectedSalesWidget = ({
   salesWhitoutIncrements,
@@ -53,6 +54,9 @@ ProjectedSalesWidget.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

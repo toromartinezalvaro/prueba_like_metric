@@ -17,6 +17,7 @@ import Increment2Services from '../../../../../services/incrementsV2/incrementsS
 import generateDataset from '../../../../../containers/StrategyV2/helpers/dataset';
 import { startLoading, stopLoading } from '../../../Loader/actions';
 import styles from './styles.module.scss';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const validationSchema = yup.object().shape({
   projectedIncrement: yup
@@ -154,6 +155,9 @@ ProjectedIncrement.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory, id, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

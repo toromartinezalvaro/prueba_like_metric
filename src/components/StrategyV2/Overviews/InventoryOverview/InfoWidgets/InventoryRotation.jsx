@@ -5,6 +5,7 @@ import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import Tooltip from '@material-ui/core/Tooltip';
 import Widget, { XS, SM, MD, Type } from '../../../Shared/Widget';
 import { MAIN_VIEW } from '../../reducer';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const InventoryRotation = ({
   rotationMonths,
@@ -57,6 +58,9 @@ InventoryRotation.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory, initialFee, sales } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

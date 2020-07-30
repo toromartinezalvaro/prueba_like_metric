@@ -15,6 +15,7 @@ import generateDataset from '../../../../../containers/StrategyV2/helpers/datase
 import { startLoading, stopLoading } from '../../../Loader/actions';
 import { Numbers } from '../../../../../helpers';
 import { MAIN_VIEW } from '../../reducer';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const services = {
   increments: new IncrementServices(),
@@ -186,6 +187,9 @@ SaleSpeed.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const {
     id,
     inventory,
