@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { Formik, Form } from 'formik';
@@ -13,12 +14,15 @@ import Grid from '@material-ui/core/Grid';
 import HoverContainer from '../../../../UI2/HoverContainer';
 import withFormikField from '../../../../../HOC/withFormikFieldV2';
 import BudgetServices from '../../../../../services/budget';
+import { actions as chartActions } from '../../../Chart'
+import { actions as distributionActions } from '../../../Distribution'
 
 const services = new BudgetServices();
 
 const Field = withFormikField(TextField);
 
 const Budget = ({ units, month }) => {
+  const dispatch = useDispatch();
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const [editMode, setEditMode] = useState(false);
@@ -27,9 +31,21 @@ const Budget = ({ units, month }) => {
     setEditMode((prevEditMode) => !prevEditMode);
   };
 
+  const fetch = async () => {
+    try {
+      const response = await services.getBudget(towerId);
+      const { chart, ...distribution } = response.data;
+      dispatch(chartActions.setBudgetChartData(chart));
+      dispatch(distributionActions.setBudgetDistributionData(distribution));
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  };
+
   const submitHandler = async (values) => {
     try {
       await services.putMonthBudget(towerId, month, { value: values.units });
+      fetch()
     } catch (error) {
       enqueueSnackbar(error, { variant: 'error' });
     } finally {
