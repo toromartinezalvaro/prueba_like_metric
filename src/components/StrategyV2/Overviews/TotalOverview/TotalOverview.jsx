@@ -7,6 +7,7 @@ import Overview from '../Overview';
 import Widget, { SM, XS } from '../../Shared/Widget';
 import WidgetGroup from '../../Shared/WidgetGroup';
 import Numbers from '../../../../helpers/numbers';
+import validateSelectedGroup from '../../Shared/Validator';
 
 const TotalOverView = ({
   increment,
@@ -110,6 +111,9 @@ TotalOverView.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { total } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

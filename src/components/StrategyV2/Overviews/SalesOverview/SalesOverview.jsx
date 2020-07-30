@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Overview from '../Overview';
 import Widget, { SM } from '../../Shared/Widget';
 import Numbers from '../../../../helpers/numbers';
+import validateSelectedGroup from '../../Shared/Validator';
 
 const SalesOverview = ({
   increment,
@@ -90,6 +91,10 @@ SalesOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
+
   const { sales } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

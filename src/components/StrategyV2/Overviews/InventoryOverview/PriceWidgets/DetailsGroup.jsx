@@ -8,14 +8,6 @@ import AveragePrice from './AveragePrice';
 import PricePerM2 from './PricePerM2';
 
 export const DetailsGroup = () => {
-  const strategy = useSelector(
-    (state) =>
-      state.strategy.root.groups[state.strategy.root.selectedGroup].strategy,
-  );
-  const isReset = useSelector(
-    (state) =>
-      state.strategy.root.groups[state.strategy.root.selectedGroup].isReset,
-  );
   return (
     <Grid container direction="row" spacing={2}>
       <Grid item xs={12}>

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Widget, { MD } from '../../../Shared/Widget';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const InitialFee = ({ initialFee }) => {
   return (
@@ -17,9 +18,14 @@ InitialFee.propTypes = {
   initialFee: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  initialFee:
-    state.strategy.root.groups[state.strategy.root.selectedGroup].initialFee,
-});
+const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
+  return {
+    initialFee:
+      state.strategy.root.groups[state.strategy.root.selectedGroup].initialFee,
+  };
+};
 
 export default connect(mapStateToProps)(InitialFee);

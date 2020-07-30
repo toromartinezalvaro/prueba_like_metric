@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Widget from '../Shared/Widget';
 import TotalSalesWidget from './TotalSalesWidget';
 import ProjectedSalesWidget from './ProjectedSalesWidget';
+import validateSelectedGroup from '../Shared/Validator';
 
 const Widgets = ({ totalUnits, salesUnits, inventoryUnits, sales }) => {
   return (
@@ -48,6 +49,9 @@ Widgets.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory, total, sales } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

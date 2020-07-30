@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const PricePerM2 = ({
   projected,
@@ -31,6 +32,9 @@ PricePerM2.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

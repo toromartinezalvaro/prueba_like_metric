@@ -11,6 +11,7 @@ import {
 } from '../../../../../../containers/StrategyV2/actions';
 import { startLoading, stopLoading } from '../../../../Loader/actions';
 import IncrementsServices from '../../../../../../services/increments/IncrementsServices';
+import validateSelectedGroup from '../../../../Shared/Validator';
 
 const services = new IncrementsServices();
 
@@ -95,6 +96,9 @@ AveragePrice.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { market, id } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

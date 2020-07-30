@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Widget, { SM, Type } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const EARateWidget = ({ EARate, EARateSelected, salesEARate, type, hide }) => {
   let currentEARate = 0;
@@ -42,6 +43,9 @@ EARateWidget.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const groupSelected =
     state.strategy.root.groups[state.strategy.root.selectedGroup];
   const { strategy, inventory, sales } = groupSelected;

@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Styles from './Chart.module.scss';
 import Line from '../../../../UI/ChartLine/ChartLine';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const Chart = ({ groupStrategies, initialMonth }) => {
   const makeArrayLabels = () => {
@@ -48,6 +49,9 @@ Chart.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const currentGroup =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
   if (currentGroup) {

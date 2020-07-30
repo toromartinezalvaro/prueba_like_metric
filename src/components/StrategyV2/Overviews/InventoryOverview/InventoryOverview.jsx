@@ -25,6 +25,7 @@ import RealSoldUnits from './InfoWidgets/RealSoldUnits';
 import AvailableUnits from './InfoWidgets/AvailableUnits';
 import { openSalesSpeedDialog } from './SalesSpeedModal/actions';
 import { Type } from '../../Shared/Widget';
+import validateSelectedGroup from '../../Shared/Validator';
 
 const mainInfoWidgets = [
   <SaleSpeed key={uuidV4()} />,
@@ -139,6 +140,9 @@ InventoryOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory, strategy, isReset } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

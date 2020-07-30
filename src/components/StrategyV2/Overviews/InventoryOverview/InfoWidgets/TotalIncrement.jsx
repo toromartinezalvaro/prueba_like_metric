@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const TotalIncrement = ({ totalIncrement }) => {
   return (
@@ -23,6 +24,9 @@ TotalIncrement.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];

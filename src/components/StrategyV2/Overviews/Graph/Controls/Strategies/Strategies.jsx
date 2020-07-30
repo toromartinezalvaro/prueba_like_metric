@@ -29,6 +29,7 @@ import ConfirmDialog from './ConfirmDialog';
 import generateDataset from '../../../../../../containers/StrategyV2/helpers/dataset';
 import { DashboardRoutes } from '../../../../../../routes/local/routes';
 import Styles from './Strategies.module.scss';
+import validateSelectedGroup from '../../../../Shared/Validator';
 
 const services = {
   strategy: new StrategyServices(),
@@ -252,6 +253,9 @@ const mapStrategyForSelector = (strategy) => {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const group =
     state.strategy.root.strategyLines[state.strategy.root.selectedGroup];
   const { strategy, isReset, inventory, locked } = state.strategy.root.groups[

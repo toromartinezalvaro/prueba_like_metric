@@ -15,6 +15,7 @@ import { fetchDataInit, fetchDataStart, fetchDataEmpty } from './actions';
 import IncrementServices from '../../services/incrementsV2/incrementsService';
 import generateDataset from './helpers/dataset';
 import InventorySalesSepeedModal from '../../components/StrategyV2/Overviews/InventoryOverview/SalesSpeedModal/InventorySalesSepeedModal';
+import validateSelectedGroup from '../../components/StrategyV2/Shared/Validator';
 
 const services = new IncrementServices();
 const Strategy = ({
@@ -82,16 +83,22 @@ Strategy.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  strategy:
-    state.strategy.root.groups[state.strategy.root.selectedGroup].strategy,
-  isReset:
-    state.strategy.root.groups[state.strategy.root.selectedGroup].isReset,
-  view: state.strategy.overviews.view,
-  validGroup: state.strategy.root.selectedGroup,
-  loading: state.strategy.root.loading,
-  isEmpty: state.strategy.root.isEmpty,
-});
+const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
+  return {
+    log: console.log(state.strategy.root.selectedGroup),
+    strategy:
+      state.strategy.root.groups[state.strategy.root.selectedGroup].strategy,
+    isReset:
+      state.strategy.root.groups[state.strategy.root.selectedGroup].isReset,
+    view: state.strategy.overviews.view,
+    validGroup: state.strategy.root.selectedGroup,
+    loading: state.strategy.root.loading,
+    isEmpty: state.strategy.root.isEmpty,
+  };
+};
 
 const mapDispatchToProps = {
   onFetchedDataStart: fetchDataStart,

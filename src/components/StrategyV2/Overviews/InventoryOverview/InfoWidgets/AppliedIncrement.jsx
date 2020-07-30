@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget, { SM, XS } from '../../../Shared/Widget';
 import Numbers from '../../../../../helpers/numbers';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const AppliedIncrement = ({ appliedIncrement, mini }) => {
   return (
@@ -27,10 +28,15 @@ AppliedIncrement.defaultProps = {
   mini: false,
 };
 
-const mapStateToProps = (state) => ({
-  appliedIncrement:
-    state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
-      .appliedIncrement,
-});
+const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
+  return {
+    appliedIncrement:
+      state.strategy.root.groups[state.strategy.root.selectedGroup].inventory
+        .appliedIncrement,
+  };
+};
 
 export default connect(mapStateToProps)(AppliedIncrement);

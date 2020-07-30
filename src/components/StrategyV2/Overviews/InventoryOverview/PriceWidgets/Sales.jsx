@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Widget, { SM } from '../../../Shared/Widget';
+import validateSelectedGroup from '../../../Shared/Validator';
 
 const Sales = ({ projected, salesProjected, salesToToday }) => {
   const sales = projected ? salesProjected : salesToToday;
@@ -29,6 +30,9 @@ Sales.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  if (validateSelectedGroup(state.strategy.root)) {
+    return {};
+  }
   const { inventory } = state.strategy.root.groups[
     state.strategy.root.selectedGroup
   ];
