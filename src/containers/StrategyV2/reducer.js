@@ -125,8 +125,6 @@ export const initialState = {
         },
       ],
     },
-    2: {},
-    3: {},
   },
 };
 
