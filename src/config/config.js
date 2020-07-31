@@ -1,8 +1,6 @@
 import axios from 'axios';
 import Server from './server';
-
-// const env = process.env.NODE_ENV || 'development';
-// const config = require('./server')[env];
+import Config from '.';
 
 const jwtKey = 'jwt';
 
@@ -88,9 +86,7 @@ class Agent {
   }
 }
 
-// export const API_PATH = Server.development.serverUrl;
-// export const API_PATH = Server.staging.serverUrl;
-export const API_PATH = Server.production.serverUrl;
+export const API_PATH = Config.server.serverUrl;
 
 const instance = new Agent();
 // export singleton freezed object

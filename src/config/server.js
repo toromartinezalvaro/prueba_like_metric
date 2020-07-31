@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   staging: {
     serverUrl: 'https://pefpi-api-dev.herokuapp.com/api/',
   },
