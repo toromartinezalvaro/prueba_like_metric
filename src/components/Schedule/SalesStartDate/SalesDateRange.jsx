@@ -12,9 +12,17 @@ const displacementValidation = () => [
     fn: (value) => value >= 0,
     message: 'Debe ser mayor 0',
   },
+  ...displacementValidationMaxMin(),
+];
+
+const displacementValidationMaxMin = () => [
   {
     fn: (value) => value <= 100,
     message: 'El desplazamiento es demasiado grande',
+  },
+  {
+    fn: (value) => value >= -100,
+    message: 'El desplazamiento es demasiado pequeño',
   },
 ];
 
@@ -118,6 +126,7 @@ function SalesDateRange({
               disableCalendar
             />
             <Input
+              validations={displacementValidationMaxMin()}
               value={moment(Number(maximumCollectionDate)).diff(
                 moment(Number(endOfSalesDate)),
                 'month',
