@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { Formik, Form } from 'formik';
@@ -14,8 +14,8 @@ import Grid from '@material-ui/core/Grid';
 import HoverContainer from '../../../../UI2/HoverContainer';
 import withFormikField from '../../../../../HOC/withFormikFieldV2';
 import BudgetServices from '../../../../../services/budget';
-import { actions as chartActions } from '../../../Chart'
-import { actions as distributionActions } from '../../../Distribution'
+import { actions as chartActions } from '../../../Chart';
+import { actions as distributionActions } from '../../../Distribution';
 
 const services = new BudgetServices();
 
@@ -44,8 +44,10 @@ const Budget = ({ units, month }) => {
 
   const submitHandler = async (values) => {
     try {
-      await services.putMonthBudget(towerId, month, { value: values.units });
-      fetch()
+      await services.putMonthBudget(towerId, month, {
+        value: Number(values.units),
+      });
+      fetch();
     } catch (error) {
       enqueueSnackbar(error, { variant: 'error' });
     } finally {

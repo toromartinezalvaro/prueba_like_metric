@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ExecutionWidget from '../Widget';
@@ -24,18 +25,20 @@ const CurrentMonth = () => {
     monthsDiff,
   ]);
 
+  const date = moment().format('MMMM YYYY');
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Typography variant="h6">Ejecución presupuestal mes actual</Typography>
       </Grid>
       <Grid item lg={4}>
-        <ExecutionWidget title="Real">
+        <ExecutionWidget title={`Real ${date}`}>
           <Typography component="span">{currentMonthSales}</Typography>
         </ExecutionWidget>
       </Grid>
       <Grid item lg={4}>
-        <ExecutionWidget title="Presupuesto">
+        <ExecutionWidget title={`Presupuesto ${date}`}>
           <CurrentMontBudget units={estimatedSales} month={monthsDiff} />
         </ExecutionWidget>
       </Grid>

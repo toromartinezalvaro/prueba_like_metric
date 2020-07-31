@@ -27,7 +27,8 @@ const Chart = () => {
   return (
     <Paper>
       <Box width="100%" height="300px">
-        {data.length > 0 && data[data.length - 1].estimationAccumulated !== 0 ? (
+        {data.length > 0 &&
+        data[data.length - 1].estimationAccumulated !== 0 ? (
           <ResponsiveContainer>
             <ComposedChart width={1000} height={700} data={data}>
               <CartesianGrid stroke="#f5f5f5" />
@@ -35,40 +36,43 @@ const Chart = () => {
               <YAxis yAxisId="left" />
               <YAxis yAxisId="right" orientation="right" />
               <Tooltip />
-              <Legend />
+              <Legend isAnimationActive={false} />
               <Area
                 type="monotone"
                 name="Presupuesto acumulado"
                 dataKey="estimationAccumulated"
                 yAxisId="left"
-                fill="#8884d8"
-                stroke="#8884d8"
-              />
-              <Bar
-                name="Presupuesto ventas"
-                dataKey="estimatedSales"
-                yAxisId="right"
-                barSize={20}
-                fill="#000000"
-              />
-              <Bar
-                name="Ventas reales"
-                dataKey="realSales"
-                yAxisId="right"
-                barSize={20}
-                fill="#413ea0"
+                fill="#00abe7"
+                stroke="#00abe7"
               />
               <Line
                 name="Real acumulado"
                 type="monotone"
                 yAxisId="left"
                 dataKey="realAccumulated"
-                stroke="#ff7300"
+                stroke="#A896FF"
+                strokeWidth={2}
+              />
+              <Bar
+                name="Presupuesto ventas"
+                dataKey="estimatedSales"
+                yAxisId="right"
+                barSize={20}
+                fill="#0083B3"
+              />
+              <Bar
+                name="Ventas reales"
+                dataKey="realSales"
+                yAxisId="right"
+                barSize={20}
+                fill="#5e548e"
               />
             </ComposedChart>
           </ResponsiveContainer>
         ) : (
-          <Typography align="center">No hay informacion para mostrar</Typography>
+          <Typography align="center">
+            No hay informacion para mostrar
+          </Typography>
         )}
       </Box>
     </Paper>

@@ -29,7 +29,10 @@ const LastMonth = () => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Typography variant="h6">
-          Ejecución presupuestal a {moment().format('MMMM [de] YYYY')}
+          Ejecución presupuestal a{' '}
+          {moment()
+            .subtract(1, 'month')
+            .format('MMMM [de] YYYY')}
         </Typography>
       </Grid>
       <Grid item lg={4}>
