@@ -24,6 +24,10 @@ const Paper = styled(MuiPaper)`
 const Chart = () => {
   const data = useSelector((state) => state.budget.chart.data);
 
+  if (!data) {
+    return null;
+  }
+
   return (
     <Paper>
       <Box width="100%" height="300px">
