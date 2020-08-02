@@ -11,7 +11,7 @@ export const getExecution = (real, estimation) => {
   if (estimation === 0) {
     return 'No aplica';
   }
-  return `${(real / estimation).toFixed(2)}%`;
+  return `${((real / estimation) * 100).toFixed(2)}%`;
 };
 
 export const getMonthValue = (arr, index, key) => {
