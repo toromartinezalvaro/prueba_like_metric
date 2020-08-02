@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Dialog from './Dialog';
 import Numbers from '../../../../../helpers/numbers';
 
-const BankCredit = ({ totalPaymentCredit, monthlyPayment, months }) => {
+const BankCredit = ({ totalPaymentCredit, monthlyPayment, bankFinalRate }) => {
   return (
     <>
       <Grid container>
@@ -38,13 +38,7 @@ const BankCredit = ({ totalPaymentCredit, monthlyPayment, months }) => {
             </Grid>
             <Grid item xs={6}>
               <Typography>
-                {console.log({
-                  monthsd: moment().add(months - 1, 'months'),
-                  months,
-                })}
-                {moment()
-                  .add(months - 1, 'months')
-                  .format('MMM YYYY')}
+                {moment(Number(bankFinalRate)).format('MMM YYYY')}
               </Typography>
             </Grid>
           </Grid>
@@ -79,10 +73,9 @@ const mapStateToProps = (state) => {
   const {
     totalPaymentCredit,
     monthlyPayment,
+    bankFinalRate,
   } = state.financial.dialog.info.bank.root;
-
-  const { months } = state.financial.dialog.info.initialFee;
-  return { totalPaymentCredit, monthlyPayment, months };
+  return { totalPaymentCredit, monthlyPayment, bankFinalRate };
 };
 
 BankCredit.propTypes = {

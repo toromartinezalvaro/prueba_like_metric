@@ -17,6 +17,7 @@ import { actions as BankActions } from '../Info/BankCredit';
 import { actions as BankDialogActions } from '../Info/BankCredit/Dialog';
 import { actions as DateActions } from '../Info/Dates';
 import Services from '../../../../services/financing';
+import { useEffect } from 'react';
 
 const services = new Services();
 
@@ -42,6 +43,7 @@ const Steps = ({
     try {
       const response = await services.getFinancingInfo(towerId, body);
       const dateResponse = await services.getTowerDates(towerId);
+      console.log({ dateResponse });
       setEndOfSales(dateResponse.data.schedule.averageDeliveryDate);
       setFinancialInfo({
         financing: response.data.financialValue,
@@ -55,6 +57,17 @@ const Steps = ({
       enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
+
+  useEffect(() => {
+    handleSubmit({
+      propertyValue: propertyPrice,
+      separationValue: 0,
+      monthlyRate: 0,
+      termLimit: 0,
+      initialFeeBasePercentage: 0,
+      additionalFees: [],
+    });
+  });
 
   return (
     <Formik

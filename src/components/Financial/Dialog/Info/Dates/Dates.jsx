@@ -5,10 +5,10 @@ import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-const ExtraFees = ({ endOfSalesDate, months }) => {
+const ExtraFees = ({ averageDeliveryDate, months }) => {
   const today = moment();
-  const endDate = moment(endOfSalesDate, 'x');
-  const diffDate = endDate.diff(today, 'months');
+  const averageDate = moment(averageDeliveryDate, 'x');
+  const diffDate = averageDate.diff(today, 'months');
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -28,7 +28,7 @@ const ExtraFees = ({ endOfSalesDate, months }) => {
             <Typography>Fecha Promedio de entrega</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography>{endDate.format('MMM-YY')}</Typography>
+            <Typography>{averageDate.format('MMM-YY')}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -70,14 +70,14 @@ const ExtraFees = ({ endOfSalesDate, months }) => {
 };
 
 const mapStateToProps = (state) => ({
-  endOfSalesDate: state.financial.dialog.info.dates.averageDeliveryDate,
+  averageDeliveryDate: state.financial.dialog.info.dates.averageDeliveryDate,
   months: state.financial.dialog.info.initialFee.months,
 });
 
 const mapDispatchToProps = {};
 
 ExtraFees.propTypes = {
-  endOfSalesDate: PropTypes.number.isRequired,
+  averageDeliveryDate: PropTypes.number.isRequired,
   months: PropTypes.number.isRequired,
 };
 
