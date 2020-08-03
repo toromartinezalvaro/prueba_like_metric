@@ -21,7 +21,7 @@ import {
   Table,
   VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';
-import { SelectionState } from '@devexpress/dx-react-grid';
+import { SortingState, IntegratedSorting } from '@devexpress/dx-react-grid';
 import ContractService from '../../../services/contract/contractService';
 import newContract from '../NewContract/NewContract';
 import ViewContractInformation from '../ViewContractInformation/ViewContractInformation';
@@ -45,9 +45,10 @@ class ContractList extends Component {
       contractAvailable: true,
       events: [],
       columns: [
+        { name: 'group', title: 'Grupo' },
+        { name: 'item', title: 'Item' },
         { name: 'title', title: 'Titulo' },
         { name: 'partner', title: 'Socio' },
-        { name: 'group', title: 'Grupo' },
         { name: 'status', title: 'Estado' },
       ],
     };
@@ -123,14 +124,11 @@ class ContractList extends Component {
     this.services
       .getAllContracts(this.props.towerId)
       .then((contracts) => {
-        const data = [];
-        contracts.data.map((contract) => {
-          if (contract) {
-            data.push(contract);
-          }
-          this.setState({ contractAvailable: false });
+        this.setState({
+          contracts: contracts.data,
+          isLoading: false,
+          contractAvailable: false,
         });
-        this.setState({ contracts: data, isLoading: false });
       })
       .catch((error) => {
         console.log(error);
@@ -184,15 +182,17 @@ class ContractList extends Component {
     return this.state.contracts.map((contract, i) => {
       const allPartners = this.props.listInformationPartner;
       const allGroups = this.props.listInformationGroup;
-      const status = statusOfContract.map((element) => {
-        return element.id === contract.state && element.state;
-      });
-      const partner = allPartners.map((element) => {
-        return element.value === contract.businessPartnerId && element.label;
-      });
-      const group = allGroups.map((element) => {
-        return element.value === contract.groupId && element.label;
-      });
+      const status = statusOfContract.flatMap((element) => {
+        return element.id === contract.state ? element.state : [];
+      })[0];
+      const partner = allPartners.flatMap((element) => {
+        return element.value === contract.businessPartnerId
+          ? element.label
+          : [];
+      })[0];
+      const group = allGroups.flatMap((element) => {
+        return element.value === contract.groupId ? element.label : [];
+      })[0];
 
       return {
         id: contract.id,
@@ -200,6 +200,7 @@ class ContractList extends Component {
         partner,
         group,
         status,
+        item: contract.item.name,
       };
     });
   };
@@ -231,8 +232,12 @@ class ContractList extends Component {
           ) : (
             <Paper classes={{ root: style.container }}>
               <Grid rows={this.displayData()} columns={this.state.columns}>
+                <SortingState
+                  defaultSorting={[{ columnName: 'group', direction: 'asc' }]}
+                />
+                <IntegratedSorting />
                 <VirtualTable cellComponent={this.TableCell} />
-                <TableHeaderRow />
+                <TableHeaderRow showSortingControls />
               </Grid>
             </Paper>
           )}

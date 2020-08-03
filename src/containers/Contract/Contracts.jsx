@@ -102,7 +102,7 @@ class Contracts extends Component {
         const categories = response.data.map((category) => {
           return {
             value: category.id,
-            label: `${category.id} - ${category.categoryName}`,
+            label: category.categoryName,
           };
         });
         this.setState({

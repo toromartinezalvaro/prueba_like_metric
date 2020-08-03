@@ -121,7 +121,7 @@ const TablesContractFlow = ({ groups }) => {
     ),
   );
   const [tableColumnExtensions] = useState([
-    { columnName: 'name', width: 250 },
+    { columnName: 'name', width: 300 },
     { columnName: 'accumulated', width: 150 },
     { columnName: 'projected', width: 150 },
     { columnName: 'total', width: 150 },
