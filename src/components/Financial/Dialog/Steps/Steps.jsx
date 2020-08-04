@@ -81,44 +81,47 @@ const Steps = ({
       }}
       onSubmit={handleSubmit}
     >
-      {({ values }) => (
-        <Form>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Step title={<Step1Title />}>
-                <Step1 initialFeeRate={values.initialFeeBasePercentage} />
-              </Step>
+      {({ values, handleChange }) => {
+        return (
+          <Form>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Step title={<Step1Title />}>
+                  <Step1 initialFeeRate={values.initialFeeBasePercentage} />
+                </Step>
+              </Grid>
+              <Grid item xs={12}>
+                <Step title={<Step2Title />}>
+                  <Step2 />
+                </Step>
+              </Grid>
+              <Grid item xs={12}>
+                <Step title={<Step3Title />}>
+                  <Step3 additionalFees={values.additionalFees} />
+                </Step>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  disableElevation
+                >
+                  Calcular
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Step title={<Step2Title />}>
-                <Step2 />
-              </Step>
-            </Grid>
-            <Grid item xs={12}>
-              <Step title={<Step3Title />}>
-                <Step3 additionalFees={values.additionalFees} />
-              </Step>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                disableElevation
-              >
-                Calcular
-              </Button>
-            </Grid>
-          </Grid>
-        </Form>
-      )}
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
 
 const mapStateToProps = (state) => ({
   propertyPrice: state.financial.dialog.root.propertyPrice,
+  bankCreadit,
 });
 
 const mapDispatchToProps = {

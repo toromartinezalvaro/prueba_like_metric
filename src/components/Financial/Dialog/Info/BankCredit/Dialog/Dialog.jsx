@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Item from './Item';
 import { openFinancialBankDialog, closeFinancialBankDialog } from './actions';
 import Numbers from '../../../../../../helpers/numbers';
+import LabelEditor from './LabelEditor';
 
 const Dialog = ({
   open,
@@ -55,7 +56,12 @@ const Dialog = ({
               </Grid>
 
               <Grid item xs={12}>
-                <Item left="Años" right={totalYears} />
+                <Item
+                  left="Años"
+                  right={
+                    <LabelEditor units={totalYears} fetch={async () => {}} />
+                  }
+                />
               </Grid>
 
               <Grid item xs={12}>
@@ -66,11 +72,16 @@ const Dialog = ({
                 <Item
                   left="Tasa ea"
                   right={
-                    <NumberFormat
-                      value={Numbers.toFixed(anualEffectiveRate * 100)}
-                      displayType="text"
+                    // <NumberFormat
+                    //   value={Numbers.toFixed(anualEffectiveRate * 100)}
+                    //   displayType="text"
+                    //   suffix="%"
+                    //   thousandSeparator
+                    // />
+                    <LabelEditor
+                      units={Numbers.toFixed(anualEffectiveRate * 100)}
                       suffix="%"
-                      thousandSeparator
+                      fetch={Promise.resolve()}
                     />
                   }
                 />
