@@ -38,6 +38,7 @@ const services = {
 };
 
 const Strategies = ({
+  units,
   locked,
   strategy,
   onChangeStrategy,
@@ -124,105 +125,109 @@ const Strategies = ({
 
   return (
     <>
-      <Paper>
-        <Box p={3}>
-          <Typography variant="h5">Estrategias</Typography>
-        </Box>
-        {locked && isReset && (
-          <Box p={3}>
-            <Typography variant="overline" component="span">
-              * No se puede seleccionar la estrategia sin resolver los casos de
-              desistimiento pendientes
-            </Typography>{' '}
-            <Link
-              component="button"
-              onClick={redirectToSalesRequest}
-              variant="overline"
+      {units > 1 ? (
+        <>
+          <Paper>
+            <Box p={3}>
+              <Typography variant="h5">Estrategias</Typography>
+            </Box>
+            {locked && isReset && (
+              <Box p={3}>
+                <Typography variant="overline" component="span">
+                  * No se puede seleccionar la estrategia sin resolver los casos
+                  de desistimiento pendientes
+                </Typography>{' '}
+                <Link
+                  component="button"
+                  onClick={redirectToSalesRequest}
+                  variant="overline"
+                >
+                  Ir a solicitudes
+                </Link>
+              </Box>
+            )}
+            <RadioGroup
+              row
+              aria-label="estrategia"
+              value={isReset ? null : strategy}
+              onChange={(event) => {
+                if (isReset || !strategy) {
+                  setSelectedStrategy(event.target.value);
+                  setSelectStrategyConfirmationDialogOpen(true);
+                }
+              }}
             >
-              Ir a solicitudes
-            </Link>
-          </Box>
-        )}
-        <RadioGroup
-          row
-          aria-label="estrategia"
-          value={isReset ? null : strategy}
-          onChange={(event) => {
-            if (isReset || !strategy) {
-              setSelectedStrategy(event.target.value);
-              setSelectStrategyConfirmationDialogOpen(true);
-            }
-          }}
-        >
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox" />
-                  <TableCell>Estrategia</TableCell>
-                  <TableCell>Tasa e.a</TableCell>
-                  <TableCell>Frecuencia Inc</TableCell>
-                  <TableCell>Tasa Fr</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row, index) => (
-                  <TableRow key={`strategy-${index}`}>
-                    <TableCell classes={{ root: Styles.radioButtonCell }}>
-                      <FormControlLabel
-                        disabled={(strategy && !isReset) || locked}
-                        value={row.frequencyId}
-                        control={<Radio />}
-                      />
-                    </TableCell>
-                    <TableCell>{row.strategy}</TableCell>
-                    <TableCell>{row.AER}</TableCell>
-                    <TableCell>{row.frequency}</TableCell>
-                    <TableCell>{row.frequencyRate}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </RadioGroup>
-        <Box p={3}>
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={() => {
-              setResetStrategyConfirmationDialogOpen(true);
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell padding="checkbox" />
+                      <TableCell>Estrategia</TableCell>
+                      <TableCell>Tasa e.a</TableCell>
+                      <TableCell>Frecuencia Inc</TableCell>
+                      <TableCell>Tasa Fr</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row, index) => (
+                      <TableRow key={`strategy-${index}`}>
+                        <TableCell classes={{ root: Styles.radioButtonCell }}>
+                          <FormControlLabel
+                            disabled={(strategy && !isReset) || locked}
+                            value={row.frequencyId}
+                            control={<Radio />}
+                          />
+                        </TableCell>
+                        <TableCell>{row.strategy}</TableCell>
+                        <TableCell>{row.AER}</TableCell>
+                        <TableCell>{row.frequency}</TableCell>
+                        <TableCell>{row.frequencyRate}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </RadioGroup>
+            <Box p={3}>
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={() => {
+                  setResetStrategyConfirmationDialogOpen(true);
+                }}
+                fullWidth
+                disabled={isReset}
+              >
+                Reiniciar estrategia
+              </Button>
+            </Box>
+          </Paper>
+          <ConfirmDialog
+            open={selectStrategyConfirmationDialogOpen}
+            title="Seleccionar estrategia"
+            content="¿Esta seguro de que desea selecionar esa estrategia?"
+            handleAccept={() => {
+              confirmStrategySelection();
+              setSelectStrategyConfirmationDialogOpen(false);
             }}
-            fullWidth
-            disabled={isReset}
-          >
-            Reiniciar estrategia
-          </Button>
-        </Box>
-      </Paper>
-      <ConfirmDialog
-        open={selectStrategyConfirmationDialogOpen}
-        title="Seleccionar estrategia"
-        content="¿Esta seguro de que desea selecionar esa estrategia?"
-        handleAccept={() => {
-          confirmStrategySelection();
-          setSelectStrategyConfirmationDialogOpen(false);
-        }}
-        handleClose={() => {
-          setSelectStrategyConfirmationDialogOpen(false);
-        }}
-      />
-      <ConfirmDialog
-        open={resetStrategyConfirmationDialogOpen}
-        title="Reinciar estrategia"
-        content="¿Esta seguro de que desea reiniciar la estrategia?"
-        handleAccept={() => {
-          resetStrategyHandler();
-          setResetStrategyConfirmationDialogOpen(false);
-        }}
-        handleClose={() => {
-          setResetStrategyConfirmationDialogOpen(false);
-        }}
-      />
+            handleClose={() => {
+              setSelectStrategyConfirmationDialogOpen(false);
+            }}
+          />
+          <ConfirmDialog
+            open={resetStrategyConfirmationDialogOpen}
+            title="Reinciar estrategia"
+            content="¿Esta seguro de que desea reiniciar la estrategia?"
+            handleAccept={() => {
+              resetStrategyHandler();
+              setResetStrategyConfirmationDialogOpen(false);
+            }}
+            handleClose={() => {
+              setResetStrategyConfirmationDialogOpen(false);
+            }}
+          />
+        </>
+      ) : null}
     </>
   );
 };
@@ -234,6 +239,7 @@ Strategies.propTypes = {
   strategy: PropTypes.number.isRequired,
   onChangeStrategy: PropTypes.func.isRequired,
   groupId: PropTypes.number.isRequired,
+  units: PropTypes.number.isRequired,
   onFetchedData: PropTypes.func.isRequired,
   startApiLoading: PropTypes.func.isRequired,
   stopApiLoading: PropTypes.func.isRequired,
@@ -265,6 +271,7 @@ const mapStateToProps = (state) => {
   const rows = strategies.flatMap(mapStrategyForSelector);
 
   return {
+    units: inventory.units,
     strategy,
     locked,
     isReset,
