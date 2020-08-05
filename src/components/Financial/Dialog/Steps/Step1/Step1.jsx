@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Input, { NUMBER, PERCENTAGE } from '../../../../UI2/FormatInput';
 import Numbers from '../../../../../helpers/numbers';
 
-const Step1 = ({ initialFeeRate }) => {
+const Step1 = ({ initialFeeRate, onChange }) => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -22,6 +22,7 @@ const Step1 = ({ initialFeeRate }) => {
               mask={NUMBER}
               fullWidth
               component={Input}
+              onChange={onChange}
             />
           </Grid>
         </Grid>
@@ -40,6 +41,7 @@ const Step1 = ({ initialFeeRate }) => {
               mask={PERCENTAGE}
               fullWidth
               component={Input}
+              onChange={onChange}
             />
           </Grid>
         </Grid>
@@ -69,6 +71,7 @@ const Step1 = ({ initialFeeRate }) => {
               mask={PERCENTAGE}
               fullWidth
               component={Input}
+              onChange={onChange}
             />
           </Grid>
         </Grid>

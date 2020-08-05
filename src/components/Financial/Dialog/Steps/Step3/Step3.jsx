@@ -9,7 +9,7 @@ import DatePicker from './DatePicker';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-const Step3 = ({ additionalFees }) => {
+const Step3 = ({ additionalFees, onChange }) => {
   return (
     <Grid container spacing={1}>
       <FieldArray
@@ -33,6 +33,7 @@ const Step3 = ({ additionalFees }) => {
                       mask={CURRENCY}
                       fullWidth
                       component={Input}
+                      onChange={onChange}
                     />
                   </Grid>
                   <Grid item xs={1} spacing={1}>

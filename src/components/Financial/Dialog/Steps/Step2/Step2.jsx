@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Input, { CURRENCY } from '../../../../UI2/FormatInput';
 
-const Step2 = () => {
+const Step2 = ({ onChange }) => {
   return (
     <Grid container alignItems="center">
       <Grid item xs={6}>
@@ -17,6 +17,7 @@ const Step2 = () => {
           variant="outlined"
           mask={CURRENCY}
           fullWidth
+          onChange={onChange}
           component={Input}
         />
       </Grid>

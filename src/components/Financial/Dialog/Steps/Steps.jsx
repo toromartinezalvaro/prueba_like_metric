@@ -17,7 +17,7 @@ import { actions as BankActions } from '../Info/BankCredit';
 import { actions as BankDialogActions } from '../Info/BankCredit/Dialog';
 import { actions as DateActions } from '../Info/Dates';
 import Services from '../../../../services/financing';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const services = new Services();
 
@@ -29,6 +29,8 @@ const Steps = ({
   setBankInfo,
   setFinancialBankDialogInfo,
   setEndOfSales,
+  anualEffectiveRate,
+  totalYears,
 }) => {
   const { towerId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -57,47 +59,62 @@ const Steps = ({
     }
   };
 
+  const [formValues, setFormValues] = useState({
+    propertyValue: propertyPrice,
+    separationValue: 0,
+    monthlyRate: 0,
+    termLimit: 0,
+    initialFeeBasePercentage: 0,
+    additionalFees: [],
+  });
+
   useEffect(() => {
-    handleSubmit({
-      propertyValue: propertyPrice,
-      separationValue: 0,
-      monthlyRate: 0,
-      termLimit: 0,
-      initialFeeBasePercentage: 0,
-      additionalFees: [],
-    });
+    console.log({ anualEffectiveRate, totalYears });
+  }, [anualEffectiveRate, totalYears]);
+
+  useEffect(() => {
+    handleSubmit(formValues);
   });
 
   return (
     <Formik
       enableReinitialize
-      initialValues={{
-        propertyValue: propertyPrice,
-        separationValue: 0,
-        monthlyRate: 0,
-        termLimit: 0,
-        initialFeeBasePercentage: 0,
-        additionalFees: [],
-      }}
+      initialValues={formValues}
       onSubmit={handleSubmit}
     >
       {({ values, handleChange }) => {
+        const onChange = (e) => {
+          const targetEl = e.target;
+          const fieldName = targetEl.name;
+          setFormValues({
+            ...formValues,
+            [fieldName]: targetEl.value,
+          });
+          return handleChange(e);
+        };
+
         return (
           <Form>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Step title={<Step1Title />}>
-                  <Step1 initialFeeRate={values.initialFeeBasePercentage} />
+                  <Step1
+                    initialFeeRate={values.initialFeeBasePercentage}
+                    onChange={onChange}
+                  />
                 </Step>
               </Grid>
               <Grid item xs={12}>
                 <Step title={<Step2Title />}>
-                  <Step2 />
+                  <Step2 onChange={onChange} />
                 </Step>
               </Grid>
               <Grid item xs={12}>
                 <Step title={<Step3Title />}>
-                  <Step3 additionalFees={values.additionalFees} />
+                  <Step3
+                    additionalFees={values.additionalFees}
+                    onChange={onChange}
+                  />
                 </Step>
               </Grid>
               <Grid item xs={12}>
@@ -121,7 +138,9 @@ const Steps = ({
 
 const mapStateToProps = (state) => ({
   propertyPrice: state.financial.dialog.root.propertyPrice,
-  bankCreadit,
+  totalYears: state.financial.dialog.info.bank.dialog.totalYears,
+  anualEffectiveRate:
+    state.financial.dialog.info.bank.dialog.anualEffectiveRate,
 });
 
 const mapDispatchToProps = {
@@ -141,6 +160,8 @@ Steps.propTypes = {
   setBankInfo: PropTypes.func.isRequired,
   setFinancialBankDialogInfo: PropTypes.func.isRequired,
   setEndOfSales: PropTypes.func.isRequired,
+  anualEffectiveRate: PropTypes.number,
+  totalYears: PropTypes.number,
 };
 
 export default connect(

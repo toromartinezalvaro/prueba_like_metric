@@ -72,12 +72,6 @@ const Dialog = ({
                 <Item
                   left="Tasa ea"
                   right={
-                    // <NumberFormat
-                    //   value={Numbers.toFixed(anualEffectiveRate * 100)}
-                    //   displayType="text"
-                    //   suffix="%"
-                    //   thousandSeparator
-                    // />
                     <LabelEditor
                       units={Numbers.toFixed(anualEffectiveRate * 100)}
                       suffix="%"
