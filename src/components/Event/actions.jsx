@@ -11,10 +11,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-function Actions({ open, eventInformation, deleteEventAt, close }) {
+function Actions({ open, eventInformation, deleteEventAt, close, onChange }) {
   const deleteThisEvent = () => {
     deleteEventAt(eventInformation.eventId);
   };
+
+  // const onChangePicker = (event) => {
+  //   console.log({ event });
+  // };
   return (
     <MuiDialog open={open}>
       <DialogTitle id="alert-dialog-title">Edición de eventos</DialogTitle>
@@ -39,7 +43,8 @@ function Actions({ open, eventInformation, deleteEventAt, close }) {
                   format="dd/MM/yyyy"
                   margin="normal"
                   label="Fecha Evento"
-                  value={Number(eventInformation.value)}
+                  value={eventInformation.value}
+                  onChange={onChange}
                 />
               </MuiPickersUtilsProvider>
             </Grid>
