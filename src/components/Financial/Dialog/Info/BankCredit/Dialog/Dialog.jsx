@@ -59,7 +59,7 @@ const Dialog = ({
                 <Item
                   left="Años"
                   right={
-                    <LabelEditor units={totalYears} fetch={async () => {}} />
+                    <LabelEditor units={totalYears} submitHandler={async () => {}} />
                   }
                 />
               </Grid>
@@ -75,7 +75,7 @@ const Dialog = ({
                     <LabelEditor
                       units={Numbers.toFixed(anualEffectiveRate * 100)}
                       suffix="%"
-                      fetch={Promise.resolve()}
+                      submitHandler={}
                     />
                   }
                 />

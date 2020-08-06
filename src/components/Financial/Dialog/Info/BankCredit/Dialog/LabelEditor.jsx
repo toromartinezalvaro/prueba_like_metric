@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { useSnackbar } from 'notistack';
-import * as yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,15 +12,13 @@ import withFormikField from '../../../../../../HOC/withFormikFieldV2';
 
 const Field = withFormikField(TextField);
 
-const LabelEditor = ({ units, submitHandler, suffix }) => {
-  const { towerId } = useParams();
-  const { enqueueSnackbar } = useSnackbar();
-  const [editMode, setEditMode] = useState(false);
-
-  const toggleEditModeHandler = () => {
-    setEditMode((prevEditMode) => !prevEditMode);
-  };
-
+const LabelEditor = ({
+  units,
+  submitHandler,
+  suffix,
+  editMode,
+  toggleEditModeHandler,
+}) => {
   return editMode ? (
     <Formik
       initialValues={{
