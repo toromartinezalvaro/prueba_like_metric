@@ -284,6 +284,16 @@ class Events extends Component {
     this.setState({ openEdit: false, eventInformation: {} });
   };
 
+  onChange = (event) => {
+    this.setState({
+      eventInformation: {
+        ...this.state.eventInformation,
+        value: moment(event).valueOf(),
+      },
+    });
+    console.log(moment(event).valueOf(), event);
+  };
+
   render() {
     return (
       <div className={styles.events}>
@@ -318,6 +328,7 @@ class Events extends Component {
           eventInformation={this.state.eventInformation}
           deleteEventAt={this.deleteEventAt}
           close={this.handleCloseDialog}
+          onChange={this.onChange}
         />
         <Dialog
           className={styles.dialogExpand}
