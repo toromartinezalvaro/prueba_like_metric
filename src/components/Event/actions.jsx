@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import esLocale from 'date-fns/locale/es';
 import DateFnsUtils from '@date-io/date-fns';
 import Button from '@material-ui/core/Button';
@@ -11,14 +12,52 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-function Actions({ open, eventInformation, deleteEventAt, close, onChange }) {
+function Actions({ open, eventInformation, deleteEventAt, close, sendUpdate }) {
+  const REGEX = /\(([^)]*)\)/g;
+  const [event, setEvent] = useState({
+    id: null,
+    customDate: null,
+    description: null,
+    scheduleId: null,
+  });
+
+  useEffect(() => {
+    setEvent({
+      id: eventInformation.eventId,
+      customDate: Number(eventInformation.value),
+      description:
+        eventInformation.label && eventInformation.label.replace(REGEX, ''),
+      scheduleId: null,
+    });
+  }, [eventInformation]);
+
   const deleteThisEvent = () => {
     deleteEventAt(eventInformation.eventId);
   };
 
-  // const onChangePicker = (event) => {
-  //   console.log({ event });
-  // };
+  const onChangeText = (e) => {
+    let tempEvent = { ...event };
+    tempEvent = { ...tempEvent, description: e.target.value };
+    setEvent(tempEvent);
+  };
+
+  const onChangePicker = (date) => {
+    let tempEvent = { ...event };
+    tempEvent = { ...tempEvent, customDate: moment(date).valueOf() };
+    setEvent(tempEvent);
+  };
+
+  const updateEvent = () => {
+    const prevSend = {
+      ...event,
+      description: `${event.description}(${moment(event.customDate).format(
+        'DD/MM/YYYY',
+      )})`,
+    };
+    sendUpdate(prevSend);
+    close();
+  };
+
   return (
     <MuiDialog open={open}>
       <DialogTitle id="alert-dialog-title">Edición de eventos</DialogTitle>
@@ -29,7 +68,11 @@ function Actions({ open, eventInformation, deleteEventAt, close, onChange }) {
               <TextField
                 label="Nombre del evento"
                 fullWidth
-                defaultValue={eventInformation.label}
+                onChange={onChangeText}
+                defaultValue={
+                  eventInformation.label &&
+                  eventInformation.label.replace(REGEX, '')
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -43,8 +86,8 @@ function Actions({ open, eventInformation, deleteEventAt, close, onChange }) {
                   format="dd/MM/yyyy"
                   margin="normal"
                   label="Fecha Evento"
-                  value={eventInformation.value}
-                  onChange={onChange}
+                  value={event.customDate}
+                  onChange={onChangePicker}
                 />
               </MuiPickersUtilsProvider>
             </Grid>
@@ -52,7 +95,7 @@ function Actions({ open, eventInformation, deleteEventAt, close, onChange }) {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={updateEvent}>
           Editar
         </Button>
         <Button variant="contained" color="secondary" onClick={deleteThisEvent}>
@@ -71,6 +114,7 @@ Actions.propTypes = {
   eventInformation: PropTypes.object,
   deleteEventAt: PropTypes.func,
   close: PropTypes.func,
+  sendUpdate: PropTypes.func,
 };
 
 export default Actions;

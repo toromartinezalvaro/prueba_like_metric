@@ -284,14 +284,27 @@ class Events extends Component {
     this.setState({ openEdit: false, eventInformation: {} });
   };
 
-  onChange = (event) => {
-    this.setState({
-      eventInformation: {
-        ...this.state.eventInformation,
-        value: moment(event).valueOf(),
-      },
-    });
-    console.log(moment(event).valueOf(), event);
+  sendUpdate = (event) => {
+    this.services
+      .putEvent(this.props.towerId, event)
+      .then((response) => {
+        const currentEvent = {
+          eventId: response.data[1].id,
+          value: response.data[1].customDate,
+          label: response.data[1].description,
+        };
+        const currentEvents = [...this.props.events];
+        const filterEvent = currentEvents.filter(
+          (currentEventInArray) =>
+            currentEventInArray.eventId !== this.props.eventSelected.id,
+        );
+        const newEvents = filterEvent.splice(1, 0, currentEvent);
+        this.props.updateEvents(filterEvent);
+        this.props.spawnMessage('EVENTO EDITADO CON EXITO', 'success');
+      })
+      .catch((error) => {
+        this.props.spawnMessage(error.message, 'error');
+      });
   };
 
   render() {
@@ -328,7 +341,7 @@ class Events extends Component {
           eventInformation={this.state.eventInformation}
           deleteEventAt={this.deleteEventAt}
           close={this.handleCloseDialog}
-          onChange={this.onChange}
+          sendUpdate={this.sendUpdate}
         />
         <Dialog
           className={styles.dialogExpand}

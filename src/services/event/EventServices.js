@@ -15,7 +15,7 @@ export default class EventServices extends Services {
   }
 
   putEvent(towerId, data) {
-    return this.put(EventServicesDefinition.eventRoute(towerId), data);
+    return this.put(EventServicesDefinition.eventEdit(), data);
   }
 
   deleteEvent(towerId, data) {
