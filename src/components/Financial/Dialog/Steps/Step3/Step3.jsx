@@ -20,14 +20,16 @@ const Step3 = ({ additionalFees, onChange }) => {
               <Grid item xs={12} key={`additionalFee-${index}`}>
                 <Grid container alignItems="center">
                   <Grid item xs={5}>
-                    <Field
-                      name={`additionalFees[${index}].date`}
-                      component={DatePicker}
+                    <DatePicker
+                      realValue={_additionalFee.date}
+                      name={`${index}--date`}
+                      onChange={onChange}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <Field
-                      name={`additionalFees[${index}].price`}
+                      value={_additionalFee.price}
+                      name={`${index}--price`}
                       placeholder="$3,000,000"
                       variant="outlined"
                       mask={CURRENCY}

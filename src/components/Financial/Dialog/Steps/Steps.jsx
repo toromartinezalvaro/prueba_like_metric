@@ -18,6 +18,9 @@ import { actions as BankDialogActions } from '../Info/BankCredit/Dialog';
 import { actions as DateActions } from '../Info/Dates';
 import Services from '../../../../services/financing';
 import { useEffect, useState } from 'react';
+import Numbers from '../../../../helpers/numbers';
+import { indigo } from '@material-ui/core/colors';
+import Comparable from '../../../../helpers/comparable';
 
 const services = new Services();
 
@@ -53,11 +56,26 @@ const Steps = ({
       setInitialFeeInfo(response.data.initialFees);
       setExtraFeesInfo(response.data.extraFees);
       setBankInfo(response.data.bankFees);
-      setFinancialBankDialogInfo(response.data.bankFeesDetail);
+      setFinancialBankDialogInfo({
+        ...response.data.bankFeesDetail,
+        editTotalYears: false,
+        editAnualEffectiveRate: false,
+      });
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
+
+  const [initialValues, setInitialValues] = useState({
+    propertyValue: propertyPrice,
+    separationValue: 0,
+    monthlyRate: 0,
+    termLimit: 0,
+    initialFeeBasePercentage: 0,
+    anualEffectiveRate: 0.11,
+    totalYears: 20,
+    additionalFees: [],
+  });
 
   const [formValues, setFormValues] = useState({
     propertyValue: propertyPrice,
@@ -65,16 +83,48 @@ const Steps = ({
     monthlyRate: 0,
     termLimit: 0,
     initialFeeBasePercentage: 0,
+    anualEffectiveRate: 0.11,
+    totalYears: 20,
     additionalFees: [],
   });
 
   useEffect(() => {
-    console.log({ anualEffectiveRate, totalYears });
+    handleSubmit({
+      ...formValues,
+      anualEffectiveRate: Numbers.cleanNumber(anualEffectiveRate / 100),
+      totalYears,
+    });
+    setFormValues({ ...formValues, anualEffectiveRate, totalYears });
   }, [anualEffectiveRate, totalYears]);
 
-  useEffect(() => {
-    handleSubmit(formValues);
-  });
+  const updateAndGetAdditionalFees = (values, name, value) => {
+    const index = name.split('--')[0];
+    const key = name.split('--')[1];
+    if (index && key) {
+      const currentFee = values.additionalFees[index];
+      console.log({ currentFee, key, value });
+      if (currentFee) currentFee[key] = value;
+    }
+    return values.additionalFees;
+  };
+
+  const onChangeForm = (e, values, handleChange) => {
+    const targetElement = e.target;
+    const fieldName = targetElement.name;
+
+    const additionalFees = updateAndGetAdditionalFees(
+      values,
+      targetElement.name,
+      targetElement.value,
+    );
+    setFormValues({
+      ...formValues,
+      [fieldName]: targetElement.value,
+      additionalFees,
+    });
+
+    return handleChange(e);
+  };
 
   return (
     <Formik
@@ -83,15 +133,7 @@ const Steps = ({
       onSubmit={handleSubmit}
     >
       {({ values, handleChange }) => {
-        const onChange = (e) => {
-          const targetEl = e.target;
-          const fieldName = targetEl.name;
-          setFormValues({
-            ...formValues,
-            [fieldName]: targetEl.value,
-          });
-          return handleChange(e);
-        };
+        const onChange = (e) => onChangeForm(e, values, handleChange);
 
         return (
           <Form>
@@ -138,9 +180,9 @@ const Steps = ({
 
 const mapStateToProps = (state) => ({
   propertyPrice: state.financial.dialog.root.propertyPrice,
-  totalYears: state.financial.dialog.info.bank.dialog.totalYears,
+  totalYears: state.financial.dialog.info.bank.dialog.temporalTotalYears,
   anualEffectiveRate:
-    state.financial.dialog.info.bank.dialog.anualEffectiveRate,
+    state.financial.dialog.info.bank.dialog.temporalAnualEffectiveRate,
 });
 
 const mapDispatchToProps = {
