@@ -9,7 +9,7 @@ import DatePicker from './DatePicker';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-const Step3 = ({ additionalFees }) => {
+const Step3 = ({ additionalFees, onChange }) => {
   return (
     <Grid container spacing={1}>
       <FieldArray
@@ -20,19 +20,22 @@ const Step3 = ({ additionalFees }) => {
               <Grid item xs={12} key={`additionalFee-${index}`}>
                 <Grid container alignItems="center">
                   <Grid item xs={5}>
-                    <Field
-                      name={`additionalFees[${index}].date`}
-                      component={DatePicker}
+                    <DatePicker
+                      realValue={_additionalFee.date}
+                      name={`${index}--date`}
+                      onChange={onChange}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <Field
-                      name={`additionalFees[${index}].price`}
+                      value={_additionalFee.price}
+                      name={`${index}--price`}
                       placeholder="$3,000,000"
                       variant="outlined"
                       mask={CURRENCY}
                       fullWidth
                       component={Input}
+                      onChange={onChange}
                     />
                   </Grid>
                   <Grid item xs={1} spacing={1}>

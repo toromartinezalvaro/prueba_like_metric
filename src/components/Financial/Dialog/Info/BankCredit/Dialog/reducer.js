@@ -7,10 +7,14 @@ import {
 const initialState = {
   open: false,
   totalPaymentCredit: 0,
-  totalYears: 0,
+  totalYears: 20,
   months: 0,
-  anualEffectiveRate: 0,
+  anualEffectiveRate: 0.11,
   monthlyRate: 0,
+  editTotalYears: false,
+  editAnualEffectiveRate: false,
+  temporalAnualEffectiveRate: 0.11,
+  temporalTotalYears: 20,
 };
 
 export default (state = initialState, { type, payload }) => {

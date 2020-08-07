@@ -10,19 +10,31 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Item from './Item';
-import { openFinancialBankDialog, closeFinancialBankDialog } from './actions';
+import {
+  openFinancialBankDialog,
+  closeFinancialBankDialog,
+  setFinancialBankDialogInfo,
+} from './actions';
 import Numbers from '../../../../../../helpers/numbers';
+import LabelEditor from './LabelEditor';
 
 const Dialog = ({
   open,
   totalPaymentCredit,
+  editTotalYears,
+  editAnualEffectiveRate,
   totalYears,
   months,
   anualEffectiveRate,
   monthlyRate,
   closeHandler,
   openHandler,
+  submitHandler,
 }) => {
+  const updateFinancialBank = (key, value) => {
+    submitHandler({ [key]: value });
+  };
+
   return (
     <>
       <Button
@@ -55,7 +67,21 @@ const Dialog = ({
               </Grid>
 
               <Grid item xs={12}>
-                <Item left="Años" right={totalYears} />
+                <Item
+                  left="Años"
+                  right={
+                    <LabelEditor
+                      editMode={editTotalYears}
+                      units={totalYears}
+                      submitHandler={(values) => {
+                        updateFinancialBank('temporalTotalYears', values.units);
+                      }}
+                      toggleEditModeHandler={() => {
+                        updateFinancialBank('editTotalYears', !editTotalYears);
+                      }}
+                    />
+                  }
+                />
               </Grid>
 
               <Grid item xs={12}>
@@ -66,11 +92,22 @@ const Dialog = ({
                 <Item
                   left="Tasa ea"
                   right={
-                    <NumberFormat
-                      value={Numbers.toFixed(anualEffectiveRate * 100)}
-                      displayType="text"
+                    <LabelEditor
+                      editMode={editAnualEffectiveRate}
+                      units={Numbers.toFixed(anualEffectiveRate * 100)}
                       suffix="%"
-                      thousandSeparator
+                      submitHandler={(values) => {
+                        updateFinancialBank(
+                          'temporalAnualEffectiveRate',
+                          values.units,
+                        );
+                      }}
+                      toggleEditModeHandler={() => {
+                        updateFinancialBank(
+                          'editAnualEffectiveRate',
+                          !editAnualEffectiveRate,
+                        );
+                      }}
                     />
                   }
                 />
@@ -111,6 +148,8 @@ const mapStateToProps = (state) => {
     months,
     anualEffectiveRate,
     monthlyRate,
+    editTotalYears,
+    editAnualEffectiveRate,
   } = state.financial.dialog.info.bank.dialog;
   return {
     open,
@@ -119,12 +158,15 @@ const mapStateToProps = (state) => {
     months,
     anualEffectiveRate,
     monthlyRate,
+    editTotalYears,
+    editAnualEffectiveRate,
   };
 };
 
 const mapDispatchToProps = {
   openHandler: openFinancialBankDialog,
   closeHandler: closeFinancialBankDialog,
+  submitHandler: setFinancialBankDialogInfo,
 };
 
 Dialog.propTypes = {

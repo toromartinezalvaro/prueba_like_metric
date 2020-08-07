@@ -7,13 +7,15 @@ import {
   DatePicker as MuiDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { useField, useFormikContext } from 'formik';
 
-const DatePicker = ({ field }) => {
-  const { value, onChange, name, ...fieldRest } = field;
+const DatePicker = (props) => {
+  const { onChange, name, realValue } = props;
+  const { setFieldValue } = useFormikContext();
+  const [field] = useField(props);
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
       <MuiDatePicker
-        {...fieldRest}
         name={name}
         inputVariant="outlined"
         variant="inline"
@@ -21,8 +23,9 @@ const DatePicker = ({ field }) => {
         minDate={new Date()}
         format="MMM-yy"
         margin="normal"
-        value={fromUnixTime(value)}
+        value={fromUnixTime(realValue)}
         onChange={(val) => {
+          setFieldValue(field.name, val);
           onChange({
             target: {
               name,
@@ -36,7 +39,9 @@ const DatePicker = ({ field }) => {
 };
 
 DatePicker.propTypes = {
-  field: PropTypes.any,
+  realValue: PropTypes.any,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 export default DatePicker;

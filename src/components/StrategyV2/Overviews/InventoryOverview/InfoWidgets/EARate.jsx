@@ -54,6 +54,8 @@ const mapStateToProps = (state) => {
   const lines = strategyLines ? strategyLines.strategies : [];
   const currentStrategy = lines.find((line) => line.id === strategy && line.id);
 
+  console.log(sales.EARate);
+
   return {
     EARate: inventory.EARate,
     EARateSelected: currentStrategy ? currentStrategy.EARate : 0,
