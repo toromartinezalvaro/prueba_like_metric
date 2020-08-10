@@ -160,7 +160,9 @@ class Events extends Component {
               const currentEvent = {
                 eventId: response.data.id,
                 value: response.data.customDate,
-                label: response.data.description,
+                label: `${response.data.description} (${moment(
+                  Number(response.data.customDate),
+                ).format('DD/MM/YYYY')})`,
               };
               this.props.spawnMessage('EVENTO CREADO CON EXITO', 'success');
               this.props.currentEvent(currentEvent);
@@ -196,9 +198,7 @@ class Events extends Component {
     const time = Number(moment(e.getTime()).format('x'));
     this.setState({
       event: {
-        description: `${this.state.description}(${moment(Number(time)).format(
-          'MM/DD/YYYY',
-        )})`,
+        description: this.state.description,
         customDate: time,
         scheduleId: null,
       },

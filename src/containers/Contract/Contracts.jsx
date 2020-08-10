@@ -4,6 +4,7 @@
  * Copyright (c) 2019 JCATMAN INSTABUILD
  */
 import { ClickAwayListener, Dialog, DialogContent } from '@material-ui/core';
+import moment from 'moment';
 import React, { Component } from 'react';
 import styles from './Contracts.module.scss';
 import Navbar from '../../components/Contracts/Navbar/Navbar';
@@ -136,7 +137,9 @@ class Contracts extends Component {
           return {
             eventId: event.id,
             value: event.customDate,
-            label: event.description,
+            label: `${event.description} (${moment(
+              Number(event.customDate),
+            ).format('DD/MM/YYYY')})`,
           };
         });
         events.unshift({
