@@ -184,10 +184,7 @@ class Events extends Component {
       time === '' ? moment(defaultDate.getTime()).format('X') : time;
     this.setState({
       event: {
-        description:
-          time === 'Invalid date'
-            ? `${e.target.value}`
-            : `${e.target.value}(${moment(Number(time)).format('DD/MM/YYYY')})`,
+        description: `${e.target.value}`,
         customDate: moment(Number(times)).format('x'),
         scheduleId: null,
       },

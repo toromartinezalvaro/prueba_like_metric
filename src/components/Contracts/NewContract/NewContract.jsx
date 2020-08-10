@@ -172,7 +172,7 @@ const NewContract = ({
             }
             onClick={isEditable ? editContract : addContract}
           >
-            {isEditable ? 'Editar Contrato' : 'Crear Contrato'}
+            {isEditable ? 'Guardar cambios' : 'Crear Contrato'}
           </Button>
           <Button
             variant="contained"
