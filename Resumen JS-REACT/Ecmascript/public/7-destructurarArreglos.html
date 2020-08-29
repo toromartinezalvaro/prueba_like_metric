@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Destructurar arreglos</h1>
+
+    <pre>
+    Cuando se necesita trabajar con un arreglo de muchos elementos, contar la posicion no es una opcion, por lo cual podriamos destructurar el arreglo (transformar los datos a variables para acceder mas facilmente a ellos)
+
+        Ejemplo
+
+        const persona = ['alvaro', 23, 'colombia', 'desarrollador web'];
+
+        const [nombre, edad, pais, profesion] = persona;           <strong> <------ con esta linea estamos asignando a cada posicion un nombre de variable que podemos llamar posteriormente</strong> 
+
+        console.log(pais);
+
+        si quisieramos saltarnos la asignacion de algun parametro solo pondriamos una coma con un espacio asi:
+
+        const [nombre, edad, , profesion] = persona;                <strong>Aqui nos saltariamos el pais</strong>
+
+
+
+    </pre>
+
+    <script src="../src/7-destructurarArreglos.js"></script>
+</body>
+</html>

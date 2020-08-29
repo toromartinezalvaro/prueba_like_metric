@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Esto es lo que necesito de react</h1>
+
+    <h2>Docuemntacion:</h2>
+    <p>Buscar en el navegador "reactjs.org"</p>
+
+    <h2>Requisitos:</h2>
+    <ul>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JAVASCRIPT</li>
+    </ul>
+    <h2>Recomendado:</h2>
+    <ul>
+      <li>Node.js</li>
+      <li>ES6+</li>
+    </ul>
+
+    <pre>
+    PASOS PARA CREAR UN PROYECTO DE REACT
+
+    -Se debe instalar node.js (se descarga desde nodejs.org) para instalar solo se descarga uy se da siguiente hasta que instale.
+
+    -para comprobar si se instaló nodejs en el CMD se pone el comando "node --version". Ademas tambien se va a instalar npm, para verificarlo, ponemos en el CMD "npm --version" 
+    (npm es un administrador de programas de node, permite instalar programas de javascript)
+
+    En el CMD escojemos la ruta en la que vayamos a crear el proyecto y ponemos el comando"npm install -g create-react-app" para instalar el creador y luego el comando
+    "create-react-app mi-aplicacion" para crear el proyecto.
+    </pre>
+
+    <h2>Comandos:</h2>
+    <ul>
+      <li>
+        npm start: arranca el programa y refresca los cambios automaticamente
+      </li>
+      <li>
+        npm run build: contruye la aplicacion (toda la app se transforma en
+        javascript puro)
+      </li>
+      <li>npm test:</li>
+      <li>npm run eject: </li>
+      <li></li>
+    </ul>
+
+    <h2>Componentes:</h2>
+    <pre>
+      Con react nosotros podemos crear nuestras propias etiquetas (creando componentes que luego podremos usar)
+      Cada componente esta conformado por HTML, CSS Y JAVASCRIPT
+    </pre>
+
+    <h2>Archivos del proyecto</h2>
+    <ul>
+      <li><strong>readme.md</strong> solo para escribir la documentacion del proyecto</li>
+      <li><strong>package.json</strong> Describe de que es el proyecto, dependencias, nombre react, dom, tambien aparecen los comandos que podemos usar como por ejemplo npm start, npm run build, npm test, etc</li>
+      <li><strong>pacckage-lock.json:</strong> No se toca</li>
+      <li><strong>.gitignore:</strong> para el sistema de control de versiones, es para configurar git, desde ahi podemos ver las modificaciones de los demas</li>
+      <li><strong>node_modules:</strong> es relacionado a nodejs, aqui se instalan los modulos que se usan para usar javascript</li>
+      <li><strong>public: </strong>Aqui van los archivos relacionados al HTML. Dentro hay un archivo index.html, en el hay un div con id="root", dentro de este div es que se va a montar toda la aplicacion de react</li>
+      <li><strong>src: </strong>Dentro va todo loq ue haremos con react</li>
+        <ul>
+          <li>index.js:  es el archivo que arranca todo, dentro de el va codigo de react</li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+    </ul>
+
+    <h2>COMO USAR BOOTSTRAP:</h2>
+    <p>
+      ingresamos a getbootstrap.com, luego vamos a la parte donde dice "get started" y copiamos la CDN (es el link que esta debajo de css y empieza con < link rel="")
+    </p>
+
+    <p>
+      En react podemos crear componentes y luego llamarlos por su nombre como si fueran una etiqueta de HTML
+    </p>
+    <strong>
+      Cuando queremos usar codigo de javascript en react, lo hacemos dentro de llaves  {}
+    </strong>
+
+
+    <h2>Funciones de javascript</h2>
+    <ul>
+      <li><strong>.toUpperCase()</strong> Sirve para pasar a mayuscula, por ejemplo si ponemos "hello".toUpperCase() va a retornar HELLO</li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+    </ul>
+
+    <h2>PROPS</h2>
+    <pre>cuando pedimos una propiedad (que luego se va a llenar), lo hacemos con props, la forma de hacerlo es usandop primero "this"(de este componente quiero la propiedad llamada) 
+      seguido de un punto la palabra props, un punto y por ultimo el nombre de la propiedad, asi:
+      {this.props.titulo}
+
+        luego de lo anterior llamaremos el componente y agregaremos las propiedades asi:
+          <nombreComponente titulo="este componente es reutilizable con diferentes titulos"/>
+    </pre>
+
+    <h2>Estados:</h2>
+    <pre>
+      React no contiene los datos por lo cual los llama desde el backend, sin embargo al llamar esos datos va a necesitar almacenarlos en el navegador para mostrarlos en pantalla,
+      eso es conocido como el estado de la aplicacion.
+
+      El estado se llama de forma similar a los props, la forma de llamar el estado seria asi {this.state.title} {this.state.nTareas}, el constructor se pone antes del renderizado
+      por que de esa forma se va a procesar toda la informacion necesaria para renderizar la vista
+    
+
+    </pre>
+
+    <h2>constructor(){}</h2>
+    <pre>
+      Es un metodo que se ejecuta inmediatamente el componente es creado, incluso antes del render(){}, al constructor se le puede decir que almacene los datos
+      Nota: debajo del constructor se debe usar el super(); para que herede toda las funcionalidades de react (si no se pone sale un error)
+
+      Se usa de la siguiente forma:
+
+      class App extends Component {
+        constructor(){
+          super();
+          this.state = {                                   *este es el estado del componente*
+            title: "aplicacion de tareas",
+            nTareas: 10
+          }
+        }
+      }
+    </pre>
+
+    <h2>Paquetes necesarios para utilizar Material ui, react hooks, api rest:</h2>
+    <p>
+      luego de tener creado el proyecto de react, usaremos la consola para correr el comando -----> npm i @material-ui/core @material-ui/icons axios  (lo usaremos para usar los componentes de material design(@material-ui/core), sus iconos(@material-ui/icons) y el ultimo para hacer peticiones http(axios))
+    </p>
+      
+  </body>
+</html>

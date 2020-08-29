@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Clases y herencia</h1>
+
+    <h2>CLASES:</h2>
+    <pre>
+Una clase nos permite organizar el codigo para separar las funciones y variables que estan relacionadas
+        
+clase para 
+class usuario {
+    constructor(){
+        this.nombre = 'carlos arturo',
+        this.edad = 23;
+    }
+}
+        //dentro de la clase lo primero que debemos hacer es asignarlas, para eso usamos el metodo constructor(){} (es una funcion que se ejecuta una vez se haga una instancia de usuario)
+
+//Como crear una nueva instancia:
+const carlos = new usuario();               //aqui se dice que carlos va a tener las propiedades de usuario
+
+document.write(carlos.nombre);              //aqui se llama a nueva clase carlos con su propiedad nombre
+
+
+const alejandro = new usuario();
+
+//como crear una clase sin propiedades estaticas (propiedades dinamicas):
+
+class usuario2 {
+    constructor(nombre, edad, profesion){                //los valores que se van a recibir van dentro de los parentesis
+        this.nombre = nombre,
+        this.edad = edad,
+        this.profesion = profesion
+    }
+}
+
+const alvaro = new usuario2('Alvaro', 25, 'desarrollador web');                                 //se asignan las propiedades provenientes de la funcion
+
+document.write(`mi nombre es ${alvaro.nombre} y tengo ${alvaro.edad} años`);                    //se llaman la propiedades requeridas
+
+let alejandro = new usuario2('alejandro', 30, 'ingeniero'); 
+
+
+*/
+//METODOS DENTRO DE UNA CLASE una funcion y un metodo son lo mismo pero cuando esta dentro de una clase se llama metodo. el metodo va fuera del constructor ejemplo:
+
+class usuario {
+    constructor(nombre, edad, correo){
+        this.nombre = nombre,
+        this.edad = edad,
+        this.correo = correo
+    }
+
+    //nuevo metodo que recibe y retorna los parametros del constructor de arriba
+    mostrarInfo(){
+        return `
+            nombre: ${this.nombre}            
+            edad: ${this.edad} 
+            correo: ${this.correo} 
+            
+        `;
+    }
+}
+
+/*
+let alvaro = new usuario('alvaro', 25);             //Se le asignan los parametros a la nueva herencia de la clase
+document.write(`Mi nombre es ${alvaro.nombre} y tengo ${alvaro.edad} años`);         //se muestra en pantalla usando el nombre asignado, un punto y la propiedad que se quiere mostrar
+*/
+
+const carlos = new usuario('carlos arturo', 29 , 'correo@correo.com');          //Se asignan los parametros de la nueva clase
+document.write(carlos.mostrarInfo());                                           //se llama el metodo que está dentro de la clase
+
+
+const alvaro2 = new usuario('Alvaro', 25 , 'correo@correo.com');                //Se asignan los parametros de la nueva clase
+document.write(alvaro2.mostrarInfo());                                          //se llama el metodo que está dentro de la clase
+</pre>
+
+    <h2>HERENCIA</h2>
+    <pre>
+        Se usa cuando se quieren heredar todas las funciones y parametros de una clase desde otra clase, la forma de hacerlo es la siguiente:
+
+        class clase1 {                          //esta es la clase madre
+
+        }
+
+        class heredando extends clase1 {            //esta es la clase que hereda, se pone la clase(heredando) luego "extends" y luego la clase de la que hereda
+
+        }
+
+            En el anterior ejemplo la clase "heredando" va a obtener todos los parametros y metodos de la clase madre llamada "clase1"
+
+        Ademas de heredar todas las propiedades y funcionalidades de la clase que extiende, tambien puede tener nuevos parametros o metodos, para agregarlos hariamos lo
+        siguiente (agregar el metodo super(con los parametros de la clase madre aqui); seguido del constructor(){})
+
+
+
+
+    </pre>
+    <script src="../src/9-clasesYHerencia.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Nuevas formas de declarar variables</h1>
+
+    <ul>
+      <li>
+        <pre><strong>var:</strong> Con var podemos redeclarar variables de la siguiente forma
+            var nombre = 'juan';
+            var nombre = 'pedro';
+            var nombre = 'andres';
+            </pre>
+      </li>
+      <li>
+        <pre><strong>Let:</strong> No se puede asignar varias veces (no se puede poner let varias veces para la misma variable)
+            let nombre = 'juan';
+            let nombre = 'pedro';           //aqui sale error por que estoy usando let de nuevo para la misma variable
+            let nombre = 'andres';          //aqui sale error por que estoy usando let de nuevo para la misma variable
+
+            Ademas de lo anterior, let tiene scope de tipo bloque (si se declara dentro de una funcion no se puede usar fuera de la misma)
+            </pre>
+      </li>
+      <li>
+        <strong>const:</strong> al igual que let, no se puede declarar varias
+        veces. Ademas de lo anterior, cons tiene scope de tipo bloque (si se
+        declara dentro de una funcion no se puede usar fuera de la misma). Si
+        usamos const para un arreglo [] podemos usar el metodo .push() para
+        agregarle datos (solo en arreglos podemos modificar una constante)
+      </li>
+
+      <li><strong></strong></li>
+      <li><strong></strong></li>
+    </ul>
+
+    <script src="../src/3-variables.js"></script>
+  </body>
+</html>
