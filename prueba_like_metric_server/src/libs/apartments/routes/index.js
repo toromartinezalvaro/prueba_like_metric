@@ -31,7 +31,7 @@ router.put("/apartments", async(req, res, next) =>{
 router.delete("/apartments", async(req, res, next) =>{
     const body = req.body;
     const del = async (objectToDelete) =>{
-        return apartment.destroy({where: {id: objectToDelete.tableData.id}})
+        return apartment.destroy({where: {id: objectToDelete.id}})
     }
     const response = await del(body);
     res.json(response);

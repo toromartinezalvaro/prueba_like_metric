@@ -19,6 +19,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import services from "../../services";
 import styles from "./table.module.scss";
+import { blue } from "@material-ui/core/colors";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => (
@@ -51,6 +52,7 @@ const tableIcons = {
       ref={ref}
     />
   )),
+
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
@@ -100,8 +102,8 @@ const Table = () => {
   //funcion para añadir datos
   const addData = async (newData) => {
     const prevData = [...data]; //es igual a lo que haya dentro de data
-    prevData.push(newData);
     const sendToDB = await services("/apartments", "POST", newData);
+    prevData.push(sendToDB.data);
     await setData(prevData);
   };
 
