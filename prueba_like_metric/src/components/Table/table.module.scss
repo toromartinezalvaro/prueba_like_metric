@@ -1,0 +1,87 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10%;
+  background: #0f2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.container1 {
+  position: relative;
+  overflow: hidden;
+}
+
+.addButton {
+  color: white;
+  background-image: linear-gradient(to bottom right, gray, blue, gray);
+  border-radius: 50%;
+}
+
+.addButton:hover {
+  color: white;
+  background-image: linear-gradient(
+    to bottom right,
+    blue,
+    gray,
+    blue
+  ) !important;
+  border-radius: 50%;
+}
+
+.checkButton {
+  color: white;
+  background-image: linear-gradient(to bottom right, gray, green, gray);
+  border-radius: 50%;
+}
+
+.checkButton:hover {
+  color: white;
+  background-image: linear-gradient(to bottom right, green, gray, green);
+  border-radius: 50%;
+}
+
+.clearButton {
+  color: white;
+  background-image: linear-gradient(to bottom right, gray, red, gray);
+  border-radius: 50%;
+}
+
+.clearButton:hover {
+  color: white;
+  background-image: linear-gradient(to bottom right, red, gray, red);
+  border-radius: 50%;
+}
+
+.editButton {
+  color: rgb(83, 161, 83);
+  border-radius: 30%;
+}
+
+.editButton:hover {
+  color: rgb(7, 253, 7);
+  border-radius: 30%;
+}
+
+.deleteButton {
+  color: rgb(158, 83, 83);
+}
+
+.deleteButton:hover {
+  color: rgb(248, 8, 8);
+}
+
+rightChevron{
+    color:black;
+}

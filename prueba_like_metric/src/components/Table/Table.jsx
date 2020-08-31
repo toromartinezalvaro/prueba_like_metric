@@ -1,14 +1,15 @@
 import React, { useState, forwardRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import MaterialTable from "material-table";
-import AddBox from "@material-ui/icons/AddBox";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import Check from "@material-ui/icons/Check";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import Edit from "@material-ui/icons/Edit";
+import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined";
+import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
@@ -17,22 +18,50 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import services from "../../services";
-import "./Table.scss";
+import styles from "./table.module.scss";
 
 const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  Add: forwardRef((props, ref) => (
+    <AddCircleIcon classes={{ root: styles.addButton }} {...props} ref={ref} />
+  )),
+  Check: forwardRef((props, ref) => (
+    <CheckCircleIcon
+      classes={{ root: styles.checkButton }}
+      {...props}
+      ref={ref}
+    />
+  )),
+  Clear: forwardRef((props, ref) => (
+    <CancelIcon classes={{ root: styles.clearButton }} {...props} ref={ref} />
+  )),
+  Delete: forwardRef((props, ref) => (
+    <DeleteForeverOutlinedIcon
+      classes={{ root: styles.deleteButton }}
+      {...props}
+      ref={ref}
+    />
+  )),
   DetailPanel: forwardRef((props, ref) => (
     <ChevronRight {...props} ref={ref} />
   )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Edit: forwardRef((props, ref) => (
+    <EditTwoToneIcon
+      classes={{ root: styles.editButton }}
+      {...props}
+      ref={ref}
+    />
+  )),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => (
+    <ChevronRight
+      classes={{ root: styles.rightChevron }}
+      {...props}
+      ref={ref}
+    />
+  )),
   PreviousPage: forwardRef((props, ref) => (
     <ChevronLeft {...props} ref={ref} />
   )),
@@ -53,6 +82,7 @@ const Table = () => {
 
   const [data, setData] = useState([]); //Guardando datos en el state de la app
 
+  //se usa async y await para que la funcion espere a tener el valor
   const fetch = async () => {
     //TRAER INFO DE LA BD
     const consult = await services("/apartments", "GET");
@@ -67,6 +97,7 @@ const Table = () => {
     }
   }, []);
 
+  //funcion para añadir datos
   const addData = async (newData) => {
     const prevData = [...data]; //es igual a lo que haya dentro de data
     prevData.push(newData);
@@ -74,6 +105,7 @@ const Table = () => {
     await setData(prevData);
   };
 
+  //funcion para actualizar datos
   const updateData = async (newData, oldData) => {
     if (oldData) {
       const prevData = [...data];
@@ -84,6 +116,7 @@ const Table = () => {
     }
   };
 
+  //funcion para eliminar datos
   const deleteData = async (oldData) => {
     const prevData = [...data];
     const position = prevData.indexOf(oldData);
@@ -93,19 +126,17 @@ const Table = () => {
   };
 
   return (
-    <div className="table">
-      <MaterialTable
-        title="Precios de metro cuadradro"
-        icons={tableIcons} //llamando los iconos de la tabla
-        columns={columns} //llamando las propiedades del state
-        data={data} //llamando State data
-        editable={{
-          onRowAdd: async (newData) => addData(newData),
-          onRowUpdate: async (newData, oldData) => updateData(newData, oldData),
-          onRowDelete: async (oldData) => deleteData(oldData),
-        }}
-      />
-    </div>
+    <MaterialTable
+      title="Informacion y precios de mt2"
+      icons={tableIcons} //llamando los iconos de la tabla
+      columns={columns} //llamando las propiedades del state
+      data={data} //llamando State data
+      editable={{
+        onRowAdd: async (newData) => addData(newData),
+        onRowUpdate: async (newData, oldData) => updateData(newData, oldData),
+        onRowDelete: async (oldData) => deleteData(oldData),
+      }}
+    />
   );
 };
 
